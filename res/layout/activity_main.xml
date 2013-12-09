@@ -1,16 +1,92 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity" >
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
-
+    android:layout_height="match_parent">
+	
+    <com.wise.extend.SlidingMenuView
+        android:id="@+id/sliding_menu_view"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+        
+       <LinearLayout 
+        	android:id="@+id/left_sliding_tab"
+        	android:background="@android:color/darker_gray"
+        	android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:padding="5dip"
+        	android:layout_height="fill_parent">
+            <Button
+                android:id="@+id/bt_activity_menu_home"
+                android:text="主界面"
+                android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"/>
+            <Button
+                android:text="显示右菜单"
+                android:onClick="showRightMenu"
+                android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"/>
+            <Button
+                android:text="菜单项1"
+                android:id="@+id/button1"
+                android:onClick="changeTab1"
+                android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"/>
+            <Button
+                android:text="菜单项2"
+                android:id="@+id/button2"
+                 android:onClick="changeTab2"
+                android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"/>
+          
+    	</LinearLayout>
+        
+    	
+        <FrameLayout 
+        	android:id="@+id/sliding_body"
+            android:layout_width="fill_parent"
+        	android:layout_height="fill_parent">
+            
+    	</FrameLayout>
+    	
+        <LinearLayout 
+        	android:id="@+id/right_sliding_tab"
+        	android:background="@android:color/darker_gray"
+        	android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:padding="5dip"
+        	android:layout_height="fill_parent">
+            <Button
+                android:text="隐藏菜单"
+                android:onClick="hideMenu"
+                android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"/>
+            <Button
+                android:text="显示左菜单"
+                android:onClick="showLeftMenu"
+                android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"/>
+            <Button
+                android:text="菜单项3"
+                android:id="@+id/button3"
+                android:onClick="changeTab3"
+                android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"/>
+            <Button
+                android:text="菜单项4"
+                android:id="@+id/button4"
+                 android:onClick="changeTab4"
+                android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"/>
+            <Button
+                android:text="这个按钮证明宽度是自适应的"
+                android:id="@+id/button4"
+                 android:onClick="changeTab4"
+                android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"/>
+          
+    	</LinearLayout>
+        
+        
+    </com.wise.extend.SlidingMenuView>
 </RelativeLayout>
