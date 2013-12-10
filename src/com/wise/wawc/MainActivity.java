@@ -12,10 +12,15 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
-
+import android.widget.TextView;
+/**
+ * 菜单界面
+ * @author honesty
+ */
 public class MainActivity extends ActivityGroup {
 	SlidingMenuView slidingMenuView;	
 	ViewGroup tabcontent;
+	int Screen = 1;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -29,7 +34,16 @@ public class MainActivity extends ActivityGroup {
         Button bt_activity_menu_home = (Button)findViewById(R.id.bt_activity_menu_home);
         bt_activity_menu_home.setWidth(width);
         bt_activity_menu_home.setOnClickListener(onClickListener);
-        ToHome();
+        TextView tv_activity_main_right = (TextView)findViewById(R.id.tv_activity_main_right);
+        tv_activity_main_right.setWidth(width);//设置菜单宽度
+        
+        LinearLayout ll_activity_main_car_remind = (LinearLayout)findViewById(R.id.ll_activity_main_car_remind);
+        ll_activity_main_car_remind.setOnClickListener(onClickListener);
+        
+        Intent i = new Intent(MainActivity.this,HomeActivity.class);
+    	View v = getLocalActivityManager().startActivity(HomeActivity.class.getName(), i).getDecorView();
+		tabcontent.removeAllViews();
+		tabcontent.addView(v);
 	}
 	
 	OnClickListener onClickListener = new OnClickListener() {		
@@ -37,28 +51,52 @@ public class MainActivity extends ActivityGroup {
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.bt_activity_menu_home:
-				Intent i = new Intent(MainActivity.this,HomeActivity.class);
-		    	View view = getLocalActivityManager().startActivity(HomeActivity.class.getName(), i).getDecorView();
-				tabcontent.removeAllViews();
-				tabcontent.addView(view);
-				slidingMenuView.snapToScreen(1);
+				ToHome();
 				break;
-
+			case R.id.ll_activity_main_car_remind:
+				ToCarRemind();
+				break;
 			default:
 				break;
 			}
 		}
 	};
 	
-	private void ToHome(){
-        slidingMenuView.snapToScreen(0);
+	public void ToHome(){
+		Screen = 1;
+        slidingMenuView.snapToScreen(1);
         Intent i = new Intent(MainActivity.this,HomeActivity.class);
     	View v = getLocalActivityManager().startActivity(HomeActivity.class.getName(), i).getDecorView();
 		tabcontent.removeAllViews();
 		tabcontent.addView(v);
 	}
-	public void ShowMenu(){
-		slidingMenuView.snapToScreen(0);
+	/**
+	 * 车务提醒
+	 */
+	public void ToCarRemind(){
+		Screen = 1;
+		slidingMenuView.snapToScreen(1);
+		Intent i = new Intent(MainActivity.this,CarRemindActivity.class);
+    	View view = getLocalActivityManager().startActivity(HomeActivity.class.getName(), i).getDecorView();
+		tabcontent.removeAllViews();
+		tabcontent.addView(view);
+	}
+	public void LeftMenu(){
+		if(Screen == 0){
+			Screen = 1;
+		}else if(Screen == 1){
+			Screen = 0;
+		}
+		slidingMenuView.snapToScreen(Screen);
+	}
+	
+	public void RightMenu(){
+		if(Screen == 2){
+			Screen = 1;
+		}else if(Screen == 1){
+			Screen = 2;
+		}
+		slidingMenuView.snapToScreen(Screen);
 	}
 
 	@Override

@@ -3,229 +3,167 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
-    <LinearLayout 
-       	android:id="@+id/left_sliding_tab"
-       	android:orientation="vertical"
-        android:layout_width="fill_parent"
-       	android:layout_height="fill_parent">
-       	<RelativeLayout 
+    android:orientation="vertical"
+    android:background="#FFFFFF">    
+   	<LinearLayout 
+   	    android:id="@+id/right_sliding_tab"
+   	    android:layout_marginTop="30dp"
+   	    android:layout_width="fill_parent"
+   	    android:layout_height="wrap_content"
+   	    android:orientation="vertical">
+   	    <RelativeLayout
+   	        android:id="@+id/rl_activity_main_voice" 
+       	    android:layout_width="fill_parent"
        	    android:layout_height="wrap_content"
-       	    android:layout_width="fill_parent">
-       	    <ImageView
-       	        android:id="@+id/iv_activity_main_logo"
-       	        android:layout_height="40dp"
-       	        android:layout_width="40dp"
-       	        android:contentDescription="@string/app_name"
-       	        android:src="@drawable/ic_launcher"/>
+       	    android:layout_margin="5dp"
+       	    android:padding="5dp"
+       	    android:background="@drawable/border_bg">
        	    <TextView 
-       	        android:id="@+id/tv_activity_main_name"
-       	        android:layout_width="wrap_content"
-       	        android:layout_height="wrap_content"
-       	        android:layout_toRightOf="@id/iv_activity_main_logo"
-       	        android:textColor="@color/black"
-       	        android:text="Thomas"/>
+	       	    android:layout_width="wrap_content"
+	       	    android:layout_height="wrap_content"
+	       	    android:textColor="@color/black"
+	       	    android:textSize="@dimen/title"
+	       	    android:layout_marginLeft="10dp"
+	       	    android:layout_centerVertical="true"
+	       	    android:text="你要做什么"/>
        	    <ImageView
-       	        android:id="@+id/iv_activity_main_qq"
-       	        android:layout_height="20dp"
-       	        android:layout_width="20dp"
-       	        android:layout_toRightOf="@id/iv_activity_main_logo"
-       	        android:layout_below="@id/tv_activity_main_name"
-       	        android:contentDescription="@string/app_name"
-       	        android:src="@drawable/ic_launcher"/>
-       	    <ImageView
-       	        android:id="@+id/iv_activity_main_sina"
-       	        android:layout_height="20dp"
-       	        android:layout_width="20dp"
-       	        android:layout_toRightOf="@id/iv_activity_main_qq"
-       	        android:layout_below="@id/tv_activity_main_name"
-       	        android:contentDescription="@string/app_name"
-       	        android:src="@drawable/ic_launcher"/>
-       	     <ImageView
-       	        android:id="@+id/iv_activity_main_login_qq"
        	        android:layout_height="30dp"
        	        android:layout_width="30dp"
+       	        android:contentDescription="@string/app_name"
        	        android:layout_alignParentRight="true"
-       	        android:layout_centerVertical="true"
-       	        android:contentDescription="@string/app_name"
        	        android:src="@drawable/ic_launcher"/>
-       	     <ImageView
-       	        android:id="@+id/iv_activity_main_login_sina"
-       	        android:layout_height="30dp"
-       	        android:layout_width="30dp"
-       	        android:layout_toLeftOf="@id/iv_activity_main_login_qq"
-       	        android:layout_centerVertical="true"
-       	        android:contentDescription="@string/app_name"
-       	        android:src="@drawable/ic_launcher"/> 	    
        	</RelativeLayout>
-       	<TextView 
+       	<RelativeLayout 
+       	    android:id="@+id/rl_activity_main_oil" 
        	    android:layout_width="fill_parent"
        	    android:layout_height="wrap_content"
-       	    android:textColor="@color/black"
-       	    android:textSize="@dimen/title"
+       	    android:layout_margin="5dp"
        	    android:padding="5dp"
-       	    android:background="@drawable/border_bg"
-       	    android:text="@string/social"/>
-       	<LinearLayout 
-       	    android:layout_width="fill_parent"
-       	    android:layout_height="wrap_content"
-       	    android:padding="5dp"
-       	    android:background="@drawable/border_bg"
-       	    android:gravity="center_vertical"
-       	    android:orientation="horizontal">
-       	    <ImageView
-       	        android:layout_height="30dp"
-       	        android:layout_width="30dp"
-       	        android:contentDescription="@string/app_name"
-       	        android:src="@drawable/ic_launcher"/>
+       	    android:background="@drawable/border_bg">
        	    <TextView 
 	       	    android:layout_width="wrap_content"
 	       	    android:layout_height="wrap_content"
 	       	    android:textColor="@color/black"
 	       	    android:textSize="@dimen/title"
 	       	    android:layout_marginLeft="10dp"
-	       	    android:text="@string/car_circle"/>
-       	</LinearLayout>
-       	<TextView 
-       	    android:layout_width="fill_parent"
-       	    android:layout_height="wrap_content"
-       	    android:textColor="@color/black"
-       	    android:textSize="@dimen/title"
-       	    android:padding="5dp"
-       	    android:background="@drawable/border_bg"
-       	    android:text="@string/my_center"/>
-       	<LinearLayout 
-       	    android:layout_width="fill_parent"
-       	    android:layout_height="wrap_content"
-       	    android:padding="5dp"
-       	    android:background="@drawable/border_bg"
-       	    android:gravity="center_vertical"
-       	    android:orientation="horizontal">
+	       	    android:layout_centerVertical="true"
+	       	    android:text="我要加油"/>
        	    <ImageView
        	        android:layout_height="30dp"
        	        android:layout_width="30dp"
        	        android:contentDescription="@string/app_name"
+       	        android:layout_alignParentRight="true"
        	        android:src="@drawable/ic_launcher"/>
+       	</RelativeLayout>
+       	<RelativeLayout 
+       	    android:id="@+id/rl_activity_main_maintain"
+       	    android:layout_width="fill_parent"
+       	    android:layout_height="wrap_content"
+       	    android:layout_margin="5dp"
+       	    android:padding="5dp"
+       	    android:background="@drawable/border_bg">
        	    <TextView 
 	       	    android:layout_width="wrap_content"
 	       	    android:layout_height="wrap_content"
 	       	    android:textColor="@color/black"
 	       	    android:textSize="@dimen/title"
 	       	    android:layout_marginLeft="10dp"
-	       	    android:text="@string/car_remind"/>
-       	</LinearLayout>
-       	<LinearLayout 
-       	    android:layout_width="fill_parent"
-       	    android:layout_height="wrap_content"
-       	    android:padding="5dp"
-       	    android:background="@drawable/border_bg"
-       	    android:gravity="center_vertical"
-       	    android:orientation="horizontal">
+	       	    android:layout_centerVertical="true"
+	       	    android:text="我要维保"/>
        	    <ImageView
        	        android:layout_height="30dp"
        	        android:layout_width="30dp"
        	        android:contentDescription="@string/app_name"
+       	        android:layout_alignParentRight="true"
        	        android:src="@drawable/ic_launcher"/>
+       	</RelativeLayout>
+       	<RelativeLayout
+       	    android:id="@+id/rl_activity_main_wash" 
+       	    android:layout_width="fill_parent"
+       	    android:layout_height="wrap_content"
+       	    android:layout_margin="5dp"
+       	    android:padding="5dp"
+       	    android:background="@drawable/border_bg">
        	    <TextView 
 	       	    android:layout_width="wrap_content"
 	       	    android:layout_height="wrap_content"
 	       	    android:textColor="@color/black"
 	       	    android:textSize="@dimen/title"
 	       	    android:layout_marginLeft="10dp"
-	       	    android:text="@string/my_car"/>
-       	</LinearLayout>
-       	<LinearLayout 
-       	    android:layout_width="fill_parent"
-       	    android:layout_height="wrap_content"
-       	    android:padding="5dp"
-       	    android:background="@drawable/border_bg"
-       	    android:gravity="center_vertical"
-       	    android:orientation="horizontal">
+	       	    android:layout_centerVertical="true"
+	       	    android:text="我要洗车"/>
        	    <ImageView
        	        android:layout_height="30dp"
        	        android:layout_width="30dp"
        	        android:contentDescription="@string/app_name"
+       	        android:layout_alignParentRight="true"
        	        android:src="@drawable/ic_launcher"/>
+       	</RelativeLayout>
+       	<RelativeLayout 
+       	    android:id="@+id/rl_activity_main_help" 
+       	    android:layout_width="fill_parent"
+       	    android:layout_height="wrap_content"
+       	    android:layout_margin="5dp"
+       	    android:padding="5dp"
+       	    android:background="@drawable/border_bg">
        	    <TextView 
 	       	    android:layout_width="wrap_content"
 	       	    android:layout_height="wrap_content"
 	       	    android:textColor="@color/black"
 	       	    android:textSize="@dimen/title"
 	       	    android:layout_marginLeft="10dp"
-	       	    android:text="@string/my_terminal"/>
-       	</LinearLayout>
-       	<LinearLayout 
-       	    android:layout_width="fill_parent"
-       	    android:layout_height="wrap_content"
-       	    android:padding="5dp"
-       	    android:background="@drawable/border_bg"
-       	    android:gravity="center_vertical"
-       	    android:orientation="horizontal">
+	       	    android:layout_centerVertical="true"
+	       	    android:text="我要救援"/>
        	    <ImageView
        	        android:layout_height="30dp"
        	        android:layout_width="30dp"
        	        android:contentDescription="@string/app_name"
+       	        android:layout_alignParentRight="true"
        	        android:src="@drawable/ic_launcher"/>
+       	</RelativeLayout>
+       	<RelativeLayout
+       	    android:id="@+id/rl_activity_main_safety"  
+       	    android:layout_width="fill_parent"
+       	    android:layout_height="wrap_content"
+       	    android:layout_margin="5dp"
+       	    android:padding="5dp"
+       	    android:background="@drawable/border_bg">
        	    <TextView 
 	       	    android:layout_width="wrap_content"
 	       	    android:layout_height="wrap_content"
 	       	    android:textColor="@color/black"
 	       	    android:textSize="@dimen/title"
 	       	    android:layout_marginLeft="10dp"
-	       	    android:text="@string/my_orders"/>
-       	</LinearLayout>
-       	<LinearLayout 
-       	    android:layout_width="fill_parent"
-       	    android:layout_height="wrap_content"
-       	    android:padding="5dp"
-       	    android:background="@drawable/border_bg"
-       	    android:gravity="center_vertical"
-       	    android:orientation="horizontal">
+	       	    android:layout_centerVertical="true"
+	       	    android:text="我要保险"/>
        	    <ImageView
        	        android:layout_height="30dp"
        	        android:layout_width="30dp"
        	        android:contentDescription="@string/app_name"
+       	        android:layout_alignParentRight="true"
        	        android:src="@drawable/ic_launcher"/>
+       	</RelativeLayout>
+       	<RelativeLayout
+       	    android:id="@+id/rl_activity_main_park"   
+       	    android:layout_width="fill_parent"
+       	    android:layout_height="wrap_content"
+       	    android:layout_margin="5dp"
+       	    android:padding="5dp"
+       	    android:background="@drawable/border_bg">
        	    <TextView 
 	       	    android:layout_width="wrap_content"
 	       	    android:layout_height="wrap_content"
 	       	    android:textColor="@color/black"
 	       	    android:textSize="@dimen/title"
 	       	    android:layout_marginLeft="10dp"
-	       	    android:text="@string/my_collect"/>
-       	</LinearLayout>
-       	<TextView 
-       	    android:layout_width="fill_parent"
-       	    android:layout_height="wrap_content"
-       	    android:textColor="@color/black"
-       	    android:textSize="@dimen/title"
-       	    android:padding="5dp"
-       	    android:background="@drawable/border_bg"
-       	    android:text="@string/system_related"/>
-       	<LinearLayout 
-       	    android:layout_width="fill_parent"
-       	    android:layout_height="wrap_content"
-       	    android:padding="5dp"
-       	    android:background="@drawable/border_bg"
-       	    android:gravity="center_vertical"
-       	    android:orientation="horizontal">
+	       	    android:layout_centerVertical="true"
+	       	    android:text="我要停车"/>
        	    <ImageView
        	        android:layout_height="30dp"
        	        android:layout_width="30dp"
        	        android:contentDescription="@string/app_name"
+       	        android:layout_alignParentRight="true"
        	        android:src="@drawable/ic_launcher"/>
-       	    <TextView 
-	       	    android:layout_width="wrap_content"
-	       	    android:layout_height="wrap_content"
-	       	    android:textColor="@color/black"
-	       	    android:textSize="@dimen/title"
-	       	    android:layout_marginLeft="10dp"
-	       	    android:text="@string/setup_center"/>
-       	</LinearLayout>
-        <Button
-            android:id="@+id/bt_activity_menu_home"
-            android:text="主界面"
-            android:layout_width="wrap_content"
-    		android:layout_height="wrap_content"/>        
+       	</RelativeLayout>       	
    	</LinearLayout>
 </LinearLayout>
