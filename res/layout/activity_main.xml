@@ -99,7 +99,8 @@
 	       	    android:padding="5dp"
 	       	    android:background="@drawable/border_bg"
 	       	    android:text="@string/my_center"/>
-	       	<LinearLayout 
+	       	<LinearLayout
+	       	    android:id="@+id/ll_activity_main_car_remind" 
 	       	    android:layout_width="fill_parent"
 	       	    android:layout_height="wrap_content"
 	       	    android:padding="5dp"
@@ -232,53 +233,179 @@
 	            android:text="主界面"
 	            android:layout_width="250dp"
 	    		android:layout_height="wrap_content"/>        
-	   	</LinearLayout>
-        
+	   	</LinearLayout>        
     	
         <FrameLayout 
         	android:id="@+id/sliding_body"
             android:layout_width="fill_parent"
-        	android:layout_height="fill_parent">
-            
+        	android:layout_height="fill_parent">            
     	</FrameLayout>
     	
         <LinearLayout 
-        	android:id="@+id/right_sliding_tab"
-        	android:background="@android:color/darker_gray"
-        	android:orientation="vertical"
-            android:layout_width="wrap_content"
-            android:padding="5dip"
-        	android:layout_height="fill_parent">
-            <Button
-                android:text="隐藏菜单"
-                android:onClick="hideMenu"
-                android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"/>
-            <Button
-                android:text="显示左菜单"
-                android:onClick="showLeftMenu"
-                android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"/>
-            <Button
-                android:text="菜单项3"
-                android:id="@+id/button3"
-                android:onClick="changeTab3"
-                android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"/>
-            <Button
-                android:text="菜单项4"
-                android:id="@+id/button4"
-                 android:onClick="changeTab4"
-                android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"/>
-            <Button
-                android:text="这个按钮证明宽度是自适应的"
-                android:id="@+id/button4"
-                 android:onClick="changeTab4"
-                android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"/>
-          
-    	</LinearLayout>
+	   	    android:id="@+id/right_sliding_tab"
+	   	    android:layout_marginTop="30dp"
+	   	    android:layout_width="fill_parent"
+	   	    android:layout_height="wrap_content"
+	   	    android:orientation="vertical">
+	   	    <RelativeLayout
+	   	        android:id="@+id/rl_activity_main_voice" 
+	       	    android:layout_width="fill_parent"
+	       	    android:layout_height="wrap_content"
+	       	    android:layout_margin="5dp"
+	       	    android:padding="5dp"
+	       	    android:background="@drawable/border_bg">
+	       	    <TextView 
+		       	    android:layout_width="wrap_content"
+		       	    android:layout_height="wrap_content"
+		       	    android:textColor="@color/black"
+		       	    android:textSize="@dimen/title"
+		       	    android:layout_marginLeft="10dp"
+		       	    android:layout_centerVertical="true"
+		       	    android:text="你要做什么"/>
+	       	    <ImageView
+	       	        android:layout_height="30dp"
+	       	        android:layout_width="30dp"
+	       	        android:contentDescription="@string/app_name"
+	       	        android:layout_alignParentRight="true"
+	       	        android:src="@drawable/ic_launcher"/>
+	       	</RelativeLayout>
+	       	<RelativeLayout 
+	       	    android:id="@+id/rl_activity_main_oil" 
+	       	    android:layout_width="fill_parent"
+	       	    android:layout_height="wrap_content"
+	       	    android:layout_margin="5dp"
+	       	    android:padding="5dp"
+	       	    android:background="@drawable/border_bg">
+	       	    <TextView 
+		       	    android:layout_width="wrap_content"
+		       	    android:layout_height="wrap_content"
+		       	    android:textColor="@color/black"
+		       	    android:textSize="@dimen/title"
+		       	    android:layout_marginLeft="10dp"
+		       	    android:layout_centerVertical="true"
+		       	    android:text="我要加油"/>
+	       	    <ImageView
+	       	        android:layout_height="30dp"
+	       	        android:layout_width="30dp"
+	       	        android:contentDescription="@string/app_name"
+	       	        android:layout_alignParentRight="true"
+	       	        android:src="@drawable/ic_launcher"/>
+	       	</RelativeLayout>
+	       	<RelativeLayout 
+	       	    android:id="@+id/rl_activity_main_maintain"
+	       	    android:layout_width="fill_parent"
+	       	    android:layout_height="wrap_content"
+	       	    android:layout_margin="5dp"
+	       	    android:padding="5dp"
+	       	    android:background="@drawable/border_bg">
+	       	    <TextView 
+		       	    android:layout_width="wrap_content"
+		       	    android:layout_height="wrap_content"
+		       	    android:textColor="@color/black"
+		       	    android:textSize="@dimen/title"
+		       	    android:layout_marginLeft="10dp"
+		       	    android:layout_centerVertical="true"
+		       	    android:text="我要维保"/>
+	       	    <ImageView
+	       	        android:layout_height="30dp"
+	       	        android:layout_width="30dp"
+	       	        android:contentDescription="@string/app_name"
+	       	        android:layout_alignParentRight="true"
+	       	        android:src="@drawable/ic_launcher"/>
+	       	</RelativeLayout>
+	       	<RelativeLayout
+	       	    android:id="@+id/rl_activity_main_wash" 
+	       	    android:layout_width="fill_parent"
+	       	    android:layout_height="wrap_content"
+	       	    android:layout_margin="5dp"
+	       	    android:padding="5dp"
+	       	    android:background="@drawable/border_bg">
+	       	    <TextView 
+		       	    android:layout_width="wrap_content"
+		       	    android:layout_height="wrap_content"
+		       	    android:textColor="@color/black"
+		       	    android:textSize="@dimen/title"
+		       	    android:layout_marginLeft="10dp"
+		       	    android:layout_centerVertical="true"
+		       	    android:text="我要洗车"/>
+	       	    <ImageView
+	       	        android:layout_height="30dp"
+	       	        android:layout_width="30dp"
+	       	        android:contentDescription="@string/app_name"
+	       	        android:layout_alignParentRight="true"
+	       	        android:src="@drawable/ic_launcher"/>
+	       	</RelativeLayout>
+	       	<RelativeLayout 
+	       	    android:id="@+id/rl_activity_main_help" 
+	       	    android:layout_width="fill_parent"
+	       	    android:layout_height="wrap_content"
+	       	    android:layout_margin="5dp"
+	       	    android:padding="5dp"
+	       	    android:background="@drawable/border_bg">
+	       	    <TextView 
+		       	    android:layout_width="wrap_content"
+		       	    android:layout_height="wrap_content"
+		       	    android:textColor="@color/black"
+		       	    android:textSize="@dimen/title"
+		       	    android:layout_marginLeft="10dp"
+		       	    android:layout_centerVertical="true"
+		       	    android:text="我要救援"/>
+	       	    <ImageView
+	       	        android:layout_height="30dp"
+	       	        android:layout_width="30dp"
+	       	        android:contentDescription="@string/app_name"
+	       	        android:layout_alignParentRight="true"
+	       	        android:src="@drawable/ic_launcher"/>
+	       	</RelativeLayout>
+	       	<RelativeLayout
+	       	    android:id="@+id/rl_activity_main_safety"  
+	       	    android:layout_width="fill_parent"
+	       	    android:layout_height="wrap_content"
+	       	    android:layout_margin="5dp"
+	       	    android:padding="5dp"
+	       	    android:background="@drawable/border_bg">
+	       	    <TextView 
+		       	    android:layout_width="wrap_content"
+		       	    android:layout_height="wrap_content"
+		       	    android:textColor="@color/black"
+		       	    android:textSize="@dimen/title"
+		       	    android:layout_marginLeft="10dp"
+		       	    android:layout_centerVertical="true"
+		       	    android:text="我要保险"/>
+	       	    <ImageView
+	       	        android:layout_height="30dp"
+	       	        android:layout_width="30dp"
+	       	        android:contentDescription="@string/app_name"
+	       	        android:layout_alignParentRight="true"
+	       	        android:src="@drawable/ic_launcher"/>
+	       	</RelativeLayout>
+	       	<RelativeLayout
+	       	    android:id="@+id/rl_activity_main_park"   
+	       	    android:layout_width="fill_parent"
+	       	    android:layout_height="wrap_content"
+	       	    android:layout_margin="5dp"
+	       	    android:padding="5dp"
+	       	    android:background="@drawable/border_bg">
+	       	    <TextView 
+		       	    android:layout_width="wrap_content"
+		       	    android:layout_height="wrap_content"
+		       	    android:textColor="@color/black"
+		       	    android:textSize="@dimen/title"
+		       	    android:layout_marginLeft="10dp"
+		       	    android:layout_centerVertical="true"
+		       	    android:text="我要停车"/>
+	       	    <ImageView
+	       	        android:layout_height="30dp"
+	       	        android:layout_width="30dp"
+	       	        android:contentDescription="@string/app_name"
+	       	        android:layout_alignParentRight="true"
+	       	        android:src="@drawable/ic_launcher"/>
+	       	</RelativeLayout>
+	       	<TextView 
+	       	    android:id="@+id/tv_activity_main_right"
+	       	    android:layout_width="wrap_content"
+	       	    android:layout_height="wrap_content"/>
+	   	</LinearLayout>
         
         
     </com.wise.extend.SlidingMenuView>

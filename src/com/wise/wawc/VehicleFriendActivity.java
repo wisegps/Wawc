@@ -25,7 +25,7 @@ public class VehicleFriendActivity extends Activity {
 		menuButton = (Button) findViewById(R.id.menu);
 		menuButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				
+				ActivityFactory.A.LeftMenu();
 			}
 		});
 		articleList = (ListView) findViewById(R.id.article_list);

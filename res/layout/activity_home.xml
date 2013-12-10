@@ -1,18 +1,40 @@
-<RelativeLayout 
+<LinearLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="#FFFFFF">
-    <Button 
-        android:id="@+id/bt_activity_home_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="menu"/>
-	<TextView 
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_below="@id/bt_activity_home_menu"
-	    android:textColor="#000000"
-	    android:text="home menu search"/>
-</RelativeLayout>
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="44dp"
+        android:background="@drawable/border_bg"
+        android:padding="2dp">
+		<ImageView
+            android:id="@+id/iv_activity_home_menu"
+            android:layout_width="60dp"
+	        android:layout_height="36dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_launcher"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_toLeftOf="@+id/iv_activity_car_home_search"
+            android:layout_toRightOf="@+id/iv_activity_home_menu"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textColor="@color/black"
+            android:textSize="@dimen/title"
+            android:textStyle="bold" />
+		<ImageView
+            android:id="@+id/iv_activity_car_home_search"
+            android:layout_width="60dp"
+	        android:layout_height="36dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_launcher"/>
+	</RelativeLayout>
+</LinearLayout>
