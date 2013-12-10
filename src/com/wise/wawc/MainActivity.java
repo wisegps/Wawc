@@ -7,6 +7,7 @@ import android.app.ActivityGroup;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -36,6 +37,10 @@ public class MainActivity extends ActivityGroup {
         Button bt_activity_menu_home = (Button)findViewById(R.id.bt_activity_menu_home);
         bt_activity_menu_home.setWidth(width);
         bt_activity_menu_home.setOnClickListener(onClickListener);
+        ToHome();
+        //车友圈
+        TextView vehiclefriend = (TextView)findViewById(R.id.car_circle);
+        vehiclefriend.setOnClickListener(onClickListener);
         TextView tv_activity_main_right = (TextView)findViewById(R.id.tv_activity_main_right);
         tv_activity_main_right.setWidth(width);//设置菜单宽度
         
@@ -56,6 +61,15 @@ public class MainActivity extends ActivityGroup {
 			switch (v.getId()) {
 			case R.id.bt_activity_menu_home:
 				ToHome();
+				break;
+				//车友圈
+			case R.id.car_circle:
+				Intent intent = new Intent(MainActivity.this,VehicleFriendActivity.class);
+		    	View vv = getLocalActivityManager().startActivity(VehicleFriendActivity.class.getName(), intent).getDecorView();
+				tabcontent.removeAllViews();
+				tabcontent.addView(vv);
+				slidingMenuView.snapToScreen(1);
+				Log.e("VehicleFriendActivity","VehicleFriendActivity");
 				break;
 			case R.id.ll_activity_main_car_remind:
 				ToCarRemind();

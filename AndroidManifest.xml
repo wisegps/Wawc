@@ -22,5 +22,6 @@
         <activity android:name=".HomeActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".CarRemindActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".VehicleStatusActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".VehicleFriendActivity"></activity>
     </application>
 </manifest>
