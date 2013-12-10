@@ -2,6 +2,7 @@
 <resources>
     <color name="white">#FFFFFF</color>
 	<color name="yellow">#FFFF00</color>
+	<color name="red">#FF0000</color>
     <drawable name="red">#7f00</drawable>
     <drawable name="blue">#770000ff</drawable>
     <drawable name="green">#7700ff00</drawable>

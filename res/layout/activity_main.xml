@@ -118,7 +118,8 @@
 		       	    android:layout_marginLeft="10dp"
 		       	    android:text="@string/car_remind"/>
 	       	</LinearLayout>
-	       	<LinearLayout 
+	       	<LinearLayout
+	       	    android:id="@+id/ll_activity_main_mycar" 
 	       	    android:layout_width="fill_parent"
 	       	    android:layout_height="wrap_content"
 	       	    android:padding="5dp"
