@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="white">#FFFFFF</color>
+	<color name="yellow">#FFFF00</color>
+    <drawable name="red">#7f00</drawable>
+    <drawable name="blue">#770000ff</drawable>
+    <drawable name="green">#7700ff00</drawable>
+	<drawable name="yellow">#77ffff00</drawable>
+	<drawable name="darkgray">#808080FF</drawable>
+	
+	<drawable name="screen_background_black">#ff000000</drawable>
+    <drawable name="translucent_background">#e0000000</drawable>
+    <drawable name="transparent_background">#00000000</drawable>
+    <drawable name="black2">#8B000000</drawable>
+
+    <color name="solid_red">#f00</color>
+    <color name="solid_blue">#0000ff</color>
+    <color name="solid_green">#f0f0</color>
+    <color name="solid_yellow">#ffffff00</color>
+    <color name="black">#000000</color>
+    <color name="write">#ffffff</color>
+    <color name="blue">#0677bb</color>
+    <color name="grey">#5b5b5b</color>
+    <color name="bkg1">#e6ecf1</color>
+    <color name="bkg2">#edf8fb</color>
+    <color name="celendar_month">#ceeffe</color>
+    <color name="celendar_daynames">#8bcbe9</color>
+    <color name="celendar_body">#95a9b6</color>
+    <color name="celendar_text">#6b8597</color>
+    <color name="transparent_background">#50000000</color>  
+    <color name="bkg3">#ac5818</color>  
+    <color name="bkg4">#d0a079</color>  
+    <color name="bkg5">#4f3105</color>  
+    <color name="bkg6">#ff903e</color>  
+    <color name="orange">#da6528</color>  
+</resources>

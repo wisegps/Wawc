@@ -131,7 +131,7 @@ public class SlidingMenuView extends ViewGroup{
 	public void measureViews(int widthMeasureSpec, int heightMeasureSpec){
 		
 		View v1 = findViewById(R.id.left_sliding_tab);
-
+		v1.measure(500, heightMeasureSpec);
 		v1.measure(v1.getLayoutParams().width+v1.getLeft()+v1.getRight(), heightMeasureSpec);
 		
 		View v2 = findViewById(R.id.sliding_body);
