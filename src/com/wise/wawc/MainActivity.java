@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class MainActivity extends ActivityGroup {
 	SlidingMenuView slidingMenuView;	
@@ -30,6 +31,9 @@ public class MainActivity extends ActivityGroup {
         bt_activity_menu_home.setWidth(width);
         bt_activity_menu_home.setOnClickListener(onClickListener);
         ToHome();
+        //车友圈
+        TextView vehiclefriend = (TextView)findViewById(R.id.car_circle);
+        vehiclefriend.setOnClickListener(onClickListener);
 	}
 	
 	OnClickListener onClickListener = new OnClickListener() {		
@@ -43,7 +47,14 @@ public class MainActivity extends ActivityGroup {
 				tabcontent.addView(view);
 				slidingMenuView.snapToScreen(1);
 				break;
-
+				//车友圈
+			case R.id.car_circle:
+				Intent intent = new Intent(MainActivity.this,VehicleFriendActivity.class);
+		    	View vv = getLocalActivityManager().startActivity(VehicleFriendActivity.class.getName(), intent).getDecorView();
+				tabcontent.removeAllViews();
+				tabcontent.addView(vv);
+				slidingMenuView.snapToScreen(1);
+				break;
 			default:
 				break;
 			}
