@@ -15,6 +15,7 @@ import android.widget.ListView;
  */
 public class VehicleFriendActivity extends Activity {
 	private Button menuButton = null;
+	private Button homeButton = null;
 	private ListView articleList = null;
 	private MyAdapter myAdapter = null;
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,12 @@ public class VehicleFriendActivity extends Activity {
 		menuButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				ActivityFactory.A.LeftMenu();
+			}
+		});
+		homeButton = (Button) findViewById(R.id.home);
+		homeButton.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				ActivityFactory.A.ToHome();
 			}
 		});
 		articleList = (ListView) findViewById(R.id.article_list);
