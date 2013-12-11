@@ -91,48 +91,43 @@
         android:layout_height="wrap_content"
         android:hint="Search" />
     <!-- 显示详细评论信息 -->
-
-    <ListView
-        android:id="@+id/article_list"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        >
-    </ListView>
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <ImageView
-            android:id="@+id/publish_article"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:background="@drawable/ic_launcher" />
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/publish_article"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal"
-            android:visibility="gone"
-             >
-
-            <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="说点什么..." 
-                android:layout_weight="1"
-                />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/ic_launcher" 
-                android:layout_weight="1"
-                />
-        </LinearLayout>
-    </RelativeLayout>
-
+	<RelativeLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent">
+	    <ListView
+	        android:id="@+id/article_list"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent">
+	    </ListView>
+	    <RelativeLayout
+	        android:background="#000000"
+	        android:layout_alignParentBottom="true"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" >
+	
+	        <ImageView
+	            android:id="@+id/publish_article"
+	            android:layout_width="wrap_content"
+	            android:layout_height="20dp"
+	            android:layout_alignParentRight="true"
+	            android:layout_alignParentBottom="true"
+	            android:src="@drawable/ic_launcher"
+	            android:contentDescription="@string/app_name"/>	
+	        <LinearLayout
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentBottom="true"
+	            android:orientation="horizontal"
+	            android:visibility="visible">	
+	            <EditText
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content"
+	                android:hint="说点什么..."/>
+	            <ImageView
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:background="@drawable/ic_launcher"  />
+	        </LinearLayout>
+	    </RelativeLayout>
+	</RelativeLayout>
 </LinearLayout>

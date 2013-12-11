@@ -37,7 +37,7 @@ public class MainActivity extends ActivityGroup {
         Button bt_activity_menu_home = (Button)findViewById(R.id.bt_activity_menu_home);
         bt_activity_menu_home.setWidth(width);
         bt_activity_menu_home.setOnClickListener(onClickListener);
-        ToHome();
+        //ToMyCar();
         //车友圈
         TextView vehiclefriend = (TextView)findViewById(R.id.car_circle);
         vehiclefriend.setOnClickListener(onClickListener);
@@ -49,7 +49,7 @@ public class MainActivity extends ActivityGroup {
         LinearLayout ll_activity_main_mycar = (LinearLayout)findViewById(R.id.ll_activity_main_mycar);
         ll_activity_main_mycar.setOnClickListener(onClickListener);
         
-        Intent i = new Intent(MainActivity.this,VehicleStatusActivity.class);
+        Intent i = new Intent(MainActivity.this,HomeActivity.class);
     	View v = getLocalActivityManager().startActivity(HomeActivity.class.getName(), i).getDecorView();
 		tabcontent.removeAllViews();
 		tabcontent.addView(v);
