@@ -1,5 +1,7 @@
 package com.wise.wawc;
 
+import javax.xml.validation.ValidatorHandler;
+
 import com.wise.extend.SlidingMenuView;
 import android.app.ActivityGroup;
 import android.content.Context;
@@ -44,8 +46,10 @@ public class MainActivity extends ActivityGroup {
         
         LinearLayout ll_activity_main_car_remind = (LinearLayout)findViewById(R.id.ll_activity_main_car_remind);
         ll_activity_main_car_remind.setOnClickListener(onClickListener);
+        LinearLayout ll_activity_main_mycar = (LinearLayout)findViewById(R.id.ll_activity_main_mycar);
+        ll_activity_main_mycar.setOnClickListener(onClickListener);
         
-        Intent i = new Intent(MainActivity.this,HomeActivity.class);
+        Intent i = new Intent(MainActivity.this,VehicleStatusActivity.class);
     	View v = getLocalActivityManager().startActivity(HomeActivity.class.getName(), i).getDecorView();
 		tabcontent.removeAllViews();
 		tabcontent.addView(v);
@@ -70,7 +74,8 @@ public class MainActivity extends ActivityGroup {
 			case R.id.ll_activity_main_car_remind:
 				ToCarRemind();
 				break;
-			default:
+			case R.id.ll_activity_main_mycar:
+				ToMyCar();
 				break;
 			}
 		}
@@ -91,10 +96,22 @@ public class MainActivity extends ActivityGroup {
 		Screen = 1;
 		slidingMenuView.snapToScreen(1);
 		Intent i = new Intent(MainActivity.this,CarRemindActivity.class);
-    	View view = getLocalActivityManager().startActivity(HomeActivity.class.getName(), i).getDecorView();
+    	View view = getLocalActivityManager().startActivity(CarRemindActivity.class.getName(), i).getDecorView();
 		tabcontent.removeAllViews();
 		tabcontent.addView(view);
 	}
+	/**
+	 * 我的车况
+	 */
+	public void ToMyCar(){
+		Screen = 1;
+		slidingMenuView.snapToScreen(1);
+		Intent i = new Intent(MainActivity.this,VehicleStatusActivity.class);
+    	View view = getLocalActivityManager().startActivity(VehicleStatusActivity.class.getName(), i).getDecorView();
+		tabcontent.removeAllViews();
+		tabcontent.addView(view);
+	}
+	
 	public void LeftMenu(){
 		if(Screen == 0){
 			Screen = 1;
