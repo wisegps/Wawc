@@ -86,24 +86,27 @@ containing a value of this type.
     }
     public static final class drawable {
         public static final int border_bg=0x7f020000;
-        public static final int car=0x7f020001;
-        public static final int energy_degree=0x7f020002;
-        public static final int energy_trendline=0x7f020003;
-        public static final int energy_trendpoint_last=0x7f020004;
-        public static final int energy_trendpoint_move=0x7f020005;
-        public static final int ic_launcher=0x7f020006;
-        public static final int image=0x7f020007;
-        public static final int rl_bg=0x7f020008;
-        public static final int xlistview_arrow=0x7f020009;
+        public static final int camera=0x7f020001;
+        public static final int car=0x7f020002;
+        public static final int energy_degree=0x7f020003;
+        public static final int energy_trendline=0x7f020004;
+        public static final int energy_trendpoint_last=0x7f020005;
+        public static final int energy_trendpoint_move=0x7f020006;
+        public static final int ic_launcher=0x7f020007;
+        public static final int image=0x7f020008;
+        public static final int rl_bg=0x7f020009;
+        public static final int xlistview_arrow=0x7f02000a;
     }
     public static final class id {
-        public static final int action_settings=0x7f09004d;
-        public static final int article_list=0x7f090042;
+        public static final int action_settings=0x7f090052;
+        public static final int article_list=0x7f090046;
+        public static final int back=0x7f09003e;
         public static final int bt_activity_menu_home=0x7f09001c;
         public static final int car_circle=0x7f090019;
+        public static final int ed_publish_article=0x7f090040;
         public static final int erenergycurve=0x7f09002f;
         public static final int head_article=0x7f090035;
-        public static final int home=0x7f09003f;
+        public static final int home=0x7f090043;
         public static final int iv_activity_car_fault_home=0x7f090001;
         public static final int iv_activity_car_fault_menu=0x7f090000;
         public static final int iv_activity_car_home_search=0x7f090010;
@@ -137,10 +140,12 @@ containing a value of this type.
         public static final int ll_activity_main_car_remind=0x7f09001a;
         public static final int ll_activity_main_mycar=0x7f09001b;
         public static final int ll_item_car_fault=0x7f09003d;
+        public static final int localtion=0x7f09003f;
         public static final int lv_activity_car_fault=0x7f090002;
         public static final int lv_activity_travel=0x7f09002b;
-        public static final int menu=0x7f09003e;
-        public static final int publish_article=0x7f090043;
+        public static final int menu=0x7f090042;
+        public static final int publish=0x7f090041;
+        public static final int publish_article=0x7f090047;
         public static final int qq=0x7f090038;
         public static final int right_sliding_tab=0x7f09001e;
         public static final int rl_activity_main_help=0x7f090023;
@@ -151,7 +156,8 @@ containing a value of this type.
         public static final int rl_activity_main_voice=0x7f09001f;
         public static final int rl_activity_main_wash=0x7f090022;
         public static final int rl_activity_vehicle_status_oil=0x7f090030;
-        public static final int search=0x7f090041;
+        public static final int say_something=0x7f090048;
+        public static final int search=0x7f090045;
         public static final int sina=0x7f090037;
         public static final int sliding_body=0x7f09001d;
         public static final int sliding_menu_view=0x7f090011;
@@ -165,16 +171,16 @@ containing a value of this type.
         public static final int tv_item_car_fault_data=0x7f090039;
         public static final int tv_item_car_fault_info=0x7f09003b;
         public static final int update_time=0x7f090036;
-        public static final int user_head=0x7f090040;
-        public static final int xlistview_footer_content=0x7f090044;
-        public static final int xlistview_footer_hint_textview=0x7f090046;
-        public static final int xlistview_footer_progressbar=0x7f090045;
-        public static final int xlistview_header_arrow=0x7f09004b;
-        public static final int xlistview_header_content=0x7f090047;
-        public static final int xlistview_header_hint_textview=0x7f090049;
-        public static final int xlistview_header_progressbar=0x7f09004c;
-        public static final int xlistview_header_text=0x7f090048;
-        public static final int xlistview_header_time=0x7f09004a;
+        public static final int user_head=0x7f090044;
+        public static final int xlistview_footer_content=0x7f090049;
+        public static final int xlistview_footer_hint_textview=0x7f09004b;
+        public static final int xlistview_footer_progressbar=0x7f09004a;
+        public static final int xlistview_header_arrow=0x7f090050;
+        public static final int xlistview_header_content=0x7f09004c;
+        public static final int xlistview_header_hint_textview=0x7f09004e;
+        public static final int xlistview_header_progressbar=0x7f090051;
+        public static final int xlistview_header_text=0x7f09004d;
+        public static final int xlistview_header_time=0x7f09004f;
     }
     public static final class layout {
         public static final int activity_car_fault=0x7f030000;
@@ -186,10 +192,11 @@ containing a value of this type.
         public static final int article_adapter=0x7f030006;
         public static final int item_car_fault=0x7f030007;
         public static final int item_travel=0x7f030008;
-        public static final int text=0x7f030009;
-        public static final int vehicle_friend=0x7f03000a;
-        public static final int xlistview_footer=0x7f03000b;
-        public static final int xlistview_header=0x7f03000c;
+        public static final int new_article=0x7f030009;
+        public static final int text=0x7f03000a;
+        public static final int vehicle_friend=0x7f03000b;
+        public static final int xlistview_footer=0x7f03000c;
+        public static final int xlistview_header=0x7f03000d;
     }
     public static final class menu {
         public static final int main=0x7f080000;
