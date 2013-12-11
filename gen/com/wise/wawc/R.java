@@ -9,30 +9,67 @@ package com.wise.wawc;
 
 public final class R {
     public static final class attr {
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int border_bottom=0x7f010004;
+        /** <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+         */
+        public static final int border_color=0x7f010000;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int border_left=0x7f010001;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int border_right=0x7f010003;
+        /** <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+         */
+        public static final int border_top=0x7f010002;
     }
     public static final class color {
-        public static final int bkg1=0x7f04000b;
-        public static final int bkg2=0x7f04000c;
-        public static final int bkg3=0x7f040012;
-        public static final int bkg4=0x7f040013;
-        public static final int bkg5=0x7f040014;
-        public static final int bkg6=0x7f040015;
+        public static final int bkg1=0x7f04000a;
+        public static final int bkg2=0x7f04000b;
+        public static final int bkg3=0x7f040011;
+        public static final int bkg4=0x7f040012;
+        public static final int bkg5=0x7f040013;
+        public static final int bkg6=0x7f040014;
         public static final int black=0x7f040007;
-        public static final int blue=0x7f040009;
-        public static final int celendar_body=0x7f04000f;
-        public static final int celendar_daynames=0x7f04000e;
-        public static final int celendar_month=0x7f04000d;
-        public static final int celendar_text=0x7f040010;
-        public static final int grey=0x7f04000a;
-        public static final int orange=0x7f040016;
+        public static final int blue=0x7f040008;
+        public static final int celendar_body=0x7f04000e;
+        public static final int celendar_daynames=0x7f04000d;
+        public static final int celendar_month=0x7f04000c;
+        public static final int celendar_text=0x7f04000f;
+        public static final int grey=0x7f040009;
+        public static final int orange=0x7f040015;
         public static final int red=0x7f040002;
         public static final int solid_blue=0x7f040004;
         public static final int solid_green=0x7f040005;
         public static final int solid_red=0x7f040003;
         public static final int solid_yellow=0x7f040006;
-        public static final int transparent_background=0x7f040011;
+        public static final int transparent_background=0x7f040010;
         public static final int white=0x7f040000;
-        public static final int write=0x7f040008;
         public static final int yellow=0x7f040001;
     }
     public static final class dimen {
@@ -48,85 +85,111 @@ public final class R {
         public static final int title=0x7f050002;
     }
     public static final class drawable {
-        public static final int black2=0x7f020011;
-        public static final int blue=0x7f02000a;
         public static final int border_bg=0x7f020000;
         public static final int car=0x7f020001;
-        public static final int darkgray=0x7f02000d;
         public static final int energy_degree=0x7f020002;
         public static final int energy_trendline=0x7f020003;
         public static final int energy_trendpoint_last=0x7f020004;
         public static final int energy_trendpoint_move=0x7f020005;
-        public static final int green=0x7f02000b;
         public static final int ic_launcher=0x7f020006;
         public static final int image=0x7f020007;
-        public static final int red=0x7f020009;
         public static final int rl_bg=0x7f020008;
-        public static final int screen_background_black=0x7f02000e;
-        public static final int translucent_background=0x7f02000f;
-        public static final int transparent_background=0x7f020010;
-        public static final int yellow=0x7f02000c;
+        public static final int xlistview_arrow=0x7f020009;
     }
     public static final class id {
-        public static final int action_settings=0x7f090031;
-        public static final int article_list=0x7f09002f;
-        public static final int bt_activity_menu_home=0x7f090019;
-        public static final int car_circle=0x7f090016;
-        public static final int erenergycurve=0x7f090026;
-        public static final int head_article=0x7f090027;
-        public static final int home=0x7f09002c;
-        public static final int iv_activity_car_home_search=0x7f09000d;
-        public static final int iv_activity_car_remind_examined_note=0x7f090009;
-        public static final int iv_activity_car_remind_examined_problem=0x7f090008;
-        public static final int iv_activity_car_remind_home=0x7f090001;
-        public static final int iv_activity_car_remind_inspection_note=0x7f090003;
-        public static final int iv_activity_car_remind_inspection_problem=0x7f090002;
-        public static final int iv_activity_car_remind_maintenance_note=0x7f090007;
-        public static final int iv_activity_car_remind_maintenance_problem=0x7f090006;
-        public static final int iv_activity_car_remind_menu=0x7f090000;
-        public static final int iv_activity_car_remind_renewal_note=0x7f090005;
-        public static final int iv_activity_car_remind_renewal_problem=0x7f090004;
-        public static final int iv_activity_car_remind_replacement_note=0x7f09000b;
-        public static final int iv_activity_car_remind_replacement_problem=0x7f09000a;
-        public static final int iv_activity_home_menu=0x7f09000c;
-        public static final int iv_activity_main_login_qq=0x7f090014;
-        public static final int iv_activity_main_login_sina=0x7f090015;
-        public static final int iv_activity_main_logo=0x7f090010;
-        public static final int iv_activity_main_qq=0x7f090012;
-        public static final int iv_activity_main_sina=0x7f090013;
-        public static final int iv_activity_vehicle_status_menu=0x7f090024;
-        public static final int iv_activity_vehicle_status_search=0x7f090025;
-        public static final int left_sliding_tab=0x7f09000f;
-        public static final int ll_activity_main_car_remind=0x7f090017;
-        public static final int ll_activity_main_mycar=0x7f090018;
-        public static final int menu=0x7f09002b;
-        public static final int publish_article=0x7f090030;
-        public static final int qq=0x7f09002a;
-        public static final int right_sliding_tab=0x7f09001b;
-        public static final int rl_activity_main_help=0x7f090020;
-        public static final int rl_activity_main_maintain=0x7f09001e;
-        public static final int rl_activity_main_oil=0x7f09001d;
-        public static final int rl_activity_main_park=0x7f090022;
-        public static final int rl_activity_main_safety=0x7f090021;
-        public static final int rl_activity_main_voice=0x7f09001c;
-        public static final int rl_activity_main_wash=0x7f09001f;
-        public static final int search=0x7f09002e;
-        public static final int sina=0x7f090029;
-        public static final int sliding_body=0x7f09001a;
-        public static final int sliding_menu_view=0x7f09000e;
-        public static final int tv_activity_main_name=0x7f090011;
-        public static final int tv_activity_main_right=0x7f090023;
-        public static final int update_time=0x7f090028;
-        public static final int user_head=0x7f09002d;
+        public static final int action_settings=0x7f09004d;
+        public static final int article_list=0x7f090042;
+        public static final int bt_activity_menu_home=0x7f09001c;
+        public static final int car_circle=0x7f090019;
+        public static final int erenergycurve=0x7f09002f;
+        public static final int head_article=0x7f090035;
+        public static final int home=0x7f09003f;
+        public static final int iv_activity_car_fault_home=0x7f090001;
+        public static final int iv_activity_car_fault_menu=0x7f090000;
+        public static final int iv_activity_car_home_search=0x7f090010;
+        public static final int iv_activity_car_remind_examined_note=0x7f09000c;
+        public static final int iv_activity_car_remind_examined_problem=0x7f09000b;
+        public static final int iv_activity_car_remind_home=0x7f090004;
+        public static final int iv_activity_car_remind_inspection_note=0x7f090006;
+        public static final int iv_activity_car_remind_inspection_problem=0x7f090005;
+        public static final int iv_activity_car_remind_maintenance_note=0x7f09000a;
+        public static final int iv_activity_car_remind_maintenance_problem=0x7f090009;
+        public static final int iv_activity_car_remind_menu=0x7f090003;
+        public static final int iv_activity_car_remind_renewal_note=0x7f090008;
+        public static final int iv_activity_car_remind_renewal_problem=0x7f090007;
+        public static final int iv_activity_car_remind_replacement_note=0x7f09000e;
+        public static final int iv_activity_car_remind_replacement_problem=0x7f09000d;
+        public static final int iv_activity_home_menu=0x7f09000f;
+        public static final int iv_activity_main_login_qq=0x7f090017;
+        public static final int iv_activity_main_login_sina=0x7f090018;
+        public static final int iv_activity_main_logo=0x7f090013;
+        public static final int iv_activity_main_qq=0x7f090015;
+        public static final int iv_activity_main_sina=0x7f090016;
+        public static final int iv_activity_travel_data_next=0x7f09002a;
+        public static final int iv_activity_travel_data_previous=0x7f090029;
+        public static final int iv_activity_travel_menu=0x7f090027;
+        public static final int iv_activity_vehicle_status_data_next=0x7f090034;
+        public static final int iv_activity_vehicle_status_data_previous=0x7f090033;
+        public static final int iv_activity_vehicle_status_menu=0x7f09002c;
+        public static final int iv_activity_vehicle_status_search=0x7f09002d;
+        public static final int iv_item_car_fault_share=0x7f09003c;
+        public static final int left_sliding_tab=0x7f090012;
+        public static final int ll_activity_main_car_remind=0x7f09001a;
+        public static final int ll_activity_main_mycar=0x7f09001b;
+        public static final int ll_item_car_fault=0x7f09003d;
+        public static final int lv_activity_car_fault=0x7f090002;
+        public static final int lv_activity_travel=0x7f09002b;
+        public static final int menu=0x7f09003e;
+        public static final int publish_article=0x7f090043;
+        public static final int qq=0x7f090038;
+        public static final int right_sliding_tab=0x7f09001e;
+        public static final int rl_activity_main_help=0x7f090023;
+        public static final int rl_activity_main_maintain=0x7f090021;
+        public static final int rl_activity_main_oil=0x7f090020;
+        public static final int rl_activity_main_park=0x7f090025;
+        public static final int rl_activity_main_safety=0x7f090024;
+        public static final int rl_activity_main_voice=0x7f09001f;
+        public static final int rl_activity_main_wash=0x7f090022;
+        public static final int rl_activity_vehicle_status_oil=0x7f090030;
+        public static final int search=0x7f090041;
+        public static final int sina=0x7f090037;
+        public static final int sliding_body=0x7f09001d;
+        public static final int sliding_menu_view=0x7f090011;
+        public static final int tv_activity_main_name=0x7f090014;
+        public static final int tv_activity_main_right=0x7f090026;
+        public static final int tv_activity_travel_data=0x7f090028;
+        public static final int tv_activity_vehicle_status_data=0x7f090032;
+        public static final int tv_activity_vehicle_status_fault=0x7f09002e;
+        public static final int tv_activity_vehicle_status_oil=0x7f090031;
+        public static final int tv_item_car_fault_code=0x7f09003a;
+        public static final int tv_item_car_fault_data=0x7f090039;
+        public static final int tv_item_car_fault_info=0x7f09003b;
+        public static final int update_time=0x7f090036;
+        public static final int user_head=0x7f090040;
+        public static final int xlistview_footer_content=0x7f090044;
+        public static final int xlistview_footer_hint_textview=0x7f090046;
+        public static final int xlistview_footer_progressbar=0x7f090045;
+        public static final int xlistview_header_arrow=0x7f09004b;
+        public static final int xlistview_header_content=0x7f090047;
+        public static final int xlistview_header_hint_textview=0x7f090049;
+        public static final int xlistview_header_progressbar=0x7f09004c;
+        public static final int xlistview_header_text=0x7f090048;
+        public static final int xlistview_header_time=0x7f09004a;
     }
     public static final class layout {
-        public static final int activity_car_remind=0x7f030000;
-        public static final int activity_home=0x7f030001;
-        public static final int activity_main=0x7f030002;
-        public static final int activity_vehicle_status=0x7f030003;
-        public static final int article_adapter=0x7f030004;
-        public static final int text=0x7f030005;
-        public static final int vehicle_friend=0x7f030006;
+        public static final int activity_car_fault=0x7f030000;
+        public static final int activity_car_remind=0x7f030001;
+        public static final int activity_home=0x7f030002;
+        public static final int activity_main=0x7f030003;
+        public static final int activity_travel=0x7f030004;
+        public static final int activity_vehicle_status=0x7f030005;
+        public static final int article_adapter=0x7f030006;
+        public static final int item_car_fault=0x7f030007;
+        public static final int item_travel=0x7f030008;
+        public static final int text=0x7f030009;
+        public static final int vehicle_friend=0x7f03000a;
+        public static final int xlistview_footer=0x7f03000b;
+        public static final int xlistview_header=0x7f03000c;
     }
     public static final class menu {
         public static final int main=0x7f080000;
@@ -147,6 +210,12 @@ public final class R {
         public static final int setup_center=0x7f06000c;
         public static final int social=0x7f060003;
         public static final int system_related=0x7f06000b;
+        public static final int xlistview_footer_hint_normal=0x7f060013;
+        public static final int xlistview_footer_hint_ready=0x7f060014;
+        public static final int xlistview_header_hint_loading=0x7f060011;
+        public static final int xlistview_header_hint_normal=0x7f06000f;
+        public static final int xlistview_header_hint_ready=0x7f060010;
+        public static final int xlistview_header_last_time=0x7f060012;
     }
     public static final class style {
         /** 
@@ -176,4 +245,96 @@ public final class R {
          */
         public static final int AppTheme=0x7f070001;
     }
+    public static final class styleable {
+        /** Attributes that can be used with a custom.
+           <p>Includes the following attributes:</p>
+           <table>
+           <colgroup align="left" />
+           <colgroup align="left" />
+           <tr><th>Attribute</th><th>Description</th></tr>
+           <tr><td><code>{@link #custom_border_bottom com.wise.wawc:border_bottom}</code></td><td></td></tr>
+           <tr><td><code>{@link #custom_border_color com.wise.wawc:border_color}</code></td><td></td></tr>
+           <tr><td><code>{@link #custom_border_left com.wise.wawc:border_left}</code></td><td></td></tr>
+           <tr><td><code>{@link #custom_border_right com.wise.wawc:border_right}</code></td><td></td></tr>
+           <tr><td><code>{@link #custom_border_top com.wise.wawc:border_top}</code></td><td></td></tr>
+           </table>
+           @see #custom_border_bottom
+           @see #custom_border_color
+           @see #custom_border_left
+           @see #custom_border_right
+           @see #custom_border_top
+         */
+        public static final int[] custom = {
+            0x7f010000, 0x7f010001, 0x7f010002, 0x7f010003,
+            0x7f010004
+        };
+        /**
+          <p>This symbol is the offset where the {@link com.wise.wawc.R.attr#border_bottom}
+          attribute's value can be found in the {@link #custom} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:border_bottom
+        */
+        public static final int custom_border_bottom = 4;
+        /**
+          <p>This symbol is the offset where the {@link com.wise.wawc.R.attr#border_color}
+          attribute's value can be found in the {@link #custom} array.
+
+
+          <p>May be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
+or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>".
+<p>May be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
+"<code>#<i>rrggbb</i></code>", or "<code>#<i>aarrggbb</i></code>".
+          @attr name android:border_color
+        */
+        public static final int custom_border_color = 0;
+        /**
+          <p>This symbol is the offset where the {@link com.wise.wawc.R.attr#border_left}
+          attribute's value can be found in the {@link #custom} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:border_left
+        */
+        public static final int custom_border_left = 1;
+        /**
+          <p>This symbol is the offset where the {@link com.wise.wawc.R.attr#border_right}
+          attribute's value can be found in the {@link #custom} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:border_right
+        */
+        public static final int custom_border_right = 3;
+        /**
+          <p>This symbol is the offset where the {@link com.wise.wawc.R.attr#border_top}
+          attribute's value can be found in the {@link #custom} array.
+
+
+          <p>Must be a boolean value, either "<code>true</code>" or "<code>false</code>".
+<p>This may also be a reference to a resource (in the form
+"<code>@[<i>package</i>:]<i>type</i>:<i>name</i></code>") or
+theme attribute (in the form
+"<code>?[<i>package</i>:][<i>type</i>:]<i>name</i></code>")
+containing a value of this type.
+          @attr name android:border_top
+        */
+        public static final int custom_border_top = 2;
+    };
 }
