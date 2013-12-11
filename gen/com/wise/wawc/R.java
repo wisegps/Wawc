@@ -47,28 +47,31 @@ public final class R {
         public static final int title=0x7f050002;
     }
     public static final class drawable {
-        public static final int black2=0x7f02000d;
-        public static final int blue=0x7f020006;
+        public static final int black2=0x7f02000e;
+        public static final int blue=0x7f020007;
         public static final int border_bg=0x7f020000;
-        public static final int car=0x7f020001;
-        public static final int darkgray=0x7f020009;
-        public static final int green=0x7f020007;
-        public static final int ic_launcher=0x7f020002;
-        public static final int image=0x7f020003;
-        public static final int red=0x7f020005;
-        public static final int rl_bg=0x7f020004;
-        public static final int screen_background_black=0x7f02000a;
-        public static final int translucent_background=0x7f02000b;
-        public static final int transparent_background=0x7f02000c;
-        public static final int yellow=0x7f020008;
+        public static final int camera=0x7f020001;
+        public static final int car=0x7f020002;
+        public static final int darkgray=0x7f02000a;
+        public static final int green=0x7f020008;
+        public static final int ic_launcher=0x7f020003;
+        public static final int image=0x7f020004;
+        public static final int red=0x7f020006;
+        public static final int rl_bg=0x7f020005;
+        public static final int screen_background_black=0x7f02000b;
+        public static final int translucent_background=0x7f02000c;
+        public static final int transparent_background=0x7f02000d;
+        public static final int yellow=0x7f020009;
     }
     public static final class id {
-        public static final int action_settings=0x7f09002d;
-        public static final int article_list=0x7f09002b;
+        public static final int action_settings=0x7f090032;
+        public static final int article_list=0x7f09002f;
+        public static final int back=0x7f090027;
         public static final int bt_activity_menu_home=0x7f090018;
         public static final int car_circle=0x7f090016;
+        public static final int ed_publish_article=0x7f090029;
         public static final int head_article=0x7f090023;
-        public static final int home=0x7f090028;
+        public static final int home=0x7f09002c;
         public static final int iv_activity_car_home_search=0x7f09000d;
         public static final int iv_activity_car_remind_examined_note=0x7f090009;
         public static final int iv_activity_car_remind_examined_problem=0x7f090008;
@@ -90,8 +93,10 @@ public final class R {
         public static final int iv_activity_main_sina=0x7f090013;
         public static final int left_sliding_tab=0x7f09000f;
         public static final int ll_activity_main_car_remind=0x7f090017;
-        public static final int menu=0x7f090027;
-        public static final int publish_article=0x7f09002c;
+        public static final int localtion=0x7f090028;
+        public static final int menu=0x7f09002b;
+        public static final int publish=0x7f09002a;
+        public static final int publish_article=0x7f090030;
         public static final int qq=0x7f090026;
         public static final int right_sliding_tab=0x7f09001a;
         public static final int rl_activity_main_help=0x7f09001f;
@@ -101,22 +106,24 @@ public final class R {
         public static final int rl_activity_main_safety=0x7f090020;
         public static final int rl_activity_main_voice=0x7f09001b;
         public static final int rl_activity_main_wash=0x7f09001e;
-        public static final int search=0x7f09002a;
+        public static final int say_something=0x7f090031;
+        public static final int search=0x7f09002e;
         public static final int sina=0x7f090025;
         public static final int sliding_body=0x7f090019;
         public static final int sliding_menu_view=0x7f09000e;
         public static final int tv_activity_main_name=0x7f090011;
         public static final int tv_activity_main_right=0x7f090022;
         public static final int update_time=0x7f090024;
-        public static final int user_head=0x7f090029;
+        public static final int user_head=0x7f09002d;
     }
     public static final class layout {
         public static final int activity_car_remind=0x7f030000;
         public static final int activity_home=0x7f030001;
         public static final int activity_main=0x7f030002;
         public static final int article_adapter=0x7f030003;
-        public static final int text=0x7f030004;
-        public static final int vehicle_friend=0x7f030005;
+        public static final int new_article=0x7f030004;
+        public static final int text=0x7f030005;
+        public static final int vehicle_friend=0x7f030006;
     }
     public static final class menu {
         public static final int main=0x7f080000;
