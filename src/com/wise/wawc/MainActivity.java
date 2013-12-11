@@ -64,11 +64,7 @@ public class MainActivity extends ActivityGroup {
 				break;
 				//车友圈
 			case R.id.car_circle:
-				Intent intent = new Intent(MainActivity.this,VehicleFriendActivity.class);
-		    	View vv = getLocalActivityManager().startActivity(VehicleFriendActivity.class.getName(), intent).getDecorView();
-				tabcontent.removeAllViews();
-				tabcontent.addView(vv);
-				slidingMenuView.snapToScreen(1);
+				ToVehicleFriends();
 				Log.e("VehicleFriendActivity","VehicleFriendActivity");
 				break;
 			case R.id.ll_activity_main_car_remind:
@@ -81,6 +77,7 @@ public class MainActivity extends ActivityGroup {
 		}
 	};
 	
+	
 	public void ToHome(){
 		Screen = 1;
         slidingMenuView.snapToScreen(1);
@@ -88,6 +85,16 @@ public class MainActivity extends ActivityGroup {
     	View v = getLocalActivityManager().startActivity(HomeActivity.class.getName(), i).getDecorView();
 		tabcontent.removeAllViews();
 		tabcontent.addView(v);
+	}
+	/**
+	 * 车友圈
+	 */
+	public void ToVehicleFriends(){
+		Intent intent = new Intent(MainActivity.this,VehicleFriendActivity.class);
+    	View vv = getLocalActivityManager().startActivity(VehicleFriendActivity.class.getName(), intent).getDecorView();
+		tabcontent.removeAllViews();
+		tabcontent.addView(vv);
+		slidingMenuView.snapToScreen(1);
 	}
 	/**
 	 * 车务提醒
