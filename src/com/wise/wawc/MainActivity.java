@@ -108,13 +108,13 @@ public class MainActivity extends ActivityGroup {
 		tabcontent.addView(view);
 	}
 	/**
-	 * 我的车况
+	 * 我的爱车
 	 */
 	public void ToMyCar(){
 		Screen = 1;
 		slidingMenuView.snapToScreen(1);
-		Intent i = new Intent(MainActivity.this,VehicleStatusActivity.class);
-    	View view = getLocalActivityManager().startActivity(VehicleStatusActivity.class.getName(), i).getDecorView();
+		Intent i = new Intent(MainActivity.this,MyVehicleActivity.class);
+    	View view = getLocalActivityManager().startActivity(MyVehicleActivity.class.getName(), i).getDecorView();
 		tabcontent.removeAllViews();
 		tabcontent.addView(view);
 	}

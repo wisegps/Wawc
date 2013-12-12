@@ -17,4 +17,27 @@
     <string name="setup_center">设置中心</string>
     <string name="menu">菜单</string>
     <string name="home">主页</string>
+    
+    <!-- 我的爱车 -->
+    <string name="base_information">基本资料</string>
+    <string name="brand">品牌</string>
+    <string name="model">车型</string>
+    <string name="car_number">车牌号</string>
+    <string name="vehicle_style">车款</string>
+    <string name="cloud_terminal">OBD云终端</string>
+    <string name="against_rules">违章查询</string>
+    <string name="traffic_department">车务提醒</string>
+    <string name="engine_number">发动机型号</string>
+    <string name="vehicle_number">车架号</string>
+    <string name="insurance_company">保险公司</string>
+    <string name="insurance_time">保险时间</string>
+    <string name="maintain_shop">4S保养店</string>
+    <string name="current_mileage">当前里程</string>
+    <string name="last_insurance_mileage">最后保养里程</string>
+    <string name="shopping_time">购车时间</string>
+    <string name="save">保存</string>
+    <string name="delete">删除</string>
+    
+    <string name="add_car">添加爱车</string>
+    <string name="choice_brank">选择品牌</string>
 </resources>

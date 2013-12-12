@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+
+    <string-array name="date">
+        <item>北京奔驰</item>
+        <item>北京吉普</item>
+        <item>北京三菱</item>
+        <item>北京现代</item>
+        <item>北汽</item>
+        <item>奔腾</item>
+        <item>比亚迪</item>
+        <item>昌河铃木</item>
+        <item>长安福特</item>
+        <item>长安铃木</item>
+        <item>长安马自达</item>
+        <item>长城汽车</item>
+        <item>长丰猎豹</item>
+        <item>大迪</item>
+        <item>东风本田</item>
+        <item>东风标致</item>
+        <item>东风柳汽</item>
+        <item>东风日产</item>
+        <item>东风雪铁龙</item>
+        <item>东风悦达起</item>
+        <item>东南汽车</item>
+        <item>飞碟汽车</item>
+        <item>福田</item>
+        <item>广州本田</item>
+        <item>广州丰田</item>
+        <item>哈飞</item>
+        <item>海马汽车</item>
+        <item>海南马自达</item>
+        <item>红旗</item>
+        <item>华北</item>
+        <item>华晨宝马</item>
+        <item>华晨金杯</item>
+        <item>华晨中华</item>
+        <item>华利</item>
+        <item>华普</item>
+        <item>华泰现代</item>
+        <item>华翔富奇</item>
+        <item>齐大友</item>
+        <item>齐天大圣</item>
+        <item>品冠</item>
+        <item>吴克群</item>
+        <item>BOBO</item>
+        <item>Jobs</item>
+        <item>动力火车</item>
+        <item>伍佰</item>
+        <item>#蔡依林</item>
+        <item>$797835344$</item>
+        <item>Jack</item>
+        <item>~夏先生</item>
+    </string-array>
+
+</resources>
