@@ -1,11 +1,10 @@
 <LinearLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:custom="http://schemas.android.com/apk/res/com.wise.wawc"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFFFFF">
+    android:background="@drawable/border_bg">
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="44dp"
@@ -87,18 +86,11 @@
 	            android:text="话费31.04元"/>
 	    </TableRow>
 	</TableLayout>
-	<com.wise.extend.BorderTextView 
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:padding="5dp"
-	    android:layout_margin="5dp"
-	    custom:border_color="@color/black"
-	    custom:border_left="true"
-	    custom:border_right="true"
-	    custom:border_top="true"
-	    android:text="Android"/>
 	<ListView 
 	    android:id="@+id/lv_activity_travel"
 	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"></ListView>
+	    android:layout_height="fill_parent"
+	    android:layout_margin="10dp"
+        android:divider="@null"
+        android:cacheColorHint="#00000000"></ListView>
 </LinearLayout>

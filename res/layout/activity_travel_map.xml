@@ -2,47 +2,46 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/border_bg"
-    android:orientation="vertical">
-    <LinearLayout
-        android:background="@drawable/border_bg"
-        android:orientation="horizontal" 
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/border_bg">
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:layout_height="wrap_content">
-        <TextView 
-            android:id="@+id/tv_item_travel_startTime"
+        android:layout_height="44dp"
+        android:background="@drawable/border_bg"
+        android:padding="2dp">
+		<ImageView
+            android:id="@+id/iv_activity_travel_back"
+            android:layout_width="60dp"
+	        android:layout_height="36dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_launcher"/>
+        <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="19:27"            
+            android:layout_height="fill_parent"
+            android:layout_toLeftOf="@+id/iv_activity_car_home_search"
+            android:layout_toRightOf="@+id/iv_activity_travel_back"
+            android:gravity="center"
+            android:text="19:27至20:04总共37分钟"
             android:textColor="@color/black"
-	        android:textSize="@dimen/title"
-            android:layout_weight="1"/>
-        <TextView 
-            android:id="@+id/tv_item_travel_stopTime"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="20:04"
-            android:textColor="@color/black"
-	        android:textSize="@dimen/title"
-            android:layout_weight="1"/>
-        <TextView 
-            android:id="@+id/tv_item_travel_spacingTime"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="37分钟"
-            android:textColor="@color/black"
-	        android:textSize="@dimen/title"
-            android:layout_weight="1"/>
-    </LinearLayout>
-    <LinearLayout
+            android:textSize="@dimen/title"
+            android:textStyle="bold" />
+		<ImageView
+            android:id="@+id/iv_activity_car_home_search"
+            android:layout_width="60dp"
+	        android:layout_height="36dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_launcher"/>
+	</RelativeLayout>
+	<LinearLayout
         android:background="@drawable/border_bg"
         android:orientation="horizontal" 
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
         <RelativeLayout 
@@ -97,7 +96,7 @@
 	        android:textSize="@dimen/title"
             android:layout_weight="1"/>
     </LinearLayout>
-    <TableLayout 
+	<TableLayout 
         android:background="@drawable/border_bg"
 	    android:stretchColumns="*" 
 	    android:padding="10dp"
@@ -144,23 +143,9 @@
 	            android:text="花费：11.34元"/>
 	    </TableRow>
 	</TableLayout>
-	<RelativeLayout 
-	    android:background="@drawable/border_bg"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content">
-	    <ImageView
-             android:id="@+id/iv_item_travel_map" 
-             android:contentDescription="@string/app_name"
-             android:src="@drawable/ic_launcher"
-             android:layout_alignParentRight="true"
-             android:layout_width="30dp"
-             android:layout_height="30dp"/>
-	    <ImageView
-             android:id="@+id/iv_item_travel_share" 
-             android:contentDescription="@string/app_name"
-             android:src="@drawable/ic_launcher"
-             android:layout_toLeftOf="@id/iv_item_travel_map"
-             android:layout_width="30dp"
-             android:layout_height="30dp"/>
-	</RelativeLayout>
+	<com.baidu.mapapi.map.MapView 
+        android:id="@+id/mv_travel_map"  
+        android:layout_width="fill_parent"  
+        android:layout_height="fill_parent"  
+        android:clickable="true" /> 
 </LinearLayout>
