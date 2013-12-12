@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 控件获得焦点 -->
+    <item android:state_focused="true" android:drawable="@drawable/search_bar_edit_pressed"></item>
+    <!-- 按下 -->
+    <item android:state_pressed="true" android:drawable="@drawable/search_bar_edit_pressed"></item>
+    <item android:drawable="@drawable/search_bar_edit_normal"></item>
+</selector>
