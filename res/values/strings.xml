@@ -40,4 +40,7 @@
     
     <string name="add_car">添加爱车</string>
     <string name="choice_brank">选择品牌</string>
+    
+    <!-- 我的收藏 -->
+    <string name="my_collection">我的收藏</string>
 </resources>

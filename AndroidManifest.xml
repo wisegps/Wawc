@@ -27,5 +27,7 @@
         <activity android:name=".MyVehicleActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".NewVehicleActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".CarBrankListActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".MyCollectionActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
     </application>
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
 </manifest>

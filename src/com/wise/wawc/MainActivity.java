@@ -41,6 +41,9 @@ public class MainActivity extends ActivityGroup {
         //车友圈
         TextView vehiclefriend = (TextView)findViewById(R.id.car_circle);
         vehiclefriend.setOnClickListener(onClickListener);
+        //我的收藏
+        TextView myCollection = (TextView)findViewById(R.id.menu_my_collection);
+        myCollection.setOnClickListener(onClickListener);
         TextView tv_activity_main_right = (TextView)findViewById(R.id.tv_activity_main_right);
         tv_activity_main_right.setWidth(width);//设置菜单宽度
         
@@ -65,7 +68,6 @@ public class MainActivity extends ActivityGroup {
 				//车友圈
 			case R.id.car_circle:
 				ToVehicleFriends();
-				Log.e("VehicleFriendActivity","VehicleFriendActivity");
 				break;
 			case R.id.ll_activity_main_car_remind:
 				ToCarRemind();
@@ -73,10 +75,27 @@ public class MainActivity extends ActivityGroup {
 			case R.id.ll_activity_main_mycar:
 				ToMyCar();
 				break;
+				//我的收藏
+			case R.id.menu_my_collection:
+				ToMyCollection();
+				break;
+			default:
+				return;
 			}
 		}
 	};
 	
+
+	/**
+	 * 我的收藏
+	 */
+	private void ToMyCollection() {
+		Intent intent = new Intent(MainActivity.this,MyCollectionActivity.class);
+    	View vv = getLocalActivityManager().startActivity(MyCollectionActivity.class.getName(), intent).getDecorView();
+		tabcontent.removeAllViews();
+		tabcontent.addView(vv);
+		slidingMenuView.snapToScreen(1);
+	}
 	
 	public void ToHome(){
 		Screen = 1;
