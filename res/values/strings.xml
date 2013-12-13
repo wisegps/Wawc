@@ -44,4 +44,16 @@
     <!-- 我的收藏 -->
     <string name="my_collection">我的收藏</string>
     
+    <!-- 设置中心 -->
+    
+    <string name="search_setting">搜索设置</string>
+    <string name="default_center">默认中心点</string>
+    <string name="push_setting">推送设置</string>
+    <string name="against_push">违章推送</string>
+    <string name="system_setting">系统相关</string>
+    <string name="bug_push">故障推送</string>
+    <string name="share_gift">分享有礼</string>
+    <string name="feedbaack">意见反馈</string>
+    <string name="give_us_score">给我们评分</string>
+    <string name="about_appliaction">关于我爱我车</string>
 </resources>

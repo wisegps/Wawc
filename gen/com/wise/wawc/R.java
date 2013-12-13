@@ -51,39 +51,44 @@ public final class R {
         public static final int title=0x7f060002;
     }
     public static final class drawable {
-        public static final int black2=0x7f020019;
-        public static final int blue=0x7f020012;
+        public static final int black2=0x7f02001c;
+        public static final int blue=0x7f020015;
         public static final int border_bg=0x7f020000;
         public static final int camera=0x7f020001;
         public static final int car=0x7f020002;
-        public static final int darkgray=0x7f020015;
-        public static final int emotionstore_progresscancelbtn=0x7f020003;
-        public static final int energy_degree=0x7f020004;
-        public static final int energy_trendline=0x7f020005;
-        public static final int energy_trendpoint_last=0x7f020006;
-        public static final int energy_trendpoint_move=0x7f020007;
-        public static final int green=0x7f020013;
-        public static final int ic_launcher=0x7f020008;
-        public static final int image=0x7f020009;
-        public static final int red=0x7f020011;
-        public static final int rl_bg=0x7f02000a;
-        public static final int screen_background_black=0x7f020016;
-        public static final int search_bar_edit_normal=0x7f02000b;
-        public static final int search_bar_edit_pressed=0x7f02000c;
-        public static final int search_bar_edit_selector=0x7f02000d;
-        public static final int search_bar_icon_normal=0x7f02000e;
-        public static final int show_head_toast_bg=0x7f02000f;
-        public static final int sidebar_background=0x7f020010;
-        public static final int translucent_background=0x7f020017;
-        public static final int transparent_background=0x7f020018;
-        public static final int yellow=0x7f020014;
+        public static final int darkgray=0x7f020018;
+        public static final int down_arrow=0x7f020003;
+        public static final int emotionstore_progresscancelbtn=0x7f020004;
+        public static final int energy_degree=0x7f020005;
+        public static final int energy_trendline=0x7f020006;
+        public static final int energy_trendpoint_last=0x7f020007;
+        public static final int energy_trendpoint_move=0x7f020008;
+        public static final int green=0x7f020016;
+        public static final int ic_launcher=0x7f020009;
+        public static final int image=0x7f02000a;
+        public static final int radio_button=0x7f02000b;
+        public static final int radio_open=0x7f02000c;
+        public static final int red=0x7f020014;
+        public static final int rl_bg=0x7f02000d;
+        public static final int screen_background_black=0x7f020019;
+        public static final int search_bar_edit_normal=0x7f02000e;
+        public static final int search_bar_edit_pressed=0x7f02000f;
+        public static final int search_bar_edit_selector=0x7f020010;
+        public static final int search_bar_icon_normal=0x7f020011;
+        public static final int show_head_toast_bg=0x7f020012;
+        public static final int sidebar_background=0x7f020013;
+        public static final int translucent_background=0x7f02001a;
+        public static final int transparent_background=0x7f02001b;
+        public static final int yellow=0x7f020017;
     }
     public static final class id {
-        public static final int action_settings=0x7f0a004b;
+        public static final int action_settings=0x7f0a0050;
         public static final int add_car=0x7f0a003b;
-        public static final int article_list=0x7f0a0048;
+        public static final int against_push=0x7f0a0046;
+        public static final int article_list=0x7f0a004d;
         public static final int back=0x7f0a003c;
         public static final int bt_activity_menu_home=0x7f0a001b;
+        public static final int bt_dropdown=0x7f0a0045;
         public static final int car_circle=0x7f0a0016;
         public static final int choice_brank=0x7f0a0041;
         public static final int choice_vechile_back=0x7f0a0030;
@@ -94,7 +99,7 @@ public final class R {
         public static final int erenergycurve=0x7f0a0028;
         public static final int filter_edit=0x7f0a0032;
         public static final int head_article=0x7f0a0029;
-        public static final int home=0x7f0a0045;
+        public static final int home=0x7f0a004a;
         public static final int iv_activity_car_home_search=0x7f0a000d;
         public static final int iv_activity_car_remind_examined_note=0x7f0a0009;
         public static final int iv_activity_car_remind_examined_problem=0x7f0a0008;
@@ -119,11 +124,12 @@ public final class R {
         public static final int left_sliding_tab=0x7f0a000f;
         public static final int list_brank=0x7f0a002f;
         public static final int list_letter=0x7f0a002d;
+        public static final int listview=0x7f0a0048;
         public static final int ll_activity_main_car_remind=0x7f0a0017;
         public static final int ll_activity_main_mycar=0x7f0a0018;
         public static final int localtion=0x7f0a003d;
         public static final int logo=0x7f0a002e;
-        public static final int menu=0x7f0a0044;
+        public static final int menu=0x7f0a0049;
         public static final int menu_my_collection=0x7f0a0019;
         public static final int my_collection_list=0x7f0a003a;
         public static final int my_vechile_home=0x7f0a0039;
@@ -131,7 +137,7 @@ public final class R {
         public static final int new_vechile_back=0x7f0a0040;
         public static final int new_vechile_save=0x7f0a0031;
         public static final int publish=0x7f0a003f;
-        public static final int publish_article=0x7f0a0049;
+        public static final int publish_article=0x7f0a004e;
         public static final int qq=0x7f0a002c;
         public static final int right_sliding_tab=0x7f0a001d;
         public static final int rl_activity_main_help=0x7f0a0022;
@@ -141,8 +147,8 @@ public final class R {
         public static final int rl_activity_main_safety=0x7f0a0023;
         public static final int rl_activity_main_voice=0x7f0a001e;
         public static final int rl_activity_main_wash=0x7f0a0021;
-        public static final int say_something=0x7f0a004a;
-        public static final int search=0x7f0a0047;
+        public static final int say_something=0x7f0a004f;
+        public static final int search=0x7f0a004c;
         public static final int setting_center_home=0x7f0a0043;
         public static final int setting_center_menu=0x7f0a0042;
         public static final int settting_center=0x7f0a001a;
@@ -150,10 +156,12 @@ public final class R {
         public static final int sina=0x7f0a002b;
         public static final int sliding_body=0x7f0a001c;
         public static final int sliding_menu_view=0x7f0a000e;
+        public static final int textView=0x7f0a0047;
         public static final int tv_activity_main_name=0x7f0a0011;
         public static final int tv_activity_main_right=0x7f0a0025;
+        public static final int tv_value=0x7f0a0044;
         public static final int update_time=0x7f0a002a;
-        public static final int user_head=0x7f0a0046;
+        public static final int user_head=0x7f0a004b;
         public static final int vehicle_brank_list=0x7f0a0033;
     }
     public static final class layout {
@@ -170,29 +178,37 @@ public final class R {
         public static final int new_article=0x7f03000a;
         public static final int new_vehicle=0x7f03000b;
         public static final int setting_center=0x7f03000c;
-        public static final int text=0x7f03000d;
-        public static final int vehicle_friend=0x7f03000e;
+        public static final int spiner_item_layout=0x7f03000d;
+        public static final int spiner_window_layout=0x7f03000e;
+        public static final int text=0x7f03000f;
+        public static final int vehicle_friend=0x7f030010;
     }
     public static final class menu {
         public static final int main=0x7f090000;
     }
     public static final class string {
+        public static final int about_appliaction=0x7f07002d;
         public static final int action_settings=0x7f070001;
         public static final int add_car=0x7f070021;
+        public static final int against_push=0x7f070027;
         public static final int against_rules=0x7f070015;
         public static final int app_name=0x7f070000;
         /**  我的爱车 
          */
         public static final int base_information=0x7f07000f;
         public static final int brand=0x7f070010;
+        public static final int bug_push=0x7f070029;
         public static final int car_circle=0x7f070004;
         public static final int car_number=0x7f070012;
         public static final int car_remind=0x7f070006;
         public static final int choice_brank=0x7f070022;
         public static final int cloud_terminal=0x7f070014;
         public static final int current_mileage=0x7f07001c;
+        public static final int default_center=0x7f070025;
         public static final int delete=0x7f070020;
         public static final int engine_number=0x7f070017;
+        public static final int feedbaack=0x7f07002b;
+        public static final int give_us_score=0x7f07002c;
         public static final int hello_world=0x7f070002;
         public static final int home=0x7f07000e;
         public static final int insurance_company=0x7f070019;
@@ -209,11 +225,17 @@ public final class R {
         public static final int my_collection=0x7f070023;
         public static final int my_orders=0x7f070009;
         public static final int my_terminal=0x7f070008;
+        public static final int push_setting=0x7f070026;
         public static final int save=0x7f07001f;
+        /**  设置中心 
+         */
+        public static final int search_setting=0x7f070024;
         public static final int setup_center=0x7f07000c;
+        public static final int share_gift=0x7f07002a;
         public static final int shopping_time=0x7f07001e;
         public static final int social=0x7f070003;
         public static final int system_related=0x7f07000b;
+        public static final int system_setting=0x7f070028;
         public static final int traffic_department=0x7f070016;
         public static final int vehicle_number=0x7f070018;
         public static final int vehicle_style=0x7f070013;
