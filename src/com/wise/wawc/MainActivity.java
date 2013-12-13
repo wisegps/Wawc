@@ -43,6 +43,9 @@ public class MainActivity extends ActivityGroup {
         //我的收藏
         TextView myCollection = (TextView)findViewById(R.id.menu_my_collection);
         myCollection.setOnClickListener(onClickListener);
+      //设置中心
+        TextView settingCenter = (TextView)findViewById(R.id.settting_center);
+        settingCenter.setOnClickListener(onClickListener);
         TextView tv_activity_main_right = (TextView)findViewById(R.id.tv_activity_main_right);
         tv_activity_main_right.setWidth(width);//设置菜单宽度
         
@@ -88,10 +91,25 @@ public class MainActivity extends ActivityGroup {
 			case R.id.ll_activity_main_orders:
 				Toorders();
 				break;
+				//设置中心
+			case R.id.settting_center:
+				ToSettingCenter();
+				break;
 			}
 		}
 	};
 	
+	
+	/**
+	 * 设置中心
+	 */
+	public void ToSettingCenter(){
+		Intent intent = new Intent(MainActivity.this,SettingCenterActivity.class);
+    	View vv = getLocalActivityManager().startActivity(SettingCenterActivity.class.getName(), intent).getDecorView();
+		tabcontent.removeAllViews();
+		tabcontent.addView(vv);
+		slidingMenuView.snapToScreen(1);
+	}
 
 	/**
 	 * 我的收藏

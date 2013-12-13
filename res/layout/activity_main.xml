@@ -225,6 +225,7 @@
 	       	        android:contentDescription="@string/app_name"
 	       	        android:src="@drawable/ic_launcher"/>
 	       	    <TextView 
+	       	        android:id="@+id/settting_center"
 		       	    android:layout_width="wrap_content"
 		       	    android:layout_height="wrap_content"
 		       	    android:textColor="@color/black"

@@ -51,5 +51,7 @@
         <activity android:name=".NewVehicleActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".CarBrankListActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".MyCollectionActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".SettingCenterActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".FeedBackActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
     </application>       
 </manifest>
