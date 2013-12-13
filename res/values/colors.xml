@@ -3,13 +3,13 @@
     <color name="white">#FFFFFF</color>
 	<color name="yellow">#FFFF00</color>
 	<color name="red">#FF0000</color>
+	<color name="blue">#0000CC</color>
 
     <color name="solid_red">#f00</color>
     <color name="solid_blue">#0000ff</color>
     <color name="solid_green">#f0f0</color>
     <color name="solid_yellow">#ffffff00</color>
     <color name="black">#000000</color>
-    <color name="blue">#0677bb</color>
     <color name="grey">#5b5b5b</color>
     <color name="bkg1">#e6ecf1</color>
     <color name="bkg2">#edf8fb</color>

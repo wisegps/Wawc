@@ -4,15 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFFFFF">
+    android:background="@drawable/border_bg">
     <RelativeLayout
-        android:id="@+id/rl_activity_home_top"
+        android:id="@+id/rl_activity_car_location_top"
         android:layout_width="fill_parent"
         android:layout_height="44dp"
         android:background="@drawable/border_bg"
         android:padding="2dp">
 		<ImageView
-            android:id="@+id/iv_activity_home_menu"
+            android:id="@+id/iv_activity_travel_back"
             android:layout_width="60dp"
 	        android:layout_height="36dp"
             android:layout_alignParentLeft="true"
@@ -23,9 +23,9 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_toLeftOf="@+id/iv_activity_car_home_search"
-            android:layout_toRightOf="@+id/iv_activity_home_menu"
+            android:layout_toRightOf="@+id/iv_activity_travel_back"
             android:gravity="center"
-            android:text="@string/app_name"
+            android:text="粤B12345"
             android:textColor="@color/black"
             android:textSize="@dimen/title"
             android:textStyle="bold" />
@@ -39,40 +39,41 @@
             android:src="@drawable/ic_launcher"/>
 	</RelativeLayout>
 	<LinearLayout 
-	    android:id="@+id/ll_activity_home_car"
-	    android:orientation="vertical"
-	    android:layout_below="@id/rl_activity_home_top"
-	    android:layout_width="fill_parent"
-	    android:layout_height="100dp"
-	    android:layout_margin="10dp"
-	    android:background="@color/bkg1"></LinearLayout>
-	<LinearLayout 
-	    android:layout_below="@id/ll_activity_home_car"
-	    android:layout_width="fill_parent"
-	    android:layout_height="200dp"
-	    android:layout_margin="10dp"
-	    android:background="@color/bkg2"></LinearLayout>
-	<RelativeLayout 
+	    android:id="@+id/ll_activity_car_location_bottom"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:layout_alignParentBottom="true"
-	    android:background="@color/grey">
-	    <Button
-	        android:id="@+id/bt_activity_home_help" 
-	        android:layout_width="wrap_content"
+	    android:orientation="horizontal">
+	    <Button 
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:text="救援"/>
-	    <Button
-	        android:id="@+id/bt_activity_home_risk" 
-	        android:layout_width="wrap_content"
+	        android:layout_weight="1"
+	        android:drawableLeft="@drawable/ic_launcher"
+	        android:text="寻车"/>
+	    <Button 
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_toRightOf="@+id/bt_activity_home_help"
-	        android:text="报险"/>
-	    <ImageView 
-	        android:layout_width="wrap_content"
+	        android:layout_weight="1"
+	        android:drawableLeft="@drawable/ic_launcher"
+	        android:text="行程"/>
+	    <Button 
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:layout_alignParentRight="true"
-	        android:src="@drawable/ic_launcher"/>
-	        
-	</RelativeLayout>
+	        android:layout_weight="1"
+	        android:drawableLeft="@drawable/ic_launcher"
+	        android:text="周边"/>
+	    <Button 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:drawableLeft="@drawable/ic_launcher"
+	        android:text="围栏"/>
+	</LinearLayout>
+	<com.baidu.mapapi.map.MapView 
+        android:id="@+id/mv_car_location"  
+        android:layout_below="@id/rl_activity_car_location_top"
+        android:layout_above="@id/ll_activity_car_location_bottom"
+        android:layout_width="fill_parent"  
+        android:layout_height="fill_parent"  
+        android:clickable="true" /> 
 </RelativeLayout>

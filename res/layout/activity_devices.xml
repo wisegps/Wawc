@@ -11,7 +11,7 @@
         android:background="@drawable/border_bg"
         android:padding="2dp">
 		<ImageView
-            android:id="@+id/iv_activity_devices_back"
+            android:id="@+id/iv_activity_devices_menu"
             android:layout_width="60dp"
 	        android:layout_height="36dp"
             android:layout_alignParentLeft="true"
@@ -22,7 +22,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_toLeftOf="@+id/iv_activity_devices_home"
-            android:layout_toRightOf="@+id/iv_activity_devices_back"
+            android:layout_toRightOf="@+id/iv_activity_devices_menu"
             android:gravity="center"
             android:text="我的终端"
             android:textColor="@color/black"
@@ -38,6 +38,7 @@
             android:src="@drawable/ic_launcher"/>
 	</RelativeLayout>
 	<GridView 
+	    android:id="@+id/gv_activity_devices"
 	    android:layout_width="fill_parent"
 	    android:layout_height="100dp"
 	    android:background="@color/bkg1"/>
@@ -49,9 +50,176 @@
         android:padding="10dp"
         android:textSize="@dimen/title"
         android:text="基本资料"/>
-	<ListView 
-	    android:layout_margin="5dp"
-	    android:id="@+id/lv_activity_traffic"
+	<LinearLayout 
+	    android:orientation="horizontal"
+	    android:padding="5dp"
+	    android:background="@drawable/border_bg"
 	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"></ListView>
+	    android:layout_height="wrap_content">
+	    <TextView
+	        android:text="序列号" 
+	        android:layout_weight="2"
+	        android:textColor="@color/black"
+	        android:textSize="@dimen/title"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	    <TextView 
+	        android:text="43420432" 
+	        android:layout_weight="1"
+	        android:textColor="@color/black"
+	        android:textSize="@dimen/title"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	</LinearLayout>
+	<LinearLayout 
+	    android:orientation="horizontal"
+	    android:padding="5dp"
+	    android:background="@drawable/border_bg"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content">
+	    <TextView
+	        android:text="SIM卡号" 
+	        android:layout_weight="2"
+	        android:textColor="@color/black"
+	        android:textSize="@dimen/title"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	    <TextView 
+	        android:text="13316666666" 
+	        android:layout_weight="1"
+	        android:textColor="@color/black"
+	        android:textSize="@dimen/title"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	</LinearLayout>
+	<LinearLayout 
+	    android:orientation="horizontal"
+	    android:padding="5dp"
+	    android:background="@drawable/border_bg"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content">
+	    <TextView
+	        android:text="状态" 
+	        android:layout_weight="2"
+	        android:textColor="@color/black"
+	        android:textSize="@dimen/title"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	    <TextView 
+	        android:text="未激活" 
+	        android:layout_weight="1"
+	        android:textColor="@color/black"
+	        android:textSize="@dimen/title"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	</LinearLayout>
+	<LinearLayout 
+	    android:orientation="horizontal"
+	    android:padding="5dp"
+	    android:background="@drawable/border_bg"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content">
+	    <TextView
+	        android:text="状态" 
+	        android:layout_weight="2"
+	        android:textColor="@color/black"
+	        android:textSize="@dimen/title"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	    <RelativeLayout 
+	        android:layout_weight="1"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content">
+	        <TextView
+		        android:text="2014-11-01" 
+		        android:textColor="@color/black"
+		        android:textSize="@dimen/title"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"/>
+	        <TextView
+		        android:text="续费" 
+		        android:id="@+id/tv_activity_devices_renewals"
+		        android:textColor="@color/blue"
+		        android:textSize="@dimen/title"
+		        android:layout_alignParentRight="true"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"/>
+	     </RelativeLayout>
+	</LinearLayout>
+	<LinearLayout 
+	    android:orientation="horizontal"
+	    android:padding="5dp"
+	    android:background="@drawable/border_bg"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content">
+	    <TextView
+	        android:text="硬件版本" 
+	        android:layout_weight="2"
+	        android:textColor="@color/black"
+	        android:textSize="@dimen/title"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	    <TextView 
+	        android:text="V1.0" 
+	        android:layout_weight="1"
+	        android:textColor="@color/black"
+	        android:textSize="@dimen/title"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	</LinearLayout>
+	<LinearLayout 
+	    android:orientation="horizontal"
+	    android:padding="5dp"
+	    android:background="@drawable/border_bg"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content">
+	    <TextView
+	        android:text="软件版本" 
+	        android:layout_weight="2"
+	        android:textColor="@color/black"
+	        android:textSize="@dimen/title"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"/>
+	    <RelativeLayout 
+	        android:layout_weight="1"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content">
+	        <TextView
+		        android:text="V1.0" 
+		        android:textColor="@color/black"
+		        android:textSize="@dimen/title"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"/>
+	        <TextView
+		        android:text="发现新版本" 
+		        android:textColor="@color/blue"
+		        android:textSize="@dimen/title"
+		        android:layout_alignParentRight="true"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"/>
+	     </RelativeLayout>
+	</LinearLayout>
+	<EditText 
+	    android:layout_margin="5dp"
+	    android:minLines="3"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"/>
+	<RelativeLayout 
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <TextView
+	        android:text="升级中。。。50%" 
+	        android:textColor="@color/black"
+	        android:textSize="@dimen/title"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"/>
+        <Button
+	        android:text="发现新版本" 
+	        android:textColor="@color/black"
+	        android:textSize="@dimen/title"
+	        android:layout_alignParentRight="true"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"/>
+     </RelativeLayout>
 </LinearLayout>

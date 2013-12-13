@@ -5,9 +5,11 @@ import java.util.List;
 import com.wise.list.XListView;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -101,6 +103,12 @@ public class CarFaultActivity extends Activity{
 			holder.tv_item_car_fault_data.setText(faultData.getData());
 			holder.tv_item_car_fault_code.setText(faultData.getFaultCode());
 			holder.tv_item_car_fault_info.setText(faultData.getFaultInfo());
+			holder.iv_item_car_fault_share.setOnClickListener(new OnClickListener() {				
+				@Override
+				public void onClick(View v) {
+					CarFaultActivity.this.startActivity(new Intent(CarFaultActivity.this, ShareLocationActivity.class));
+				}
+			});
 			if(faultData.isDataFrist){
 				holder.tv_item_car_fault_data.setVisibility(View.VISIBLE);
 			}else{

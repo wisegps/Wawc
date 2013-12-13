@@ -71,7 +71,7 @@ public class VehicleStatusActivity extends Activity{
 				startActivity(new Intent(VehicleStatusActivity.this, CarFaultActivity.class));
 				break;
 			case R.id.rl_activity_vehicle_status_oil:
-				Toast.makeText(VehicleStatusActivity.this, "点击事件", Toast.LENGTH_SHORT).show();
+				startActivity(new Intent(VehicleStatusActivity.this, TravelActivity.class));
 				break;
 			case R.id.iv_activity_vehicle_status_data_next:
 				Toast.makeText(VehicleStatusActivity.this, "NEXT", Toast.LENGTH_SHORT).show();

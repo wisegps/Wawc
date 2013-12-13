@@ -37,7 +37,6 @@ public class MainActivity extends ActivityGroup {
         Button bt_activity_menu_home = (Button)findViewById(R.id.bt_activity_menu_home);
         bt_activity_menu_home.setWidth(width);
         bt_activity_menu_home.setOnClickListener(onClickListener);
-        //ToMyCar();
         //车友圈
         TextView vehiclefriend = (TextView)findViewById(R.id.car_circle);
         vehiclefriend.setOnClickListener(onClickListener);
@@ -51,6 +50,10 @@ public class MainActivity extends ActivityGroup {
         ll_activity_main_car_remind.setOnClickListener(onClickListener);
         LinearLayout ll_activity_main_mycar = (LinearLayout)findViewById(R.id.ll_activity_main_mycar);
         ll_activity_main_mycar.setOnClickListener(onClickListener);
+        LinearLayout ll_activity_main_terminal = (LinearLayout)findViewById(R.id.ll_activity_main_terminal);
+        ll_activity_main_terminal.setOnClickListener(onClickListener);
+        LinearLayout ll_activity_main_orders = (LinearLayout)findViewById(R.id.ll_activity_main_orders);
+        ll_activity_main_orders.setOnClickListener(onClickListener);
         
         Intent i = new Intent(MainActivity.this,HomeActivity.class);
     	View v = getLocalActivityManager().startActivity(HomeActivity.class.getName(), i).getDecorView();
@@ -79,8 +82,12 @@ public class MainActivity extends ActivityGroup {
 			case R.id.menu_my_collection:
 				ToMyCollection();
 				break;
-			default:
-				return;
+			case R.id.ll_activity_main_terminal:
+				ToCarTerminal();
+				break;
+			case R.id.ll_activity_main_orders:
+				Toorders();
+				break;
 			}
 		}
 	};
@@ -96,7 +103,9 @@ public class MainActivity extends ActivityGroup {
 		tabcontent.addView(vv);
 		slidingMenuView.snapToScreen(1);
 	}
-	
+	/**
+	 * 首页
+	 */
 	public void ToHome(){
 		Screen = 1;
         slidingMenuView.snapToScreen(1);
@@ -137,7 +146,28 @@ public class MainActivity extends ActivityGroup {
 		tabcontent.removeAllViews();
 		tabcontent.addView(view);
 	}
-	
+	/**
+	 * 我的终端
+	 */
+	public void ToCarTerminal(){
+		Screen = 1;
+		slidingMenuView.snapToScreen(1);
+		Intent i = new Intent(MainActivity.this,MyDevicesActivity.class);
+    	View view = getLocalActivityManager().startActivity(MyDevicesActivity.class.getName(), i).getDecorView();
+		tabcontent.removeAllViews();
+		tabcontent.addView(view);
+	}
+	/**
+	 * 我的订单
+	 */
+	public void Toorders(){
+		Screen = 1;
+		slidingMenuView.snapToScreen(1);
+		Intent i = new Intent(MainActivity.this,OrderMeActivity.class);
+    	View view = getLocalActivityManager().startActivity(OrderMeActivity.class.getName(), i).getDecorView();
+		tabcontent.removeAllViews();
+		tabcontent.addView(view);
+	}
 	public void LeftMenu(){
 		if(Screen == 0){
 			Screen = 1;

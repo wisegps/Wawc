@@ -8,7 +8,10 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
-
+/**
+ * 我的爱车
+ * @author honesty
+ */
 public class MyVehicleActivity extends Activity {
 	private Button menu = null;
 	private Button home = null;

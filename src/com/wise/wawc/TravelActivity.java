@@ -3,9 +3,11 @@ package com.wise.wawc;
 import java.util.ArrayList;
 import java.util.List;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -94,6 +96,18 @@ public class TravelActivity extends Activity{
 			holder.tv_item_travel_oil.setText(travelData.getOil());
 			holder.tv_item_travel_speed.setText(travelData.getSpeed());
 			holder.tv_item_travel_cost.setText(travelData.getCost());
+			holder.iv_item_travel_share.setOnClickListener(new OnClickListener() {				
+				@Override
+				public void onClick(View v) {
+					TravelActivity.this.startActivity(new Intent(TravelActivity.this, ShareLocationActivity.class));
+				}
+			});
+			holder.iv_item_travel_map.setOnClickListener(new OnClickListener() {				
+				@Override
+				public void onClick(View v) {
+					TravelActivity.this.startActivity(new Intent(TravelActivity.this, TravelMapActivity.class));
+				}
+			});
 			return convertView;
 		}
 		private class ViewHolder {
