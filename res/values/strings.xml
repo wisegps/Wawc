@@ -56,4 +56,6 @@
     <string name="feedbaack">意见反馈</string>
     <string name="give_us_score">给我们评分</string>
     <string name="about_appliaction">关于我爱我车</string>
+    
+    <string name="send_suggest">发送</string>
 </resources>

@@ -57,7 +57,7 @@
                 android:text="@string/search_setting"
                 android:layout_gravity="center"
                 android:textColor="#000000"
-                android:textSize="8pt"
+                android:textSize="10pt"
                 />
         </TableRow>
         
@@ -77,6 +77,7 @@
                 android:gravity="left"
                 android:layout_weight="1"
                 android:textColor="#000000"
+                android:textSize="16dip"
                 />
 			            <TextView
 		                android:id="@+id/tv_value"
@@ -86,6 +87,7 @@
 		                android:text="车辆粤B12345的位置"
 		                android:layout_weight="1"
 		                android:textColor="#000000"
+		                android:textSize="16dip"
 		                >
 			            </TextView>
 			            
@@ -112,7 +114,7 @@
                 android:text="@string/push_setting"
                 android:layout_gravity="center"
                 android:textColor="#000000"
-                android:textSize="8pt"
+                android:textSize="10pt"
                 />
         </TableRow>
         <TableRow 
@@ -136,6 +138,7 @@
 	                android:text="@string/against_push"
 	                android:layout_gravity="center"
 	                android:textColor="#000000"
+	                android:textSize="16dip"
                 />
                 <RadioButton 
                     android:layout_height="20dip"
@@ -167,6 +170,7 @@
 	                android:text="@string/bug_push"
 	                android:layout_gravity="center"
 	                android:textColor="#000000"
+	                android:textSize="16dip"
                 />
                 <RadioButton
                     android:layout_width="40dip"
@@ -198,6 +202,7 @@
 	                android:text="@string/traffic_department"
 	                android:layout_gravity="center"
 	                android:textColor="#000000"
+	                android:textSize="16dip"
                 />
                 <ImageView 
                     android:layout_height="20dip"
@@ -223,7 +228,7 @@
                 android:text="@string/system_setting"
                 android:layout_gravity="center"
                 android:textColor="#000000"
-                android:textSize="8pt"
+                android:textSize="10pt"
                 />
         </TableRow>
         <TableRow 
@@ -246,8 +251,10 @@
 	                android:text="@string/share_gift"
 	                android:layout_gravity="center"
 	                android:textColor="#000000"
+	                android:textSize="16dip"
                 />
                 <ImageView 
+                    android:id="@+id/share_have_gift"
                     android:layout_height="20dip"
                     android:layout_width="40dip"
                     android:layout_alignParentRight="true"
@@ -276,8 +283,10 @@
 	                android:text="@string/feedbaack"
 	                android:layout_gravity="center"
 	                android:textColor="#000000"
+	                android:textSize="16dip"
                 />
                 <ImageView 
+                    android:id="@+id/feedback"
                     android:layout_height="20dip"
                     android:layout_width="40dip"
                     android:layout_alignParentRight="true"
@@ -306,8 +315,10 @@
 	                android:text="@string/give_us_score"
 	                android:layout_gravity="center"
 	                android:textColor="#000000"
+	                android:textSize="16dip"
                 />
                 <ImageView 
+                    android:id="@+id/give_us_score"
                     android:layout_height="20dip"
                     android:layout_width="40dip"
                     android:layout_alignParentRight="true"
@@ -337,8 +348,10 @@
 	                android:text="@string/about_appliaction"
 	                android:layout_gravity="center"
 	                android:textColor="#000000"
+	                android:textSize="16dip"
                 />
                 <ImageView 
+                    android:id="@+id/about_appliaction"
                     android:layout_height="20dip"
                     android:layout_width="40dip"
                     android:layout_alignParentRight="true"
