@@ -22,6 +22,7 @@ public class VehicleFriendActivity extends Activity {
 	private MyAdapter myAdapter = null;
 	
 	private ImageView newArticle = null;
+//	private ImageView publishArticle
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE); 
@@ -46,7 +47,6 @@ public class VehicleFriendActivity extends Activity {
 	
 	class ClickListener implements OnClickListener{
 		public void onClick(View v) {
-			
 			switch(v.getId()){
 			case R.id.menu:
 				ActivityFactory.A.LeftMenu();
@@ -62,4 +62,5 @@ public class VehicleFriendActivity extends Activity {
 			}
 		}
 	}
+	
 }

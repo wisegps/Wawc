@@ -83,10 +83,10 @@ public final class R {
     }
     public static final class id {
         public static final int about_appliaction=0x7f0a004b;
-        public static final int action_settings=0x7f0a0055;
+        public static final int action_settings=0x7f0a0057;
         public static final int add_car=0x7f0a003c;
         public static final int against_push=0x7f0a0047;
-        public static final int article_list=0x7f0a0052;
+        public static final int article_list=0x7f0a0054;
         public static final int back=0x7f0a003d;
         public static final int bt_activity_menu_home=0x7f0a001b;
         public static final int bt_dropdown=0x7f0a0046;
@@ -98,6 +98,7 @@ public final class R {
         public static final int dialog=0x7f0a0034;
         public static final int ed_publish_article=0x7f0a003f;
         public static final int erenergycurve=0x7f0a0028;
+        public static final int favorite=0x7f0a002b;
         public static final int feed_back_cancle=0x7f0a0038;
         public static final int feedback=0x7f0a0049;
         public static final int filter_edit=0x7f0a0032;
@@ -141,8 +142,8 @@ public final class R {
         public static final int new_vechile_back=0x7f0a0041;
         public static final int new_vechile_save=0x7f0a0031;
         public static final int publish=0x7f0a0040;
-        public static final int publish_article=0x7f0a0053;
-        public static final int qq=0x7f0a002c;
+        public static final int publish_article=0x7f0a0055;
+        public static final int qq=0x7f0a0052;
         public static final int right_sliding_tab=0x7f0a001d;
         public static final int rl_activity_main_help=0x7f0a0022;
         public static final int rl_activity_main_maintain=0x7f0a0020;
@@ -151,14 +152,15 @@ public final class R {
         public static final int rl_activity_main_safety=0x7f0a0023;
         public static final int rl_activity_main_voice=0x7f0a001e;
         public static final int rl_activity_main_wash=0x7f0a0021;
-        public static final int say_something=0x7f0a0054;
-        public static final int search=0x7f0a0051;
+        public static final int say_something=0x7f0a0056;
+        public static final int say_somthing=0x7f0a002c;
+        public static final int search=0x7f0a0053;
         public static final int setting_center_home=0x7f0a0044;
         public static final int setting_center_menu=0x7f0a0043;
         public static final int settting_center=0x7f0a001a;
         public static final int share_have_gift=0x7f0a0048;
         public static final int sidrbar=0x7f0a0035;
-        public static final int sina=0x7f0a002b;
+        public static final int sina=0x7f0a0051;
         public static final int sliding_body=0x7f0a001c;
         public static final int sliding_menu_view=0x7f0a000e;
         public static final int textView=0x7f0a004c;

@@ -31,5 +31,6 @@
         <activity android:name=".SettingCenterActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".FeedBackActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
     </application>
+    <!-- 权限 -->
     <uses-permission android:name="android.permission.CALL_PHONE"/>
 </manifest>

@@ -44,12 +44,12 @@
 		        	
 			    
 		        	<LinearLayout
-		            android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:orientation="vertical"
-					android:layout_alignParentRight="true"
-					android:layout_alignParentTop="true"
-					android:paddingTop="3dip"
+			            android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:orientation="vertical"
+						android:layout_alignParentRight="true"
+						android:layout_alignParentTop="true"
+						android:paddingTop="3dip"
 		            >
 		            <TextView 
 		                android:id="@+id/update_time"
@@ -67,16 +67,17 @@
 					               >
 
 					              <ImageView
-					                  android:id="@+id/sina"
+					                  android:id="@+id/favorite"
 					                  android:layout_width="wrap_content"
 					                  android:layout_height="wrap_content"
 					                  android:background="@drawable/ic_launcher" />
 
 					              <ImageView
-					                  android:id="@+id/qq"
+					                  android:id="@+id/say_somthing"
 					                  android:layout_width="wrap_content"
 					                  android:layout_height="wrap_content"
 					                  android:background="@drawable/ic_launcher" />
+					              
 					          </LinearLayout>
  
 		        	</LinearLayout>
