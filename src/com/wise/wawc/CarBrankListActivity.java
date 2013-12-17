@@ -23,7 +23,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 /**
- * 车辆品牌型号
+ * 车辆型号
+ * @author 王庆文
  */
 public class CarBrankListActivity extends Activity {
 	private ClearEditText mClearEditText;   //自定义搜索栏

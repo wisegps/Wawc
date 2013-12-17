@@ -37,6 +37,7 @@
     <string name="shopping_time">购车时间</string>
     <string name="save">保存</string>
     <string name="delete">删除</string>
+    <string name="exit">退出</string>
     
     <string name="add_car">添加爱车</string>
     <string name="choice_brank">选择品牌</string>
@@ -58,4 +59,11 @@
     <string name="about_appliaction">关于我爱我车</string>
     
     <string name="send_suggest">发送</string>
+    <string name="my_account">我的账户</string>
+    <string name="consignee">收货人</string>
+    <string name="address">地址</string>
+    <string name="tel">电话</string>
+    <string name="friend_information">好友资料</string>
+    <string name="friend_vehicle">TA的爱车</string>
+    <string name="friend_home">好友主页</string>
 </resources>

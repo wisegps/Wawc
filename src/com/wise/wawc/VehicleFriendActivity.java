@@ -13,6 +13,7 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 /**
@@ -27,6 +28,7 @@ public class VehicleFriendActivity extends Activity {
 	
 	private ImageView newArticle = null;
 	private EditText saySomething;
+	private ImageButton userInformation;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE); 
@@ -38,8 +40,10 @@ public class VehicleFriendActivity extends Activity {
 		homeButton.setOnClickListener(new ClickListener());
 		newArticle = (ImageView) findViewById(R.id.publish_article);
 		newArticle.setOnClickListener(new ClickListener());
-		
 		saySomething = (EditText) findViewById(R.id.say_something);
+		userInformation = (ImageButton) findViewById(R.id.user_head);
+		userInformation.setOnClickListener(new ClickListener());
+		
 		articleList = (ListView) findViewById(R.id.article_list);
 		myAdapter = new MyAdapter(this,saySomething);
 		articleList.setAdapter(myAdapter);
@@ -71,6 +75,10 @@ public class VehicleFriendActivity extends Activity {
 				break;
 			case R.id.home:
 				ActivityFactory.A.ToHome();
+				break;
+				
+			case R.id.user_head:    //用户资料
+				startActivity(new Intent(VehicleFriendActivity.this,AccountActivity.class));
 				break;
 			default:
 				return;

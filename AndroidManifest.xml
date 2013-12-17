@@ -16,6 +16,8 @@
 	<uses-permission android:name="android.permission.CALL_PHONE"/>
 	<uses-permission android:name="android.permission.WRITE_SETTINGS"/>
 	<uses-permission android:name="android.permission.GET_TASKS" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+	<uses-permission android:name="android.permission.CAMERA"></uses-permission>
     
     <application
         android:name="com.wise.wawc.WawcApplication"
@@ -54,6 +56,8 @@
         <activity android:name=".MyCollectionActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".SettingCenterActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".FeedBackActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".FriendInformationActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".FriendHomeActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity
             android:name="cn.sharesdk.framework.ShareSDKUIShell"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"

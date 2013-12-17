@@ -1,0 +1,96 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+
+    <!-- 头部 -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/menu"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/ic_launcher" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/friend_home"
+            android:textSize="8pt"
+            android:textColor="#000000"
+             />
+
+        <Button
+            android:id="@+id/home"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/ic_launcher" />
+    </LinearLayout>
+    <!-- 标题 -->
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="120dip"
+        android:background="@drawable/car" >
+
+        <ImageButton
+            android:id="@+id/friend_home_user_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/ic_launcher" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/friend_home_user_head"
+            android:layout_toRightOf="@id/friend_home_user_head"
+            android:orientation="vertical"
+            android:paddingTop="3dip"
+             >
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="宝马车主"
+                android:textColor="#FF3300" />
+        </LinearLayout>
+    </RelativeLayout>
+    <!-- 显示详细评论信息 -->
+	
+	<RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+		 <ListView
+		        android:id="@+id/friend_home_article_list"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content" >
+		    </ListView>
+		    <LinearLayout 
+		        android:layout_width="fill_parent"
+        		android:layout_height="wrap_content"
+        		android:layout_alignParentBottom="true"
+        		android:orientation="vertical"
+		        >
+            	<EditText
+            	    android:id="@+id/friend_home_say_something"
+	                android:layout_width="fill_parent"
+	                android:layout_height="50dip"
+	                android:hint="说点什么..." 
+	                android:drawableRight="@drawable/ic_launcher"
+	                android:visibility="gone"
+	                android:minHeight="10dip"
+                />
+		    </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>
