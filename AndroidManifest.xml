@@ -15,6 +15,7 @@
 	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 	<uses-permission android:name="android.permission.CALL_PHONE"/>
 	<uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+	<uses-permission android:name="android.permission.GET_TASKS" />
     
     <application
         android:name="com.wise.wawc.WawcApplication"
@@ -53,5 +54,19 @@
         <activity android:name=".MyCollectionActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".SettingCenterActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".FeedBackActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+    	
+        <activity
+            android:name="cn.sharesdk.framework.ShareSDKUIShell"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+            <meta-data android:name="Adapter" android:value="cn.sharesdk.demo.MyAdapter" />
+            <intent-filter>
+                <data android:scheme="db-7janx53ilz11gbs" />
+        		<action android:name="android.intent.action.VIEW" />
+        		<category android:name="android.intent.category.BROWSABLE"/>
+        		<category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>       
 </manifest>

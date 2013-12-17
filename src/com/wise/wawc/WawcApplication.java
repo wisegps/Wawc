@@ -54,7 +54,6 @@ public class WawcApplication extends Application {
                 Toast.makeText(WawcApplication.getInstance().getApplicationContext(), "输入正确的检索条件！",
                         Toast.LENGTH_LONG).show();
             }
-            // ...
         }
 
         @Override

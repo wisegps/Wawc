@@ -38,20 +38,23 @@
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_launcher"/>
 	</RelativeLayout>
-	<LinearLayout 
-	    android:id="@+id/ll_activity_home_car"
-	    android:orientation="vertical"
-	    android:layout_below="@id/rl_activity_home_top"
-	    android:layout_width="fill_parent"
-	    android:layout_height="100dp"
-	    android:layout_margin="10dp"
-	    android:background="@color/bkg1"></LinearLayout>
-	<LinearLayout 
-	    android:layout_below="@id/ll_activity_home_car"
-	    android:layout_width="fill_parent"
-	    android:layout_height="200dp"
-	    android:layout_margin="10dp"
-	    android:background="@color/bkg2"></LinearLayout>
+	<com.wise.extend.HScrollLayout
+          xmlns:android="http://schemas.android.com/apk/res/android"    
+		  android:id="@+id/ScrollLayout_car"    
+		  android:layout_below="@id/rl_activity_home_top"
+		  android:layout_width="fill_parent"   
+		  android:background="@color/bkg1" 
+		  android:layout_height="wrap_content"> 
+    </com.wise.extend.HScrollLayout>
+    
+	<com.wise.extend.HScrollLayout
+          xmlns:android="http://schemas.android.com/apk/res/android"    
+		  android:id="@+id/ScrollLayout_other"    
+		  android:layout_below="@id/ScrollLayout_car"
+		  android:layout_width="fill_parent"   
+		  android:background="@color/bkg1" 
+		  android:layout_height="wrap_content"> 
+    </com.wise.extend.HScrollLayout>
 	<RelativeLayout 
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
