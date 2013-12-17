@@ -54,7 +54,6 @@
         <activity android:name=".MyCollectionActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".SettingCenterActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".FeedBackActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
-    	
         <activity
             android:name="cn.sharesdk.framework.ShareSDKUIShell"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"

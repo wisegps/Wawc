@@ -140,10 +140,10 @@ containing a value of this type.
         public static final int ScrollLayout_car=0x7f0a0022;
         public static final int ScrollLayout_other=0x7f0a0023;
         public static final int about_appliaction=0x7f0a009a;
-        public static final int action_settings=0x7f0a00ad;
+        public static final int action_settings=0x7f0a00af;
         public static final int add_car=0x7f0a008b;
         public static final int against_push=0x7f0a0096;
-        public static final int article_list=0x7f0a00a1;
+        public static final int article_list=0x7f0a00a3;
         public static final int back=0x7f0a008c;
         public static final int bt_activity_home_help=0x7f0a0024;
         public static final int bt_activity_home_risk=0x7f0a0025;
@@ -158,6 +158,7 @@ containing a value of this type.
         public static final int dialog=0x7f0a006b;
         public static final int ed_publish_article=0x7f0a008e;
         public static final int erenergycurve=0x7f0a005a;
+        public static final int favorite=0x7f0a0062;
         public static final int feed_back_cancle=0x7f0a006f;
         public static final int feedback=0x7f0a0098;
         public static final int filter_edit=0x7f0a0069;
@@ -240,8 +241,8 @@ containing a value of this type.
         public static final int new_vechile_back=0x7f0a0090;
         public static final int new_vechile_save=0x7f0a0068;
         public static final int publish=0x7f0a008f;
-        public static final int publish_article=0x7f0a00a2;
-        public static final int qq=0x7f0a0063;
+        public static final int publish_article=0x7f0a00a4;
+        public static final int qq=0x7f0a00a1;
         public static final int right_sliding_tab=0x7f0a0038;
         public static final int rl_activity_car_location_top=0x7f0a0008;
         public static final int rl_activity_home_top=0x7f0a0020;
@@ -254,14 +255,15 @@ containing a value of this type.
         public static final int rl_activity_main_voice=0x7f0a0039;
         public static final int rl_activity_main_wash=0x7f0a003c;
         public static final int rl_activity_vehicle_status_oil=0x7f0a005b;
-        public static final int say_something=0x7f0a00a3;
-        public static final int search=0x7f0a00a0;
+        public static final int say_something=0x7f0a00a5;
+        public static final int say_somthing=0x7f0a0063;
+        public static final int search=0x7f0a00a2;
         public static final int setting_center_home=0x7f0a0093;
         public static final int setting_center_menu=0x7f0a0092;
         public static final int settting_center=0x7f0a0035;
         public static final int share_have_gift=0x7f0a0097;
         public static final int sidrbar=0x7f0a006c;
-        public static final int sina=0x7f0a0062;
+        public static final int sina=0x7f0a00a0;
         public static final int sliding_body=0x7f0a0037;
         public static final int sliding_menu_view=0x7f0a0026;
         public static final int textView=0x7f0a009b;
@@ -302,15 +304,15 @@ containing a value of this type.
         public static final int update_time=0x7f0a0061;
         public static final int user_head=0x7f0a009f;
         public static final int vehicle_brank_list=0x7f0a006a;
-        public static final int xlistview_footer_content=0x7f0a00a4;
-        public static final int xlistview_footer_hint_textview=0x7f0a00a6;
-        public static final int xlistview_footer_progressbar=0x7f0a00a5;
-        public static final int xlistview_header_arrow=0x7f0a00ab;
-        public static final int xlistview_header_content=0x7f0a00a7;
-        public static final int xlistview_header_hint_textview=0x7f0a00a9;
-        public static final int xlistview_header_progressbar=0x7f0a00ac;
-        public static final int xlistview_header_text=0x7f0a00a8;
-        public static final int xlistview_header_time=0x7f0a00aa;
+        public static final int xlistview_footer_content=0x7f0a00a6;
+        public static final int xlistview_footer_hint_textview=0x7f0a00a8;
+        public static final int xlistview_footer_progressbar=0x7f0a00a7;
+        public static final int xlistview_header_arrow=0x7f0a00ad;
+        public static final int xlistview_header_content=0x7f0a00a9;
+        public static final int xlistview_header_hint_textview=0x7f0a00ab;
+        public static final int xlistview_header_progressbar=0x7f0a00ae;
+        public static final int xlistview_header_text=0x7f0a00aa;
+        public static final int xlistview_header_time=0x7f0a00ac;
     }
     public static final class layout {
         public static final int activity_account=0x7f030000;
