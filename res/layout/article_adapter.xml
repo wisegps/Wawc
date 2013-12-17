@@ -73,7 +73,7 @@
 					                  android:background="@drawable/ic_launcher" />
 
 					              <ImageView
-					                  android:id="@+id/say_somthing"
+					                  android:id="@+id/list_say_somthing"
 					                  android:layout_width="wrap_content"
 					                  android:layout_height="wrap_content"
 					                  android:background="@drawable/ic_launcher" />

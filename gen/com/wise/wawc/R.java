@@ -129,6 +129,7 @@ public final class R {
         public static final int left_sliding_tab=0x7f0a000f;
         public static final int list_brank=0x7f0a002f;
         public static final int list_letter=0x7f0a002d;
+        public static final int list_say_somthing=0x7f0a002c;
         public static final int listview=0x7f0a004d;
         public static final int ll_activity_main_car_remind=0x7f0a0017;
         public static final int ll_activity_main_mycar=0x7f0a0018;
@@ -153,7 +154,6 @@ public final class R {
         public static final int rl_activity_main_voice=0x7f0a001e;
         public static final int rl_activity_main_wash=0x7f0a0021;
         public static final int say_something=0x7f0a0056;
-        public static final int say_somthing=0x7f0a002c;
         public static final int search=0x7f0a0053;
         public static final int setting_center_home=0x7f0a0044;
         public static final int setting_center_menu=0x7f0a0043;

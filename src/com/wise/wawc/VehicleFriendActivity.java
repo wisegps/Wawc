@@ -5,10 +5,14 @@ import com.wise.service.MyAdapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 /**
@@ -22,7 +26,7 @@ public class VehicleFriendActivity extends Activity {
 	private MyAdapter myAdapter = null;
 	
 	private ImageView newArticle = null;
-//	private ImageView publishArticle
+	private EditText saySomething;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE); 
@@ -34,10 +38,21 @@ public class VehicleFriendActivity extends Activity {
 		homeButton.setOnClickListener(new ClickListener());
 		newArticle = (ImageView) findViewById(R.id.publish_article);
 		newArticle.setOnClickListener(new ClickListener());
-//		
+		
+		saySomething = (EditText) findViewById(R.id.say_something);
 		articleList = (ListView) findViewById(R.id.article_list);
-		myAdapter = new MyAdapter(this);
+		myAdapter = new MyAdapter(this,saySomething);
 		articleList.setAdapter(myAdapter);
+		
+		articleList.setOnScrollListener(new OnScrollListener() {
+			public void onScrollStateChanged(AbsListView view, int scrollState) {
+				saySomething.setVisibility(View.GONE);
+				myAdapter.isClick = false;
+			}
+			public void onScroll(AbsListView view, int firstVisibleItem,int visibleItemCount, int totalItemCount) {
+			}
+		});
+		
 		bindDate();
 		
 	}

@@ -119,12 +119,12 @@
             	<EditText
             	    android:id="@+id/say_something"
 	                android:layout_width="fill_parent"
-	                android:layout_height="40dip"
+	                android:layout_height="50dip"
 	                android:hint="说点什么..." 
 	                android:drawableRight="@drawable/ic_launcher"
 	                android:visibility="visible"
+	                android:minHeight="10dip"
                 />
 		    </LinearLayout>
     </RelativeLayout>
-
 </LinearLayout>
