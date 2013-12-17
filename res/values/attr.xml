@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>  
+<resources>  
+    <declare-styleable name="custom">
+        <attr name="border_color" format="reference|color"/>
+        <attr name="border_left" format="boolean"></attr>
+        <attr name="border_top" format="boolean"></attr>
+        <attr name="border_right" format="boolean"></attr>
+        <attr name="border_bottom" format="boolean"></attr>
+    </declare-styleable>  
+</resources>

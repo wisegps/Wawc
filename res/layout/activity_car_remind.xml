@@ -61,15 +61,15 @@
 	                android:text="车辆年检提醒"/>
 	            <ImageView
 	                android:id="@+id/iv_activity_car_remind_inspection_problem" 
-	                android:layout_width="30dp"
-	                android:layout_height="30dp"
+	                android:layout_width="40dp"
+	                android:layout_height="40dp"
 	                android:contentDescription="@string/app_name"
 	                android:layout_alignParentRight="true"
 	                android:src="@drawable/ic_launcher"/>
 	            <ImageView
 	                android:id="@+id/iv_activity_car_remind_inspection_note" 
-	                android:layout_width="30dp"
-	                android:layout_height="30dp"
+	                android:layout_width="40dp"
+	                android:layout_height="40dp"
 	                android:contentDescription="@string/app_name"
 	                android:layout_toLeftOf ="@id/iv_activity_car_remind_inspection_problem"
 	                android:src="@drawable/ic_launcher"/>
@@ -94,15 +94,15 @@
 	                android:text="车辆续保提醒"/>
 	            <ImageView
 	                android:id="@+id/iv_activity_car_remind_renewal_problem" 
-	                android:layout_width="30dp"
-	                android:layout_height="30dp"
+	                android:layout_width="40dp"
+	                android:layout_height="40dp"
 	                android:contentDescription="@string/app_name"
 	                android:layout_alignParentRight="true"
 	                android:src="@drawable/ic_launcher"/>
 	            <ImageView
 	                android:id="@+id/iv_activity_car_remind_renewal_note" 
-	                android:layout_width="30dp"
-	                android:layout_height="30dp"
+	                android:layout_width="40dp"
+	                android:layout_height="40dp"
 	                android:contentDescription="@string/app_name"
 	                android:layout_toLeftOf ="@id/iv_activity_car_remind_renewal_problem"
 	                android:src="@drawable/ic_launcher"/>
@@ -127,15 +127,15 @@
 	                android:text="车辆保养提醒"/>
 	            <ImageView
 	                android:id="@+id/iv_activity_car_remind_maintenance_problem" 
-	                android:layout_width="30dp"
-	                android:layout_height="30dp"
+	                android:layout_width="40dp"
+	                android:layout_height="40dp"
 	                android:contentDescription="@string/app_name"
 	                android:layout_alignParentRight="true"
 	                android:src="@drawable/ic_launcher"/>
 	            <ImageView
 	                android:id="@+id/iv_activity_car_remind_maintenance_note" 
-	                android:layout_width="30dp"
-	                android:layout_height="30dp"
+	                android:layout_width="40dp"
+	                android:layout_height="40dp"
 	                android:contentDescription="@string/app_name"
 	                android:layout_toLeftOf ="@id/iv_activity_car_remind_maintenance_problem"
 	                android:src="@drawable/ic_launcher"/>
@@ -161,15 +161,15 @@
 	                android:text="车辆年审提醒"/>
 	            <ImageView
 	                android:id="@+id/iv_activity_car_remind_examined_problem" 
-	                android:layout_width="30dp"
-	                android:layout_height="30dp"
+	                android:layout_width="40dp"
+	                android:layout_height="40dp"
 	                android:contentDescription="@string/app_name"
 	                android:layout_alignParentRight="true"
 	                android:src="@drawable/ic_launcher"/>
 	            <ImageView
 	                android:id="@+id/iv_activity_car_remind_examined_note" 
-	                android:layout_width="30dp"
-	                android:layout_height="30dp"
+	                android:layout_width="40dp"
+	                android:layout_height="40dp"
 	                android:contentDescription="@string/app_name"
 	                android:layout_toLeftOf ="@id/iv_activity_car_remind_examined_problem"
 	                android:src="@drawable/ic_launcher"/>
@@ -194,15 +194,15 @@
 	                android:text="驾照换证提醒"/>
 	            <ImageView
 	                android:id="@+id/iv_activity_car_remind_replacement_problem" 
-	                android:layout_width="30dp"
-	                android:layout_height="30dp"
+	                android:layout_width="40dp"
+	                android:layout_height="40dp"
 	                android:contentDescription="@string/app_name"
 	                android:layout_alignParentRight="true"
 	                android:src="@drawable/ic_launcher"/>
 	            <ImageView
 	                android:id="@+id/iv_activity_car_remind_replacement_note" 
-	                android:layout_width="30dp"
-	                android:layout_height="30dp"
+	                android:layout_width="40dp"
+	                android:layout_height="40dp"
 	                android:contentDescription="@string/app_name"
 	                android:layout_toLeftOf ="@id/iv_activity_car_remind_replacement_problem"
 	                android:src="@drawable/ic_launcher"/>

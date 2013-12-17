@@ -5,20 +5,13 @@ import java.util.ArrayList;
 import com.wise.data.EnergyItem;
 import com.wise.wawc.R;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.PaintFlagsDrawFilter;
-import android.graphics.Path;
-import android.graphics.PathEffect;
 import android.graphics.PointF;
-import android.graphics.Region;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -45,7 +38,6 @@ public class EnergyCurveView extends View implements OnTouchListener {
 	 * 距离左边的间距
 	 */
 	private static final float SPACING = 35f;
-	private Bitmap mDegree; // 度数显示框
 	private Bitmap mTrendLine; // 点击显示的竖线
 	private Bitmap mLastPoint; // 曲线图最后一个绘制灰色圆点
 	private Bitmap mMovePoint; // 曲线图移动中绘制的圆点
@@ -61,6 +53,7 @@ public class EnergyCurveView extends View implements OnTouchListener {
 	private float moveXOfFirst; // 单个按下的X坐标
 	private float moveYOfFirst; // 单个按下的Y的坐标
 	private boolean isMove = false; // 可以移动
+	OnViewTouchListener onViewTouchListener;
 
 	public EnergyCurveView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -102,13 +95,6 @@ public class EnergyCurveView extends View implements OnTouchListener {
 	}
 	
 	private boolean isClick(MotionEvent event){
-		if(event.getX(0) > (moveX - mDegree.getWidth() / 2) &&
-		   event.getX(0) < (moveX + mDegree.getWidth() / 2) &&
-		   event.getY(0) > (mGradientHeight + SPACING_HEIGHT - mTrendLine.getHeight())/2 &&
-		   event.getY(0) < (mGradientHeight + SPACING_HEIGHT - mTrendLine.getHeight())/2 + mDegree.getHeight()){
-			System.out.println("点到了");
-			return true;
-		}
 		return false;
 	}
 	
@@ -132,64 +118,35 @@ public class EnergyCurveView extends View implements OnTouchListener {
 		Log.d(TAG, "initDraw()");
 		paint.setColor(Color.GREEN);
 		paint.setAntiAlias(true);
-		/* 绘制虚线 */
-		Paint mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		PathEffect effects = new DashPathEffect(new float[] { 3, 3, 3, 3 }, 3);
-		mPaint.setStyle(Paint.Style.STROKE);
-		mPaint.setAntiAlias(true);
-		mPaint.setStrokeWidth(1);
-		mPaint.setPathEffect(effects);
-		
-		float dottedSpacing = (mGradientHeight - WEIGHT) / 5;
-		float smallDotted = dottedSpacing / 5;
-		//TODO 记住
-//		for (int i = 1; i <= 5; i++) {
-//			Path dottedPath = new Path();
-//			mPaint.setColor(Color.RED);
-//			mPaint.setAlpha(0x50);
-//			dottedPath.moveTo(SPACING, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i);
-//			dottedPath.lineTo(mGradientWidth, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i);
-//			canvas.drawPath(dottedPath, mPaint);
-//		}
-		/* 左边刻度尺 */
+		float dottedSpacing = (mGradientHeight - WEIGHT) / 5;//垂直大间隔,实线距离
+		float smallDotted = dottedSpacing / 5;//里面虚线距离
+		/* 水平线和文字 */
 		for (int i = 0; i <= 5; i++) {
-			paint.setStrokeWidth(1);
-			canvas.drawText(new BigDecimal(2.6*i).toString(), SPACING - 25,mGradientHeight + SPACING_HEIGHT - dottedSpacing * i + 5,paint);
+			paint.setStrokeWidth(3);
+			paint.setColor(Color.GRAY);
+			canvas.drawText(new BigDecimal(3*i).toString(), SPACING - 25,mGradientHeight + SPACING_HEIGHT - dottedSpacing * i + 5,paint);
 			canvas.drawLine(SPACING, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i, mGradientWidth, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i, paint);
+			paint.setStrokeWidth(1);
+			paint.setColor(0xff999999);
 			if(i != 0){
 				for (int j = 1; j <= 4; j++) {
-					//canvas.drawLine(SPACING, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i + smallDotted * j,mGradientWidth, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i + smallDotted * j,mPaint);
+					canvas.drawLine(SPACING, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i + smallDotted * j,mGradientWidth, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i + smallDotted * j,paint);
 				}
 			}			
 		}
-
 		/* 绘制曲线 覆盖 剪切后的锯齿 */
 		for (int i = 0; i < points.size(); i++) {
 			paint.setStrokeWidth(3);
 			PointF startPoint = points.get(i);
-			if (i + 1 == points.size()) {
-				// 绘制最后一个圆点到底部的 竖线
-				paint.setStrokeWidth(1);
-				canvas.drawLine(startPoint.x, startPoint.y, startPoint.x,
-						mGradientHeight + SPACING_HEIGHT, paint);
-				// 绘制 最后一个圆点 为剪切的图片
-				canvas.drawBitmap(mLastPoint,
-						startPoint.x - mLastPoint.getWidth() / 2, startPoint.y
-								- mLastPoint.getHeight() / 2, paint);
+			if (i + 1 == points.size()) {// 绘制 最后一个圆点 为剪切的图片
+				canvas.drawBitmap(mLastPoint,startPoint.x - mLastPoint.getWidth() / 2, startPoint.y - mLastPoint.getHeight() / 2, paint);
 				break;
 			}
 			PointF endPoint = points.get(i + 1);
 			// 绘制曲线，并且覆盖剪切后的锯齿
 			canvas.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y,paint);
-			// 为了使线条圆滑 绘一个点 每个坐标系 绘制一个圆点
-			canvas.drawPoint(startPoint.x, startPoint.y, paint);
+			canvas.drawBitmap(mLastPoint,startPoint.x - mLastPoint.getWidth() / 2, startPoint.y - mLastPoint.getHeight() / 2, paint);
 		}
-
-		// 绘制左边的竖线,以及温度的刻度 （由于需要与顶边 产生间距SPACING_HEIGHT）———— 目前模拟 待修改
-		canvas.drawLine(SPACING, SPACING_HEIGHT, SPACING, mGradientHeight+ SPACING_HEIGHT, paint);
-		paint.setTextSize(16);
-		canvas.drawText("天", mGradientWidth + 5, mGradientHeight + SPACING_HEIGHT + 5, paint);
-		canvas.drawText("度", SPACING - 8, 30, paint);
 	}
 	float moveX;
 	/**
@@ -199,7 +156,7 @@ public class EnergyCurveView extends View implements OnTouchListener {
 	 */
 	private void SinglePointTouch(Canvas canvas, Paint paint) {
 		Log.d(TAG, "SinglePointTouch()");
-		// 顶部的度数框
+		// TODO 顶部的度数框
 		if (moveXOfFirst < points.get(0).x) {
 			moveXOfFirst = points.get(0).x;
 		}
@@ -211,8 +168,6 @@ public class EnergyCurveView extends View implements OnTouchListener {
 		//canvas.drawBitmap(mTrendLine, SPACING, mGradientHeight + SPACING_HEIGHT - mTrendLine.getHeight() + 5, paint);
 		// 绘制 移动的 点
 		onPointMove(canvas, paint, moveXOfFirst);
-		canvas.drawBitmap(mDegree,moveX - mDegree.getWidth() / 2,
-				(mGradientHeight + SPACING_HEIGHT - mTrendLine.getHeight())/2,paint);
 
 		// 绘制 变动的 能耗为多少
 		float moveY = getMoveY(moveXOfFirst);
@@ -226,10 +181,9 @@ public class EnergyCurveView extends View implements OnTouchListener {
 		}
 		int indexOf = energyText.indexOf(".");
 		String substring = energyText.substring(0, indexOf + 2);
-		paint.setTextSize(28);
-		paint.setColor(Color.BLACK);
-		canvas.drawText(substring + "度", moveX - mDegree.getWidth() / 3,
-				mGradientHeight + SPACING_HEIGHT - mTrendLine.getHeight() + mDegree.getHeight() / 3, paint);
+		if(onViewTouchListener != null){
+			onViewTouchListener.OnViewTouch(substring);
+		}
 	}
 
 	/**
@@ -299,6 +253,7 @@ public class EnergyCurveView extends View implements OnTouchListener {
 		int windowW = (int) (dm.widthPixels - SPACING_SCALE);
 		mGradientWidth = windowW;
 		mGradientHeight = (float) (windowW*0.75);
+		System.out.println("mGradientWidth = " + mGradientWidth + ",mGradientHeight = " + mGradientHeight);
 		// 移动的黄色的线条
 		mTrendLine = BitmapFactory.decodeResource(getResources(),R.drawable.energy_trendline);
 		int height = mTrendLine.getHeight();
@@ -307,13 +262,10 @@ public class EnergyCurveView extends View implements OnTouchListener {
 		// 最后一个灰色的点
 		mLastPoint = BitmapFactory.decodeResource(getResources(), R.drawable.energy_trendpoint_last);
 		mMovePoint = BitmapFactory.decodeResource(getResources(), R.drawable.energy_trendpoint_move);
-		mDegree = BitmapFactory.decodeResource(getResources(), R.drawable.energy_degree);
 	}
 
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		Log.d(TAG, "onMeasure(int widthMeasureSpec, int heightMeasureSpec)");
-		Log.e("onMeasure", widthMeasureSpec + ":" + heightMeasureSpec);
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	}
 
@@ -349,12 +301,13 @@ public class EnergyCurveView extends View implements OnTouchListener {
 	 */
 	public void initPoints(ArrayList<EnergyItem> energys) {
 		Log.d(TAG, "initPoints(ArrayList<EnergyItem> energys)");
+		this.energyItems = energys;
 		getSpacingOfXY(energys);
 		points = new ArrayList<PointF>();
 		for (int i = 0; i < energys.size(); i++) {
 			float f = energys.get(i).value;
 			float y = ((mGradientHeight + SPACING_HEIGHT) - f * spacingOfY);
-			float x = (i * spacingOfX + SPACING);
+			float x = (i * spacingOfX + SPACING + mLastPoint.getWidth());
 			PointF point = new PointF(x, y);
 			points.add(point);
 			Log.i("initPoints", energys.get(i).date + "|point.x:" + x + "|point.y:" + y);
@@ -370,7 +323,7 @@ public class EnergyCurveView extends View implements OnTouchListener {
 		Log.d(TAG, "getSpacingOfXY(ArrayList<EnergyItem> energys)");
 		maxEnergy = findMaxPowers(energys);
 		Log.i("maxEnergy", maxEnergy.value + "");
-		spacingOfX = mGradientWidth / (energys.size()) + 1;
+		spacingOfX = (mGradientWidth - mLastPoint.getWidth()) / (energys.size()) + 1;
 		spacingOfY = (mGradientHeight - WEIGHT) / ((maxEnergy.value) / 4 + maxEnergy.value);
 		Log.e("spacingOfX and spacingOfY", spacingOfX + ":" + spacingOfY);
 	}
@@ -391,8 +344,10 @@ public class EnergyCurveView extends View implements OnTouchListener {
 		}
 		return energy;
 	}
-	public void setData(ArrayList<EnergyItem> energyItems){
-		Log.d(TAG, "setData(ArrayList<EnergyItem> energyItems,int i)");
-		this.energyItems = energyItems;
+	public void setOnViewTouchListener(OnViewTouchListener onViewTouchListener){
+		this.onViewTouchListener = onViewTouchListener;
+	}
+	public void RefreshView(){
+		invalidate();
 	}
 }

@@ -3,17 +3,27 @@
     package="com.wise.wawc"
     android:versionCode="1"
     android:versionName="1.0" >
-    <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="17" />
+    <supports-screens android:largeScreens="true" android:normalScreens="true" android:smallScreens="true" android:resizeable="true" android:anyDensity="true"/>  
+    
+    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17" />
+    
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+	<uses-permission android:name="android.permission.INTERNET"/>
+	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+	<uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+	<uses-permission android:name="android.permission.CALL_PHONE"/>
+	<uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+	<uses-permission android:name="android.permission.GET_TASKS" />
+    
     <application
+        android:name="com.wise.wawc.WawcApplication"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity
-            android:name=".MainActivity" android:theme="@android:style/Theme.NoTitleBar"
-            android:label="@string/app_name" >                        
+        <activity android:name=".MainActivity" android:theme="@android:style/Theme.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -23,6 +33,20 @@
 		<activity android:name=".CarRemindActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".NewArticleActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".VehicleStatusActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+
+        <activity android:name=".CarFaultActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".TravelActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".TravelMapActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".TrafficActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".MyDevicesActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".OrderDeviceActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".OrderServiceActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".OrderConfirmActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".OrderMeActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".AccountActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".CarLocationActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".DealAddressActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".ShareLocationActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".VehicleFriendActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".MyVehicleActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".NewVehicleActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
@@ -30,7 +54,18 @@
         <activity android:name=".MyCollectionActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".SettingCenterActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".FeedBackActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
-    </application>
-    <!-- 权限 -->
-    <uses-permission android:name="android.permission.CALL_PHONE"/>
+        <activity
+            android:name="cn.sharesdk.framework.ShareSDKUIShell"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateHidden|adjustResize" >
+            <meta-data android:name="Adapter" android:value="cn.sharesdk.demo.MyAdapter" />
+            <intent-filter>
+                <data android:scheme="db-7janx53ilz11gbs" />
+        		<action android:name="android.intent.action.VIEW" />
+        		<category android:name="android.intent.category.BROWSABLE"/>
+        		<category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+    </application>       
 </manifest>
