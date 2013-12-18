@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 /**
- * 车辆行程
+ * 车辆行程列表
  * @author honesty
  */
 public class TravelActivity extends Activity{

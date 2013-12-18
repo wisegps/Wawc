@@ -12,7 +12,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
-
+/**
+ * 车辆行程
+ * @author honesty
+ */
 public class TravelMapActivity extends Activity{
 	WawcApplication app;
 	MapView mMapView = null;

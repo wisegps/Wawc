@@ -5,7 +5,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-
+/**
+ * 我的账户
+ * @author honesty
+ */
 public class AccountActivity extends Activity{
 	private View view = null;
 	protected void onCreate(Bundle savedInstanceState) {

@@ -101,6 +101,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 		platformQQ = ShareSDK.getPlatform(MainActivity.this,QZone.NAME);
 		platformSina = ShareSDK.getPlatform(MainActivity.this,SinaWeibo.NAME);
 		isLogin();
+		startService(new Intent(MainActivity.this, LocationService.class));
 	}
 	
 	OnClickListener onClickListener = new OnClickListener() {		
@@ -353,6 +354,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 			app.mBMapManager.destroy();
 			app.mBMapManager = null;
 		}
+		stopService(new Intent(MainActivity.this, LocationService.class));
 	}
 
 	@Override

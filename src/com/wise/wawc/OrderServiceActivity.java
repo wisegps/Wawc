@@ -6,7 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-
+/**
+ * 订购服务
+ * @author honesty
+ */
 public class OrderServiceActivity extends Activity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
