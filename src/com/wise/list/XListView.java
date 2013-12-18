@@ -16,6 +16,10 @@ import android.widget.RelativeLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
 
+/**
+ * 下拉,上拉listview
+ * @author honesty
+ */
 public class XListView extends ListView implements OnScrollListener {
 
 	private float mLastY = -1; // save event y

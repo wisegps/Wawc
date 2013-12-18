@@ -55,10 +55,5 @@ public class TravelMapActivity extends Activity{
 	protected void onDestroy() {
 		super.onDestroy();
 		mMapView.destroy();
-		WawcApplication app = (WawcApplication)this.getApplication();
-		if (app.mBMapManager != null) {
-			app.mBMapManager.destroy();
-			app.mBMapManager = null;
-		}
 	}
 }

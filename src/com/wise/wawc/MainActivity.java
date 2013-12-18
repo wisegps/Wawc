@@ -171,6 +171,8 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 			iv_activity_main_login_qq.setVisibility(View.GONE);
 			new Thread(new GetBitMapFromUrlThread(platformQQ.getDb().getUserIcon())).start();
 		}else if(platformSina.getDb().isValid()){
+			Log.d(TAG, "platformSina.getDb().getUserId() = " + platformSina.getDb().getUserId());
+			Log.d(TAG, "platformSina.getDb().getToken() = " + platformSina.getDb().getToken());
 			tv_activity_main_name.setText(platformSina.getDb().getUserName());
 			iv_activity_main_qq.setVisibility(View.VISIBLE);
 			iv_activity_main_sina.setVisibility(View.VISIBLE);
@@ -240,11 +242,11 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 	public void ToHome(){
 		if(platformQQ.getDb().isValid() || platformSina.getDb().isValid()){
 			Screen = 1;
-	        slidingMenuView.snapToScreen(1);
 	        Intent i = new Intent(MainActivity.this,HomeActivity.class);
 	    	View v = getLocalActivityManager().startActivity(HomeActivity.class.getName(), i).getDecorView();
 			tabcontent.removeAllViews();
 			tabcontent.addView(v);
+	        slidingMenuView.snapToScreen(1);
 		}else{
 			Toast.makeText(getApplicationContext(), "请登录", Toast.LENGTH_SHORT).show();
 		}		
@@ -346,6 +348,11 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 	protected void onDestroy() {
 		super.onDestroy();
 		ShareSDK.stopSDK(this);
+		WawcApplication app = (WawcApplication)this.getApplication();
+		if (app.mBMapManager != null) {
+			app.mBMapManager.destroy();
+			app.mBMapManager = null;
+		}
 	}
 
 	@Override

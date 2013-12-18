@@ -39,9 +39,13 @@ public class HomeActivity extends Activity{
         	item_home_car_icon.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View v) {
-					Toast.makeText(HomeActivity.this, "onclicklistener", Toast.LENGTH_SHORT).show();
+					
 				}
 			});
+        	ImageView item_home_car_vehicle_status = (ImageView)mapView.findViewById(R.id.item_home_car_vehicle_status);
+        	item_home_car_vehicle_status.setOnClickListener(onClickListener);
+        	TextView tv_item_home_car_adress = (TextView)mapView.findViewById(R.id.tv_item_home_car_adress);
+        	tv_item_home_car_adress.setOnClickListener(onClickListener);
 		}
         for (int i = 0; i < 2; i++) {
         	View mapView = mLayoutInflater.inflate(R.layout.item_home_car, null);
@@ -70,6 +74,12 @@ public class HomeActivity extends Activity{
 				break;
 			case R.id.bt_activity_home_risk:
 				HomeActivity.this.startActivity(new Intent(HomeActivity.this, ShareLocationActivity.class));
+				break;
+			case R.id.item_home_car_vehicle_status:
+				HomeActivity.this.startActivity(new Intent(HomeActivity.this, VehicleStatusActivity.class));
+				break;
+			case R.id.tv_item_home_car_adress:
+				HomeActivity.this.startActivity(new Intent(HomeActivity.this, CarLocationActivity.class));
 				break;
 			}
 		}
