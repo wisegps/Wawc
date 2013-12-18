@@ -26,7 +26,8 @@
 					android:layout_alignTop="@id/head_article"
 					android:paddingTop="3dip"
 		            >
-		            <TextView 
+		            <TextView
+		                android:id="@+id/detail_article" 
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
 		                android:layout_gravity="center"
@@ -73,7 +74,7 @@
 					                  android:background="@drawable/ic_launcher" />
 
 					              <ImageView
-					                  android:id="@+id/say_somthing"
+					                  android:id="@+id/list_say_somthing"
 					                  android:layout_width="wrap_content"
 					                  android:layout_height="wrap_content"
 					                  android:background="@drawable/ic_launcher" />
