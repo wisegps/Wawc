@@ -39,9 +39,22 @@ public class HomeActivity extends Activity{
         	item_home_car_icon.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View v) {
-					
+					HomeActivity.this.startActivity(new Intent(HomeActivity.this, MyVehicleActivity.class));
 				}
 			});
+        	TextView item_home_car_number = (TextView)findViewById(R.id.item_home_car_number);
+        	item_home_car_number.setOnClickListener(new OnClickListener() {				
+				@Override
+				public void onClick(View v) {
+					HomeActivity.this.startActivity(new Intent(HomeActivity.this, MyVehicleActivity.class));
+				}
+			});
+        	ImageView item_home_car_share = (ImageView)mapView.findViewById(R.id.item_home_car_share);
+        	item_home_car_share.setOnClickListener(onClickListener);
+        	ImageView item_home_car_traffic = (ImageView)mapView.findViewById(R.id.item_home_car_traffic);
+        	item_home_car_traffic.setOnClickListener(onClickListener);
+        	ImageView item_home_car_vehicle_event = (ImageView)mapView.findViewById(R.id.item_home_car_vehicle_event);
+        	item_home_car_vehicle_event.setOnClickListener(onClickListener);
         	ImageView item_home_car_vehicle_status = (ImageView)mapView.findViewById(R.id.item_home_car_vehicle_status);
         	item_home_car_vehicle_status.setOnClickListener(onClickListener);
         	TextView tv_item_home_car_adress = (TextView)mapView.findViewById(R.id.tv_item_home_car_adress);
@@ -69,11 +82,22 @@ public class HomeActivity extends Activity{
 			case R.id.iv_activity_car_home_search:
 				ActivityFactory.A.RightMenu();
 				break;
-			case R.id.bt_activity_home_help:
+			case R.id.bt_activity_home_help://救援
 				HomeActivity.this.startActivity(new Intent(HomeActivity.this, ShareLocationActivity.class));
 				break;
-			case R.id.bt_activity_home_risk:
+			case R.id.bt_activity_home_risk://报险
 				HomeActivity.this.startActivity(new Intent(HomeActivity.this, ShareLocationActivity.class));
+				break;
+			case R.id.item_home_car_share://位置分享
+				HomeActivity.this.startActivity(new Intent(HomeActivity.this, ShareLocationActivity.class));
+				break;
+			case R.id.item_home_car_traffic://车辆违章
+				HomeActivity.this.startActivity(new Intent(HomeActivity.this, TrafficActivity.class));
+				break;
+			case R.id.item_home_car_vehicle_event://车务提醒
+				Intent eventIntent = new Intent(HomeActivity.this, CarRemindActivity.class);
+				eventIntent.putExtra("isFinish", true);
+				HomeActivity.this.startActivity(eventIntent);
 				break;
 			case R.id.item_home_car_vehicle_status:
 				HomeActivity.this.startActivity(new Intent(HomeActivity.this, VehicleStatusActivity.class));

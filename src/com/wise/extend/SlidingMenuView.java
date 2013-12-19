@@ -209,7 +209,8 @@ public class SlidingMenuView extends ViewGroup{
          * The only time we want to intercept motion events is if we are in the
          * drag mode.
          */
-        return mTouchState != TOUCH_STATE_REST;
+        return false;
+        //return mTouchState != TOUCH_STATE_REST;
     }
 
     void enableChildrenCache() {

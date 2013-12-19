@@ -28,7 +28,7 @@ public class GetSystem {
 	 * @param number 上个月填-1 ,下个月填1
 	 * @return
 	 */
-	public String GetNextMonth(String Month,int number){
+	public static String GetNextMonth(String Month,int number){
 		try {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM");
 			Calendar nowDate = Calendar.getInstance();
@@ -41,4 +41,24 @@ public class GetSystem {
 			return null;
 		}
 	}
+	/**
+	 * 获取指定天
+	 * @param Date 2013-12-01
+	 * @param number 前一天填-1 ,后一天填1
+	 * @return
+	 */
+	public static String GetNextData(String Date,int number){
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			Calendar nowDate = Calendar.getInstance();
+			nowDate.setTime(sdf.parse(Date));
+			nowDate.add(Calendar.DATE, number);
+			String newDate = sdf.format(nowDate.getTime());
+			return newDate;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
 }

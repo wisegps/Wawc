@@ -2,44 +2,85 @@ package com.wise.wawc;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.wise.extend.CarAdapter;
+import com.wise.pubclas.Config;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.LinearLayout.LayoutParams;
 /**
  * 车辆违章
  * @author honesty
  */
 public class TrafficActivity extends Activity{
+	
+	CarAdapter carAdapter;
 	List<TrafficData> trafficDatas = new ArrayList<TrafficData>();
 	TrafficAdapter trafficAdapter;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_traffic);
+		ImageView iv_activity_traffic_back = (ImageView)findViewById(R.id.iv_activity_traffic_back);
+		iv_activity_traffic_back.setOnClickListener(onClickListener);
 		ListView lv_activity_traffic = (ListView)findViewById(R.id.lv_activity_traffic);
 		GetData();
 		trafficAdapter = new TrafficAdapter();
 		lv_activity_traffic.setAdapter(trafficAdapter);
 		ImageView iv_activity_traffic_help = (ImageView)findViewById(R.id.iv_activity_traffic_help);
 		iv_activity_traffic_help.setOnClickListener(onClickListener);
+		
+		GridView gv_activity_traffic = (GridView)findViewById(R.id.gv_activity_traffic);
+        carAdapter = new CarAdapter(TrafficActivity.this,Config.carDatas);
+        gv_activity_traffic.setAdapter(carAdapter);
+        
+        int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 120, getResources().getDisplayMetrics());
+		LayoutParams params = new LayoutParams(Config.carDatas.size() * (px + 10),LayoutParams.WRAP_CONTENT);
+		gv_activity_traffic.setLayoutParams(params);
+		gv_activity_traffic.setColumnWidth(px);
+		gv_activity_traffic.setHorizontalSpacing(10);
+		gv_activity_traffic.setStretchMode(GridView.NO_STRETCH);
+		gv_activity_traffic.setNumColumns(Config.carDatas.size());
+		gv_activity_traffic.setOnItemClickListener(onItemClickListener);		
 	}
 	
 	OnClickListener onClickListener = new OnClickListener() {		
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
+			case R.id.iv_activity_traffic_back:
+				finish();
+				break;
 			case R.id.iv_activity_traffic_help:
 				TrafficActivity.this.startActivity(new Intent(TrafficActivity.this, DealAddressActivity.class));
 				break;
 			}
+		}
+	};
+	
+	OnItemClickListener onItemClickListener = new OnItemClickListener() {
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+			for(int i = 0 ; i < Config.carDatas.size() ; i++){
+				Config.carDatas.get(i).setCheck(false);
+			}
+			Config.carDatas.get(arg2).setCheck(true);
+			carAdapter.notifyDataSetChanged();
 		}
 	};
 	

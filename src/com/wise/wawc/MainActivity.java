@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 
 import cn.sharesdk.framework.Platform;
@@ -13,7 +15,11 @@ import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qzone.QZone;
+
+import com.wise.data.CarData;
 import com.wise.extend.SlidingMenuView;
+import com.wise.pubclas.Config;
+
 import android.app.ActivityGroup;
 import android.content.Context;
 import android.content.Intent;
@@ -102,6 +108,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 		platformSina = ShareSDK.getPlatform(MainActivity.this,SinaWeibo.NAME);
 		isLogin();
 		startService(new Intent(MainActivity.this, LocationService.class));
+		GetData();
 	}
 	
 	OnClickListener onClickListener = new OnClickListener() {		
@@ -109,7 +116,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.rl_activity_main_home:
-				ToHome();
+				ToFriendHome();
 				break;
 				//车友圈
 			case R.id.car_circle:
@@ -181,7 +188,10 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 			iv_activity_main_login_qq.setVisibility(View.GONE);
 			new Thread(new GetBitMapFromUrlThread(platformSina.getDb().getUserIcon())).start();
 		}else{
-			
+			iv_activity_main_qq.setVisibility(View.GONE);
+			iv_activity_main_sina.setVisibility(View.GONE);
+			iv_activity_main_login_sina.setVisibility(View.VISIBLE);
+			iv_activity_main_login_qq.setVisibility(View.VISIBLE);
 		}
 	}
 	Bitmap bimage;
@@ -241,21 +251,30 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 	 * 首页
 	 */
 	public void ToHome(){
+		Screen = 1;
+		Intent intent = new Intent(MainActivity.this,HomeActivity.class);
+    	View vv = getLocalActivityManager().startActivity(HomeActivity.class.getName(), intent).getDecorView();
+		tabcontent.removeAllViews();
+		tabcontent.addView(vv);
+		slidingMenuView.snapToScreen(1);	
+	}
+	public void ToFriendHome(){
 		if(platformQQ.getDb().isValid() || platformSina.getDb().isValid()){
 			Screen = 1;
-	        Intent i = new Intent(MainActivity.this,HomeActivity.class);
-	    	View v = getLocalActivityManager().startActivity(HomeActivity.class.getName(), i).getDecorView();
+	        Intent i = new Intent(MainActivity.this,FriendHomeActivity.class);
+	    	View v = getLocalActivityManager().startActivity(FriendHomeActivity.class.getName(), i).getDecorView();
 			tabcontent.removeAllViews();
 			tabcontent.addView(v);
 	        slidingMenuView.snapToScreen(1);
 		}else{
 			Toast.makeText(getApplicationContext(), "请登录", Toast.LENGTH_SHORT).show();
-		}		
+		}
 	}
 	/**
 	 * 车友圈
 	 */
 	public void ToVehicleFriends(){
+		Screen = 1;
 		Intent intent = new Intent(MainActivity.this,VehicleFriendActivity.class);
     	View vv = getLocalActivityManager().startActivity(VehicleFriendActivity.class.getName(), intent).getDecorView();
 		tabcontent.removeAllViews();
@@ -322,6 +341,21 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 			Screen = 2;
 		}
 		slidingMenuView.snapToScreen(Screen);
+	}
+	
+	/**
+	 * 模拟车辆数据
+	 */
+	private void GetData(){
+		List<CarData> carDatas = new ArrayList<CarData>();
+		for(int i = 0 ; i < 7 ; i++){
+			CarData carData = new CarData();
+			carData.setCarLogo(1);
+			carData.setCarNumber("粤B12345");
+			carData.setCheck(false);
+			carDatas.add(carData);
+		}
+		Config.carDatas = carDatas;
 	}
 
 	@Override

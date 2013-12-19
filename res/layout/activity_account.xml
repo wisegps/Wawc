@@ -11,7 +11,7 @@
         android:background="@drawable/border_bg"
         android:padding="2dp">
 		<ImageView
-            android:id="@+id/iv_activity_order_device_back"
+            android:id="@+id/iv_activity_account_menu"
             android:layout_width="60dp"
 	        android:layout_height="36dp"
             android:layout_alignParentLeft="true"
@@ -21,15 +21,15 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_toLeftOf="@+id/iv_activity_order_device"
-            android:layout_toRightOf="@+id/iv_activity_order_device_back"
+            android:layout_toLeftOf="@+id/iv_activity_account_home"
+            android:layout_toRightOf="@+id/iv_activity_account_menu"
             android:gravity="center"
             android:text="我的账户"
             android:textColor="@color/black"
             android:textSize="@dimen/title"
             android:textStyle="bold" />
 		<ImageView
-            android:id="@+id/iv_activity_order_device"
+            android:id="@+id/iv_activity_account_home"
             android:layout_width="60dp"
 	        android:layout_height="36dp"
             android:layout_alignParentRight="true"

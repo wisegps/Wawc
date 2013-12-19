@@ -29,6 +29,8 @@ public class CarFaultActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_car_fault);
+		ImageView iv_activity_car_fault_back = (ImageView)findViewById(R.id.iv_activity_car_fault_back);
+		iv_activity_car_fault_back.setOnClickListener(onClickListener);
 		lv_activity_car_fault = (XListView)findViewById(R.id.lv_activity_car_fault);
 		GetData();
 		for(int i = 0 ; i < faultDatas.size() ; i++){
@@ -37,6 +39,21 @@ public class CarFaultActivity extends Activity{
 		faultAdapter = new FaultAdapter(CarFaultActivity.this,faultDatas);
 		lv_activity_car_fault.setAdapter(faultAdapter);
 	}
+	
+	OnClickListener onClickListener = new OnClickListener() {		
+		@Override
+		public void onClick(View v) {
+			switch (v.getId()) {
+			case R.id.iv_activity_car_fault_back:
+				finish();
+				break;
+
+			default:
+				break;
+			}
+		}
+	};
+	
 	private void GetData(){
 		FaultData faultData = new FaultData();
 		faultData.setData("今天");

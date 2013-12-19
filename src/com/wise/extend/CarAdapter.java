@@ -5,6 +5,7 @@ import com.wise.data.CarData;
 import com.wise.wawc.R;
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,8 +13,12 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
+/**
+ * 车辆信息，车牌，车标
+ * @author honesty
+ */
 public class CarAdapter extends BaseAdapter{
+	private static final String TAG = "CarAdapter";
 	Context context;
 	List<CarData> carDatas;
 	LayoutInflater mInflater;
@@ -54,7 +59,7 @@ public class CarAdapter extends BaseAdapter{
 		if(carData.isCheck()){
 			holder.ll_item_cars.setBackgroundResource(R.color.bkg1);
 		}else{
-			holder.ll_item_cars.setBackgroundColor(Color.TRANSPARENT);
+			holder.ll_item_cars.setBackgroundDrawable(null);
 		}
 		return convertView;
 	}

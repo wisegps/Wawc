@@ -1,5 +1,9 @@
 package com.wise.pubclas;
 
+import java.util.List;
+
+import com.wise.data.CarData;
+
 public class Config {
 	/**
 	 * 当前位置
@@ -13,4 +17,5 @@ public class Config {
 	 * 当前未读
 	 */
 	public static double Lon = 0;
+	public static List<CarData> carDatas;
 }

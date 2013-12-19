@@ -28,6 +28,7 @@ public class CarData {
 	}
 	@Override
 	public String toString() {
-		return "CarData [CarNumber=" + CarNumber + ", CarLogo=" + CarLogo + "]";
+		return "CarData [CarNumber=" + CarNumber + ", CarLogo=" + CarLogo
+				+ ", isCheck=" + isCheck + "]";
 	}	
 }
