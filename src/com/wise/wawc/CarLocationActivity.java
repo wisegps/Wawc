@@ -12,6 +12,7 @@ import com.baidu.mapapi.navi.BaiduMapNavigation;
 import com.baidu.mapapi.navi.NaviPara;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.wise.pubclas.Config;
+import com.wise.pubclas.GetSystem;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -104,7 +105,12 @@ public class CarLocationActivity extends Activity {
 				ShowPop();
 				break;
 			case R.id.bt_activity_car_location_findCar:
-				FindCar();
+
+				GeoPoint pt1 = new GeoPoint((int) (Config.Lat * 1E6),
+						(int) (Config.Lon * 1E6));
+				GeoPoint pt2 = new GeoPoint((int) ((Config.Lat + 1) * 1E6),
+						(int) ((Config.Lon + 1) * 1E6));
+				GetSystem.FindCar(CarLocationActivity.this,pt1,pt2,"起始","结束");
 				break;
 			case R.id.bt_activity_car_location_travel:// 车辆行程
 				CarLocationActivity.this.startActivity(new Intent(

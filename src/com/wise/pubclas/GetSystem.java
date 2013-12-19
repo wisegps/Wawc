@@ -3,6 +3,12 @@ package com.wise.pubclas;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import com.baidu.mapapi.navi.BaiduMapAppNotSupportNaviException;
+import com.baidu.mapapi.navi.BaiduMapNavigation;
+import com.baidu.mapapi.navi.NaviPara;
+import com.baidu.platform.comapi.basestruct.GeoPoint;
+
+import android.app.Activity;
 import android.content.Context;
 import android.location.LocationManager;
 
@@ -60,5 +66,18 @@ public class GetSystem {
 			return null;
 		}
 	}
-	
+	public static void FindCar(Activity mActivity,GeoPoint pt1,GeoPoint pt2,String str1,String str2) {
+		NaviPara para = new NaviPara();
+		para.startPoint = pt1; // 起点坐标
+		para.startName = str1;
+		para.endPoint = pt2; // 终点坐标
+		para.endName = str2;
+		try {
+			// 调起百度地图客户端导航功能,参数this为Activity。
+			BaiduMapNavigation.openBaiduMapNavi(para, mActivity);
+		} catch (BaiduMapAppNotSupportNaviException e) {
+			// 在此处理异常
+			e.printStackTrace();
+		}
+	}
 }

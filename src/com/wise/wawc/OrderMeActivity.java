@@ -1,7 +1,9 @@
 package com.wise.wawc;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -29,8 +31,16 @@ public class OrderMeActivity extends Activity{
 
 			case R.id.iv_activity_order_me_home:
 				ActivityFactory.A.ToHome();
+				//OrderMeActivity.this.startActivity(new Intent(OrderMeActivity.this, SelectCityActivity.class));
 				break;
 			}
 		}
 	};
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			return false;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 }
