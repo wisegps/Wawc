@@ -1,7 +1,9 @@
 package com.wise.service;
+import com.wise.wawc.ArticleDetailActivity;
 import com.wise.wawc.FriendHomeActivity;
 import com.wise.wawc.FriendInformationActivity;
 import com.wise.wawc.R;
+
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -11,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -24,7 +27,7 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 	private View view;
 	private Context context;
 	public boolean isClick = false;
-	private ImageView detailArticle;  //点击查看详细信息
+	private TextView detailArticle;  //点击查看详细信息
 	public MyAdapter(Context context,View v){
 		inflater=LayoutInflater.from(context);
 		this.view = v;
@@ -43,7 +46,7 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 		convertView = inflater.inflate(R.layout.article_adapter, null);
 		saySomething = (ImageView) convertView.findViewById(R.id.list_say_somthing);
 		userHead = (ImageView) convertView.findViewById(R.id.head_article);
-		detailArticle = (ImageView) convertView.findViewById(R.id.detail_article);
+		detailArticle = (TextView) convertView.findViewById(R.id.detail_article);
 		saySomething.setOnClickListener(this);
 		userHead.setOnClickListener(this);
 		detailArticle.setOnClickListener(this);
@@ -67,7 +70,8 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 			context.startActivity(new Intent(context,FriendHomeActivity.class));
 			break;
 		case R.id.detail_article:   //点击进入文章的详细介绍
-			
+			Log.e("进入文章详情","进入文章详情");
+			context.startActivity(new Intent(context,ArticleDetailActivity.class));
 			break;
 		}
 	}

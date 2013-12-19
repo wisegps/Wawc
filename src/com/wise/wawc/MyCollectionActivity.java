@@ -8,7 +8,10 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ListView;
-
+/**
+ * 我的收藏
+ * @author 王庆文
+ */
 public class MyCollectionActivity extends Activity {
 	private ListView collectionList;
 	private CollectionAdapter collectionAdapter;

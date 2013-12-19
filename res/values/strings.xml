@@ -66,4 +66,10 @@
     <string name="friend_information">好友资料</string>
     <string name="friend_vehicle">TA的爱车</string>
     <string name="friend_home">好友主页</string>
+    <string name="article_detaile">文章详情</string>
+    <string name="choice_insurance_company">保险公司</string>
+    <string name="synchronization_mileage">同步里程</string>
+    <string name="input_mileage">请输入仪表上面的里程</string>
+    <string name="sure">确定</string>
+    <string name="cancle">取消</string>
 </resources>

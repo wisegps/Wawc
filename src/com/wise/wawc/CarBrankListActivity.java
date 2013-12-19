@@ -11,6 +11,7 @@ import com.wise.service.SideBar;
 import com.wise.service.SideBar.OnTouchingLetterChangedListener;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -18,6 +19,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -41,12 +44,36 @@ public class CarBrankListActivity extends Activity {
 	
 	//组件
 	private Button choiceBrankBack = null;
+	private Intent parentIntent = null;
+	private int code = 0;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.brank_list);
+		parentIntent = getIntent();
+		code = parentIntent.getIntExtra("code", 0);
 		//初始化控件
 		initViews();
+		
+		
+		vehicleBrankList.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+				Log.e("click Index",arg2+"");
+				String beank = ((BrankModel)adapter.getItem(arg2)).getVehicleBrank();
+				finishCurrentActivity(beank);
+			}
+			
+			private void finishCurrentActivity(String brank) {
+				Intent intent = new Intent();
+				intent.putExtra("brank", brank);
+				if(code == MyVehicleActivity.resultCodeBrank){
+					CarBrankListActivity.this.setResult(MyVehicleActivity.resultCodeBrank, intent);
+				}else if(code == NewVehicleActivity.newVehicleBrank){
+					CarBrankListActivity.this.setResult(NewVehicleActivity.newVehicleBrank, intent);
+				}
+				CarBrankListActivity.this.finish();
+			}
+		});
 	}
 
 	private void initViews() {
