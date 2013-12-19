@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<TextView 
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:text="@string/synchronization_mileage"
+        android:gravity="center"
+        android:textSize="12pt"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+ <TextView 
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:layout_marginTop="10dip"
+        android:text="@string/input_mileage"
+        android:gravity="left"/>
+ <EditText 
+     android:id="@+id/mileage"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:layout_marginTop="10dip"
+        android:inputType="number"
+        />
+ <LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dip"
+    >
+     <Button
+         android:id="@+id/dialog_mileage_cancle"
+         android:layout_width="0dip"
+    	android:layout_height="wrap_content"
+    	android:text="@string/cancle"
+    	android:layout_weight="1"
+         />
+      <Button
+          android:id="@+id/dialog_mileage_sure"
+         android:layout_width="0dip"
+    	android:layout_height="wrap_content"
+    	android:text="@string/sure"
+    	android:layout_weight="1"
+         />
+ </LinearLayout>
+</LinearLayout>

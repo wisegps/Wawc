@@ -1,0 +1,158 @@
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical"
+    android:padding="4dip">
+    
+      <!-- 头部 -->
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/article_detaile_menu"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/ic_launcher" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/article_detaile"
+            android:textSize="8pt" />
+
+        <Button
+            android:id="@+id/article_detaile_home"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/ic_launcher" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip" 
+        android:background="#000000"
+        />
+
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+	        <ImageButton 
+	            android:id="@+id/article_detaile_head"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentLeft="true"
+				android:layout_alignParentTop="true"
+	            android:background="@drawable/ic_launcher"
+	            />
+			    <LinearLayout
+		            android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					android:layout_toRightOf="@id/article_detaile_head"
+					android:layout_alignTop="@id/article_detaile_head"
+					android:paddingTop="3dip"
+		            >
+		            <TextView
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_gravity="center"
+		                android:textColor="#FF3300"
+		                android:text="用户名"
+		                />
+			          <TextView 
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_gravity="center"
+		                android:textColor="#FF3300"
+		                android:text="简略内容"
+		                />  
+		        	</LinearLayout>
+		        	
+			    
+		        	<LinearLayout
+			            android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:orientation="vertical"
+						android:layout_alignParentRight="true"
+						android:layout_alignParentTop="true"
+						android:paddingTop="3dip"
+		            >
+
+		            <TextView
+		                android:id="@+id/article_detaile_update_time"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_gravity="center"
+		                android:text="1分钟前"
+		                android:textColor="#FF3300" />
+
+		            <ImageView
+		                android:layout_width="20dip"
+		                android:layout_height="20dip"
+		                android:layout_marginLeft="30dip"
+		                android:background="@drawable/ic_launcher" />
+
+		        	</LinearLayout>
+    </RelativeLayout>
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="70dip"
+        >
+     <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <ImageView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/image"
+            android:layout_margin="3dip"
+            android:layout_weight="1"
+            />
+        <ImageView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/image"
+            android:layout_margin="3dip"
+            android:layout_weight="1"
+            />
+        <ImageView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/image"
+            android:layout_margin="3dip"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+    
+     <TextView 
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:text="小张：不错"
+         />
+     <TextView 
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:text="李四：值得推荐"
+         />
+     <TextView 
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:text="张三：帮助很大"
+         />
+    </LinearLayout>
+</LinearLayout>

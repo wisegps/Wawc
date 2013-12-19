@@ -14,6 +14,10 @@ import android.widget.TextView;
 import com.wise.extend.AbstractSpinerAdapter;
 import com.wise.extend.SpinerPopWindow;
 
+/**
+ * 设置中心
+ * @author 王庆文
+ */
 public class SettingCenterActivity extends Activity implements OnClickListener, AbstractSpinerAdapter.IOnItemSelectListener {
 	private Button setCenterMenu;
 	private Button setCenterHome;
