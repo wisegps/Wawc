@@ -169,8 +169,11 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 	};
 	
 	private void isLogin(){
+		Log.d(TAG, "platformQQ.getDb().isValid() = " + platformQQ.getDb().isValid());
+		Log.d(TAG, "platformQQ.getDb().getUserId() = " + platformQQ.getDb().getUserId());
+		Log.d(TAG, "platformSina.getDb().isValid() = " + platformSina.getDb().isValid());
+		Log.d(TAG, "platformSina.getDb().getUserId() = " + platformSina.getDb().getUserId());
 		if(platformQQ.getDb().isValid()){
-			Log.d(TAG, "platform.getDb().getUserId() = " + platformQQ.getDb().getUserId());
 			Log.d(TAG, "platform.getDb().getToken() = " + platformQQ.getDb().getToken());
 			tv_activity_main_name.setText(platformQQ.getDb().getUserName());
 			iv_activity_main_qq.setVisibility(View.VISIBLE);
@@ -179,7 +182,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 			iv_activity_main_login_qq.setVisibility(View.GONE);
 			new Thread(new GetBitMapFromUrlThread(platformQQ.getDb().getUserIcon())).start();
 		}else if(platformSina.getDb().isValid()){
-			Log.d(TAG, "platformSina.getDb().getUserId() = " + platformSina.getDb().getUserId());
 			Log.d(TAG, "platformSina.getDb().getToken() = " + platformSina.getDb().getToken());
 			tv_activity_main_name.setText(platformSina.getDb().getUserName());
 			iv_activity_main_qq.setVisibility(View.VISIBLE);

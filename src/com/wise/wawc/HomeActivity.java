@@ -89,7 +89,9 @@ public class HomeActivity extends Activity{
 				HomeActivity.this.startActivity(new Intent(HomeActivity.this, ShareLocationActivity.class));
 				break;
 			case R.id.item_home_car_share://位置分享
-				HomeActivity.this.startActivity(new Intent(HomeActivity.this, ShareLocationActivity.class));
+				Intent intent = new Intent(HomeActivity.this, NewArticleActivity.class);
+				intent.putExtra("isSNS", true);
+				HomeActivity.this.startActivity(intent);
 				break;
 			case R.id.item_home_car_traffic://车辆违章
 				HomeActivity.this.startActivity(new Intent(HomeActivity.this, TrafficActivity.class));
