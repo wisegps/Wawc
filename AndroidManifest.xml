@@ -18,7 +18,7 @@
 	<uses-permission android:name="android.permission.GET_TASKS" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
 	<uses-permission android:name="android.permission.CAMERA"></uses-permission>
-    
+	
     <application
         android:name="com.wise.wawc.WawcApplication"
         android:allowBackup="true"
@@ -61,6 +61,7 @@
         <activity android:name=".ArticleDetailActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".ChoiceInsuranceActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".MaintainShopActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".ShareActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity
             android:name="cn.sharesdk.framework.ShareSDKUIShell"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
