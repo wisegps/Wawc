@@ -10,6 +10,9 @@ import com.baidu.platform.comapi.basestruct.GeoPoint;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.LocationManager;
 
 public class GetSystem {
@@ -66,6 +69,14 @@ public class GetSystem {
 			return null;
 		}
 	}
+	/**
+	 * 调用百度地图导航
+	 * @param mActivity
+	 * @param pt1
+	 * @param pt2
+	 * @param str1
+	 * @param str2
+	 */
 	public static void FindCar(Activity mActivity,GeoPoint pt1,GeoPoint pt2,String str1,String str2) {
 		NaviPara para = new NaviPara();
 		para.startPoint = pt1; // 起点坐标
@@ -78,6 +89,22 @@ public class GetSystem {
 		} catch (BaiduMapAppNotSupportNaviException e) {
 			// 在此处理异常
 			e.printStackTrace();
+		}
+	}
+	/**
+	 * 获取版本信息，判断时候有更新
+	 * @param context
+	 * @param 包名称
+	 * @return versionName，版本名称，如1.2
+	 */
+	public static String GetVersion(Context context,String packString) {
+		PackageManager pm = context.getPackageManager();
+		try {
+			PackageInfo pi = pm.getPackageInfo(packString, 0);
+			return pi.versionName;
+		} catch (NameNotFoundException e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 }
