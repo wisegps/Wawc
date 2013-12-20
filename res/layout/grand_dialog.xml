@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:padding="5dip"
+    >
+<TextView 
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:text="界面布局"
+        android:gravity="left"
+        />
+<RatingBar 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:numStars="6"
+    android:rating="2.5"
+     />
+<TextView 
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:text="操作体验"
+        android:gravity="left"
+        />
+<RatingBar 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:numStars="6"
+    android:rating="2.5" 
+    />
+<TextView 
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_marginLeft="20dip"
+        android:layout_marginRight="20dip"
+        android:text="功能设计"
+        android:gravity="left"
+        />
+<RatingBar 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:numStars="6"
+    android:rating="2.5" 
+    />
+	<LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    >
+	    <Button
+	        android:id="@+id/grade_commit"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="提交"
+	        android:layout_weight="1"
+	        ></Button>
+	    <Button
+	        android:id="@+id/grade_cancle"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:text="取消"
+	        android:layout_weight="1"
+	        ></Button>
+	</LinearLayout>
+</LinearLayout>

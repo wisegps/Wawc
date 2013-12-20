@@ -5,8 +5,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.Locale;
-
+import com.wise.sharesdk.OnekeyShare;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.sina.weibo.SinaWeibo;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,19 +29,30 @@ import android.widget.Toast;
  * 发表新文章
  * @author 王庆文
  */
-public class NewArticleActivity extends Activity {
+public class NewArticleActivity extends Activity implements PlatformActionListener{
+	/**
+	 * isSNS，true发布到微博orQQ控件；false发布新文章
+	 */
+	boolean isSNS = false;
 	private Button back = null;
 	private ImageView takePhoto;
 	private LinearLayout linearLayout = null;  //将照片动态添加到布局文件中
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_article);
+		Button publish = (Button)findViewById(R.id.publish);
+		publish.setOnClickListener(new ClickListener());
 		back = (Button) findViewById(R.id.back);
 		back.setOnClickListener(new ClickListener());
 		takePhoto = (ImageView) findViewById(R.id.take_photo);
 		takePhoto.setOnClickListener(new ClickListener());
 		
 		linearLayout = (LinearLayout) findViewById(R.id.my_linearLayout);
+		Intent intent = getIntent();
+		isSNS = intent.getBooleanExtra("isSNS", false);
+		if(isSNS){//初始化shareSDK
+			ShareSDK.initSDK(this);
+		}
 	}
 	class ClickListener implements OnClickListener{
 		public void onClick(View v) {
@@ -45,6 +61,11 @@ public class NewArticleActivity extends Activity {
 				NewArticleActivity.this.finish();
 				break;
 			case R.id.publish:
+				if(isSNS){//发布到到微博orQQ空间
+					showShare(false, null);
+				}else{//发布新文章
+					
+				}
 				break;
 			case R.id.take_photo:
 		       	//调用照相机
@@ -96,4 +117,37 @@ public class NewArticleActivity extends Activity {
             linearLayout.addView(imageView);
         }  
     }
+	
+	private void showShare(boolean silent, String platform) {
+		System.out.println("分享");
+		final OnekeyShare oks = new OnekeyShare();
+		oks.setNotification(R.drawable.ic_launcher, "app_name");
+		oks.setAddress("12345678901");
+		oks.setTitle("share");
+		//oks.setTitleUrl("http://sharesdk.cn");
+		oks.setText("无聊");
+		//oks.setImagePath(MainActivity.TEST_IMAGE);
+		//oks.setImageUrl("http://img.appgo.cn/imgs/sharesdk/content/2013/07/25/1374723172663.jpg");
+		//oks.setUrl("http://www.sharesdk.cn");
+		//oks.setFilePath(MainActivity.TEST_IMAGE);
+		//oks.setComment("share");
+		//oks.setSite("wise");
+		//oks.setSiteUrl("http://sharesdk.cn");
+		//oks.setVenueName("Share SDK");
+		//oks.setVenueDescription("This is a beautiful place!");
+		//oks.setLatitude(23.056081f);
+		//oks.setLongitude(113.385708f);
+		oks.setSilent(silent);
+		if (platform != null) {
+			oks.setPlatform(platform);
+		}
+		oks.show(NewArticleActivity.this);
+	}
+
+	@Override
+	public void onCancel(Platform arg0, int arg1) {}
+	@Override
+	public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {}
+	@Override
+	public void onError(Platform arg0, int arg1, Throwable arg2) {}
 }

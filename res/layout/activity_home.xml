@@ -43,7 +43,8 @@
 		  android:id="@+id/ScrollLayout_car"    
 		  android:layout_below="@id/rl_activity_home_top"
 		  android:layout_width="fill_parent"   
-		  android:background="@color/bkg1" 
+		  android:layout_margin="10dp"
+		  android:background="@drawable/border_bg"
 		  android:layout_height="wrap_content"> 
     </com.wise.extend.HScrollLayout>
     
@@ -52,9 +53,11 @@
 		  android:id="@+id/ScrollLayout_other"    
 		  android:layout_below="@id/ScrollLayout_car"
 		  android:layout_width="fill_parent"   
-		  android:background="@color/bkg1" 
+		  android:layout_margin="10dp"
+		  android:background="@drawable/border_bg" 
 		  android:layout_height="wrap_content"> 
     </com.wise.extend.HScrollLayout>
+    
 	<RelativeLayout 
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"

@@ -1,15 +1,16 @@
 package com.wise.wawc;
 
-
 import android.app.Application;
 import android.content.Context;
 import android.widget.Toast;
-
 import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.MKGeneralListener;
 import com.baidu.mapapi.map.MKEvent;
 
-
+/**
+ * 初始化地图
+ * @author honesty
+ */
 public class WawcApplication extends Application {
 	
     private static WawcApplication mInstance = null;

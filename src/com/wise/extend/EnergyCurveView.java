@@ -14,7 +14,6 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -23,7 +22,6 @@ import android.view.View.OnTouchListener;
  * @author honesty
  */
 public class EnergyCurveView extends View implements OnTouchListener {
-	private final static String TAG = "testActivity";
 	Context context;
 	private static final float SPACING_SCALE = 40f; // 缩放间距 用于背景图过大
 	/**
@@ -67,11 +65,9 @@ public class EnergyCurveView extends View implements OnTouchListener {
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-		Log.d(TAG, "onTouch");
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			isMove = false;
 			if(!isClick(event)){
-				Log.d(TAG, "ACTION_DOWN");
 				downYOfFirst = event.getY(0);
 				moveXOfFirst = event.getX(0);
 				moveYOfFirst = event.getY(0);
@@ -79,15 +75,30 @@ public class EnergyCurveView extends View implements OnTouchListener {
 		}
 		if (event.getAction() == MotionEvent.ACTION_MOVE) {
 			isMove = true;
-			Log.d(TAG, "ACTION_MOVE");
 			moveXOfFirst = event.getX(0);
 			moveYOfFirst = event.getY(0);
 		}
 		if (event.getAction() == MotionEvent.ACTION_UP) {
-			Log.d(TAG, "ACTION_UP");
-			if((!isMove)&&isClick(event)){				
-				//Intent intent = new Intent(context, A.class);
-				//context.startActivity(intent);
+			moveXOfFirst = event.getX(0);
+			float x_Distance = 0;
+			boolean isLast = true;
+			for(int i = 0 ; i < points.size(); i++){
+				PointF textPoint = points.get(i);
+				float x = textPoint.x - moveXOfFirst;
+				float x_abc = Math.abs(x);
+				if(i == 0){
+					//TODO
+				}else{
+					if(x_abc > x_Distance){
+						moveXOfFirst = points.get(i-1).x;
+						isLast = false;
+						break;
+					}
+				}
+				x_Distance = x_abc;
+			}
+			if(isLast){
+				moveXOfFirst = points.get(points.size()-1).x;
 			}			
 		}
 		invalidate();
@@ -100,7 +111,6 @@ public class EnergyCurveView extends View implements OnTouchListener {
 	
 	@Override
 	protected void onDraw(Canvas canvas) {
-		Log.d(TAG, "onDraw");
 		super.onDraw(canvas);
 		Paint paint = new Paint();
 		// 初始化绘制
@@ -115,7 +125,6 @@ public class EnergyCurveView extends View implements OnTouchListener {
 	 * @param paint
 	 */
 	private void initDraw(Canvas canvas, Paint paint) {
-		Log.d(TAG, "initDraw()");
 		paint.setColor(Color.GREEN);
 		paint.setAntiAlias(true);
 		float dottedSpacing = (mGradientHeight - WEIGHT) / 5;//垂直大间隔,实线距离
@@ -155,7 +164,6 @@ public class EnergyCurveView extends View implements OnTouchListener {
 	 * @param paint
 	 */
 	private void SinglePointTouch(Canvas canvas, Paint paint) {
-		Log.d(TAG, "SinglePointTouch()");
 		// TODO 顶部的度数框
 		if (moveXOfFirst < points.get(0).x) {
 			moveXOfFirst = points.get(0).x;
@@ -216,7 +224,6 @@ public class EnergyCurveView extends View implements OnTouchListener {
 		for (int i = 0; i < points.size(); i++) {
 			if (moveX == points.get(i).x) {
 				energy = energyItems.get(i);
-				System.out.println(energy.date + ":" + energy.value);
 				break;
 			}
 		}
@@ -248,12 +255,10 @@ public class EnergyCurveView extends View implements OnTouchListener {
 	 * 初始化 加载 view 的资源图片
 	 */
 	public void setImages() {
-		Log.d(TAG, "setImages()");
 		// 背景渐变色大图
 		int windowW = (int) (dm.widthPixels - SPACING_SCALE);
 		mGradientWidth = windowW;
 		mGradientHeight = (float) (windowW*0.75);
-		System.out.println("mGradientWidth = " + mGradientWidth + ",mGradientHeight = " + mGradientHeight);
 		// 移动的黄色的线条
 		mTrendLine = BitmapFactory.decodeResource(getResources(),R.drawable.energy_trendline);
 		int height = mTrendLine.getHeight();
@@ -277,7 +282,6 @@ public class EnergyCurveView extends View implements OnTouchListener {
 	 * @return
 	 */
 	public Bitmap scaleBmp(Bitmap bitmap, float scaleX, float scaleY) {
-		Log.d(TAG, "scaleBmp(Bitmap bitmap, float scaleX, float scaleY)");
 		Bitmap scaleBmp = null;
 		int width = bitmap.getWidth();
 		int height = bitmap.getHeight();
@@ -288,7 +292,6 @@ public class EnergyCurveView extends View implements OnTouchListener {
 		return scaleBmp;
 	}
 	public void setWindowsWH(DisplayMetrics dm) {
-		Log.d(TAG, "setWindowsWH(DisplayMetrics dm)");
 		this.dm = dm;
 		setImages();
 	}
@@ -300,7 +303,6 @@ public class EnergyCurveView extends View implements OnTouchListener {
 	 * @param date
 	 */
 	public void initPoints(ArrayList<EnergyItem> energys) {
-		Log.d(TAG, "initPoints(ArrayList<EnergyItem> energys)");
 		this.energyItems = energys;
 		getSpacingOfXY(energys);
 		points = new ArrayList<PointF>();
@@ -310,7 +312,6 @@ public class EnergyCurveView extends View implements OnTouchListener {
 			float x = (i * spacingOfX + SPACING + mLastPoint.getWidth());
 			PointF point = new PointF(x, y);
 			points.add(point);
-			Log.i("initPoints", energys.get(i).date + "|point.x:" + x + "|point.y:" + y);
 		}
 	}
 
@@ -320,12 +321,9 @@ public class EnergyCurveView extends View implements OnTouchListener {
 	 * @param date
 	 */
 	private void getSpacingOfXY(ArrayList<EnergyItem> energys) {
-		Log.d(TAG, "getSpacingOfXY(ArrayList<EnergyItem> energys)");
 		maxEnergy = findMaxPowers(energys);
-		Log.i("maxEnergy", maxEnergy.value + "");
 		spacingOfX = (mGradientWidth - mLastPoint.getWidth()) / (energys.size()) + 1;
 		spacingOfY = (mGradientHeight - WEIGHT) / ((maxEnergy.value) / 4 + maxEnergy.value);
-		Log.e("spacingOfX and spacingOfY", spacingOfX + ":" + spacingOfY);
 	}
 
 	/**
@@ -334,7 +332,6 @@ public class EnergyCurveView extends View implements OnTouchListener {
 	 * @return
 	 */
 	private static EnergyItem findMaxPowers(ArrayList<EnergyItem> energys) {
-		Log.d(TAG, "findMaxPowers(ArrayList<EnergyItem> energys)");
 		EnergyItem energy = new EnergyItem();
 		energy.value = 0;
 		for (int i = 0; i < energys.size(); i++) {

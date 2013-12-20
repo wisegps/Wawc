@@ -1,28 +1,41 @@
 package com.wise.wawc;
 
 import java.util.ArrayList;
+import java.util.List;
+import com.wise.data.CarData;
 import com.wise.data.EnergyItem;
+import com.wise.extend.CarAdapter;
 import com.wise.extend.EnergyCurveView;
 import com.wise.extend.OnViewTouchListener;
+import com.wise.pubclas.Config;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 /**
- * 我的车况
+ * 我的车况,爱车车况
  * @author honesty
  */
 public class VehicleStatusActivity extends Activity{
+	private static final String TAG = "VehicleStatusActivity";
 	private EnergyCurveView erenergyCurve;
     private DisplayMetrics dm = new DisplayMetrics();
     TextView tv_activity_vehicle_status_oil,tv_activity_vehicle_status_fault;
+    CarAdapter carAdapter;
+	//List<CarData> carDatas;
     String oil;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +47,8 @@ public class VehicleStatusActivity extends Activity{
 		iv_activity_vehicle_status_data_next.setOnClickListener(onClickListener);
 		ImageView iv_activity_vehicle_status_data_previous = (ImageView)findViewById(R.id.iv_activity_vehicle_status_data_previous);
 		iv_activity_vehicle_status_data_previous.setOnClickListener(onClickListener);
-		ImageView iv_activity_vehicle_status_menu = (ImageView)findViewById(R.id.iv_activity_vehicle_status_menu);
-		iv_activity_vehicle_status_menu.setOnClickListener(onClickListener);
+		ImageView iv_activity_vehicle_status_back = (ImageView)findViewById(R.id.iv_activity_vehicle_status_back);
+		iv_activity_vehicle_status_back.setOnClickListener(onClickListener);
 		tv_activity_vehicle_status_oil = (TextView)findViewById(R.id.tv_activity_vehicle_status_oil);
 		tv_activity_vehicle_status_fault = (TextView)findViewById(R.id.tv_activity_vehicle_status_fault);
 		tv_activity_vehicle_status_fault.setOnClickListener(onClickListener);
@@ -59,13 +72,26 @@ public class VehicleStatusActivity extends Activity{
 				tv_activity_vehicle_status_oil.setText(oil + "L");
 			}
 		});
+        GridView gv_activity_vehicle_status = (GridView)findViewById(R.id.gv_activity_vehicle_status);
+        carAdapter = new CarAdapter(VehicleStatusActivity.this,Config.carDatas);
+        gv_activity_vehicle_status.setAdapter(carAdapter);
+        
+        int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 120, getResources().getDisplayMetrics());
+		LayoutParams params = new LayoutParams(Config.carDatas.size() * (px + 10),LayoutParams.WRAP_CONTENT);
+		gv_activity_vehicle_status.setLayoutParams(params);
+		gv_activity_vehicle_status.setColumnWidth(px);
+		gv_activity_vehicle_status.setHorizontalSpacing(10);
+		gv_activity_vehicle_status.setStretchMode(GridView.NO_STRETCH);
+		gv_activity_vehicle_status.setNumColumns(Config.carDatas.size());
+		gv_activity_vehicle_status.setOnItemClickListener(onItemClickListener);
 	}
+	
 	OnClickListener onClickListener = new OnClickListener() {		
 		@Override
 		public void onClick(View v) {
 			switch (v.getId()) {
-			case R.id.iv_activity_vehicle_status_menu:
-				ActivityFactory.A.ToHome();
+			case R.id.iv_activity_vehicle_status_back:
+				finish();
 				break;
 			case R.id.tv_activity_vehicle_status_fault:
 				startActivity(new Intent(VehicleStatusActivity.this, CarFaultActivity.class));
@@ -101,6 +127,16 @@ public class VehicleStatusActivity extends Activity{
 		        erenergyCurve.RefreshView();
 				break;
 			}
+		}
+	};
+	OnItemClickListener onItemClickListener = new OnItemClickListener() {
+		@Override
+		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+			for(int i = 0 ; i < Config.carDatas.size() ; i++){
+				Config.carDatas.get(i).setCheck(false);
+			}
+			Config.carDatas.get(arg2).setCheck(true);
+			carAdapter.notifyDataSetChanged();
 		}
 	};
 }

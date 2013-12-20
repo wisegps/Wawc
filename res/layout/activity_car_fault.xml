@@ -11,7 +11,7 @@
         android:background="@drawable/border_bg"
         android:padding="2dp">
 		<ImageView
-            android:id="@+id/iv_activity_car_fault_menu"
+            android:id="@+id/iv_activity_car_fault_back"
             android:layout_width="60dp"
 	        android:layout_height="36dp"
             android:layout_alignParentLeft="true"
@@ -22,7 +22,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_toLeftOf="@+id/iv_activity_car_fault_home"
-            android:layout_toRightOf="@+id/iv_activity_car_fault_menu"
+            android:layout_toRightOf="@+id/iv_activity_car_fault_back"
             android:gravity="center"
             android:text="爱车故障"
             android:textColor="@color/black"

@@ -2,6 +2,9 @@ package com.wise.wawc;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.wise.pubclas.GetSystem;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,21 +17,52 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 /**
- * 车辆行程
+ * 车辆行程列表
  * @author honesty
  */
 public class TravelActivity extends Activity{
+	
+	TextView tv_activity_travel_data;
+	
 	List<TravelData> travelDatas = new ArrayList<TravelData>();
 	TravelAdapter travelAdapter;
+	String Date = "3013-12-01";
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_travel);
+		tv_activity_travel_data = (TextView)findViewById(R.id.tv_activity_travel_data);
+		ImageView iv_activity_travel_back = (ImageView)findViewById(R.id.iv_activity_travel_back);
+		iv_activity_travel_back.setOnClickListener(onClickListener);
+		ImageView iv_activity_travel_data_next = (ImageView)findViewById(R.id.iv_activity_travel_data_next);
+		iv_activity_travel_data_next.setOnClickListener(onClickListener);
+		ImageView iv_activity_travel_data_previous = (ImageView)findViewById(R.id.iv_activity_travel_data_previous);
+		iv_activity_travel_data_previous.setOnClickListener(onClickListener);
 		ListView lv_activity_travel = (ListView)findViewById(R.id.lv_activity_travel);
 		GetData();
 		travelAdapter = new TravelAdapter();
 		lv_activity_travel.setAdapter(travelAdapter);
 	}
+	OnClickListener onClickListener = new OnClickListener() {		
+		@Override
+		public void onClick(View v) {
+			switch (v.getId()) {
+			case R.id.iv_activity_travel_back:
+				finish();
+				break;
+
+			case R.id.iv_activity_travel_data_next://下一日
+				Date = GetSystem.GetNextData(Date, 1);
+				tv_activity_travel_data.setText(Date);
+				break;
+			case R.id.iv_activity_travel_data_previous://上一日
+				Date = GetSystem.GetNextData(Date, -1);
+				tv_activity_travel_data.setText(Date);
+				break;
+			}
+		}
+	};
 	
 	private void GetData(){		
 		for(int i = 0 ; i < 8; i++){

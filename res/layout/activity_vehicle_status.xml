@@ -11,7 +11,7 @@
         android:background="@drawable/border_bg"
         android:padding="2dp">
 		<ImageView
-            android:id="@+id/iv_activity_vehicle_status_menu"
+            android:id="@+id/iv_activity_vehicle_status_back"
             android:layout_width="60dp"
 	        android:layout_height="36dp"
             android:layout_alignParentLeft="true"
@@ -22,7 +22,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_toLeftOf="@+id/iv_activity_vehicle_status_search"
-            android:layout_toRightOf="@+id/iv_activity_vehicle_status_menu"
+            android:layout_toRightOf="@+id/iv_activity_vehicle_status_back"
             android:gravity="center"
             android:text="爱车车况"
             android:textColor="@color/black"
@@ -37,10 +37,22 @@
             android:layout_centerVertical="true"
             android:contentDescription="@string/app_name"/>
 	</RelativeLayout>
-	<GridView 
-	    android:layout_width="fill_parent"
-	    android:layout_height="100dp"
-	    android:background="@color/bkg1"/>
+	<HorizontalScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+		<LinearLayout 
+		    android:layout_width="wrap_content"
+			android:layout_height="wrap_content" 
+			android:orientation="horizontal">
+			<GridView 
+			    android:id="@+id/gv_activity_vehicle_status"
+			    android:layout_width="fill_parent"
+			    android:layout_height="wrap_content"
+			    android:numColumns="auto_fit"
+			    android:stretchMode="columnWidth"
+			    android:horizontalSpacing="10dp"/>
+		</LinearLayout>
+	</HorizontalScrollView>
 	<TableLayout 
 	    android:stretchColumns="*" 
 	    android:layout_width="fill_parent"
