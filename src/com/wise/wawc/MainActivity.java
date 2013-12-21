@@ -1,5 +1,4 @@
 package com.wise.wawc;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -16,15 +15,22 @@ import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qzone.QZone;
 
+import com.iflytek.speech.RecognizerResult;
+import com.iflytek.speech.SpeechConfig.RATE;
+import com.iflytek.speech.SpeechError;
+import com.iflytek.ui.RecognizerDialog;
+import com.iflytek.ui.RecognizerDialogListener;
+import com.wise.data.BrankModel;
 import com.wise.data.CarData;
+import com.wise.data.CharacterParser;
 import com.wise.extend.SlidingMenuView;
 import com.wise.pubclas.Config;
-
 import android.app.ActivityGroup;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -45,7 +51,7 @@ import android.widget.Toast;
  * 菜单界面
  * @author honesty
  */
-public class MainActivity extends ActivityGroup implements PlatformActionListener{
+public class MainActivity extends ActivityGroup implements PlatformActionListener,RecognizerDialogListener{
 	private static final String TAG = "MainActivity";
 	private static final int GET_PIC = 1;
 	SlidingMenuView slidingMenuView;	
@@ -55,10 +61,19 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 	Platform platformSina;
 	ImageView iv_activity_main_logo,iv_activity_main_qq,iv_activity_main_sina,iv_activity_main_login_sina,iv_activity_main_login_qq;
 	TextView tv_activity_main_name;
+	View view = null;
+	private RecognizerDialog recognizerDialog = null;    //语音合成文字
+	StringBuffer sb = null;
+	private CharacterParser characterParser;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		// 注册（将语音转文字）
+		recognizerDialog = new RecognizerDialog(this, "appid=5281eaf4");
+		recognizerDialog.setListener(this);
+		recognizerDialog.setEngine("sms", "", null);
+		recognizerDialog.setSampleRate(RATE.rate16k);
 		ActivityFactory.A = this;
 		slidingMenuView = (SlidingMenuView) findViewById(R.id.sliding_menu_view);        
         tabcontent = (ViewGroup) slidingMenuView.findViewById(R.id.sliding_body);
@@ -78,6 +93,12 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         iv_activity_main_login_qq.setOnClickListener(onClickListener);
         iv_activity_main_logo = (ImageView)findViewById(R.id.iv_activity_main_logo);
         tv_activity_main_name = (TextView)findViewById(R.id.tv_activity_main_name);
+        view = findViewById(R.id.rl_activity_main_voice);
+        view.setOnClickListener(onClickListener);
+        characterParser = new CharacterParser().getInstance();
+		sb = new StringBuffer();
+        
+        
         //车友圈
         TextView vehiclefriend = (TextView)findViewById(R.id.car_circle);
         vehiclefriend.setOnClickListener(onClickListener);
@@ -149,6 +170,10 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 			case R.id.iv_activity_main_login_sina:
 				platformSina.setPlatformActionListener(MainActivity.this);
 				platformSina.showUser(null);
+				break;
+			case R.id.rl_activity_main_voice:  //语音识别
+				Log.e("你要做什么","你要做什么");
+				recognizerDialog.show();
 				break;
 			}
 		}
@@ -412,5 +437,107 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 	public void onError(Platform arg0, int arg1, Throwable arg2) {
 		Log.d(TAG, "登录出错");
 		arg0.removeAccount();
+	}
+	//语音识别
+	@Override
+	public void onEnd(SpeechError arg0) {
+		String parseResult = null;
+		String result = sb.toString();
+		String rr = null;;
+		try {
+			rr = result.substring(0, result.length() - 1);
+		} catch (Exception e) {
+			Toast.makeText(getApplicationContext(), "你说什么？", 0).show();
+			e.printStackTrace();
+		}
+		Log.e("中文",rr);
+		String[] StringArray = new String[]{rr};
+		String[] StringArrays = new String[]{"woyaojiayou","woyaoweibao","woyaoxiche","woyaojiuyuan","woyaobaoxian","woyaotingche"};
+		List<BrankModel> brankModelList = filledData(StringArray);
+		for(BrankModel brankModel : brankModelList){
+			parseResult = brankModel.getVehicleLetter();
+		}
+		sb.delete(0,sb.length());
+//		加油
+		if("woyaojiayou".equals(parseResult)){
+			findViewById(R.id.rl_activity_main_oil).setBackgroundColor(Color.parseColor("#93ABE6"));
+			findViewById(R.id.rl_activity_main_maintain).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_wash).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_help).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_safety).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_park).setBackgroundColor(Color.parseColor("#FFFFFF"));
+//		维保	
+		}else if("woyaoweibao".equals(parseResult)){
+			findViewById(R.id.rl_activity_main_maintain).setBackgroundColor(Color.parseColor("#93ABE6"));
+			findViewById(R.id.rl_activity_main_oil).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_wash).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_help).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_safety).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_park).setBackgroundColor(Color.parseColor("#FFFFFF"));
+//			洗车
+		}else if("woyaoxiche".equals(parseResult)){
+			findViewById(R.id.rl_activity_main_wash).setBackgroundColor(Color.parseColor("#93ABE6"));
+			findViewById(R.id.rl_activity_main_oil).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_maintain).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_help).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_safety).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_park).setBackgroundColor(Color.parseColor("#FFFFFF"));
+//			救援
+		}else if("woyaojiuyuan".equals(parseResult)){
+			findViewById(R.id.rl_activity_main_help).setBackgroundColor(Color.parseColor("#93ABE6"));
+			findViewById(R.id.rl_activity_main_oil).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_maintain).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_wash).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_safety).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_park).setBackgroundColor(Color.parseColor("#FFFFFF"));
+//			保险
+		}else if("woyaobaoxian".equals(parseResult)){
+			findViewById(R.id.rl_activity_main_safety).setBackgroundColor(Color.parseColor("#93ABE6"));
+			findViewById(R.id.rl_activity_main_oil).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_maintain).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_wash).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_help).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_park).setBackgroundColor(Color.parseColor("#FFFFFF"));
+//		停车	
+		}else if("woyaotingche".equals(parseResult)){
+			findViewById(R.id.rl_activity_main_park).setBackgroundColor(Color.parseColor("#93ABE6"));
+			findViewById(R.id.rl_activity_main_oil).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_maintain).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_wash).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_help).setBackgroundColor(Color.parseColor("#FFFFFF"));
+			findViewById(R.id.rl_activity_main_safety).setBackgroundColor(Color.parseColor("#FFFFFF"));
+		}else{
+			Toast.makeText(getApplicationContext(), "你说什么？", 0).show();
+		}
+	}
+	@Override
+	public void onResults(ArrayList<RecognizerResult> results, boolean arg1) {
+		StringBuilder builder = new StringBuilder();
+		for (RecognizerResult recognizerResult : results) {
+			builder.append(recognizerResult.text);
+		}
+		sb.append(builder.toString());
+	}
+	//将汉字转换为拼音
+	private List<BrankModel> filledData(String [] date){
+		List<BrankModel> mSortList = new ArrayList<BrankModel>();
+		for(int i=0; i<date.length; i++){
+			BrankModel sortModel = new BrankModel();
+			sortModel.setVehicleBrank(date[i]);
+			//汉字转换成拼音
+			String pinyin = characterParser.getSelling(date[i]);
+			String sortString = pinyin.substring(0, 1).toUpperCase();
+			sortModel.setVehicleLetter(pinyin);
+			
+			// 正则表达式，判断首字母是否是英文字母
+//			if(sortString.matches("[A-Z]")){
+//				sortModel.setVehicleLetter(sortString.toUpperCase());
+//			}else{
+//				sortModel.setVehicleLetter("#");
+//			}
+			mSortList.add(sortModel);
+		}
+		return mSortList;
+		
 	}
 }
