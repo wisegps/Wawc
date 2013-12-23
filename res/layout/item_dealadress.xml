@@ -12,10 +12,9 @@
         android:textSize="@dimen/title"
         android:textColor="@color/black"
         android:padding="10dp"
-        android:background="@drawable/border_bg"
+        android:background="@color/bkg1"
         android:text="深圳市交通局"/>
     <LinearLayout
-        android:background="@drawable/border_bg"
         android:orientation="vertical" 
         android:layout_width="fill_parent"
         android:padding="10dp"

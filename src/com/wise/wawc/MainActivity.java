@@ -1,20 +1,15 @@
 package com.wise.wawc;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
-
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qzone.QZone;
-
 import com.iflytek.speech.RecognizerResult;
 import com.iflytek.speech.SpeechConfig.RATE;
 import com.iflytek.speech.SpeechError;
@@ -25,11 +20,11 @@ import com.wise.data.CarData;
 import com.wise.data.CharacterParser;
 import com.wise.extend.SlidingMenuView;
 import com.wise.pubclas.Config;
+import com.wise.pubclas.NetThread;
 import android.app.ActivityGroup;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,7 +36,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -53,7 +47,8 @@ import android.widget.Toast;
  */
 public class MainActivity extends ActivityGroup implements PlatformActionListener,RecognizerDialogListener{
 	private static final String TAG = "MainActivity";
-	private static final int GET_PIC = 1;
+	private static final int Get_pic = 1;
+	private static final int Login = 2;
 	SlidingMenuView slidingMenuView;	
 	ViewGroup tabcontent;
 	int Screen = 1;
@@ -183,11 +178,12 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			switch (msg.what) {
-			case GET_PIC:
+			case Get_pic:
 				iv_activity_main_logo.setImageBitmap(bimage);
 				break;
 
-			default:
+			case Login:
+				isLogin();
 				break;
 			}
 		}		
@@ -199,7 +195,8 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 		Log.d(TAG, "platformSina.getDb().isValid() = " + platformSina.getDb().isValid());
 		Log.d(TAG, "platformSina.getDb().getUserId() = " + platformSina.getDb().getUserId());
 		if(platformQQ.getDb().isValid()){
-			Log.d(TAG, "platform.getDb().getToken() = " + platformQQ.getDb().getToken());
+			System.out.println("qq登录");
+			Log.d(TAG, "platformQQ.getDb().getToken() = " + platformQQ.getDb().getToken());
 			tv_activity_main_name.setText(platformQQ.getDb().getUserName());
 			iv_activity_main_qq.setVisibility(View.VISIBLE);
 			iv_activity_main_sina.setVisibility(View.VISIBLE);
@@ -207,6 +204,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 			iv_activity_main_login_qq.setVisibility(View.GONE);
 			new Thread(new GetBitMapFromUrlThread(platformQQ.getDb().getUserIcon())).start();
 		}else if(platformSina.getDb().isValid()){
+			System.out.println("sina登录");
 			Log.d(TAG, "platformSina.getDb().getToken() = " + platformSina.getDb().getToken());
 			tv_activity_main_name.setText(platformSina.getDb().getUserName());
 			iv_activity_main_qq.setVisibility(View.VISIBLE);
@@ -215,6 +213,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 			iv_activity_main_login_qq.setVisibility(View.GONE);
 			new Thread(new GetBitMapFromUrlThread(platformSina.getDb().getUserIcon())).start();
 		}else{
+			System.out.println("没有登录");
 			iv_activity_main_qq.setVisibility(View.GONE);
 			iv_activity_main_sina.setVisibility(View.GONE);
 			iv_activity_main_login_sina.setVisibility(View.VISIBLE);
@@ -230,29 +229,12 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 		@Override
 		public void run() {
 			super.run();
-			bimage =  getBitmapFromURL(url);
+			bimage =  NetThread.getBitmapFromURL(url);
 			Message message = new Message();
-			message.what = GET_PIC;
+			message.what = Get_pic;
 			handler.sendMessage(message);
 		}
 	}
-	public static Bitmap getBitmapFromURL(String src) {
-        try {
-            Log.e("src",src);
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            Log.e("Bitmap","returned");
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e("Exception",e.getMessage());
-            return null;
-        }
-    }
 	/**
 	 * 设置中心
 	 */
@@ -431,6 +413,9 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 			Entry entry = (Entry)iterator.next();
 			System.out.println(entry.getKey() + "," + entry.getValue());
 		}
+		Message message = new Message();
+		message.what = Login;
+		handler.sendMessage(message);
 	}
 
 	@Override

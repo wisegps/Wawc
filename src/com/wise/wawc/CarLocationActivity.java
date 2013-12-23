@@ -118,32 +118,16 @@ public class CarLocationActivity extends Activity {
 				break;
 			case R.id.tv_item_car_location_oil:
 				mPopupWindow.dismiss();
-				Toast.makeText(CarLocationActivity.this, "加油站",
-						Toast.LENGTH_SHORT).show();
+				ToSearchMap("加油站");
 				break;
 			}
 		}
 	};
-
-	private void FindCar() {
-		GeoPoint pt1 = new GeoPoint((int) (Config.Lat * 1E6),
-				(int) (Config.Lon * 1E6));
-		GeoPoint pt2 = new GeoPoint((int) ((Config.Lat + 1) * 1E6),
-				(int) ((Config.Lon + 1) * 1E6));
-		NaviPara para = new NaviPara();
-		para.startPoint = pt1; // 起点坐标
-		para.startName = "从这里开始";
-		para.endPoint = pt2; // 终点坐标
-		para.endName = "到这里结束";
-		try {
-			// 调起百度地图客户端导航功能,参数this为Activity。
-			BaiduMapNavigation.openBaiduMapNavi(para, this);
-		} catch (BaiduMapAppNotSupportNaviException e) {
-			// 在此处理异常
-			e.printStackTrace();
-		}
+	private void ToSearchMap(String keyWord){
+		Intent intent = new Intent(CarLocationActivity.this, SearchMapActivity.class);
+		intent.putExtra("keyWord", keyWord);
+		startActivity(intent);
 	}
-
 	private void ShowPop() {
 		int Height = ll_activity_car_location_bottom.getMeasuredHeight();
 		LayoutInflater mLayoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
