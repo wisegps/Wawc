@@ -1,5 +1,13 @@
 package com.wise.wawc;
 
+import java.util.ArrayList;
+
+import com.iflytek.speech.RecognizerResult;
+import com.iflytek.speech.SpeechConfig.RATE;
+import com.iflytek.speech.SpeechError;
+import com.iflytek.ui.RecognizerDialog;
+import com.iflytek.ui.RecognizerDialogListener;
+import com.wise.data.CharacterParser;
 import com.wise.extend.HScrollLayout;
 import android.app.Activity;
 import android.content.Intent;
@@ -15,7 +23,10 @@ import android.widget.Toast;
  * 首页
  * @author honesty
  */
-public class HomeActivity extends Activity{
+public class HomeActivity extends Activity implements RecognizerDialogListener{
+	private RecognizerDialog recognizerDialog = null;    //语音合成文字
+	StringBuffer sb = null;
+	private ImageView saySomething = null;  //语音识别
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -31,6 +42,10 @@ public class HomeActivity extends Activity{
 		//ScrollLayout_car
 		HScrollLayout ScrollLayout_car = (HScrollLayout)findViewById(R.id.ScrollLayout_car);
 		HScrollLayout ScrollLayout_other = (HScrollLayout)findViewById(R.id.ScrollLayout_other);
+		
+		saySomething = (ImageView) findViewById(R.id.iv_home_say_something);
+		saySomething.setOnClickListener(onClickListener);
+		sb = new StringBuffer();
 		LayoutInflater mLayoutInflater = LayoutInflater.from(HomeActivity.this);
         for (int i = 0; i < 5; i++) {
         	View mapView = mLayoutInflater.inflate(R.layout.item_home_car, null);
@@ -71,6 +86,13 @@ public class HomeActivity extends Activity{
 				}
 			});
 		}
+        
+     // 注册（将语音转文字）
+     	recognizerDialog = new RecognizerDialog(this, "appid=5281eaf4");
+     	recognizerDialog.setListener(this);
+     	recognizerDialog.setEngine("sms", "", null);
+     	recognizerDialog.setSampleRate(RATE.rate16k);
+ 		sb = new StringBuffer();
 	}
 	OnClickListener onClickListener = new OnClickListener() {		
 		@Override
@@ -107,7 +129,20 @@ public class HomeActivity extends Activity{
 			case R.id.tv_item_home_car_adress:
 				HomeActivity.this.startActivity(new Intent(HomeActivity.this, CarLocationActivity.class));
 				break;
+			case R.id.iv_home_say_something:
+				recognizerDialog.show();
+				break;
 			}
 		}
 	};
+	@Override
+	public void onEnd(SpeechError arg0) {
+		Toast.makeText(getApplicationContext(), sb.toString(), 0).show();
+		sb.delete(0, sb.length());
+	}
+	public void onResults(ArrayList<RecognizerResult> results, boolean arg1) {
+		for (RecognizerResult recognizerResult : results) {
+			sb.append(recognizerResult.text);
+		}
+	}
 }
