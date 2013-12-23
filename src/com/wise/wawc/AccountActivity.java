@@ -1,5 +1,4 @@
 package com.wise.wawc;
-
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;

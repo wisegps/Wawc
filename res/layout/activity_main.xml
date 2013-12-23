@@ -223,7 +223,8 @@
 	       	    android:padding="5dp"
 	       	    android:background="@drawable/border_bg"
 	       	    android:gravity="center_vertical"
-	       	    android:orientation="horizontal">
+	       	    android:orientation="horizontal"
+	       	    >
 	       	    <ImageView
 	       	        android:layout_height="30dp"
 	       	        android:layout_width="30dp"
@@ -415,7 +416,5 @@
 	       	    android:layout_width="wrap_content"
 	       	    android:layout_height="wrap_content"/>
 	   	</LinearLayout>
-        
-        
     </com.wise.extend.SlidingMenuView>
 </RelativeLayout>

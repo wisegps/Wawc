@@ -142,7 +142,7 @@ public class MyVehicleActivity extends Activity {
 	
 	void showDialog(){
 		LayoutInflater layoutInflater = LayoutInflater.from(MyVehicleActivity.this);
-		View view = layoutInflater.inflate(R.layout.dialog, null);
+		View view = layoutInflater.inflate(R.layout.mileage_dialog, null);
 		etDialogMileage = (EditText) view.findViewById(R.id.mileage);
 		btSureMileage = (Button) view.findViewById(R.id.dialog_mileage_sure);
 		btCancleMileage = (Button) view.findViewById(R.id.dialog_mileage_cancle);
@@ -151,7 +151,5 @@ public class MyVehicleActivity extends Activity {
 		dlg = new AlertDialog.Builder(MyVehicleActivity.this).setView(view).setCancelable(true).create();
 		dlg.show();
 	}
-	
-	
 }
 
