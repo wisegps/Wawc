@@ -75,6 +75,7 @@
 	        android:layout_toRightOf="@+id/bt_activity_home_help"
 	        android:text="报险"/>
 	    <ImageView 
+	        android:id="@+id/iv_home_say_something"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentRight="true"
