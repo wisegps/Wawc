@@ -50,27 +50,28 @@
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:drawableLeft="@drawable/ic_launcher"
-	        android:text="寻车"/>
+	        android:text="@string/find_car"/>
 	    <Button 
 	        android:id="@+id/bt_activity_car_location_travel"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:drawableLeft="@drawable/ic_launcher"
-	        android:text="行程"/>
+	        android:text="@string/travel"/>
 	    <Button 
 	        android:id="@+id/bt_activity_car_location_periphery"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:drawableLeft="@drawable/ic_launcher"
-	        android:text="周边"/>
+	        android:text="@string/periphery"/>
 	    <Button 
+	        android:id="@+id/bt_activity_car_location_fence"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:drawableLeft="@drawable/ic_launcher"
-	        android:text="围栏"/>
+	        android:text="@string/fence"/>
 	</LinearLayout>
 	<com.baidu.mapapi.map.MapView 
         android:id="@+id/mv_car_location"  

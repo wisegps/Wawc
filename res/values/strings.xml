@@ -4,6 +4,8 @@
     <string name="app_name">我爱我车</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="sure">确定</string>
+    <string name="cancle">取消</string>
 	
     <string name="social">社交</string>
     <string name="car_circle">车友圈</string>
@@ -70,6 +72,19 @@
     <string name="choice_insurance_company">保险公司</string>
     <string name="synchronization_mileage">同步里程</string>
     <string name="input_mileage">请输入仪表上面的里程</string>
-    <string name="sure">确定</string>
-    <string name="cancle">取消</string>
+    
+    <!-- 车辆位置 -->
+    <string name="find_car">寻车</string>
+    <string name="travel">行程</string>
+    <string name="periphery">周边</string>
+    <string name="fence">围栏</string>
+    <string name="oil_station">加油站</string>
+    <string name="parking">停车场</string>
+    <string name="four_s">4S店</string>
+    <string name="specialist">专修店</string>
+    <string name="automotive_beauty">汽车美容店</string>
+    <string name="wash">洗车店</string>
+    <!-- 搜索结果 -->
+    <string name="search_result_not_found">抱歉，未找到结果</string>
+    <string name="search_error">搜索出错啦..</string>
 </resources>

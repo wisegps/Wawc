@@ -7,13 +7,9 @@ import com.baidu.mapapi.map.MapController;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.map.OverlayItem;
-import com.baidu.mapapi.navi.BaiduMapAppNotSupportNaviException;
-import com.baidu.mapapi.navi.BaiduMapNavigation;
-import com.baidu.mapapi.navi.NaviPara;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.wise.pubclas.Config;
 import com.wise.pubclas.GetSystem;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
@@ -29,7 +25,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * 车辆位置
@@ -113,37 +108,59 @@ public class CarLocationActivity extends Activity {
 				GetSystem.FindCar(CarLocationActivity.this,pt1,pt2,"起始","结束");
 				break;
 			case R.id.bt_activity_car_location_travel:// 车辆行程
-				CarLocationActivity.this.startActivity(new Intent(
-						CarLocationActivity.this, TravelActivity.class));
+				CarLocationActivity.this.startActivity(new Intent(CarLocationActivity.this, TravelActivity.class));
 				break;
 			case R.id.tv_item_car_location_oil:
-				mPopupWindow.dismiss();
-				ToSearchMap("加油站");
+				ToSearchMap(getString(R.string.oil_station));
+				break;
+			case R.id.tv_item_car_location_Parking:
+				ToSearchMap(getString(R.string.parking));
+				break;
+			case R.id.tv_item_car_location_4s:
+				ToSearchMap(getString(R.string.four_s));
+				break;
+			case R.id.tv_item_car_location_specialist:
+				ToSearchMap(getString(R.string.specialist));
+				break;
+			case R.id.tv_item_car_location_automotive_beauty:
+				ToSearchMap(getString(R.string.automotive_beauty));
+				break;
+			case R.id.tv_item_car_location_wash:
+				ToSearchMap(getString(R.string.wash));
 				break;
 			}
 		}
 	};
 	private void ToSearchMap(String keyWord){
+		mPopupWindow.dismiss();
 		Intent intent = new Intent(CarLocationActivity.this, SearchMapActivity.class);
 		intent.putExtra("keyWord", keyWord);
 		startActivity(intent);
 	}
+	/**
+	 * 弹出popupwindow
+	 */
 	private void ShowPop() {
 		int Height = ll_activity_car_location_bottom.getMeasuredHeight();
 		LayoutInflater mLayoutInflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-		View popunwindwow = mLayoutInflater.inflate(R.layout.item_car_location,
-				null);
-		mPopupWindow = new PopupWindow(popunwindwow, LayoutParams.FILL_PARENT,
-				LayoutParams.WRAP_CONTENT);
+		View popunwindwow = mLayoutInflater.inflate(R.layout.item_car_location,null);
+		mPopupWindow = new PopupWindow(popunwindwow, LayoutParams.FILL_PARENT,LayoutParams.WRAP_CONTENT);
 		mPopupWindow.setBackgroundDrawable(new BitmapDrawable());
 		mPopupWindow.setFocusable(true);
 		mPopupWindow.setOutsideTouchable(true);
-		mPopupWindow.showAtLocation(
-				findViewById(R.id.bt_activity_car_location_periphery),
-				Gravity.BOTTOM, 0, Height);
-		TextView tv_item_car_location_oil = (TextView) popunwindwow
-				.findViewById(R.id.tv_item_car_location_oil);
+		mPopupWindow.showAtLocation(findViewById(R.id.bt_activity_car_location_periphery),Gravity.BOTTOM, 0, Height);
+		TextView tv_item_car_location_oil = (TextView) popunwindwow.findViewById(R.id.tv_item_car_location_oil);
 		tv_item_car_location_oil.setOnClickListener(onClickListener);
+		TextView tv_item_car_location_Parking = (TextView) popunwindwow.findViewById(R.id.tv_item_car_location_Parking);
+		tv_item_car_location_Parking.setOnClickListener(onClickListener);
+		TextView tv_item_car_location_4s = (TextView) popunwindwow.findViewById(R.id.tv_item_car_location_4s);
+		tv_item_car_location_4s.setOnClickListener(onClickListener);
+		TextView tv_item_car_location_specialist = (TextView) popunwindwow.findViewById(R.id.tv_item_car_location_specialist);
+		tv_item_car_location_specialist.setOnClickListener(onClickListener);
+		TextView tv_item_car_location_automotive_beauty = (TextView) popunwindwow.findViewById(R.id.tv_item_car_location_automotive_beauty);
+		tv_item_car_location_automotive_beauty.setOnClickListener(onClickListener);
+		TextView tv_item_car_location_wash = (TextView) popunwindwow.findViewById(R.id.tv_item_car_location_wash);
+		tv_item_car_location_wash.setOnClickListener(onClickListener);
 	}
 
 	class OverlayCar extends ItemizedOverlay<OverlayItem> {

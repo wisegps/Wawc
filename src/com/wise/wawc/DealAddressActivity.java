@@ -23,7 +23,7 @@ public class DealAddressActivity extends Activity{
 		setContentView(R.layout.activity_dealadress);
 		ListView lv_activity_dealadress = (ListView)findViewById(R.id.lv_activity_dealadress);
 		GetData();
-		adressAdapter = new AdressAdapter(getApplicationContext(), adressDatas);
+		adressAdapter = new AdressAdapter(getApplicationContext(), adressDatas,DealAddressActivity.this);
 		lv_activity_dealadress.setAdapter(adressAdapter);
 		
 		ImageView iv_activity_dealadress_back = (ImageView)findViewById(R.id.iv_activity_dealadress_back);

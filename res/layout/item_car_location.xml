@@ -21,8 +21,9 @@
             android:layout_weight="1"
             android:textColor="@color/black"
             android:textSize="@dimen/title"
-            android:text="加油站"/>
+            android:text="@string/oil_station"/>
         <TextView 
+            android:id="@+id/tv_item_car_location_Parking"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:gravity="center_horizontal"
@@ -33,8 +34,9 @@
             android:layout_weight="1"
             android:textColor="@color/black"
             android:textSize="@dimen/title"
-            android:text="停车场"/>
+            android:text="@string/parking"/>
         <TextView 
+            android:id="@+id/tv_item_car_location_4s"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:gravity="center_horizontal"
@@ -45,13 +47,14 @@
             android:layout_weight="1"
             android:textColor="@color/black"
             android:textSize="@dimen/title"
-            android:text="4S店 "/>
+            android:text="@string/four_s"/>
     </LinearLayout>
     <LinearLayout 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView 
+            android:id="@+id/tv_item_car_location_specialist"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:gravity="center_horizontal"
@@ -62,8 +65,9 @@
             android:layout_weight="1"
             android:textColor="@color/black"
             android:textSize="@dimen/title"
-            android:text="专修店"/>
+            android:text="@string/specialist"/>
         <TextView 
+            android:id="@+id/tv_item_car_location_automotive_beauty"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:gravity="center_horizontal"
@@ -74,8 +78,9 @@
             android:layout_weight="1"
             android:textColor="@color/black"
             android:textSize="@dimen/title"
-            android:text="汽车美容店"/>
+            android:text="@string/automotive_beauty"/>
         <TextView 
+            android:id="@+id/tv_item_car_location_wash"
             android:layout_height="wrap_content"
             android:layout_width="fill_parent"
             android:gravity="center_horizontal"
@@ -86,6 +91,6 @@
             android:layout_weight="1"
             android:textColor="@color/black"
             android:textSize="@dimen/title"
-            android:text="洗车店"/>
+            android:text="@string/wash"/>
     </LinearLayout>  
 </LinearLayout>

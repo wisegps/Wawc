@@ -5,15 +5,29 @@
     android:layout_height="wrap_content"
     android:background="@drawable/border_bg"
     android:orientation="vertical">
-    <TextView 
-        android:id="@+id/tv_item_dealadress_name"
+    <RelativeLayout 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="@dimen/title"
-        android:textColor="@color/black"
-        android:padding="10dp"
         android:background="@color/bkg1"
-        android:text="深圳市交通局"/>
+        android:padding="10dp">
+        <TextView 
+            android:id="@+id/tv_item_dealadress_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/title"
+        	android:textColor="@color/black"
+            android:layout_marginLeft="10dp"/>
+        <TextView 
+            android:id="@+id/tv_item_dealadress_name"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/tv_item_dealadress_distance"
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/title"
+        	android:textColor="@color/black"/>
+    </RelativeLayout>
     <LinearLayout
         android:orientation="vertical" 
         android:layout_width="fill_parent"
@@ -40,71 +54,44 @@
         android:padding="10dp"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
-        <RelativeLayout 
-            android:id="@+id/rl_item_dealadress_collection"
+        <LinearLayout 
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_weight="1">
-            <ImageView
-                android:id="@+id/iv_item_travel_start" 
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_launcher"
-                android:layout_width="30dp"
-                android:layout_height="30dp"/>
-	        <TextView
-	            android:id="@+id/tv_item_travel_startPlace"  
+	        android:layout_weight="1">
+            <Button 
+                android:id="@+id/bt_item_dealadress_collection"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_centerVertical="true"
-	            android:layout_toRightOf="@id/iv_item_travel_start"
-	            android:textColor="@color/black"
-		        android:textSize="@dimen/title"
+	            android:drawableLeft="@drawable/ic_launcher"
+	            android:background="@null"
 	            android:text="收藏"/>
-        </RelativeLayout>
-        <RelativeLayout 
-            android:id="@+id/rl_item_dealadress_call"
+        </LinearLayout>
+        <LinearLayout 
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_weight="1">
-            <ImageView
-                android:id="@+id/iv_item_travel_stop" 
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_launcher"
-                android:layout_width="30dp"
-                android:layout_height="30dp"/>
-	        <TextView
-	            android:id="@+id/tv_item_travel_stopPlace" 
+	        android:layout_weight="1">
+            <Button 
+                android:id="@+id/bt_item_dealadress_call"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_centerVertical="true"
-	            android:layout_toRightOf="@id/iv_item_travel_stop"
-	            android:textColor="@color/black"
-		        android:textSize="@dimen/title"
+	            android:drawableLeft="@drawable/ic_launcher"
+	            android:background="@null"
 	            android:text="电话"/>
-        </RelativeLayout>
-        <RelativeLayout 
-            android:id="@+id/rl_item_dealadress_navigation"
+        </LinearLayout>
+        <LinearLayout 
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_weight="1">
-            <ImageView
-                android:id="@+id/iv_item_travel_stop" 
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_launcher"
-                android:layout_width="30dp"
-                android:layout_height="30dp"/>
-	        <TextView
-	            android:id="@+id/tv_item_travel_stopPlace" 
+	        android:layout_weight="1">
+            <Button 
+                android:id="@+id/bt_item_dealadress_navigation"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_centerVertical="true"
-	            android:layout_toRightOf="@id/iv_item_travel_stop"
-	            android:textColor="@color/black"
-		        android:textSize="@dimen/title"
+	            android:drawableLeft="@drawable/ic_launcher"
+	            android:background="@null"
 	            android:text="去这里"/>
-        </RelativeLayout>
+        </LinearLayout>
     </LinearLayout>
 </LinearLayout>

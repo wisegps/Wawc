@@ -4,6 +4,9 @@ public class AdressData {
 	private String name;
 	private String adress;
 	private String phone;
+	private int distance = -1;
+	private double Lat;
+	private double Lon;
 	public String getName() {
 		return name;
 	}
@@ -22,4 +25,27 @@ public class AdressData {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+	public double getLat() {
+		return Lat;
+	}
+	public void setLat(double lat) {
+		Lat = lat;
+	}
+	public double getLon() {
+		return Lon;
+	}
+	public void setLon(double lon) {
+		Lon = lon;
+	}	
+	public int getDistance() {
+		return distance;
+	}
+	public void setDistance(int distance) {
+		this.distance = distance;
+	}
+	@Override
+	public String toString() {
+		return "AdressData [name=" + name + ", adress=" + adress + ", phone="
+				+ phone + ", Lat=" + Lat + ", Lon=" + Lon + "]";
+	}	
 }

@@ -19,6 +19,7 @@
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_launcher"/>
         <TextView
+            android:id="@+id/tv_activity_search_map_title"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_toLeftOf="@+id/iv_activity_search_map_home"
