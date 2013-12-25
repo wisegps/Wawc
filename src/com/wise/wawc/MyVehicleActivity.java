@@ -6,6 +6,7 @@ import android.app.AlertDialog.Builder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,6 +44,7 @@ public class MyVehicleActivity extends Activity {
 	private TextView tvMaintain = null;
 	
 	AlertDialog dlg = null;
+	boolean isJump = false;//false从菜单页跳转过来返回打开菜单，true从首页跳转返回关闭页面
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.my_vehicle);
@@ -67,16 +69,27 @@ public class MyVehicleActivity extends Activity {
 		brand.setOnClickListener(new ClickListener());
 		insuranceCompany.setOnClickListener(new ClickListener());
 		insuranceTime.setOnClickListener(new ClickListener());
+		
+		Intent intent = getIntent();
+		isJump = intent.getBooleanExtra("isJump", false);
 	}
 	
 	class ClickListener implements OnClickListener{
 		public void onClick(View v) {
 			switch(v.getId()){
 			case R.id.my_vechile_menu:
-				ActivityFactory.A.LeftMenu();
+				if(isJump){
+					finish();
+				}else{
+					ActivityFactory.A.LeftMenu();
+				}
 				break;
 			case R.id.my_vechile_home:
-				ActivityFactory.A.ToHome();
+				if(isJump){
+					finish();
+				}else{
+					ActivityFactory.A.ToHome();
+				}
 				break;
 			case R.id.add_car:    //添加车辆
 				startActivity(new Intent(MyVehicleActivity.this,NewVehicleActivity.class));
@@ -151,5 +164,14 @@ public class MyVehicleActivity extends Activity {
 		dlg = new AlertDialog.Builder(MyVehicleActivity.this).setView(view).setCancelable(true).create();
 		dlg.show();
 	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if(isJump){
+				finish();
+			}
+			return false;//拦截load页面的返回事件
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 }
-

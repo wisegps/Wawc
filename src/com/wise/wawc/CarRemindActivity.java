@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -22,7 +23,7 @@ import android.widget.LinearLayout.LayoutParams;
 public class CarRemindActivity extends Activity{
 	private static final String TAG = "CarRemindActivity";
 	CarAdapter carAdapter;
-	boolean isFinish = false;//false从菜单页跳转过来返回打开菜单，true从首页跳转返回关闭页面
+	boolean isJump = false;//false从菜单页跳转过来返回打开菜单，true从首页跳转返回关闭页面
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -37,7 +38,7 @@ public class CarRemindActivity extends Activity{
 		iv_activity_car_remind_inspection_problem.setOnClickListener(onClickListener);
 		
 		Intent intent = getIntent();
-		isFinish = intent.getBooleanExtra("isFinish", false);
+		isJump = intent.getBooleanExtra("isJump", false);
 		
 		GridView gv_activity_car_remind = (GridView)findViewById(R.id.gv_activity_car_remind);
         carAdapter = new CarAdapter(CarRemindActivity.this,Config.carDatas);
@@ -57,21 +58,23 @@ public class CarRemindActivity extends Activity{
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.iv_activity_car_remind_menu:
-				if(isFinish){
+				if(isJump){
 					finish();
 				}else{
 					ActivityFactory.A.LeftMenu();
 				}
 				break;
 			case R.id.iv_activity_car_remind_home:
-				if(isFinish){
+				if(isJump){
 					finish();
 				}else{
 					ActivityFactory.A.ToHome();
 				}
 				break;
 			case R.id.iv_activity_car_remind_maintenance_note:
-				CarRemindActivity.this.startActivity(new Intent(CarRemindActivity.this, MyVehicleActivity.class));
+				Intent RemindIntent = new Intent(CarRemindActivity.this, MyVehicleActivity.class);
+				RemindIntent.putExtra("isJump", true);
+				CarRemindActivity.this.startActivity(RemindIntent);
 				break;
 			case R.id.iv_activity_car_remind_inspection_problem:
 				CarRemindActivity.this.startActivity(new Intent(CarRemindActivity.this, DealAddressActivity.class));
@@ -89,4 +92,15 @@ public class CarRemindActivity extends Activity{
 			carAdapter.notifyDataSetChanged();
 		}
 	};
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if(isJump){
+				finish();
+			}
+			return false;//拦截load页面的返回事件
+		}
+		return super.onKeyDown(keyCode, event);
+	}
 }

@@ -99,7 +99,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener{
 				break;
 			case R.id.bt_activity_home_car_remind://车务提醒
 				Intent eventIntent = new Intent(HomeActivity.this, CarRemindActivity.class);
-				eventIntent.putExtra("isFinish", true);
+				eventIntent.putExtra("isJump", true);
 				HomeActivity.this.startActivity(eventIntent);
 				break;
 			case R.id.bt_activity_home_vehicle_status://爱车车况

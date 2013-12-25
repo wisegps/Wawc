@@ -28,7 +28,7 @@ public class MyDevicesActivity extends Activity{
 	private static final String TAG = "MyDevicesActivity";
 	CarAdapter carAdapter;
 	List<CarData> carDatas;
-	
+	boolean isJump = false;//false 加载，true 跳转
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,6 +52,9 @@ public class MyDevicesActivity extends Activity{
 		gv_activity_devices.setStretchMode(GridView.NO_STRETCH);
 		gv_activity_devices.setNumColumns(carDatas.size());
 		gv_activity_devices.setOnItemClickListener(onItemClickListener);	
+		
+		Intent intent = getIntent();
+		isJump = intent.getBooleanExtra("isJump", false);
 	}
 	OnClickListener onClickListener = new OnClickListener() {		
 		@Override
@@ -100,13 +103,13 @@ public class MyDevicesActivity extends Activity{
 		carData.setCheck(false);
 		carDatas.add(carData);
 	}
-	
-	
-	
+		
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			finish();
+			if(isJump){
+				finish();
+			}
 			return false;
 		}
 		return super.onKeyDown(keyCode, event);
