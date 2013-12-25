@@ -1,4 +1,4 @@
-<RelativeLayout 
+<LinearLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -6,55 +6,180 @@
     android:orientation="vertical"
     android:background="#FFFFFF">
     <RelativeLayout 
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/energy_degree"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+        <ImageView
+            android:id="@+id/item_home_car_icon" 
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:src="@drawable/ic_launcher"/>
+        <TextView 
+            android:id="@+id/item_home_car_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/item_home_car_icon"
+            android:text="粤B12345"/>
+        <ImageView
+            android:id="@+id/item_home_car_share" 
+            android:layout_alignParentRight="true"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_launcher"/>        
+    </RelativeLayout>
+    <LinearLayout        
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="horizontal">
+        <ImageView 
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_launcher"/>
+        <TextView 
+            android:id="@+id/tv_item_home_car_adress"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:layout_gravity="center_vertical"
+            android:text="深圳市南山区南山大道115号，招商银行附近, 大厦B塔"/>
+    </LinearLayout>
+    <TextView 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:gravity="right"
+        android:text="5分钟前更新"/>
+    <LinearLayout
+        android:background="@color/bkg1"
+        android:orientation="horizontal" 
+        android:padding="10dp"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content">
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+	        android:layout_weight="1">
+            <Button 
+                android:id="@+id/bt_item_dealadress_collection"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:drawableTop="@drawable/ic_launcher"
+	            android:background="@null"
+	            android:text="收藏"/>
+        </LinearLayout>
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+	        android:layout_weight="1">
+            <Button 
+                android:id="@+id/bt_item_dealadress_call"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:drawableTop="@drawable/ic_launcher"
+	            android:background="@null"
+	            android:text="电话"/>
+        </LinearLayout>
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+	        android:layout_weight="1">
+            <Button 
+                android:id="@+id/bt_item_dealadress_navigation"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:drawableTop="@drawable/ic_launcher"
+	            android:background="@null"
+	            android:text="去这里"/>
+        </LinearLayout>
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+	        android:layout_weight="1">
+            <Button 
+                android:id="@+id/bt_item_dealadress_navigation"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:drawableTop="@drawable/ic_launcher"
+	            android:background="@null"
+	            android:text="去这里"/>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:orientation="vertical">
         <RelativeLayout 
-            android:id="@+id/rl_activity_vehicle_status_oil"
-            android:layout_width="200dp"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content">
             <TextView 
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_centerHorizontal="true"
-	            android:textColor="@color/black"    
-	            android:textSize="30sp"        
-	            android:text="11.20L"/>
+	            android:layout_alignParentRight="true"
+	            android:textColor="@color/black"
+	            android:text="深圳"/>
         </RelativeLayout>
+        <LinearLayout 
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="horizontal">
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="normal"
+                android:textSize="40sp"
+                android:textColor="@color/black"
+                android:text="12°"/>
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="多云转晴"/>
+        </LinearLayout>
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/rl_activity_vehicle_status_oil"
-            android:layout_centerHorizontal="true"
-            android:textColor="@color/black"            
-            android:text="[点击查看详情]"/>
-    </RelativeLayout>
-    <RelativeLayout 
-        android:layout_alignParentBottom="true"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <TextView 
-            android:id="@+id/tv_activity_vehicle_status_data"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
             android:textColor="@color/black"
-            android:text="2013-12"/>
-        <ImageView 
-            android:id="@+id/iv_activity_vehicle_status_data_previous" 
-            android:contentDescription="@string/app_name"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_toRightOf="@id/tv_activity_vehicle_status_data"
-            android:src="@drawable/ic_launcher"/>
-        <ImageView
-            android:id="@+id/iv_activity_vehicle_status_data_next" 
-            android:contentDescription="@string/app_name"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_toLeftOf="@id/tv_activity_vehicle_status_data"
-            android:src="@drawable/ic_launcher"/>
-    </RelativeLayout>
-</RelativeLayout>
+            android:text="10月27日  星期一"/>
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:text="6-18°C  东风3级    湿度84%"/>
+        <LinearLayout 
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="horizontal">
+            <TextView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:textColor="@color/black"
+	            android:text="洗车指数:"/>
+            <TextView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:textColor="@color/black"
+	            android:background="@color/bkg4"
+	            android:text="适宜"/>
+            <TextView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:textColor="@color/black"
+	            android:text="车辆限行:"/>
+            <TextView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:textColor="@color/black"
+	            android:background="@color/bkg4"
+	            android:text="限行"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

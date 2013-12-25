@@ -38,20 +38,125 @@
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_launcher"/>
 	</RelativeLayout>
-	<com.wise.extend.HScrollLayout
-          xmlns:android="http://schemas.android.com/apk/res/android"    
-		  android:id="@+id/ScrollLayout_car"    
-		  android:layout_below="@id/rl_activity_home_top"
-		  android:layout_width="fill_parent"   
-		  android:layout_margin="10dp"
-		  android:background="@drawable/border_bg"
-		  android:layout_height="wrap_content"> 
-    </com.wise.extend.HScrollLayout>
-    
+    <LinearLayout 
+        android:id="@+id/ll_car"
+        android:layout_below="@id/rl_activity_home_top"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RelativeLayout 
+            android:id="@+id/rl_activity_home_car"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="10dp">
+	        <ImageView
+	            android:id="@+id/item_home_car_icon" 
+	            android:layout_width="50dp"
+	            android:layout_height="50dp"
+	            android:src="@drawable/ic_launcher"/>
+	        <TextView 
+	            android:id="@+id/item_home_car_number"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:textColor="@color/black"
+	            android:layout_centerVertical="true"
+	            android:layout_toRightOf="@id/item_home_car_icon"
+	            android:text="粤B12345"/>
+	        <ImageView
+	            android:id="@+id/item_home_car_share" 
+	            android:layout_alignParentRight="true"
+	            android:layout_width="30dp"
+	            android:layout_height="30dp"
+	            android:layout_centerVertical="true"
+	            android:src="@drawable/ic_launcher"/>        
+	    </RelativeLayout>
+	    <LinearLayout        
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:padding="10dp"
+	        android:orientation="horizontal">
+	        <ImageView 
+	            android:layout_width="20dp"
+	            android:layout_height="20dp"
+	            android:src="@drawable/ic_launcher"/>
+	        <TextView 
+	            android:id="@+id/tv_activity_home_car_adress"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:textColor="@color/black"
+	            android:layout_gravity="center_vertical"
+	            android:text="深圳市南山区南山大道115号，招商银行附近, 大厦B塔"/>
+	    </LinearLayout>
+	    <TextView 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/black"
+	        android:gravity="right"
+	        android:text="5分钟前更新"/>
+	    <LinearLayout
+	        android:background="@color/bkg1"
+	        android:orientation="horizontal" 
+	        android:padding="10dp"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content">
+	        <LinearLayout 
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center_horizontal"
+		        android:layout_weight="1">
+	            <Button 
+	                android:id="@+id/bt_activity_home_vehicle_status"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:drawableTop="@drawable/ic_launcher"
+		            android:background="@null"
+		            android:text="@string/vehicle_status"/>
+	        </LinearLayout>
+	        <LinearLayout 
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center_horizontal"
+		        android:layout_weight="1">
+	            <Button 
+	                android:id="@+id/bt_activity_home_car_remind"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:drawableTop="@drawable/ic_launcher"
+		            android:background="@null"
+		            android:text="@string/car_remind"/>
+	        </LinearLayout>
+	        <LinearLayout 
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center_horizontal"
+		        android:layout_weight="1">
+	            <Button 
+	                android:id="@+id/bt_activity_home_traffic"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:drawableTop="@drawable/ic_launcher"
+		            android:background="@null"
+		            android:text="@string/traffic"/>
+	        </LinearLayout>
+	        <LinearLayout 
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:gravity="center_horizontal"
+		        android:layout_weight="1">
+	            <Button 
+	                android:id="@+id/bt_activity_home_share"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:drawableTop="@drawable/ic_launcher"
+		            android:background="@null"
+		            android:text="@string/shareLocation"/>
+	        </LinearLayout>
+	    </LinearLayout>
+    </LinearLayout>
 	<com.wise.extend.HScrollLayout
           xmlns:android="http://schemas.android.com/apk/res/android"    
 		  android:id="@+id/ScrollLayout_other"    
-		  android:layout_below="@id/ScrollLayout_car"
+		  android:layout_below="@id/ll_car"
 		  android:layout_width="fill_parent"   
 		  android:layout_margin="10dp"
 		  android:background="@drawable/border_bg" 
@@ -79,7 +184,6 @@
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentRight="true"
-	        android:src="@drawable/ic_launcher"/>
-	        
+	        android:src="@drawable/ic_launcher"/>	        
 	</RelativeLayout>
 </RelativeLayout>

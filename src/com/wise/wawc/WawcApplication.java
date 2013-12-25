@@ -3,6 +3,8 @@ package com.wise.wawc;
 import android.app.Application;
 import android.content.Context;
 import android.widget.Toast;
+import cn.jpush.android.api.JPushInterface;
+
 import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.MKGeneralListener;
 import com.baidu.mapapi.map.MKEvent;
@@ -24,6 +26,9 @@ public class WawcApplication extends Application {
 	    super.onCreate();
 		mInstance = this;
 		initEngineManager(this);
+		//启动初始化推送
+		JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
 	}
 	
 	public void initEngineManager(Context context) {

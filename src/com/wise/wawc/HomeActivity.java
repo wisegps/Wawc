@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 /**
@@ -40,54 +41,32 @@ public class HomeActivity extends Activity implements RecognizerDialogListener{
 		Button bt_activity_home_risk = (Button)findViewById(R.id.bt_activity_home_risk);
 		bt_activity_home_risk.setOnClickListener(onClickListener);
 		//ScrollLayout_car
-		HScrollLayout ScrollLayout_car = (HScrollLayout)findViewById(R.id.ScrollLayout_car);
-		HScrollLayout ScrollLayout_other = (HScrollLayout)findViewById(R.id.ScrollLayout_other);
+		RelativeLayout rl_activity_home_car = (RelativeLayout)findViewById(R.id.rl_activity_home_car);
+		rl_activity_home_car.setOnClickListener(onClickListener);
+		Button bt_activity_home_vehicle_status = (Button)findViewById(R.id.bt_activity_home_vehicle_status);
+		bt_activity_home_vehicle_status.setOnClickListener(onClickListener);
+		Button bt_activity_home_car_remind = (Button)findViewById(R.id.bt_activity_home_car_remind);
+		bt_activity_home_car_remind.setOnClickListener(onClickListener);
+		Button bt_activity_home_traffic = (Button)findViewById(R.id.bt_activity_home_traffic);
+		bt_activity_home_traffic.setOnClickListener(onClickListener);
+		Button bt_activity_home_share = (Button)findViewById(R.id.bt_activity_home_share);
+		bt_activity_home_share.setOnClickListener(onClickListener);
+		TextView tv_activity_home_car_adress = (TextView)findViewById(R.id.tv_activity_home_car_adress);
+		tv_activity_home_car_adress.setOnClickListener(onClickListener);
+		
 		
 		saySomething = (ImageView) findViewById(R.id.iv_home_say_something);
 		saySomething.setOnClickListener(onClickListener);
 		sb = new StringBuffer();
+		
+		HScrollLayout ScrollLayout_other = (HScrollLayout)findViewById(R.id.ScrollLayout_other);
 		LayoutInflater mLayoutInflater = LayoutInflater.from(HomeActivity.this);
-        for (int i = 0; i < 5; i++) {
-        	View mapView = mLayoutInflater.inflate(R.layout.item_home_car, null);
-        	ScrollLayout_car.addView(mapView);
-        	ImageView item_home_car_icon = (ImageView)mapView.findViewById(R.id.item_home_car_icon);
-        	item_home_car_icon.setOnClickListener(new OnClickListener() {				
-				@Override
-				public void onClick(View v) {
-					HomeActivity.this.startActivity(new Intent(HomeActivity.this, MyVehicleActivity.class));
-				}
-			});
-        	TextView item_home_car_number = (TextView)findViewById(R.id.item_home_car_number);
-        	item_home_car_number.setOnClickListener(new OnClickListener() {				
-				@Override
-				public void onClick(View v) {
-					HomeActivity.this.startActivity(new Intent(HomeActivity.this, MyVehicleActivity.class));
-				}
-			});
-        	ImageView item_home_car_share = (ImageView)mapView.findViewById(R.id.item_home_car_share);
-        	item_home_car_share.setOnClickListener(onClickListener);
-        	ImageView item_home_car_traffic = (ImageView)mapView.findViewById(R.id.item_home_car_traffic);
-        	item_home_car_traffic.setOnClickListener(onClickListener);
-        	ImageView item_home_car_vehicle_event = (ImageView)mapView.findViewById(R.id.item_home_car_vehicle_event);
-        	item_home_car_vehicle_event.setOnClickListener(onClickListener);
-        	ImageView item_home_car_vehicle_status = (ImageView)mapView.findViewById(R.id.item_home_car_vehicle_status);
-        	item_home_car_vehicle_status.setOnClickListener(onClickListener);
-        	TextView tv_item_home_car_adress = (TextView)mapView.findViewById(R.id.tv_item_home_car_adress);
-        	tv_item_home_car_adress.setOnClickListener(onClickListener);
-		}
-        for (int i = 0; i < 2; i++) {
-        	View mapView = mLayoutInflater.inflate(R.layout.item_home_car, null);
-        	ScrollLayout_other.addView(mapView);
-        	ImageView item_home_car_icon = (ImageView)mapView.findViewById(R.id.item_home_car_icon);
-        	item_home_car_icon.setOnClickListener(new OnClickListener() {				
-				@Override
-				public void onClick(View v) {
-					Toast.makeText(HomeActivity.this, "onclicklistener", Toast.LENGTH_SHORT).show();
-				}
-			});
-		}
+        View weatherView = mLayoutInflater.inflate(R.layout.item_weather, null);
+        View oilView = mLayoutInflater.inflate(R.layout.item_oil, null);
+    	ScrollLayout_other.addView(weatherView);
+    	ScrollLayout_other.addView(oilView);
         
-     // 注册（将语音转文字）
+    	// 注册（将语音转文字）
      	recognizerDialog = new RecognizerDialog(this, "appid=5281eaf4");
      	recognizerDialog.setListener(this);
      	recognizerDialog.setEngine("sms", "", null);
@@ -110,24 +89,27 @@ public class HomeActivity extends Activity implements RecognizerDialogListener{
 			case R.id.bt_activity_home_risk://报险
 				HomeActivity.this.startActivity(new Intent(HomeActivity.this, ShareLocationActivity.class));
 				break;
-			case R.id.item_home_car_share://位置分享
+			case R.id.bt_activity_home_share://位置分享
 				Intent intent = new Intent(HomeActivity.this, NewArticleActivity.class);
 				intent.putExtra("isSNS", true);
 				HomeActivity.this.startActivity(intent);
 				break;
-			case R.id.item_home_car_traffic://车辆违章
+			case R.id.bt_activity_home_traffic://车辆违章
 				HomeActivity.this.startActivity(new Intent(HomeActivity.this, TrafficActivity.class));
 				break;
-			case R.id.item_home_car_vehicle_event://车务提醒
+			case R.id.bt_activity_home_car_remind://车务提醒
 				Intent eventIntent = new Intent(HomeActivity.this, CarRemindActivity.class);
 				eventIntent.putExtra("isFinish", true);
 				HomeActivity.this.startActivity(eventIntent);
 				break;
-			case R.id.item_home_car_vehicle_status:
+			case R.id.bt_activity_home_vehicle_status://爱车车况
 				HomeActivity.this.startActivity(new Intent(HomeActivity.this, VehicleStatusActivity.class));
 				break;
-			case R.id.tv_item_home_car_adress:
+			case R.id.tv_activity_home_car_adress: //车辆位置
 				HomeActivity.this.startActivity(new Intent(HomeActivity.this, CarLocationActivity.class));
+				break;
+			case R.id.rl_activity_home_car: //我的爱车
+				HomeActivity.this.startActivity(new Intent(HomeActivity.this, MyVehicleActivity.class));
 				break;
 			case R.id.iv_home_say_something:
 				recognizerDialog.show();

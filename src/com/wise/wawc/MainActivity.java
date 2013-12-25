@@ -153,6 +153,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 				break;
 			case R.id.iv_activity_main_login_sina:
 				platformSina.setPlatformActionListener(MainActivity.this);
+				platformSina.SSOSetting(true);
 				platformSina.showUser(null);
 				break;
 			case R.id.rl_activity_main_voice:  //语音识别

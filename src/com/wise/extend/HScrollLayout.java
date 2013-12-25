@@ -35,7 +35,7 @@ public class HScrollLayout extends ViewGroup{
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-		View v1 = findViewById(R.id.ll_item_home_car);
+		View v1 = findViewById(R.id.ll_item_weather);
 		int Height = v1.getHeight();
 		int count = getChildCount();
 		for(int i = 0 ; i < count; i++){

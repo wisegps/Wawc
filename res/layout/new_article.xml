@@ -41,7 +41,7 @@
     </LinearLayout>
     
     <EditText 
-        android:id="@+id/ed_publish_article"
+        android:id="@+id/et_publish_article"
         android:layout_width="fill_parent"
         android:layout_marginTop="5dip"
         android:layout_height="200dip"

@@ -6,6 +6,7 @@
     <string name="hello_world">Hello world!</string>
     <string name="sure">确定</string>
     <string name="cancle">取消</string>
+    <string name="content_null">内容不能为空</string>
 	
     <string name="social">社交</string>
     <string name="car_circle">车友圈</string>
@@ -19,7 +20,10 @@
     <string name="setup_center">设置中心</string>
     <string name="menu">菜单</string>
     <string name="home">主页</string>
-    
+    <string name="vehicle_status">爱车车况</string>
+    <string name="traffic">车辆违章</string>
+    <string name="shareLocation">位置分享</string>
+    <!-- 主页 -->
     <!-- 我的爱车 -->
     <string name="base_information">基本资料</string>
     <string name="brand">品牌</string>

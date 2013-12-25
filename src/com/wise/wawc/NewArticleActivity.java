@@ -22,11 +22,12 @@ import android.text.format.DateFormat;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 /**
- * 发表新文章
+ * 发表新文章,分享
  * @author 王庆文
  */
 public class NewArticleActivity extends Activity implements PlatformActionListener{
@@ -37,6 +38,10 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 	private Button back = null;
 	private ImageView takePhoto;
 	private LinearLayout linearLayout = null;  //将照片动态添加到布局文件中
+	EditText et_publish_article;
+	
+	String Content;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_article);
@@ -46,7 +51,7 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 		back.setOnClickListener(new ClickListener());
 		takePhoto = (ImageView) findViewById(R.id.take_photo);
 		takePhoto.setOnClickListener(new ClickListener());
-		
+		et_publish_article = (EditText)findViewById(R.id.et_publish_article);
 		linearLayout = (LinearLayout) findViewById(R.id.my_linearLayout);
 		Intent intent = getIntent();
 		isSNS = intent.getBooleanExtra("isSNS", false);
@@ -61,11 +66,17 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 				NewArticleActivity.this.finish();
 				break;
 			case R.id.publish:
-				if(isSNS){//发布到到微博orQQ空间
-					showShare(false, null);
-				}else{//发布新文章
-					
+				Content = et_publish_article.getText().toString().trim();
+				if(Content.equals("")){
+					Toast.makeText(NewArticleActivity.this, R.string.content_null, Toast.LENGTH_SHORT).show();
+				}else{
+					if(isSNS){//发布到到微博orQQ空间
+						showShare(true, null);
+					}else{//发布新文章
+						
+					}
 				}
+				
 				break;
 			case R.id.take_photo:
 		       	//调用照相机
@@ -122,10 +133,10 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 		System.out.println("分享");
 		final OnekeyShare oks = new OnekeyShare();
 		oks.setNotification(R.drawable.ic_launcher, "app_name");
-		oks.setAddress("12345678901");
+		//oks.setAddress("12345678901");
 		oks.setTitle("share");
 		//oks.setTitleUrl("http://sharesdk.cn");
-		oks.setText("无聊");
+		oks.setText(Content);
 		//oks.setImagePath(MainActivity.TEST_IMAGE);
 		//oks.setImageUrl("http://img.appgo.cn/imgs/sharesdk/content/2013/07/25/1374723172663.jpg");
 		//oks.setUrl("http://www.sharesdk.cn");
