@@ -29,4 +29,25 @@ public class Config {
 	 * 车辆数据
 	 */
 	public static List<CarData> carDatas;
+	/**
+	 * 违章推送
+	 */
+	public static boolean againstPush = true;
+	/**
+	 * 故障推送
+	 */
+	public static boolean faultPush = true;
+	/**
+	 * 车务提醒
+	 */
+	public static boolean remaindPush = true;
+	
+	/**
+	 * 默认定位中心
+	 */
+	public static String defaultCenter = "车辆位置";
+	/**
+	 * 使用百度地图的密钥
+	 */
+	public static final String BDMapKey = "zwIFsm9hVHYmroq923Psz3xv";
 }

@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
+
+import com.wise.pubclas.Config;
 import com.wise.sharesdk.OnekeyShare;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
@@ -22,8 +24,10 @@ import android.text.format.DateFormat;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 /**
  * 发表新文章
@@ -37,6 +41,7 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 	private Button back = null;
 	private ImageView takePhoto;
 	private LinearLayout linearLayout = null;  //将照片动态添加到布局文件中
+	private TextView location;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_article);
@@ -49,6 +54,13 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 		
 		linearLayout = (LinearLayout) findViewById(R.id.my_linearLayout);
 		Intent intent = getIntent();
+		
+		location = (TextView) findViewById(R.id.localtion);
+		
+		if(!"".equals(Config.Adress)){
+			location.setText(Config.Adress);
+		}
+		
 		isSNS = intent.getBooleanExtra("isSNS", false);
 		if(isSNS){//初始化shareSDK
 			ShareSDK.initSDK(this);

@@ -6,10 +6,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.Chronometer.OnChronometerTickListener;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -17,6 +22,7 @@ import android.widget.Toast;
 
 import com.wise.extend.AbstractSpinerAdapter;
 import com.wise.extend.SpinerPopWindow;
+import com.wise.pubclas.Config;
 
 /**
  * 设置中心
@@ -40,6 +46,11 @@ public class SettingCenterActivity extends Activity implements OnClickListener, 
 	private AlertDialog dlg = null;  //显示评分对话框
 	private Button gradeCommit = null;  //提交评分
 	private Button gradeCancle = null;   //取消评分
+	//推送设置
+	private CheckBox againstPush;
+	private CheckBox faultPush;
+	private CheckBox remainPush;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.setting_center);
@@ -49,6 +60,14 @@ public class SettingCenterActivity extends Activity implements OnClickListener, 
 		feedBack = (ImageView) findViewById(R.id.feedback);
 		giveUsScore = (ImageView) findViewById(R.id.give_us_score);
 		aboutAppliaction = (ImageView) findViewById(R.id.about_appliaction);
+		
+		againstPush = (CheckBox) findViewById(R.id.against_push);
+		faultPush = (CheckBox) findViewById(R.id.fault_push);
+		remainPush = (CheckBox) findViewById(R.id.remaind_push);
+		
+		remainPush.setOnCheckedChangeListener(new CleckBoxListener());
+		faultPush.setOnCheckedChangeListener(new CleckBoxListener());
+		againstPush.setOnCheckedChangeListener(new CleckBoxListener());
 		
 		setCenterMenu.setOnClickListener(new ClickListener());
 		feedBack.setOnClickListener(new ClickListener());
@@ -72,6 +91,23 @@ public class SettingCenterActivity extends Activity implements OnClickListener, 
 		mSpinerPopWindow.refreshData(nameList, 0);
 		//设置监听
 		mSpinerPopWindow.setItemListener(this);
+	}
+	class CleckBoxListener implements OnCheckedChangeListener{
+		public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+			switch(((Button)buttonView).getId()){
+			case R.id.against_push:  //违章推送
+				Config.againstPush = isChecked;
+				break;
+			case R.id.fault_push:    //故障推送
+				Config.faultPush = isChecked;
+				break;
+			case R.id.remaind_push:   //车务提醒
+				Config.remaindPush = isChecked;
+				break;
+			default :
+				return;
+			}
+		}
 	}
 	
 	class ClickListener implements OnClickListener{
@@ -112,6 +148,7 @@ public class SettingCenterActivity extends Activity implements OnClickListener, 
 		if (pos >= 0 && pos <= nameList.size()){
 			String value = nameList.get(pos);
 			mTView.setText(value);
+			Config.defaultCenter = value;
 		}
 	}
 	

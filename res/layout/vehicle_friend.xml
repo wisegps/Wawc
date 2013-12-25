@@ -95,11 +95,13 @@
 	<RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
-		 <ListView
+		 <com.wise.list.XListView
 		        android:id="@+id/article_list"
 		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content" >
-		    </ListView>
+		        android:layout_height="wrap_content"
+		        android:cacheColorHint="#00000000"
+		         >
+		    </com.wise.list.XListView>
 		    <LinearLayout 
 		        android:layout_width="fill_parent"
         		android:layout_height="wrap_content"

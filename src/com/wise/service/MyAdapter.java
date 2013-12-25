@@ -4,8 +4,12 @@ import com.wise.wawc.FriendHomeActivity;
 import com.wise.wawc.FriendInformationActivity;
 import com.wise.wawc.R;
 
+import android.annotation.SuppressLint;
+import android.app.ActionBar.LayoutParams;
 import android.content.Context;
 import android.content.Intent;
+import android.text.Layout;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +17,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,10 +35,15 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 	private Context context;
 	public boolean isClick = false;
 	private TextView detailArticle;  //点击查看详细信息
+	private TableLayout tableLayout;  //用户发表的图片
+	private TableRow tableRow;
+	private ImageView imageView;
+	private int imageNumber = 0;
 	public MyAdapter(Context context,View v){
 		inflater=LayoutInflater.from(context);
 		this.view = v;
 		this.context = context;
+//		tableRow = new TableRow(context);
 	}
 	public int getCount() {
 		return 10;
@@ -42,8 +54,21 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 	public long getItemId(int position) {
 		return 10;
 	}
+	@SuppressLint("NewApi")
 	public View getView(int position, View convertView, ViewGroup parent) {
 		convertView = inflater.inflate(R.layout.article_adapter, null);
+//		tableLayout = (TableLayout) convertView.findViewById(R.id.user_image);
+//		tableRow = (TableRow) convertView.findViewById(R.id.row_image);
+//		tableRow.setLayoutParams(new LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+//		imageView.setBackgroundResource(R.drawable.image);
+//		imageNumber = tableRow.getChildCount();
+//		if((imageNumber%3 + 1) == 3){
+//			tableLayout.addView(tableRow)
+//			tableRow = new TableRow(context);
+//		}else{
+//			tableRow.addView(imageView);
+//		}
+		
 		saySomething = (ImageView) convertView.findViewById(R.id.list_say_somthing);
 		userHead = (ImageView) convertView.findViewById(R.id.head_article);
 		detailArticle = (TextView) convertView.findViewById(R.id.detail_article);
