@@ -46,6 +46,7 @@
      <ListView 
          android:id="@+id/lv_activity_search_map"
          android:layout_margin="5dp"
+         android:descendantFocusability="blocksDescendants"
          android:layout_width="fill_parent"
          android:layout_height="fill_parent"/>
 </LinearLayout>
