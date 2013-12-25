@@ -91,4 +91,6 @@
     <!-- 搜索结果 -->
     <string name="search_result_not_found">抱歉，未找到结果</string>
     <string name="search_error">搜索出错啦..</string>
+
+    <string name="search_result">搜索结果</string>
 </resources>

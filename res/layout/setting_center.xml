@@ -132,7 +132,6 @@
                 android:layout_weight="1"
                 >
                 <TextView 
-                    android:id="@+id/against_push"
 	                android:layout_width="fill_parent"
 	                android:layout_height="wrap_content"
 	                android:text="@string/against_push"
@@ -140,12 +139,13 @@
 	                android:textColor="#000000"
 	                android:textSize="16dip"
                 />
-                <RadioButton 
+                <CheckBox 
+                    android:id="@+id/against_push"
                     android:layout_height="20dip"
                     android:layout_width="40dip"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
-                    android:button="@drawable/radio_button"
+                    android:checked="true"
                     />
             </RelativeLayout>
         </TableRow>
@@ -172,11 +172,13 @@
 	                android:textColor="#000000"
 	                android:textSize="16dip"
                 />
-                <RadioButton
+                <CheckBox
+                    android:id="@+id/fault_push"
                     android:layout_width="40dip"
                     android:layout_height="20dip"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
+                    android:checked="true"
                     />
                 
             </RelativeLayout>
@@ -204,12 +206,13 @@
 	                android:textColor="#000000"
 	                android:textSize="16dip"
                 />
-                <ImageView 
-                    android:layout_height="20dip"
+                <CheckBox
+                    android:id="@+id/remaind_push"
                     android:layout_width="40dip"
+                    android:layout_height="20dip"
                     android:layout_alignParentRight="true"
                     android:layout_alignParentTop="true"
-                    android:background="@drawable/ic_launcher"
+                    android:checked="true"
                     />
             </RelativeLayout>
         </TableRow>

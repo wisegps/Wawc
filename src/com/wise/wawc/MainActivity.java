@@ -56,6 +56,13 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 	ImageView iv_activity_main_logo,iv_activity_main_qq,iv_activity_main_sina,iv_activity_main_login_sina,iv_activity_main_login_qq;
 	TextView tv_activity_main_name;
 	View view = null;
+	//你要做什么常用命令
+	private View wantRefuel;   //要加油
+	private View wantMaintain;  //维保
+	private View wantWash;    //洗车
+	private View wantRescue;   //救援
+	private View wantInsurance;  //报险
+	private View wantPark;     //停车
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -82,6 +89,20 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         tv_activity_main_name = (TextView)findViewById(R.id.tv_activity_main_name);
         view = findViewById(R.id.rl_activity_main_voice);
         view.setOnClickListener(onClickListener);
+        
+        wantRefuel = findViewById(R.id.rl_activity_main_oil);
+        wantMaintain = findViewById(R.id.rl_activity_main_maintain);
+        wantWash = findViewById(R.id.rl_activity_main_wash);
+        wantRescue = findViewById(R.id.rl_activity_main_help);
+        wantInsurance = findViewById(R.id.rl_activity_main_safety);
+        wantPark = findViewById(R.id.rl_activity_main_park);
+        
+        wantRefuel.setOnClickListener(onClickListener);
+        wantMaintain.setOnClickListener(onClickListener);
+        wantWash.setOnClickListener(onClickListener);
+        wantRescue.setOnClickListener(onClickListener);
+        wantInsurance.setOnClickListener(onClickListener);
+        wantPark.setOnClickListener(onClickListener);
         
         //车友圈
         TextView vehiclefriend = (TextView)findViewById(R.id.car_circle);
@@ -156,9 +177,27 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 				platformSina.SSOSetting(true);
 				platformSina.showUser(null);
 				break;
-			case R.id.rl_activity_main_voice:  //语音识别
-				
+			case R.id.rl_activity_main_oil: // 加油
+//				startActivity(new Intent(MainActivity.this,SearchResultActivity.class));
 				break;
+			case R.id.rl_activity_main_maintain: // 维保
+
+				break;
+			case R.id.rl_activity_main_wash: // 洗车
+
+				break;
+			case R.id.rl_activity_main_help: // 救援
+
+				break;
+			case R.id.rl_activity_main_safety: // 报险
+
+				break;
+			case R.id.rl_activity_main_park: // 停车
+
+				break;
+			default:
+					
+				return;
 			}
 		}
 	};
