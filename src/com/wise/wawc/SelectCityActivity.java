@@ -8,6 +8,7 @@ import com.baidu.mapapi.map.MKOfflineMapListener;
 import com.baidu.mapapi.map.MapController;
 import com.baidu.mapapi.map.MapView;
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -20,14 +21,14 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * 选择城市
  * 
  * @author honesty
  */
-public class SelectCityActivity extends Activity implements
-		MKOfflineMapListener {
+public class SelectCityActivity extends Activity implements MKOfflineMapListener {
 	ListView lv_activity_select_city;
 	MKOfflineMap mkOfflineMap;
 	ArrayList<CityData> cityParentDatas; // 一级城市列表
@@ -120,16 +121,24 @@ public class SelectCityActivity extends Activity implements
 						for(CityData cityData : cityParentDatas){
 							if(cityData.getCityID() == cityChooseData.getCityParentID()){
 								System.out.println(cityData.getCityName() + "/" + cityChooseData.getCityName());
+								GetCity(cityData.getCityName() + "/" + cityChooseData.getCityName());
 								break;
 							}
 						}
 					}else{
 						System.out.println(cityChooseData.getCityName());
+						GetCity(cityChooseData.getCityName());
 					}					
 				}
 			}
 		}
 	};
+	
+	private void GetCity(String city){
+		Toast.makeText(getApplicationContext(), city, Toast.LENGTH_SHORT).show();
+		startActivity(new Intent(SelectCityActivity.this, MainActivity.class));
+		finish();
+	}
 
 	private class AllCityAdapter extends BaseAdapter {
 		ArrayList<CityData> citys;

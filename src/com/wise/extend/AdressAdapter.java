@@ -84,14 +84,14 @@ public class AdressAdapter extends BaseAdapter{
 		holder.bt_item_dealadress_collection.setOnClickListener(new OnClickListener() {				
 			@Override
 			public void onClick(View v) {
-				context.startActivity(new Intent(mActivity, MyCollectionActivity.class));
+				mActivity.startActivity(new Intent(mActivity, MyCollectionActivity.class));
 			}
 		});
 		holder.bt_item_dealadress_call.setOnClickListener(new OnClickListener() {				
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:"+ adressData.getPhone()));  
-				context.startActivity(intent);
+				mActivity.startActivity(intent);
 			}
 		});
 		holder.bt_item_dealadress_navigation.setOnClickListener(new OnClickListener() {				
@@ -99,6 +99,8 @@ public class AdressAdapter extends BaseAdapter{
 			public void onClick(View v) {
 				GeoPoint point = new GeoPoint((int) (Config.Lat * 1E6),(int) (Config.Lon * 1E6));
 				GeoPoint point1 = new GeoPoint((int) (adressData.getLat() * 1E6),(int) (adressData.getLon() * 1E6));
+				System.out.println(Config.Lat + "/" + Config.Lat);
+				System.out.println(adressData.getLat() + "/" + adressData.getLat());
 				GetSystem.FindCar(mActivity, point, point1, "point", "point1");
 			}
 		});

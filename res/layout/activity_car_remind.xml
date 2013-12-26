@@ -70,7 +70,7 @@
 	                android:layout_height="wrap_content"
 	                android:textColor="@color/black"
 	                android:layout_centerVertical="true"
-	                android:text="车辆年检提醒"/>
+	                android:text="@string/inspection"/>
 	            <ImageView
 	                android:id="@+id/iv_activity_car_remind_inspection_problem" 
 	                android:layout_width="40dp"
@@ -103,7 +103,7 @@
 	                android:layout_height="wrap_content"
 	                android:textColor="@color/black"
 	                android:layout_centerVertical="true"
-	                android:text="车辆续保提醒"/>
+	                android:text="@string/renewal"/>
 	            <ImageView
 	                android:id="@+id/iv_activity_car_remind_renewal_problem" 
 	                android:layout_width="40dp"
@@ -136,7 +136,7 @@
 	                android:layout_height="wrap_content"
 	                android:textColor="@color/black"
 	                android:layout_centerVertical="true"
-	                android:text="车辆保养提醒"/>
+	                android:text="@string/maintenance"/>
 	            <ImageView
 	                android:id="@+id/iv_activity_car_remind_maintenance_problem" 
 	                android:layout_width="40dp"
@@ -170,7 +170,7 @@
 	                android:layout_height="wrap_content"
 	                android:textColor="@color/black"
 	                android:layout_centerVertical="true"
-	                android:text="车辆年审提醒"/>
+	                android:text="@string/examined"/>
 	            <ImageView
 	                android:id="@+id/iv_activity_car_remind_examined_problem" 
 	                android:layout_width="40dp"
@@ -203,7 +203,7 @@
 	                android:layout_height="wrap_content"
 	                android:textColor="@color/black"
 	                android:layout_centerVertical="true"
-	                android:text="驾照换证提醒"/>
+	                android:text="@string/replacement"/>
 	            <ImageView
 	                android:id="@+id/iv_activity_car_remind_replacement_problem" 
 	                android:layout_width="40dp"
