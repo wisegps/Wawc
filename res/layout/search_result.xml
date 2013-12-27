@@ -1,0 +1,66 @@
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/border_bg">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:id="@+id/top"
+         >
+
+        <Button
+            android:id="@+id/search_result_menu"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/ic_launcher" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/search_result"
+            android:textSize="8pt" />
+
+        <Button
+            android:id="@+id/search_result_home"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@drawable/ic_launcher" />
+    </LinearLayout>
+    
+	<LinearLayout
+	    android:id="@+id/search_result_menu"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    android:layout_alignParentBottom="true"
+	    android:visibility="gone"
+	    >
+	    <Button
+	        android:layout_width="0dip"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="收藏它"
+	        ></Button>
+	    <Button
+	        android:layout_width="0dip"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:text="去这里"
+	        ></Button>
+	</LinearLayout>
+	<com.baidu.mapapi.map.MapView 
+	    android:id="@+id/search_result_map"
+        android:layout_width="fill_parent"  
+        android:layout_height="fill_parent"  
+        android:layout_above="@id/search_result_menu"
+        android:layout_below="@id/top"
+        android:clickable="true" />
+</RelativeLayout>
