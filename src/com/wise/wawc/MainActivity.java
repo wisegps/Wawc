@@ -3,8 +3,13 @@ package com.wise.wawc;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Map.Entry;
+
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
@@ -135,6 +140,16 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 		isLogin();
 		startService(new Intent(MainActivity.this, LocationService.class));
 		GetData();
+		//模拟推送
+		Set<String> tagSet = new LinkedHashSet<String>();
+		tagSet.add("371278698");
+		//调用JPush API设置Tag
+		JPushInterface.setAliasAndTags(getApplicationContext(), null, tagSet,new TagAliasCallback() {			
+			@Override
+			public void gotResult(int arg0, String arg1, Set<String> arg2) {
+				Log.d(TAG, "推送：arg0 =" +arg0 + ",arg1 = " + arg1);
+			}
+		});
 	}
 	
 	OnClickListener onClickListener = new OnClickListener() {		
