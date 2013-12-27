@@ -2,6 +2,7 @@ package com.wise.service;
 import com.wise.wawc.ArticleDetailActivity;
 import com.wise.wawc.FriendHomeActivity;
 import com.wise.wawc.FriendInformationActivity;
+import com.wise.wawc.ImageActivity;
 import com.wise.wawc.R;
 
 import android.annotation.SuppressLint;
@@ -39,11 +40,12 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 	private TableRow tableRow;
 	private ImageView imageView;
 	private int imageNumber = 0;
+	
+	int padding = 40;
 	public MyAdapter(Context context,View v){
 		inflater=LayoutInflater.from(context);
 		this.view = v;
 		this.context = context;
-//		tableRow = new TableRow(context);
 	}
 	public int getCount() {
 		return 10;
@@ -54,20 +56,30 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 	public long getItemId(int position) {
 		return 10;
 	}
-	@SuppressLint("NewApi")
 	public View getView(int position, View convertView, ViewGroup parent) {
 		convertView = inflater.inflate(R.layout.article_adapter, null);
-//		tableLayout = (TableLayout) convertView.findViewById(R.id.user_image);
-//		tableRow = (TableRow) convertView.findViewById(R.id.row_image);
-//		tableRow.setLayoutParams(new LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
-//		imageView.setBackgroundResource(R.drawable.image);
-//		imageNumber = tableRow.getChildCount();
-//		if((imageNumber%3 + 1) == 3){
-//			tableLayout.addView(tableRow)
-//			tableRow = new TableRow(context);
-//		}else{
-//			tableRow.addView(imageView);
-//		}
+		//动态添加用户发表的图片
+		
+		TableLayout table = (TableLayout) convertView.findViewById(R.id.user_image);
+		TableRow row = new TableRow(context);
+		for(int i = 0 ; i < 9 ; i ++){
+			ImageView t = new ImageView(context);
+			t.setClickable(true);
+			t.setOnClickListener(new OnClickListener() {
+				public void onClick(View v) {
+					context.startActivity(new Intent(context,ImageActivity.class));
+				}
+			});
+			t.setBackgroundResource(R.drawable.image);
+			t.setId(i);
+			if((i%3 + 1) == 3){
+				row.addView(t);
+				table.addView(row,new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+				row = new TableRow(context);
+			}else{
+				row.addView(t);
+			}
+		}
 		
 		saySomething = (ImageView) convertView.findViewById(R.id.list_say_somthing);
 		userHead = (ImageView) convertView.findViewById(R.id.head_article);
@@ -97,6 +109,9 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 		case R.id.detail_article:   //点击进入文章的详细介绍
 			Log.e("进入文章详情","进入文章详情");
 			context.startActivity(new Intent(context,ArticleDetailActivity.class));
+			break;
+		case 1:
+//			context.startActivity(new Intent(context,ImageActivity.class));
 			break;
 		}
 	}
