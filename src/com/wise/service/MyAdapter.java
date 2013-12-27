@@ -80,7 +80,6 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 				row.addView(t);
 			}
 		}
-		
 		saySomething = (ImageView) convertView.findViewById(R.id.list_say_somthing);
 		userHead = (ImageView) convertView.findViewById(R.id.head_article);
 		detailArticle = (TextView) convertView.findViewById(R.id.detail_article);

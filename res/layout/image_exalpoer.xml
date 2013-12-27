@@ -3,11 +3,11 @@
 		android:layout_height="fill_parent" 
 		android:layout_width="fill_parent" 
 		android:orientation="vertical" > 
- <Gallery
+ <com.wise.extend.MyGallery
          android:id="@+id/gallery"
          android:layout_width="fill_parent"
          android:layout_height="fill_parent"
          android:spacing="2dp"
          android:layout_marginTop="5dp"    >
-     </Gallery>
+     </com.wise.extend.MyGallery>
 </FrameLayout>
