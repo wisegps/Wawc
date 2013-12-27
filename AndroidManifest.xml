@@ -79,7 +79,6 @@
         <activity android:name=".MaintainShopActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".ShareActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".SearchMapActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
-        <activity android:name=".WelcomeActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".ImageActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity
             android:name="cn.sharesdk.framework.ShareSDKUIShell"
@@ -134,7 +133,7 @@
             android:enabled="true" >
              <intent-filter android:priority="1000">
                 <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />   <!--Required  显示通知栏 -->
-                <category android:name="com.wise.app" />
+                <category android:name="com.wise.wawc" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.USER_PRESENT" />
@@ -160,7 +159,7 @@
 		        <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
 		        <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />		        
 		        <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />		        
-		        <category android:name="com.wise.app" />
+		        <category android:name="com.wise.wawc" />
 		    </intent-filter>
 		</receiver>
 		
