@@ -11,16 +11,18 @@
        <LinearLayout 
 	       	android:id="@+id/left_sliding_tab"
 	       	android:orientation="vertical"
-	        android:layout_width="500dp"
+	        android:layout_width="500dp"	        
 	       	android:layout_height="fill_parent">
 	       	<RelativeLayout 
 	       	    android:id="@+id/rl_activity_main_home"
-	       	    android:layout_height="wrap_content"
+	       	    android:padding="5dp"
+	       	    android:layout_height="60dp"
 	       	    android:layout_width="fill_parent">
 	       	    <ImageView
 	       	        android:id="@+id/iv_activity_main_logo"
-	       	        android:layout_height="40dp"
-	       	        android:layout_width="40dp"
+	       	        android:layout_height="50dp"
+	       	        android:layout_width="50dp"
+	       	        android:layout_marginRight="10dp"
 	       	        android:contentDescription="@string/app_name"
 	       	        android:src="@drawable/ic_launcher"/>
 	       	    <TextView 
@@ -28,6 +30,7 @@
 	       	        android:layout_width="wrap_content"
 	       	        android:layout_height="wrap_content"
 	       	        android:layout_toRightOf="@id/iv_activity_main_logo"
+	       	        android:layout_alignTop="@id/iv_activity_main_logo"
 	       	        android:textColor="@color/black"
 	       	        android:text="Thomas"/>
 	       	    <ImageView
@@ -36,7 +39,7 @@
 	       	        android:layout_height="20dp"
 	       	        android:layout_width="20dp"
 	       	        android:layout_toRightOf="@id/iv_activity_main_logo"
-	       	        android:layout_below="@id/tv_activity_main_name"
+	       	        android:layout_alignBottom="@id/iv_activity_main_logo"
 	       	        android:contentDescription="@string/app_name"
 	       	        android:src="@drawable/logo_qq"/>
 	       	    <ImageView
@@ -45,7 +48,7 @@
 	       	        android:layout_height="20dp"
 	       	        android:layout_width="20dp"
 	       	        android:layout_toRightOf="@id/iv_activity_main_qq"
-	       	        android:layout_below="@id/tv_activity_main_name"
+	       	        android:layout_alignBottom="@id/iv_activity_main_logo"
 	       	        android:contentDescription="@string/app_name"
 	       	        android:src="@drawable/logo_sinaweibo"/>
 	       	     <ImageView
@@ -72,13 +75,11 @@
 	       	    android:textColor="@color/black"
 	       	    android:textSize="@dimen/title"
 	       	    android:padding="5dp"
-	       	    android:background="@drawable/border_bg"
 	       	    android:text="@string/social"/>
 	       	<LinearLayout 
 	       	    android:layout_width="fill_parent"
 	       	    android:layout_height="wrap_content"
 	       	    android:padding="5dp"
-	       	    android:background="@drawable/border_bg"
 	       	    android:gravity="center_vertical"
 	       	    android:orientation="horizontal">
 	       	    <ImageView
@@ -102,14 +103,12 @@
 	       	    android:textColor="@color/black"
 	       	    android:textSize="@dimen/title"
 	       	    android:padding="5dp"
-	       	    android:background="@drawable/border_bg"
 	       	    android:text="@string/my_center"/>
 	       	<LinearLayout
 	       	    android:id="@+id/ll_activity_main_car_remind" 
 	       	    android:layout_width="fill_parent"
 	       	    android:layout_height="wrap_content"
 	       	    android:padding="5dp"
-	       	    android:background="@drawable/border_bg"
 	       	    android:gravity="center_vertical"
 	       	    android:orientation="horizontal">
 	       	    <ImageView
@@ -130,7 +129,6 @@
 	       	    android:layout_width="fill_parent"
 	       	    android:layout_height="wrap_content"
 	       	    android:padding="5dp"
-	       	    android:background="@drawable/border_bg"
 	       	    android:gravity="center_vertical"
 	       	    android:orientation="horizontal">
 	       	    <ImageView
@@ -151,7 +149,6 @@
 	       	    android:layout_width="fill_parent"
 	       	    android:layout_height="wrap_content"
 	       	    android:padding="5dp"
-	       	    android:background="@drawable/border_bg"
 	       	    android:gravity="center_vertical"
 	       	    android:orientation="horizontal">
 	       	    <ImageView
@@ -172,7 +169,6 @@
 	       	    android:layout_width="fill_parent"
 	       	    android:layout_height="wrap_content"
 	       	    android:padding="5dp"
-	       	    android:background="@drawable/border_bg"
 	       	    android:gravity="center_vertical"
 	       	    android:orientation="horizontal">
 	       	    <ImageView
@@ -192,7 +188,6 @@
 	       	    android:layout_width="fill_parent"
 	       	    android:layout_height="wrap_content"
 	       	    android:padding="5dp"
-	       	    android:background="@drawable/border_bg"
 	       	    android:gravity="center_vertical"
 	       	    android:orientation="horizontal">
 	       	    <ImageView
@@ -215,16 +210,13 @@
 	       	    android:textColor="@color/black"
 	       	    android:textSize="@dimen/title"
 	       	    android:padding="5dp"
-	       	    android:background="@drawable/border_bg"
 	       	    android:text="@string/system_related"/>
 	       	<LinearLayout 
 	       	    android:layout_width="fill_parent"
 	       	    android:layout_height="wrap_content"
 	       	    android:padding="5dp"
-	       	    android:background="@drawable/border_bg"
 	       	    android:gravity="center_vertical"
-	       	    android:orientation="horizontal"
-	       	    >
+	       	    android:orientation="horizontal">
 	       	    <ImageView
 	       	        android:layout_height="30dp"
 	       	        android:layout_width="30dp"

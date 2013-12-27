@@ -58,7 +58,10 @@ public class TravelMapActivity extends Activity{
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.iv_activity_car_home_search:
-				mMapView.getCurrentMap();
+				//mMapView.getCurrentMap();
+				Intent intent = new Intent(TravelMapActivity.this, NewArticleActivity.class);
+				intent.putExtra("isSNS", true);
+				TravelMapActivity.this.startActivity(intent);
 				break;
 			case R.id.iv_activity_travel_back:
 				finish();

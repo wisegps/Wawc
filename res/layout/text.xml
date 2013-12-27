@@ -182,4 +182,61 @@
 	            android:text="限行"/>
         </LinearLayout>
     </LinearLayout>
+    <RelativeLayout 
+   	    android:id="@+id/rl_activity_main_home"
+   	    android:padding="5dp"
+   	    android:background="@drawable/border_bg"
+   	    android:layout_height="50dp"
+   	    android:layout_width="fill_parent">
+   	    <ImageView
+   	        android:id="@+id/iv_activity_main_logo"
+   	        android:layout_height="wrap_content"
+   	        android:layout_width="wrap_content"
+   	        android:contentDescription="@string/app_name"
+   	        android:layout_marginRight="10dp"
+   	        android:src="@drawable/ic_launcher"/>
+   	    <TextView 
+   	        android:id="@+id/tv_activity_main_name"
+   	        android:layout_width="wrap_content"
+   	        android:layout_height="wrap_content"
+   	        android:layout_toRightOf="@id/iv_activity_main_logo"
+   	        android:layout_alignBaseline="@id/iv_activity_main_logo"
+   	        android:textColor="@color/black"
+   	        android:text="Thomas"/>
+   	    <ImageView
+   	        android:id="@+id/iv_activity_main_qq"
+   	        android:visibility="visible"
+   	        android:layout_height="20dp"
+   	        android:layout_width="20dp"
+   	        android:layout_toRightOf="@id/iv_activity_main_logo"
+   	        android:layout_alignBottom="@id/iv_activity_main_logo"
+   	        android:contentDescription="@string/app_name"
+   	        android:src="@drawable/logo_qq"/>
+   	    <ImageView
+   	        android:id="@+id/iv_activity_main_sina"
+   	        android:visibility="visible"
+   	        android:layout_height="20dp"
+   	        android:layout_width="20dp"
+   	        android:layout_toRightOf="@id/iv_activity_main_qq"
+   	        android:layout_alignBottom="@id/iv_activity_main_logo"
+   	        android:contentDescription="@string/app_name"
+   	        android:src="@drawable/logo_sinaweibo"/>
+   	     <ImageView
+   	        android:id="@+id/iv_activity_main_login_qq"
+   	        android:layout_height="30dp"
+   	        android:layout_width="30dp"
+   	        android:layout_alignParentRight="true"
+   	        android:layout_centerVertical="true"
+   	        android:contentDescription="@string/app_name"
+   	        android:src="@drawable/logo_qq"/>
+   	     <ImageView
+   	        android:id="@+id/iv_activity_main_login_sina"
+   	        android:layout_height="30dp"
+   	        android:layout_width="30dp"
+   	        android:layout_toLeftOf="@id/iv_activity_main_login_qq"
+   	        android:layout_marginLeft= "10dp"
+   	        android:layout_centerVertical="true"
+   	        android:contentDescription="@string/app_name"
+   	        android:src="@drawable/logo_sinaweibo"/> 	    
+   	</RelativeLayout>
 </LinearLayout>

@@ -14,6 +14,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 
 public class GetSystem {
 	/**
@@ -31,6 +33,22 @@ public class GetSystem {
 			//mContext.startActivity(myIntent);
 		}
 	}
+	/**
+	 * 检测网络
+	 * @param context
+	 * @return
+	 */
+	public static boolean checkNetWorkStatus(Context context){
+        boolean result;
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netinfo = cm.getActiveNetworkInfo();
+        if (netinfo != null && netinfo.isConnected()) {
+            result = true;
+        } else {
+            result = false;
+        }
+        return result;
+    }
 	/**
 	 * 获取指定月份
 	 * @param Month 2013-12

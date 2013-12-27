@@ -14,6 +14,7 @@ import android.graphics.Paint;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -22,6 +23,7 @@ import android.view.View.OnTouchListener;
  * @author honesty
  */
 public class EnergyCurveView extends View implements OnTouchListener {
+	private static final String TAG = "EnergyCurveView";
 	Context context;
 	private static final float SPACING_SCALE = 40f; // 缩放间距 用于背景图过大
 	/**
@@ -117,6 +119,7 @@ public class EnergyCurveView extends View implements OnTouchListener {
 		initDraw(canvas, paint);
 		// 点击屏幕时 进行的操作, 单点，多点
 		SinglePointTouch(canvas, paint);
+		Log.d(TAG, "onDraw");
 	}
 
 	/**
@@ -345,6 +348,7 @@ public class EnergyCurveView extends View implements OnTouchListener {
 		this.onViewTouchListener = onViewTouchListener;
 	}
 	public void RefreshView(){
+		Log.d(TAG, "RefreshView");
 		invalidate();
 	}
 }

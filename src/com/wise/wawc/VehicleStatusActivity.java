@@ -12,6 +12,8 @@ import com.wise.pubclas.Config;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
@@ -31,17 +33,22 @@ import android.widget.Toast;
  */
 public class VehicleStatusActivity extends Activity{
 	private static final String TAG = "VehicleStatusActivity";
+	private static final int Hide_rl = 1;
 	private EnergyCurveView erenergyCurve;
     private DisplayMetrics dm = new DisplayMetrics();
+    
+    RelativeLayout rl_activity_vehicle_status_oil;
     TextView tv_activity_vehicle_status_oil,tv_activity_vehicle_status_fault;
     CarAdapter carAdapter;
 	//List<CarData> carDatas;
+    boolean isWait = true;
     String oil;
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_vehicle_status);
-		RelativeLayout rl_activity_vehicle_status_oil = (RelativeLayout)findViewById(R.id.rl_activity_vehicle_status_oil);
+		rl_activity_vehicle_status_oil = (RelativeLayout)findViewById(R.id.rl_activity_vehicle_status_oil);
 		rl_activity_vehicle_status_oil.setOnClickListener(onClickListener);
 		ImageView iv_activity_vehicle_status_data_next = (ImageView)findViewById(R.id.iv_activity_vehicle_status_data_next);
 		iv_activity_vehicle_status_data_next.setOnClickListener(onClickListener);
@@ -64,12 +71,13 @@ public class VehicleStatusActivity extends Activity{
         energys.add(new EnergyItem("6", 8.0f, "无"));
         energys.add(new EnergyItem("7", 7.0f, "无"));
         tv_activity_vehicle_status_oil.setText("9.0L");
+        Log.d(TAG, "initPoints");
         erenergyCurve.initPoints(energys);
         erenergyCurve.setOnViewTouchListener(new OnViewTouchListener() {			
 			@Override
 			public void OnViewTouch(String value) {
 		        oil = value;
-				tv_activity_vehicle_status_oil.setText(oil + "L");
+		        ViewTouch(oil);
 			}
 		});
         GridView gv_activity_vehicle_status = (GridView)findViewById(R.id.gv_activity_vehicle_status);
@@ -84,6 +92,8 @@ public class VehicleStatusActivity extends Activity{
 		gv_activity_vehicle_status.setStretchMode(GridView.NO_STRETCH);
 		gv_activity_vehicle_status.setNumColumns(Config.carDatas.size());
 		gv_activity_vehicle_status.setOnItemClickListener(onItemClickListener);
+		
+		new Thread(new waitThread()).start();
 	}
 	
 	OnClickListener onClickListener = new OnClickListener() {		
@@ -100,6 +110,7 @@ public class VehicleStatusActivity extends Activity{
 				startActivity(new Intent(VehicleStatusActivity.this, TravelActivity.class));
 				break;
 			case R.id.iv_activity_vehicle_status_data_next:
+				isFrist = true;
 				Toast.makeText(VehicleStatusActivity.this, "NEXT", Toast.LENGTH_SHORT).show();
 				ArrayList<EnergyItem> energys = new ArrayList<EnergyItem>();
 		        energys.add(new EnergyItem("1", 4.0f, "无"));
@@ -114,6 +125,7 @@ public class VehicleStatusActivity extends Activity{
 		        erenergyCurve.RefreshView();
 				break;
 			case R.id.iv_activity_vehicle_status_data_previous:
+				isFrist = true;
 				ArrayList<EnergyItem> energy = new ArrayList<EnergyItem>();
 		        energy.add(new EnergyItem("1", 9.0f, "无"));
 		        energy.add(new EnergyItem("2", 8.0f, "无"));
@@ -129,6 +141,20 @@ public class VehicleStatusActivity extends Activity{
 			}
 		}
 	};
+	Handler handler = new Handler(){
+		@Override
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			switch (msg.what) {
+			case Hide_rl:
+				rl_activity_vehicle_status_oil.setVisibility(View.GONE);
+				break;
+
+			default:
+				break;
+			}
+		}		
+	};
 	OnItemClickListener onItemClickListener = new OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
@@ -139,4 +165,42 @@ public class VehicleStatusActivity extends Activity{
 			carAdapter.notifyDataSetChanged();
 		}
 	};
+	private void ViewTouch(String value){
+		System.out.println("isFrist = " + isFrist);
+		if(isFrist){
+			isFrist = false;
+			rl_activity_vehicle_status_oil.setVisibility(View.GONE);
+		}else{
+			rl_activity_vehicle_status_oil.setVisibility(View.VISIBLE);
+			tv_activity_vehicle_status_oil.setText(oil + "L");
+			wait = 6;
+		}
+	}
+	boolean isFrist = true;
+	int wait = 0;
+	class waitThread extends Thread{
+		@Override
+		public void run() {
+			super.run();
+			while (isWait) {
+				try {
+					if(wait > 0){
+						wait--;
+					}else{
+						Message message = new Message();
+						message.what = Hide_rl;
+						handler.sendMessage(message);
+					}
+					Thread.sleep(500);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		isWait = false;
+	}
 }

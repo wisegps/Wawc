@@ -4,6 +4,7 @@
     <string name="app_name">我爱我车</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
+    <string name="system_note">系统提示</string>
     <string name="sure">确定</string>
     <string name="cancle">取消</string>
     <string name="content_null">内容不能为空</string>
@@ -23,7 +24,9 @@
     <string name="vehicle_status">爱车车况</string>
     <string name="traffic">车辆违章</string>
     <string name="shareLocation">位置分享</string>
-    <!-- 主页 -->
+    <!-- 欢迎界面-->
+    <string name="set_network">设置网络</string>
+    <string name="network_error">网络连接不可用,请检查网络设置.</string>
     <!-- 我的爱车 -->
     <string name="base_information">基本资料</string>
     <string name="brand">品牌</string>

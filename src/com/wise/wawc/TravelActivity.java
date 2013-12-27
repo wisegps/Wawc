@@ -133,7 +133,9 @@ public class TravelActivity extends Activity{
 			holder.iv_item_travel_share.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View v) {
-					TravelActivity.this.startActivity(new Intent(TravelActivity.this, ShareLocationActivity.class));
+					Intent intent = new Intent(TravelActivity.this, NewArticleActivity.class);
+					intent.putExtra("isSNS", true);
+					TravelActivity.this.startActivity(intent);
 				}
 			});
 			holder.iv_item_travel_map.setOnClickListener(new OnClickListener() {				
