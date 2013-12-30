@@ -377,6 +377,10 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 		tabcontent.removeAllViews();
 		tabcontent.addView(view);
 	}
+	public void HideMenu(){
+		Screen = 1;
+		slidingMenuView.snapToScreen(Screen);
+	}
 	public void LeftMenu(){
 		if(slidingMenuView.getCurrentScreen() == 0){
 			Screen = 1;

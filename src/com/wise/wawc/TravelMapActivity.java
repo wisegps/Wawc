@@ -9,6 +9,7 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Overlay;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -27,6 +28,8 @@ public class TravelMapActivity extends Activity{
 	MapView mMapView = null;
 	MapController mMapController = null;
 	List<Overlay> overlays;
+	ProgressDialog Dialog = null;    //progress
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -58,10 +61,8 @@ public class TravelMapActivity extends Activity{
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.iv_activity_car_home_search:
-				//mMapView.getCurrentMap();
-				Intent intent = new Intent(TravelMapActivity.this, NewArticleActivity.class);
-				intent.putExtra("isSNS", true);
-				TravelMapActivity.this.startActivity(intent);
+				Dialog = ProgressDialog.show(TravelMapActivity.this,getString(R.string.note),getString(R.string.travel_map_urrent),true);
+				mMapView.getCurrentMap();
 				break;
 			case R.id.iv_activity_travel_back:
 				finish();
@@ -79,8 +80,11 @@ public class TravelMapActivity extends Activity{
 		public void onMapAnimationFinish() {}		
 		@Override
 		public void onGetCurrentMap(Bitmap arg0) {
+			if(Dialog != null){
+				Dialog.dismiss();
+			}
 			Log.d(TAG, "截图完毕");
-			Intent intent = new Intent(TravelMapActivity.this, ShareLocationActivity.class);
+			Intent intent = new Intent(TravelMapActivity.this, NewArticleActivity.class);
 			intent.putExtra("bitmap", arg0);
 			startActivity(intent);
 			//分享界面接受

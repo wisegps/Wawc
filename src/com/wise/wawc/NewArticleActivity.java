@@ -56,17 +56,19 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 		takePhoto.setOnClickListener(new ClickListener());
 		et_publish_article = (EditText)findViewById(R.id.et_publish_article);
 		linearLayout = (LinearLayout) findViewById(R.id.my_linearLayout);
-		Intent intent = getIntent();
 		
 		location = (TextView) findViewById(R.id.localtion);
 		
 		if(!"".equals(Config.Adress)){
 			location.setText(Config.Adress);
 		}
-		
+
+		Intent intent = getIntent();
 		isSNS = intent.getBooleanExtra("isSNS", false);
 		if(isSNS){//初始化shareSDK
 			ShareSDK.initSDK(this);
+			Bitmap bitmap=intent.getParcelableExtra("bitmap");
+			ShowBitMap(bitmap);
 		}
 	}
 	class ClickListener implements OnClickListener{
@@ -107,37 +109,41 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
                 Toast.makeText(this, "没有多余内存",0).show();
                 return;  
             }  
-            String name = new DateFormat().format("yyyyMMdd_hhmmss",Calendar.getInstance(Locale.CHINA)) + ".jpg";     
-            Toast.makeText(this, name, Toast.LENGTH_LONG).show();  
             Bundle bundle = data.getExtras();  
             Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式  
-          
-            FileOutputStream b = null;  
-            File file = new File("/sdcard/myImage/");  
-            file.mkdirs();// 创建文件夹  
-            String fileName = "/sdcard/myImage/"+name;  
-  
-            try {  
-                b = new FileOutputStream(fileName);  
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件  
-            } catch (FileNotFoundException e) {  
-                e.printStackTrace();  
-            } finally {  
-                try {  
-                    b.flush();  
-                    b.close();  
-                } catch (IOException e) {  
-                    e.printStackTrace();  
-                }  
-            }  
-            //动态在LinearLayout中添加一张图片
-            ImageView imageView = new ImageView(this);
-            imageView.setLayoutParams(new LinearLayout.LayoutParams(80,80));
-            imageView.setPadding(5, 5, 5, 5);
-            imageView.setImageBitmap(bitmap);
-            linearLayout.addView(imageView);
+            ShowBitMap(bitmap);
         }  
     }
+	
+	private void ShowBitMap(Bitmap bitmap){
+		String name = new DateFormat().format("yyyyMMdd_hhmmss",Calendar.getInstance(Locale.CHINA)) + ".jpg";     
+        Toast.makeText(this, name, Toast.LENGTH_LONG).show();  
+      
+        FileOutputStream b = null;  
+        File file = new File("/sdcard/myImage/");  
+        file.mkdirs();// 创建文件夹  
+        String fileName = "/sdcard/myImage/"+name;  
+
+        try {  
+            b = new FileOutputStream(fileName);  
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件  
+        } catch (FileNotFoundException e) {  
+            e.printStackTrace();  
+        } finally {  
+            try {  
+                b.flush();  
+                b.close();  
+            } catch (IOException e) {  
+                e.printStackTrace();  
+            }  
+        }  
+        //动态在LinearLayout中添加一张图片
+        ImageView imageView = new ImageView(this);
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(80,80));
+        imageView.setPadding(5, 5, 5, 5);
+        imageView.setImageBitmap(bitmap);
+        linearLayout.addView(imageView);
+	}
 	
 	private void showShare(boolean silent, String platform) {
 		System.out.println("分享");

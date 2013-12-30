@@ -5,6 +5,7 @@
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="system_note">系统提示</string>
+    <string name="note">提示</string>
     <string name="sure">确定</string>
     <string name="cancle">取消</string>
     <string name="content_null">内容不能为空</string>
@@ -50,7 +51,8 @@
     
     <string name="add_car">添加爱车</string>
     <string name="choice_brank">选择品牌</string>
-    
+    <!-- 车辆行程地图 -->
+    <string name="travel_map_urrent">地图截取中</string>
     <!-- 我的收藏 -->
     <string name="my_collection">我的收藏</string>
     <!-- 车务提醒 -->

@@ -13,6 +13,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -84,15 +85,13 @@ public class HomeActivity extends Activity implements RecognizerDialogListener{
 				ActivityFactory.A.RightMenu();
 				break;
 			case R.id.bt_activity_home_help://救援
-				HomeActivity.this.startActivity(new Intent(HomeActivity.this, ShareLocationActivity.class));
+				ToShare();
 				break;
 			case R.id.bt_activity_home_risk://报险
-				HomeActivity.this.startActivity(new Intent(HomeActivity.this, ShareLocationActivity.class));
+				ToShare();
 				break;
 			case R.id.bt_activity_home_share://位置分享
-				Intent intent = new Intent(HomeActivity.this, NewArticleActivity.class);
-				intent.putExtra("isSNS", true);
-				HomeActivity.this.startActivity(intent);
+				ToShare();
 				break;
 			case R.id.bt_activity_home_traffic://车辆违章
 				HomeActivity.this.startActivity(new Intent(HomeActivity.this, TrafficActivity.class));
@@ -117,6 +116,12 @@ public class HomeActivity extends Activity implements RecognizerDialogListener{
 			}
 		}
 	};
+	
+	private void ToShare(){
+		Intent intent = new Intent(HomeActivity.this, NewArticleActivity.class);
+		intent.putExtra("isSNS", true);
+		HomeActivity.this.startActivity(intent);
+	}
 	@Override
 	public void onEnd(SpeechError arg0) {
 		Toast.makeText(getApplicationContext(), sb.toString(), 0).show();
@@ -126,5 +131,10 @@ public class HomeActivity extends Activity implements RecognizerDialogListener{
 		for (RecognizerResult recognizerResult : results) {
 			sb.append(recognizerResult.text);
 		}
+	}
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		ActivityFactory.A.HideMenu();
+		return false;
 	}
 }

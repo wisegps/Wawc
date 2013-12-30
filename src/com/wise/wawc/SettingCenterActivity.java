@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -172,5 +173,10 @@ public class SettingCenterActivity extends Activity implements OnClickListener, 
 		gradeCancle.setOnClickListener(new ClickListener());
 		dlg = new AlertDialog.Builder(SettingCenterActivity.this).setView(view).setCancelable(true).create();
 		dlg.show();
+	}
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		ActivityFactory.A.HideMenu();
+		return false;
 	}
 }

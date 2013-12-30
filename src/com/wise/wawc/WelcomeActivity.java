@@ -1,5 +1,7 @@
 package com.wise.wawc;
 
+import cn.jpush.android.api.JPushInterface;
+
 import com.wise.pubclas.Config;
 import com.wise.pubclas.GetSystem;
 import android.app.Activity;
@@ -23,6 +25,10 @@ public class WelcomeActivity extends Activity{
 		TextView tv_activity_welcom_version = (TextView)findViewById(R.id.tv_activity_welcom_version);
 		tv_activity_welcom_version.setText("V" + GetSystem.GetVersion(getApplicationContext(), Config.PackageName));
 		isOffline();
+
+		//启动初始化推送
+		JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
 	}
 	Handler handler = new Handler(){
 		@Override

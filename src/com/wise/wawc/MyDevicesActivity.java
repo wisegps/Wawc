@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -113,5 +114,10 @@ public class MyDevicesActivity extends Activity{
 			return false;
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		ActivityFactory.A.HideMenu();
+		return false;
 	}
 }

@@ -26,9 +26,6 @@ public class WawcApplication extends Application {
 	    super.onCreate();
 		mInstance = this;
 		initEngineManager(this);
-		//启动初始化推送
-		JPushInterface.setDebugMode(true);
-        JPushInterface.init(this);
 	}
 	
 	public void initEngineManager(Context context) {

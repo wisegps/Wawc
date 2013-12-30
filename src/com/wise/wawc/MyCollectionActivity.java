@@ -4,6 +4,7 @@ import com.wise.service.CollectionAdapter;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -42,5 +43,10 @@ public class MyCollectionActivity extends Activity {
 				return;
 			}
 		}
+	}
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		ActivityFactory.A.HideMenu();
+		return false;
 	}
 }

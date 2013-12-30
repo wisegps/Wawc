@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -173,5 +174,10 @@ public class MyVehicleActivity extends Activity {
 			return false;//拦截load页面的返回事件
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		ActivityFactory.A.HideMenu();
+		return false;
 	}
 }
