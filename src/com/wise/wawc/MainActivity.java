@@ -15,14 +15,19 @@ import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qzone.QZone;
 import com.wise.data.CarData;
+import com.wise.extend.FaceConversionUtil;
+import com.wise.extend.FaceRelativeLayout;
 import com.wise.extend.SlidingMenuView;
 import com.wise.pubclas.Config;
+import com.wise.service.SaveSettingData;
+
 import android.app.ActivityGroup;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -61,10 +66,16 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 	private View wantRescue;   //救援
 	private View wantInsurance;  //报险
 	private View wantPark;     //停车
+	
+	private ParseFaceThread thread = null;
+	private SaveSettingData saveSettingData;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		thread = new ParseFaceThread();
+		thread.start();
 		
 		ActivityFactory.A = this;
 		slidingMenuView = (SlidingMenuView) findViewById(R.id.sliding_menu_view);        
@@ -133,6 +144,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 		isLogin();
 		startService(new Intent(MainActivity.this, LocationService.class));
 		GetData();
+		initSettingData();
 	}
 	
 	OnClickListener onClickListener = new OnClickListener() {		
@@ -156,7 +168,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 			case R.id.menu_my_collection:
 				ToMyCollection();
 				break;
-			case R.id.ll_activity_main_terminal:
+			case R.id.ll_activity_main_terminal:				
 				ToCarTerminal();
 				break;
 			case R.id.ll_activity_main_orders:
@@ -212,6 +224,14 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 			}
 		}		
 	};
+	
+	
+	class ParseFaceThread extends Thread{
+		public void run() {
+			super.run();
+			FaceConversionUtil.getInstace().getFileText(getApplication());
+		}
+	}
 	
 	private void isLogin(){
 		Log.d(TAG, "platformQQ.getDb().isValid() = " + platformQQ.getDb().isValid());
@@ -419,7 +439,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 			if(touchTime == 0 || (currentTime-touchTime)>=waitTime) {  
 	            Toast.makeText(this, "再按一次退出客户端", Toast.LENGTH_SHORT).show();  
 	            touchTime = currentTime;  
-	        }else{  
+	        }else{ 
 	            finish();
 	        }			
 			return true;
@@ -457,5 +477,13 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 	public void onError(Platform arg0, int arg1, Throwable arg2) {
 		Log.d(TAG, "登录出错");
 		arg0.removeAccount();
+	}
+	
+	private void initSettingData() {
+		saveSettingData = new SaveSettingData(MainActivity.this);
+		Config.againstPush = saveSettingData.getAgainstPush();
+		Config.faultPush = saveSettingData.getBugPush();
+		Config.remaindPush = saveSettingData.getTrafficDepartment();
+		Config.defaultCenter = saveSettingData.getDefaultCenter();
 	}
 }

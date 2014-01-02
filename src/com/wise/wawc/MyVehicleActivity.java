@@ -1,19 +1,26 @@
 package com.wise.wawc;
 
+import com.wise.service.LogoAdapter;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.LinearLayout.LayoutParams;
 /**
  * 我的爱车
  * @author 王庆文
@@ -21,7 +28,6 @@ import android.widget.Toast;
 public class MyVehicleActivity extends Activity {
 	private Button menu = null;
 	private Button home = null;
-	private ImageView addCar = null;
 	private ImageView brand = null;
 	private ImageView device = null;
 	private ImageView insuranceCompany = null;
@@ -42,13 +48,18 @@ public class MyVehicleActivity extends Activity {
 	private TextView myVehicleBrank = null;
 	private TextView tvMaintain = null;
 	
+	private GridView vehicleGridView = null;
+	private LogoAdapter logoAdapter = null;
+	private int[] images = new int[]{R.drawable.image,R.drawable.image,R.drawable.image,R.drawable.image,R.drawable.image,
+			R.drawable.image,R.drawable.image,R.drawable.image,R.drawable.image,
+			R.drawable.new_vehicle};
+	
 	AlertDialog dlg = null;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.my_vehicle);
 		menu = (Button) findViewById(R.id.my_vechile_menu);
 		home = (Button) findViewById(R.id.my_vechile_home);
-		addCar = (ImageView) findViewById(R.id.add_car);
 		brand = (ImageView) findViewById(R.id.my_vehicle_brank);
 		device = (ImageView) findViewById(R.id.	my_vehicle_device);
 		insuranceCompany = (ImageView)findViewById(R.id.insurance_company);
@@ -58,12 +69,35 @@ public class MyVehicleActivity extends Activity {
 		myVehicleBrank = (TextView) findViewById(R.id.my_vehicle_beank);
 		choiceMaintian = (ImageView) findViewById(R.id.choice_maintain_image);
 		tvMaintain = (TextView) findViewById(R.id.show_maintain);
+		
+		
+		int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, getResources().getDisplayMetrics());
+		LayoutParams params = new LayoutParams(images.length * (px + 10),LayoutParams.WRAP_CONTENT);
+		
+		
+		vehicleGridView = (GridView) findViewById(R.id.gv_my_vehicle);
+		//汽车品牌Logo
+		logoAdapter = new LogoAdapter(MyVehicleActivity.this,images);
+		vehicleGridView.setAdapter(logoAdapter);
+		vehicleGridView.setLayoutParams(params);
+		
+		vehicleGridView.setColumnWidth(px);
+		vehicleGridView.setHorizontalSpacing(6);
+		vehicleGridView.setStretchMode(GridView.NO_STRETCH);
+		vehicleGridView.setNumColumns(images.length);
+		vehicleGridView.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+				if((images.length - 1) == arg2){
+					startActivity(new Intent(MyVehicleActivity.this,NewVehicleActivity.class));
+				}
+			}
+		});
+		
 
 		choiceMaintian.setOnClickListener(new ClickListener());
 		device.setOnClickListener(new ClickListener());
 		menu.setOnClickListener(new ClickListener());
 		home.setOnClickListener(new ClickListener());
-		addCar.setOnClickListener(new ClickListener());
 		brand.setOnClickListener(new ClickListener());
 		insuranceCompany.setOnClickListener(new ClickListener());
 		insuranceTime.setOnClickListener(new ClickListener());
@@ -78,9 +112,9 @@ public class MyVehicleActivity extends Activity {
 			case R.id.my_vechile_home:
 				ActivityFactory.A.ToHome();
 				break;
-			case R.id.add_car:    //添加车辆
-				startActivity(new Intent(MyVehicleActivity.this,NewVehicleActivity.class));
-				break;
+//			case R.id.add_car:    //添加车辆
+//				startActivity(new Intent(MyVehicleActivity.this,NewVehicleActivity.class));
+//				break;
 			case R.id.my_vehicle_brank:    //选择汽车品牌
 				Intent intent = new Intent(MyVehicleActivity.this,CarBrankListActivity.class);
 				intent.putExtra("code", resultCodeBrank);

@@ -2,6 +2,8 @@ package com.wise.pubclas;
 
 import java.util.List;
 
+import android.content.SharedPreferences;
+
 import com.wise.data.CarData;
 
 public class Config {
@@ -50,4 +52,8 @@ public class Config {
 	 * 使用百度地图的密钥
 	 */
 	public static final String BDMapKey = "zwIFsm9hVHYmroq923Psz3xv";
+	/**
+	 * SharedPreferences数据共享名称
+	 */
+	public static final String sharedPreferencesName = "userData";
 }

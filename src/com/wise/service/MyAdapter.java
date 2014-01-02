@@ -34,7 +34,7 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 	private ImageView userHead;
 	private View view;
 	private Context context;
-	public boolean isClick = false;
+	public static boolean isClick = false;
 	private TextView detailArticle;  //点击查看详细信息
 	private TableLayout tableLayout;  //用户发表的图片
 	private TableRow tableRow;

@@ -341,8 +341,7 @@ public class XListView extends ListView implements OnScrollListener {
 		// send to user's listener
 		mTotalItemCount = totalItemCount;
 		if (mScrollListener != null) {
-			mScrollListener.onScroll(view, firstVisibleItem, visibleItemCount,
-					totalItemCount);
+			mScrollListener.onScroll(view, firstVisibleItem, visibleItemCount,totalItemCount);
 		}
 	}
 

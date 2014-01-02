@@ -69,7 +69,7 @@ public class HScrollLayout extends ViewGroup{
         switch (ev.getAction()){  
         case MotionEvent.ACTION_DOWN:  
             mLastMotionY = y;  
-            mTouchState = scroller.isFinished() ? TOUCH_STATE_REST : TOUCH_STATE_SCROLLING;  
+            mTouchState = scroller.isFinished() ? TOUCH_STATE_REST : TOUCH_STATE_SCROLLING;
             break;  
         case MotionEvent.ACTION_MOVE:  
             final int yDiff = (int) Math.abs(y - mLastMotionY);  
@@ -80,7 +80,7 @@ public class HScrollLayout extends ViewGroup{
             }  
             break;  
         case MotionEvent.ACTION_UP:  
-            mTouchState = TOUCH_STATE_REST;  
+            mTouchState = TOUCH_STATE_REST; 
             break;  
         }  
         //true滑动容器里感应不到点击事件，false，滑动容器里控件感应到点击事件
