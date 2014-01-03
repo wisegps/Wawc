@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -167,10 +166,5 @@ public class CarRemindActivity extends Activity{
 			return false;//拦截load页面的返回事件
 		}
 		return super.onKeyDown(keyCode, event);
-	}
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		ActivityFactory.A.HideMenu();
-		return false;
 	}
 }

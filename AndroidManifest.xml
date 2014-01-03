@@ -39,13 +39,13 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         
-        <activity android:name=".WelcomeActivity" android:theme="@android:style/Theme.NoTitleBar">            
+        <activity android:name=".WelcomeActivity" android:theme="@android:style/Theme.NoTitleBar">
+        </activity>
+        <activity android:name=".MainActivity" android:theme="@android:style/Theme.NoTitleBar">                        
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".MainActivity" android:theme="@android:style/Theme.NoTitleBar">
         </activity>
         <activity android:name=".HomeActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".CarRemindActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
@@ -166,6 +166,6 @@
 		
         <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default"/>
         <!-- Required. AppKey copied from Portal -->
-        <meta-data android:name="JPUSH_APPKEY" android:value="e73e42fc51c344d1a020d605"/>
+        <meta-data android:name="JPUSH_APPKEY" android:value="3f17177b38b46ae65f51f0c0"/>
     </application>       
 </manifest>

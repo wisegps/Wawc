@@ -2,11 +2,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="#FFFFFF">	
+    android:layout_height="fill_parent">	
     <com.wise.extend.SlidingMenuView
         android:id="@+id/sliding_menu_view"
         android:layout_width="fill_parent"
+        android:background="@drawable/bg"
         android:layout_height="fill_parent">        
        <LinearLayout 
 	       	android:id="@+id/left_sliding_tab"
@@ -237,11 +237,11 @@
 	    		android:layout_height="wrap_content"/>        
 	   	</LinearLayout>        
     	
-        <FrameLayout 
+        <com.wise.extend.MyFrameLayout 
         	android:id="@+id/sliding_body"
             android:layout_width="fill_parent"
         	android:layout_height="fill_parent">            
-    	</FrameLayout>
+    	</com.wise.extend.MyFrameLayout >
     	
         <LinearLayout 
 	   	    android:id="@+id/right_sliding_tab"
