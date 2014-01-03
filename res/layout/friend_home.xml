@@ -13,7 +13,7 @@
         android:orientation="horizontal" >
 
         <Button
-            android:id="@+id/menu"
+            android:id="@+id/friend_back"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_weight="1"
@@ -29,12 +29,10 @@
             android:textColor="#000000"
              />
 
-        <Button
-            android:id="@+id/home"
+        <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:background="@drawable/ic_launcher" />
+            android:layout_weight="1"/>
     </LinearLayout>
     <!-- 标题 -->
 

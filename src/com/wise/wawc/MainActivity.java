@@ -1,5 +1,9 @@
 package com.wise.wawc;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -21,14 +25,19 @@ import com.iflytek.ui.RecognizerDialog;
 import com.iflytek.ui.RecognizerDialogListener;
 import com.wise.data.BrankModel;
 import com.wise.data.CarData;
+import com.wise.extend.FaceConversionUtil;
+import com.wise.extend.FaceRelativeLayout;
 import com.wise.extend.SlidingMenuView;
 import com.wise.pubclas.Config;
 import com.wise.pubclas.NetThread;
+import com.wise.service.SaveSettingData;
 import android.app.ActivityGroup;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -50,39 +59,40 @@ import android.widget.Toast;
  * 
  * @author honesty
  */
-public class MainActivity extends ActivityGroup implements
-        PlatformActionListener {
-    private static final String TAG = "MainActivity";
-    private static final int Get_pic = 1;
-    private static final int Login = 2;
-    SlidingMenuView slidingMenuView;
-    ViewGroup tabcontent;
-    Platform platformQQ;
-    Platform platformSina;
-    ImageView iv_activity_main_logo, iv_activity_main_qq,
-            iv_activity_main_sina, iv_activity_main_login_sina,
-            iv_activity_main_login_qq;
-    TextView tv_activity_main_name;
-    View view = null;
-    // 你要做什么常用命令
-    private View wantRefuel; // 要加油
-    private View wantMaintain; // 维保
-    private View wantWash; // 洗车
-    private View wantRescue; // 救援
-    private View wantInsurance; // 报险
-    private View wantPark; // 停车
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        ActivityFactory.A = this;
-        slidingMenuView = (SlidingMenuView) findViewById(R.id.sliding_menu_view);
-        ActivityFactory.S = slidingMenuView;
-        tabcontent = (ViewGroup) slidingMenuView
-                .findViewById(R.id.sliding_body);
-        tabcontent.setOnClickListener(onClickListener);
+public class MainActivity extends ActivityGroup implements PlatformActionListener{
+	private static final String TAG = "MainActivity";
+	
+	private static final int Login = 1;
+	private static final int GET_PIC = 2;
+	SlidingMenuView slidingMenuView;	
+	ViewGroup tabcontent;
+	int Screen = 1;
+	Platform platformQQ;
+	Platform platformSina;
+	ImageView iv_activity_main_logo,iv_activity_main_qq,iv_activity_main_sina,iv_activity_main_login_sina,iv_activity_main_login_qq;
+	TextView tv_activity_main_name;
+	View view = null;
+	//你要做什么常用命令
+	private View wantRefuel;   //要加油
+	private View wantMaintain;  //维保
+	private View wantWash;    //洗车
+	private View wantRescue;   //救援
+	private View wantInsurance;  //报险
+	private View wantPark;     //停车
+	
+	private ParseFaceThread thread = null;
+	private SaveSettingData saveSettingData;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		
+		thread = new ParseFaceThread();
+		thread.start();
+		
+		ActivityFactory.A = this;
+		slidingMenuView = (SlidingMenuView) findViewById(R.id.sliding_menu_view);      
+        tabcontent = (ViewGroup) slidingMenuView.findViewById(R.id.sliding_body);
         ActivityFactory.v = tabcontent;
         // 获取屏幕宽度
         WindowManager wm = (WindowManager) this
@@ -137,37 +147,19 @@ public class MainActivity extends ActivityGroup implements
         ll_activity_main_terminal.setOnClickListener(onClickListener);
         LinearLayout ll_activity_main_orders = (LinearLayout) findViewById(R.id.ll_activity_main_orders);
         ll_activity_main_orders.setOnClickListener(onClickListener);
-
-        Intent i = new Intent(MainActivity.this, HomeActivity.class);
-        View v = getLocalActivityManager().startActivity(
-                HomeActivity.class.getName(), i).getDecorView();
-        tabcontent.removeAllViews();
-        tabcontent.addView(v);
-        ShareSDK.initSDK(this);
-        platformQQ = ShareSDK.getPlatform(MainActivity.this, QZone.NAME);
-        platformSina = ShareSDK.getPlatform(MainActivity.this, SinaWeibo.NAME);
-        isLogin();
-        startService(new Intent(MainActivity.this, LocationService.class));
-        GetData();
-
-
-        //启动初始化推送
-        //JPushInterface.setDebugMode(true);
-        JPushInterface.init(getApplicationContext());
-        // 模拟推送
-        Set<String> tagSet = new LinkedHashSet<String>();
-        tagSet.add("371278698");
-        // 调用JPush API设置Tag
-        JPushInterface.setAliasAndTags(getApplicationContext(), null, tagSet,
-                new TagAliasCallback() {
-                    @Override
-                    public void gotResult(int arg0, String arg1,
-                            Set<String> arg2) {
-                        Log.d(TAG, "推送：arg0 =" + arg0 + ",arg1 = " + arg1);
-                    }
-                });
-
-    }
+        
+        Intent i = new Intent(MainActivity.this,HomeActivity.class);
+    	View v = getLocalActivityManager().startActivity(HomeActivity.class.getName(), i).getDecorView();
+		tabcontent.removeAllViews();
+		tabcontent.addView(v);
+		ShareSDK.initSDK(this);
+		platformQQ = ShareSDK.getPlatform(MainActivity.this,QZone.NAME);
+		platformSina = ShareSDK.getPlatform(MainActivity.this,SinaWeibo.NAME);
+		isLogin();
+		startService(new Intent(MainActivity.this, LocationService.class));
+		GetData();
+		initSettingData();
+	}
 
     OnClickListener onClickListener = new OnClickListener() {
         @Override
@@ -218,7 +210,6 @@ public class MainActivity extends ActivityGroup implements
                 // Intent(MainActivity.this,SearchResultActivity.class));
                 break;
             case R.id.rl_activity_main_maintain: // 维保
-
                 break;
             case R.id.rl_activity_main_wash: // 洗车
 
@@ -238,12 +229,13 @@ public class MainActivity extends ActivityGroup implements
             }
         }
     };
+    
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-            case Get_pic:
+            case GET_PIC:
                 iv_activity_main_logo.setImageBitmap(bimage);
                 break;
 
@@ -272,8 +264,7 @@ public class MainActivity extends ActivityGroup implements
             iv_activity_main_sina.setVisibility(View.VISIBLE);
             iv_activity_main_login_sina.setVisibility(View.GONE);
             iv_activity_main_login_qq.setVisibility(View.GONE);
-            new Thread(new GetBitMapFromUrlThread(platformQQ.getDb()
-                    .getUserIcon())).start();
+            new Thread(new GetBitMapFromUrlThread(platformQQ.getDb().getUserIcon())).start();
         } else if (platformSina.getDb().isValid()) {
             System.out.println("sina登录");
             Log.d(TAG, "platformSina.getDb().getToken() = "
@@ -291,27 +282,81 @@ public class MainActivity extends ActivityGroup implements
             iv_activity_main_sina.setVisibility(View.GONE);
             iv_activity_main_login_sina.setVisibility(View.VISIBLE);
             iv_activity_main_login_qq.setVisibility(View.VISIBLE);
+			}
+	}
+	
+	
+	class ParseFaceThread extends Thread{
+		public void run() {
+			super.run();
+			FaceConversionUtil.getInstace().getFileText(getApplication());
+		}
+	};
+	Bitmap bimage;
+	class GetBitMapFromUrlThread extends Thread{
+		String url;
+		public GetBitMapFromUrlThread(String url){
+			this.url = url;
+		}
+		@Override
+		public void run() {
+			super.run();
+			bimage =  getBitmapFromURL(url);
+			Message message = new Message();
+			message.what = GET_PIC;
+			handler.sendMessage(message);
+		}
+	}
+	public static Bitmap getBitmapFromURL(String src) {
+        try {
+            Log.e("src",src);
+            URL url = new URL(src);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            Log.e("Bitmap","returned");
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("Exception",e.getMessage());
+            return null;
         }
     }
-
-    Bitmap bimage;
-
-    class GetBitMapFromUrlThread extends Thread {
-        String url;
-
-        public GetBitMapFromUrlThread(String url) {
-            this.url = url;
-        }
-
-        @Override
-        public void run() {
-            super.run();
-            bimage = NetThread.getBitmapFromURL(url);
-            Message message = new Message();
-            message.what = Get_pic;
-            handler.sendMessage(message);
-        }
-    }
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.main, menu);
+		return true;
+	}
+	long waitTime = 2000;  
+	long touchTime = 0;
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			long currentTime = System.currentTimeMillis(); 
+			if(touchTime == 0 || (currentTime-touchTime)>=waitTime) {  
+	            Toast.makeText(this, "再按一次退出客户端", Toast.LENGTH_SHORT).show();  
+	            touchTime = currentTime;  
+	        }else{ 
+	            finish();
+	        }			
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
+	}
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		ShareSDK.stopSDK(this);
+		WawcApplication app = (WawcApplication)this.getApplication();
+		if (app.mBMapManager != null) {
+			app.mBMapManager.destroy();
+			app.mBMapManager = null;
+		}
+		stopService(new Intent(MainActivity.this, LocationService.class));
+	}
 
     /**
      * 设置中心
@@ -460,43 +505,7 @@ public class MainActivity extends ActivityGroup implements
         }
         Config.carDatas = carDatas;
     }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    long waitTime = 2000;
-    long touchTime = 0;
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            long currentTime = System.currentTimeMillis();
-            if (touchTime == 0 || (currentTime - touchTime) >= waitTime) {
-                Toast.makeText(this, "再按一次退出客户端", Toast.LENGTH_SHORT).show();
-                touchTime = currentTime;
-            } else {
-                finish();
-            }
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        ShareSDK.stopSDK(this);
-        WawcApplication app = (WawcApplication) this.getApplication();
-        if (app.mBMapManager != null) {
-            app.mBMapManager.destroy();
-            app.mBMapManager = null;
-        }
-        stopService(new Intent(MainActivity.this, LocationService.class));
-    }
-
+    
     @Override
     public void onCancel(Platform arg0, int arg1) {
         Log.d(TAG, "登录取消");
@@ -520,4 +529,12 @@ public class MainActivity extends ActivityGroup implements
         Log.d(TAG, "登录出错");
         arg0.removeAccount();
     }
+	
+	private void initSettingData() {
+		saveSettingData = new SaveSettingData(MainActivity.this);
+		Config.againstPush = saveSettingData.getAgainstPush();
+		Config.faultPush = saveSettingData.getBugPush();
+		Config.remaindPush = saveSettingData.getTrafficDepartment();
+		Config.defaultCenter = saveSettingData.getDefaultCenter();
+	}
 }

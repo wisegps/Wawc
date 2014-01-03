@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.wise.extend.AbstractSpinerAdapter;
 import com.wise.extend.SpinerPopWindow;
 import com.wise.pubclas.Config;
+import com.wise.service.SaveSettingData;
 
 /**
  * 设置中心
@@ -92,6 +93,13 @@ public class SettingCenterActivity extends Activity implements OnClickListener, 
 		mSpinerPopWindow.refreshData(nameList, 0);
 		//设置监听
 		mSpinerPopWindow.setItemListener(this);
+		
+		//初始化用户数据
+		againstPush.setChecked(Config.againstPush);
+		faultPush.setChecked(Config.faultPush);
+		remainPush.setChecked(Config.remaindPush);
+		mTView.setText(Config.defaultCenter);
+		
 	}
 	class CleckBoxListener implements OnCheckedChangeListener{
 		public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
@@ -115,6 +123,7 @@ public class SettingCenterActivity extends Activity implements OnClickListener, 
 		public void onClick(View v) {
 			switch(v.getId()){
 			case R.id.setting_center_menu:
+				saveData();
 				ActivityFactory.A.LeftMenu();
 				break;
 			case R.id.setting_center_home:
@@ -174,9 +183,19 @@ public class SettingCenterActivity extends Activity implements OnClickListener, 
 		dlg = new AlertDialog.Builder(SettingCenterActivity.this).setView(view).setCancelable(true).create();
 		dlg.show();
 	}
+
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		ActivityFactory.A.HideMenu();
-		return false;
+	protected void onDestroy() {
+		super.onDestroy();
+		saveData();
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		saveData();
+	}
+	public void saveData(){
+		new SaveSettingData(this).saveData(Config.defaultCenter, Config.againstPush, Config.faultPush,Config.remaindPush);
 	}
 }

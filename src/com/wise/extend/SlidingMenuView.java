@@ -1,10 +1,12 @@
 package com.wise.extend;
 
+import com.wise.service.MyAdapter;
 import com.wise.wawc.R;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -239,60 +241,63 @@ public class SlidingMenuView extends ViewGroup{
         final int action = ev.getAction();
         final float x = ev.getX();
 
-        switch (action) {
-        case MotionEvent.ACTION_DOWN:
-            /*
-             * If being flinged and user touches, stop the fling. isFinished
-             * will be false if being flinged.
-             */
-            if (!mScroller.isFinished()) {
-                mScroller.abortAnimation();
-            }
-
-            // Remember where the motion event started
-            mLastMotionX = x;
-            break;
-        case MotionEvent.ACTION_MOVE:
-            if (mTouchState == TOUCH_STATE_SCROLLING) {//TODO 考虑滑动过了的情况
-                final int deltaX = (int) (mLastMotionX - x);
-                mLastMotionX = x;
-                if (deltaX < 0) {//向右滑
-                    if (getScrollX() > 0) {//滚动的距离                 	
-                        scrollBy(Math.max(-getScrollX(), deltaX), 0);
-                    }
-                } else if (deltaX > 0) {
-                    final int availableToScroll = getChildAt(getChildCount() - 1).getRight() -
-                    	getScrollX() - getWidth();
-                    if (availableToScroll > 0) {                    
-                        scrollBy(Math.min(availableToScroll, deltaX), 0);
-                    }
-                }
-            }
-            break;
-        case MotionEvent.ACTION_UP:
-            if (mTouchState == TOUCH_STATE_SCROLLING) {
-                final VelocityTracker velocityTracker = mVelocityTracker;
-                velocityTracker.computeCurrentVelocity(1000);
-                int velocityX = (int) velocityTracker.getXVelocity();
-
-                if (velocityX > SNAP_VELOCITY && mCurrentScreen > 0) {//向左滑                
-                    snapToScreen(mCurrentScreen - 1);
-                } else if (velocityX < -SNAP_VELOCITY && mCurrentScreen < getChildCount() - 1) {
-                    snapToScreen(mCurrentScreen + 1);
-                } else {
-                    snapToDestination();
-                }
-                if (mVelocityTracker != null) {
-                    mVelocityTracker.recycle();
-                    mVelocityTracker = null;
-                }
-            }
-            mTouchState = TOUCH_STATE_REST;
-            break;
-        case MotionEvent.ACTION_CANCEL:
-            mTouchState = TOUCH_STATE_REST;
+        //这里处理滑动否  在评论文章时 不应该滑动（与选择表情滑动分页冲突）  TODO
+        if(MyAdapter.isClick != true){
+	        switch (action) {
+	        case MotionEvent.ACTION_DOWN:
+	            /*
+	             * If being flinged and user touches, stop the fling. isFinished
+	             * will be false if being flinged.
+	             */
+	            if (!mScroller.isFinished()) {
+	                mScroller.abortAnimation();
+	            }
+	
+	            // Remember where the motion event started
+	            mLastMotionX = x;
+	            break;
+	        case MotionEvent.ACTION_MOVE:
+				if (mTouchState == TOUCH_STATE_SCROLLING) {// TODO 考虑滑动过了的情况
+					final int deltaX = (int) (mLastMotionX - x);
+					mLastMotionX = x;
+					if (deltaX < 0) {// 向右滑
+						if (getScrollX() > 0) {// 滚动的距离
+							scrollBy(Math.max(-getScrollX(), deltaX), 0);
+						}
+					} else if (deltaX > 0) {
+						final int availableToScroll = getChildAt(
+								getChildCount() - 1).getRight()
+								- getScrollX() - getWidth();
+						if (availableToScroll > 0) {
+							scrollBy(Math.min(availableToScroll, deltaX), 0);
+						}
+					}
+				}
+	            break;
+	        case MotionEvent.ACTION_UP:
+	            if (mTouchState == TOUCH_STATE_SCROLLING) {
+	                final VelocityTracker velocityTracker = mVelocityTracker;
+	                velocityTracker.computeCurrentVelocity(1000);
+	                int velocityX = (int) velocityTracker.getXVelocity();
+	
+	                if (velocityX > SNAP_VELOCITY && mCurrentScreen > 0) {//向左滑                
+	                    snapToScreen(mCurrentScreen - 1);
+	                } else if (velocityX < -SNAP_VELOCITY && mCurrentScreen < getChildCount() - 1) {
+	                    snapToScreen(mCurrentScreen + 1);
+	                } else {
+	                    snapToDestination();
+	                }
+	                if (mVelocityTracker != null) {
+	                    mVelocityTracker.recycle();
+	                    mVelocityTracker = null;
+	                }
+	            }
+	            mTouchState = TOUCH_STATE_REST;
+	            break;
+	        case MotionEvent.ACTION_CANCEL:
+	            mTouchState = TOUCH_STATE_REST;
+	        }
         }
-
         return true;
     }
 
@@ -355,7 +360,6 @@ public class SlidingMenuView extends ViewGroup{
 
 	@Override
 	protected void onFinishInflate() {
-		// TODO Auto-generated method stub
 		super.onFinishInflate();
 		View child;
 		for(int i=0;i<getChildCount();i++){

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -17,6 +18,8 @@ public class FriendHomeActivity extends Activity {
 	private FriendArticleAdapter friendArticleAdapter;
 	private EditText saySomething;
 	private ImageView friendHead;    //点击好友头像显示资料
+	
+	private Button cancle;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.friend_home);
@@ -26,6 +29,8 @@ public class FriendHomeActivity extends Activity {
 		friendArticleList.setAdapter(friendArticleAdapter);
 		friendHead = (ImageView) findViewById(R.id.friend_home_user_head);
 		friendHead.setOnClickListener(new OnClickListener());
+		cancle = (Button) findViewById(R.id.friend_back);
+		cancle.setOnClickListener(new OnClickListener());
 	}
 	
 	class OnClickListener implements android.view.View.OnClickListener{
@@ -34,6 +39,9 @@ public class FriendHomeActivity extends Activity {
 			case R.id.friend_home_user_head:
 				startActivity(new Intent(FriendHomeActivity.this,
 						FriendInformationActivity.class));
+				break;
+			case R.id.friend_back:
+				//返回键
 				break;
 			default:
 				return;

@@ -42,11 +42,13 @@ public class MyDevicesActivity extends Activity{
 		tv_activity_devices_renewals.setOnClickListener(onClickListener);
 		GetData();
 		GridView gv_activity_devices = (GridView)findViewById(R.id.gv_activity_devices);
+		
         carAdapter = new CarAdapter(MyDevicesActivity.this,carDatas);
         gv_activity_devices.setAdapter(carAdapter);
         
         int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 120, getResources().getDisplayMetrics());
 		LayoutParams params = new LayoutParams(carDatas.size() * (px + 10),LayoutParams.WRAP_CONTENT);
+		
 		gv_activity_devices.setLayoutParams(params);
 		gv_activity_devices.setColumnWidth(px);
 		gv_activity_devices.setHorizontalSpacing(10);
