@@ -1,8 +1,6 @@
 package com.wise.extend;
 
-import com.wise.service.MyAdapter;
 import com.wise.wawc.R;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.util.AttributeSet;
@@ -48,6 +46,7 @@ public class SlidingMenuView extends ViewGroup{
     private int mTouchSlop;
 
     int totalWidth = 0;
+    OnViewTouchMoveListener onViewTouchMoveListener;
     
     public SlidingMenuView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
@@ -112,10 +111,7 @@ public class SlidingMenuView extends ViewGroup{
 		View v1 = findViewById(R.id.left_sliding_tab);
 		v1.measure(v1.getLayoutParams().width+v1.getLeft()+v1.getRight(), heightMeasureSpec);
 		View v2 = findViewById(R.id.sliding_body);
-	    v2.measure(widthMeasureSpec, heightMeasureSpec);
-	    
-	    View v3 = findViewById(R.id.right_sliding_tab);
-	    v3.measure(v3.getLayoutParams().width+v3.getLeft()+v3.getRight(), heightMeasureSpec);
+	    v2.measure(widthMeasureSpec, heightMeasureSpec);	    
 	}
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
@@ -130,6 +126,9 @@ public class SlidingMenuView extends ViewGroup{
             }
         }
         totalWidth = childLeft;
+        if(onViewTouchMoveListener != null){
+            onViewTouchMoveListener.OnViewLoad(totalWidth, getChildAt(0).getMeasuredWidth());
+        }
     }
 
 	@Override
@@ -242,7 +241,7 @@ public class SlidingMenuView extends ViewGroup{
         final float x = ev.getX();
 
         //这里处理滑动否  在评论文章时 不应该滑动（与选择表情滑动分页冲突）  TODO
-        if(MyAdapter.isClick != true){
+        //if(MyAdapter.isClick != true){
 	        switch (action) {
 	        case MotionEvent.ACTION_DOWN:
 	            /*
@@ -258,11 +257,15 @@ public class SlidingMenuView extends ViewGroup{
 	            break;
 	        case MotionEvent.ACTION_MOVE:
 				if (mTouchState == TOUCH_STATE_SCROLLING) {// TODO 考虑滑动过了的情况
-					final int deltaX = (int) (mLastMotionX - x);
+					int deltaX = (int) (mLastMotionX - x);
 					mLastMotionX = x;
+					deltaX = Even(deltaX);
 					if (deltaX < 0) {// 向右滑
 						if (getScrollX() > 0) {// 滚动的距离
-							scrollBy(Math.max(-getScrollX(), deltaX), 0);
+						    scrollBy(Math.max(-getScrollX(), deltaX), 0);
+	                        if(onViewTouchMoveListener != null){
+	                            onViewTouchMoveListener.OnViewMove(Math.max(-getScrollX(), deltaX));
+	                        }
 						}
 					} else if (deltaX > 0) {
 						final int availableToScroll = getChildAt(
@@ -270,6 +273,7 @@ public class SlidingMenuView extends ViewGroup{
 								- getScrollX() - getWidth();
 						if (availableToScroll > 0) {
 							scrollBy(Math.min(availableToScroll, deltaX), 0);
+							onViewTouchMoveListener.OnViewMove(Math.min(availableToScroll, deltaX));
 						}
 					}
 				}
@@ -297,8 +301,22 @@ public class SlidingMenuView extends ViewGroup{
 	        case MotionEvent.ACTION_CANCEL:
 	            mTouchState = TOUCH_STATE_REST;
 	        }
-        }
+        //}
         return true;
+    }
+    
+    /**
+     * 偶数化
+     * @param deltaX
+     * @return
+     */
+    private int Even(int deltaX){
+        if(deltaX%2 == 0){
+            
+        }else{
+            deltaX += 1;
+        }
+        return deltaX;
     }
 
     protected void snapToDestination() {
@@ -347,9 +365,12 @@ public class SlidingMenuView extends ViewGroup{
         for(int i=0;i<whichScreen;i++){
         	newX+=getChildAt(i).getWidth();
         }
-        newX =Math.min(totalWidth - getWidth(), newX);
+        newX = Math.min(totalWidth - getWidth(), newX);
         final int delta = newX - getScrollX();
-        mScroller.startScroll(getScrollX(), 0, delta, 0, Math.abs(delta) * 2);
+        int duration = Math.abs(delta)*3;
+        //TODO 松开手后自动滑动
+        mScroller.startScroll(getScrollX(), 0, delta, 0, duration);
+        onViewTouchMoveListener.OnViewChange(getScrollX(), delta,whichScreen, duration);
         invalidate();
     }
     void moveToDefaultScreen() {
@@ -368,4 +389,7 @@ public class SlidingMenuView extends ViewGroup{
 			child.setClickable(true);
 		}
 	}
+	public void setOnViewTouchMoveListener(OnViewTouchMoveListener onViewTouchMoveListener){
+        this.onViewTouchMoveListener = onViewTouchMoveListener;
+    }
 }

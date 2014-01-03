@@ -27,7 +27,10 @@ import com.wise.data.BrankModel;
 import com.wise.data.CarData;
 import com.wise.extend.FaceConversionUtil;
 import com.wise.extend.FaceRelativeLayout;
+import com.wise.extend.OnViewTouchMoveListener;
+import com.wise.extend.PicHorizontalScrollView;
 import com.wise.extend.SlidingMenuView;
+import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Config;
 import com.wise.pubclas.NetThread;
 import com.wise.service.SaveSettingData;
@@ -36,6 +39,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.hardware.Camera.Size;
 import android.os.Bundle;
@@ -82,6 +86,9 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 	
 	private ParseFaceThread thread = null;
 	private SaveSettingData saveSettingData;
+	double Multiple = 0.5;
+	PicHorizontalScrollView hsv_pic;
+	ImageView iv_pic;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -89,11 +96,48 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 		
 		thread = new ParseFaceThread();
 		thread.start();
-		
+		hsv_pic = (PicHorizontalScrollView) findViewById(R.id.hsv_pic);
 		ActivityFactory.A = this;
 		slidingMenuView = (SlidingMenuView) findViewById(R.id.sliding_menu_view);      
         tabcontent = (ViewGroup) slidingMenuView.findViewById(R.id.sliding_body);
         ActivityFactory.v = tabcontent;
+        ActivityFactory.S = slidingMenuView;
+        slidingMenuView.setOnViewTouchMoveListener(new OnViewTouchMoveListener() {            
+            @Override
+            public void OnViewMove(int x) {
+                hsv_pic.scrollBy((int) (x * Multiple), 0);
+            }
+            
+            @Override
+            public void OnViewLoad(int width, int delta) {
+                int pic_width = (int) (delta * Multiple);
+                hsv_pic.SetFristScreenWidth(pic_width);
+                hsv_pic.snapToPic(0, delta,1, 500);
+            }
+            
+            @Override
+            public void OnViewChange(int ScrollX, int delta, int whichScreen,
+                    int duration) {
+                ScrollX = (int) (ScrollX * Multiple);
+                delta = (int) (delta * Multiple);
+                hsv_pic.snapToPic(ScrollX, delta,whichScreen, duration);
+            }
+        });
+        BlurImage blurImage = new BlurImage();
+        // 设置图片的宽高
+        iv_pic = (ImageView) findViewById(R.id.iv_pic);
+        // 模糊图片
+        Bitmap bitmap_main = blurImage.readBitMap(this, R.drawable.bg);
+        // 覆盖图片，一张灰色不透明图片
+        Bitmap bitmap_over = blurImage.readBitMap(this, R.drawable.gray);
+        // 创建一个和原图片宽和高一样的bitmap
+        Bitmap bitmap = Bitmap.createBitmap(bitmap_main.getWidth(),
+                bitmap_main.getHeight(), bitmap_main.getConfig());
+        // 创建画布
+        Canvas canvas = new Canvas(bitmap);
+        // 模糊操作
+        blurImage.blurImage(bitmap_main, bitmap_over, canvas, 100);
+        iv_pic.setImageBitmap(bitmap);
         // 获取屏幕宽度
         WindowManager wm = (WindowManager) this
                 .getSystemService(Context.WINDOW_SERVICE);
@@ -110,22 +154,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         iv_activity_main_login_qq.setOnClickListener(onClickListener);
         iv_activity_main_logo = (ImageView) findViewById(R.id.iv_activity_main_logo);
         tv_activity_main_name = (TextView) findViewById(R.id.tv_activity_main_name);
-        view = findViewById(R.id.rl_activity_main_voice);
-        view.setOnClickListener(onClickListener);
-
-        wantRefuel = findViewById(R.id.rl_activity_main_oil);
-        wantMaintain = findViewById(R.id.rl_activity_main_maintain);
-        wantWash = findViewById(R.id.rl_activity_main_wash);
-        wantRescue = findViewById(R.id.rl_activity_main_help);
-        wantInsurance = findViewById(R.id.rl_activity_main_safety);
-        wantPark = findViewById(R.id.rl_activity_main_park);
-
-        wantRefuel.setOnClickListener(onClickListener);
-        wantMaintain.setOnClickListener(onClickListener);
-        wantWash.setOnClickListener(onClickListener);
-        wantRescue.setOnClickListener(onClickListener);
-        wantInsurance.setOnClickListener(onClickListener);
-        wantPark.setOnClickListener(onClickListener);
 
         // 车友圈
         TextView vehiclefriend = (TextView) findViewById(R.id.car_circle);
@@ -136,8 +164,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         // 设置中心
         TextView settingCenter = (TextView) findViewById(R.id.settting_center);
         settingCenter.setOnClickListener(onClickListener);
-        TextView tv_activity_main_right = (TextView) findViewById(R.id.tv_activity_main_right);
-        tv_activity_main_right.setWidth(width);// 设置菜单宽度
 
         LinearLayout ll_activity_main_car_remind = (LinearLayout) findViewById(R.id.ll_activity_main_car_remind);
         ll_activity_main_car_remind.setOnClickListener(onClickListener);

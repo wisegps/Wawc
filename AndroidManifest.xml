@@ -40,6 +40,7 @@
         android:theme="@style/AppTheme" >
         
         <activity android:name=".WelcomeActivity" android:theme="@android:style/Theme.NoTitleBar">
+            
         </activity>
         <activity android:name=".MainActivity" android:theme="@android:style/Theme.NoTitleBar">                        
             <intent-filter>
@@ -81,6 +82,7 @@
         <activity android:name=".ShareActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".SearchMapActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".ImageActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".ActivitySearch" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity
             android:name="cn.sharesdk.framework.ShareSDKUIShell"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"

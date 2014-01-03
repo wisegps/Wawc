@@ -82,7 +82,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener{
 				ActivityFactory.A.LeftMenu();
 				break;
 			case R.id.iv_activity_car_home_search:
-				ActivityFactory.A.RightMenu();
+			    HomeActivity.this.startActivity(new Intent(HomeActivity.this, ActivitySearch.class));
 				break;
 			case R.id.bt_activity_home_help://救援
 				ToShare();
