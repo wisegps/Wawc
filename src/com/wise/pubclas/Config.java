@@ -54,4 +54,6 @@ public class Config {
 	 * SharedPreferences数据共享名称
 	 */
 	public static final String sharedPreferencesName = "userData";
+	
+	public static final String DefaultCity = "DefaultCity";
 }
