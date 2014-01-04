@@ -16,6 +16,7 @@
                 android:layout_width="1000dp"
                 android:layout_height="fill_parent"
                 android:scaleType="fitStart"
+                android:contentDescription="@string/app_name"
                 android:src="@drawable/bg"/>
         </LinearLayout>
     </com.wise.extend.PicHorizontalScrollView> 

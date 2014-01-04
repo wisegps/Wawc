@@ -1,12 +1,10 @@
 package com.wise.pubclas;
 
 import java.util.List;
-
-import android.content.SharedPreferences;
-
 import com.wise.data.CarData;
 
 public class Config {
+    public static String BaseUrl = "http://wiwc.api.wisegps.cn/";
 	/**
 	 * 获取版本信息用到
 	 */
