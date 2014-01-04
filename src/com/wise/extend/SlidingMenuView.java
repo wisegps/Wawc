@@ -10,6 +10,8 @@ import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.View.MeasureSpec;
 import android.widget.Scroller;
 
 /**
@@ -17,7 +19,7 @@ import android.widget.Scroller;
  * @author honesty
  */
 public class SlidingMenuView extends ViewGroup{
-	
+	private static final String TAG = "SlidingMenuView";
     private static final int INVALID_SCREEN = -1;
     private static final int SNAP_VELOCITY = 600;
     private int mDefaultScreen = 1;
@@ -47,9 +49,14 @@ public class SlidingMenuView extends ViewGroup{
 
     int totalWidth = 0;
     OnViewTouchMoveListener onViewTouchMoveListener;
-    
+    int width;
     public SlidingMenuView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
+        // 获取屏幕宽度
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        width = (int) (wm.getDefaultDisplay().getWidth() * 0.8);// 屏幕宽度
+        Log.d(TAG, ""+wm.getDefaultDisplay().getWidth());
+        Log.d(TAG, ""+width);
     }
     public SlidingMenuView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -107,9 +114,11 @@ public class SlidingMenuView extends ViewGroup{
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         measureViews(widthMeasureSpec, heightMeasureSpec);        
     }	
-	public void measureViews(int widthMeasureSpec, int heightMeasureSpec){	
-		View v1 = findViewById(R.id.left_sliding_tab);
-		v1.measure(v1.getLayoutParams().width+v1.getLeft()+v1.getRight(), heightMeasureSpec);
+	public void measureViews(int widthMeasureSpec, int heightMeasureSpec){
+        int width_v1 = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY);
+	    View v1 = findViewById(R.id.left_sliding_tab);
+		v1.measure(width_v1, heightMeasureSpec);
+		Log.d(TAG, "measureViews = " + width);
 		View v2 = findViewById(R.id.sliding_body);
 	    v2.measure(widthMeasureSpec, heightMeasureSpec);	    
 	}
@@ -367,7 +376,7 @@ public class SlidingMenuView extends ViewGroup{
         }
         newX = Math.min(totalWidth - getWidth(), newX);
         final int delta = newX - getScrollX();
-        int duration = Math.abs(delta)*3;
+        int duration = Math.abs(delta)*2;
         //TODO 松开手后自动滑动
         mScroller.startScroll(getScrollX(), 0, delta, 0, duration);
         onViewTouchMoveListener.OnViewChange(getScrollX(), delta,whichScreen, duration);

@@ -96,6 +96,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 		
 		thread = new ParseFaceThread();
 		thread.start();
+        
 		hsv_pic = (PicHorizontalScrollView) findViewById(R.id.hsv_pic);
 		ActivityFactory.A = this;
 		slidingMenuView = (SlidingMenuView) findViewById(R.id.sliding_menu_view);      
@@ -111,15 +112,13 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             @Override
             public void OnViewLoad(int width, int delta) {
                 int pic_width = (int) (delta * Multiple);
+                Log.d(TAG, "delta = " + delta + ",pic_width = " + pic_width);
                 hsv_pic.SetFristScreenWidth(pic_width);
                 hsv_pic.snapToPic(0, delta,1, 500);
             }
             
             @Override
-            public void OnViewChange(int ScrollX, int delta, int whichScreen,
-                    int duration) {
-                ScrollX = (int) (ScrollX * Multiple);
-                delta = (int) (delta * Multiple);
+            public void OnViewChange(int ScrollX, int delta, int whichScreen, int duration) {
                 hsv_pic.snapToPic(ScrollX, delta,whichScreen, duration);
             }
         });
@@ -138,12 +137,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         // 模糊操作
         blurImage.blurImage(bitmap_main, bitmap_over, canvas, 100);
         iv_pic.setImageBitmap(bitmap);
-        // 获取屏幕宽度
-        WindowManager wm = (WindowManager) this
-                .getSystemService(Context.WINDOW_SERVICE);
-        int width = (int) (wm.getDefaultDisplay().getWidth() * 0.8);// 屏幕宽度
-        TextView tv_activity_menu = (TextView) findViewById(R.id.tv_activity_menu);
-        tv_activity_menu.setWidth(width);
         RelativeLayout rl_activity_main_home = (RelativeLayout) findViewById(R.id.rl_activity_main_home);
         rl_activity_main_home.setOnClickListener(onClickListener);
         iv_activity_main_login_sina = (ImageView) findViewById(R.id.iv_activity_main_login_sina);

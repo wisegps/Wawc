@@ -199,19 +199,4 @@ public class MyVehicleActivity extends Activity {
 		dlg = new AlertDialog.Builder(MyVehicleActivity.this).setView(view).setCancelable(true).create();
 		dlg.show();
 	}
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if(isJump){
-				finish();
-			}
-			return false;//拦截load页面的返回事件
-		}
-		return super.onKeyDown(keyCode, event);
-	}
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		ActivityFactory.A.HideMenu();
-		return false;
-	}
 }
