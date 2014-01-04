@@ -402,7 +402,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         tabcontent.addView(vv);
         slidingMenuView.snapToScreen(1);
     }
-
     /**
      * 首页
      */
@@ -414,6 +413,23 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         tabcontent.addView(vv);
         slidingMenuView.snapToScreen(1);
     }
+	@Override
+	public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
+		Log.d(TAG, "登录成功" +arg0.getName());
+		Iterator iterator = arg2.entrySet().iterator();
+		while (iterator.hasNext()) {
+			Entry entry = (Entry)iterator.next();
+			System.out.println(entry.getKey() + "," + entry.getValue());
+			if(entry.getKey().equals("nickname")){
+				Config.qqUserName = (String) entry.getValue();
+				Log.e("QQ昵称","" + entry.getValue());
+			}
+		}
+
+        Message message = new Message();
+        message.what = Login;
+        handler.sendMessage(message);
+	}
 
     public void ToFriendHome() {
         if (platformQQ.getDb().isValid() || platformSina.getDb().isValid()) {
@@ -528,19 +544,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     @Override
     public void onCancel(Platform arg0, int arg1) {
         Log.d(TAG, "登录取消");
-    }
-
-    @Override
-    public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
-        Log.d(TAG, "登录成功" + arg0.getName());
-        Iterator iterator = arg2.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Entry entry = (Entry) iterator.next();
-            System.out.println(entry.getKey() + "," + entry.getValue());
-        }
-        Message message = new Message();
-        message.what = Login;
-        handler.sendMessage(message);
     }
 
     @Override
