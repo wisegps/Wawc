@@ -21,10 +21,10 @@ public class SaveSettingData {
 	}
 	public void saveData(String defaultCenter,boolean againstPush,boolean bugPush,boolean trafficDepartment){
 		editor = userData.edit();
-		editor.putString("defaultCenter", defaultCenter);
-		editor.putBoolean("againstPush", againstPush);
-		editor.putBoolean("bugPush", bugPush);
-		editor.putBoolean("trafficDepartment", trafficDepartment);
+		editor.putString(Config.defaultCenter_key, defaultCenter);
+		editor.putBoolean(Config.againstPush_key, againstPush);
+		editor.putBoolean(Config.faultPush_key, bugPush);
+		editor.putBoolean(Config.remaindPush_key, trafficDepartment);
 		editor.commit();
 	}
 	

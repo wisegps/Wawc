@@ -4,6 +4,7 @@ import com.wise.wawc.R;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -23,6 +24,7 @@ import android.widget.TextView;
 public class XListView extends ListView implements OnScrollListener {
 
 	private float mLastY = -1; // save event y
+	private float number = 0f;
 	private Scroller mScroller; // used for scroll back
 	private OnScrollListener mScrollListener; // user's scroll listener
 
@@ -270,17 +272,16 @@ public class XListView extends ListView implements OnScrollListener {
 		switch (ev.getAction()) {
 		case MotionEvent.ACTION_DOWN:
 			mLastY = ev.getRawY();
+			number = ev.getRawY();
 			break;
 		case MotionEvent.ACTION_MOVE:
 			final float deltaY = ev.getRawY() - mLastY;
 			mLastY = ev.getRawY();
-			if (getFirstVisiblePosition() == 0
-					&& (mHeaderView.getVisiableHeight() > 0 || deltaY > 0)) {
+			if (getFirstVisiblePosition() == 0 && (mHeaderView.getVisiableHeight() > 0 || deltaY > 0)) {
 				// the first item is showing, header has shown or pull down.
 				updateHeaderHeight(deltaY / OFFSET_RADIO);
 				invokeOnScrolling();
-			} else if (getLastVisiblePosition() == mTotalItemCount - 1
-					&& (mFooterView.getBottomMargin() > 0 || deltaY < 0)) {
+			} else if (getLastVisiblePosition() == mTotalItemCount - 1 && (mFooterView.getBottomMargin() > 0 || deltaY < 0)) {
 				// last item, already pulled up or want to pull up.
 				updateFooterHeight(-deltaY / OFFSET_RADIO);
 			}
@@ -307,6 +308,11 @@ public class XListView extends ListView implements OnScrollListener {
 				resetFooterHeight();
 			}
 			break;
+		}
+		if(MotionEvent.ACTION_UP == ev.getAction()){
+			if(number > ev.getRawY()){
+				mListViewListener.PullUp();
+			}
 		}
 		return super.onTouchEvent(ev);
 	}
@@ -364,5 +370,7 @@ public class XListView extends ListView implements OnScrollListener {
 		public void onRefresh();
 
 		public void onLoadMore();
+		
+		public void PullUp();
 	}
 }
