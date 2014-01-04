@@ -477,6 +477,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 			}
 		}
 	}
+	
 
 	@Override
 	public void onError(Platform arg0, int arg1, Throwable arg2) {
