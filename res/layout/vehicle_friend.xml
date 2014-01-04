@@ -41,13 +41,14 @@
         android:layout_height="120dip"
         android:background="@drawable/car" >
 
-        <ImageButton
+        <ImageView
             android:id="@+id/user_head"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:layout_margin="2dip"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:background="@drawable/ic_launcher" />
+            />
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -58,6 +59,7 @@
             android:paddingTop="3dip" >
 
             <TextView
+                android:id="@+id/tv_qq_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -89,7 +91,9 @@
         android:id="@+id/search"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:hint="Search" />
+        android:hint="Search"
+        android:visibility="gone"
+         />
     <!-- 显示详细评论信息 -->
 	
 	<RelativeLayout
@@ -102,47 +106,31 @@
 		        android:cacheColorHint="#00000000"
 		         >
 		    </com.wise.list.XListView>
-		    <LinearLayout 
+		    <RelativeLayout 
 		        android:layout_width="fill_parent"
         		android:layout_height="wrap_content"
         		android:layout_alignParentBottom="true"
-        		android:orientation="vertical"
 		        >
 		        <ImageView
 		            android:id="@+id/publish_article"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:background="@drawable/image"
-		            android:layout_gravity="right"
-		            android:layout_marginBottom="5dip"
-		            android:layout_marginRight="5dip"
-		            android:clickable="true"
+		            android:layout_alignParentRight="true"
 		             />
-		    <LinearLayout
-                android:id="@+id/say_something"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true" >
-
-                <!-- 聊天输入框 -->
-
-                <include
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    layout="@layout/custom_facerelativelayout" />
-            </LinearLayout>
-
-				<!-- 
-            	<EditText
-            	    android:id="@+id/say_something"
+			    <LinearLayout
+	                android:id="@+id/say_something"
 	                android:layout_width="fill_parent"
-	                android:layout_height="50dip"
-	                android:hint="说点什么..." 
-	                android:drawableRight="@drawable/ic_launcher"
-	                android:visibility="visible"
-	                android:minHeight="10dip"
-                />
-                 -->
-		    </LinearLayout>
+	                android:layout_height="wrap_content"
+	                android:layout_alignTop="@id/publish_article"
+	                android:visibility="gone"
+	                >
+	                <!-- 聊天输入框 -->
+	                <include
+	                    android:layout_width="fill_parent"
+	                    android:layout_height="wrap_content"
+	                    layout="@layout/custom_facerelativelayout" />
+	            </LinearLayout>
+		    </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>

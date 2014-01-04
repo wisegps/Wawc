@@ -19,6 +19,7 @@ import com.wise.extend.FaceConversionUtil;
 import com.wise.extend.FaceRelativeLayout;
 import com.wise.extend.SlidingMenuView;
 import com.wise.pubclas.Config;
+import com.wise.service.DBOperation;
 import com.wise.service.SaveSettingData;
 
 import android.app.ActivityGroup;
@@ -59,16 +60,16 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 	ImageView iv_activity_main_logo,iv_activity_main_qq,iv_activity_main_sina,iv_activity_main_login_sina,iv_activity_main_login_qq;
 	TextView tv_activity_main_name;
 	View view = null;
-	//你要做什么常用命令
-	private View wantRefuel;   //要加油
-	private View wantMaintain;  //维保
-	private View wantWash;    //洗车
-	private View wantRescue;   //救援
-	private View wantInsurance;  //报险
-	private View wantPark;     //停车
+	private View wantRefuel;   
+	private View wantMaintain;  
+	private View wantWash;    
+	private View wantRescue;   
+	private View wantInsurance;  
+	private View wantPark;     
 	
 	private ParseFaceThread thread = null;
 	private SaveSettingData saveSettingData;
+	DBOperation dBOperation = new DBOperation(MainActivity.this);
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -113,13 +114,13 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         wantInsurance.setOnClickListener(onClickListener);
         wantPark.setOnClickListener(onClickListener);
         
-        //车友圈
+
         TextView vehiclefriend = (TextView)findViewById(R.id.car_circle);
         vehiclefriend.setOnClickListener(onClickListener);
-        //我的收藏
+
         TextView myCollection = (TextView)findViewById(R.id.menu_my_collection);
         myCollection.setOnClickListener(onClickListener);
-        //设置中心
+
         TextView settingCenter = (TextView)findViewById(R.id.settting_center);
         settingCenter.setOnClickListener(onClickListener);
         TextView tv_activity_main_right = (TextView)findViewById(R.id.tv_activity_main_right);
@@ -154,7 +155,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 			case R.id.rl_activity_main_home:
 				ToFriendHome();
 				break;
-				//车友圈
 			case R.id.car_circle:
 				ToVehicleFriends();
 				break;
@@ -164,7 +164,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 			case R.id.ll_activity_main_mycar:
 				ToMyCar();
 				break;
-				//我的收藏
+
 			case R.id.menu_my_collection:
 				ToMyCollection();
 				break;
@@ -174,7 +174,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 			case R.id.ll_activity_main_orders:
 				Toorders();
 				break;
-				//设置中心
+
 			case R.id.settting_center:
 				ToSettingCenter();
 				break;
@@ -187,7 +187,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 				platformSina.showUser(null);
 				break;
 			case R.id.rl_activity_main_oil: // 加油
-//				startActivity(new Intent(MainActivity.this,SearchResultActivity.class));
 				break;
 			case R.id.rl_activity_main_maintain: // 维保
 
@@ -271,6 +270,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 		public void run() {
 			super.run();
 			bimage =  getBitmapFromURL(url);
+			Config.UserIcon = bimage;
 			Message message = new Message();
 			message.what = GET_PIC;
 			handler.sendMessage(message);
@@ -327,6 +327,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 	}
 	public void ToFriendHome(){
 		if(platformQQ.getDb().isValid() || platformSina.getDb().isValid()){
+			
 			Screen = 1;
 	        Intent i = new Intent(MainActivity.this,FriendHomeActivity.class);
 	    	View v = getLocalActivityManager().startActivity(FriendHomeActivity.class.getName(), i).getDecorView();
@@ -470,6 +471,10 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
 		while (iterator.hasNext()) {
 			Entry entry = (Entry)iterator.next();
 			System.out.println(entry.getKey() + "," + entry.getValue());
+			if(entry.getKey().equals("nickname")){
+				Config.qqUserName = (String) entry.getValue();
+				Log.e("QQ昵称","" + entry.getValue());
+			}
 		}
 	}
 

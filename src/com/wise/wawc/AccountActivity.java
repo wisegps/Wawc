@@ -49,6 +49,7 @@ public class AccountActivity extends Activity{
 				Platform platformSina = ShareSDK.getPlatform(AccountActivity.this,SinaWeibo.NAME);
 				platformQQ.removeAccount();
 				platformSina.removeAccount();
+				AccountActivity.this.finish();
 				break;
 			}
 		}

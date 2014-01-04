@@ -5,11 +5,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
+import com.wise.pubclas.Config;
+import com.wise.service.DBOperation;
 import com.wise.service.MyAdapter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,9 +21,11 @@ import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 /**
  * 车友圈
  * @author 王庆文
@@ -33,9 +38,15 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	private ImageView newArticle = null;
 	private View saySomething;
-	private ImageButton userInformation;
 	
-	private Handler handler = null;
+	private MyHandler myHandler = null;
+	private EditText searchView = null;
+	
+	private ImageView qqUserHead = null;
+	private TextView qqUserName = null;
+//	tv_qq_user_name
+	
+	private static final int setUserIcon = 4;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -49,8 +60,10 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		newArticle = (ImageView) findViewById(R.id.publish_article);
 		newArticle.setOnClickListener(new ClickListener());
 		saySomething = (View) findViewById(R.id.say_something);
-		userInformation = (ImageButton) findViewById(R.id.user_head);
-		userInformation.setOnClickListener(new ClickListener());
+		searchView = (EditText) findViewById(R.id.search);
+		qqUserHead = (ImageView) findViewById(R.id.user_head);
+		qqUserHead.setOnClickListener(new ClickListener());
+		qqUserName = (TextView) findViewById(R.id.tv_qq_user_name);
 		
 		articleList = (XListView) findViewById(R.id.article_list);
 		articleList.setXListViewListener(this);
@@ -59,11 +72,16 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		
 		myAdapter = new MyAdapter(this,saySomething);
 		articleList.setAdapter(myAdapter);
-		handler = new Handler();
+		
+		myHandler = new MyHandler();
+		Message msg = new Message();
+		msg.what = setUserIcon;
+		myHandler.sendMessage(msg);
 		
 		articleList.setOnScrollListener(new OnScrollListener() {
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 				saySomething.setVisibility(View.GONE);
+//				searchView.setVisibility(View.GONE);
 				myAdapter.isClick = false;
 			}
 			public void onScroll(AbsListView view, int firstVisibleItem,int visibleItemCount, int totalItemCount) {
@@ -101,8 +119,9 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	@Override  //下拉刷新
 	public void onRefresh() {
+		searchView.setVisibility(View.VISIBLE);
 		Log.e("下拉刷新","下拉刷新");
-		handler.postDelayed(new Runnable() {
+		myHandler.postDelayed(new Runnable() {
 			public void run() {
 				onLoad();
 			}
@@ -111,7 +130,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	@Override   //上拉加载
 	public void onLoadMore() {
 		Log.e("上拉加载","上拉加载");
-		handler.postDelayed(new Runnable() {
+		myHandler.postDelayed(new Runnable() {
 			public void run() {
 //				myAdapter.notifyDataSetChanged();
 				onLoad();
@@ -127,5 +146,30 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		articleList.stopRefresh();
 		articleList.stopLoadMore();
 		articleList.setRefreshTime(date);
+	}
+	public void PullUp() {
+		searchView.setVisibility(View.GONE);
+	}
+	
+	class MyHandler extends Handler{
+		public void handleMessage(Message msg) {
+			switch(msg.what){
+			case setUserIcon:
+				if(Config.UserIcon != null){
+					qqUserHead.setImageBitmap(Config.UserIcon);
+				}else{
+					qqUserHead.setBackgroundResource(R.drawable.ic_launcher);
+				}
+				
+				if(!"".equals(Config.qqUserName)){
+					qqUserName.setText(Config.qqUserName);
+				}else{
+					qqUserName.setText("未登录");
+				}
+				
+				break;
+			}
+			super.handleMessage(msg);
+		}
 	}
 }
