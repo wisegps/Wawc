@@ -73,26 +73,6 @@ public class Config {
 	 */
 	public static Bitmap UserIcon = null;
 	/**
-	 * 数据库名称
-	 */
-	public static String DBName = "com.wise.wawc";
-	/**
-	 * 数据库版本
-	 */
-	public static int DBVersion = 1;
-	/**
-	 * 说说表
-	 */
-	public static final String articleTable = "article_tb";
-	/**
-	 * 评论表
-	 */
-	public static final String commentTable = "comment_tb";
-	/**
-	 * 说说图片表
-	 */
-	public static final String imageTable = "image_tb";
-	/**
 	 * auth_code
 	 */
 	public static String auth_code;
@@ -100,4 +80,36 @@ public class Config {
 	 * cust_id
 	 */
 	public static String cust_id;
+	/**
+	 * 基础表
+	 */
+	public static String TB_Base = "TB_Base";
+	/**
+	 * 车友圈
+	 */
+	public static String TB_VehicleFriend = "TB_VehicleFriend";
+	/**
+	 * 爱车故障
+	 */
+	public static String TB_Faults = "TB_Faults";
+	/**
+	 * 行程记录
+	 */
+	public static String TB_TripList = "TB_TripList";
+	/**
+	 * 单次行程记录详细
+	 */
+	public static String TB_Trip = "TB_Trip";
+	/**
+	 * 我的爱车
+	 */
+	public static String TB_Vehicle = "TB_Vehicle";
+	/**
+	 * 我的终端
+	 */
+	public static String TB_Devices = "TB_Devices";
+	/**
+	 * 我的收藏
+	 */
+	public static String TB_Collection = "TB_Collection";
 }
