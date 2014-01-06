@@ -64,7 +64,7 @@ public class Config {
 	/**
 	 * QQ登录返回的数据
 	 */
-	public static String qqUserName = null;
+	public static String qqUserName = "";
 	/**
 	 * QQ用户登录之后的头像
 	 */

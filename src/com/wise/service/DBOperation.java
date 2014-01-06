@@ -20,6 +20,7 @@ public class DBOperation {
 	}
 	
 	public void newArticle(Object[] obj){
+		Log.e("添加数据","添加数据");
 		SQLiteDatabase db = dBHelper.getWritableDatabase();
 		try {
 				db.execSQL("insert into "+ Config.articleTable+" (publish_user, publish_time,publish_content,article_comment_id)values(?, ?, ?, ?)",
@@ -55,7 +56,7 @@ public class DBOperation {
 	public List<Article> selectArticle(int start,int pageSize){
 //		create table article_tb(article_id integer primary key autoincrement, publish_user varchar(30),publish_time varchar(20), publish_content text,article_comment_id integer)
 		SQLiteDatabase db = dBHelper.getReadableDatabase();
-		Cursor cursor = db.rawQuery("select * from article_tb order by article_id limit ?, ?", new String[]{String.valueOf(0), String.valueOf(10)});
+		Cursor cursor = db.rawQuery("select * from article_tb order by publish_time desc limit ?, ?", new String[]{String.valueOf(0), String.valueOf(10)});
 		List<Article> Articlelist = new ArrayList<Article>();
 		while (cursor.moveToNext()){ //如果移动成功，才返回真
 			Article article = new Article();
@@ -65,6 +66,7 @@ public class DBOperation {
 			article.setPublish_content(cursor.getString(cursor.getColumnIndex("publish_content")));
 			article.setArticle_comment_id(cursor.getInt(cursor.getColumnIndex("article_comment_id")));
 			Articlelist.add(article);
+			Log.e("时间--->",cursor.getString(cursor.getColumnIndex("publish_time")));
 		}
 		return Articlelist;
 	}

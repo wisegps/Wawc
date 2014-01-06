@@ -451,8 +451,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     public void ToVehicleFriends() {
         Intent intent = new Intent(MainActivity.this,
                 VehicleFriendActivity.class);
-        View vv = getLocalActivityManager().startActivity(
-                VehicleFriendActivity.class.getName(), intent).getDecorView();
+        View vv = getLocalActivityManager().startActivity(VehicleFriendActivity.class.getName(), intent).getDecorView();
         tabcontent.removeAllViews();
         tabcontent.addView(vv);
         slidingMenuView.snapToScreen(1);

@@ -2,7 +2,11 @@ package com.wise.wawc;
 
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import com.wise.data.Article;
 import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
 import com.wise.pubclas.Config;
@@ -28,6 +32,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 /**
  * 车友圈
  * @author 王庆文
@@ -46,9 +51,13 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	private ImageView qqUserHead = null;
 	private TextView qqUserName = null;
-//	tv_qq_user_name
+	
+	private DBOperation dBOperation = null;
+	private List<Object[]> objList = new ArrayList<Object[]>();
+	
 	
 	private static final int setUserIcon = 4;
+	private List<Article> artList = null;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -72,13 +81,18 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		//不设置上拉加载无效
 		articleList.setPullLoadEnable(true);
 		
-		myAdapter = new MyAdapter(this,saySomething);
-		articleList.setAdapter(myAdapter);
+		dBOperation = new DBOperation(VehicleFriendActivity.this);
+		
 		
 		myHandler = new MyHandler();
 		Message msg = new Message();
 		msg.what = setUserIcon;
 		myHandler.sendMessage(msg);
+		
+		artList = dBOperation.selectArticle(0, 10);
+		myAdapter = new MyAdapter(this,saySomething,artList);
+		articleList.setAdapter(myAdapter);
+	
 		
 		articleList.setOnScrollListener(new OnScrollListener() {
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -104,7 +118,11 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				ActivityFactory.A.LeftMenu();
 				break;
 			case R.id.publish_article:  //发表新文章
-				startActivity(new Intent(VehicleFriendActivity.this,NewArticleActivity.class));
+				if("".equals(Config.qqUserName)){
+					Toast.makeText(getApplicationContext(), getString(R.string.please_login), 0).show();
+				}else{
+					startActivity(new Intent(VehicleFriendActivity.this,NewArticleActivity.class));
+				}
 				break;
 			case R.id.home:
 				ActivityFactory.A.ToHome();
@@ -138,6 +156,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	}
 	@Override   //上拉加载
 	public void onLoadMore() {
+		myAdapter.refreshDates(dBOperation.selectArticle(0, 10));
 		Log.e("上拉加载","上拉加载");
 		myHandler.postDelayed(new Runnable() {
 			public void run() {
@@ -169,11 +188,47 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				}else{
 					qqUserHead.setBackgroundResource(R.drawable.ic_launcher);
 				}
-				
+				Log.e("用户昵称",Config.qqUserName);
 				if(!"".equals(Config.qqUserName)){
 					qqUserName.setText(Config.qqUserName);
 				}else{
 					qqUserName.setText("未登录");
+				}
+				
+				/**
+				 * 测试用
+				 */
+				List<Date> dates = new ArrayList<Date>();
+				Date date1 = new Date("2013/05/22 13:08:34");
+				//用这个日期测试
+				Date date2 = new Date("2014/06/21 18:28:14");
+				Date date3 = new Date("2014/06/20 13:08:34");
+				Date date4 = new Date("2014/06/19 13:08:34");
+				Date date5 = new Date("2014/03/22 13:08:34");
+				Date date6 = new Date("2013/04/24 13:08:34");
+				Date date7 = new Date("2013/03/22 13:08:34");
+				Date date8 = new Date("2013/02/22 13:08:34");
+				Date date9 = new Date("2013/01/22 13:08:34");
+				Date date10 = new Date("2013/06/22 13:08:34");
+				dates.add(date10);
+				dates.add(date9);
+				dates.add(date8);
+				dates.add(date7);
+				dates.add(date6);
+				dates.add(date5);
+				dates.add(date4);
+				dates.add(date3);
+				dates.add(date2);
+				dates.add(date1);
+				
+//				模拟说说列表
+				
+				if(dBOperation.selectArticle(0, 10).size() == 0){
+					for(int i = 0 ; i < 10 ; i ++){
+						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+						sdf.format(dates.get(i));
+						dBOperation.newArticle(new Object[]{"张三",sdf.format(dates.get(i)),"宝马",0});
+					}
 				}
 				
 				break;
