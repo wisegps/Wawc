@@ -17,22 +17,27 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.MarginLayoutParams;
+import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 /**
  * 选择城市
- * 
  * @author honesty
  */
 public class SelectCityActivity extends Activity{
     private static final String TAG = "SelectCityActivity";
     
 	ListView lv_activity_select_city;
+	LinearLayout ll_activity_select_city;
+	TextView tv_select_city_title;
 	private TextView letterIndex = null;    //字母索引选中提示框
 	private SideBar sideBar = null;         //右侧字母索引栏
 	
@@ -45,6 +50,8 @@ public class SelectCityActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_select_city);
+        ll_activity_select_city = (LinearLayout)findViewById(R.id.ll_activity_select_city);
+        tv_select_city_title = (TextView)findViewById(R.id.tv_select_city_title);
 		lv_activity_select_city = (ListView) findViewById(R.id.lv_activity_select_city);
 		Intent intent = getIntent();
 		String Citys = intent.getStringExtra("Citys");
@@ -70,7 +77,7 @@ public class SelectCityActivity extends Activity{
         allCityAdapter = new AllCityAdapter(cityDatas);
         lv_activity_select_city.setAdapter(allCityAdapter);
         lv_activity_select_city.setOnItemClickListener(onItemClickListener);
-        
+        setupListView();
         letterIndex = (TextView) findViewById(R.id.dialog);
         sideBar = (SideBar) findViewById(R.id.sidrbar);
         sideBar.setTextView(letterIndex);   //选中某个拼音索引   提示框显示
@@ -99,11 +106,49 @@ public class SelectCityActivity extends Activity{
             }            
         }
     };
+    String LastLetter = "A";
+    private void setupListView(){
+        lv_activity_select_city.setOnScrollListener(new OnScrollListener() {            
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {}            
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                    int visibleItemCount, int totalItemCount) {
+                
+                String letter = cityDatas.get(firstVisibleItem).getFirst_letter();
+                if(letter.equals(LastLetter)){
+                    
+                }
+                if(!letter.equals(LastLetter)){
+                    //Log.d(TAG, "letter = " + letter + ", LastLetter = " + LastLetter);
+                    //产生碰撞挤压效果
+                    View childView = view.getChildAt(0);
+                    if (childView != null) {
+                        int titleHeight = ll_activity_select_city.getHeight();
+                        int bottom = childView.getBottom();
+                        MarginLayoutParams params = (MarginLayoutParams) ll_activity_select_city.getLayoutParams();
+                        Log.d(TAG, "bottom = " + bottom + ",titleHeight = " + titleHeight);
+                        if (bottom < titleHeight) {
+                            float pushedDistance = bottom - titleHeight;
+                            params.topMargin = (int) pushedDistance;
+                            ll_activity_select_city.setLayoutParams(params);
+                        } else {
+                            if (params.topMargin != 0) {
+                                params.topMargin = 0;
+                                ll_activity_select_city.setLayoutParams(params);
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    }
 	/**
 	 * 解析城市列表
 	 * @param Citys
 	 */
 	private void GetCityList(String Citys) {
+	    
 	    try {
             JSONArray jsonArray = new JSONArray(Citys);
             for(int i = 0 ; i < jsonArray.length() ; i++){

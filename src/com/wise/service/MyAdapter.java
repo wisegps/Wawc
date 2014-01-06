@@ -1,4 +1,7 @@
 package com.wise.service;
+import java.util.List;
+
+import com.wise.data.Article;
 import com.wise.wawc.ArticleDetailActivity;
 import com.wise.wawc.FriendHomeActivity;
 import com.wise.wawc.FriendInformationActivity;
@@ -7,6 +10,7 @@ import com.wise.wawc.R;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.text.Layout;
@@ -35,26 +39,31 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 	private View view;
 	private Context context;
 	public static boolean isClick = false;
-	private TextView detailArticle;  //点击查看详细信息
+	private TextView articel_user_name;  //点击查看详细信息
+	private TextView tv_article_content;
+	private TextView publish_time;
 	private TableLayout tableLayout;  //用户发表的图片
 	private TableRow tableRow;
 	private ImageView imageView;
 	private int imageNumber = 0;
 	
+	private List<Article> articleList;
+	
 	int padding = 40;
-	public MyAdapter(Context context,View v){
+	public MyAdapter(Context context,View v,List<Article> articleList){
 		inflater=LayoutInflater.from(context);
 		this.view = v;
 		this.context = context;
+		this.articleList = articleList;
 	}
 	public int getCount() {
-		return 10;
+		return articleList.size();
 	}
 	public Object getItem(int position) {
-		return null;
+		return articleList.get(position);
 	}
 	public long getItemId(int position) {
-		return 10;
+		return position;
 	}
 	public View getView(int position, View convertView, ViewGroup parent) {
 		convertView = inflater.inflate(R.layout.article_adapter, null);
@@ -82,10 +91,17 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 		}
 		saySomething = (ImageView) convertView.findViewById(R.id.list_say_somthing);
 		userHead = (ImageView) convertView.findViewById(R.id.head_article);
-		detailArticle = (TextView) convertView.findViewById(R.id.detail_article);
+		articel_user_name = (TextView) convertView.findViewById(R.id.article_user_name);
+		tv_article_content = (TextView) convertView.findViewById(R.id.tv_article_content);
+		publish_time = (TextView) convertView.findViewById(R.id.publish_time);
+		
+		publish_time.setText(getTime(articleList.get(position).getPublish_time()));
+		articel_user_name.setText(articleList.get(position).getPublish_user());
+		tv_article_content.setText(articleList.get(position).getPublish_content());
+		
 		saySomething.setOnClickListener(this);
 		userHead.setOnClickListener(this);
-		detailArticle.setOnClickListener(this);
+		articel_user_name.setOnClickListener(this);
 		return convertView;
 	}
 	public void onClick(View v) {
@@ -105,7 +121,7 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 		case R.id.head_article:   //点击用户头像 进入好友主页
 			context.startActivity(new Intent(context,FriendHomeActivity.class));
 			break;
-		case R.id.detail_article:   //点击进入文章的详细介绍
+		case R.id.article_user_name:   //点击进入文章的详细介绍
 			Log.e("进入文章详情","进入文章详情");
 			context.startActivity(new Intent(context,ArticleDetailActivity.class));
 			break;
@@ -113,5 +129,25 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 //			context.startActivity(new Intent(context,ImageActivity.class));
 			break;
 		}
+	}
+	
+	public String getTime(String time){
+	     String currentTime = "2014-06-21 18:28:14";
+	     if(Integer.parseInt(time.substring(0,4)) < Integer.parseInt(currentTime.substring(0,4))){
+	    	 return time.substring(0, 16);
+	     }else{
+	    	 if((Integer.parseInt(currentTime.substring(8,10)) - Integer.parseInt(time.substring(8,10))) == 1){
+	    		 return "昨天" + time.substring(11, 16);
+	    	 }else if((Integer.parseInt(currentTime.substring(8,10)) - Integer.parseInt(time.substring(8,10))) == 2){
+	    		 return "前天" + time.substring(11, 16);
+	    	 }
+	    	 return time.substring(5, 16);
+	     }
+	}
+	
+	public void refreshDates(List<Article> articleList){ 
+		this.articleList.clear();
+		this.articleList = articleList;
+		this.notifyDataSetChanged();
 	}
 }
