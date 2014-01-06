@@ -41,6 +41,7 @@
         android:layout_below="@id/rl_activity_home_top"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:background="#6c000000"
         android:orientation="vertical">
         <RelativeLayout 
             android:id="@+id/rl_activity_home_car"
@@ -56,9 +57,9 @@
 	            android:id="@+id/item_home_car_number"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:textColor="@color/black"
 	            android:layout_centerVertical="true"
 	            android:layout_toRightOf="@id/item_home_car_icon"
+	            android:textColor="@color/white"
 	            android:text="粤B12345"/>
 	        <ImageView
 	            android:id="@+id/item_home_car_share" 
@@ -81,14 +82,14 @@
 	            android:id="@+id/tv_activity_home_car_adress"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
-	            android:textColor="@color/black"
+	            android:textColor="@color/white"
 	            android:layout_gravity="center_vertical"
 	            android:text="深圳市南山区南山大道115号，招商银行附近, 大厦B塔"/>
 	    </LinearLayout>
 	    <TextView 
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:textColor="@color/black"
+	        android:textColor="@color/white"
 	        android:gravity="right"
 	        android:text="5分钟前更新"/>
 	    <LinearLayout

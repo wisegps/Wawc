@@ -1,7 +1,12 @@
 package com.wise.wawc;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import com.wise.pubclas.Config;
 import com.wise.pubclas.GetSystem;
+import com.wise.pubclas.NetThread;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -11,6 +16,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.widget.TextView;
 
 /**
@@ -19,7 +25,10 @@ import android.widget.TextView;
  * @author honesty
  */
 public class WelcomeActivity extends Activity {
+    private static final String TAG = "WelcomeActivity";
+    
     private final static int Wait = 1;
+    private final static int Get_city = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +56,11 @@ public class WelcomeActivity extends Activity {
             super.handleMessage(msg);
             switch (msg.what) {
             case Wait:
-                startActivity(new Intent(WelcomeActivity.this,
-                        MainActivity.class));
+                startActivity(new Intent(WelcomeActivity.this,MainActivity.class));
                 finish();
                 break;
-
-            default:
+            case Get_city:
+                TurnActivity(msg.obj.toString());
                 break;
             }
         }
@@ -124,6 +132,13 @@ public class WelcomeActivity extends Activity {
         return false;
     }
     private void GetCityList(){
-        //http://wiwc.api.wisegps.cn/base/city?is_hot=0
+        String url = Config.BaseUrl + "base/city?is_hot=0";
+        new Thread(new NetThread.GetDataThread(handler, url, Get_city)).start();
+    }
+    private void TurnActivity(String result){
+        Intent intent = new Intent(WelcomeActivity.this, SelectCityActivity.class);
+        intent.putExtra("Citys", result);
+        startActivity(intent);
+        finish();
     }
 }

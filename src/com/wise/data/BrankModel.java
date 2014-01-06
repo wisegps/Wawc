@@ -15,4 +15,10 @@ public class BrankModel {
 	public void setVehicleLetter(String vehicleLetter) {
 		this.vehicleLetter = vehicleLetter;
 	}
+    @Override
+    public String toString() {
+        return "BrankModel [vehicleBrank=" + vehicleBrank + ", vehicleLetter="
+                + vehicleLetter + "]";
+    }
+	
 }

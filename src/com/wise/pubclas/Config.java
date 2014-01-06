@@ -5,6 +5,9 @@ import android.graphics.Bitmap;
 import com.wise.data.CarData;
 
 public class Config {
+    /**
+     * 服务器地址："http://wiwc.api.wisegps.cn/"
+     */
     public static String BaseUrl = "http://wiwc.api.wisegps.cn/";
 	/**
 	 * 获取版本信息用到
@@ -89,4 +92,12 @@ public class Config {
 	 * 说说图片表
 	 */
 	public static final String imageTable = "image_tb";
+	/**
+	 * auth_code
+	 */
+	public static String auth_code;
+	/**
+	 * cust_id
+	 */
+	public static String cust_id;
 }

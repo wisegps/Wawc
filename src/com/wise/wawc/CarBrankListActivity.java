@@ -109,7 +109,9 @@ public class CarBrankListActivity extends Activity {
 		brankModelList = filledData(getResources().getStringArray(R.array.date));
 		//排序
 		Collections.sort(brankModelList, comparator);
-		
+		for(int i = 0 ; i < brankModelList.size() ; i++){
+		    System.out.println(brankModelList.get(i).toString());
+		}
 		adapter = new BrankAdapter(this, brankModelList);
 		vehicleBrankList.setAdapter(adapter);
 		

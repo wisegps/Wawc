@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -11,6 +12,10 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Map.Entry;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 import cn.sharesdk.framework.Platform;
@@ -63,65 +68,74 @@ import android.widget.Toast;
  * 
  * @author honesty
  */
-public class MainActivity extends ActivityGroup implements PlatformActionListener{
-	private static final String TAG = "MainActivity";
-	
-	private static final int Login = 1;
-	private static final int GET_PIC = 2;
-	SlidingMenuView slidingMenuView;	
-	ViewGroup tabcontent;
-	int Screen = 1;
-	Platform platformQQ;
-	Platform platformSina;
-	ImageView iv_activity_main_logo,iv_activity_main_qq,iv_activity_main_sina,iv_activity_main_login_sina,iv_activity_main_login_qq;
-	TextView tv_activity_main_name;
-	View view = null;
-	//你要做什么常用命令
-	private View wantRefuel;   //要加油
-	private View wantMaintain;  //维保
-	private View wantWash;    //洗车
-	private View wantRescue;   //救援
-	private View wantInsurance;  //报险
-	private View wantPark;     //停车
-	
-	private ParseFaceThread thread = null;
-	private SaveSettingData saveSettingData;
-	double Multiple = 0.5;
-	PicHorizontalScrollView hsv_pic;
-	ImageView iv_pic;
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_main);
-		
-		thread = new ParseFaceThread();
-		thread.start();
-        
-		hsv_pic = (PicHorizontalScrollView) findViewById(R.id.hsv_pic);
-		ActivityFactory.A = this;
-		slidingMenuView = (SlidingMenuView) findViewById(R.id.sliding_menu_view);      
-        tabcontent = (ViewGroup) slidingMenuView.findViewById(R.id.sliding_body);
+public class MainActivity extends ActivityGroup implements
+        PlatformActionListener {
+    private static final String TAG = "MainActivity";
+
+    private static final int Login = 1;
+    private static final int GET_PIC = 2;
+    private static final int Bind_ID = 3;
+    SlidingMenuView slidingMenuView;
+    ViewGroup tabcontent;
+    int Screen = 1;
+    Platform platformQQ;
+    Platform platformSina;
+    ImageView iv_activity_main_logo, iv_activity_main_qq,
+            iv_activity_main_sina, iv_activity_main_login_sina,
+            iv_activity_main_login_qq;
+    TextView tv_activity_main_name;
+    View view = null;
+    // 你要做什么常用命令
+    private View wantRefuel; // 要加油
+    private View wantMaintain; // 维保
+    private View wantWash; // 洗车
+    private View wantRescue; // 救援
+    private View wantInsurance; // 报险
+    private View wantPark; // 停车
+
+    private ParseFaceThread thread = null;
+    private SaveSettingData saveSettingData;
+    double Multiple = 0.5;
+    PicHorizontalScrollView hsv_pic;
+    ImageView iv_pic;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        thread = new ParseFaceThread();
+        thread.start();
+
+        hsv_pic = (PicHorizontalScrollView) findViewById(R.id.hsv_pic);
+        ActivityFactory.A = this;
+        slidingMenuView = (SlidingMenuView) findViewById(R.id.sliding_menu_view);
+        tabcontent = (ViewGroup) slidingMenuView
+                .findViewById(R.id.sliding_body);
         ActivityFactory.v = tabcontent;
         ActivityFactory.S = slidingMenuView;
-        slidingMenuView.setOnViewTouchMoveListener(new OnViewTouchMoveListener() {            
-            @Override
-            public void OnViewMove(int x) {
-                hsv_pic.scrollBy((int) (x * Multiple), 0);
-            }
-            
-            @Override
-            public void OnViewLoad(int width, int delta) {
-                int pic_width = (int) (delta * Multiple);
-                Log.d(TAG, "delta = " + delta + ",pic_width = " + pic_width);
-                hsv_pic.SetFristScreenWidth(pic_width);
-                hsv_pic.snapToPic(0, delta,1, 500);
-            }
-            
-            @Override
-            public void OnViewChange(int ScrollX, int delta, int whichScreen, int duration) {
-                hsv_pic.snapToPic(ScrollX, delta,whichScreen, duration);
-            }
-        });
+        slidingMenuView
+                .setOnViewTouchMoveListener(new OnViewTouchMoveListener() {
+                    @Override
+                    public void OnViewMove(int x) {
+                        hsv_pic.scrollBy((int) (x * Multiple), 0);
+                    }
+
+                    @Override
+                    public void OnViewLoad(int width, int delta) {
+                        int pic_width = (int) (delta * Multiple);
+                        Log.d(TAG, "delta = " + delta + ",pic_width = "
+                                + pic_width);
+                        hsv_pic.SetFristScreenWidth(pic_width);
+                        hsv_pic.snapToPic(0, delta, 1, 500);
+                    }
+
+                    @Override
+                    public void OnViewChange(int ScrollX, int delta,
+                            int whichScreen, int duration) {
+                        hsv_pic.snapToPic(ScrollX, delta, whichScreen, duration);
+                    }
+                });
         BlurImage blurImage = new BlurImage();
         // 设置图片的宽高
         iv_pic = (ImageView) findViewById(R.id.iv_pic);
@@ -166,19 +180,20 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         ll_activity_main_terminal.setOnClickListener(onClickListener);
         LinearLayout ll_activity_main_orders = (LinearLayout) findViewById(R.id.ll_activity_main_orders);
         ll_activity_main_orders.setOnClickListener(onClickListener);
-        
-        Intent i = new Intent(MainActivity.this,HomeActivity.class);
-    	View v = getLocalActivityManager().startActivity(HomeActivity.class.getName(), i).getDecorView();
-		tabcontent.removeAllViews();
-		tabcontent.addView(v);
-		ShareSDK.initSDK(this);
-		platformQQ = ShareSDK.getPlatform(MainActivity.this,QZone.NAME);
-		platformSina = ShareSDK.getPlatform(MainActivity.this,SinaWeibo.NAME);
-		isLogin();
-		startService(new Intent(MainActivity.this, LocationService.class));
-		GetData();
-		initSettingData();
-	}
+
+        Intent i = new Intent(MainActivity.this, HomeActivity.class);
+        View v = getLocalActivityManager().startActivity(
+                HomeActivity.class.getName(), i).getDecorView();
+        tabcontent.removeAllViews();
+        tabcontent.addView(v);
+        ShareSDK.initSDK(this);
+        platformQQ = ShareSDK.getPlatform(MainActivity.this, QZone.NAME);
+        platformSina = ShareSDK.getPlatform(MainActivity.this, SinaWeibo.NAME);
+        isLogin();
+        startService(new Intent(MainActivity.this, LocationService.class));
+        GetData();
+        initSettingData();
+    }
 
     OnClickListener onClickListener = new OnClickListener() {
         @Override
@@ -248,7 +263,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             }
         }
     };
-    
+
     Handler handler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -257,23 +272,32 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             case GET_PIC:
                 iv_activity_main_logo.setImageBitmap(bimage);
                 break;
-
             case Login:
                 isLogin();
+                break;
+            case Bind_ID:
+                Log.d(TAG, "登录返回=" + msg.obj.toString());
+                jsonLogin(msg.obj.toString());
                 break;
             }
         }
     };
+    private void jsonLogin(String result){
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            String status_code = jsonObject.getString("status_code");
+            if(status_code.equals("0")){
+                String auth_code = jsonObject.getString("auth_code");                
+                String cust_id = jsonObject.getString("cust_id");
+                Config.auth_code = auth_code;
+                Config.cust_id = cust_id;
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void isLogin() {
-        Log.d(TAG, "platformQQ.getDb().isValid() = "
-                + platformQQ.getDb().isValid());
-        Log.d(TAG, "platformQQ.getDb().getUserId() = "
-                + platformQQ.getDb().getUserId());
-        Log.d(TAG, "platformSina.getDb().isValid() = "
-                + platformSina.getDb().isValid());
-        Log.d(TAG, "platformSina.getDb().getUserId() = "
-                + platformSina.getDb().getUserId());
         if (platformQQ.getDb().isValid()) {
             System.out.println("qq登录");
             Log.d(TAG, "platformQQ.getDb().getToken() = "
@@ -283,7 +307,11 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             iv_activity_main_sina.setVisibility(View.VISIBLE);
             iv_activity_main_login_sina.setVisibility(View.GONE);
             iv_activity_main_login_qq.setVisibility(View.GONE);
-            new Thread(new GetBitMapFromUrlThread(platformQQ.getDb().getUserIcon())).start();
+            new Thread(new GetBitMapFromUrlThread(platformQQ.getDb()
+                    .getUserIcon())).start();
+            Login(platformQQ.getDb().getUserId(), platformQQ.getDb()
+                    .getUserName(), "广东", "深圳", platformQQ.getDb()
+                    .getUserIcon(), "remark");
         } else if (platformSina.getDb().isValid()) {
             System.out.println("sina登录");
             Log.d(TAG, "platformSina.getDb().getToken() = "
@@ -295,87 +323,128 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             iv_activity_main_login_qq.setVisibility(View.GONE);
             new Thread(new GetBitMapFromUrlThread(platformSina.getDb()
                     .getUserIcon())).start();
+            Login(platformSina.getDb().getUserId(), platformSina.getDb()
+                    .getUserName(), "广东", "深圳", platformSina.getDb()
+                    .getUserIcon(), "remark");
         } else {
             System.out.println("没有登录");
             iv_activity_main_qq.setVisibility(View.GONE);
             iv_activity_main_sina.setVisibility(View.GONE);
             iv_activity_main_login_sina.setVisibility(View.VISIBLE);
             iv_activity_main_login_qq.setVisibility(View.VISIBLE);
-			}
-	}
-	
-	
-	class ParseFaceThread extends Thread{
-		public void run() {
-			super.run();
-			FaceConversionUtil.getInstace().getFileText(getApplication());
-		}
-	};
-	Bitmap bimage;
-	class GetBitMapFromUrlThread extends Thread{
-		String url;
-		public GetBitMapFromUrlThread(String url){
-			this.url = url;
-		}
-		@Override
-		public void run() {
-			super.run();
-			bimage =  getBitmapFromURL(url);
-			Message message = new Message();
-			message.what = GET_PIC;
-			handler.sendMessage(message);
-		}
-	}
-	public static Bitmap getBitmapFromURL(String src) {
+        }
+    }
+
+    /**
+     * 社会化登录后绑定
+     * 
+     * @param login_id
+     *            第三方登录返回的标识ID
+     * @param cust_name
+     *            用户名称
+     * @param province
+     *            省份
+     * @param city
+     *            城市
+     * @param logo
+     *            头像url
+     * @param remark
+     *            个人说明
+     */
+    private void Login(String login_id, String cust_name, String province,
+            String city, String logo, String remark) {
         try {
-            Log.e("src",src);
+            String url = Config.BaseUrl + "login?login_id=" + login_id
+                    + "&cust_name=" + URLEncoder.encode(cust_name, "UTF-8")
+                    + "&province=" + URLEncoder.encode(province, "UTF-8")
+                    + "&city=" + URLEncoder.encode(city, "UTF-8") + "&logo="
+                    + URLEncoder.encode(logo, "UTF-8") + "&remark="
+                    + URLEncoder.encode(remark, "UTF-8");
+            new Thread(new NetThread.GetDataThread(handler, url, Bind_ID)).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    class ParseFaceThread extends Thread {
+        public void run() {
+            super.run();
+            FaceConversionUtil.getInstace().getFileText(getApplication());
+        }
+    };
+
+    Bitmap bimage;
+
+    class GetBitMapFromUrlThread extends Thread {
+        String url;
+
+        public GetBitMapFromUrlThread(String url) {
+            this.url = url;
+        }
+
+        @Override
+        public void run() {
+            super.run();
+            bimage = getBitmapFromURL(url);
+            Message message = new Message();
+            message.what = GET_PIC;
+            handler.sendMessage(message);
+        }
+    }
+
+    public static Bitmap getBitmapFromURL(String src) {
+        try {
             URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            HttpURLConnection connection = (HttpURLConnection) url
+                    .openConnection();
             connection.setDoInput(true);
             connection.connect();
             InputStream input = connection.getInputStream();
             Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            Log.e("Bitmap","returned");
+            Log.e("Bitmap", "returned");
             return myBitmap;
         } catch (IOException e) {
             e.printStackTrace();
-            Log.e("Exception",e.getMessage());
+            Log.e("Exception", e.getMessage());
             return null;
         }
     }
-	
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.main, menu);
-		return true;
-	}
-	long waitTime = 2000;  
-	long touchTime = 0;
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			long currentTime = System.currentTimeMillis(); 
-			if(touchTime == 0 || (currentTime-touchTime)>=waitTime) {  
-	            Toast.makeText(this, "再按一次退出客户端", Toast.LENGTH_SHORT).show();  
-	            touchTime = currentTime;  
-	        }else{ 
-	            finish();
-	        }			
-			return true;
-		}
-		return super.onKeyDown(keyCode, event);
-	}
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		ShareSDK.stopSDK(this);
-		WawcApplication app = (WawcApplication)this.getApplication();
-		if (app.mBMapManager != null) {
-			app.mBMapManager.destroy();
-			app.mBMapManager = null;
-		}
-		stopService(new Intent(MainActivity.this, LocationService.class));
-	}
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    long waitTime = 2000;
+    long touchTime = 0;
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            long currentTime = System.currentTimeMillis();
+            if (touchTime == 0 || (currentTime - touchTime) >= waitTime) {
+                Toast.makeText(this, "再按一次退出客户端", Toast.LENGTH_SHORT).show();
+                touchTime = currentTime;
+            } else {
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ShareSDK.stopSDK(this);
+        WawcApplication app = (WawcApplication) this.getApplication();
+        if (app.mBMapManager != null) {
+            app.mBMapManager.destroy();
+            app.mBMapManager = null;
+        }
+        stopService(new Intent(MainActivity.this, LocationService.class));
+    }
 
     /**
      * 设置中心
@@ -402,6 +471,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         tabcontent.addView(vv);
         slidingMenuView.snapToScreen(1);
     }
+
     /**
      * 首页
      */
@@ -413,23 +483,24 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         tabcontent.addView(vv);
         slidingMenuView.snapToScreen(1);
     }
-	@Override
-	public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
-		Log.d(TAG, "登录成功" +arg0.getName());
-		Iterator iterator = arg2.entrySet().iterator();
-		while (iterator.hasNext()) {
-			Entry entry = (Entry)iterator.next();
-			System.out.println(entry.getKey() + "," + entry.getValue());
-			if(entry.getKey().equals("nickname")){
-				Config.qqUserName = (String) entry.getValue();
-				Log.e("QQ昵称","" + entry.getValue());
-			}
-		}
+
+    @Override
+    public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
+        Log.d(TAG, "登录成功" + arg0.getName());
+        Iterator iterator = arg2.entrySet().iterator();
+        while (iterator.hasNext()) {
+            Entry entry = (Entry) iterator.next();
+            System.out.println(entry.getKey() + "," + entry.getValue());
+            if (entry.getKey().equals("nickname")) {
+                Config.qqUserName = (String) entry.getValue();
+                Log.e("QQ昵称", "" + entry.getValue());
+            }
+        }
 
         Message message = new Message();
         message.what = Login;
         handler.sendMessage(message);
-	}
+    }
 
     public void ToFriendHome() {
         if (platformQQ.getDb().isValid() || platformSina.getDb().isValid()) {
@@ -540,7 +611,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         }
         Config.carDatas = carDatas;
     }
-    
+
     @Override
     public void onCancel(Platform arg0, int arg1) {
         Log.d(TAG, "登录取消");
@@ -551,12 +622,12 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         Log.d(TAG, "登录出错");
         arg0.removeAccount();
     }
-	
-	private void initSettingData() {
-		saveSettingData = new SaveSettingData(MainActivity.this);
-		Config.againstPush = saveSettingData.getAgainstPush();
-		Config.faultPush = saveSettingData.getBugPush();
-		Config.remaindPush = saveSettingData.getTrafficDepartment();
-		Config.defaultCenter = saveSettingData.getDefaultCenter();
-	}
+
+    private void initSettingData() {
+        saveSettingData = new SaveSettingData(MainActivity.this);
+        Config.againstPush = saveSettingData.getAgainstPush();
+        Config.faultPush = saveSettingData.getBugPush();
+        Config.remaindPush = saveSettingData.getTrafficDepartment();
+        Config.defaultCenter = saveSettingData.getDefaultCenter();
+    }
 }

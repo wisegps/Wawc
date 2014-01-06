@@ -36,9 +36,32 @@
             android:layout_centerVertical="true"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_launcher"/>
-	</RelativeLayout>
-	<ListView 
-	    android:id="@+id/lv_activity_select_city"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"></ListView>
+	</RelativeLayout>	
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+        <ListView
+            android:id="@+id/lv_activity_select_city"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:divider="@null" />
+        <!-- 点击字母显示 -->
+        <TextView
+            android:id="@+id/dialog"
+            android:layout_width="80.0dip"
+            android:layout_height="80.0dip"
+            android:layout_gravity="center"
+            android:background="@drawable/show_head_toast_bg"
+            android:gravity="center"
+            android:textColor="#ffffffff"
+            android:textSize="30.0dip"
+            android:visibility="invisible" />        
+        <!-- 右边字母索引 -->
+        <com.wise.service.SideBar
+            android:id="@+id/sidrbar"
+            android:layout_width="30.0dip"
+            android:layout_height="fill_parent"
+            android:layout_gravity="right|center" />
+    </FrameLayout>
 </LinearLayout>

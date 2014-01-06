@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="40dp"
-    android:padding="5dp" >
-    <ImageView
-        android:id="@+id/iv_item_select_city"
-        android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="#E0E0E0"
+    android:orientation="vertical">
+    <TextView
+        android:id="@+id/tv_item_select_city_title"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:contentDescription="@string/app_name"
-        android:src="@drawable/ic_launcher" />
+        android:padding="10dp"
+        android:background="#FFFFFF"
+        android:textColor="#336598"
+        android:text="hhhh"/>    
+    <View 
+        android:layout_width="fill_parent"
+        android:layout_height="0.5dip"
+        android:background="#000000"/>
     <TextView
         android:id="@+id/tv_item_select_city"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
+        android:padding="10dp"
+        android:textColor="@color/black"
         android:text="深圳市" />
-</RelativeLayout>
+</LinearLayout>
