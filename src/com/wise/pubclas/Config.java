@@ -14,10 +14,6 @@ public class Config {
 	 */
 	public static String PackageName = "com.wise.wawc";
 	/**
-	 * 配置文件名称
-	 */
-	public static String spfName = "com_wise_wawc";
-	/**
 	 * 当前位置
 	 */
 	public static String Adress = "";
@@ -64,6 +60,18 @@ public class Config {
 	public static final String sharedPreferencesName = "userData";
 	
 	public static final String DefaultCity = "DefaultCity";
+	/**
+	 * 定位城市，获取天气油价
+	 */
+	public static final String LocationCity = "LocationCity";
+	/**
+	 * 城市编码
+	 */
+	public static final String LocationCityCode = "LocationCityCode";
+	/**
+	 * 省份
+	 */
+	public static final String LocationProvince = "LocationProvince";
 	/**
 	 * QQ登录返回的数据
 	 */
@@ -112,4 +120,8 @@ public class Config {
 	 * 我的收藏
 	 */
 	public static String TB_Collection = "TB_Collection";
+	/**
+	 * 定位到城市后广播
+	 */
+	public static String A_City = "com.wise.wawc.city";
 }

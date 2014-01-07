@@ -61,10 +61,12 @@ public class WelcomeActivity extends Activity {
                 finish();
                 break;
             case Get_city:
+                isCity = true;
                 citys = msg.obj.toString();
                 TurnActivity();
                 break;
             case Get_host_city:
+                isHotCity = true;
                 hot_citys = msg.obj.toString();
                 TurnActivity();
                 break;
@@ -131,8 +133,8 @@ public class WelcomeActivity extends Activity {
     private boolean isFristLoad() {
         SharedPreferences preferences = getSharedPreferences(
                 Config.sharedPreferencesName, Context.MODE_PRIVATE);
-        String defaultCenter = preferences.getString(Config.defaultCenter, "");
-        if (defaultCenter.equals("")) {
+        String LocationCity = preferences.getString(Config.LocationCity, "");
+        if (LocationCity.equals("")) {
             return true;
         }
         return false;
@@ -146,7 +148,8 @@ public class WelcomeActivity extends Activity {
     private void TurnActivity(){
         if(isCity && isHotCity){
             if(citys.equals("")||hot_citys.equals("")){
-                Toast.makeText(WelcomeActivity.this, "读取数据失败！", Toast.LENGTH_SHORT).show();
+                Toast.makeText(WelcomeActivity.this, "读取数据失败！", Toast.LENGTH_LONG).show();
+                finish();
             }else{
                 Intent intent = new Intent(WelcomeActivity.this, SelectCityActivity.class);
                 intent.putExtra("Citys", citys);

@@ -87,8 +87,11 @@ public class LocationService extends Service {
 				sb.append("\naddr : ");
 				sb.append(location.getAddrStr());
 				Config.Adress = location.getAddrStr();
+	            //发送定位城市广播，选择城市用到
+	            Intent intent = new Intent(Config.A_City);
+	            intent.putExtra("City", location.getCity());
+	            sendBroadcast(intent);
 			}
-			//Log.d(TAG, sb.toString());
 		}
 
 		@Override
