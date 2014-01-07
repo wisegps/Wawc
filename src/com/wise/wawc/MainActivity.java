@@ -73,9 +73,11 @@ public class MainActivity extends ActivityGroup implements
         PlatformActionListener {
     private static final String TAG = "MainActivity";
 
-    private static final int Login = 1;
-    private static final int GET_PIC = 2;
-    private static final int Bind_ID = 3;
+    private static final int Login = 1; //登录
+    private static final int Get_Pic = 2;//获取登录头像
+    private static final int Bind_ID = 3; //绑定ID
+    private static final int Get_Weather = 4; //获取天气
+    
     SlidingMenuView slidingMenuView;
     ViewGroup tabcontent;
     int Screen = 1;
@@ -185,6 +187,7 @@ public class MainActivity extends ActivityGroup implements
         startService(new Intent(MainActivity.this, LocationService.class));
         GetData();
         initSettingData();
+        GetOldWeather();
         GetWeather();
     }
 
@@ -262,7 +265,7 @@ public class MainActivity extends ActivityGroup implements
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-            case GET_PIC:
+            case Get_Pic:
                 iv_activity_main_logo.setImageBitmap(bimage);
                 break;
             case Login:
@@ -272,9 +275,58 @@ public class MainActivity extends ActivityGroup implements
                 Log.d(TAG, "登录返回=" + msg.obj.toString());
                 jsonLogin(msg.obj.toString());
                 break;
+            case Get_Weather:
+                //Log.d(TAG, "天气=" + msg.obj.toString());
+                JudgeWeather(msg.obj.toString());
+                break;
             }
         }
     };
+    boolean isHaveOldWeather = false;
+    private void GetOldWeather(){
+        // 查询
+        DBHelper dbHelper = new DBHelper(MainActivity.this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor c = db.rawQuery("select * from " + Config.TB_Base
+                + " where Title=?", new String[] { "Weather" });
+        if (c.moveToFirst()) {
+            String Content = c.getString(c.getColumnIndex("Content"));
+            isHaveOldWeather = true;
+            //解析数据
+            jsonWeather(Content);
+        }
+    }
+    /**
+     * 判断天气是插入数据库or更新数据库
+     * @param result
+     */
+    private void JudgeWeather(String result){//TODO 数据库操作
+        if(isHaveOldWeather){//更新
+            UpdateWeather(result);
+        }else{//插入
+            InsertWeather(result);
+        }
+    }
+    private void UpdateWeather(String result){
+        DBExcute dbExcute = new DBExcute();
+        ContentValues values = new ContentValues();
+        values.put("Content", result);
+        dbExcute.UpdateDB(MainActivity.this, values, "Weather");
+    }
+    private void InsertWeather(String result){        
+        DBExcute dbExcute = new DBExcute();
+        ContentValues values = new ContentValues();
+        values.put("Title", "Weather");
+        values.put("Content", result);
+        dbExcute.InsertDB(MainActivity.this, values, Config.TB_Base);
+    }
+    /**
+     * 解析天气
+     * @param result
+     */
+    private void jsonWeather(String result){
+        Log.d(TAG, result);
+    }
     private void jsonLogin(String result){
         try {
             JSONObject jsonObject = new JSONObject(result);
@@ -380,7 +432,7 @@ public class MainActivity extends ActivityGroup implements
             super.run();
             bimage = getBitmapFromURL(url);
             Message message = new Message();
-            message.what = GET_PIC;
+            message.what = Get_Pic;
             handler.sendMessage(message);
         }
     }
@@ -596,21 +648,8 @@ public class MainActivity extends ActivityGroup implements
                 Config.sharedPreferencesName, Context.MODE_PRIVATE);
         String LocationCityCode = preferences.getString(Config.LocationCityCode, "");
         String url = "http://wiwc.api.wisegps.cn/base/weather?city_code=" + LocationCityCode +"&is_real=0";
-        DBExcute dbExcute = new DBExcute();
-        ContentValues values = new ContentValues();
-        values.put("Title", "Weather");
-        values.put("Content", "天气");
-        dbExcute.InsertDB(MainActivity.this, values, Config.TB_Base);
+        new Thread(new NetThread.GetDataThread(handler, url, Get_Weather)).start();
         
-        //查询
-        DBHelper database = new DBHelper(this);//这段代码放到Activity类中才用this
-        SQLiteDatabase db = null;
-        db = database.getReadableDatabase();
-        Cursor c = db.rawQuery("select * from " + Config.TB_Base + " where Title=?",new String[]{"Weather"});
-        if(c.moveToFirst()) {
-            String Content = c.getString(c.getColumnIndex("Content"));
-            System.out.println("Content = " + Content);
-        }
     }
 
     /**
