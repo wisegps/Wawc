@@ -36,7 +36,34 @@
             android:layout_centerVertical="true"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_launcher"/>
-	</RelativeLayout>	
+	</RelativeLayout>
+	<com.wise.service.ClearEditText
+        android:id="@+id/filter_edit"
+        android:layout_marginTop="5dip"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/search_bar_edit_selector"
+        android:drawableLeft="@drawable/search_bar_icon_normal"
+        android:hint="请输入关键字"
+        android:singleLine="true"
+        android:textSize="15.0dip" />
+	<LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal">
+	    <ImageView 
+	        android:layout_height="40dp"
+	        android:layout_width="40dp"
+	        android:contentDescription="@string/app_name"
+	        android:src="@drawable/ic_launcher"/>
+	    <TextView 
+	        android:id="@+id/tv_activity_select_city_location"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/black"
+	        android:layout_gravity="center_vertical"
+	        android:text="正在定位..."/>
+	</LinearLayout>
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
@@ -59,7 +86,7 @@
 		        android:padding="10dp"
 		        android:background="#FFFFFF"
 		        android:textColor="#336598"
-		        android:text="hhhh"/>
+		        android:text="热门城市"/>
 		</LinearLayout>
         <!-- 点击字母显示 -->
         <TextView

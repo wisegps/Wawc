@@ -8,12 +8,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.wise.data.CharacterParser;
+import com.wise.pubclas.Config;
 import com.wise.service.SideBar;
 import com.wise.service.SideBar.OnTouchingLetterChangedListener;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,8 +23,10 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,11 +41,12 @@ public class SelectCityActivity extends Activity{
     
 	ListView lv_activity_select_city;
 	LinearLayout ll_activity_select_city;
-	TextView tv_select_city_title;
+	TextView tv_select_city_title,tv_activity_select_city_location;
 	private TextView letterIndex = null;    //字母索引选中提示框
 	private SideBar sideBar = null;         //右侧字母索引栏
 	
-	List<CityData> cityDatas = new ArrayList<CityData>();
+	List<CityData> cityDatas;
+	List<CityData> hotDatas;
 	AllCityAdapter allCityAdapter;
     CharacterParser characterParser = new CharacterParser().getInstance();   //将汉字转成拼音
     private PinyinComparator comparator = new PinyinComparator();;      //根据拼音排序
@@ -52,27 +57,15 @@ public class SelectCityActivity extends Activity{
 		setContentView(R.layout.activity_select_city);
         ll_activity_select_city = (LinearLayout)findViewById(R.id.ll_activity_select_city);
         tv_select_city_title = (TextView)findViewById(R.id.tv_select_city_title);
+        tv_activity_select_city_location = (TextView)findViewById(R.id.tv_activity_select_city_location);
 		lv_activity_select_city = (ListView) findViewById(R.id.lv_activity_select_city);
 		Intent intent = getIntent();
 		String Citys = intent.getStringExtra("Citys");
-		GetCityList(Citys);
-		//排序
-        Collections.sort(cityDatas, comparator);
-        String Letter = "";
-        for(int i = 0 ; i < cityDatas.size() ; i++){
-            if(!Letter.equals(cityDatas.get(i).getFirst_letter())){
-                Letter = cityDatas.get(i).getFirst_letter();
-                
-                CityData cityData = new CityData();
-                cityData.setCity(Letter);
-                cityData.setFirst_letter(Letter);
-                cityDatas.add(i, cityData);
-            }
-        }
-
-        LayoutInflater mLayoutInflater = LayoutInflater.from(SelectCityActivity.this);
-        View searchView = mLayoutInflater.inflate(R.layout.search, null);
-        lv_activity_select_city.addHeaderView(searchView);
+		String Hot_Citys = intent.getStringExtra("Hot_Citys");
+		cityDatas = GetCityList(Citys);
+		hotDatas = GetCityList(Hot_Citys);		
+		//排序,添加热门
+		ProcessCitys();
         
         allCityAdapter = new AllCityAdapter(cityDatas);
         lv_activity_select_city.setAdapter(allCityAdapter);
@@ -106,40 +99,47 @@ public class SelectCityActivity extends Activity{
             }            
         }
     };
-    String LastLetter = "A";
+    
     private void setupListView(){
         lv_activity_select_city.setOnScrollListener(new OnScrollListener() {            
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {}            
             @Override
-            public void onScroll(AbsListView view, int firstVisibleItem,
-                    int visibleItemCount, int totalItemCount) {
-                
-                String letter = cityDatas.get(firstVisibleItem).getFirst_letter();
-                if(letter.equals(LastLetter)){
-                    
-                }
-                if(!letter.equals(LastLetter)){
-                    //Log.d(TAG, "letter = " + letter + ", LastLetter = " + LastLetter);
-                    //产生碰撞挤压效果
-                    View childView = view.getChildAt(0);
-                    if (childView != null) {
-                        int titleHeight = ll_activity_select_city.getHeight();
-                        int bottom = childView.getBottom();
-                        MarginLayoutParams params = (MarginLayoutParams) ll_activity_select_city.getLayoutParams();
-                        Log.d(TAG, "bottom = " + bottom + ",titleHeight = " + titleHeight);
-                        if (bottom < titleHeight) {
-                            float pushedDistance = bottom - titleHeight;
-                            params.topMargin = (int) pushedDistance;
-                            ll_activity_select_city.setLayoutParams(params);
-                        } else {
-                            if (params.topMargin != 0) {
-                                params.topMargin = 0;
+            public void onScroll(AbsListView view, int firstVisibleItem,int visibleItemCount, int totalItemCount) {
+                if(firstVisibleItem != 0){
+                    String letter = cityDatas.get(firstVisibleItem).getFirst_letter();
+                    String NextLetter = cityDatas.get(firstVisibleItem + 1).getFirst_letter();
+                    Log.d(TAG,"Item = " + firstVisibleItem + "letter = " + letter + ",NextLetter = " + NextLetter);
+                    tv_select_city_title.setText(letter);
+                    if(!letter.equals(NextLetter)){
+                        //产生碰撞挤压效果
+                        View childView = view.getChildAt(0);
+                        if (childView != null) {
+                            int titleHeight = ll_activity_select_city.getHeight();
+                            int bottom = childView.getBottom();
+                            MarginLayoutParams params = (MarginLayoutParams) ll_activity_select_city.getLayoutParams();
+                            Log.d(TAG, "bottom = " + bottom + ",titleHeight = " + titleHeight);
+                            if (bottom < titleHeight) {
+                                float pushedDistance = bottom - titleHeight;
+                                params.topMargin = (int) pushedDistance;
                                 ll_activity_select_city.setLayoutParams(params);
+                            } else {
+                                if (params.topMargin != 0) {
+                                    params.topMargin = 0;
+                                    ll_activity_select_city.setLayoutParams(params);
+                                }
                             }
                         }
+                    }else{
+                        Log.d(TAG, "相等");
+                        MarginLayoutParams params = (MarginLayoutParams) ll_activity_select_city
+                                .getLayoutParams();
+                        params.topMargin = 0;
+                        ll_activity_select_city.setLayoutParams(params);
                     }
-                }
+                }else{
+                     
+                }             
             }
         });
     }
@@ -147,32 +147,106 @@ public class SelectCityActivity extends Activity{
 	 * 解析城市列表
 	 * @param Citys
 	 */
-	private void GetCityList(String Citys) {
-	    
-	    try {
-            JSONArray jsonArray = new JSONArray(Citys);
-            for(int i = 0 ; i < jsonArray.length() ; i++){
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
+	private List<CityData> GetCityList(String Citys) {
+        List<CityData> Datas = new ArrayList<CityData>();        
+	    for(int i = 0 ; i < 5; i++){
+	        CityData cityData = new CityData();
+            cityData.setType(1);
+            cityData.setCity_code("10");
+            cityData.setCity("包头");
+            cityData.setProvince("爆头");
+            cityData.setFirst_letter(GetFristLetter("包头"));
+            Datas.add(cityData);
+	    }
+	    for(int i = 0 ; i < 4; i++){
+            CityData cityData = new CityData();
+            cityData.setType(1);
+            cityData.setCity_code("10");
+            cityData.setCity("北京");
+            cityData.setProvince("爆头");
+            cityData.setFirst_letter(GetFristLetter("北京"));
+            Datas.add(cityData);
+        }
+	    for(int i = 0 ; i < 4; i++){
+            CityData cityData = new CityData();
+            cityData.setType(1);
+            cityData.setCity_code("10");
+            cityData.setCity("长春");
+            cityData.setProvince("爆头");
+            cityData.setFirst_letter(GetFristLetter("长春"));
+            Datas.add(cityData);
+        }
+	    for(int i = 0 ; i < 10; i++){
+            CityData cityData = new CityData();
+            cityData.setType(1);
+            cityData.setCity_code("10");
+            cityData.setCity("上海");
+            cityData.setProvince("爆头");
+            cityData.setFirst_letter(GetFristLetter("上海"));
+            Datas.add(cityData);
+        }
+//	    try {
+//            JSONArray jsonArray = new JSONArray(Citys);
+//            for(int i = 0 ; i < jsonArray.length() ; i++){
+//                JSONObject jsonObject = jsonArray.getJSONObject(i);
+//                CityData cityData = new CityData();
+//                if(jsonObject.opt("city_code") == null){
+//                    cityData.setCity_code("");
+//                }else{
+//                    cityData.setCity_code(jsonObject.getString("city_code"));
+//                }
+//                cityData.setCity(jsonObject.getString("city"));
+//                cityData.setProvince(jsonObject.getString("province"));
+//                cityData.setFirst_letter(GetFristLetter(jsonObject.getString("city")));
+//                Datas.add(cityData);
+//            }
+//            return Datas;
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+        return Datas;
+	}
+	/**
+	 * 给城市排序，添加热门城市
+	 */
+	private void ProcessCitys(){
+	    Collections.sort(cityDatas, comparator);
+        String Letter = "";
+        for(int i = 0 ; i < cityDatas.size() ; i++){
+            if(!Letter.equals(cityDatas.get(i).getFirst_letter())){
+                //增加标题
+                Letter = cityDatas.get(i).getFirst_letter();                
                 CityData cityData = new CityData();
-                if(jsonObject.opt("city_code") == null){
-                    cityData.setCity_code("");
-                }else{
-                    cityData.setCity_code(jsonObject.getString("city_code"));
-                }
-                cityData.setCity(jsonObject.getString("city"));
-                cityData.setProvince(jsonObject.getString("province"));
-                cityData.setFirst_letter(GetFristLetter(jsonObject.getString("city")));
-                cityDatas.add(cityData);
+                cityData.setType(1);
+                cityData.setCity(Letter);
+                cityData.setFirst_letter(Letter);
+                cityDatas.add(i, cityData);
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
+        }
+        
+        CityData cityData = new CityData();
+        cityData.setType(0);
+        cityData.setCity_code("10");
+        cityData.setCity("1231231231231");
+        cityData.setProvince("12312312312");
+        cityData.setFirst_letter("热门城市");
+        cityDatas.add(0, cityData);
+        
+        CityData cityData1 = new CityData();
+        cityData1.setType(1);
+        cityData1.setCity("热门城市");
+        cityData1.setProvince("12312312312");
+        cityData1.setFirst_letter("热门城市");
+        cityDatas.add(0, cityData1);
+       
+        for(int i = 0 ; i < cityDatas.size() ; i++){
+            Log.d(TAG, cityDatas.get(i).toString());
         }
 	}
 	
 	private String GetFristLetter(String city){
 	    String pinyin = characterParser.getSelling(city);
-        String sortString = pinyin.substring(0, 1).toUpperCase();
-        
+        String sortString = pinyin.substring(0, 1).toUpperCase();        
         // 正则表达式，判断首字母是否是英文字母
         if(sortString.matches("[A-Z]")){
             return sortString.toUpperCase();
@@ -202,6 +276,8 @@ public class SelectCityActivity extends Activity{
 	}
 
 	private class AllCityAdapter extends BaseAdapter {
+	    private static final int VALUE_HOT = 0;
+	    private static final int VALUE_CITY = 1;
 		List<CityData> citys;
 		LayoutInflater mInflater;
 
@@ -209,56 +285,114 @@ public class SelectCityActivity extends Activity{
 			this.citys = citys;
 			mInflater = LayoutInflater.from(SelectCityActivity.this);
 		}
-
 		@Override
 		public int getCount() {
 			return citys.size();
 		}
-
 		@Override
 		public Object getItem(int position) {
 			return citys.get(position);
 		}
-
 		@Override
 		public long getItemId(int position) {
 			return position;
 		}
-
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			ViewHolder holder;
-			if (convertView == null) {
-				convertView = mInflater.inflate(R.layout.item_select_city, null);
-				holder = new ViewHolder();
-				holder.tv_item_select_city = (TextView) convertView.findViewById(R.id.tv_item_select_city);
-				holder.tv_item_select_city_title = (TextView) convertView.findViewById(R.id.tv_item_select_city_title);
-				convertView.setTag(holder);
-			} else {
-				holder = (ViewHolder) convertView.getTag();
-			}
-            if(citys.get(position).getCity_code() == null){
-                holder.tv_item_select_city_title.setVisibility(View.VISIBLE);
-                holder.tv_item_select_city_title.setText(citys.get(position).getFirst_letter());
-                holder.tv_item_select_city.setVisibility(View.GONE);
-            }else{
-                holder.tv_item_select_city.setVisibility(View.VISIBLE);
-                holder.tv_item_select_city.setText(citys.get(position).getCity());
-                holder.tv_item_select_city_title.setVisibility(View.GONE);
-            }
-            holder.tv_item_select_city.setText(citys.get(position).getCity());
-			return convertView;
-		}
-		private class ViewHolder {
+		    CityData cityData = citys.get(position);
+		    int type = getItemViewType(position);
+		    ViewHot hotholder = null;
+		    ViewCity cityHolder = null;
+		    if(convertView == null){
+		        switch (type) {
+                case VALUE_HOT:
+                    hotholder = new ViewHot();
+                    convertView = mInflater.inflate(R.layout.hot_city, null);
+                    hotholder.gv = (GridView)convertView.findViewById(R.id.gv_hot_city);
+                    int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, getResources().getDisplayMetrics());
+                    LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,(hotDatas.size()/5 + 1)*px);
+                    hotholder.gv.setLayoutParams(params);
+                    hotholder.gv.setAdapter(new hotAdapter());
+                    convertView.setTag(hotholder);
+                    break;
+                case VALUE_CITY:
+                    cityHolder = new ViewCity();
+                    convertView = mInflater.inflate(R.layout.item_select_city, null);
+                    cityHolder.tv_item_select_city = (TextView) convertView.findViewById(R.id.tv_item_select_city);
+                    cityHolder.tv_item_select_city_title = (TextView) convertView.findViewById(R.id.tv_item_select_city_title);
+                    if(citys.get(position).getCity_code() == null){
+                        cityHolder.tv_item_select_city_title.setVisibility(View.VISIBLE);
+                        cityHolder.tv_item_select_city_title.setText(citys.get(position).getFirst_letter());
+                        cityHolder.tv_item_select_city.setVisibility(View.GONE);
+                    }else{
+                        cityHolder.tv_item_select_city.setVisibility(View.VISIBLE);
+                        cityHolder.tv_item_select_city.setText(citys.get(position).getCity());
+                        cityHolder.tv_item_select_city_title.setVisibility(View.GONE);
+                    }
+                    convertView.setTag(cityHolder);
+                    break;
+                default:
+                    break;
+                }
+		    }else{
+		        switch (type) {
+                case VALUE_HOT:
+                    hotholder = (ViewHot) convertView.getTag();
+                    int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, getResources().getDisplayMetrics());
+                    LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,(hotDatas.size()/5 + 1)*px);
+                    hotholder.gv.setLayoutParams(params);
+                    hotholder.gv.setAdapter(new hotAdapter());
+                    break;
+
+                case VALUE_CITY:
+                    cityHolder = (ViewCity) convertView.getTag();
+                    if(citys.get(position).getCity_code() == null){
+                        cityHolder.tv_item_select_city_title.setVisibility(View.VISIBLE);
+                        cityHolder.tv_item_select_city_title.setText(citys.get(position).getFirst_letter());
+                        cityHolder.tv_item_select_city.setVisibility(View.GONE);
+                    }else{
+                        cityHolder.tv_item_select_city.setVisibility(View.VISIBLE);
+                        cityHolder.tv_item_select_city.setText(citys.get(position).getCity());
+                        cityHolder.tv_item_select_city_title.setVisibility(View.GONE);
+                    }
+                    break;
+                default:
+                    break;
+                }
+		    }
+		    return convertView;
+		}		
+		@Override
+        public int getItemViewType(int position) {	
+		    CityData cityData = citys.get(position);
+		    int type = cityData.getType();
+            return type;
+        }
+        @Override
+        public int getViewTypeCount() {
+            return 2;
+        }
+        private class ViewCity {//城市列表
 			TextView tv_item_select_city,tv_item_select_city_title;
 		}
+		private class ViewHot {//热门城市
+            GridView gv;
+        }
 	}
 
 	private class CityData {
+	    int Type;
 	    String City_code;
 	    String city;
 	    String Province;
-	    String First_letter;
+	    String First_letter;	    
+	    
+        public int getType() {
+            return Type;
+        }
+        public void setType(int type) {
+            Type = type;
+        }
         public String getCity_code() {
             return City_code;
         }
@@ -285,9 +419,41 @@ public class SelectCityActivity extends Activity{
         }
         @Override
         public String toString() {
-            return "CityData [City_code=" + City_code + ", city=" + city
-                    + ", Province=" + Province + ", First_letter="
-                    + First_letter + "]";
-        }        
+            return "CityData [Type=" + Type + ", City_code=" + City_code
+                    + ", city=" + city + ", Province=" + Province
+                    + ", First_letter=" + First_letter + "]";
+        }                
+	}
+	public class hotAdapter extends BaseAdapter{
+	    LayoutInflater mInflater = LayoutInflater.from(SelectCityActivity.this);
+        @Override
+        public int getCount() {
+            return hotDatas.size();
+        }
+        @Override
+        public Object getItem(int position) {
+            return hotDatas.get(position);
+        }
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if (convertView == null) {
+                convertView = mInflater.inflate(R.layout.item_hot, null);
+                holder = new ViewHolder();
+                holder.tv_item_hot = (TextView) convertView.findViewById(R.id.tv_item_hot);
+                convertView.setTag(holder);
+            } else {
+                holder = (ViewHolder) convertView.getTag();
+            }
+            holder.tv_item_hot.setText(hotDatas.get(position).getCity());
+            return convertView;
+        }
+        private class ViewHolder {
+            TextView tv_item_hot;
+        }
 	}
 }

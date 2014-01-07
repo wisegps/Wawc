@@ -1,12 +1,8 @@
 package com.wise.wawc;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import com.wise.pubclas.Config;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -16,8 +12,8 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * 欢迎界面
@@ -29,6 +25,7 @@ public class WelcomeActivity extends Activity {
     
     private final static int Wait = 1;
     private final static int Get_city = 2;
+    private final static int Get_host_city = 3;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +46,10 @@ public class WelcomeActivity extends Activity {
             new Thread(new WaitThread()).start();
         }
     }
+    String citys = "";
+    String hot_citys = "";
+    boolean isCity = false;
+    boolean isHotCity = false;
 
     Handler handler = new Handler() {
         @Override
@@ -60,7 +61,12 @@ public class WelcomeActivity extends Activity {
                 finish();
                 break;
             case Get_city:
-                TurnActivity(msg.obj.toString());
+                citys = msg.obj.toString();
+                TurnActivity();
+                break;
+            case Get_host_city:
+                hot_citys = msg.obj.toString();
+                TurnActivity();
                 break;
             }
         }
@@ -134,11 +140,20 @@ public class WelcomeActivity extends Activity {
     private void GetCityList(){
         String url = Config.BaseUrl + "base/city?is_hot=0";
         new Thread(new NetThread.GetDataThread(handler, url, Get_city)).start();
+        String url_hot = Config.BaseUrl + "base/city?is_hot=1";
+        new Thread(new NetThread.GetDataThread(handler, url_hot, Get_host_city)).start();
     }
-    private void TurnActivity(String result){
-        Intent intent = new Intent(WelcomeActivity.this, SelectCityActivity.class);
-        intent.putExtra("Citys", result);
-        startActivity(intent);
-        finish();
+    private void TurnActivity(){
+        if(isCity && isHotCity){
+            if(citys.equals("")||hot_citys.equals("")){
+                Toast.makeText(WelcomeActivity.this, "读取数据失败！", Toast.LENGTH_SHORT).show();
+            }else{
+                Intent intent = new Intent(WelcomeActivity.this, SelectCityActivity.class);
+                intent.putExtra("Citys", citys);
+                intent.putExtra("Hot_Citys", hot_citys);
+                startActivity(intent);
+                finish();
+            }            
+        }
     }
 }

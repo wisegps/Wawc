@@ -1,0 +1,15 @@
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
+    <GridView 
+        android:id="@+id/gv_hot_city"
+        android:layout_width="fill_parent"
+        android:layout_height="250dp"
+        android:numColumns="5"
+        android:stretchMode="columnWidth"
+        android:horizontalSpacing="10dp"/>
+</LinearLayout>
