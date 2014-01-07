@@ -12,10 +12,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Map.Entry;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 import cn.sharesdk.framework.Platform;
@@ -39,14 +37,18 @@ import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Config;
 import com.wise.pubclas.NetThread;
 import com.wise.service.SaveSettingData;
+import com.wise.sql.DBExcute;
+import com.wise.sql.DBHelper;
+
 import android.app.ActivityGroup;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.hardware.Camera.Size;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -56,7 +58,6 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -136,21 +137,12 @@ public class MainActivity extends ActivityGroup implements
                         hsv_pic.snapToPic(ScrollX, delta, whichScreen, duration);
                     }
                 });
-        BlurImage blurImage = new BlurImage();
         // 设置图片的宽高
         iv_pic = (ImageView) findViewById(R.id.iv_pic);
-        // 模糊图片
-        Bitmap bitmap_main = blurImage.readBitMap(this, R.drawable.bg);
-        // 覆盖图片，一张灰色不透明图片
-        Bitmap bitmap_over = blurImage.readBitMap(this, R.drawable.gray);
-        // 创建一个和原图片宽和高一样的bitmap
-        Bitmap bitmap = Bitmap.createBitmap(bitmap_main.getWidth(),
-                bitmap_main.getHeight(), bitmap_main.getConfig());
-        // 创建画布
-        Canvas canvas = new Canvas(bitmap);
-        // 模糊操作
-        blurImage.blurImage(bitmap_main, bitmap_over, canvas, 100);
-        iv_pic.setImageBitmap(bitmap);
+        //iv_pic.setImageDrawable(getResources().getDrawable(R.drawable.bg));
+        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.bg);
+        iv_pic.setImageDrawable(BlurImage.BoxBlurFilter(bmp));
+        
         RelativeLayout rl_activity_main_home = (RelativeLayout) findViewById(R.id.rl_activity_main_home);
         rl_activity_main_home.setOnClickListener(onClickListener);
         iv_activity_main_login_sina = (ImageView) findViewById(R.id.iv_activity_main_login_sina);
@@ -193,6 +185,7 @@ public class MainActivity extends ActivityGroup implements
         startService(new Intent(MainActivity.this, LocationService.class));
         GetData();
         initSettingData();
+        GetWeather();
     }
 
     OnClickListener onClickListener = new OnClickListener() {
@@ -593,6 +586,30 @@ public class MainActivity extends ActivityGroup implements
             slidingMenuView.snapToScreen(1);
         } else if (slidingMenuView.getCurrentScreen() == 1) {
             slidingMenuView.snapToScreen(2);
+        }
+    }
+    /**
+     * 获取天气
+     */
+    private void GetWeather(){
+        SharedPreferences preferences = getSharedPreferences(
+                Config.sharedPreferencesName, Context.MODE_PRIVATE);
+        String LocationCityCode = preferences.getString(Config.LocationCityCode, "");
+        String url = "http://wiwc.api.wisegps.cn/base/weather?city_code=" + LocationCityCode +"&is_real=0";
+        DBExcute dbExcute = new DBExcute();
+        ContentValues values = new ContentValues();
+        values.put("Title", "Weather");
+        values.put("Content", "天气");
+        dbExcute.InsertDB(MainActivity.this, values, Config.TB_Base);
+        
+        //查询
+        DBHelper database = new DBHelper(this);//这段代码放到Activity类中才用this
+        SQLiteDatabase db = null;
+        db = database.getReadableDatabase();
+        Cursor c = db.rawQuery("select * from " + Config.TB_Base + " where Title=?",new String[]{"Weather"});
+        if(c.moveToFirst()) {
+            String Content = c.getString(c.getColumnIndex("Content"));
+            System.out.println("Content = " + Content);
         }
     }
 
