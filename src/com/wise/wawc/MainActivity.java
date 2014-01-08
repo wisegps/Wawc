@@ -591,9 +591,9 @@ public class MainActivity extends ActivityGroup implements
 
     private void initSettingData() {
         saveSettingData = new SaveSettingData(MainActivity.this);
-        Constant.againstPush = saveSettingData.getAgainstPush();
-        Constant.faultPush = saveSettingData.getBugPush();
-        Constant.remaindPush = saveSettingData.getTrafficDepartment();
-        Constant.defaultCenter = saveSettingData.getDefaultCenter();
+        Variable.againstPush = saveSettingData.getAgainstPush();
+        Variable.faultPush = saveSettingData.getBugPush();
+        Variable.remaindPush = saveSettingData.getTrafficDepartment();
+        Variable.defaultCenter = saveSettingData.getDefaultCenter();
     }
 }

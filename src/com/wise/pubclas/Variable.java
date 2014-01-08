@@ -24,4 +24,12 @@ public class Variable {
      * 车辆数据
      */
     public static List<CarData> carDatas;
+
+    public static boolean againstPush = true;
+
+    public static boolean faultPush = true;
+
+    public static boolean remaindPush = true;
+
+    public static String defaultCenter = "车辆位置";
 }

@@ -1,8 +1,6 @@
 package com.wise.pubclas;
 
-import java.util.List;
 import android.graphics.Bitmap;
-import com.wise.data.CarData;
 /**
  * 常量
  * @author honesty
@@ -20,23 +18,19 @@ public class Constant {
 	/**
 	 * 违章推送
 	 */
-	public static boolean againstPush = true;
 	public static String againstPush_key ="againstPush";
 	/**
 	 * 故障推送
 	 */
-	public static boolean faultPush = true;
 	public static String faultPush_key ="faultPush";
 	/**
 	 * 车务提醒
 	 */
-	public static boolean remaindPush = true;
 	public static String remaindPush_key ="remaindPush";
 	
 	/**
 	 * 默认定位中心
 	 */
-	public static String defaultCenter = "车辆位置";
 	public static String defaultCenter_key ="defaultCenter";
 	/**
 	 * SharedPreferences数据共享名称

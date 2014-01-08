@@ -1,6 +1,7 @@
 package com.wise.service;
 
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.Variable;
 
 import android.app.Activity;
 import android.content.Context;
@@ -29,7 +30,7 @@ public class SaveSettingData {
 	}
 	
 	public String getDefaultCenter(){
-		return userData.getString("defaultCenter", Constant.defaultCenter);
+		return userData.getString("defaultCenter", Variable.defaultCenter);
 	}
 	public boolean getAgainstPush(){
 		return userData.getBoolean("againstPush", true);

@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.wise.extend.AbstractSpinerAdapter;
 import com.wise.extend.SpinerPopWindow;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.Variable;
 import com.wise.service.SaveSettingData;
 
 /**
@@ -95,23 +96,23 @@ public class SettingCenterActivity extends Activity implements OnClickListener, 
 		mSpinerPopWindow.setItemListener(this);
 		
 		//初始化用户数据
-		againstPush.setChecked(Constant.againstPush);
-		faultPush.setChecked(Constant.faultPush);
-		remainPush.setChecked(Constant.remaindPush);
-		mTView.setText(Constant.defaultCenter);
+		againstPush.setChecked(Variable.againstPush);
+		faultPush.setChecked(Variable.faultPush);
+		remainPush.setChecked(Variable.remaindPush);
+		mTView.setText(Variable.defaultCenter);
 		
 	}
 	class CleckBoxListener implements OnCheckedChangeListener{
 		public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
 			switch(((Button)buttonView).getId()){
 			case R.id.against_push:  //违章推送
-				Constant.againstPush = isChecked;
+			    Variable.againstPush = isChecked;
 				break;
 			case R.id.fault_push:    //故障推送
-				Constant.faultPush = isChecked;
+			    Variable.faultPush = isChecked;
 				break;
 			case R.id.remaind_push:   //车务提醒
-				Constant.remaindPush = isChecked;
+			    Variable.remaindPush = isChecked;
 				break;
 			default :
 				return;
@@ -158,7 +159,7 @@ public class SettingCenterActivity extends Activity implements OnClickListener, 
 		if (pos >= 0 && pos <= nameList.size()){
 			String value = nameList.get(pos);
 			mTView.setText(value);
-			Constant.defaultCenter = value;
+			Variable.defaultCenter = value;
 		}
 	}
 	
@@ -196,6 +197,6 @@ public class SettingCenterActivity extends Activity implements OnClickListener, 
 		saveData();
 	}
 	public void saveData(){
-		new SaveSettingData(this).saveData(Constant.defaultCenter, Constant.againstPush, Constant.faultPush,Constant.remaindPush);
+		new SaveSettingData(this).saveData(Variable.defaultCenter, Variable.againstPush, Variable.faultPush,Variable.remaindPush);
 	}
 }
