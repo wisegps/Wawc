@@ -9,6 +9,14 @@ import com.wise.data.CarData;
  */
 public class Variable {
     /**
+     * auth_code
+     */
+    public static String auth_code;
+    /**
+     * cust_id
+     */
+    public static String cust_id;
+    /**
      * 当前位置
      */
     public static String Adress = "";

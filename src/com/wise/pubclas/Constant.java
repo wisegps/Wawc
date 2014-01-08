@@ -1,6 +1,7 @@
 package com.wise.pubclas;
 
 import android.graphics.Bitmap;
+import android.os.Environment;
 /**
  * 常量
  * @author honesty
@@ -10,6 +11,14 @@ public class Constant {
      * 服务器地址："http://wiwc.api.wisegps.cn/"
      */
     public static String BaseUrl = "http://wiwc.api.wisegps.cn/";
+    /**
+     * 图片路径存储地址
+     */
+    public static String BasePath = Environment.getExternalStorageDirectory().getPath() + "/wiwc/image/";
+    /**
+     * 个人头像
+     */
+    public static final String UserImage = "UserIcon.jpg";
 	/**
 	 * 获取版本信息用到
 	 */
@@ -70,14 +79,6 @@ public class Constant {
 	 * QQ用户登录之后的头像
 	 */
 	public static Bitmap UserIcon = null;
-	/**
-	 * auth_code
-	 */
-	public static String auth_code;
-	/**
-	 * cust_id
-	 */
-	public static String cust_id;
 	/**
 	 * 基础表
 	 */

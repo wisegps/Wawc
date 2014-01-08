@@ -1,5 +1,12 @@
 package com.wise.pubclas;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -13,9 +20,12 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 
 public class GetSystem {
 	/**
@@ -125,4 +135,49 @@ public class GetSystem {
 			return null;
 		}
 	}
+	/**
+	 * 从服务器读取图片
+	 * @param src
+	 * @return
+	 */
+	public static Bitmap getBitmapFromURL(String Path) {
+        try {
+            URL url = new URL(Path);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setDoInput(true);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+            Bitmap myBitmap = BitmapFactory.decodeStream(input);
+            return myBitmap;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+	/**
+	 * 保存图片在sd卡上
+	 * @param bitmap
+	 * @param name 图片名称a.jpg
+	 */
+	public static void saveImageSD(Bitmap bitmap,String name){
+        File file = new File(Constant.BasePath);
+        if(!file.exists()){            
+            file.mkdirs();// 创建文件夹  
+        }        
+        String fileName = Constant.BasePath + name;  
+        FileOutputStream b = null;
+        try {  
+            b = new FileOutputStream(fileName);  
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件  
+        } catch (FileNotFoundException e) {  
+            e.printStackTrace();  
+        } finally {  
+            try {  
+                b.flush();  
+                b.close();  
+            } catch (IOException e) {  
+                e.printStackTrace();  
+            }  
+        }
+    }
 }

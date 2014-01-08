@@ -1,15 +1,20 @@
 package com.wise.wawc;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 import java.util.Map.Entry;
 import org.json.JSONException;
@@ -35,6 +40,7 @@ import com.wise.extend.PicHorizontalScrollView;
 import com.wise.extend.SlidingMenuView;
 import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.service.SaveSettingData;
@@ -48,6 +54,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -89,6 +96,7 @@ public class MainActivity extends ActivityGroup implements
     double Multiple = 0.5;
     PicHorizontalScrollView hsv_pic;
     ImageView iv_pic;
+    Bitmap bimage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -234,6 +242,8 @@ public class MainActivity extends ActivityGroup implements
             switch (msg.what) {
             case Get_Pic:
                 iv_activity_main_logo.setImageBitmap(bimage);
+                //TODO 释放内存
+                
                 break;
             case Login:
                 //isLogin();
@@ -249,7 +259,7 @@ public class MainActivity extends ActivityGroup implements
     /**
      * 登录成功
      */
-    private void jsonLoginOk(){
+    private void jsonLoginOk(){//登录成功
         SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
         String LocationProvince = preferences.getString(Constant.LocationProvince, "");
         String LocationCity = preferences.getString(Constant.LocationCity, "");
@@ -272,8 +282,8 @@ public class MainActivity extends ActivityGroup implements
             if(status_code.equals("0")){
                 String auth_code = jsonObject.getString("auth_code");                
                 String cust_id = jsonObject.getString("cust_id");
-                Constant.auth_code = auth_code;
-                Constant.cust_id = cust_id;
+                Variable.auth_code = auth_code;
+                Variable.cust_id = cust_id;
                 
                 SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
                 Editor editor = preferences.edit();
@@ -294,6 +304,7 @@ public class MainActivity extends ActivityGroup implements
             iv_activity_main_sina.setVisibility(View.VISIBLE);
             iv_activity_main_login_sina.setVisibility(View.GONE);
             iv_activity_main_login_qq.setVisibility(View.GONE);
+            platfromIsLogin();
         } else if (platformSina.getDb().isValid()) {
             System.out.println("sina登录");
             tv_activity_main_name.setText(platformSina.getDb().getUserName());
@@ -301,6 +312,7 @@ public class MainActivity extends ActivityGroup implements
             iv_activity_main_sina.setVisibility(View.VISIBLE);
             iv_activity_main_login_sina.setVisibility(View.GONE);
             iv_activity_main_login_qq.setVisibility(View.GONE);
+            platfromIsLogin();
         } else {
             System.out.println("没有登录");
             iv_activity_main_qq.setVisibility(View.GONE);
@@ -308,6 +320,24 @@ public class MainActivity extends ActivityGroup implements
             iv_activity_main_login_sina.setVisibility(View.VISIBLE);
             iv_activity_main_login_qq.setVisibility(View.VISIBLE);
         }
+    }
+    /**
+     * 已经登录过,初始化数据
+     */
+    private void platfromIsLogin(){
+        bimage = BitmapFactory.decodeFile(Constant.BasePath + Constant.UserImage);
+        if(bimage != null){
+            iv_activity_main_logo.setImageBitmap(bimage);
+            //TODO 释放内存
+            if(bimage!=null && !bimage.isRecycled()){  
+                bimage.recycle();  
+                System.gc();
+            } 
+        }
+        SharedPreferences preferences = getSharedPreferences(
+                Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+        Variable.cust_id  = preferences.getString(Constant.sp_cust_id, "");
+        Variable.auth_code = preferences.getString(Constant.sp_auth_code, "");
     }
 
     /**
@@ -341,42 +371,24 @@ public class MainActivity extends ActivityGroup implements
         }
     };
 
-    Bitmap bimage;
-
     class GetBitMapFromUrlThread extends Thread {
         String url;
 
         public GetBitMapFromUrlThread(String url) {
             this.url = url;
         }
-
         @Override
         public void run() {
             super.run();
-            bimage = getBitmapFromURL(url);
+            bimage = GetSystem.getBitmapFromURL(url);
+            if(bimage != null){
+                GetSystem.saveImageSD(bimage, Constant.UserImage);
+            }
             Message message = new Message();
             message.what = Get_Pic;
             handler.sendMessage(message);
         }
-    }
-
-    public static Bitmap getBitmapFromURL(String src) {
-        try {
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url
-                    .openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            Log.e("Bitmap", "returned");
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e("Exception", e.getMessage());
-            return null;
-        }
-    }
+    }    
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

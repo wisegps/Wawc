@@ -117,9 +117,4 @@ public class MyDevicesActivity extends Activity{
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		ActivityFactory.A.HideMenu();
-		return false;
-	}
 }
