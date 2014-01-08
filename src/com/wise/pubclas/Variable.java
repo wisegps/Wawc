@@ -17,6 +17,10 @@ public class Variable {
      */
     public static String cust_id;
     /**
+     * 用户名称
+     */
+    public static String cust_name;
+    /**
      * 当前位置
      */
     public static String Adress = "";

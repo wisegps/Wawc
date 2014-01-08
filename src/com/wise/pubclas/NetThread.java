@@ -93,26 +93,6 @@ public class NetThread {
 		}
 	}
 	
-	/**
-	 * 读取图片
-	 * @param src
-	 * @return
-	 */
-	public static Bitmap getBitmapFromURL(String src) {
-        try {
-            URL url = new URL(src);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap myBitmap = BitmapFactory.decodeStream(input);
-            return myBitmap;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-	
 	public static class putDataThread extends Thread{
 		Handler handler;
 		String url;

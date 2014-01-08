@@ -114,4 +114,16 @@ public class Constant {
 	
 	public static String A_City = "com.wise.wawc.city";
 	public static boolean isHideFooter = false;
+	/**
+	 * 收货人
+	 */
+	public static String Consignee = "Consignee";
+	/**
+	 * 收获地址
+	 */
+	public static String Adress = "Adress";
+	/**
+	 * 收货人手机
+	 */
+	public static String Phone = "Phone";
 }

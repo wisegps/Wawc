@@ -242,11 +242,8 @@ public class MainActivity extends ActivityGroup implements
             switch (msg.what) {
             case Get_Pic:
                 iv_activity_main_logo.setImageBitmap(bimage);
-                //TODO 释放内存
-                
                 break;
             case Login:
-                //isLogin();
                 jsonLoginOk();
                 break;
             case Bind_ID:
@@ -263,6 +260,7 @@ public class MainActivity extends ActivityGroup implements
         SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
         String LocationProvince = preferences.getString(Constant.LocationProvince, "");
         String LocationCity = preferences.getString(Constant.LocationCity, "");
+        Variable.cust_name = platformWhat.getDb().getUserName();
         //绑定
         Login(platformWhat.getDb().getUserId(), platformWhat.getDb()
                 .getUserName(), LocationProvince, LocationCity, platformWhat.getDb()
@@ -300,6 +298,7 @@ public class MainActivity extends ActivityGroup implements
         if (platformQQ.getDb().isValid()) {
             System.out.println("qq登录");
             tv_activity_main_name.setText(platformQQ.getDb().getUserName());
+            Variable.cust_name = platformQQ.getDb().getUserName();
             iv_activity_main_qq.setVisibility(View.VISIBLE);
             iv_activity_main_sina.setVisibility(View.VISIBLE);
             iv_activity_main_login_sina.setVisibility(View.GONE);
@@ -308,6 +307,7 @@ public class MainActivity extends ActivityGroup implements
         } else if (platformSina.getDb().isValid()) {
             System.out.println("sina登录");
             tv_activity_main_name.setText(platformSina.getDb().getUserName());
+            Variable.cust_name = platformSina.getDb().getUserName();
             iv_activity_main_qq.setVisibility(View.VISIBLE);
             iv_activity_main_sina.setVisibility(View.VISIBLE);
             iv_activity_main_login_sina.setVisibility(View.GONE);
@@ -328,11 +328,6 @@ public class MainActivity extends ActivityGroup implements
         bimage = BitmapFactory.decodeFile(Constant.BasePath + Constant.UserImage);
         if(bimage != null){
             iv_activity_main_logo.setImageBitmap(bimage);
-            //TODO 释放内存
-            if(bimage!=null && !bimage.isRecycled()){  
-                bimage.recycle();  
-                System.gc();
-            } 
         }
         SharedPreferences preferences = getSharedPreferences(
                 Constant.sharedPreferencesName, Context.MODE_PRIVATE);
