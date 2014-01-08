@@ -1,5 +1,6 @@
 package com.wise.list;
 
+import com.wise.pubclas.Config;
 import com.wise.wawc.R;
 
 import android.content.Context;
@@ -42,7 +43,7 @@ public class XListView extends ListView implements OnScrollListener {
 	private boolean mPullRefreshing = false; // is refreashing.
 
 	// -- footer view
-	private XListViewFooter mFooterView;
+	public XListViewFooter mFooterView;
 	private boolean mEnablePullLoad;
 	private boolean mPullLoading;
 	private boolean mIsFooterReady = false;
@@ -301,8 +302,7 @@ public class XListView extends ListView implements OnScrollListener {
 			}
 			if (getLastVisiblePosition() == mTotalItemCount - 1) {
 				// invoke load more.
-				if (mEnablePullLoad
-						&& mFooterView.getBottomMargin() > PULL_LOAD_MORE_DELTA) {
+				if (mEnablePullLoad && mFooterView.getBottomMargin() > PULL_LOAD_MORE_DELTA) {
 					startLoadMore();
 				}
 				resetFooterHeight();
@@ -313,6 +313,9 @@ public class XListView extends ListView implements OnScrollListener {
 			if(number > ev.getRawY()){
 				mListViewListener.PullUp();
 			}
+		}
+		if(Config.isHideFooter){
+			mFooterView.hide();
 		}
 		return super.onTouchEvent(ev);
 	}

@@ -112,4 +112,8 @@ public class Config {
 	 * 我的收藏
 	 */
 	public static String TB_Collection = "TB_Collection";
+	/**
+	 * 是否隐藏上拉加载  false 显示  true 隐藏
+	 */
+	public static boolean isHideFooter = false;
 }

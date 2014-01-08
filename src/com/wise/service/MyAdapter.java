@@ -57,10 +57,11 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 		this.articleList = articleList;
 	}
 	public int getCount() {
-		return articleList.size();
+		return 10;
+//		return articleList.size();
 	}
 	public Object getItem(int position) {
-		return articleList.get(position);
+		return null;
 	}
 	public long getItemId(int position) {
 		return position;
@@ -95,9 +96,9 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 		tv_article_content = (TextView) convertView.findViewById(R.id.tv_article_content);
 		publish_time = (TextView) convertView.findViewById(R.id.publish_time);
 		
-		publish_time.setText(getTime(articleList.get(position).getPublish_time()));
-		articel_user_name.setText(articleList.get(position).getPublish_user());
-		tv_article_content.setText(articleList.get(position).getPublish_content());
+//		publish_time.setText(getTime(articleList.get(position).getPublish_time()));
+//		articel_user_name.setText(articleList.get(position).getPublish_user());
+//		tv_article_content.setText(articleList.get(position).getPublish_content());
 		
 		saySomething.setOnClickListener(this);
 		userHead.setOnClickListener(this);

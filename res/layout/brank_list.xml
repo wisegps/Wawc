@@ -49,12 +49,22 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" >
 
-        <ListView
+        <com.wise.list.XListView
             android:id="@+id/vehicle_brank_list"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
+            android:cacheColorHint="#00000000"
             android:divider="@null" />
+        <!-- 
+         <com.wise.list.XListView
+		        android:id="@+id/article_list"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:cacheColorHint="#00000000"
+		         >
+		    </com.wise.list.XListView>
+		     -->
 
         <!-- 点击字母显示 -->
         <TextView

@@ -98,7 +98,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		articleList.setOnScrollListener(new OnScrollListener() {
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 				saySomething.setVisibility(View.GONE);
-//				searchView.setVisibility(View.GONE);
+				searchView.setVisibility(View.GONE);
 				myAdapter.isClick = false;
 			}
 			public void onScroll(AbsListView view, int firstVisibleItem,int visibleItemCount, int totalItemCount) {
@@ -157,11 +157,9 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	}
 	@Override   //上拉加载
 	public void onLoadMore() {
-		//myAdapter.refreshDates(dBOperation.selectArticle(0, 10));
 		Log.e("上拉加载","上拉加载");
 		myHandler.postDelayed(new Runnable() {
 			public void run() {
-//				myAdapter.notifyDataSetChanged();
 				onLoad();
 			}
 		}, 2000);

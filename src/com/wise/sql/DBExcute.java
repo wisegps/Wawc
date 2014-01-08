@@ -3,6 +3,7 @@ package com.wise.sql;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 public class DBExcute {	
 	/**
@@ -13,6 +14,7 @@ public class DBExcute {
 		DBHelper dbHelper = new DBHelper(context);
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		db.insert(table, null, values);
+		Log.e("插入数据","插入数据");
 		db.close();
 	}
 	/**

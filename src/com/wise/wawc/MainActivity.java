@@ -86,7 +86,7 @@ public class MainActivity extends ActivityGroup implements
     TextView tv_activity_main_name;
     View view = null;
     // 你要做什么常用命令
-    private View wantRefuel; // 要加油
+    private View wantRefuel1; // 要加油
     private View wantMaintain; // 维保
     private View wantWash; // 洗车
     private View wantRescue; // 救援
