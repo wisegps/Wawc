@@ -120,8 +120,7 @@ public class Config {
 	 * 我的收藏
 	 */
 	public static String TB_Collection = "TB_Collection";
-	/**
-	 * 定位到城市后广播
-	 */
+	
 	public static String A_City = "com.wise.wawc.city";
+	public static boolean isHideFooter = false;
 }

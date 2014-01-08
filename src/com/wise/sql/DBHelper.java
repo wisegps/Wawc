@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
+import android.util.Log;
 
 public class DBHelper extends SQLiteOpenHelper{
 	private static final int VERSION = 1;
@@ -43,6 +44,7 @@ public class DBHelper extends SQLiteOpenHelper{
 		db.execSQL(CREATE_TB_Vehicle);
 		db.execSQL(CREATE_TB_Devices);
 		db.execSQL(CREATE_TB_Collection);
+		Log.e("创建表成功","创建表成功");
 	}
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}

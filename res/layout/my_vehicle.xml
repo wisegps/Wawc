@@ -116,15 +116,16 @@
 	        >
 	        <TextView 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="@string/car_number"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
+	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
-	        <TextView 
+	        <EditText 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="粤B12345"
 	    		android:layout_weight="1"
 	    		android:textColor="#000000"
@@ -145,7 +146,7 @@
 	    		android:text="@string/brand"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
-	    		android:gravity="center"
+	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
 	        <TextView 
@@ -180,7 +181,7 @@
 	    		android:text="@string/model"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
-	    		android:gravity="center"
+	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
 	        <TextView 
@@ -213,7 +214,7 @@
 	    		android:text="@string/vehicle_style"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
-	    		android:gravity="center"
+	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
 	        <TextView 
@@ -247,7 +248,7 @@
 	    		android:text="@string/cloud_terminal"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
-	    		android:gravity="center"
+	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
 	        <TextView 
@@ -281,7 +282,7 @@
 	    		android:layout_width="fill_parent"
 	    		android:text="@string/against_rules"
 	    		android:textSize="10pt"
-	    		android:gravity="center"
+	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
 	    </TableRow>
@@ -295,20 +296,19 @@
 	        >
 	        <TextView 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="@string/engine_number"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
-	    		android:gravity="center"
+	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
-	        <TextView 
+	        <EditText 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="123456"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
-	    		android:gravity="center"
 	    		android:textColor="#000000"
 	            />
 	        
@@ -323,20 +323,19 @@
 	        >
 	        <TextView 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="@string/vehicle_number"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
-	    		android:gravity="center"
+	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
-	        <TextView 
+	        <EditText 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="123456"
-	    		android:layout_weight="2"
+	    		android:layout_weight="1"
 	    		android:textSize="7pt"
-	    		android:gravity="center"
 	    		android:textColor="#000000"
 	            />
 	    </TableRow>
@@ -373,7 +372,7 @@
 	    		android:text="@string/insurance_company"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
-	    		android:gravity="center"
+	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
 	        <TextView 
@@ -408,7 +407,7 @@
 	    		android:text="@string/insurance_time"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
-	    		android:gravity="center"
+	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
 	        <TextView 
@@ -442,7 +441,7 @@
 	    		android:text="@string/maintain_shop"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
-	    		android:gravity="center"
+	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
 	        <TextView 
@@ -478,7 +477,7 @@
 	    		android:text="@string/current_mileage"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
-	    		android:gravity="center"
+	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
 	        <TextView 
@@ -509,16 +508,16 @@
 	        >
 	        <TextView 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="@string/last_insurance_mileage"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
-	    		android:gravity="center"
+	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
-	        <TextView 
+	        <EditText 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="46000Km"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
@@ -536,16 +535,16 @@
 	        >
 	        <TextView 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="@string/shopping_time"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
-	    		android:gravity="center"
+	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
-	        <TextView 
+	        <EditText 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="2009"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
