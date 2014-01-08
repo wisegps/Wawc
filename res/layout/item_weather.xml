@@ -27,6 +27,7 @@
             android:layout_width="fill_parent"
             android:orientation="horizontal">
             <TextView 
+                android:id="@+id/tv_item_weather_wd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="normal"
@@ -34,17 +35,20 @@
                 android:textColor="@color/black"
                 android:text="12°"/>
             <TextView 
+                android:id="@+id/tv_item_weather_sky"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:text="多云转晴"/>
         </LinearLayout>
         <TextView 
+            android:id="@+id/tv_item_weather_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:text="10月27日  星期一"/>
         <TextView 
+            android:id="@+id/tv_item_weather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/black"
