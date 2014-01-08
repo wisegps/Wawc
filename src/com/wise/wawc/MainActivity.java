@@ -131,10 +131,10 @@ public class MainActivity extends ActivityGroup implements
                     }
                 });
         // 设置图片的宽高
-        iv_pic = (ImageView) findViewById(R.id.iv_pic);
+        //iv_pic = (ImageView) findViewById(R.id.iv_pic);
         //iv_pic.setImageDrawable(getResources().getDrawable(R.drawable.bg));
-        Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.bg);
-        iv_pic.setImageDrawable(BlurImage.BoxBlurFilter(bmp));
+        //Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.bg);
+        //iv_pic.setImageDrawable(BlurImage.BoxBlurFilter(bmp));
         
         RelativeLayout rl_activity_main_home = (RelativeLayout) findViewById(R.id.rl_activity_main_home);
         rl_activity_main_home.setOnClickListener(onClickListener);

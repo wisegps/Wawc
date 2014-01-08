@@ -209,7 +209,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         // 实时天气
         Cursor cursor = db.rawQuery("select * from " + Config.TB_Base
                 + " where Title=?", new String[] { "RealTimeWeather" });
-        if (c.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             String Content = cursor.getString(c.getColumnIndex("Content"));
             isHaveOldRealTimeWeather = true;
             // 解析数据
