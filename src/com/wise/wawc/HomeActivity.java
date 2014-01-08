@@ -1,7 +1,10 @@
 package com.wise.wawc;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,6 +25,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -47,14 +51,17 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
     private static final String TAG = "HomeActivity";
     private static final int Get_FutureWeather = 1; // 获取未来天气
     private static final int Get_RealTimeWeather = 2; // 获取实时天气
+    private static final int Get_Fuel = 3; // 获取城市油价
 
     TextView tv_item_weather_date, tv_item_weather_wd, tv_item_weather,tv_item_weather_sky,
-            tv_item_weather_temp1,tv_item_weather_index_xc;
+            tv_item_weather_temp1,tv_item_weather_index_xc,tv_item_oil_90,tv_item_oil_93,
+            tv_item_oil_97,tv_item_oil_0,tv_item_oil_update;
     private RecognizerDialog recognizerDialog = null; // 语音合成文字
     StringBuffer sb = null;
     private ImageView saySomething = null; // 语音识别
     
     String LocationCityCode ="";//城市编码
+    String LocationCity ="";//城市
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,8 +109,12 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 .findViewById(R.id.tv_item_weather_sky);
         tv_item_weather_temp1 = (TextView) weatherView
                 .findViewById(R.id.tv_item_weather_temp1);
-        tv_item_weather_index_xc = (TextView) weatherView
-                .findViewById(R.id.tv_item_weather_index_xc);
+        tv_item_weather_index_xc = (TextView) weatherView.findViewById(R.id.tv_item_weather_index_xc);
+        tv_item_oil_90 = (TextView) oilView.findViewById(R.id.tv_item_oil_90);
+        tv_item_oil_93 = (TextView) oilView.findViewById(R.id.tv_item_oil_93);
+        tv_item_oil_97 = (TextView) oilView.findViewById(R.id.tv_item_oil_97);
+        tv_item_oil_0 = (TextView) oilView.findViewById(R.id.tv_item_oil_0);
+        tv_item_oil_update = (TextView) oilView.findViewById(R.id.tv_item_oil_update);
 
         // 注册（将语音转文字）
         recognizerDialog = new RecognizerDialog(this, "appid=5281eaf4");
@@ -114,9 +125,15 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
 
         SharedPreferences preferences = getSharedPreferences(Config.sharedPreferencesName, Context.MODE_PRIVATE);
         LocationCityCode = preferences.getString(Config.LocationCityCode, "101280601");
+        LocationCity = preferences.getString(Config.LocationCity, "");
+        String LocationCityFuel = preferences.getString(Config.LocationCityFuel, "");
+        Log.d(TAG, "LocationCityFuel = " + LocationCityFuel);
+        jsonFuel(LocationCityFuel);
+        
         GetOldWeather();// 获取本地存储的数据
         GetFutureWeather();
         GetRealTimeWeather();
+        GetFuel();
     }
 
     OnClickListener onClickListener = new OnClickListener() {
@@ -174,13 +191,15 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
             super.handleMessage(msg);
             switch (msg.what) {
             case Get_FutureWeather:
-                // Log.d(TAG, "天气=" + msg.obj.toString());
                 JudgeFutureWeather(msg.obj.toString());
                 jsonFutureWeather(msg.obj.toString());
                 break;
             case Get_RealTimeWeather:
                 JudgeRealTimeWeather(msg.obj.toString());
                 jsonRealTimeWeather(msg.obj.toString());
+                break;
+            case Get_Fuel:
+                SaveAndJsonFuel(msg.obj.toString());
                 break;
             }
         }
@@ -264,13 +283,13 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
      * @param result
      */
     private void jsonFutureWeather(String result) {
-        Log.d(TAG, result);
         try {
             String Weather = "";
             JSONObject jsonObject = new JSONObject(result)
                     .getJSONObject("weatherinfo");
             if (jsonObject.opt("date_y") != null) {
                 String date_y = jsonObject.getString("date_y");
+                tv_item_oil_update.setText(date_y + "更新");
                 Weather += date_y;
             }
             if (jsonObject.opt("week") != null) {
@@ -298,7 +317,6 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
      * @param result
      */
     private void jsonRealTimeWeather(String result) {
-        Log.d(TAG, result);
         try {
             String weather = "";
             JSONObject jsonObject = new JSONObject(result)
@@ -320,12 +338,26 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
             e.printStackTrace();
         }
     }
+    
+    private void jsonFuel(String result){
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            if(!result.equals("")){
+                tv_item_oil_90.setText(jsonObject.getString("fuel90"));
+                tv_item_oil_93.setText(jsonObject.getString("fuel93"));
+                tv_item_oil_97.setText(jsonObject.getString("fuel97"));
+                tv_item_oil_0.setText(jsonObject.getString("fuel0"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * 获取未来天气
      */
     private void GetFutureWeather() {
-        String url = "http://wiwc.api.wisegps.cn/base/weather?city_code="
+        String url = Config.BaseUrl + "base/weather?city_code="
                 + LocationCityCode + "&is_real=0";
         new Thread(new NetThread.GetDataThread(handler, url, Get_FutureWeather))
                 .start();
@@ -336,11 +368,42 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
      * 获取实时天气
      */
     private void GetRealTimeWeather() {
-        String url = "http://wiwc.api.wisegps.cn/base/weather?city_code="
+        String url = Config.BaseUrl + "base/weather?city_code="
                 + LocationCityCode + "&is_real=1";
         new Thread(new NetThread.GetDataThread(handler, url,
                 Get_RealTimeWeather)).start();
 
+    }
+    /**
+     * 获取城市油价
+     */
+    private void GetFuel(){
+        try {
+            String url = Config.BaseUrl + "base/city/" + URLEncoder.encode(LocationCity, "UTF-8");
+            new Thread(new NetThread.GetDataThread(handler, url,
+                    Get_Fuel)).start();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * 保存并解析油价
+     * @param result
+     */
+    private void SaveAndJsonFuel(String result){
+        try {
+            JSONObject jsonObject = new JSONArray(result).getJSONObject(0);
+            String fuel_price = jsonObject.getString("fuel_price");
+            //存储
+            SharedPreferences preferences = getSharedPreferences(Config.sharedPreferencesName, Context.MODE_PRIVATE);
+            Editor editor = preferences.edit();
+            editor.putString(Config.LocationCityFuel, fuel_price);
+            editor.commit();
+            //解析
+            jsonFuel(fuel_price);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void ToShare() {

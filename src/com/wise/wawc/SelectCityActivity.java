@@ -125,7 +125,6 @@ public class SelectCityActivity extends Activity {
             filterCityDatas.clear();
             filterCityDatas.addAll(cityDatas);
         }else{
-            //TODO 匹配某些类型的品牌
             filterCityDatas.clear();
             ll_activity_select_city.setVisibility(View.GONE);
             for(CityData cityData : cityDatas){
@@ -196,8 +195,14 @@ public class SelectCityActivity extends Activity {
         editor.putString(Config.LocationCity, cityData.getCity());
         editor.putString(Config.LocationCityCode, cityData.getCity_code());
         editor.putString(Config.LocationProvince, cityData.getProvince());
+        editor.putString(Config.LocationCityFuel, cityData.getFuel_price());
         editor.commit();
         Toast.makeText(SelectCityActivity.this, "您选择了城市：" +cityData.getCity(), Toast.LENGTH_LONG).show();
+        //TODO 释放内存
+        cityDatas.clear();
+        filterCityDatas.clear();
+        hotDatas.clear();
+        System.gc();
         startActivity(new Intent(SelectCityActivity.this, MainActivity.class));
         finish();
     }
@@ -310,8 +315,12 @@ public class SelectCityActivity extends Activity {
                 cityData.setType(1);
                 cityData.setCity(jsonObject.getString("city"));
                 cityData.setProvince(jsonObject.getString("province"));
-                cityData.setFirst_letter(GetFristLetter(jsonObject
-                        .getString("city")));
+                cityData.setFirst_letter(GetFristLetter(jsonObject.getString("city")));
+                if(jsonObject.opt("fuel_price") == null){
+                    cityData.setFuel_price("");
+                }else{
+                    cityData.setFuel_price(jsonObject.getString("fuel_price"));
+                }
                 Datas.add(cityData);
             }
             return Datas;
@@ -382,13 +391,6 @@ public class SelectCityActivity extends Activity {
                 return o1.getFirst_letter().compareTo(o2.getFirst_letter());
             }
         }
-    }
-
-    private void GetCity(String city) {
-        Toast.makeText(getApplicationContext(), city, Toast.LENGTH_SHORT)
-                .show();
-        startActivity(new Intent(SelectCityActivity.this, MainActivity.class));
-        finish();
     }
 
     private class AllCityAdapter extends BaseAdapter {
@@ -534,47 +536,44 @@ public class SelectCityActivity extends Activity {
         String city;
         String Province;
         String First_letter;
+        String Fuel_price;
 
         public int getType() {
             return Type;
         }
-
         public void setType(int type) {
             Type = type;
         }
-
         public String getCity_code() {
             return City_code;
         }
-
         public void setCity_code(String city_code) {
             City_code = city_code;
         }
-
         public String getCity() {
             return city;
         }
-
         public void setCity(String city) {
             this.city = city;
         }
-
         public String getProvince() {
             return Province;
         }
-
         public void setProvince(String province) {
             Province = province;
         }
-
         public String getFirst_letter() {
             return First_letter;
         }
-
         public void setFirst_letter(String first_letter) {
             First_letter = first_letter;
         }
-
+        public String getFuel_price() {
+            return Fuel_price;
+        }
+        public void setFuel_price(String fuel_price) {
+            Fuel_price = fuel_price;
+        }
         @Override
         public String toString() {
             return "CityData [Type=" + Type + ", City_code=" + City_code

@@ -73,6 +73,10 @@ public class Config {
 	 */
 	public static final String LocationProvince = "LocationProvince";
 	/**
+	 * 油价
+	 */
+	public static final String LocationCityFuel = "LocationCityFuel";
+	/**
 	 * QQ登录返回的数据
 	 */
 	public static String qqUserName = "";

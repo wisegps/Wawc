@@ -157,8 +157,8 @@
 		  android:id="@+id/ScrollLayout_other"    
 		  android:layout_below="@id/ll_car"
 		  android:layout_width="fill_parent"   
-		  android:layout_margin="10dp"
-		  android:background="@drawable/border_bg" 
+		  android:layout_marginTop="10dp"
+		  android:background="#6c000000"
 		  android:layout_height="wrap_content"> 
     </com.wise.extend.HScrollLayout>
     

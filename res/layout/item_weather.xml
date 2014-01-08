@@ -3,14 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/bkg1"
     android:id="@+id/ll_item_weather"
     android:orientation="vertical">
     <LinearLayout 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-    	android:background="@drawable/border_bg"
         android:orientation="vertical">
         <RelativeLayout 
             android:layout_width="fill_parent"
@@ -19,7 +17,7 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_alignParentRight="true"
-	            android:textColor="@color/black"
+	            android:textColor="@color/white"
 	            android:text="深圳"/>
         </RelativeLayout>
         <LinearLayout 
@@ -32,20 +30,20 @@
                 android:layout_height="wrap_content"
                 android:textStyle="normal"
                 android:textSize="40sp"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:text="12°"/>
             <TextView 
                 android:id="@+id/tv_item_weather_sky"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:text="多云转晴"/>
         </LinearLayout>
         <TextView 
             android:id="@+id/tv_item_weather_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:text="10月27日  星期一"/>
         <LinearLayout 
             android:layout_width="fill_parent"
@@ -56,13 +54,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:text="6-18°C"/>
             <TextView 
 	            android:id="@+id/tv_item_weather"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:textColor="@color/black"
+	            android:textColor="@color/white"
 	            android:text="东风3级    湿度84%"/>
         </LinearLayout>
         
@@ -73,24 +71,24 @@
             <TextView 
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:textColor="@color/black"
+	            android:textColor="@color/white"
 	            android:text="洗车指数:"/>
             <TextView
                 android:id="@+id/tv_item_weather_index_xc" 
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:textColor="@color/black"
+	            android:textColor="@color/white"
 	            android:background="@color/bkg4"
 	            android:text="适宜"/>
             <TextView 
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:textColor="@color/black"
+	            android:textColor="@color/white"
 	            android:text="车辆限行:"/>
             <TextView 
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:textColor="@color/black"
+	            android:textColor="@color/white"
 	            android:background="@color/bkg4"
 	            android:text="限行"/>
         </LinearLayout>
