@@ -48,10 +48,13 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
     private static final int Get_FutureWeather = 1; // 获取未来天气
     private static final int Get_RealTimeWeather = 2; // 获取实时天气
 
-    TextView tv_item_weather_date, tv_item_weather_wd, tv_item_weather,tv_item_weather_sky;
+    TextView tv_item_weather_date, tv_item_weather_wd, tv_item_weather,tv_item_weather_sky,
+            tv_item_weather_temp1,tv_item_weather_index_xc;
     private RecognizerDialog recognizerDialog = null; // 语音合成文字
     StringBuffer sb = null;
     private ImageView saySomething = null; // 语音识别
+    
+    String LocationCityCode ="";//城市编码
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +100,10 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 .findViewById(R.id.tv_item_weather);
         tv_item_weather_sky = (TextView) weatherView
                 .findViewById(R.id.tv_item_weather_sky);
+        tv_item_weather_temp1 = (TextView) weatherView
+                .findViewById(R.id.tv_item_weather_temp1);
+        tv_item_weather_index_xc = (TextView) weatherView
+                .findViewById(R.id.tv_item_weather_index_xc);
 
         // 注册（将语音转文字）
         recognizerDialog = new RecognizerDialog(this, "appid=5281eaf4");
@@ -105,6 +112,8 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         recognizerDialog.setSampleRate(RATE.rate16k);
         sb = new StringBuffer();
 
+        SharedPreferences preferences = getSharedPreferences(Config.sharedPreferencesName, Context.MODE_PRIVATE);
+        LocationCityCode = preferences.getString(Config.LocationCityCode, "101280601");
         GetOldWeather();// 获取本地存储的数据
         GetFutureWeather();
         GetRealTimeWeather();
@@ -271,6 +280,12 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
             if (jsonObject.opt("weather1") != null) {
                 tv_item_weather_sky.setText(jsonObject.getString("weather1"));
             }
+            if (jsonObject.opt("temp1") != null) {
+                tv_item_weather_temp1.setText(jsonObject.getString("temp1"));
+            }
+            if (jsonObject.opt("index_xc") != null) {
+                tv_item_weather_index_xc.setText(jsonObject.getString("index_xc"));
+            }
             tv_item_weather_date.setText(Weather);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -310,10 +325,6 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
      * 获取未来天气
      */
     private void GetFutureWeather() {
-        SharedPreferences preferences = getSharedPreferences(
-                Config.sharedPreferencesName, Context.MODE_PRIVATE);
-        String LocationCityCode = preferences.getString(
-                Config.LocationCityCode, "");
         String url = "http://wiwc.api.wisegps.cn/base/weather?city_code="
                 + LocationCityCode + "&is_real=0";
         new Thread(new NetThread.GetDataThread(handler, url, Get_FutureWeather))
@@ -325,10 +336,6 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
      * 获取实时天气
      */
     private void GetRealTimeWeather() {
-        SharedPreferences preferences = getSharedPreferences(
-                Config.sharedPreferencesName, Context.MODE_PRIVATE);
-        String LocationCityCode = preferences.getString(
-                Config.LocationCityCode, "");
         String url = "http://wiwc.api.wisegps.cn/base/weather?city_code="
                 + LocationCityCode + "&is_real=1";
         new Thread(new NetThread.GetDataThread(handler, url,
