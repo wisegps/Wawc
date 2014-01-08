@@ -27,6 +27,7 @@ public class DBExcute {
 		db.execSQL(sql);
 		db.close();
 	}
+	
 	/**
 	 * 删除记录
 	 * @param id
