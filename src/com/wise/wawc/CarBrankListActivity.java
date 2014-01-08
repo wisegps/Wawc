@@ -43,6 +43,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.wise.wawc.R;
 
 /**
@@ -73,8 +75,10 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 	private MyHandler myHandler = null;
 	private ProgressDialog progressDialog;
 	private static final int GET_BRANK = 1;
+	private static final int REFRESH_BRANK = 2;
 	
 	private DBExcute dBExcute = null;
+	private DBHelper dbHelper = null;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -84,6 +88,7 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 		
 		myHandler = new MyHandler();
 		brankLogo = new ArrayList<String>();
+		dbHelper = new DBHelper(CarBrankListActivity.this);
 		dBExcute = new DBExcute();
 		//初始化控件
 		initViews();
@@ -168,10 +173,10 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 		progressDialog = ProgressDialog.show(CarBrankListActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 		progressDialog.setCancelable(true);
 		myHandler = new MyHandler();
-		new Thread(new NetThread.GetDataThread(myHandler, Config.BaseUrl + "base/car_brand", GET_BRANK)).start();
+		
+		getDate();
 	}
-	
-	
+
 	/**
 	 * 为ListView填充数据
 	 * @param date
@@ -226,13 +231,8 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 	}
 	@Override  //下拉刷新
 	public void onRefresh() {
-		new Thread(new NetThread.GetDataThread(myHandler, Config.BaseUrl + "base/car_brand", GET_BRANK)).start();
+		new Thread(new NetThread.GetDataThread(myHandler, Config.BaseUrl + "base/car_brand", REFRESH_BRANK)).start();
 		Log.e("下拉刷新","下拉刷新");
-		myHandler.postDelayed(new Runnable() {
-			public void run() {
-				onLoad();
-			}
-		}, 2000);
 	}
 	@Override   //上拉加载
 	public void onLoadMore() {
@@ -260,60 +260,106 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 			case GET_BRANK:
 				progressDialog.dismiss();
 				String brankData = msg.obj.toString();
-//				ContentValues contentValues = new ContentValues();
-//				contentValues.put("Title", "brank");
-//				contentValues.put("Content", "brankContent");
-//				
-//				dBExcute.InsertDB(CarBrankListActivity.this, contentValues, Config.TB_Base);  //存储到数据库
-//				DBHelper dBHelper = new DBHelper(CarBrankListActivity.this);
-//				SQLiteDatabase read = dBHelper.getReadableDatabase();
-//				
-//				Cursor cursor = read.rawQuery("select * from " + Config.TB_Base + " where Title = ?",new String[]{"brank"});
-//				if(cursor.moveToNext()){
-//					System.out.println("title=" + cursor.getString(cursor.getColumnIndex("Title")));
-//					System.out.println("content=" + cursor.getString(cursor.getColumnIndex("Content")));
-//				}
-				Log.e("获取到的车辆品牌",brankData);
-				
-				try {
-					JSONArray jsonArray = new JSONArray(brankData);
-					int arrayLength = jsonArray.length();
-					StringBuffer sb = new StringBuffer();
-					for(int i = 0 ; i < arrayLength ; i ++){
-						JSONObject jsonObj = jsonArray.getJSONObject(i);
-						if(i < arrayLength){
-							sb.append(jsonObj.get("name")+",");
-						}else{
-							sb.append(jsonObj.get("name"));
-						}
-						//获取logo  TODO
+				if(!"".equals(brankData)){
+					ContentValues contentValues = new ContentValues();
+					contentValues.put("Title", "carBrank");
+					contentValues.put("Content", brankData);
+					dBExcute.InsertDB(CarBrankListActivity.this, contentValues, Config.TB_Base);
+					JSONArray jsonArray = null;
+					try {
+						jsonArray = new JSONArray(brankData);
+					} catch (JSONException e) {
+						e.printStackTrace();
 					}
-					brankTemp = sb.toString().split(",");
-					Log.e("brankTemp",brankTemp.length+"");
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-				
-				if(brankTemp != null && brankTemp.length >0){
-					brankModelList = filledData(brankTemp);
+					Log.e("服务器获取的数据：",jsonArray.length()+"");
+					parseJSON(jsonArray);
 				}else{
-					//查询数据库 TODO
+					Toast.makeText(getApplicationContext(), "获取数据失败，稍后再试", 0).show();
+				}
+				break;
+			case REFRESH_BRANK:
+				onLoad();
+				String refreshData = msg.obj.toString();
+				if(!"".equals(refreshData)){
+					ContentValues contentValues = new ContentValues();
+					contentValues.put("Title", "carBrank");
+					contentValues.put("Content", refreshData);
+					//更新数据库  TODO
+//					dBExcute.InsertDB(CarBrankListActivity.this, contentValues, Config.TB_Base);
+					JSONArray jsonArray = null;
+					try {
+						jsonArray = new JSONArray(refreshData);
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+					Log.e("服务器获取的数据：",jsonArray.length()+"");
+					parseJSON(jsonArray);
+				}else{
+					Toast.makeText(getApplicationContext(), "获取数据失败，稍后再试", 0).show();
 				}
 				break;
 			default:
 				return;
 			}
-//			//添加数据(模拟)
+			//添加数据(模拟)
 //			brankModelList = filledData(getResources().getStringArray(R.array.date));
-			//排序
-			Collections.sort(brankModelList, comparator);
 			
-			adapter = new BrankAdapter(CarBrankListActivity.this, brankModelList);
-			vehicleBrankList.setAdapter(adapter);
 			super.handleMessage(msg);
 			
 		}
 	}
+	
+	
+	
+	//数据库存在数据则从数据库获取
+	private void getDate() {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		 Cursor cursor = db.rawQuery("select * from " + Config.TB_Base + " where Title = ?", new String[]{"carBrank"});
+		 JSONArray jsonArray = null;
+		if(cursor.moveToFirst()){
+			progressDialog.dismiss();
+			try {
+				jsonArray = new JSONArray(cursor.getString(cursor.getColumnIndex("Content")));
+				Log.e("数据库获取的诗数据：",jsonArray.length()+"");
+				parseJSON(jsonArray);
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}else{
+			new Thread(new NetThread.GetDataThread(myHandler, Config.BaseUrl + "base/car_brand", GET_BRANK)).start();
+		}
+	}
+	
+	//解析json数据
+	public void parseJSON(JSONArray jsonArray){
+
+		try {
+			int arrayLength = jsonArray.length();
+			StringBuffer sb = new StringBuffer();
+			for(int i = 0 ; i < arrayLength ; i ++){
+				JSONObject jsonObj = jsonArray.getJSONObject(i);
+				if(i < arrayLength){
+					sb.append(jsonObj.get("name")+",");
+				}else{
+					sb.append(jsonObj.get("name"));
+				}
+				//获取logo  TODO
+			}
+			brankTemp = sb.toString().split(",");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		if(brankTemp != null && brankTemp.length >0){
+			brankModelList = filledData(brankTemp);
+		}
+		
+		Collections.sort(brankModelList, comparator);
+		
+		adapter = new BrankAdapter(CarBrankListActivity.this, brankModelList);
+		vehicleBrankList.setAdapter(adapter);
+	}
+	
 	protected void onDestroy() {
 		Config.isHideFooter = false;
 		super.onDestroy();

@@ -4,6 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
+    android:background="#FFFFFF"
     android:padding="4dip"
     >
     
@@ -43,12 +44,12 @@
         android:background="#000000"
         />
 
-    <ListView
+    <com.wise.list.XListView
         android:id="@+id/insurance_company_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:cacheColorHint="#00ffffff"
         android:scrollingCache="false" >
-    </ListView>
+    </com.wise.list.XListView>
 
 </LinearLayout>
