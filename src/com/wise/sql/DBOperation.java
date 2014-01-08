@@ -8,7 +8,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 import com.wise.data.Article;
-import com.wise.pubclas.Config;
+import com.wise.pubclas.Constant;
 
 public class DBOperation {
 //	private DBHelper dBHelper;

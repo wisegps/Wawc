@@ -1,6 +1,6 @@
 package com.wise.wawc;
 
-import com.wise.pubclas.Config;
+import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import android.app.Activity;
@@ -34,7 +34,7 @@ public class WelcomeActivity extends Activity {
         TextView tv_activity_welcom_version = (TextView) findViewById(R.id.tv_activity_welcom_version);
         tv_activity_welcom_version.setText("V"
                 + GetSystem.GetVersion(getApplicationContext(),
-                        Config.PackageName));
+                        Constant.PackageName));
         if (isOffline()) {
             // 没有网络
             setNetworkMethod();
@@ -132,17 +132,17 @@ public class WelcomeActivity extends Activity {
      */
     private boolean isFristLoad() {
         SharedPreferences preferences = getSharedPreferences(
-                Config.sharedPreferencesName, Context.MODE_PRIVATE);
-        String LocationCity = preferences.getString(Config.LocationCity, "");
+                Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+        String LocationCity = preferences.getString(Constant.LocationCity, "");
         if (LocationCity.equals("")) {
             return true;
         }
         return false;
     }
     private void GetCityList(){
-        String url = Config.BaseUrl + "base/city?is_hot=0";
+        String url = Constant.BaseUrl + "base/city?is_hot=0";
         new Thread(new NetThread.GetDataThread(handler, url, Get_city)).start();
-        String url_hot = Config.BaseUrl + "base/city?is_hot=1";
+        String url_hot = Constant.BaseUrl + "base/city?is_hot=1";
         new Thread(new NetThread.GetDataThread(handler, url_hot, Get_host_city)).start();
     }
     private void TurnActivity(){

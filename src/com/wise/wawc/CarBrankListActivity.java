@@ -13,7 +13,7 @@ import com.wise.data.BrankModel;
 import com.wise.data.CharacterParser;
 import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
-import com.wise.pubclas.Config;
+import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
 import com.wise.service.BrankAdapter;
 import com.wise.service.ClearEditText;
@@ -110,7 +110,7 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 	}
 
 	private void initViews() {
-		Config.isHideFooter = true;
+		Constant.isHideFooter = true;
 		mClearEditText = (ClearEditText) findViewById(R.id.filter_edit);
 		vehicleBrankList = (XListView) findViewById(R.id.vehicle_brank_list);
 		vehicleBrankList.setXListViewListener(this);
@@ -168,7 +168,7 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 		progressDialog = ProgressDialog.show(CarBrankListActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 		progressDialog.setCancelable(true);
 		myHandler = new MyHandler();
-		new Thread(new NetThread.GetDataThread(myHandler, Config.BaseUrl + "base/car_brand", GET_BRANK)).start();
+		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "base/car_brand", GET_BRANK)).start();
 	}
 	
 	
@@ -226,7 +226,7 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 	}
 	@Override  //下拉刷新
 	public void onRefresh() {
-		new Thread(new NetThread.GetDataThread(myHandler, Config.BaseUrl + "base/car_brand", GET_BRANK)).start();
+		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "base/car_brand", GET_BRANK)).start();
 		Log.e("下拉刷新","下拉刷新");
 		myHandler.postDelayed(new Runnable() {
 			public void run() {
@@ -315,23 +315,23 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 		}
 	}
 	protected void onDestroy() {
-		Config.isHideFooter = false;
+		Constant.isHideFooter = false;
 		super.onDestroy();
 	}
 	protected void onPause() {
-		Config.isHideFooter = false;
+		Constant.isHideFooter = false;
 		super.onPause();
 	}
 
 	@Override
 	protected void onRestart() {
-		Config.isHideFooter = true;
+		Constant.isHideFooter = true;
 		super.onRestart();
 	}
 
 	@Override
 	protected void onResume() {
-		Config.isHideFooter = true;
+		Constant.isHideFooter = true;
 		super.onResume();
 	}
 }

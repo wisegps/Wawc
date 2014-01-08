@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.wise.extend.CarAdapter;
-import com.wise.pubclas.Config;
+import com.wise.pubclas.Constant;
+import com.wise.pubclas.Variable;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -46,16 +47,16 @@ public class TrafficActivity extends Activity{
 		iv_activity_traffic_help.setOnClickListener(onClickListener);
 		
 		GridView gv_activity_traffic = (GridView)findViewById(R.id.gv_activity_traffic);
-        carAdapter = new CarAdapter(TrafficActivity.this,Config.carDatas);
+        carAdapter = new CarAdapter(TrafficActivity.this,Variable.carDatas);
         gv_activity_traffic.setAdapter(carAdapter);
         
         int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 120, getResources().getDisplayMetrics());
-		LayoutParams params = new LayoutParams(Config.carDatas.size() * (px + 10),LayoutParams.WRAP_CONTENT);
+		LayoutParams params = new LayoutParams(Variable.carDatas.size() * (px + 10),LayoutParams.WRAP_CONTENT);
 		gv_activity_traffic.setLayoutParams(params);
 		gv_activity_traffic.setColumnWidth(px);
 		gv_activity_traffic.setHorizontalSpacing(10);
 		gv_activity_traffic.setStretchMode(GridView.NO_STRETCH);
-		gv_activity_traffic.setNumColumns(Config.carDatas.size());
+		gv_activity_traffic.setNumColumns(Variable.carDatas.size());
 		gv_activity_traffic.setOnItemClickListener(onItemClickListener);		
 	}
 	
@@ -76,10 +77,10 @@ public class TrafficActivity extends Activity{
 	OnItemClickListener onItemClickListener = new OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
-			for(int i = 0 ; i < Config.carDatas.size() ; i++){
-				Config.carDatas.get(i).setCheck(false);
+			for(int i = 0 ; i < Variable.carDatas.size() ; i++){
+			    Variable.carDatas.get(i).setCheck(false);
 			}
-			Config.carDatas.get(arg2).setCheck(true);
+			Variable.carDatas.get(arg2).setCheck(true);
 			carAdapter.notifyDataSetChanged();
 		}
 	};

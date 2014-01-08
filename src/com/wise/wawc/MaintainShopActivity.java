@@ -1,6 +1,6 @@
 package com.wise.wawc;
 
-import com.wise.pubclas.Config;
+import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
 import com.wise.service.MaintainAdapter;
 
@@ -35,7 +35,7 @@ public class MaintainShopActivity extends Activity {
 		
 		myHandler = new MyHandler();
 		progressDialog = ProgressDialog.show(MaintainShopActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
-		new Thread(new NetThread.DeleteThread(myHandler, Config.BaseUrl, getMaintainShopCode)).start();
+		new Thread(new NetThread.DeleteThread(myHandler, Constant.BaseUrl, getMaintainShopCode)).start();
 		
 	}
 	

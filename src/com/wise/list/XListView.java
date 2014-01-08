@@ -1,6 +1,6 @@
 package com.wise.list;
 
-import com.wise.pubclas.Config;
+import com.wise.pubclas.Constant;
 import com.wise.wawc.R;
 
 import android.content.Context;
@@ -314,7 +314,7 @@ public class XListView extends ListView implements OnScrollListener {
 				mListViewListener.PullUp();
 			}
 		}
-		if(Config.isHideFooter){
+		if(Constant.isHideFooter){
 			mFooterView.hide();
 		}
 		return super.onTouchEvent(ev);

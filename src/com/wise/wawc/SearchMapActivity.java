@@ -26,7 +26,9 @@ import com.baidu.mapapi.utils.DistanceUtil;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.wise.data.AdressData;
 import com.wise.extend.AdressAdapter;
-import com.wise.pubclas.Config;
+import com.wise.pubclas.Constant;
+import com.wise.pubclas.Variable;
+
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -75,7 +77,7 @@ public class SearchMapActivity extends Activity {
 		mMapView = (MapView) findViewById(R.id.mv_search_map);
 		mMapView.setBuiltInZoomControls(true);
 		mMapController = mMapView.getController();
-		point = new GeoPoint((int) (Config.Lat * 1E6),(int) (Config.Lon * 1E6));
+		point = new GeoPoint((int) (Variable.Lat * 1E6),(int) (Variable.Lon * 1E6));
 		mMapController.setCenter(point);// 设置地图中心点
 		mMapController.setZoom(12);// 设置地图zoom级别
 		overlays = mMapView.getOverlays();

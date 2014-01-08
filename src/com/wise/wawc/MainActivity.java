@@ -34,11 +34,15 @@ import com.wise.extend.OnViewTouchMoveListener;
 import com.wise.extend.PicHorizontalScrollView;
 import com.wise.extend.SlidingMenuView;
 import com.wise.pubclas.BlurImage;
-import com.wise.pubclas.Config;
+import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
+import com.wise.pubclas.Variable;
 import com.wise.service.SaveSettingData;
 import android.app.ActivityGroup;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -74,19 +78,12 @@ public class MainActivity extends ActivityGroup implements
     int Screen = 1;
     Platform platformQQ;
     Platform platformSina;
+    Platform platformWhat;
     ImageView iv_activity_main_logo, iv_activity_main_qq,
             iv_activity_main_sina, iv_activity_main_login_sina,
             iv_activity_main_login_qq;
     TextView tv_activity_main_name;
-    View view = null;
-    // 你要做什么常用命令
-    private View wantRefuel1; // 要加油
-    private View wantMaintain; // 维保
-    private View wantWash; // 洗车
-    private View wantRescue; // 救援
-    private View wantInsurance; // 报险
-    private View wantPark; // 停车
-
+    
     private ParseFaceThread thread = null;
     private SaveSettingData saveSettingData;
     double Multiple = 0.5;
@@ -218,33 +215,14 @@ public class MainActivity extends ActivityGroup implements
             case R.id.iv_activity_main_login_qq:
                 platformQQ.setPlatformActionListener(MainActivity.this);
                 platformQQ.showUser(null);
+                platformWhat = platformQQ;
                 break;
             case R.id.iv_activity_main_login_sina:
                 platformSina.setPlatformActionListener(MainActivity.this);
                 platformSina.SSOSetting(true);
                 platformSina.showUser(null);
-                break;
-            case R.id.rl_activity_main_oil: // 加油
-                // startActivity(new
-                // Intent(MainActivity.this,SearchResultActivity.class));
-                break;
-            case R.id.rl_activity_main_maintain: // 维保
-                break;
-            case R.id.rl_activity_main_wash: // 洗车
-
-                break;
-            case R.id.rl_activity_main_help: // 救援
-
-                break;
-            case R.id.rl_activity_main_safety: // 报险
-
-                break;
-            case R.id.rl_activity_main_park: // 停车
-
-                break;
-            default:
-
-                return;
+                platformWhat = platformSina;
+                break;            
             }
         }
     };
@@ -258,17 +236,35 @@ public class MainActivity extends ActivityGroup implements
                 iv_activity_main_logo.setImageBitmap(bimage);
                 break;
             case Login:
-                isLogin();
+                //isLogin();
+                jsonLoginOk();
                 break;
             case Bind_ID:
-                Log.d(TAG, "登录返回=" + msg.obj.toString());
+                Log.d(TAG, "绑定返回=" + msg.obj.toString());
                 jsonLogin(msg.obj.toString());
                 break;
             }
         }
     };
-    
-    
+    /**
+     * 登录成功
+     */
+    private void jsonLoginOk(){
+        SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+        String LocationProvince = preferences.getString(Constant.LocationProvince, "");
+        String LocationCity = preferences.getString(Constant.LocationCity, "");
+        //绑定
+        Login(platformWhat.getDb().getUserId(), platformWhat.getDb()
+                .getUserName(), LocationProvince, LocationCity, platformWhat.getDb()
+                .getUserIcon(), "remark");
+        //获取图片
+        new Thread(new GetBitMapFromUrlThread(platformWhat.getDb()
+                .getUserIcon())).start();
+    }
+    /**
+     * 解析绑定返回数据
+     * @param result
+     */
     private void jsonLogin(String result){
         try {
             JSONObject jsonObject = new JSONObject(result);
@@ -276,8 +272,14 @@ public class MainActivity extends ActivityGroup implements
             if(status_code.equals("0")){
                 String auth_code = jsonObject.getString("auth_code");                
                 String cust_id = jsonObject.getString("cust_id");
-                Config.auth_code = auth_code;
-                Config.cust_id = cust_id;
+                Constant.auth_code = auth_code;
+                Constant.cust_id = cust_id;
+                
+                SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+                Editor editor = preferences.edit();
+                editor.putString(Constant.sp_cust_id, cust_id);
+                editor.putString(Constant.sp_auth_code, auth_code);
+                editor.commit();
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -287,32 +289,18 @@ public class MainActivity extends ActivityGroup implements
     private void isLogin() {
         if (platformQQ.getDb().isValid()) {
             System.out.println("qq登录");
-            Log.d(TAG, "platformQQ.getDb().getToken() = "
-                    + platformQQ.getDb().getToken());
             tv_activity_main_name.setText(platformQQ.getDb().getUserName());
             iv_activity_main_qq.setVisibility(View.VISIBLE);
             iv_activity_main_sina.setVisibility(View.VISIBLE);
             iv_activity_main_login_sina.setVisibility(View.GONE);
             iv_activity_main_login_qq.setVisibility(View.GONE);
-            new Thread(new GetBitMapFromUrlThread(platformQQ.getDb()
-                    .getUserIcon())).start();
-            Login(platformQQ.getDb().getUserId(), platformQQ.getDb()
-                    .getUserName(), "广东", "深圳", platformQQ.getDb()
-                    .getUserIcon(), "remark");
         } else if (platformSina.getDb().isValid()) {
             System.out.println("sina登录");
-            Log.d(TAG, "platformSina.getDb().getToken() = "
-                    + platformSina.getDb().getToken());
             tv_activity_main_name.setText(platformSina.getDb().getUserName());
             iv_activity_main_qq.setVisibility(View.VISIBLE);
             iv_activity_main_sina.setVisibility(View.VISIBLE);
             iv_activity_main_login_sina.setVisibility(View.GONE);
             iv_activity_main_login_qq.setVisibility(View.GONE);
-            new Thread(new GetBitMapFromUrlThread(platformSina.getDb()
-                    .getUserIcon())).start();
-            Login(platformSina.getDb().getUserId(), platformSina.getDb()
-                    .getUserName(), "广东", "深圳", platformSina.getDb()
-                    .getUserIcon(), "remark");
         } else {
             System.out.println("没有登录");
             iv_activity_main_qq.setVisibility(View.GONE);
@@ -324,24 +312,17 @@ public class MainActivity extends ActivityGroup implements
 
     /**
      * 社会化登录后绑定
-     * 
-     * @param login_id
-     *            第三方登录返回的标识ID
-     * @param cust_name
-     *            用户名称
-     * @param province
-     *            省份
-     * @param city
-     *            城市
-     * @param logo
-     *            头像url
-     * @param remark
-     *            个人说明
+     * @param login_id 第三方登录返回的标识ID
+     * @param cust_name 用户名称
+     * @param province  省份
+     * @param city 城市
+     * @param logo 头像url
+     * @param remark 个人说明
      */
     private void Login(String login_id, String cust_name, String province,
             String city, String logo, String remark) {
         try {
-            String url = Config.BaseUrl + "login?login_id=" + login_id
+            String url = Constant.BaseUrl + "login?login_id=" + login_id
                     + "&cust_name=" + URLEncoder.encode(cust_name, "UTF-8")
                     + "&province=" + URLEncoder.encode(province, "UTF-8")
                     + "&city=" + URLEncoder.encode(city, "UTF-8") + "&logo="
@@ -474,16 +455,15 @@ public class MainActivity extends ActivityGroup implements
     @Override
     public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
         Log.d(TAG, "登录成功" + arg0.getName());
-        Iterator iterator = arg2.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Entry entry = (Entry) iterator.next();
-            System.out.println(entry.getKey() + "," + entry.getValue());
-            if (entry.getKey().equals("nickname")) {
-                Config.qqUserName = (String) entry.getValue();
-                Log.e("QQ昵称", "" + entry.getValue());
-            }
-        }
-
+//        Iterator iterator = arg2.entrySet().iterator();
+//        while (iterator.hasNext()) {
+//            Entry entry = (Entry) iterator.next();
+//            System.out.println(entry.getKey() + "," + entry.getValue());
+//            if (entry.getKey().equals("nickname")) {
+//                Config.qqUserName = (String) entry.getValue();
+//                Log.e("QQ昵称", "" + entry.getValue());
+//            }
+//        }
         Message message = new Message();
         message.what = Login;
         handler.sendMessage(message);
@@ -595,7 +575,7 @@ public class MainActivity extends ActivityGroup implements
             carData.setCheck(false);
             carDatas.add(carData);
         }
-        Config.carDatas = carDatas;
+        Variable.carDatas = carDatas;
     }
 
     @Override
@@ -611,9 +591,9 @@ public class MainActivity extends ActivityGroup implements
 
     private void initSettingData() {
         saveSettingData = new SaveSettingData(MainActivity.this);
-        Config.againstPush = saveSettingData.getAgainstPush();
-        Config.faultPush = saveSettingData.getBugPush();
-        Config.remaindPush = saveSettingData.getTrafficDepartment();
-        Config.defaultCenter = saveSettingData.getDefaultCenter();
+        Constant.againstPush = saveSettingData.getAgainstPush();
+        Constant.faultPush = saveSettingData.getBugPush();
+        Constant.remaindPush = saveSettingData.getTrafficDepartment();
+        Constant.defaultCenter = saveSettingData.getDefaultCenter();
     }
 }

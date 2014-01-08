@@ -15,7 +15,7 @@ import com.iflytek.ui.RecognizerDialog;
 import com.iflytek.ui.RecognizerDialogListener;
 import com.wise.data.CharacterParser;
 import com.wise.extend.HScrollLayout;
-import com.wise.pubclas.Config;
+import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
@@ -123,10 +123,10 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         recognizerDialog.setSampleRate(RATE.rate16k);
         sb = new StringBuffer();
 
-        SharedPreferences preferences = getSharedPreferences(Config.sharedPreferencesName, Context.MODE_PRIVATE);
-        LocationCityCode = preferences.getString(Config.LocationCityCode, "101280601");
-        LocationCity = preferences.getString(Config.LocationCity, "");
-        String LocationCityFuel = preferences.getString(Config.LocationCityFuel, "");
+        SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+        LocationCityCode = preferences.getString(Constant.LocationCityCode, "101280601");
+        LocationCity = preferences.getString(Constant.LocationCity, "");
+        String LocationCityFuel = preferences.getString(Constant.LocationCityFuel, "");
         Log.d(TAG, "LocationCityFuel = " + LocationCityFuel);
         jsonFuel(LocationCityFuel);
         
@@ -216,7 +216,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         DBHelper dbHelper = new DBHelper(HomeActivity.this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         // 未来天气
-        Cursor c = db.rawQuery("select * from " + Config.TB_Base
+        Cursor c = db.rawQuery("select * from " + Constant.TB_Base
                 + " where Title=?", new String[] { "FutureWeather" });
         if (c.moveToFirst()) {
             String Content = c.getString(c.getColumnIndex("Content"));
@@ -226,7 +226,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         }
         c.close();
         // 实时天气
-        Cursor cursor = db.rawQuery("select * from " + Config.TB_Base
+        Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base
                 + " where Title=?", new String[] { "RealTimeWeather" });
         if (cursor.moveToFirst()) {
             String Content = cursor.getString(c.getColumnIndex("Content"));
@@ -274,7 +274,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         ContentValues values = new ContentValues();
         values.put("Title", Title);
         values.put("Content", result);
-        dbExcute.InsertDB(HomeActivity.this, values, Config.TB_Base);
+        dbExcute.InsertDB(HomeActivity.this, values, Constant.TB_Base);
     }
 
     /**
@@ -357,7 +357,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
      * 获取未来天气
      */
     private void GetFutureWeather() {
-        String url = Config.BaseUrl + "base/weather?city_code="
+        String url = Constant.BaseUrl + "base/weather?city_code="
                 + LocationCityCode + "&is_real=0";
         new Thread(new NetThread.GetDataThread(handler, url, Get_FutureWeather))
                 .start();
@@ -368,7 +368,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
      * 获取实时天气
      */
     private void GetRealTimeWeather() {
-        String url = Config.BaseUrl + "base/weather?city_code="
+        String url = Constant.BaseUrl + "base/weather?city_code="
                 + LocationCityCode + "&is_real=1";
         new Thread(new NetThread.GetDataThread(handler, url,
                 Get_RealTimeWeather)).start();
@@ -379,7 +379,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
      */
     private void GetFuel(){
         try {
-            String url = Config.BaseUrl + "base/city/" + URLEncoder.encode(LocationCity, "UTF-8");
+            String url = Constant.BaseUrl + "base/city/" + URLEncoder.encode(LocationCity, "UTF-8");
             new Thread(new NetThread.GetDataThread(handler, url,
                     Get_Fuel)).start();
         } catch (UnsupportedEncodingException e) {
@@ -395,9 +395,9 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
             JSONObject jsonObject = new JSONArray(result).getJSONObject(0);
             String fuel_price = jsonObject.getString("fuel_price");
             //存储
-            SharedPreferences preferences = getSharedPreferences(Config.sharedPreferencesName, Context.MODE_PRIVATE);
+            SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
             Editor editor = preferences.edit();
-            editor.putString(Config.LocationCityFuel, fuel_price);
+            editor.putString(Constant.LocationCityFuel, fuel_price);
             editor.commit();
             //解析
             jsonFuel(fuel_price);

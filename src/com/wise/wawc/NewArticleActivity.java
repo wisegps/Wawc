@@ -8,7 +8,8 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 
-import com.wise.pubclas.Config;
+import com.wise.pubclas.Constant;
+import com.wise.pubclas.Variable;
 import com.wise.sharesdk.OnekeyShare;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
@@ -59,8 +60,8 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 		
 		location = (TextView) findViewById(R.id.localtion);
 		
-		if(!"".equals(Config.Adress)){
-			location.setText(Config.Adress);
+		if(!"".equals(Variable.Adress)){
+			location.setText(Variable.Adress);
 		}
 
 		Intent intent = getIntent();

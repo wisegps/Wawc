@@ -3,8 +3,11 @@ package com.wise.pubclas;
 import java.util.List;
 import android.graphics.Bitmap;
 import com.wise.data.CarData;
-
-public class Config {
+/**
+ * 常量
+ * @author honesty
+ */
+public class Constant {
     /**
      * 服务器地址："http://wiwc.api.wisegps.cn/"
      */
@@ -13,22 +16,7 @@ public class Config {
 	 * 获取版本信息用到
 	 */
 	public static String PackageName = "com.wise.wawc";
-	/**
-	 * 当前位置
-	 */
-	public static String Adress = "";
-	/**
-	 * 当前经度
-	 */
-	public static double Lat = 0;
-	/**
-	 * 当前未读
-	 */
-	public static double Lon = 0;
-	/**
-	 * 车辆数据
-	 */
-	public static List<CarData> carDatas;
+	
 	/**
 	 * 违章推送
 	 */
@@ -51,10 +39,6 @@ public class Config {
 	public static String defaultCenter = "车辆位置";
 	public static String defaultCenter_key ="defaultCenter";
 	/**
-	 * 使用百度地图的密钥
-	 */
-	public static final String BDMapKey = "zwIFsm9hVHYmroq923Psz3xv";
-	/**
 	 * SharedPreferences数据共享名称
 	 */
 	public static final String sharedPreferencesName = "userData";
@@ -76,6 +60,14 @@ public class Config {
 	 * 油价
 	 */
 	public static final String LocationCityFuel = "LocationCityFuel";
+	/**
+	 * 用户id
+	 */
+	public static final String sp_cust_id = "sp_cust_id";
+	/**
+	 * 用户auth_code
+	 */
+	public static final String sp_auth_code = "sp_auth_code";
 	/**
 	 * QQ登录返回的数据
 	 */

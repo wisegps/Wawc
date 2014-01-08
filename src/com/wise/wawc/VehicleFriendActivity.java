@@ -9,7 +9,7 @@ import java.util.List;
 import com.wise.data.Article;
 import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
-import com.wise.pubclas.Config;
+import com.wise.pubclas.Constant;
 import com.wise.service.MyAdapter;
 import com.wise.sql.DBOperation;
 
@@ -119,7 +119,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				ActivityFactory.A.LeftMenu();
 				break;
 			case R.id.publish_article:  //发表新文章
-				if("".equals(Config.qqUserName)){
+				if("".equals(Constant.qqUserName)){
 					Toast.makeText(getApplicationContext(), getString(R.string.please_login), 0).show();
 				}else{
 					startActivity(new Intent(VehicleFriendActivity.this,NewArticleActivity.class));
@@ -182,14 +182,14 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		public void handleMessage(Message msg) {
 			switch(msg.what){
 			case setUserIcon:
-				if(Config.UserIcon != null){
-					qqUserHead.setImageBitmap(Config.UserIcon);
+				if(Constant.UserIcon != null){
+					qqUserHead.setImageBitmap(Constant.UserIcon);
 				}else{
 					qqUserHead.setBackgroundResource(R.drawable.ic_launcher);
 				}
-				Log.e("用户昵称",Config.qqUserName);
-				if(!"".equals(Config.qqUserName)){
-					qqUserName.setText(Config.qqUserName);
+				Log.e("用户昵称",Constant.qqUserName);
+				if(!"".equals(Constant.qqUserName)){
+					qqUserName.setText(Constant.qqUserName);
 				}else{
 					qqUserName.setText("未登录");
 				}

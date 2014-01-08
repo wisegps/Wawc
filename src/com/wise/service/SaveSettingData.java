@@ -1,6 +1,6 @@
 package com.wise.service;
 
-import com.wise.pubclas.Config;
+import com.wise.pubclas.Constant;
 
 import android.app.Activity;
 import android.content.Context;
@@ -17,19 +17,19 @@ public class SaveSettingData {
 	private Editor editor;
 	public SaveSettingData(Context context) {
 		this.context = context;
-		userData = this.context.getSharedPreferences(Config.sharedPreferencesName, Activity.MODE_PRIVATE);
+		userData = this.context.getSharedPreferences(Constant.sharedPreferencesName, Activity.MODE_PRIVATE);
 	}
 	public void saveData(String defaultCenter,boolean againstPush,boolean bugPush,boolean trafficDepartment){
 		editor = userData.edit();
-		editor.putString(Config.defaultCenter_key, defaultCenter);
-		editor.putBoolean(Config.againstPush_key, againstPush);
-		editor.putBoolean(Config.faultPush_key, bugPush);
-		editor.putBoolean(Config.remaindPush_key, trafficDepartment);
+		editor.putString(Constant.defaultCenter_key, defaultCenter);
+		editor.putBoolean(Constant.againstPush_key, againstPush);
+		editor.putBoolean(Constant.faultPush_key, bugPush);
+		editor.putBoolean(Constant.remaindPush_key, trafficDepartment);
 		editor.commit();
 	}
 	
 	public String getDefaultCenter(){
-		return userData.getString("defaultCenter", Config.defaultCenter);
+		return userData.getString("defaultCenter", Constant.defaultCenter);
 	}
 	public boolean getAgainstPush(){
 		return userData.getBoolean("againstPush", true);

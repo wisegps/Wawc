@@ -8,8 +8,10 @@ import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.map.OverlayItem;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
-import com.wise.pubclas.Config;
+import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
+import com.wise.pubclas.Variable;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
@@ -61,8 +63,8 @@ public class CarLocationActivity extends Activity {
 		mMapController.setZoom(12);// 设置地图zoom级别
 		overlays = mMapView.getOverlays();
 
-		GeoPoint p1 = new GeoPoint((int) (Config.Lat * 1E6),
-				(int) (Config.Lon * 1E6));
+		GeoPoint p1 = new GeoPoint((int) (Variable.Lat * 1E6),
+				(int) (Variable.Lon * 1E6));
 		OverlayItem item1 = new OverlayItem(p1, "item1", "item1");
 		Drawable mark = getResources().getDrawable(R.drawable.ic_launcher);
 		item1.setMarker(mark);
@@ -101,10 +103,10 @@ public class CarLocationActivity extends Activity {
 				break;
 			case R.id.bt_activity_car_location_findCar:
 
-				GeoPoint pt1 = new GeoPoint((int) (Config.Lat * 1E6),
-						(int) (Config.Lon * 1E6));
-				GeoPoint pt2 = new GeoPoint((int) ((Config.Lat + 1) * 1E6),
-						(int) ((Config.Lon + 1) * 1E6));
+				GeoPoint pt1 = new GeoPoint((int) (Variable.Lat * 1E6),
+						(int) (Variable.Lon * 1E6));
+				GeoPoint pt2 = new GeoPoint((int) ((Variable.Lat + 1) * 1E6),
+						(int) ((Variable.Lon + 1) * 1E6));
 				GetSystem.FindCar(CarLocationActivity.this,pt1,pt2,"起始","结束");
 				break;
 			case R.id.bt_activity_car_location_travel:// 车辆行程

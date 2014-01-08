@@ -3,8 +3,9 @@ package com.wise.extend;
 import java.util.List;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.wise.data.AdressData;
-import com.wise.pubclas.Config;
+import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
+import com.wise.pubclas.Variable;
 import com.wise.wawc.MyCollectionActivity;
 import com.wise.wawc.R;
 import android.app.Activity;
@@ -97,9 +98,9 @@ public class AdressAdapter extends BaseAdapter{
 		holder.bt_item_dealadress_navigation.setOnClickListener(new OnClickListener() {				
 			@Override
 			public void onClick(View v) {
-				GeoPoint point = new GeoPoint((int) (Config.Lat * 1E6),(int) (Config.Lon * 1E6));
+				GeoPoint point = new GeoPoint((int) (Variable.Lat * 1E6),(int) (Variable.Lon * 1E6));
 				GeoPoint point1 = new GeoPoint((int) (adressData.getLat() * 1E6),(int) (adressData.getLon() * 1E6));
-				System.out.println(Config.Lat + "/" + Config.Lat);
+				System.out.println(Variable.Lat + "/" + Variable.Lat);
 				System.out.println(adressData.getLat() + "/" + adressData.getLat());
 				GetSystem.FindCar(mActivity, point, point1, "point", "point1");
 			}

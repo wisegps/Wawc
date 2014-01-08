@@ -4,7 +4,8 @@ import com.baidu.location.BDLocation;
 import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.wise.pubclas.Config;
+import com.wise.pubclas.Constant;
+import com.wise.pubclas.Variable;
 
 import android.app.Service;
 import android.content.Intent;
@@ -76,8 +77,8 @@ public class LocationService extends Service {
 			sb.append(location.getLongitude());
 			sb.append("\nradius : ");
 			sb.append(location.getRadius());			
-			Config.Lat = location.getLatitude();
-			Config.Lon = location.getLongitude();
+			Variable.Lat = location.getLatitude();
+			Variable.Lon = location.getLongitude();
 			if (location.getLocType() == BDLocation.TypeGpsLocation) {
 				sb.append("\nspeed : ");
 				sb.append(location.getSpeed());
@@ -86,9 +87,9 @@ public class LocationService extends Service {
 			} else if (location.getLocType() == BDLocation.TypeNetWorkLocation) {
 				sb.append("\naddr : ");
 				sb.append(location.getAddrStr());
-				Config.Adress = location.getAddrStr();
+				Variable.Adress = location.getAddrStr();
 	            //发送定位城市广播，选择城市用到
-	            Intent intent = new Intent(Config.A_City);
+	            Intent intent = new Intent(Constant.A_City);
 	            intent.putExtra("City", location.getCity());
 	            sendBroadcast(intent);
 			}

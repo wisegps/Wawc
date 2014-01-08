@@ -1,6 +1,6 @@
 package com.wise.sql;
 
-import com.wise.pubclas.Config;
+import com.wise.pubclas.Constant;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -30,7 +30,7 @@ public class DBExcute {
 	public void UpdateDB(Context context,ContentValues values,String Title){
 	    DBHelper dbHelper = new DBHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.update(Config.TB_Base, values, "Title=?", new String[] {Title});
+        db.update(Constant.TB_Base, values, "Title=?", new String[] {Title});
         db.close();
         dbHelper.close();
 	}

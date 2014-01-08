@@ -3,7 +3,7 @@ package com.wise.wawc;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.wise.pubclas.Config;
+import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
 
 import android.app.Activity;
@@ -46,7 +46,7 @@ public class ChoiceInsuranceActivity extends Activity {
 		myHandler = new MyHandler();
 		
 		progressDialog = ProgressDialog.show(ChoiceInsuranceActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
-		new Thread(new NetThread.GetDataThread(myHandler, Config.BaseUrl + "insurance", getInsuranceCode)).start();
+		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "insurance", getInsuranceCode)).start();
 		
 		code = intetn.getIntExtra("code", 0);
 		

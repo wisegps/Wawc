@@ -1,5 +1,5 @@
 package com.wise.wawc;
-import com.wise.pubclas.Config;
+import com.wise.pubclas.Constant;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.ShareSDK;
@@ -51,7 +51,7 @@ public class AccountActivity extends Activity{
 				Platform platformSina = ShareSDK.getPlatform(AccountActivity.this,SinaWeibo.NAME);
 				platformQQ.removeAccount();
 				platformSina.removeAccount();
-				Config.qqUserName = "";
+				Constant.qqUserName = "";
 				finish();
 				break;
 			}

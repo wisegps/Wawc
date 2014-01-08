@@ -8,7 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.wise.data.CharacterParser;
-import com.wise.pubclas.Config;
+import com.wise.pubclas.Constant;
 import com.wise.service.ClearEditText;
 import com.wise.service.SideBar;
 import com.wise.service.SideBar.OnTouchingLetterChangedListener;
@@ -190,12 +190,12 @@ public class SelectCityActivity extends Activity {
      * @param cityData
      */
     private void SaveCityInfo(CityData cityData){
-        SharedPreferences preferences = getSharedPreferences(Config.sharedPreferencesName, Context.MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
         Editor editor = preferences.edit();
-        editor.putString(Config.LocationCity, cityData.getCity());
-        editor.putString(Config.LocationCityCode, cityData.getCity_code());
-        editor.putString(Config.LocationProvince, cityData.getProvince());
-        editor.putString(Config.LocationCityFuel, cityData.getFuel_price());
+        editor.putString(Constant.LocationCity, cityData.getCity());
+        editor.putString(Constant.LocationCityCode, cityData.getCity_code());
+        editor.putString(Constant.LocationProvince, cityData.getProvince());
+        editor.putString(Constant.LocationCityFuel, cityData.getFuel_price());
         editor.commit();
         Toast.makeText(SelectCityActivity.this, "您选择了城市：" +cityData.getCity(), Toast.LENGTH_LONG).show();
         //TODO 释放内存
@@ -623,7 +623,7 @@ public class SelectCityActivity extends Activity {
 
     private void registerBroadcastReceiver() {
         IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Config.A_City);
+        intentFilter.addAction(Constant.A_City);
         registerReceiver(broadcastReceiver, intentFilter);
     }
 
@@ -631,7 +631,7 @@ public class SelectCityActivity extends Activity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (action.equals(Config.A_City)) {
+            if (action.equals(Constant.A_City)) {
                 LocationCity = intent.getStringExtra("City");
                 tv_activity_select_city_location.setText(LocationCity);
             }
