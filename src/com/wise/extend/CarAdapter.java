@@ -54,7 +54,7 @@ public class CarAdapter extends BaseAdapter{
 			holder = (ViewHolder) convertView.getTag();
 		}
 		CarData carData = carDatas.get(position);
-		holder.tv_item_carnumber.setText(carData.getCarNumber());
+		holder.tv_item_carnumber.setText(carData.getObj_name());
 		holder.iv_item_cars.setImageResource(R.drawable.ic_launcher);
 		if(carData.isCheck()){
 			holder.ll_item_cars.setBackgroundResource(R.color.bkg1);

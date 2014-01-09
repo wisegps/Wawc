@@ -95,14 +95,14 @@ public class MyDevicesActivity extends Activity{
 		for(int i = 0 ; i < 5; i++){
 			CarData carData = new CarData();
 			carData.setCarLogo(1);
-			carData.setCarNumber("43420432");
+			carData.setObj_name("43420432");
 			carData.setCheck(false);
 			carDatas.add(carData);
 		}
 		
 		CarData carData = new CarData();
 		carData.setCarLogo(0);
-		carData.setCarNumber("");
+		carData.setObj_name("");
 		carData.setCheck(false);
 		carDatas.add(carData);
 	}

@@ -111,8 +111,15 @@ public class Constant {
 	 * 我的收藏
 	 */
 	public static String TB_Collection = "TB_Collection";
-	
+	/**
+	 * 定位成功发送广播，选择城市用到
+	 */
 	public static String A_City = "com.wise.wawc.city";
+	/**
+	 * 登录广播，首页获取车辆用到
+	 */
+	public static String A_Login = "com.wise.wawc.login";
+	
 	public static boolean isHideFooter = false;
 	/**
 	 * 收货人

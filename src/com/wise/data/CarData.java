@@ -1,19 +1,132 @@
 package com.wise.data;
 
+import android.R.string;
+
 /**
  * 车辆信息(车牌，车标)
  * @author keven.cheng
  */
 public class CarData {
-	public String CarNumber;
+    public int obj_id;
+    /**
+     * 品牌
+     */
+    public String car_brand;
+    /**
+     * 车型
+     */
+    public String car_series;
+    public String car_type;
+    public String engine_no;
+    public String frame_no;
+    /**
+     * 保险公司
+     */
+    public String insurance_company;
+    /**
+     * 保险时间
+     */
+    public String insurance_date;
+    /**
+     * 年检日期
+     */
+    public String annual_inspect_date;
+    /**
+     * 保养
+     */
+    public String maintain_company;
+    public String maintain_last_mileage;
+    public String maintain_next_mileage;
+    public String buy_date;    
+    
+	public String obj_name;
 	public int CarLogo;
 	public boolean isCheck;
-	public String getCarNumber() {
-		return CarNumber;
-	}
-	public void setCarNumber(String carNumber) {
-		CarNumber = carNumber;
-	}
+		
+	public int getObj_id() {
+        return obj_id;
+    }
+    public void setObj_id(int obj_id) {
+        this.obj_id = obj_id;
+    }    
+    public String getObj_name() {
+        return obj_name;
+    }
+    public void setObj_name(String obj_name) {
+        this.obj_name = obj_name;
+    }
+    public String getCar_brand() {
+        return car_brand;
+    }
+    public void setCar_brand(String car_brand) {
+        this.car_brand = car_brand;
+    }
+    public String getCar_series() {
+        return car_series;
+    }
+    public void setCar_series(String car_series) {
+        this.car_series = car_series;
+    }
+    public String getCar_type() {
+        return car_type;
+    }
+    public void setCar_type(String car_type) {
+        this.car_type = car_type;
+    }
+    public String getEngine_no() {
+        return engine_no;
+    }
+    public void setEngine_no(String engine_no) {
+        this.engine_no = engine_no;
+    }
+    public String getFrame_no() {
+        return frame_no;
+    }
+    public void setFrame_no(String frame_no) {
+        this.frame_no = frame_no;
+    }
+    public String getInsurance_company() {
+        return insurance_company;
+    }
+    public void setInsurance_company(String insurance_company) {
+        this.insurance_company = insurance_company;
+    }
+    public String getInsurance_date() {
+        return insurance_date;
+    }
+    public void setInsurance_date(String insurance_date) {
+        this.insurance_date = insurance_date;
+    }
+    public String getAnnual_inspect_date() {
+        return annual_inspect_date;
+    }
+    public void setAnnual_inspect_date(String annual_inspect_date) {
+        this.annual_inspect_date = annual_inspect_date;
+    }
+    public String getMaintain_company() {
+        return maintain_company;
+    }
+    public void setMaintain_company(String maintain_company) {
+        this.maintain_company = maintain_company;
+    }
+    public String getMaintain_last_mileage() {
+        return maintain_last_mileage;
+    }
+    public void setMaintain_last_mileage(String maintain_last_mileage) {
+        this.maintain_last_mileage = maintain_last_mileage;
+    }
+    public String getMaintain_next_mileage() {
+        return maintain_next_mileage;
+    }
+    public void setMaintain_next_mileage(String maintain_next_mileage) {
+        this.maintain_next_mileage = maintain_next_mileage;
+    }
+    public String getBuy_date() {
+        return buy_date;
+    }
+    public void setBuy_date(String buy_date) {
+        this.buy_date = buy_date;
+    }    
 	public int getCarLogo() {
 		return CarLogo;
 	}
@@ -26,9 +139,18 @@ public class CarData {
 	public void setCheck(boolean isCheck) {
 		this.isCheck = isCheck;
 	}
-	@Override
-	public String toString() {
-		return "CarData [CarNumber=" + CarNumber + ", CarLogo=" + CarLogo
-				+ ", isCheck=" + isCheck + "]";
-	}	
+    @Override
+    public String toString() {
+        return "CarData [obj_id=" + obj_id + ", car_brand=" + car_brand
+                + ", car_series=" + car_series + ", car_type=" + car_type
+                + ", engine_no=" + engine_no + ", frame_no=" + frame_no
+                + ", insurance_company=" + insurance_company
+                + ", insurance_date=" + insurance_date
+                + ", annual_inspect_date=" + annual_inspect_date
+                + ", maintain_company=" + maintain_company
+                + ", maintain_last_mileage=" + maintain_last_mileage
+                + ", maintain_next_mileage=" + maintain_next_mileage
+                + ", buy_date=" + buy_date + ", obj_name=" + obj_name
+                + ", CarLogo=" + CarLogo + ", isCheck=" + isCheck + "]";
+    }	
 }

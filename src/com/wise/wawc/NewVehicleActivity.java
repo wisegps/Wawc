@@ -129,9 +129,9 @@ public class NewVehicleActivity extends Activity {
 	    String url = Constant.BaseUrl + "vehicle?auth_code=" + Variable.auth_code;
 	    List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("cust_id", Variable.cust_id));
-        params.add(new BasicNameValuePair("obj_name", "粤B12345"));
-        params.add(new BasicNameValuePair("car_brand", "大众"));
-        params.add(new BasicNameValuePair("car_series", "途安"));
+        params.add(new BasicNameValuePair("obj_name", "粤B54321"));
+        params.add(new BasicNameValuePair("car_brand", "奥迪"));
+        params.add(new BasicNameValuePair("car_series", "A8"));
         params.add(new BasicNameValuePair("car_type", "2013款 1.4T 自动 睿智版 5座"));
         params.add(new BasicNameValuePair("engine_no", "109088"));
         params.add(new BasicNameValuePair("frame_no", "123456"));

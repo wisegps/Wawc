@@ -181,7 +181,6 @@ public class MainActivity extends ActivityGroup implements
         platformSina = ShareSDK.getPlatform(MainActivity.this, SinaWeibo.NAME);
         isLogin();
         startService(new Intent(MainActivity.this, LocationService.class));
-        GetData();
         initSettingData();
     }
 
@@ -282,7 +281,7 @@ public class MainActivity extends ActivityGroup implements
                 String cust_id = jsonObject.getString("cust_id");
                 Variable.auth_code = auth_code;
                 Variable.cust_id = cust_id;
-                
+                sendBroadcast(new Intent(Constant.A_Login));
                 SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
                 Editor editor = preferences.edit();
                 editor.putString(Constant.sp_cust_id, cust_id);
@@ -333,6 +332,7 @@ public class MainActivity extends ActivityGroup implements
                 Constant.sharedPreferencesName, Context.MODE_PRIVATE);
         Variable.cust_id  = preferences.getString(Constant.sp_cust_id, "");
         Variable.auth_code = preferences.getString(Constant.sp_auth_code, "");
+        sendBroadcast(new Intent(Constant.A_Login));
     }
 
     /**
@@ -569,22 +569,6 @@ public class MainActivity extends ActivityGroup implements
             slidingMenuView.snapToScreen(2);
         }
     }
-
-    /**
-     * 模拟车辆数据
-     */
-    private void GetData() {
-        List<CarData> carDatas = new ArrayList<CarData>();
-        for (int i = 0; i < 7; i++) {
-            CarData carData = new CarData();
-            carData.setCarLogo(1);
-            carData.setCarNumber("粤B12345");
-            carData.setCheck(false);
-            carDatas.add(carData);
-        }
-        Variable.carDatas = carDatas;
-    }
-
     @Override
     public void onCancel(Platform arg0, int arg1) {
         Log.d(TAG, "登录取消");
