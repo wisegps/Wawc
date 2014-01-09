@@ -155,7 +155,7 @@ public class SettingCenterActivity extends Activity implements OnClickListener, 
 		}
 	}
 	@Override
-	public void onItemClick(int pos) {
+	public void onItemClick(int pos,int type) {
 		if (pos >= 0 && pos <= nameList.size()){
 			String value = nameList.get(pos);
 			mTView.setText(value);

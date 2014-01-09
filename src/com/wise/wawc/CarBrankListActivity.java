@@ -61,6 +61,7 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 	private List<BrankModel> brankModelList = new ArrayList<BrankModel>();    //车辆品牌集合
 	
 	private List<String> brankLogo = null;
+	private List<String> carIdList = new ArrayList<String>(); 
 	private String[] brankTemp;
 	
 	private PinyinComparator comparator;      //根据拼音排序
@@ -98,12 +99,14 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
 				Log.e("click Index",arg2+"");
 				String beank = ((BrankModel)adapter.getItem(arg2 - 1)).getVehicleBrank();
-				finishCurrentActivity(beank);
+				String carId = carIdList.get(arg2 - 1);
+				finishCurrentActivity(beank,carId);
 			}
 			
-			private void finishCurrentActivity(String brank) {
+			private void finishCurrentActivity(String brank,String carId) {
 				Intent intent = new Intent();
 				intent.putExtra("brank", brank);
+				intent.putExtra("carId", carId);
 				if(code == MyVehicleActivity.resultCodeBrank){
 					CarBrankListActivity.this.setResult(MyVehicleActivity.resultCodeBrank, intent);
 				}else if(code == NewVehicleActivity.newVehicleBrank){
@@ -173,7 +176,7 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 		progressDialog = ProgressDialog.show(CarBrankListActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 		progressDialog.setCancelable(true);
 		myHandler = new MyHandler();
-		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "base/car_brand", GET_BRANK)).start();
+//		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "base/car_brand", GET_BRANK)).start();
 
 		
 		getDate();
@@ -233,7 +236,7 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 	}
 	@Override  //下拉刷新
 	public void onRefresh() {
-		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "base/car_brand", GET_BRANK)).start();
+		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "base/car_brand", REFRESH_BRANK)).start();
 
 		Log.e("下拉刷新","下拉刷新");
 	}
@@ -274,7 +277,7 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
-					Log.e("服务器获取的数据：",jsonArray.length()+"");
+					Log.e("服务器获取的数据：",brankData);
 					parseJSON(jsonArray);
 				}else{
 					Toast.makeText(getApplicationContext(), "获取数据失败，稍后再试", 0).show();
@@ -295,7 +298,7 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
-					Log.e("服务器获取的数据：",jsonArray.length()+"");
+					Log.e("刷新得到服务器获取的数据：",jsonArray.length()+"");
 					parseJSON(jsonArray);
 				}else{
 					Toast.makeText(getApplicationContext(), "获取数据失败，稍后再试", 0).show();
@@ -341,6 +344,7 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 			StringBuffer sb = new StringBuffer();
 			for(int i = 0 ; i < arrayLength ; i ++){
 				JSONObject jsonObj = jsonArray.getJSONObject(i);
+				carIdList.add(jsonObj.getString("id"));
 				if(i < arrayLength){
 					sb.append(jsonObj.get("name")+",");
 				}else{

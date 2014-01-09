@@ -21,6 +21,7 @@ public class SpinerPopWindow extends PopupWindow implements OnItemClickListener{
 	private ListView mListView;
 	private NormalSpinerAdapter mAdapter;
 	private IOnItemSelectListener mItemSelectListener;
+	private int type;
 	
 	//���췽��
 	public SpinerPopWindow(Context context)
@@ -66,12 +67,17 @@ public class SpinerPopWindow extends PopupWindow implements OnItemClickListener{
 		{
 			mAdapter.refreshData(list, selIndex);
 		}
+		mAdapter.refreshDatas();
 	}
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View view, int pos, long arg3) {
 		dismiss();
 		if (mItemSelectListener != null){
-			mItemSelectListener.onItemClick(pos);
+			mItemSelectListener.onItemClick(pos,type);
 		}
+	}
+	
+	public void setType(int type){
+		this.type = type;
 	}
 }

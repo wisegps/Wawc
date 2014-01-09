@@ -96,7 +96,7 @@
 	        >
 	        <TextView 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="@string/brand"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
@@ -106,7 +106,7 @@
 	        <TextView
 	            android:id="@+id/new_vehicle_brank" 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="大众"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
@@ -116,7 +116,7 @@
 	        <ImageView 
 	            android:id="@+id/add_vehicle_choice_brank"
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:layout_weight="1"
 	    		android:background="@drawable/image"
 	            />
@@ -131,7 +131,7 @@
 	        >
 	        <TextView 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="@string/model"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
@@ -140,7 +140,7 @@
 	            />
 	        <TextView 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="途安"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
@@ -149,7 +149,7 @@
 	            />
 	        <ImageView 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:layout_weight="1"
 	    		android:background="@drawable/image"
 	            />
@@ -164,7 +164,7 @@
 	        >
 	        <TextView 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="@string/vehicle_style"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
@@ -173,7 +173,7 @@
 	            />
 	        <TextView 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="自动豪华睿智版"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
@@ -182,7 +182,7 @@
 	            />
 	        <ImageView 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:layout_weight="1"
 	    		android:background="@drawable/image"
 	            />

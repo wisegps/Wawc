@@ -48,7 +48,7 @@
         android:id="@+id/insurance_company_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:cacheColorHint="#00ffffff"
+        android:cacheColorHint="#00000000"
         android:scrollingCache="false" >
     </com.wise.list.XListView>
 

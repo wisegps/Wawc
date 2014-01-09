@@ -14,8 +14,10 @@ import android.widget.TextView;
 
 public abstract class AbstractSpinerAdapter<T> extends BaseAdapter {
 
+	public static int type = 0;
+	
 	public static interface IOnItemSelectListener{
-		public void onItemClick(int pos);
+		public void onItemClick(int pos,int type);
 	};
 	
 	 private Context mContext;   
@@ -86,6 +88,8 @@ public abstract class AbstractSpinerAdapter<T> extends BaseAdapter {
 	{
 	    public TextView mTextView;
     }
-
-
+	
+	public void refreshDatas(){
+		AbstractSpinerAdapter.this.notifyDataSetChanged();
+	}
 }

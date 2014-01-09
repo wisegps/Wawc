@@ -72,6 +72,7 @@ public class MainActivity extends ActivityGroup implements
     private static final int Login = 1; //登录
     private static final int Get_Pic = 2;//获取登录头像
     private static final int Bind_ID = 3; //绑定ID
+    private static final int get_User_Car = 4;
     
     SlidingMenuView slidingMenuView;
     ViewGroup tabcontent;
@@ -243,6 +244,21 @@ public class MainActivity extends ActivityGroup implements
                 Log.d(TAG, "绑定返回=" + msg.obj.toString());
                 jsonLogin(msg.obj.toString());
                 break;
+            case get_User_Car:
+            	 //  TODO  
+            	if("[]".equals(msg.obj.toString())){
+            		//添加车辆
+            		startActivity(new Intent(MainActivity.this,NewVehicleActivity.class));
+            	}else{
+            		//我的爱车
+            		slidingMenuView.snapToScreen(1);
+                    Intent i = new Intent(MainActivity.this, MyVehicleActivity.class);
+                    View view = getLocalActivityManager().startActivity(MyVehicleActivity.class.getName(), i).getDecorView();
+                    tabcontent.removeAllViews();
+                    tabcontent.addView(view);
+            	}
+            	Log.e("用户车辆",msg.obj.toString());
+            	break;
             }
         }
     };
@@ -266,6 +282,7 @@ public class MainActivity extends ActivityGroup implements
      * @param result
      */
     private void jsonLogin(String result){
+    	Log.e("用户登录返回数据",result);
         try {
             JSONObject jsonObject = new JSONObject(result);
             String status_code = jsonObject.getString("status_code");
@@ -511,12 +528,13 @@ public class MainActivity extends ActivityGroup implements
      * 我的爱车
      */
     public void ToMyCar() {
-        slidingMenuView.snapToScreen(1);
-        Intent i = new Intent(MainActivity.this, MyVehicleActivity.class);
-        View view = getLocalActivityManager().startActivity(
-                MyVehicleActivity.class.getName(), i).getDecorView();
-        tabcontent.removeAllViews();
-        tabcontent.addView(view);
+    	if(platformQQ.getDb().isValid()){
+    		//判断用户是否添加车辆  TODO
+    		new Thread(new NetThread.GetDataThread(handler, Constant.BaseUrl + "customer/" + Constant.cust_id + "/vehicle?auth_code=" + Constant.auth_code, get_User_Car)).start();
+    	}else{
+    		Toast.makeText(getApplicationContext(), "请登录", 0).show();
+    		return;
+    	}
     }
 
     /**

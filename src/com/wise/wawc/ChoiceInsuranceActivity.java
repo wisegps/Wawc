@@ -18,6 +18,7 @@ import com.wise.sql.DBHelper;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -47,6 +48,7 @@ public class ChoiceInsuranceActivity extends Activity implements IXListViewListe
 	private ProgressDialog progressDialog = null;
 	private MyHandler myHandler = null;
 	private static final int getInsuranceCode = 1;
+	private static final int refreshInsurance = 2;
 	
 	private DBExcute dBExcute = null;
 	private DBHelper dbHelper = null;
@@ -71,27 +73,26 @@ public class ChoiceInsuranceActivity extends Activity implements IXListViewListe
 		code = intetn.getIntExtra("code", 0);
 		
 		getData();
-		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "base/insurance", getInsuranceCode)).start();
+		
 	}
 	
 	private void getData() {
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		 Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base + " where Title = ?", new String[]{"carBrank"});
+		 Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base + " where Title = ?", new String[]{"insurance"});
 		 JSONArray jsonArray = null;
 		if(cursor.moveToFirst()){
 			progressDialog.dismiss();
 			try {
 				jsonArray = new JSONArray(cursor.getString(cursor.getColumnIndex("Content")));
 				Log.e("数据库获取的诗数据：",jsonArray.length()+"");
-//				parseJSON(jsonArray);
+				setListData(jsonArray);
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
 		}else{
-//			new Thread(new NetThread.GetDataThread(myHandler, Config.BaseUrl + "base/car_brand", GET_BRANK)).start();
+			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "base/insurance", getInsuranceCode)).start();
 		}
 	}
-	
 	class MyHandler extends Handler{
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
@@ -99,45 +100,114 @@ public class ChoiceInsuranceActivity extends Activity implements IXListViewListe
 			case getInsuranceCode :
 				progressDialog.dismiss();
 				String insurance = msg.obj.toString();
-				int insuranceLength = insurance.length();
 				Log.e("服务器的保险公司：",msg.obj.toString());
 				
-				try {
-					JSONArray jsonArray = new JSONArray(insurance);
-					for(int i = 0 ; i < insuranceLength ; i ++){
-						JSONObject jsonObject = jsonArray.getJSONObject(i);
-						Log.e("保险公司：",jsonObject.getString("name"));
-						dateList.add(jsonObject.getString("name"));
+				if(!"".equals(insurance)){
+					ContentValues contentValues = new ContentValues();
+					contentValues.put("Title", "insurance");
+					contentValues.put("Content", insurance);
+					dBExcute.InsertDB(ChoiceInsuranceActivity.this, contentValues, Constant.TB_Base);
+					try {
+						JSONArray jsonArray = new JSONArray(insurance);
+						int insuranceLength = jsonArray.length();
+						for(int i = 0 ; i < insuranceLength ; i ++){
+							JSONObject jsonObject = jsonArray.getJSONObject(i);
+							Log.e("保险公司：",jsonObject.getString("name"));
+							dateList.add(jsonObject.getString("name"));
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
 					}
-				} catch (JSONException e) {
-					e.printStackTrace();
+				}else{
+					Toast.makeText(getApplicationContext(), "获取数据失败，稍后再试", 0).show();
 				}
+				setListData(dateList);
+				break;
 				
-				adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1, dateList);
-				insuranceList.setAdapter(adapter);
-				insuranceList.setOnItemClickListener(new OnItemClickListener() {
-					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-						
-						String text = (String) arg0.getItemAtPosition(arg2);
-						Intent intent = new Intent();
-						intent.putExtra("ClickItem", text);
-						if(code == NewVehicleActivity.newVehicleInsurance){
-							ChoiceInsuranceActivity.this.setResult(NewVehicleActivity.newVehicleInsurance, intent);
-						}else if(code == MyVehicleActivity.resultCodeInsurance){
-							ChoiceInsuranceActivity.this.setResult(MyVehicleActivity.resultCodeInsurance, intent);
+			case refreshInsurance:
+				onLoad();
+				String refInsurance = msg.obj.toString();
+				Log.e("刷新得到服务器的保险公司：",msg.obj.toString());
+				
+				if(!"".equals(refInsurance)){
+					ContentValues contentValues = new ContentValues();
+					contentValues.put("Title", "insurance");
+					contentValues.put("Content", refInsurance);
+					//TODO 更新数据库
+//					dBExcute.InsertDB(ChoiceInsuranceActivity.this, contentValues, Constant.TB_Base);
+					try {
+						JSONArray jsonArray = new JSONArray(refInsurance);
+						int insuranceLength = jsonArray.length();
+						for(int i = 0 ; i < insuranceLength ; i ++){
+							JSONObject jsonObject = jsonArray.getJSONObject(i);
+							Log.e("保险公司：",jsonObject.getString("name"));
+							dateList.add(jsonObject.getString("name"));
 						}
-						ChoiceInsuranceActivity.this.finish();
-						}
-					});
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}else{
+					Toast.makeText(getApplicationContext(), "获取数据失败，稍后再试", 0).show();
+				}
+				setListData(dateList);
 				break;
 			default:
 				return;
 			}
 		}
 	}
+	
+	private void setListData(Object obj) {
+		List<String> data = null;
+		if(obj instanceof List){
+			data = (List<String>) obj;
+		}else if(obj instanceof JSONArray){
+			try {
+				data = new ArrayList<String>();
+				JSONArray jsonArray = (JSONArray) obj;
+				int length = jsonArray.length();
+				for(int i = 0 ; i < length ; i ++){
+					data.add(jsonArray.getJSONObject(i).getString("name"));
+				}
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1, data);
+		insuranceList.setAdapter(adapter);
+		insuranceList.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				
+				String text = (String) arg0.getItemAtPosition(arg2);
+				Intent intent = new Intent();
+				intent.putExtra("ClickItem", text);
+				if(code == NewVehicleActivity.newVehicleInsurance){
+					ChoiceInsuranceActivity.this.setResult(NewVehicleActivity.newVehicleInsurance, intent);
+				}else if(code == MyVehicleActivity.resultCodeInsurance){
+					ChoiceInsuranceActivity.this.setResult(MyVehicleActivity.resultCodeInsurance, intent);
+				}
+				ChoiceInsuranceActivity.this.finish();
+				}
+			});
+		
+	}
+	
 	public void onRefresh() {
+//		new Handler(){
+//			public void handleMessage(Message msg) {
+//				super.handleMessage(msg);
+//				onLoad();
+//			}
+//		}.sendMessageDelayed(new Message(), 1000);
+		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "base/insurance", refreshInsurance)).start();
 	}
 	public void onLoadMore() {
+		new Handler(){
+			public void handleMessage(Message msg) {
+				super.handleMessage(msg);
+				onLoad();
+			}
+		}.sendMessageDelayed(new Message(), 1000);
 	}
 	public void PullUp() {
 	}
@@ -150,5 +220,26 @@ public class ChoiceInsuranceActivity extends Activity implements IXListViewListe
 		insuranceList.stopRefresh();
 		insuranceList.stopLoadMore();
 		insuranceList.setRefreshTime(date);
+	}
+	
+	protected void onDestroy() {
+		Constant.isHideFooter = false;
+		super.onDestroy();
+	}
+	protected void onPause() {
+		Constant.isHideFooter = false;
+		super.onPause();
+	}
+
+	@Override
+	protected void onRestart() {
+		Constant.isHideFooter = true;
+		super.onRestart();
+	}
+
+	@Override
+	protected void onResume() {
+		Constant.isHideFooter = true;
+		super.onResume();
 	}
 }
