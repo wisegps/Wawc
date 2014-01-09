@@ -58,7 +58,9 @@
     <!-- 车务提醒 -->
     <string name="inspection">车辆年检提醒</string>
     <string name="inspection_title">车辆年检</string>
+    <string name="inspection_content">需于%s前年检</string>
     <string name="renewal">车辆续保提醒</string>
+    <string name="renewal_content">需于%s前续保</string>
     <string name="maintenance">车辆保养提醒</string>
     <string name="examined">驾照年审提醒</string>
     <string name="examined_title">驾照年审</string>

@@ -86,12 +86,12 @@
 	                android:layout_toLeftOf ="@id/iv_activity_car_remind_inspection_problem"
 	                android:src="@drawable/ic_launcher"/>
 	            <TextView 
+	                android:id="@+id/tv_activity_car_remind_inspection"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:textColor="@color/black"
 	                android:layout_toLeftOf ="@id/iv_activity_car_remind_inspection_note"
-	                android:layout_centerVertical="true"
-	                android:text="需于2014-08-01前年检"/>
+	                android:layout_centerVertical="true"/>
 	        </RelativeLayout>
 	        <RelativeLayout 
 	            android:layout_width="fill_parent"
@@ -119,12 +119,12 @@
 	                android:layout_toLeftOf ="@id/iv_activity_car_remind_renewal_problem"
 	                android:src="@drawable/ic_launcher"/>
 	            <TextView 
+	                android:id="@+id/tv_activity_car_remind_remind_renewal"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:textColor="@color/black"
 	                android:layout_toLeftOf ="@id/iv_activity_car_remind_renewal_note"
-	                android:layout_centerVertical="true"
-	                android:text="需于2014-08-01前续保"/>
+	                android:layout_centerVertical="true"/>
 	        </RelativeLayout>
 	        <RelativeLayout 
 	            android:layout_width="fill_parent"

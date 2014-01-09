@@ -47,7 +47,7 @@
 	       	        android:layout_height="wrap_content"
 	       	        android:layout_toRightOf="@id/iv_activity_main_logo"
 	       	        android:layout_alignTop="@id/iv_activity_main_logo"
-	       	        android:textColor="@color/black"
+	       	        android:textColor="@color/white"
 	       	        android:text="Thomas"/>
 	       	    <ImageView
 	       	        android:id="@+id/iv_activity_main_qq"
@@ -88,7 +88,7 @@
 	       	<TextView 
 	       	    android:layout_width="fill_parent"
 	       	    android:layout_height="wrap_content"
-	       	    android:textColor="@color/black"
+	       	    android:textColor="@color/white"
 	       	    android:textSize="@dimen/title"
 	       	    android:padding="5dp"
 	       	    android:text="@string/social"/>
@@ -107,7 +107,7 @@
 	       	        android:id="@+id/car_circle"
 		       	    android:layout_width="wrap_content"
 		       	    android:layout_height="wrap_content"
-		       	    android:textColor="@color/black"
+		       	    android:textColor="@color/white"
 		       	    android:textSize="@dimen/title"
 		       	    android:layout_marginLeft="10dp"
 		       	    android:clickable="true"
@@ -116,7 +116,7 @@
 	       	<TextView 
 	       	    android:layout_width="fill_parent"
 	       	    android:layout_height="wrap_content"
-	       	    android:textColor="@color/black"
+	       	    android:textColor="@color/white"
 	       	    android:textSize="@dimen/title"
 	       	    android:padding="5dp"
 	       	    android:text="@string/my_center"/>
@@ -135,7 +135,7 @@
 	       	    <TextView 
 		       	    android:layout_width="wrap_content"
 		       	    android:layout_height="wrap_content"
-		       	    android:textColor="@color/black"
+		       	    android:textColor="@color/white"
 		       	    android:textSize="@dimen/title"
 		       	    android:layout_marginLeft="10dp"
 		       	    android:text="@string/car_remind"/>
@@ -155,7 +155,7 @@
 	       	    <TextView 
 		       	    android:layout_width="wrap_content"
 		       	    android:layout_height="wrap_content"
-		       	    android:textColor="@color/black"
+		       	    android:textColor="@color/white"
 		       	    android:textSize="@dimen/title"
 		       	    android:layout_marginLeft="10dp"
 		       	    android:text="@string/my_car"/>
@@ -175,7 +175,7 @@
 	       	    <TextView 
 		       	    android:layout_width="wrap_content"
 		       	    android:layout_height="wrap_content"
-		       	    android:textColor="@color/black"
+		       	    android:textColor="@color/white"
 		       	    android:textSize="@dimen/title"
 		       	    android:layout_marginLeft="10dp"
 		       	    android:text="@string/my_terminal"/>
@@ -195,7 +195,7 @@
 	       	    <TextView 
 		       	    android:layout_width="wrap_content"
 		       	    android:layout_height="wrap_content"
-		       	    android:textColor="@color/black"
+		       	    android:textColor="@color/white"
 		       	    android:textSize="@dimen/title"
 		       	    android:layout_marginLeft="10dp"
 		       	    android:text="@string/my_orders"/>
@@ -215,7 +215,7 @@
 	       	        android:id="@+id/menu_my_collection"
 		       	    android:layout_width="wrap_content"
 		       	    android:layout_height="wrap_content"
-		       	    android:textColor="@color/black"
+		       	    android:textColor="@color/white"
 		       	    android:textSize="@dimen/title"
 		       	    android:layout_marginLeft="10dp"
 		       	    android:text="@string/my_collect"/>
@@ -223,7 +223,7 @@
 	       	<TextView 
 	       	    android:layout_width="fill_parent"
 	       	    android:layout_height="wrap_content"
-	       	    android:textColor="@color/black"
+	       	    android:textColor="@color/white"
 	       	    android:textSize="@dimen/title"
 	       	    android:padding="5dp"
 	       	    android:text="@string/system_related"/>
@@ -242,7 +242,7 @@
 	       	        android:id="@+id/settting_center"
 		       	    android:layout_width="wrap_content"
 		       	    android:layout_height="wrap_content"
-		       	    android:textColor="@color/black"
+		       	    android:textColor="@color/white"
 		       	    android:textSize="@dimen/title"
 		       	    android:layout_marginLeft="10dp"
 		       	    android:text="@string/setup_center"/>

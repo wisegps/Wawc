@@ -4,5 +4,5 @@ package com.wise.extend;
  * @author honesty
  */
 public interface OpenDateDialogListener {
-	public abstract void OnDateChange(String Date);
+	public abstract void OnDateChange(String Date,int index);
 }

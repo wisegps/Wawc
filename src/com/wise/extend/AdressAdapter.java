@@ -6,9 +6,12 @@ import com.wise.data.AdressData;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.Variable;
+import com.wise.sql.DBExcute;
+import com.wise.wawc.HomeActivity;
 import com.wise.wawc.MyCollectionActivity;
 import com.wise.wawc.R;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -82,12 +85,22 @@ public class AdressAdapter extends BaseAdapter{
 			System.out.println("显示");
 			holder.bt_item_dealadress_call.setVisibility(View.VISIBLE);
 		}
+		//收藏
 		holder.bt_item_dealadress_collection.setOnClickListener(new OnClickListener() {				
 			@Override
 			public void onClick(View v) {
+			    DBExcute dbExcute = new DBExcute();
+		        ContentValues values = new ContentValues();
+		        values.put("name", adressData.getName());
+		        values.put("address", adressData.getAdress());
+		        values.put("tel", adressData.getPhone());
+		        values.put("lon", adressData.getLon());
+		        values.put("lat", adressData.getLat());
+		        dbExcute.InsertDB(mActivity, values, Constant.TB_Collection);
 				mActivity.startActivity(new Intent(mActivity, MyCollectionActivity.class));
 			}
 		});
+		//拨打电话
 		holder.bt_item_dealadress_call.setOnClickListener(new OnClickListener() {				
 			@Override
 			public void onClick(View v) {
@@ -95,6 +108,7 @@ public class AdressAdapter extends BaseAdapter{
 				mActivity.startActivity(intent);
 			}
 		});
+		//导航
 		holder.bt_item_dealadress_navigation.setOnClickListener(new OnClickListener() {				
 			@Override
 			public void onClick(View v) {

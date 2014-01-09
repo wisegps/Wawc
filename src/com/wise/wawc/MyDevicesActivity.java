@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import com.wise.data.CarData;
 import com.wise.extend.CarAdapter;
+import com.wise.pubclas.Constant;
+import com.wise.pubclas.Variable;
 
 import android.R.string;
 import android.app.Activity;
@@ -105,6 +107,9 @@ public class MyDevicesActivity extends Activity{
 		carData.setObj_name("");
 		carData.setCheck(false);
 		carDatas.add(carData);
+		//TODO 我的终端
+		String url = Constant.BaseUrl + "customer/" + Variable.cust_id + "/device?auth_code=" + Variable.auth_code;
+		Log.d(TAG, url);
 	}
 		
 	@Override

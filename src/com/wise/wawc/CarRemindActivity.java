@@ -1,11 +1,10 @@
 package com.wise.wawc;
 
+import com.wise.data.CarData;
 import com.wise.extend.CarAdapter;
 import com.wise.extend.OpenDateDialog;
 import com.wise.extend.OpenDateDialogListener;
-import com.wise.pubclas.Constant;
 import com.wise.pubclas.Variable;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
@@ -18,6 +17,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 
 /**
@@ -26,7 +27,26 @@ import android.widget.LinearLayout.LayoutParams;
  */
 public class CarRemindActivity extends Activity{
 	private static final String TAG = "CarRemindActivity";
+	/**
+	 * 年检提醒
+	 */
+	private static final int inspection = 1;
+	/**
+	 * 车辆续保
+	 */
+	private static final int renewal = 2;
+	/**
+	 * 驾照年审
+	 */
+	private static final int examined = 3;
+	/**
+	 * 驾照换证
+	 */
+	private static final int replacement = 4;
+	TextView tv_activity_car_remind_inspection,tv_activity_car_remind_remind_renewal;
+	
 	CarAdapter carAdapter;
+	CarData carData = Variable.carDatas.get(0); //默认指定第0个
 	boolean isJump = false;//false从菜单页跳转过来返回打开菜单，true从首页跳转返回关闭页面
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -77,9 +97,17 @@ public class CarRemindActivity extends Activity{
 		
 		OpenDateDialog.SetCustomDateListener(new OpenDateDialogListener() {			
 			@Override
-			public void OnDateChange(String Date) {
+			public void OnDateChange(String Date,int index) {
 				// TODO Auto-generated method stub
 				System.out.println(Date);
+				switch (index) {
+                case inspection:
+                    //TODO 更新年检时间
+                    break;
+
+                default:
+                    break;
+                }
 			}
 		});
 	}
@@ -107,16 +135,16 @@ public class CarRemindActivity extends Activity{
 				CarRemindActivity.this.startActivity(RemindIntent);
 				break;
 			case R.id.iv_activity_car_remind_inspection_note://年检提醒
-				ShowDate();
+				ShowDate(inspection);
 				break;
 			case R.id.iv_activity_car_remind_renewal_note://车辆续保
-				ShowDate();
+				ShowDate(renewal);
 				break;
 			case R.id.iv_activity_car_remind_examined_note://驾照年审
-				ShowDate();
+				ShowDate(examined);
 				break;
 			case R.id.iv_activity_car_remind_replacement_note://驾照换证
-				ShowDate();
+				ShowDate(replacement);
 				break;				
 			case R.id.iv_activity_car_remind_inspection_problem://年检提醒
 				ToDealAdress(getString(R.string.inspection_title));
@@ -145,8 +173,8 @@ public class CarRemindActivity extends Activity{
 		Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:"+ 10010));  
 		startActivity(intent);
 	}
-	private void ShowDate(){
-		OpenDateDialog.ShowDate(CarRemindActivity.this);
+	private void ShowDate(int index){
+		OpenDateDialog.ShowDate(CarRemindActivity.this,index);
 	}
 	OnItemClickListener onItemClickListener = new OnItemClickListener() {
 		@Override
@@ -156,8 +184,24 @@ public class CarRemindActivity extends Activity{
 			}
 			Variable.carDatas.get(arg2).setCheck(true);
 			carAdapter.notifyDataSetChanged();
+			carData = Variable.carDatas.get(arg2);
+			ClearText();
+			if(carData.getAnnual_inspect_date() != null){
+			    String Annual_inspect_date = String.format(getResources().getString(R.string.inspection_content), carData.getAnnual_inspect_date());
+			    tv_activity_car_remind_inspection.setText(Annual_inspect_date);
+			}
+			if(carData.getInsurance_date() != null){
+			    String Insurance_date = String.format(getResources().getString(R.string.renewal_content), carData.getInsurance_date());
+			    tv_activity_car_remind_remind_renewal.setText(Insurance_date);
+			}
 		}
 	};
+	/**
+	 * 清空文本数据
+	 */
+	private void ClearText(){
+	    
+	}
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

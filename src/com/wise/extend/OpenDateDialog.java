@@ -25,7 +25,7 @@ public class OpenDateDialog {
 	static Context mContext;
     static OpenDateDialogListener listener;
     
-	public static void ShowDate(Context context){
+	public static void ShowDate(Context context,final int index){
 		mContext = context;
 		View v = LayoutInflater.from(context).inflate(R.layout.data_wheel, null);
 		Calendar calendar = Calendar.getInstance();
@@ -52,7 +52,7 @@ public class OpenDateDialog {
 			public void onClick(DialogInterface dialog, int which) {
 				String trueTime = (curYear +year.getCurrentItem()) + "-" + (month.getCurrentItem()+1) + "-" + (day.getCurrentItem()+1);
 				if(listener != null){
-					listener.OnDateChange(trueTime);
+					listener.OnDateChange(trueTime,index);
 				}
 			}
 		});
