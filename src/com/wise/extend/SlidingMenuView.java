@@ -54,9 +54,7 @@ public class SlidingMenuView extends ViewGroup{
         this(context, attrs, 0);
         // 获取屏幕宽度
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        width = (int) (wm.getDefaultDisplay().getWidth() * 0.8);// 屏幕宽度
-        Log.d(TAG, ""+wm.getDefaultDisplay().getWidth());
-        Log.d(TAG, ""+width);
+        width = Even((int) (wm.getDefaultDisplay().getWidth() * 0.8));// 屏幕宽度
     }
     public SlidingMenuView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
@@ -118,7 +116,6 @@ public class SlidingMenuView extends ViewGroup{
         int width_v1 = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY);
 	    View v1 = findViewById(R.id.left_sliding_tab);
 		v1.measure(width_v1, heightMeasureSpec);
-		Log.d(TAG, "measureViews = " + width);
 		View v2 = findViewById(R.id.sliding_body);
 	    v2.measure(widthMeasureSpec, heightMeasureSpec);	    
 	}
@@ -271,9 +268,10 @@ public class SlidingMenuView extends ViewGroup{
 					deltaX = Even(deltaX);
 					if (deltaX < 0) {// 向右滑
 						if (getScrollX() > 0) {// 滚动的距离
-						    scrollBy(Math.max(-getScrollX(), deltaX), 0);
+						    int scrollX = Math.max(-getScrollX(), deltaX);
+						    scrollBy(scrollX , 0);
 	                        if(onViewTouchMoveListener != null){
-	                            onViewTouchMoveListener.OnViewMove(Math.max(-getScrollX(), deltaX));
+	                            onViewTouchMoveListener.OnViewMove(getScrollX());
 	                        }
 						}
 					} else if (deltaX > 0) {
@@ -281,8 +279,11 @@ public class SlidingMenuView extends ViewGroup{
 								getChildCount() - 1).getRight()
 								- getScrollX() - getWidth();
 						if (availableToScroll > 0) {
-							scrollBy(Math.min(availableToScroll, deltaX), 0);
-							onViewTouchMoveListener.OnViewMove(Math.min(availableToScroll, deltaX));
+						    int scrollX = Math.min(availableToScroll, deltaX);
+							scrollBy(scrollX , 0);
+							if(onViewTouchMoveListener != null){
+							    onViewTouchMoveListener.OnViewMove(getScrollX());
+							}
 						}
 					}
 				}

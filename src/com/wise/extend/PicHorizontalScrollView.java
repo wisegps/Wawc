@@ -29,8 +29,6 @@ public class PicHorizontalScrollView extends HorizontalScrollView{
             mydelta = FristScreenWidth;
         }
         int Distance = mydelta - getScrollX(); //从当前位置到目标位置的距离
-        Log.d(TAG, "getScrollX() = " + getScrollX() + ", ScrollX =" + ScrollX);
-        Log.d(TAG, "Distance = " + Distance + ", delta =" + delta);
         mScroller.startScroll(getScrollX(), 0, Distance, 0, duration);
         invalidate();
     }

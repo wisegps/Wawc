@@ -47,6 +47,7 @@ public class CarRemindActivity extends Activity{
 	
 	CarAdapter carAdapter;
 	CarData carData = Variable.carDatas.get(0); //默认指定第0个
+	
 	boolean isJump = false;//false从菜单页跳转过来返回打开菜单，true从首页跳转返回关闭页面
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,9 @@ public class CarRemindActivity extends Activity{
 		ImageView iv_activity_car_remind_replacement_problem = (ImageView)findViewById(R.id.iv_activity_car_remind_replacement_problem);
 		iv_activity_car_remind_replacement_problem.setOnClickListener(onClickListener);
 		
+		tv_activity_car_remind_inspection = (TextView)findViewById(R.id.tv_activity_car_remind_inspection);
+		tv_activity_car_remind_remind_renewal = (TextView)findViewById(R.id.tv_activity_car_remind_remind_renewal);
+		
 		Intent intent = getIntent();
 		isJump = intent.getBooleanExtra("isJump", false);
 		
@@ -94,6 +98,8 @@ public class CarRemindActivity extends Activity{
 		gv_activity_car_remind.setStretchMode(GridView.NO_STRETCH);
 		gv_activity_car_remind.setNumColumns(Variable.carDatas.size());
 		gv_activity_car_remind.setOnItemClickListener(onItemClickListener);	
+		
+		ShowText(carData);
 		
 		OpenDateDialog.SetCustomDateListener(new OpenDateDialogListener() {			
 			@Override
@@ -185,22 +191,21 @@ public class CarRemindActivity extends Activity{
 			Variable.carDatas.get(arg2).setCheck(true);
 			carAdapter.notifyDataSetChanged();
 			carData = Variable.carDatas.get(arg2);
-			ClearText();
-			if(carData.getAnnual_inspect_date() != null){
-			    String Annual_inspect_date = String.format(getResources().getString(R.string.inspection_content), carData.getAnnual_inspect_date());
-			    tv_activity_car_remind_inspection.setText(Annual_inspect_date);
-			}
-			if(carData.getInsurance_date() != null){
-			    String Insurance_date = String.format(getResources().getString(R.string.renewal_content), carData.getInsurance_date());
-			    tv_activity_car_remind_remind_renewal.setText(Insurance_date);
-			}
+			ShowText(carData);
 		}
 	};
 	/**
 	 * 清空文本数据
 	 */
-	private void ClearText(){
-	    
+	private void ShowText(CarData carData){
+	    if(carData.getAnnual_inspect_date() != null){
+            String Annual_inspect_date = String.format(getResources().getString(R.string.inspection_content), carData.getAnnual_inspect_date());
+            tv_activity_car_remind_inspection.setText(Annual_inspect_date);
+        }
+        if(carData.getInsurance_date() != null){
+            String Insurance_date = String.format(getResources().getString(R.string.renewal_content), carData.getInsurance_date());
+            tv_activity_car_remind_remind_renewal.setText(Insurance_date);
+        }
 	}
 	
 	@Override

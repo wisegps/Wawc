@@ -259,8 +259,9 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
     private void GetDBCars(){
         DBHelper dbHelper = new DBHelper(HomeActivity.this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from " + Constant.TB_Vehicle , null);
-        if (cursor.moveToNext()) {
+        
+        Cursor cursor = db.query(Constant.TB_Vehicle, null, null, null, null, null, null);
+        while (cursor.moveToNext()) {
             int obj_id = cursor.getInt(cursor.getColumnIndex("obj_id"));
             String obj_name =  cursor.getString(cursor.getColumnIndex("obj_name"));
             String car_brand =  cursor.getString(cursor.getColumnIndex("car_brand"));
@@ -294,10 +295,11 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
             carData.setMaintain_next_mileage(maintain_next_mileage);
             carData.setBuy_date(buy_date);
             carDatas.add(carData);
-            Log.d(TAG, carData.toString());
+            //Log.d(TAG, carData.toString());
         }
         cursor.close();
         db.close();
+        //Log.d(TAG, "carDatas.size()="+carDatas.size());
         Variable.carDatas = carDatas;
     }
 
@@ -605,7 +607,9 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (action.equals(Constant.A_Login)) {
+                Log.d(TAG, "carDatas.size() = " + carDatas.size());
                 if(carDatas.size() == 0){
+                    Log.d(TAG, "获取车辆数据");
                     GetCars();
                 }
             }

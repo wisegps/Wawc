@@ -117,21 +117,19 @@ public class MainActivity extends ActivityGroup implements
                 .setOnViewTouchMoveListener(new OnViewTouchMoveListener() {
                     @Override
                     public void OnViewMove(int x) {
-                        hsv_pic.scrollBy((int) (x * Multiple), 0);
+                        int scrollX = (int) (x * Multiple);
+                        hsv_pic.scrollTo(scrollX, 0);
                     }
 
                     @Override
                     public void OnViewLoad(int width, int delta) {
                         int pic_width = (int) (delta * Multiple);
-                        Log.d(TAG, "delta = " + delta + ",pic_width = "
-                                + pic_width);
                         hsv_pic.SetFristScreenWidth(pic_width);
                         hsv_pic.snapToPic(0, delta, 1, 500);
                     }
 
                     @Override
-                    public void OnViewChange(int ScrollX, int delta,
-                            int whichScreen, int duration) {
+                    public void OnViewChange(int ScrollX, int delta,int whichScreen, int duration) {
                         hsv_pic.snapToPic(ScrollX, delta, whichScreen, duration);
                     }
                 });
@@ -260,6 +258,7 @@ public class MainActivity extends ActivityGroup implements
         String LocationProvince = preferences.getString(Constant.LocationProvince, "");
         String LocationCity = preferences.getString(Constant.LocationCity, "");
         Variable.cust_name = platformWhat.getDb().getUserName();
+        tv_activity_main_name.setText(platformWhat.getDb().getUserName());
         //绑定
         Login(platformWhat.getDb().getUserId(), platformWhat.getDb()
                 .getUserName(), LocationProvince, LocationCity, platformWhat.getDb()
@@ -303,7 +302,7 @@ public class MainActivity extends ActivityGroup implements
             iv_activity_main_login_sina.setVisibility(View.GONE);
             iv_activity_main_login_qq.setVisibility(View.GONE);
             platfromIsLogin();
-        } else if (platformSina.getDb().isValid()) {
+        } else if (platformSina.getDb().isValid()){
             System.out.println("sina登录");
             tv_activity_main_name.setText(platformSina.getDb().getUserName());
             Variable.cust_name = platformSina.getDb().getUserName();
