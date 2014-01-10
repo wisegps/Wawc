@@ -234,6 +234,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				myDialog.setCancelable(true);
 				if("".equals(carBrankId)){
 					Toast.makeText(getApplicationContext(), "请选择品牌", 0).show();
+					myDialog.dismiss();
 					return;
 				}
 				getCarDatas(carSeriesTitle,"base/car_series?pid=",getCarSeries,carBrankId);
