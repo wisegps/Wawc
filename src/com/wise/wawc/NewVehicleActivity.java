@@ -19,6 +19,8 @@ import com.wise.pubclas.NetThread;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
 import com.wise.wawc.MyVehicleActivity.ClickListener;
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -386,7 +388,25 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 		}
 		
 		//添加车辆
-//		NameValuePair nameValuePair = new NameValuePair();
-//		new Thread(new NetThread.postDataThread(myHandler, Constant.BaseUrl + "", params, addCar)).start();
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("", ""));
+		params.add(new BasicNameValuePair("", ""));
+		params.add(new BasicNameValuePair("", ""));
+		params.add(new BasicNameValuePair("", ""));
+		params.add(new BasicNameValuePair("", ""));
+		params.add(new BasicNameValuePair("", ""));
+		params.add(new BasicNameValuePair("", ""));
+		params.add(new BasicNameValuePair("", ""));
+		params.add(new BasicNameValuePair("", ""));
+		params.add(new BasicNameValuePair("", ""));
+		params.add(new BasicNameValuePair("", ""));
+		params.add(new BasicNameValuePair("", ""));
+		params.add(new BasicNameValuePair("", ""));
+		params.add(new BasicNameValuePair("", ""));
+		params.add(new BasicNameValuePair("", ""));
+		params.add(new BasicNameValuePair("", ""));
+		params.add(new BasicNameValuePair("", ""));
+				
+		new Thread(new NetThread.postDataThread(myHandler, Constant.BaseUrl + "", params, addCar)).start();
 	}
 }
