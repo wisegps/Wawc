@@ -142,7 +142,7 @@
 	        >
 	        <TextView 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="@string/brand"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
@@ -152,7 +152,7 @@
 	        <TextView 
 	            android:id="@+id/my_vehicle_beank"
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="大众"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
@@ -162,7 +162,7 @@
 	        <ImageView 
 	            android:id="@+id/my_vehicle_brank"
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:layout_weight="1"
 	    		android:background="@drawable/image"
 	            />
@@ -177,7 +177,7 @@
 	        >
 	        <TextView 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="@string/model"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
@@ -185,8 +185,9 @@
 	    		android:textColor="#000000"
 	            />
 	        <TextView 
+	            android:id="@+id/tv_car_series"
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="途安"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
@@ -194,8 +195,9 @@
 	    		android:textColor="#000000"
 	            />
 	        <ImageView 
+	            android:id="@+id/iv_car_series"
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:layout_weight="1"
 	    		android:background="@drawable/image"
 	            />
@@ -209,8 +211,9 @@
 	    	android:layout_marginRight="1dip"
 	        >
 	        <TextView 
+	            
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="@string/vehicle_style"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
@@ -218,8 +221,9 @@
 	    		android:textColor="#000000"
 	            />
 	        <TextView 
+	            android:id="@+id/tv_car_type"
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="自动豪华睿智版"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
@@ -227,8 +231,9 @@
 	    		android:textColor="#000000"
 	            />
 	        <ImageView 
+	            android:id="@+id/iv_car_type"
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:layout_weight="1"
 	    		android:background="@drawable/image"
 	            />
