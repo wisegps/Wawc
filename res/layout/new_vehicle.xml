@@ -77,6 +77,7 @@
 	    		android:textColor="#000000"
 	            />
 	        <EditText 
+	            android:id="@+id/et_new_vercher_number"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="粤B12345"
@@ -139,6 +140,7 @@
 	    		android:textColor="#000000"
 	            />
 	        <TextView 
+	            android:id="@+id/tv_new_vericher_series"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="途安"
@@ -148,6 +150,7 @@
 	    		android:textColor="#000000"
 	            />
 	        <ImageView 
+	            android:id="@+id/iv_new_vericher_series"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:layout_weight="1"
@@ -172,6 +175,7 @@
 	    		android:textColor="#000000"
 	            />
 	        <TextView 
+	            android:id="@+id/tv_new_vericher_type"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="自动豪华睿智版"
@@ -181,46 +185,13 @@
 	    		android:textColor="#000000"
 	            />
 	        <ImageView 
+	            android:id="@+id/iv_new_vericher_type"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:layout_weight="1"
 	    		android:background="@drawable/image"
 	            />
 	        
-	    </TableRow>
-	    <TableRow 
-	        android:layout_height="fill_parent"
-	    	android:layout_width="fill_parent"
-	    	android:background="#F0F0F0"
-	    	android:layout_marginTop="1dip"
-	    	android:layout_marginLeft="1dip"
-	    	android:layout_marginRight="1dip"
-	        >
-	        <TextView 
-	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
-	    		android:text="@string/cloud_terminal"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
-	    		android:gravity="center_vertical"
-	    		android:textColor="#000000"
-	            />
-	        <TextView 
-	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
-	    		android:text="未绑定终端"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
-	    		android:gravity="center"
-	    		android:textColor="#000000"
-	            />
-	        <ImageView 
-	            android:id="@+id/add_vehicle_device"
-	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
-	    		android:layout_weight="1"
-	    		android:background="@drawable/image"
-	            />
 	    </TableRow>
 	    <!-- 违章查询 -->
 	    <TableRow 
@@ -258,16 +229,19 @@
 	    		android:textColor="#000000"
 	            />
 	        <EditText 
+	            android:id="@+id/et_new_vehicle_engine_number"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="123456"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
+	    		android:inputType="number"
 	    		android:textColor="#000000"
 	            />
 	        
 	    </TableRow>
 	    <TableRow 
+	        
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
 	    	android:background="#F0F0F0"
@@ -285,11 +259,13 @@
 	    		android:textColor="#000000"
 	            />
 	        <EditText 
+	            android:id="@+id/et_new_car_number"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="123456"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
+	    		android:inputType="number"
 	    		android:textColor="#000000"
 	            />
 	    </TableRow>
@@ -364,7 +340,8 @@
 	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
-	        <TextView 
+	        <TextView
+	            android:id="@+id/et_new_vercher_insurance_time" 
 	            android:layout_height="fill_parent"
 	    		android:layout_width="wrap_content"
 	    		android:text="2013年-2015年"
@@ -470,6 +447,7 @@
 	    		android:textColor="#000000"
 	            />
 	        <EditText 
+	            android:id="@+id/new_vercher_last_insurance_mileage"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="46000Km"
@@ -496,11 +474,13 @@
 	    		android:textColor="#000000"
 	            />
 	        <EditText 
+	            android:id="@+id/et_new_vehicle_buy_car_time"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="2009"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
+	    		android:inputType="number"
 	    		android:textColor="#000000"
 	            />
 	    </TableRow>
