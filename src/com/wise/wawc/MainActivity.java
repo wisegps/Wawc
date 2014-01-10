@@ -535,8 +535,8 @@ public class MainActivity extends ActivityGroup implements
      */
     public void ToMyCar() {
     	if(platformQQ.getDb().isValid()){
-    		//判断用户是否添加车辆  TODO
-    		new Thread(new NetThread.GetDataThread(handler, Constant.BaseUrl + "customer/" + Constant.cust_id + "/vehicle?auth_code=" + Constant.auth_code, get_User_Car)).start();
+    		// TODO ,未判断微博用户，判断用户是否添加车辆 
+    		new Thread(new NetThread.GetDataThread(handler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/vehicle?auth_code=" + Variable.auth_code, get_User_Car)).start();
     	}else{
     		Toast.makeText(getApplicationContext(), "请登录", 0).show();
     		return;
