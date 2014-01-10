@@ -79,7 +79,6 @@ public class MainActivity extends ActivityGroup implements
     private static final int Login = 1; //登录
     private static final int Get_Pic = 2;//获取登录头像
     private static final int Bind_ID = 3; //绑定ID
-    private static final int get_User_Car = 4;
     
     SlidingMenuView slidingMenuView;
     ViewGroup tabcontent;
@@ -248,21 +247,6 @@ public class MainActivity extends ActivityGroup implements
                 Log.d(TAG, "绑定返回=" + msg.obj.toString());
                 jsonLogin(msg.obj.toString());
                 break;
-            case get_User_Car:
-            	 //  TODO  
-            	if("[]".equals(msg.obj.toString())){
-            		//添加车辆
-            		startActivity(new Intent(MainActivity.this,NewVehicleActivity.class));
-            	}else{
-            		//我的爱车
-            		slidingMenuView.snapToScreen(1);
-                    Intent i = new Intent(MainActivity.this, MyVehicleActivity.class);
-                    View view = getLocalActivityManager().startActivity(MyVehicleActivity.class.getName(), i).getDecorView();
-                    tabcontent.removeAllViews();
-                    tabcontent.addView(view);
-            	}
-            	Log.e("用户车辆",msg.obj.toString());
-            	break;
             }
         }
     };
@@ -536,7 +520,16 @@ public class MainActivity extends ActivityGroup implements
     public void ToMyCar() {
     	if(platformQQ.getDb().isValid()){
     		// TODO ,未判断微博用户，判断用户是否添加车辆 
-    		new Thread(new NetThread.GetDataThread(handler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/vehicle?auth_code=" + Variable.auth_code, get_User_Car)).start();
+    	    if(Variable.carDatas.size() == 0){
+    	        //判断网络
+    	        startActivity(new Intent(MainActivity.this,NewVehicleActivity.class));
+    	    }else{
+    	        slidingMenuView.snapToScreen(1);
+                Intent i = new Intent(MainActivity.this, MyVehicleActivity.class);
+                View view = getLocalActivityManager().startActivity(MyVehicleActivity.class.getName(), i).getDecorView();
+                tabcontent.removeAllViews();
+                tabcontent.addView(view);
+    	    }
     	}else{
     		Toast.makeText(getApplicationContext(), "请登录", 0).show();
     		return;
