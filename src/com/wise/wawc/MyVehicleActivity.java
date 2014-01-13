@@ -112,6 +112,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	private String carSeriesId = "";
 	private static String carSeriesTitle = "carSeries";
 	private static String carTypeTitle = "carType";
+	private String brank = ""; 
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -227,6 +228,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 			case R.id.choice_maintain_image:  //选择保养店
 				Intent intent3 = new Intent(MyVehicleActivity.this,MaintainShopActivity.class);
 				intent3.putExtra("code", resultCodeMaintain);
+				intent3.putExtra("brank", brank);
 				startActivityForResult(intent3, resultCodeMaintain);
 				break;
 			case R.id.iv_car_series:  //选择车型    根据品牌id获取
@@ -240,6 +242,13 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				getCarDatas(carSeriesTitle,"base/car_series?pid=",getCarSeries,carBrankId);
 				break;
 			case R.id.iv_car_type:  //选择车款
+				if(carSeriesNameList.size() > 0){
+					mSpinerPopWindow.setWidth(width);
+					mSpinerPopWindow.setHeight(300);
+					mSpinerPopWindow.showAsDropDown(tvCarType);
+				}else{
+					Toast.makeText(getApplicationContext(), "请选择车型", 0).show();
+				}
 				break;
 			default:
 				return;
@@ -255,7 +264,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		}
 		//选择品牌
 		if(resultCode == this.resultCodeBrank){
-			String brank = (String) data.getSerializableExtra("brank");
+			brank = (String) data.getSerializableExtra("brank");
 			carBrankId = (String) data.getSerializableExtra("carId");
 			myVehicleBrank.setText(brank);
 		}
@@ -374,10 +383,10 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		//查询数据库
 		Cursor cursor = read.rawQuery("select * from " + Constant.TB_Base + " where Title = ?", new String[]{title + id});
 		JSONArray jsonArray = null;
-		String carSeries = "";
+//		String carSeries = "";
 		if(cursor.moveToFirst()){
 			try {
-				carSeries = cursor.getString(cursor.getColumnIndex("Content"));
+//				carSeries = cursor.getString(cursor.getColumnIndex("Content"));
 				jsonArray = new JSONArray(cursor.getString(cursor.getColumnIndex("Content")));
 			} catch (JSONException e) {
 				e.printStackTrace();

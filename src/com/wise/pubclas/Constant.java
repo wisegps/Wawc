@@ -64,6 +64,10 @@ public class Constant {
 	 */
 	public static final String LocationCityFuel = "LocationCityFuel";
 	/**
+	 * 获取指定城市4s店所需参数
+	 */
+	public static final String FourShopParmeter = "FourShopParmeter";
+	/**
 	 * 用户id
 	 */
 	public static final String sp_cust_id = "sp_cust_id";

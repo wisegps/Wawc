@@ -76,9 +76,11 @@ public class SelectCityActivity extends Activity {
         lv_activity_select_city = (ListView) findViewById(R.id.lv_activity_select_city);
         Intent intent = getIntent();
         String Citys = intent.getStringExtra("Citys");
+        Log.e("城市列表数据",Citys);
         String Hot_Citys = intent.getStringExtra("Hot_Citys");
         cityDatas = GetCityList(Citys);
         hotDatas = GetCityList(Hot_Citys);
+        
         //TODO  排序,添加热门
         ProcessCitys();
         filterCityDatas.addAll(cityDatas);
@@ -142,7 +144,9 @@ public class SelectCityActivity extends Activity {
         public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
             CityData cityData = filterCityDatas.get(arg2);
             if (cityData.getCity_code() != null) {
-                Log.d(TAG, cityData.toString());
+            	
+            	
+                Log.e(TAG, cityData.getCity_spell());
                 SaveCityInfo(cityData);
             }
         }
@@ -196,6 +200,7 @@ public class SelectCityActivity extends Activity {
         editor.putString(Constant.LocationCityCode, cityData.getCity_code());
         editor.putString(Constant.LocationProvince, cityData.getProvince());
         editor.putString(Constant.LocationCityFuel, cityData.getFuel_price());
+        editor.putString(Constant.FourShopParmeter, cityData.getCity_spell());
         editor.commit();
         Toast.makeText(SelectCityActivity.this, "您选择了城市：" +cityData.getCity(), Toast.LENGTH_LONG).show();
         //TODO 释放内存
@@ -315,6 +320,7 @@ public class SelectCityActivity extends Activity {
                 cityData.setType(1);
                 cityData.setCity(jsonObject.getString("city"));
                 cityData.setProvince(jsonObject.getString("province"));
+                cityData.setCity_spell(jsonObject.getString("spell"));
                 cityData.setFirst_letter(GetFristLetter(jsonObject.getString("city")));
                 if(jsonObject.opt("fuel_price") == null){
                     cityData.setFuel_price("");
@@ -537,6 +543,7 @@ public class SelectCityActivity extends Activity {
         String Province;
         String First_letter;
         String Fuel_price;
+        String city_spell;
 
         public int getType() {
             return Type;
@@ -574,7 +581,13 @@ public class SelectCityActivity extends Activity {
         public void setFuel_price(String fuel_price) {
             Fuel_price = fuel_price;
         }
-        @Override
+        public String getCity_spell() {
+			return city_spell;
+		}
+		public void setCity_spell(String city_spell) {
+			this.city_spell = city_spell;
+		}
+		@Override
         public String toString() {
             return "CityData [Type=" + Type + ", City_code=" + City_code
                     + ", city=" + city + ", Province=" + Province

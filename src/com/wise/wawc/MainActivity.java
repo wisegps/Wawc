@@ -51,6 +51,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -518,21 +520,25 @@ public class MainActivity extends ActivityGroup implements
      * 我的爱车
      */
     public void ToMyCar() {
-    	if(platformQQ.getDb().isValid()){
-    		// TODO ,未判断微博用户，判断用户是否添加车辆 
-    	    if(Variable.carDatas.size() == 0){
-    	        //判断网络
-    	        startActivity(new Intent(MainActivity.this,NewVehicleActivity.class));
-    	    }else{
-    	        slidingMenuView.snapToScreen(1);
-                Intent i = new Intent(MainActivity.this, MyVehicleActivity.class);
-                View view = getLocalActivityManager().startActivity(MyVehicleActivity.class.getName(), i).getDecorView();
-                tabcontent.removeAllViews();
-                tabcontent.addView(view);
-    	    }
+    	if(isNetworkConnected(MainActivity.this)){
+//    		Log.e("用户id",Variable.cust_id);
+    		if("".equals(Variable.cust_id) || Variable.cust_id == null){
+    			Toast.makeText(MainActivity.this, "请登录...", 0).show();
+    			return;
+    		}
+    		
+    		Log.e("车辆数据-->", Variable.carDatas.size()+"");
+    		if(Variable.carDatas == null || Variable.carDatas.size() == 0){
+    			startActivity(new Intent(MainActivity.this,NewVehicleActivity.class));
+    		}else{
+    			slidingMenuView.snapToScreen(1);
+               Intent i = new Intent(MainActivity.this, MyVehicleActivity.class);
+               View view = getLocalActivityManager().startActivity(MyVehicleActivity.class.getName(), i).getDecorView();
+               tabcontent.removeAllViews();
+               tabcontent.addView(view);
+    		}
     	}else{
-    		Toast.makeText(getApplicationContext(), "请登录", 0).show();
-    		return;
+    		Toast.makeText(MainActivity.this, "网络不可用...", 0).show();
     	}
     }
 
@@ -597,4 +603,15 @@ public class MainActivity extends ActivityGroup implements
         Variable.remaindPush = saveSettingData.getTrafficDepartment();
         Variable.defaultCenter = saveSettingData.getDefaultCenter();
     }
+    
+	public boolean isNetworkConnected(Context context) {
+		if (context != null) {
+			ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+			if (mNetworkInfo != null) {
+				return mNetworkInfo.isAvailable();
+			}
+		}
+		return false;
+	}
 }

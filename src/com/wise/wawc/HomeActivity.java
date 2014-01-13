@@ -575,6 +575,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
     private void GetCars() {
         String url = Constant.BaseUrl + "customer/" + Variable.cust_id
                 + "/vehicle?auth_code=" + Variable.auth_code;
+        Log.e("查询用户车辆的连接",url);
         new Thread(new NetThread.GetDataThread(handler, url, Get_Cars)).start();
     }
 
@@ -607,8 +608,8 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (action.equals(Constant.A_Login)) {
-                Log.d(TAG, "carDatas.size() = " + carDatas.size());
-                if(carDatas.size() == 0){
+                Log.d(TAG, "carDatas.size() = " + Variable.carDatas.size());
+                if(Variable.carDatas.size() == 0){
                     Log.d(TAG, "获取车辆数据");
                     GetCars();
                 }
