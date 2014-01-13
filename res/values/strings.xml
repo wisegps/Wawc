@@ -40,7 +40,7 @@
     <string name="engine_number">发动机型号</string>
     <string name="vehicle_number">车架号</string>
     <string name="insurance_company">保险公司</string>
-    <string name="insurance_time">保险时间</string>
+    <string name="insurance_time">保险到期时间</string>
     <string name="maintain_shop">4S保养店</string>
     <string name="current_mileage">当前里程</string>
     <string name="last_insurance_mileage">最后保养里程</string>
@@ -114,4 +114,7 @@
     
     <string name="dialog_title">数据加载</string>
     <string name="dialog_message">加载中...</string>
+    <string name="annual_survey">年检时间</string>
+    <string name="mantain_last_time">最后保养时间</string>
+    <string name="mantain_next_time">下次保养里程</string>
 </resources>

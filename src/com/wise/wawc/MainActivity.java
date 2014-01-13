@@ -51,6 +51,8 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -538,9 +540,6 @@ public class MainActivity extends ActivityGroup implements
                 tabcontent.removeAllViews();
                 tabcontent.addView(view);
     	    }
-    	}else{
-    		Toast.makeText(getApplicationContext(), "请登录", 0).show();
-    		return;
     	}
     }
 
@@ -605,4 +604,15 @@ public class MainActivity extends ActivityGroup implements
         Variable.remaindPush = saveSettingData.getTrafficDepartment();
         Variable.defaultCenter = saveSettingData.getDefaultCenter();
     }
+    
+	public boolean isNetworkConnected(Context context) {
+		if (context != null) {
+			ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+			if (mNetworkInfo != null) {
+				return mNetworkInfo.isAvailable();
+			}
+		}
+		return false;
+	}
 }

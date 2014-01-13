@@ -1,7 +1,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:orientation="vertical"
     tools:context=".VehicleStatusActivity" >
@@ -334,41 +334,6 @@
 	        <TextView 
 	            android:layout_height="fill_parent"
 	    		android:layout_width="wrap_content"
-	    		android:text="@string/insurance_time"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
-	    		android:gravity="center_vertical"
-	    		android:textColor="#000000"
-	            />
-	        <TextView
-	            android:id="@+id/et_new_vercher_insurance_time" 
-	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
-	    		android:text="2013年-2015年"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
-	    		android:gravity="center"
-	    		android:textColor="#000000"
-	            />
-	        <ImageView
-	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
-	    		android:layout_weight="1"
-	    		android:background="@drawable/image"
-	            />
-	        
-	    </TableRow>
-	    <TableRow 
-	        android:layout_height="fill_parent"
-	    	android:layout_width="fill_parent"
-	    	android:background="#F0F0F0"
-	    	android:layout_marginTop="1dip"
-	    	android:layout_marginLeft="1dip"
-	    	android:layout_marginRight="1dip"
-	        >
-	        <TextView 
-	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
 	    		android:text="@string/maintain_shop"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
@@ -394,6 +359,36 @@
 	            />
 	    </TableRow>
 	    
+	      <TableRow 
+	        android:layout_height="fill_parent"
+	    	android:layout_width="fill_parent"
+	    	android:background="#F0F0F0"
+	    	android:layout_marginTop="1dip"
+	    	android:layout_marginLeft="1dip"
+	    	android:layout_marginRight="1dip"
+	        >
+	        <TextView 
+	            android:layout_height="fill_parent"
+	    		android:layout_width="0dip"
+	    		android:text="@string/insurance_time"
+	    		android:layout_weight="1"
+	    		android:textSize="7pt"
+	    		android:gravity="center_vertical"
+	    		android:textColor="#000000"
+	            />
+
+	        <EditText
+	            android:id="@+id/et_insurance_over_time"
+	            android:layout_width="0dip"
+	            android:layout_height="fill_parent"
+	            android:layout_weight="1"
+	            android:textColor="#000000"
+	            android:inputType="none"
+	            android:textSize="7pt" >
+	        </EditText>
+
+	    </TableRow>
+	    
 	    <TableRow 
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
@@ -404,31 +399,24 @@
 	        >
 	        <TextView 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
-	    		android:text="@string/current_mileage"
+	    		android:layout_width="0dip"
+	    		android:text="@string/annual_survey"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
 	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
-	        <TextView 
-	            android:id="@+id/add_vehicle_mileage"
+	        <EditText
+	            android:id="@+id/annual_survey_time"
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
-	    		android:text="46000Km"
+	    		android:layout_width="0dip"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
-	    		android:gravity="center"
+	    		android:inputType="none"
 	    		android:textColor="#000000"
 	            />
-	        <ImageView 
-	            android:id="@+id/add_vehicle_insurance_mileage" 
-	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
-	    		android:layout_weight="1"
-	    		android:background="@drawable/image"
-	            />
 	    </TableRow>
+	    
 	    <TableRow 
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
@@ -447,10 +435,63 @@
 	    		android:textColor="#000000"
 	            />
 	        <EditText 
-	            android:id="@+id/new_vercher_last_insurance_mileage"
+	            android:id="@+id/et_last_insurance_mileage"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
-	    		android:text="46000Km"
+	    		android:layout_weight="1"
+	    		android:textSize="7pt"
+	    		android:textColor="#000000"
+	            />
+	    </TableRow>
+	    
+	    <TableRow 
+	        android:layout_height="fill_parent"
+	    	android:layout_width="fill_parent"
+	    	android:background="#F0F0F0"
+	    	android:layout_marginTop="1dip"
+	    	android:layout_marginLeft="1dip"
+	    	android:layout_marginRight="1dip"
+	        >
+	        <TextView 
+	            android:layout_height="fill_parent"
+	    		android:layout_width="0dip"
+	    		android:text="@string/mantain_last_time"
+	    		android:layout_weight="1"
+	    		android:textSize="7pt"
+	    		android:gravity="center_vertical"
+	    		android:textColor="#000000"
+	            />
+	        <EditText 
+	            android:id="@+id/et_last_maintain_time"
+	            android:layout_height="fill_parent"
+	    		android:layout_width="0dip"
+	    		android:layout_weight="1"
+	    		android:textSize="7pt"
+	    		android:inputType="none"
+	    		android:textColor="#000000"
+	            />
+	    </TableRow>
+	    <TableRow 
+	        android:layout_height="fill_parent"
+	    	android:layout_width="fill_parent"
+	    	android:background="#F0F0F0"
+	    	android:layout_marginTop="1dip"
+	    	android:layout_marginLeft="1dip"
+	    	android:layout_marginRight="1dip"
+	        >
+	        <TextView 
+	            android:layout_height="fill_parent"
+	    		android:layout_width="0dip"
+	    		android:text="@string/mantain_next_time"
+	    		android:layout_weight="1"
+	    		android:textSize="7pt"
+	    		android:gravity="center_vertical"
+	    		android:textColor="#000000"
+	            />
+	        <EditText 
+	            android:id="@+id/et_next_maintain_mileage"
+	            android:layout_height="fill_parent"
+	    		android:layout_width="0dip"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
 	    		android:textColor="#000000"
@@ -477,10 +518,9 @@
 	            android:id="@+id/et_new_vehicle_buy_car_time"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
-	    		android:text="2009"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
-	    		android:inputType="number"
+	    		android:inputType="none"
 	    		android:textColor="#000000"
 	            />
 	    </TableRow>
