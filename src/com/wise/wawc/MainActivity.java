@@ -86,8 +86,7 @@ public class MainActivity extends ActivityGroup implements
     Platform platformQQ;
     Platform platformSina;
     Platform platformWhat;
-    ImageView iv_activity_main_logo, iv_activity_main_qq,
-            iv_activity_main_sina, iv_activity_main_login_sina,
+    ImageView iv_activity_main_logo,iv_activity_main_login_sina,
             iv_activity_main_login_qq;
     TextView tv_activity_main_name;
     
@@ -97,6 +96,9 @@ public class MainActivity extends ActivityGroup implements
     PicHorizontalScrollView hsv_pic;
     ImageView iv_pic;
     Bitmap bimage;
+
+    String LocationProvince;
+    String LocationCity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,8 +145,6 @@ public class MainActivity extends ActivityGroup implements
         rl_activity_main_home.setOnClickListener(onClickListener);
         iv_activity_main_login_sina = (ImageView) findViewById(R.id.iv_activity_main_login_sina);
         iv_activity_main_login_sina.setOnClickListener(onClickListener);
-        iv_activity_main_qq = (ImageView) findViewById(R.id.iv_activity_main_qq);
-        iv_activity_main_sina = (ImageView) findViewById(R.id.iv_activity_main_sina);
         iv_activity_main_login_qq = (ImageView) findViewById(R.id.iv_activity_main_login_qq);
         iv_activity_main_login_qq.setOnClickListener(onClickListener);
         iv_activity_main_logo = (ImageView) findViewById(R.id.iv_activity_main_logo);
@@ -177,6 +177,7 @@ public class MainActivity extends ActivityGroup implements
         ShareSDK.initSDK(this);
         platformQQ = ShareSDK.getPlatform(MainActivity.this, QZone.NAME);
         platformSina = ShareSDK.getPlatform(MainActivity.this, SinaWeibo.NAME);
+        getSpData();
         isLogin();
         startService(new Intent(MainActivity.this, LocationService.class));
         initSettingData();
@@ -238,7 +239,7 @@ public class MainActivity extends ActivityGroup implements
             super.handleMessage(msg);
             switch (msg.what) {
             case Get_Pic:
-                iv_activity_main_logo.setImageBitmap(bimage);
+                iv_activity_main_logo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
                 break;
             case Login:
                 jsonLoginOk();
@@ -251,14 +252,21 @@ public class MainActivity extends ActivityGroup implements
         }
     };
     /**
+     * 获取本地数据
+     */
+    private void getSpData(){
+        SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+        LocationProvince = preferences.getString(Constant.LocationProvince, "");
+        LocationCity = preferences.getString(Constant.LocationCity, "");
+    }
+    /**
      * 登录成功
      */
-    private void jsonLoginOk(){//登录成功
-        SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
-        String LocationProvince = preferences.getString(Constant.LocationProvince, "");
-        String LocationCity = preferences.getString(Constant.LocationCity, "");
+    private void jsonLoginOk(){//登录成功        
         Variable.cust_name = platformWhat.getDb().getUserName();
         tv_activity_main_name.setText(platformWhat.getDb().getUserName());
+        iv_activity_main_login_sina.setVisibility(View.GONE);
+        iv_activity_main_login_qq.setVisibility(View.GONE);
         //绑定
         Login(platformWhat.getDb().getUserId(), platformWhat.getDb()
                 .getUserName(), LocationProvince, LocationCity, platformWhat.getDb()
@@ -298,24 +306,26 @@ public class MainActivity extends ActivityGroup implements
             System.out.println("qq登录");
             tv_activity_main_name.setText(platformQQ.getDb().getUserName());
             Variable.cust_name = platformQQ.getDb().getUserName();
-            iv_activity_main_qq.setVisibility(View.VISIBLE);
-            iv_activity_main_sina.setVisibility(View.VISIBLE);
             iv_activity_main_login_sina.setVisibility(View.GONE);
             iv_activity_main_login_qq.setVisibility(View.GONE);
+            //TODO 获取auth_code
             platfromIsLogin();
+            //绑定
+            Login(platformQQ.getDb().getUserId(), platformQQ.getDb()
+                    .getUserName(), LocationProvince, LocationCity, platformQQ.getDb()
+                    .getUserIcon(), "remark");
         } else if (platformSina.getDb().isValid()){
             System.out.println("sina登录");
             tv_activity_main_name.setText(platformSina.getDb().getUserName());
             Variable.cust_name = platformSina.getDb().getUserName();
-            iv_activity_main_qq.setVisibility(View.VISIBLE);
-            iv_activity_main_sina.setVisibility(View.VISIBLE);
             iv_activity_main_login_sina.setVisibility(View.GONE);
             iv_activity_main_login_qq.setVisibility(View.GONE);
             platfromIsLogin();
+            Login(platformSina.getDb().getUserId(), platformSina.getDb()
+                    .getUserName(), LocationProvince, LocationCity, platformSina.getDb()
+                    .getUserIcon(), "remark");
         } else {
             System.out.println("没有登录");
-            iv_activity_main_qq.setVisibility(View.GONE);
-            iv_activity_main_sina.setVisibility(View.GONE);
             iv_activity_main_login_sina.setVisibility(View.VISIBLE);
             iv_activity_main_login_qq.setVisibility(View.VISIBLE);
         }
@@ -325,14 +335,13 @@ public class MainActivity extends ActivityGroup implements
      */
     private void platfromIsLogin(){
         bimage = BitmapFactory.decodeFile(Constant.BasePath + Constant.UserImage);
-        if(bimage != null){
-            iv_activity_main_logo.setImageBitmap(bimage);
+        if(bimage != null){            
+            iv_activity_main_logo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
         }
         SharedPreferences preferences = getSharedPreferences(
                 Constant.sharedPreferencesName, Context.MODE_PRIVATE);
         Variable.cust_id  = preferences.getString(Constant.sp_cust_id, "");
         Variable.auth_code = preferences.getString(Constant.sp_auth_code, "");
-        sendBroadcast(new Intent(Constant.A_Login));
     }
 
     /**
@@ -519,7 +528,6 @@ public class MainActivity extends ActivityGroup implements
      */
     public void ToMyCar() {
     	if(platformQQ.getDb().isValid()){
-    		// TODO ,未判断微博用户，判断用户是否添加车辆 
     	    if(Variable.carDatas.size() == 0){
     	        //判断网络
     	        startActivity(new Intent(MainActivity.this,NewVehicleActivity.class));

@@ -238,6 +238,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
             String Content = c.getString(c.getColumnIndex("Content"));
             isHaveOldFutureWeather = true;
             // 解析数据
+            Log.d(TAG, "解析本地未来天气");
             jsonFutureWeather(Content);
         }
         c.close();
@@ -257,50 +258,51 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
      * 获取本地车辆信息
      */
     private void GetDBCars(){
-        DBHelper dbHelper = new DBHelper(HomeActivity.this);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        
-        Cursor cursor = db.query(Constant.TB_Vehicle, null, null, null, null, null, null);
-        while (cursor.moveToNext()) {
-            int obj_id = cursor.getInt(cursor.getColumnIndex("obj_id"));
-            String obj_name =  cursor.getString(cursor.getColumnIndex("obj_name"));
-            String car_brand =  cursor.getString(cursor.getColumnIndex("car_brand"));
-            String car_series =  cursor.getString(cursor.getColumnIndex("car_series"));
-            String car_type =  cursor.getString(cursor.getColumnIndex("car_type"));
-            String engine_no =  cursor.getString(cursor.getColumnIndex("engine_no"));
-            String frame_no =  cursor.getString(cursor.getColumnIndex("frame_no"));
-            String insurance_company =  cursor.getString(cursor.getColumnIndex("insurance_company"));
-            String insurance_date =  cursor.getString(cursor.getColumnIndex("insurance_date"));
-            String annual_inspect_date =  cursor.getString(cursor.getColumnIndex("annual_inspect_date"));
-            String maintain_company =  cursor.getString(cursor.getColumnIndex("maintain_company"));
-            String maintain_last_mileage =  cursor.getString(cursor.getColumnIndex("maintain_last_mileage"));
-            String maintain_next_mileage =  cursor.getString(cursor.getColumnIndex("maintain_next_mileage"));
-            String buy_date =  cursor.getString(cursor.getColumnIndex("buy_date"));
-            
-            CarData carData = new CarData();
-            carData.setCarLogo(1);
-            carData.setCheck(false);
-            carData.setObj_id(obj_id);
-            carData.setObj_name(obj_name);
-            carData.setCar_brand(car_brand);
-            carData.setCar_series(car_series);
-            carData.setCar_type(car_type);
-            carData.setEngine_no(engine_no);
-            carData.setFrame_no(frame_no);
-            carData.setInsurance_company(insurance_company);
-            carData.setInsurance_date(insurance_date);
-            carData.setAnnual_inspect_date(annual_inspect_date);
-            carData.setMaintain_company(maintain_company);
-            carData.setMaintain_last_mileage(maintain_last_mileage);
-            carData.setMaintain_next_mileage(maintain_next_mileage);
-            carData.setBuy_date(buy_date);
-            carDatas.add(carData);
-            //Log.d(TAG, carData.toString());
-        }
-        cursor.close();
-        db.close();
-        //Log.d(TAG, "carDatas.size()="+carDatas.size());
-        Variable.carDatas = carDatas;
+        if(Variable.cust_id != null){
+            DBHelper dbHelper = new DBHelper(HomeActivity.this);
+            SQLiteDatabase db = dbHelper.getReadableDatabase();            
+            //Cursor cursor = db.query(Constant.TB_Vehicle, null, null, null, null, null, null);
+            Cursor cursor = db.rawQuery("select * from " + Constant.TB_Vehicle
+                    + " where Cust_id=?", new String[] {Variable.cust_id });
+            while (cursor.moveToNext()) {
+                int obj_id = cursor.getInt(cursor.getColumnIndex("obj_id"));
+                String obj_name =  cursor.getString(cursor.getColumnIndex("obj_name"));
+                String car_brand =  cursor.getString(cursor.getColumnIndex("car_brand"));
+                String car_series =  cursor.getString(cursor.getColumnIndex("car_series"));
+                String car_type =  cursor.getString(cursor.getColumnIndex("car_type"));
+                String engine_no =  cursor.getString(cursor.getColumnIndex("engine_no"));
+                String frame_no =  cursor.getString(cursor.getColumnIndex("frame_no"));
+                String insurance_company =  cursor.getString(cursor.getColumnIndex("insurance_company"));
+                String insurance_date =  cursor.getString(cursor.getColumnIndex("insurance_date"));
+                String annual_inspect_date =  cursor.getString(cursor.getColumnIndex("annual_inspect_date"));
+                String maintain_company =  cursor.getString(cursor.getColumnIndex("maintain_company"));
+                String maintain_last_mileage =  cursor.getString(cursor.getColumnIndex("maintain_last_mileage"));
+                String maintain_next_mileage =  cursor.getString(cursor.getColumnIndex("maintain_next_mileage"));
+                String buy_date =  cursor.getString(cursor.getColumnIndex("buy_date"));
+                
+                CarData carData = new CarData();
+                carData.setCarLogo(1);
+                carData.setCheck(false);
+                carData.setObj_id(obj_id);
+                carData.setObj_name(obj_name);
+                carData.setCar_brand(car_brand);
+                carData.setCar_series(car_series);
+                carData.setCar_type(car_type);
+                carData.setEngine_no(engine_no);
+                carData.setFrame_no(frame_no);
+                carData.setInsurance_company(insurance_company);
+                carData.setInsurance_date(insurance_date);
+                carData.setAnnual_inspect_date(annual_inspect_date);
+                carData.setMaintain_company(maintain_company);
+                carData.setMaintain_last_mileage(maintain_last_mileage);
+                carData.setMaintain_next_mileage(maintain_next_mileage);
+                carData.setBuy_date(buy_date);
+                carDatas.add(carData);
+            }
+            cursor.close();
+            db.close();
+            Variable.carDatas = carDatas;
+        }        
     }
 
     /**
@@ -323,8 +325,10 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
      */
     private void JudgeRealTimeWeather(String result) {
         if (isHaveOldRealTimeWeather) {// 更新
+            Log.d(TAG, "更新数据库");
             UpdateWeather(result, "RealTimeWeather");
         } else {// 插入
+            Log.d(TAG, "插入数据库");
             InsertWeather(result, "RealTimeWeather");
         }
     }
@@ -528,6 +532,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 dbExcute.InsertDB(HomeActivity.this, values, Constant.TB_Vehicle);
             }
             Variable.carDatas = carDatas;
+            Log.d(TAG, "Variable.carDatas = " + Variable.carDatas.size());
         } catch (JSONException e) {
             e.printStackTrace();
         }

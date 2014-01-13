@@ -262,6 +262,7 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 				break;
 				
 			case addCar:
+			    System.out.println(msg.obj.toString());
 				break;
 			default:
 				return;

@@ -51,7 +51,7 @@ public class OrderMeActivity extends Activity{
 		ImageView iv_activity_order_me_home = (ImageView)findViewById(R.id.iv_activity_order_me_home);
 		iv_activity_order_me_home.setOnClickListener(onClickListener);
 		GetOrderDB();
-		GetOrder();
+        GetOrder();
 	}
 	OnClickListener onClickListener = new OnClickListener() {		
 		@Override
@@ -89,7 +89,7 @@ public class OrderMeActivity extends Activity{
 	    DBHelper dbHelper = new DBHelper(OrderMeActivity.this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base
-                + " where Title=?", new String[] { "Orders" });
+                + " where Title=? and Cust_id=?", new String[] { "Orders",Variable.cust_id });
         if (cursor.moveToFirst()) {
             String Content = cursor.getString(cursor.getColumnIndex("Content"));
             isHaveOrder = true;
@@ -98,6 +98,7 @@ public class OrderMeActivity extends Activity{
         }
         cursor.close();
         db.close();
+        Log.d(TAG, "GetOrderDB");
 	}
 	
 	private void GetOrder(){
@@ -145,6 +146,7 @@ public class OrderMeActivity extends Activity{
 	private void InsertOrder(String result, String Title) {
         DBExcute dbExcute = new DBExcute();
         ContentValues values = new ContentValues();
+        values.put("Cust_id", Variable.cust_id);
         values.put("Title", Title);
         values.put("Content", result);
         dbExcute.InsertDB(OrderMeActivity.this, values, Constant.TB_Base);
@@ -183,7 +185,7 @@ public class OrderMeActivity extends Activity{
             OrderData orderData = orderDatas.get(position);
             holder.tv_item_order_product_name.setText(orderData.getProduct_name());
             holder.tv_item_order_unit_price.setText(orderData.getUnit_price());
-            holder.tv_item_order_create_time.setText(orderData.getCreate_time());
+            holder.tv_item_order_create_time.setText(orderData.getCreate_time().substring(0, 10));
             holder.tv_item_order_quantity.setText(orderData.getQuantity());
             holder.tv_item_order_total_price.setText(orderData.getTotal_price());
             return convertView;

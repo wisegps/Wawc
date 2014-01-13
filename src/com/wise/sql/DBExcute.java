@@ -1,6 +1,7 @@
 package com.wise.sql;
 
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.Variable;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -30,6 +31,20 @@ public class DBExcute {
 	    DBHelper dbHelper = new DBHelper(context);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.update(Constant.TB_Base, values, "Title=?", new String[] {Title});
+        db.close();
+        dbHelper.close();
+	}
+	/**
+	 * 更新需要Cust_id的基础表
+	 * @param context
+	 * @param values
+	 * @param Title
+	 * @param Cust_id
+	 */
+	public void UpdateBDCustID(Context context,ContentValues values,String Title,String Cust_id){
+	    DBHelper dbHelper = new DBHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.update(Constant.TB_Base, values, "Title=? and Cust_id=?", new String[] {Title,Cust_id});
         db.close();
         dbHelper.close();
 	}

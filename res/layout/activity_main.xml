@@ -45,28 +45,9 @@
 	       	        android:id="@+id/tv_activity_main_name"
 	       	        android:layout_width="wrap_content"
 	       	        android:layout_height="wrap_content"
+	       	        android:layout_centerVertical="true"
 	       	        android:layout_toRightOf="@id/iv_activity_main_logo"
-	       	        android:layout_alignTop="@id/iv_activity_main_logo"
-	       	        android:textColor="@color/white"
-	       	        android:text="Thomas"/>
-	       	    <ImageView
-	       	        android:id="@+id/iv_activity_main_qq"
-	       	        android:visibility="invisible"
-	       	        android:layout_height="20dp"
-	       	        android:layout_width="20dp"
-	       	        android:layout_toRightOf="@id/iv_activity_main_logo"
-	       	        android:layout_alignBottom="@id/iv_activity_main_logo"
-	       	        android:contentDescription="@string/app_name"
-	       	        android:src="@drawable/logo_qq"/>
-	       	    <ImageView
-	       	        android:id="@+id/iv_activity_main_sina"
-	       	        android:visibility="invisible"
-	       	        android:layout_height="20dp"
-	       	        android:layout_width="20dp"
-	       	        android:layout_toRightOf="@id/iv_activity_main_qq"
-	       	        android:layout_alignBottom="@id/iv_activity_main_logo"
-	       	        android:contentDescription="@string/app_name"
-	       	        android:src="@drawable/logo_sinaweibo"/>
+	       	        android:textColor="@color/white"/>
 	       	     <ImageView
 	       	        android:id="@+id/iv_activity_main_login_qq"
 	       	        android:layout_height="30dp"

@@ -5,19 +5,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#FFFFFF">
-    <com.wise.extend.PicHorizontalScrollView
-        android:id="@+id/hsv_pic"
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent">
-        <LinearLayout 
+    <RelativeLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="200dp">
+        <TextView 
+            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageView 
-                android:id="@+id/iv_pic"          
-                android:layout_width="900dp"
-                android:scaleType="fitStart"
-                android:layout_height="fill_parent"
-                android:src="@drawable/bg"/>
-        </LinearLayout>
-    </com.wise.extend.PicHorizontalScrollView>
+            android:layout_height="wrap_content"
+            android:text="确定"/>
+    </RelativeLayout>
 </LinearLayout>
