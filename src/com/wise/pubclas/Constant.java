@@ -19,6 +19,10 @@ public class Constant {
      * 个人头像
      */
     public static final String UserImage = "UserIcon.jpg";
+    /**
+     * 救援照片存储
+     */
+    public static final String ShareImage = "Share.jpg";
 	/**
 	 * 获取版本信息用到
 	 */

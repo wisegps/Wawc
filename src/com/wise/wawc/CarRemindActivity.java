@@ -46,7 +46,7 @@ public class CarRemindActivity extends Activity{
 	TextView tv_activity_car_remind_inspection,tv_activity_car_remind_remind_renewal;
 	
 	CarAdapter carAdapter;
-	CarData carData = Variable.carDatas.get(0); //默认指定第0个
+	CarData carData;//默认指定第0个
 	
 	boolean isJump = false;//false从菜单页跳转过来返回打开菜单，true从首页跳转返回关闭页面
 	@Override
@@ -117,6 +117,9 @@ public class CarRemindActivity extends Activity{
 			}
 		});
 	}
+	
+	
+	
 	OnClickListener onClickListener = new OnClickListener(){
 		@Override
 		public void onClick(View v) {

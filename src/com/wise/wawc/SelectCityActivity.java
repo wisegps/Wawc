@@ -12,6 +12,8 @@ import com.wise.pubclas.Constant;
 import com.wise.service.ClearEditText;
 import com.wise.service.SideBar;
 import com.wise.service.SideBar.OnTouchingLetterChangedListener;
+import com.wise.sql.DBHelper;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,6 +21,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -64,6 +68,9 @@ public class SelectCityActivity extends Activity {
     CharacterParser characterParser = new CharacterParser().getInstance(); // 将汉字转成拼音
     private PinyinComparator comparator = new PinyinComparator();; // 根据拼音排序
     String LocationCity = "";
+    String Citys;
+    String Hot_Citys;
+    boolean isWelcome = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +82,9 @@ public class SelectCityActivity extends Activity {
         tv_activity_select_city_location.setOnClickListener(onClickListener);
         lv_activity_select_city = (ListView) findViewById(R.id.lv_activity_select_city);
         Intent intent = getIntent();
-        String Citys = intent.getStringExtra("Citys");
-        Log.e("城市列表数据",Citys);
-        String Hot_Citys = intent.getStringExtra("Hot_Citys");
+        isWelcome = intent.getBooleanExtra("Welcome", false);
+        GetCity();
+        
         cityDatas = GetCityList(Citys);
         hotDatas = GetCityList(Hot_Citys);
         
@@ -107,6 +114,28 @@ public class SelectCityActivity extends Activity {
         ClearEditText mClearEditText = (ClearEditText) findViewById(R.id.filter_edit);
         mClearEditText.addTextChangedListener(textWatcher);
     }
+    
+    private void GetCity() {
+        // 查询
+        DBHelper dbHelper = new DBHelper(SelectCityActivity.this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        // 未来天气
+        Cursor c = db.rawQuery("select * from " + Constant.TB_Base
+                + " where Title=?", new String[] { "City" });
+        if (c.moveToFirst()) {
+            Citys = c.getString(c.getColumnIndex("Content"));
+        }
+        c.close();
+        // 实时天气
+        Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base
+                + " where Title=?", new String[] { "hotCity" });
+        if (cursor.moveToFirst()) {
+            Hot_Citys = cursor.getString(cursor.getColumnIndex("Content"));
+        }
+        cursor.close();
+        db.close();
+    }
+    
     TextWatcher textWatcher = new TextWatcher() {        
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -208,7 +237,11 @@ public class SelectCityActivity extends Activity {
         filterCityDatas.clear();
         hotDatas.clear();
         System.gc();
-        startActivity(new Intent(SelectCityActivity.this, MainActivity.class));
+        if(isWelcome){
+            startActivity(new Intent(SelectCityActivity.this, MainActivity.class));
+        }else{
+            setResult(1);
+        }        
         finish();
     }
 
@@ -271,42 +304,6 @@ public class SelectCityActivity extends Activity {
      */
     private List<CityData> GetCityList(String Citys) {
         List<CityData> Datas = new ArrayList<CityData>();
-//        for (int i = 0; i < 5; i++) {
-//            CityData cityData = new CityData();
-//            cityData.setType(1);
-//            cityData.setCity_code("10");
-//            cityData.setCity("包头");
-//            cityData.setProvince("爆头");
-//            cityData.setFirst_letter(GetFristLetter("包头"));
-//            Datas.add(cityData);
-//        }
-//        for (int i = 0; i < 4; i++) {
-//            CityData cityData = new CityData();
-//            cityData.setType(1);
-//            cityData.setCity_code("10");
-//            cityData.setCity("北京");
-//            cityData.setProvince("爆头");
-//            cityData.setFirst_letter(GetFristLetter("北京"));
-//            Datas.add(cityData);
-//        }
-//        for (int i = 0; i < 4; i++) {
-//            CityData cityData = new CityData();
-//            cityData.setType(1);
-//            cityData.setCity_code("10");
-//            cityData.setCity("长春");
-//            cityData.setProvince("爆头");
-//            cityData.setFirst_letter(GetFristLetter("长春"));
-//            Datas.add(cityData);
-//        }
-//        for (int i = 0; i < 10; i++) {
-//            CityData cityData = new CityData();
-//            cityData.setType(1);
-//            cityData.setCity_code("10");
-//            cityData.setCity("上海");
-//            cityData.setProvince("爆头");
-//            cityData.setFirst_letter(GetFristLetter("上海"));
-//            Datas.add(cityData);
-//        }
         try {
             JSONArray jsonArray = new JSONArray(Citys);
             for (int i = 0; i < jsonArray.length(); i++) {

@@ -57,7 +57,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
 
     TextView tv_item_weather_date, tv_item_weather_wd, tv_item_weather,
             tv_item_weather_sky, tv_item_weather_temp1,
-            tv_item_weather_index_xc, tv_item_oil_90, tv_item_oil_93,
+            tv_item_weather_index_xc, tv_item_weather_city,tv_item_oil_90, tv_item_oil_93,
             tv_item_oil_97, tv_item_oil_0, tv_item_oil_update;
     private RecognizerDialog recognizerDialog = null; // 语音合成文字
     StringBuffer sb = null;
@@ -115,8 +115,10 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 .findViewById(R.id.tv_item_weather_sky);
         tv_item_weather_temp1 = (TextView) weatherView
                 .findViewById(R.id.tv_item_weather_temp1);
-        tv_item_weather_index_xc = (TextView) weatherView
-                .findViewById(R.id.tv_item_weather_index_xc);
+        tv_item_weather_index_xc = (TextView) weatherView.findViewById(R.id.tv_item_weather_index_xc);
+        tv_item_weather_city = (TextView) weatherView.findViewById(R.id.tv_item_weather_city);
+        tv_item_weather_city.setOnClickListener(onClickListener);
+        
         tv_item_oil_90 = (TextView) oilView.findViewById(R.id.tv_item_oil_90);
         tv_item_oil_93 = (TextView) oilView.findViewById(R.id.tv_item_oil_93);
         tv_item_oil_97 = (TextView) oilView.findViewById(R.id.tv_item_oil_97);
@@ -193,6 +195,9 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 break;
             case R.id.iv_home_say_something:
                 recognizerDialog.show();
+                break;
+            case R.id.tv_item_weather_city:
+                startActivityForResult(new Intent(HomeActivity.this, SelectCityActivity.class), 0);
                 break;
             }
         }
@@ -626,5 +631,16 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Log.d(TAG, "requestCode = " + requestCode + " , resultCode = " + resultCode);
+        if(resultCode == 1){
+            Log.d(TAG, "城市设置完毕");
+            GetFutureWeather();
+            GetRealTimeWeather();
+            GetFuel();
+        }
     }
 }

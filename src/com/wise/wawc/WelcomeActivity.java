@@ -3,8 +3,11 @@ package com.wise.wawc;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
+import com.wise.sql.DBExcute;
+
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -63,16 +66,26 @@ public class WelcomeActivity extends Activity {
             case Get_city:
                 isCity = true;
                 citys = msg.obj.toString();
+                InsertCity(citys, "City");
                 TurnActivity();
                 break;
             case Get_host_city:
                 isHotCity = true;
                 hot_citys = msg.obj.toString();
+                InsertCity(hot_citys, "hotCity");
                 TurnActivity();
                 break;
             }
         }
     };
+    
+    private void InsertCity(String result, String Title) {
+        DBExcute dbExcute = new DBExcute();
+        ContentValues values = new ContentValues();
+        values.put("Title", Title);
+        values.put("Content", result);
+        dbExcute.InsertDB(WelcomeActivity.this, values, Constant.TB_Base);
+    }
 
     /**
      * 判断网络连接状况，true,没有网络
@@ -152,8 +165,7 @@ public class WelcomeActivity extends Activity {
                 finish();
             }else{
                 Intent intent = new Intent(WelcomeActivity.this, SelectCityActivity.class);
-                intent.putExtra("Citys", citys);
-                intent.putExtra("Hot_Citys", hot_citys);
+                intent.putExtra("Welcome", true);
                 startActivity(intent);
                 finish();
             }            
