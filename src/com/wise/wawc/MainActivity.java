@@ -153,14 +153,14 @@ public class MainActivity extends ActivityGroup implements
         tv_activity_main_name = (TextView) findViewById(R.id.tv_activity_main_name);
 
         // 车友圈
-        TextView vehiclefriend = (TextView) findViewById(R.id.car_circle);
-        vehiclefriend.setOnClickListener(onClickListener);
+        LinearLayout ll_circle = (LinearLayout) findViewById(R.id.ll_circle);
+        ll_circle.setOnClickListener(onClickListener);
         // 我的收藏
-        TextView myCollection = (TextView) findViewById(R.id.menu_my_collection);
-        myCollection.setOnClickListener(onClickListener);
+        LinearLayout ll_collection = (LinearLayout) findViewById(R.id.ll_collection);
+        ll_collection.setOnClickListener(onClickListener);
         // 设置中心
-        TextView settingCenter = (TextView) findViewById(R.id.settting_center);
-        settingCenter.setOnClickListener(onClickListener);
+        LinearLayout ll_setting = (LinearLayout) findViewById(R.id.ll_setting);
+        ll_setting.setOnClickListener(onClickListener);
 
         LinearLayout ll_activity_main_car_remind = (LinearLayout) findViewById(R.id.ll_activity_main_car_remind);
         ll_activity_main_car_remind.setOnClickListener(onClickListener);
@@ -197,7 +197,7 @@ public class MainActivity extends ActivityGroup implements
                 ToFriendHome();
                 break;
             // 车友圈
-            case R.id.car_circle:
+            case R.id.ll_circle:
                 ToVehicleFriends();
                 break;
             case R.id.ll_activity_main_car_remind:
@@ -207,7 +207,7 @@ public class MainActivity extends ActivityGroup implements
                 ToMyCar();
                 break;
             // 我的收藏
-            case R.id.menu_my_collection:
+            case R.id.ll_collection:
                 ToMyCollection();
                 break;
             case R.id.ll_activity_main_terminal:
@@ -217,7 +217,7 @@ public class MainActivity extends ActivityGroup implements
                 Toorders();
                 break;
             // 设置中心
-            case R.id.settting_center:
+            case R.id.ll_setting:
                 ToSettingCenter();
                 break;
             case R.id.iv_activity_main_login_qq:

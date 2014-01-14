@@ -99,7 +99,7 @@ public class CarRemindActivity extends Activity{
 		gv_activity_car_remind.setNumColumns(Variable.carDatas.size());
 		gv_activity_car_remind.setOnItemClickListener(onItemClickListener);	
 		
-		ShowText(carData);
+		//ShowText(carData);
 		
 		OpenDateDialog.SetCustomDateListener(new OpenDateDialogListener() {			
 			@Override

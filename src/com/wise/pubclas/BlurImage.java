@@ -13,6 +13,11 @@ import android.graphics.drawable.Drawable;
 
 public class BlurImage {
     
+    /**
+     * 圆形图片
+     * @param bitmap
+     * @return
+     */
     public static Bitmap getRoundedCornerBitmap(Bitmap bitmap) {
         Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
                 bitmap.getHeight(), Config.ARGB_8888);
@@ -40,7 +45,11 @@ public class BlurImage {
     private static float vRadius = 5;
     /** 模糊迭代度 */
     private static int iterations = 5;
-
+    /**
+     * 高斯模糊
+     * @param bmp
+     * @return
+     */
     public static Drawable BoxBlurFilter(Bitmap bmp) {
         int width = bmp.getWidth();
         int height = bmp.getHeight();

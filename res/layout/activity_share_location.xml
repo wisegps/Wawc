@@ -73,6 +73,7 @@
 	            android:layout_toRightOf="@id/tv_activity_share_location"/>
 	    </RelativeLayout>
 	    <EditText 
+	        android:id="@+id/et_share_content"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:hint="详情描述"

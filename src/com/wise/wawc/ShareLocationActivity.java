@@ -3,6 +3,7 @@ package com.wise.wawc;
 import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
+import com.wise.sharesdk.OnekeyShare;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,6 +18,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -25,6 +28,7 @@ import android.widget.Toast;
  * @author honesty
  */
 public class ShareLocationActivity extends Activity{
+    EditText et_share_content;
     ImageView iv_photo;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +43,9 @@ public class ShareLocationActivity extends Activity{
 		iv_photo = (ImageView)findViewById(R.id.iv_photo);
 		ImageView iv_camera = (ImageView)findViewById(R.id.iv_camera);
 		iv_camera.setOnClickListener(onClickListener);
+		Button bt_activity_share = (Button)findViewById(R.id.bt_activity_share);
+		bt_activity_share.setOnClickListener(onClickListener);
+		et_share_content = (EditText)findViewById(R.id.et_share_content);
 	}
 	OnClickListener onClickListener = new OnClickListener() {		
 		@Override
@@ -47,11 +54,13 @@ public class ShareLocationActivity extends Activity{
 			case R.id.iv_activity_share_location_back:
 				finish();
 				break;
-
 			case R.id.iv_camera:
 			    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);  
                 startActivityForResult(intent, 1); 
 				break;
+			case R.id.bt_activity_share:
+			    showShare(true, null);
+			    break;
 			}
 		}
 	};
@@ -81,5 +90,31 @@ public class ShareLocationActivity extends Activity{
                 iv_photo.setImageBitmap(bimage);
             }
         }
+    }
+    
+    private void showShare(boolean silent, String platform) {
+        System.out.println("分享");
+        final OnekeyShare oks = new OnekeyShare();
+        oks.setNotification(R.drawable.ic_launcher, "app_name");
+        //oks.setAddress("12345678901");
+        oks.setTitle("share");
+        //oks.setTitleUrl("http://sharesdk.cn");
+        oks.setText(et_share_content.getText().toString().trim());
+        //oks.setImagePath(MainActivity.TEST_IMAGE);
+        //oks.setImageUrl("http://img.appgo.cn/imgs/sharesdk/content/2013/07/25/1374723172663.jpg");
+        //oks.setUrl("http://www.sharesdk.cn");
+        //oks.setFilePath(MainActivity.TEST_IMAGE);
+        //oks.setComment("share");
+        //oks.setSite("wise");
+        //oks.setSiteUrl("http://sharesdk.cn");
+        //oks.setVenueName("Share SDK");
+        //oks.setVenueDescription("This is a beautiful place!");
+        //oks.setLatitude(23.056081f);
+        //oks.setLongitude(113.385708f);
+        oks.setSilent(silent);
+        if (platform != null) {
+            oks.setPlatform(platform);
+        }
+        oks.show(ShareLocationActivity.this);
     }
 }

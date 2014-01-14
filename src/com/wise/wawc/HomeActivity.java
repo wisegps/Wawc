@@ -618,8 +618,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (action.equals(Constant.A_Login)) {
-                Log.d(TAG, "carDatas.size() = " + Variable.carDatas.size());
-                if(Variable.carDatas.size() == 0){
+                if((Variable.carDatas == null) || (Variable.carDatas.size() == 0)){
                     Log.d(TAG, "获取车辆数据");
                     GetCars();
                 }
