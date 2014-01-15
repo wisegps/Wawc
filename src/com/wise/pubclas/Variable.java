@@ -35,7 +35,6 @@ public class Variable {
     /**
      * 车辆数据
      */
-    public static List<CarData> carDatas;
 
     public static boolean againstPush = true;
 
@@ -44,4 +43,6 @@ public class Variable {
     public static boolean remaindPush = true;
 
     public static String defaultCenter = "车辆位置";
+    
+    public static List<CarData> carDatas;
 }

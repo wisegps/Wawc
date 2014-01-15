@@ -10,10 +10,13 @@ import com.wise.data.Article;
 import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.NetThread;
+import com.wise.pubclas.Variable;
 import com.wise.service.MyAdapter;
 import com.wise.sql.DBOperation;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -59,6 +62,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	private static final int setUserIcon = 4;
 	private List<Article> artList = null;
+	private ProgressDialog myDialog = null;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -82,15 +86,10 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		//不设置上拉加载无效
 		articleList.setPullLoadEnable(true);
 		
-		//dBOperation = new DBOperation(VehicleFriendActivity.this);
-		
-		
 		myHandler = new MyHandler();
 		Message msg = new Message();
 		msg.what = setUserIcon;
 		myHandler.sendMessage(msg);
-		
-		//artList = dBOperation.selectArticle(0, 10);
 		myAdapter = new MyAdapter(this,saySomething,artList);
 		articleList.setAdapter(myAdapter);
 	
@@ -110,6 +109,9 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	}
 	//TODO
 	private void bindDate() {
+		myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
+		myDialog.setCancelable(true);
+		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code, 10)).start();
 	}
 	
 	class ClickListener implements OnClickListener{
@@ -229,7 +231,10 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 //						dBOperation.newArticle(new Object[]{"张三",sdf.format(dates.get(i)),"宝马",0});
 //					}
 //				}
-				
+				break;
+			case 10:
+				myDialog.dismiss();
+				Log.e("文章列表",msg.obj.toString());
 				break;
 			}
 			super.handleMessage(msg);

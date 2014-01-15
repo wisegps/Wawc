@@ -124,6 +124,7 @@
 	    		android:textColor="#000000"
 	            />
 	        <EditText 
+	            android:id="@+id/my_vehicle_ed_vehicle_number"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="粤B12345"
@@ -309,6 +310,7 @@
 	    		android:textColor="#000000"
 	            />
 	        <EditText 
+	            android:id="@+id/my_vehicle_ed_engine_num"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="123456"
@@ -336,6 +338,7 @@
 	    		android:textColor="#000000"
 	            />
 	        <EditText 
+	            android:id="@+id/my_vehilce_ed_fram_num"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="123456"
@@ -416,6 +419,7 @@
 	    		android:textColor="#000000"
 	            />
 	        <TextView 
+	            android:id="@+id/my_vehicle_tv_insurance"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="wrap_content"
 	    		android:text="2013年-2015年"
@@ -521,6 +525,7 @@
 	    		android:textColor="#000000"
 	            />
 	        <EditText 
+	            android:id="@+id/my_vehicle_ed_last_maintain"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="46000Km"
@@ -548,6 +553,7 @@
 	    		android:textColor="#000000"
 	            />
 	        <EditText 
+	            android:id="@+id/my_vehicle_ed_buy_time"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="2009"
@@ -566,12 +572,14 @@
 	    	android:layout_marginRight="1dip"
 	        >
 	        <Button 
+	            android:id="@+id/my_vehilce_save"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="wrap_content"
 	    		android:text="@string/save"
 	    		android:layout_weight="1"
 	            />
 	        <Button 
+	            android:id="@+id/my_vehilce_delete"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="wrap_content"
 	    		android:layout_weight="1"

@@ -258,12 +258,12 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
      * 获取本地车辆信息
      */
     private void GetDBCars(){
+    	carDatas.clear();
         if(Variable.cust_id != null){
             DBHelper dbHelper = new DBHelper(HomeActivity.this);
             SQLiteDatabase db = dbHelper.getReadableDatabase();            
-            //Cursor cursor = db.query(Constant.TB_Vehicle, null, null, null, null, null, null);
-            Cursor cursor = db.rawQuery("select * from " + Constant.TB_Vehicle
-                    + " where Cust_id=?", new String[] {Variable.cust_id });
+            Cursor cursor = db.rawQuery("select * from " + Constant.TB_Vehicle + " where Cust_id=?", new String[] {Variable.cust_id });
+            Log.e("数据库数据总数：" , cursor.getCount() + "");
             while (cursor.moveToNext()) {
                 int obj_id = cursor.getInt(cursor.getColumnIndex("obj_id"));
                 String obj_name =  cursor.getString(cursor.getColumnIndex("obj_name"));
@@ -301,8 +301,9 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
             }
             cursor.close();
             db.close();
-            Variable.carDatas = carDatas;
-        }        
+        }     
+        Log.e("查询数据库完毕","查询数据库完毕");
+        Variable.carDatas = carDatas;
     }
 
     /**
@@ -471,11 +472,14 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
      * @param result
      */
     private void jsonCars(String result) {// TODO Cars
+    	carDatas.clear();
         try {
             JSONArray jsonArray = new JSONArray(result);
+            Log.e("用户车辆：" ,jsonArray.length() + "");
             for(int i = 0 ; i < jsonArray.length() ; i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 int obj_id = jsonObject.getInt("obj_id");
+                String Cust_id = jsonObject.getString("cust_id");
                 String obj_name = jsonObject.getString("obj_name");
                 String car_brand = jsonObject.getString("car_brand");
                 String car_series = jsonObject.getString("car_series");
@@ -494,7 +498,8 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 buy_date = buy_date.substring(0, 10);
                 
                 CarData carData = new CarData();
-                carData.setCarLogo(1);
+                //q汽车logo图片  TODO
+                carData.setCarLogo(R.drawable.image);
                 carData.setCheck(false);
                 carData.setObj_id(obj_id);
                 carData.setObj_name(obj_name);
@@ -516,6 +521,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 DBExcute dbExcute = new DBExcute();
                 ContentValues values = new ContentValues();
                 values.put("obj_id", obj_id);
+                values.put("Cust_id", Cust_id);
                 values.put("obj_name", obj_name);
                 values.put("car_brand", car_brand);
                 values.put("car_series", car_series);

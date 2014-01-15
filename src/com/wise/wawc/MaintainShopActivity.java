@@ -2,16 +2,28 @@ package com.wise.wawc;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
+import com.wise.pubclas.Variable;
 import com.wise.service.MaintainAdapter;
+import com.wise.sql.DBExcute;
+import com.wise.sql.DBHelper;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -32,6 +44,9 @@ public class MaintainShopActivity extends Activity {
 	ProgressDialog progressDialog = null;
 	private MyHandler myHandler = null;
 	private static final int getMaintainShopCode = 2;
+	private SharedPreferences sharedPreferences = null;
+	private List<String> MaintainList = new ArrayList<String>();
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.choice_maintain);
@@ -44,7 +59,7 @@ public class MaintainShopActivity extends Activity {
 		myHandler = new MyHandler();
 		progressDialog = ProgressDialog.show(MaintainShopActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 		progressDialog.setCancelable(true);
-		SharedPreferences sharedPreferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+		sharedPreferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
 		if("".equals(sharedPreferences.getString(Constant.FourShopParmeter, "")) || "".equals(brank)){
 			progressDialog.dismiss();
 			Toast.makeText(getApplicationContext(), "城市或者品牌为选择", 0).show();
@@ -58,7 +73,18 @@ public class MaintainShopActivity extends Activity {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "base/dealer?city_spell=" + sharedPreferences.getString(Constant.FourShopParmeter, "") + "&brand=" + URLBrank, getMaintainShopCode)).start();
+			//查询数据库
+			DBHelper dBHelper = new DBHelper(MaintainShopActivity.this);
+			SQLiteDatabase reader = dBHelper.getReadableDatabase();
+			Cursor cursor = reader.rawQuery("select * from " + Constant.TB_Base + " where Title = ?", new String[]{"maintain/" + sharedPreferences.getString("Constant.FourShopParmeter", "") + "/" + brank});
+			if(cursor.moveToFirst()){
+				parseJSON(cursor.getString(cursor.getColumnIndex("Content")));
+				progressDialog.dismiss();
+				Log.e("查询数据库","查询数据库");
+			}else{
+				Log.e("查询服务器","查询服务器");
+				new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "base/dealer?city_spell=" + sharedPreferences.getString(Constant.FourShopParmeter, "") + "&brand=" + URLBrank, getMaintainShopCode)).start();
+			}
 		}
 		
 	}
@@ -69,24 +95,17 @@ public class MaintainShopActivity extends Activity {
 			case getMaintainShopCode:
 				progressDialog.dismiss();
 				Log.e("4s保养店商家:",msg.obj+"");
+				//存在数据库
+				if(!"[]".equals(msg.obj.toString())){
+					DBExcute dBExcute = new DBExcute();
+					ContentValues values = new ContentValues();
+					values.put("Cust_id", Variable.cust_id);
+					values.put("Title", "maintain/" + sharedPreferences.getString("Constant.FourShopParmeter", "") + "/" + brank);
+					values.put("Content", msg.obj.toString());
+					dBExcute.InsertDB(MaintainShopActivity.this, values, Constant.TB_Base);
+					parseJSON(msg.obj.toString());
+				}
 				
-				
-				maintainAdapter = new MaintainAdapter(MaintainShopActivity.this);
-				maintainList.setAdapter(maintainAdapter);
-				maintainList.setOnItemClickListener(new OnItemClickListener() {
-					public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
-						TextView textView = (TextView)arg0.getChildAt(arg2).findViewById(R.id.vehicle_maintain_name);
-						Intent intents = new Intent();
-						intents.putExtra("maintain", textView.getText().toString());
-						if(code == MyVehicleActivity.resultCodeMaintain){
-							MaintainShopActivity.this.setResult(MyVehicleActivity.resultCodeMaintain, intents);
-						}else if(code == NewVehicleActivity.newVehicleMaintain){
-							Log.e("选择的item",intents.getSerializableExtra("maintain").toString());
-							MaintainShopActivity.this.setResult(NewVehicleActivity.newVehicleMaintain, intents);
-						}
-						MaintainShopActivity.this.finish();
-					}
-				});
 				break;
 			default:
 				return;
@@ -94,4 +113,36 @@ public class MaintainShopActivity extends Activity {
 			super.handleMessage(msg);
 		}
 	}
+	
+	public void parseJSON(String jsonData){
+		try {
+			MaintainList.clear();
+			JSONArray jsonArray = new JSONArray(jsonData);
+			for(int i = 0 ; i < jsonArray.length() ; i ++){
+				JSONObject jsonObject = jsonArray.getJSONObject(i);
+				MaintainList.add(jsonObject.getString("name"));
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		maintainAdapter = new MaintainAdapter(MaintainShopActivity.this,MaintainList);
+		maintainList.setAdapter(maintainAdapter);
+		maintainList.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+//				TextView textView = (TextView)arg0.getChildAt(arg2).findViewById(R.id.vehicle_maintain_name);
+				TextView textView = (TextView)maintainList.getChildAt(arg2).findViewById(R.id.vehicle_maintain_name);
+				Intent intents = new Intent();
+				intents.putExtra("maintain", textView.getText().toString());
+				if(code == MyVehicleActivity.resultCodeMaintain){
+					MaintainShopActivity.this.setResult(MyVehicleActivity.resultCodeMaintain, intents);
+				}else if(code == NewVehicleActivity.newVehicleMaintain){
+					Log.e("选择的item",intents.getSerializableExtra("maintain").toString());
+					MaintainShopActivity.this.setResult(NewVehicleActivity.newVehicleMaintain, intents);
+				}
+				MaintainShopActivity.this.finish();
+			}
+		});
+	}
 }
+

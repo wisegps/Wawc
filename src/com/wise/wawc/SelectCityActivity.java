@@ -76,7 +76,6 @@ public class SelectCityActivity extends Activity {
         lv_activity_select_city = (ListView) findViewById(R.id.lv_activity_select_city);
         Intent intent = getIntent();
         String Citys = intent.getStringExtra("Citys");
-        Log.e("城市列表数据",Citys);
         String Hot_Citys = intent.getStringExtra("Hot_Citys");
         cityDatas = GetCityList(Citys);
         hotDatas = GetCityList(Hot_Citys);

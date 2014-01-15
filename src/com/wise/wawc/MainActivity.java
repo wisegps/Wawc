@@ -171,6 +171,9 @@ public class MainActivity extends ActivityGroup implements
         LinearLayout ll_activity_main_orders = (LinearLayout) findViewById(R.id.ll_activity_main_orders);
         ll_activity_main_orders.setOnClickListener(onClickListener);
 
+        
+        getSpData();
+        
         Intent i = new Intent(MainActivity.this, HomeActivity.class);
         View v = getLocalActivityManager().startActivity(
                 HomeActivity.class.getName(), i).getDecorView();
@@ -179,7 +182,6 @@ public class MainActivity extends ActivityGroup implements
         ShareSDK.initSDK(this);
         platformQQ = ShareSDK.getPlatform(MainActivity.this, QZone.NAME);
         platformSina = ShareSDK.getPlatform(MainActivity.this, SinaWeibo.NAME);
-        getSpData();
         isLogin();
         startService(new Intent(MainActivity.this, LocationService.class));
         initSettingData();
@@ -260,6 +262,7 @@ public class MainActivity extends ActivityGroup implements
         SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
         LocationProvince = preferences.getString(Constant.LocationProvince, "");
         LocationCity = preferences.getString(Constant.LocationCity, "");
+        Variable.cust_id = preferences.getString(Constant.sp_cust_id, "");
     }
     /**
      * 登录成功
@@ -292,6 +295,7 @@ public class MainActivity extends ActivityGroup implements
                 Variable.auth_code = auth_code;
                 Variable.cust_id = cust_id;
                 sendBroadcast(new Intent(Constant.A_Login));
+                
                 SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
                 Editor editor = preferences.edit();
                 editor.putString(Constant.sp_cust_id, cust_id);
@@ -505,12 +509,16 @@ public class MainActivity extends ActivityGroup implements
      * 车友圈
      */
     public void ToVehicleFriends() {
-        Intent intent = new Intent(MainActivity.this,
-                VehicleFriendActivity.class);
-        View vv = getLocalActivityManager().startActivity(VehicleFriendActivity.class.getName(), intent).getDecorView();
-        tabcontent.removeAllViews();
-        tabcontent.addView(vv);
-        slidingMenuView.snapToScreen(1);
+    	if("".equals(Variable.cust_id)){
+    		Toast.makeText(getApplicationContext(), "请登录...", 0).show();
+    	}else{
+    		 Intent intent = new Intent(MainActivity.this,
+    	                VehicleFriendActivity.class);
+    	        View vv = getLocalActivityManager().startActivity(VehicleFriendActivity.class.getName(), intent).getDecorView();
+    	        tabcontent.removeAllViews();
+    	        tabcontent.addView(vv);
+    	        slidingMenuView.snapToScreen(1);
+    	}
     }
 
     /**
@@ -529,17 +537,20 @@ public class MainActivity extends ActivityGroup implements
      * 我的爱车
      */
     public void ToMyCar() {
-    	if(platformQQ.getDb().isValid()){
-    	    if(Variable.carDatas.size() == 0){
-    	        //判断网络
-    	        startActivity(new Intent(MainActivity.this,NewVehicleActivity.class));
-    	    }else{
-    	        slidingMenuView.snapToScreen(1);
-                Intent i = new Intent(MainActivity.this, MyVehicleActivity.class);
-                View view = getLocalActivityManager().startActivity(MyVehicleActivity.class.getName(), i).getDecorView();
-                tabcontent.removeAllViews();
-                tabcontent.addView(view);
-    	    }
+    	if("".equals(Variable.cust_id)){
+    		Toast.makeText(getApplicationContext(), "请登录", 0).show();
+    		return;
+    	}else{
+    		 if(Variable.carDatas.size() == 0){
+     	        //判断网络
+     	        startActivity(new Intent(MainActivity.this,NewVehicleActivity.class));
+     	    }else{
+     	        slidingMenuView.snapToScreen(1);
+                 Intent i = new Intent(MainActivity.this, MyVehicleActivity.class);
+                 View view = getLocalActivityManager().startActivity(MyVehicleActivity.class.getName(), i).getDecorView();
+                 tabcontent.removeAllViews();
+                 tabcontent.addView(view);
+     	    }
     	}
     }
 
