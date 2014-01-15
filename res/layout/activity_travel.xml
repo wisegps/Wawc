@@ -19,6 +19,20 @@
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_launcher"/>
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/travels"
+            android:textColor="@color/black"
+            android:textSize="@dimen/title"
+            android:textStyle="bold" />
+	</RelativeLayout>
+	<RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="44dp"
+        android:background="@drawable/border_bg"
+        android:padding="2dp">
+        <TextView
             android:id="@+id/tv_activity_travel_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,7 +41,7 @@
             android:textColor="@color/black"
             android:textSize="@dimen/title"
             android:textStyle="bold" />
-		<ImageView 
+        <ImageView 
             android:id="@+id/iv_activity_travel_data_previous" 
             android:contentDescription="@string/app_name"
             android:layout_width="40dp"
@@ -41,7 +55,7 @@
             android:layout_height="40dp"
             android:layout_toRightOf="@id/tv_activity_travel_data"
             android:src="@drawable/ic_launcher"/>
-	</RelativeLayout>
+    </RelativeLayout>
 	<TableLayout 
 	    android:stretchColumns="*" 
 	    android:padding="10dp"

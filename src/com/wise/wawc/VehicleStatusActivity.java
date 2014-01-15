@@ -1,15 +1,11 @@
 package com.wise.wawc;
 
 import java.util.ArrayList;
-import java.util.List;
-import com.wise.data.CarData;
 import com.wise.data.EnergyItem;
 import com.wise.extend.CarAdapter;
 import com.wise.extend.EnergyCurveView;
 import com.wise.extend.OnViewTouchListener;
-import com.wise.pubclas.Constant;
 import com.wise.pubclas.Variable;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -71,7 +67,6 @@ public class VehicleStatusActivity extends Activity{
         energys.add(new EnergyItem("5", 7.8f, "a"));
         energys.add(new EnergyItem("6", 8.0f, "a"));
         energys.add(new EnergyItem("7", 7.0f, "a"));
-        tv_activity_vehicle_status_oil.setText("9.0L");
         Log.d(TAG, "initPoints");
         erenergyCurve.initPoints(energys);
         erenergyCurve.setOnViewTouchListener(new OnViewTouchListener() {			
@@ -167,15 +162,18 @@ public class VehicleStatusActivity extends Activity{
 		}
 	};
 	private void ViewTouch(String value){
-		System.out.println("isFrist = " + isFrist);
-		if(isFrist){
-			isFrist = false;
-			rl_activity_vehicle_status_oil.setVisibility(View.GONE);
-		}else{
-			rl_activity_vehicle_status_oil.setVisibility(View.VISIBLE);
-			tv_activity_vehicle_status_oil.setText(oil + "L");
-			wait = 6;
-		}
+	    rl_activity_vehicle_status_oil.setVisibility(View.VISIBLE);
+        tv_activity_vehicle_status_oil.setText(oil + "L");
+        wait = 4;
+//		System.out.println("isFrist = " + isFrist);
+//		if(isFrist){
+//			isFrist = false;
+//			rl_activity_vehicle_status_oil.setVisibility(View.GONE);
+//		}else{
+//			rl_activity_vehicle_status_oil.setVisibility(View.VISIBLE);
+//			tv_activity_vehicle_status_oil.setText(oil + "L");
+//			wait = 6;
+//		}
 	}
 	boolean isFrist = true;
 	int wait = 0;

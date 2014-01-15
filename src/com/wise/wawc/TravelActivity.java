@@ -26,7 +26,7 @@ public class TravelActivity extends Activity{
 	
 	List<TravelData> travelDatas = new ArrayList<TravelData>();
 	TravelAdapter travelAdapter;
-	String Date = "3013-12-01";
+	String Date = "2013-12-01";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +72,7 @@ public class TravelActivity extends Activity{
 			travelData.setSpacingTime("37分钟");
 			travelData.setStartPlace("桃源村");
 			travelData.setStopPlace("世界之窗");
-			travelData.setSpacingTime("15.35KM");
+			travelData.setSpacingDistance("15.35公里");
 			travelData.setAverageOil("百公里油耗：9.9L");
 			travelData.setOil("油耗：1.52L");
 			travelData.setSpeed("平均速度：25.75km/h");
@@ -133,8 +133,7 @@ public class TravelActivity extends Activity{
 			holder.iv_item_travel_share.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(TravelActivity.this, NewArticleActivity.class);
-					intent.putExtra("isSNS", true);
+					Intent intent = new Intent(TravelActivity.this, ShareLocationActivity.class);
 					TravelActivity.this.startActivity(intent);
 				}
 			});

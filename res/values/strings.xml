@@ -113,7 +113,8 @@
     <string name="search_error">搜索出错啦..</string>
 
     <string name="search_result">搜索结果</string>
-    
+    <!-- 车辆行程 -->
+    <string name="travels">车辆行程</string>
     <!-- 我的账户 -->
     <string name="contact_note">联系方式(用于购物发货)</string>
     

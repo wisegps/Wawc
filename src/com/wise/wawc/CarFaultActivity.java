@@ -123,8 +123,7 @@ public class CarFaultActivity extends Activity{
 			holder.iv_item_car_fault_share.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(CarFaultActivity.this, NewArticleActivity.class);
-					intent.putExtra("isSNS", true);
+					Intent intent = new Intent(CarFaultActivity.this, ShareLocationActivity.class);
 					CarFaultActivity.this.startActivity(intent);
 				}
 			});

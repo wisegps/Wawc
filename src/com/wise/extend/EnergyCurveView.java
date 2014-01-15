@@ -49,36 +49,25 @@ public class EnergyCurveView extends View implements OnTouchListener {
 	private float spacingOfX; // X间距
 	private float spacingOfY; // Y间距,每一度的间距
 	private EnergyItem maxEnergy; //y坐标最大的单元
-	private float downYOfFirst; // 单个按下的Y的坐标
 	private float moveXOfFirst; // 单个按下的X坐标
-	private float moveYOfFirst; // 单个按下的Y的坐标
-	private boolean isMove = false; // 可以移动
 	OnViewTouchListener onViewTouchListener;
 
 	public EnergyCurveView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		this.context = context;
-		init(context);
-	}
-
-	private void init(Context context) {
 		setOnTouchListener(this);
 	}
+	boolean isSend = false;
 
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
+	    isSend = true;
+	    Log.d(TAG, "Touch");
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			isMove = false;
-			if(!isClick(event)){
-				downYOfFirst = event.getY(0);
-				moveXOfFirst = event.getX(0);
-				moveYOfFirst = event.getY(0);
-			}			
+			moveXOfFirst = event.getX(0);			
 		}
 		if (event.getAction() == MotionEvent.ACTION_MOVE) {
-			isMove = true;
 			moveXOfFirst = event.getX(0);
-			moveYOfFirst = event.getY(0);
 		}
 		if (event.getAction() == MotionEvent.ACTION_UP) {
 			moveXOfFirst = event.getX(0);
@@ -103,17 +92,14 @@ public class EnergyCurveView extends View implements OnTouchListener {
 				moveXOfFirst = points.get(points.size()-1).x;
 			}			
 		}
+		Log.d(TAG, "onTouch");
 		invalidate();
 		return true;
 	}
 	
-	private boolean isClick(MotionEvent event){
-		return false;
-	}
-	
 	@Override
 	protected void onDraw(Canvas canvas) {
-		super.onDraw(canvas);
+		//super.onDraw(canvas);
 		Paint paint = new Paint();
 		// 初始化绘制
 		initDraw(canvas, paint);
@@ -193,7 +179,10 @@ public class EnergyCurveView extends View implements OnTouchListener {
 		int indexOf = energyText.indexOf(".");
 		String substring = energyText.substring(0, indexOf + 2);
 		if(onViewTouchListener != null){
-			onViewTouchListener.OnViewTouch(substring);
+		    Log.d(TAG, "SinglePointTouch");
+		    if(isSend){
+		        onViewTouchListener.OnViewTouch(substring);
+		    }
 		}
 	}
 

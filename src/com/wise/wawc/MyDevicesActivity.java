@@ -96,8 +96,17 @@ public class MyDevicesActivity extends Activity{
             super.handleMessage(msg);
             switch (msg.what) {
             case Get_data:
-                jsonDevice(msg.obj.toString());
-                JudgeDevice(msg.obj.toString());
+                String result = msg.obj.toString();
+                try {
+                    JSONObject jsonObject = new JSONObject(result);
+                    if(jsonObject.getString("status_code").equals("0")){
+                        jsonDevice(msg.obj.toString());
+                        showGridView();
+                        JudgeDevice(msg.obj.toString());
+                    }                    
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
                 break;
 
             default:
@@ -158,7 +167,7 @@ public class MyDevicesActivity extends Activity{
         DBHelper dbHelper = new DBHelper(MyDevicesActivity.this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base
-                + " where Title=? and Cust_id", new String[] { "Devices",Variable.cust_id });
+                + " where Title=? and Cust_id=?", new String[] { "Devices",Variable.cust_id });
         if (cursor.moveToFirst()) {
             String Content = cursor.getString(cursor.getColumnIndex("Content"));
             isHaveDevices = true;
@@ -167,6 +176,7 @@ public class MyDevicesActivity extends Activity{
         }
         cursor.close();
         db.close();
+        showGridView();
         Log.d(TAG, "GetDevicesDB");
     }
 	public void GetDevicesData(){
@@ -221,7 +231,6 @@ public class MyDevicesActivity extends Activity{
                 devicesData.setStatus(jsonObject.getString("status"));
                 devicesDatas.add(devicesData);
             }
-            showGridView();
         } catch (JSONException e) {
             e.printStackTrace();
         }

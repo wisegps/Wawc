@@ -7,96 +7,71 @@
     android:orientation="vertical">
     <LinearLayout
         android:background="@drawable/border_bg"
-        android:orientation="horizontal" 
+        android:orientation="vertical" 
         android:layout_width="fill_parent"
-        android:paddingTop="5dp"
-        android:paddingBottom="5dp"
+        android:padding="20dp"
         android:layout_height="wrap_content">
-        <TextView 
-            android:id="@+id/tv_item_travel_startTime"
+        <RelativeLayout 
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="19:27"            
-            android:textColor="@color/black"
-	        android:textSize="@dimen/title"
-            android:layout_weight="1"/>
-        <TextView 
-            android:id="@+id/tv_item_travel_stopTime"
+            android:layout_height="wrap_content">            
+	        <TextView 
+	            android:id="@+id/tv_item_travel_spacingDistance" 
+	            android:layout_width="fill_parent"
+	            android:layout_height="30dp"
+	            android:gravity="center"
+	            android:text="15.35KM"
+	            android:textColor="@color/black"
+	            android:textSize="@dimen/title"/>
+            <TextView
+                android:id="@+id/tv_item_travel_startPlace"  
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/title"
+                android:text="桃源村"/>            
+            <TextView
+                android:id="@+id/tv_item_travel_stopPlace" 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/title"
+                android:text="世界之窗"/>
+        </RelativeLayout>
+        <RelativeLayout 
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:text="20:04"
-            android:textColor="@color/black"
-	        android:textSize="@dimen/title"
-            android:layout_weight="1"/>
+            android:layout_height="wrap_content">
+            <TextView 
+	            android:id="@+id/tv_item_travel_startTime"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentLeft="true"
+	            android:text="19:27"            
+	            android:textColor="@color/black"
+	            android:textSize="@dimen/title"/>
+            <TextView 
+	            android:id="@+id/tv_item_travel_stopTime"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_alignParentRight="true"
+	            android:text="20:04"
+	            android:textColor="@color/black"
+	            android:textSize="@dimen/title"/>
+        </RelativeLayout>       
         <TextView 
             android:id="@+id/tv_item_travel_spacingTime"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:gravity="center_horizontal"
             android:text="37分钟"
             android:textColor="@color/black"
 	        android:textSize="@dimen/title"
             android:layout_weight="1"/>
-    </LinearLayout>
-    <LinearLayout
-        android:background="@drawable/border_bg"
-        android:orientation="horizontal" 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <RelativeLayout 
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_weight="1">
-            <ImageView
-                android:id="@+id/iv_item_travel_start" 
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_launcher"
-                android:layout_width="30dp"
-                android:layout_height="30dp"/>
-	        <TextView
-	            android:id="@+id/tv_item_travel_startPlace"  
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_centerVertical="true"
-	            android:layout_toRightOf="@id/iv_item_travel_start"
-	            android:textColor="@color/black"
-		        android:textSize="@dimen/title"
-	            android:text="桃源村"/>
-        </RelativeLayout>
-        <RelativeLayout 
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_weight="1">
-            <ImageView
-                android:id="@+id/iv_item_travel_stop" 
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_launcher"
-                android:layout_width="30dp"
-                android:layout_height="30dp"/>
-	        <TextView
-	            android:id="@+id/tv_item_travel_stopPlace" 
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_centerVertical="true"
-	            android:layout_toRightOf="@id/iv_item_travel_stop"
-	            android:textColor="@color/black"
-		        android:textSize="@dimen/title"
-	            android:text="世界之窗"/>
-        </RelativeLayout>
-        <TextView 
-            android:id="@+id/tv_item_travel_spacingDistance" 
-            android:layout_width="fill_parent"
-            android:layout_height="30dp"
-            android:gravity="center"
-            android:text="15.35KM"
-            android:textColor="@color/black"
-	        android:textSize="@dimen/title"
-            android:layout_weight="1"/>
-    </LinearLayout>
+    </LinearLayout>    
     <TableLayout 
         android:background="@drawable/border_bg"
 	    android:stretchColumns="*" 

@@ -1,12 +1,17 @@
 package com.wise.wawc;
 
+import java.net.URLEncoder;
+
 import com.wise.data.CarData;
 import com.wise.extend.CarAdapter;
 import com.wise.extend.OpenDateDialog;
 import com.wise.extend.OpenDateDialogListener;
+import com.wise.pubclas.Constant;
 import com.wise.pubclas.Variable;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -132,7 +137,7 @@ public class CarRemindActivity extends Activity{
 		gv_activity_car_remind.setStretchMode(GridView.NO_STRETCH);
 		gv_activity_car_remind.setNumColumns(Variable.carDatas.size());
 		gv_activity_car_remind.setOnItemClickListener(onItemClickListener);	
-		
+		GetDealAdress();
 		//ShowText(carData);
 		
 		OpenDateDialog.SetCustomDateListener(new OpenDateDialogListener() {			
@@ -270,6 +275,20 @@ public class CarRemindActivity extends Activity{
             String Insurance_date = String.format(getResources().getString(R.string.renewal_content), carData.getInsurance_date());
             tv_activity_car_remind_remind_renewal.setText(Insurance_date);
         }
+	}
+	/**
+	 * 获取处理地点
+	 */
+	private void GetDealAdress(){
+	    SharedPreferences preferences = getSharedPreferences(
+                Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+        String LocationCity = preferences.getString(Constant.LocationCity, "深圳");
+        try {
+            String Url = Constant.BaseUrl + "location?auth_code="+Variable.auth_code + "@city=" + URLEncoder.encode(LocationCity, "UTF-8");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+	    
 	}
 	
 	@Override
