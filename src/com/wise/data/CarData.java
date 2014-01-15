@@ -7,6 +7,7 @@ import android.R.string;
  * @author keven.cheng
  */
 public class CarData {
+	
     public int obj_id;
     /**
      * 品牌
@@ -40,6 +41,7 @@ public class CarData {
     public String buy_date;    
     
 	public String obj_name;
+	private String maintain_last_date;
 	public int CarLogo;
 	public boolean isCheck;
 		
@@ -139,7 +141,15 @@ public class CarData {
 	public void setCheck(boolean isCheck) {
 		this.isCheck = isCheck;
 	}
-    @Override
+	
+	
+    public String getMaintain_last_date() {
+		return maintain_last_date;
+	}
+	public void setMaintain_last_date(String maintain_last_date) {
+		this.maintain_last_date = maintain_last_date;
+	}
+	@Override
     public String toString() {
         return "CarData [obj_id=" + obj_id + ", car_brand=" + car_brand
                 + ", car_series=" + car_series + ", car_type=" + car_type

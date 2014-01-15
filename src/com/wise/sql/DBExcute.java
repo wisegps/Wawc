@@ -64,10 +64,21 @@ public class DBExcute {
 	 * 删除记录
 	 * @param id
 	 */
-	public void DeleteDB(Context context,String sql){
+	public void DeleteDB(Context context,String table,String whereClause, String[] whereArgs){
 		DBHelper dbHelper = new DBHelper(context);
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
-		db.execSQL(sql);
+		db.delete(table, whereClause, whereArgs);
+		db.close();
+	}
+	/**
+	 * 更新汽车数据
+	 * @param id
+	 */
+	public void updataVehilce(Context context,String tableName,ContentValues values,String whereClause,String[] whereArgs){
+		DBHelper dbHelper = new DBHelper(context);
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		db.update(tableName, values, whereClause, whereArgs);
+		Log.e("更改数据库","更改数据库");
 		db.close();
 	}
 }

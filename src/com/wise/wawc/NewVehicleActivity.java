@@ -109,6 +109,7 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	private DBExcute dBExcute = null;
 	
 	private TextView showInsurance = null;
+	private String brank = "";
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_vehicle);
@@ -180,6 +181,7 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 			case R.id.add_vehicle_maintain:   //选择保养公司
 				Intent intent2 = new Intent(NewVehicleActivity.this,MaintainShopActivity.class);
 				intent2.putExtra("code", newVehicleMaintain);
+				intent2.putExtra("brank", brank);
 				startActivityForResult(intent2, newVehicleMaintain);
 				break;	
 				
@@ -211,7 +213,7 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == newVehicleBrank){  //设置品牌
-			String brank = (String)data.getSerializableExtra("brank");
+			brank = (String)data.getSerializableExtra("brank");
 			vehicleBrank.setText(brank); 
 			carBrankId = (String) data.getSerializableExtra("carId");
 		}else if(resultCode == newVehicleInsurance){   //设置保险公司
@@ -361,17 +363,19 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	                carData.setObj_name(carNumber.getText().toString().trim());
 	                carData.setCar_brand(vehicleBrank.getText().toString());
 	                carData.setCar_series(TvVehicleSeries.getText().toString());
-//	                carData.setCar_type(car_type);
-//	                carData.setEngine_no(engine_no);
-//	                carData.setFrame_no(frame_no);
-//	                carData.setInsurance_company(insurance_company);
-//	                carData.setInsurance_date(insurance_date);
-//	                carData.setAnnual_inspect_date(annual_inspect_date);
-//	                carData.setMaintain_company(maintain_company);
-//	                carData.setMaintain_last_mileage(maintain_last_mileage);
-//	                carData.setMaintain_next_mileage(maintain_next_mileage);
-//	                carData.setBuy_date(buy_date);
+	                carData.setCar_type(TvVehicleType.getText().toString());
+	                carData.setEngine_no(engineNumber.getText().toString().trim());
+	                carData.setFrame_no(CJNumber.getText().toString().trim());
+	                carData.setInsurance_company(showInsurance.getText().toString());
+	                carData.setInsurance_date(insuranceTime.getText().toString());
+	                carData.setAnnual_inspect_date(annualSurveyTime.getText().toString());
+	                carData.setMaintain_company(showMaintain.getText().toString());
+	                carData.setMaintain_last_mileage(lastMileage.getText().toString().trim());
+	                carData.setMaintain_next_mileage(nextMaintainMileage.getText().toString().trim());
+	                carData.setBuy_date( buyTime.getText().toString());
+	                Variable.carDatas.add(carData);
 					startActivity(new Intent(NewVehicleActivity.this,MyVehicleActivity.class));
+					NewVehicleActivity.this.finish();
 				}else{
 					Toast.makeText(getApplicationContext(), "添加失败，请重试", 0).show();
 					return;

@@ -23,4 +23,10 @@
     <color name="bkg5">#4f3105</color>  
     <color name="bkg6">#ff903e</color>  
     <color name="orange">#da6528</color>  
+    
+    
+	<color name="unfocused">#cccccccc</color>
+	<color name="pressed">#fff22fff</color>
+	<color name="selected">#FFFFFF</color>
+	<color name="focused">#ffff44ff</color>
 </resources>

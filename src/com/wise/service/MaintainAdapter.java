@@ -1,4 +1,6 @@
 package com.wise.service;
+import java.util.List;
+
 import com.wise.wawc.R;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -17,25 +19,27 @@ public class MaintainAdapter extends BaseAdapter{
 	private Context context;
 	private ImageView maintainLogo = null;
 	private TextView maintainName = null;
-	public MaintainAdapter(Context context){
+	private List<String> maintainList = null;
+	public MaintainAdapter(Context context,List<String> maintainList){
 		inflater=LayoutInflater.from(context);
+		this.maintainList = maintainList;
 		this.context = context;
 	}
 	public int getCount() {
-		return 10;
+		return maintainList.size();
 	}
 	public Object getItem(int position) {
-		return null;
+		return maintainList.get(position);
 	}
 	public long getItemId(int position) {
-		return 10;
+		return position;
 	}
 	public View getView(int position, View convertView, ViewGroup parent) {
 		convertView = inflater.inflate(R.layout.maintain_item, null);
 		maintainLogo = (ImageView) convertView.findViewById(R.id.vehicle_maintain_shop);
 		maintainLogo.setBackgroundResource(R.drawable.image);
 		maintainName = (TextView) convertView.findViewById(R.id.vehicle_maintain_name);
-		maintainName.setText((position+1)+"号保养店");
+		maintainName.setText(maintainList.get(position));
 		
 		return convertView;
 	}
