@@ -23,6 +23,10 @@ public class Constant {
      * 救援照片存储
      */
     public static final String ShareImage = "Share.jpg";
+    /**
+     * 首页背景图片
+     */
+    public static final String BgImage = "HomeBg.jpg";
 	/**
 	 * 获取版本信息用到
 	 */

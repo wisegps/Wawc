@@ -3,17 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="20dp"
     android:orientation="vertical">
     <TextView 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white"
+        android:layout_marginBottom="10dp"
         android:text="最新油价"/>
     <LinearLayout 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp">
+        android:orientation="vertical">
         <LinearLayout 
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -52,7 +53,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:background="@drawable/border_bg"
                 android:layout_weight="1"
                 android:text="0.00"/>
             <TextView 
@@ -60,7 +60,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:background="@drawable/border_bg"
                 android:layout_weight="1"
                 android:text="0.00"/>
             <TextView 
@@ -68,7 +67,6 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:background="@drawable/border_bg"
                 android:layout_weight="1"
                 android:text="0.00"/>
             <TextView 
@@ -76,15 +74,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:background="@drawable/border_bg"
                 android:layout_weight="1"
                 android:text="0.00"/>
         </LinearLayout>
     </LinearLayout>
-    <TextView 
-        android:id="@+id/tv_item_oil_update"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:text="11月23日更新"/>
 </LinearLayout>

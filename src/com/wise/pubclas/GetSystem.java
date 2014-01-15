@@ -16,6 +16,7 @@ import com.baidu.mapapi.navi.NaviPara;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -179,5 +180,8 @@ public class GetSystem {
                 e.printStackTrace();  
             }  
         }
+    }
+	public static void displayBriefMemory(Context mContext) {    
+	    Log.e("tag","内存"+Runtime.getRuntime().totalMemory()/1024/1024 + "M"); 
     }
 }

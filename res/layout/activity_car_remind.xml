@@ -39,7 +39,7 @@
 	</RelativeLayout>	
 	<HorizontalScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="100dp">
 		<LinearLayout 
 		    android:layout_width="wrap_content"
 			android:layout_height="wrap_content" 
@@ -61,6 +61,7 @@
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical">
 	        <RelativeLayout 
+	            android:id="@+id/rl_inspection"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:padding="5dp"
@@ -72,28 +73,41 @@
 	                android:layout_centerVertical="true"
 	                android:text="@string/inspection"/>
 	            <ImageView
-	                android:id="@+id/iv_activity_car_remind_inspection_problem" 
+	                android:id="@+id/iv_inspection" 
 	                android:layout_width="40dp"
 	                android:layout_height="40dp"
 	                android:contentDescription="@string/app_name"
 	                android:layout_alignParentRight="true"
-	                android:src="@drawable/ic_launcher"/>
-	            <ImageView
-	                android:id="@+id/iv_activity_car_remind_inspection_note" 
-	                android:layout_width="40dp"
-	                android:layout_height="40dp"
-	                android:contentDescription="@string/app_name"
-	                android:layout_toLeftOf ="@id/iv_activity_car_remind_inspection_problem"
 	                android:src="@drawable/ic_launcher"/>
 	            <TextView 
 	                android:id="@+id/tv_activity_car_remind_inspection"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:textColor="@color/black"
-	                android:layout_toLeftOf ="@id/iv_activity_car_remind_inspection_note"
+	                android:layout_toLeftOf ="@id/iv_inspection"
 	                android:layout_centerVertical="true"/>
 	        </RelativeLayout>
+	        <LinearLayout
+	            android:id="@+id/ll_inspection"
+	            android:visibility="gone" 
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:orientation="horizontal">
+	            <Button 
+	                android:id="@+id/bt_inspection_time"
+	                android:layout_width="fill_parent"
+	                android:layout_height="wrap_content"
+	                android:layout_weight="1"
+	                android:text="@string/update_date"/>
+	            <Button 
+	                android:id="@+id/bt_inspection_address"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/deal_adress"/>
+	        </LinearLayout>
 	        <RelativeLayout 
+	            android:id="@+id/rl_renewal"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:padding="5dp"
@@ -105,28 +119,41 @@
 	                android:layout_centerVertical="true"
 	                android:text="@string/renewal"/>
 	            <ImageView
-	                android:id="@+id/iv_activity_car_remind_renewal_problem" 
+	                android:id="@+id/iv_renewal" 
 	                android:layout_width="40dp"
 	                android:layout_height="40dp"
 	                android:contentDescription="@string/app_name"
 	                android:layout_alignParentRight="true"
-	                android:src="@drawable/ic_launcher"/>
-	            <ImageView
-	                android:id="@+id/iv_activity_car_remind_renewal_note" 
-	                android:layout_width="40dp"
-	                android:layout_height="40dp"
-	                android:contentDescription="@string/app_name"
-	                android:layout_toLeftOf ="@id/iv_activity_car_remind_renewal_problem"
 	                android:src="@drawable/ic_launcher"/>
 	            <TextView 
 	                android:id="@+id/tv_activity_car_remind_remind_renewal"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:textColor="@color/black"
-	                android:layout_toLeftOf ="@id/iv_activity_car_remind_renewal_note"
+	                android:layout_toLeftOf ="@id/iv_renewal"
 	                android:layout_centerVertical="true"/>
 	        </RelativeLayout>
+	        <LinearLayout
+                android:id="@+id/ll_renewal"
+                android:visibility="gone" 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button 
+                    android:id="@+id/bt_renewal_time"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/update_date"/>
+                <Button 
+                    android:id="@+id/bt_renewal_call"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/call_insurance"/>
+            </LinearLayout>
 	        <RelativeLayout 
+	            android:id="@+id/rl_maintenance"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:padding="5dp"
@@ -138,28 +165,41 @@
 	                android:layout_centerVertical="true"
 	                android:text="@string/maintenance"/>
 	            <ImageView
-	                android:id="@+id/iv_activity_car_remind_maintenance_problem" 
+	                android:id="@+id/iv_maintenance" 
 	                android:layout_width="40dp"
 	                android:layout_height="40dp"
 	                android:contentDescription="@string/app_name"
 	                android:layout_alignParentRight="true"
 	                android:src="@drawable/ic_launcher"/>
-	            <ImageView
-	                android:id="@+id/iv_activity_car_remind_maintenance_note" 
-	                android:layout_width="40dp"
-	                android:layout_height="40dp"
-	                android:contentDescription="@string/app_name"
-	                android:layout_toLeftOf ="@id/iv_activity_car_remind_maintenance_problem"
-	                android:src="@drawable/ic_launcher"/>
 	            <TextView 
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:textColor="@color/black"
-	                android:layout_toLeftOf ="@id/iv_activity_car_remind_maintenance_note"
+	                android:layout_toLeftOf ="@id/iv_maintenance"
 	                android:layout_centerVertical="true"
 	                android:text="离下次保养还有100km"/>
 	        </RelativeLayout>
+	        <LinearLayout
+                android:id="@+id/ll_maintenance"
+                android:visibility="gone" 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/bt_maintenance"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/go_my_car"/>
+                <Button
+                    android:id="@+id/bt_maintenance_call"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/call_fours"/>
+            </LinearLayout>
 	        <RelativeLayout 
+	            android:id="@+id/rl_examined"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:padding="5dp"
@@ -172,28 +212,41 @@
 	                android:layout_centerVertical="true"
 	                android:text="@string/examined"/>
 	            <ImageView
-	                android:id="@+id/iv_activity_car_remind_examined_problem" 
+	                android:id="@+id/iv_examined" 
 	                android:layout_width="40dp"
 	                android:layout_height="40dp"
 	                android:contentDescription="@string/app_name"
 	                android:layout_alignParentRight="true"
 	                android:src="@drawable/ic_launcher"/>
-	            <ImageView
-	                android:id="@+id/iv_activity_car_remind_examined_note" 
-	                android:layout_width="40dp"
-	                android:layout_height="40dp"
-	                android:contentDescription="@string/app_name"
-	                android:layout_toLeftOf ="@id/iv_activity_car_remind_examined_problem"
-	                android:src="@drawable/ic_launcher"/>
 	            <TextView 
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:textColor="@color/black"
-	                android:layout_toLeftOf ="@id/iv_activity_car_remind_examined_note"
+	                android:layout_toLeftOf ="@id/iv_examined"
 	                android:layout_centerVertical="true"
 	                android:text="需于2014-08-01前年审"/>
 	        </RelativeLayout>
+	        <LinearLayout
+                android:id="@+id/ll_examined"
+                android:visibility="gone" 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button 
+                    android:id="@+id/bt_examined_time"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/update_date"/>
+                <Button 
+                    android:id="@+id/bt_examined_address"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/deal_adress"/>
+            </LinearLayout>
 	        <RelativeLayout 
+	            android:id="@+id/rl_replacement"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:padding="5dp"
@@ -205,27 +258,39 @@
 	                android:layout_centerVertical="true"
 	                android:text="@string/replacement"/>
 	            <ImageView
-	                android:id="@+id/iv_activity_car_remind_replacement_problem" 
+	                android:id="@+id/iv_replacement" 
 	                android:layout_width="40dp"
 	                android:layout_height="40dp"
 	                android:contentDescription="@string/app_name"
 	                android:layout_alignParentRight="true"
 	                android:src="@drawable/ic_launcher"/>
-	            <ImageView
-	                android:id="@+id/iv_activity_car_remind_replacement_note" 
-	                android:layout_width="40dp"
-	                android:layout_height="40dp"
-	                android:contentDescription="@string/app_name"
-	                android:layout_toLeftOf ="@id/iv_activity_car_remind_replacement_problem"
-	                android:src="@drawable/ic_launcher"/>
 	            <TextView 
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:textColor="@color/black"
-	                android:layout_toLeftOf ="@id/iv_activity_car_remind_replacement_note"
+	                android:layout_toLeftOf ="@id/iv_replacement"
 	                android:layout_centerVertical="true"
 	                android:text="需于2014-08-01前换证"/>
 	        </RelativeLayout>
+	        <LinearLayout
+                android:id="@+id/ll_replacement"
+                android:visibility="gone" 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <Button 
+                    android:id="@+id/bt_replacement_time"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/update_date"/>
+                <Button 
+                    android:id="@+id/bt_replacement_address"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/deal_adress"/>
+            </LinearLayout>
 	    </LinearLayout>
 	</ScrollView>
 </LinearLayout>

@@ -439,7 +439,7 @@ public class SelectCityActivity extends Activity {
                             TypedValue.COMPLEX_UNIT_DIP, 30, getResources()
                                     .getDisplayMetrics());
                     LayoutParams params = new LayoutParams(
-                            LayoutParams.FILL_PARENT, (hotDatas.size() / 5 + 1)
+                            LayoutParams.FILL_PARENT, (hotDatas.size() / 4 + 1)
                                     * px);
                     hotholder.gv.setLayoutParams(params);
                     hotholder.gv.setAdapter(new hotAdapter());

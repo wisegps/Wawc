@@ -16,6 +16,7 @@ import com.iflytek.ui.RecognizerDialogListener;
 import com.wise.data.CarData;
 import com.wise.extend.HScrollLayout;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
@@ -58,7 +59,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
     TextView tv_item_weather_date, tv_item_weather_wd, tv_item_weather,
             tv_item_weather_sky, tv_item_weather_temp1,
             tv_item_weather_index_xc, tv_item_weather_city,tv_item_oil_90, tv_item_oil_93,
-            tv_item_oil_97, tv_item_oil_0, tv_item_oil_update;
+            tv_item_oil_97, tv_item_oil_0;
     private RecognizerDialog recognizerDialog = null; // 语音合成文字
     StringBuffer sb = null;
     private ImageView saySomething = null; // 语音识别
@@ -123,8 +124,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         tv_item_oil_93 = (TextView) oilView.findViewById(R.id.tv_item_oil_93);
         tv_item_oil_97 = (TextView) oilView.findViewById(R.id.tv_item_oil_97);
         tv_item_oil_0 = (TextView) oilView.findViewById(R.id.tv_item_oil_0);
-        tv_item_oil_update = (TextView) oilView
-                .findViewById(R.id.tv_item_oil_update);
+        //tv_item_oil_update = (TextView) oilView.findViewById(R.id.tv_item_oil_update);
 
         // 注册（将语音转文字）
         recognizerDialog = new RecognizerDialog(this, "appid=5281eaf4");
@@ -159,8 +159,8 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 ActivityFactory.A.LeftMenu();
                 break;
             case R.id.iv_activity_car_home_search:
-                HomeActivity.this.startActivity(new Intent(HomeActivity.this,
-                        ActivitySearch.class));
+                ActivityFactory.A.RightMenu();
+                //HomeActivity.this.startActivity(new Intent(HomeActivity.this,ActivitySearch.class));
                 break;
             case R.id.bt_activity_home_help:// 救援
                 ToShare();
@@ -377,7 +377,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                     .getJSONObject("weatherinfo");
             if (jsonObject.opt("date_y") != null) {
                 String date_y = jsonObject.getString("date_y");
-                tv_item_oil_update.setText(date_y + "更新");
+                //tv_item_oil_update.setText(date_y + "更新");
                 Weather += date_y;
             }
             if (jsonObject.opt("week") != null) {
@@ -398,6 +398,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        GetSystem.displayBriefMemory(HomeActivity.this);
     }
 
     /**
@@ -590,8 +591,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
     }
 
     private void ToShare() {
-        Intent intent = new Intent(HomeActivity.this, NewArticleActivity.class);
-        intent.putExtra("isSNS", true);
+        Intent intent = new Intent(HomeActivity.this, ShareLocationActivity.class);
         HomeActivity.this.startActivity(intent);
     }
 

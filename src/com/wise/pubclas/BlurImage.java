@@ -48,7 +48,7 @@ public class BlurImage {
      * @param reqHeight 缩小的高度
      * @return
      */
-    public static Bitmap decodeSampledBitmapFromResource(String Path, int reqWidth, int reqHeight) {  
+    public static Bitmap decodeSampledBitmapFromPath(String Path, int reqWidth, int reqHeight) {  
         // 第一次解析将inJustDecodeBounds设置为true，来获取图片大小  
         final BitmapFactory.Options options = new BitmapFactory.Options();  
         options.inJustDecodeBounds = true;  
@@ -59,6 +59,19 @@ public class BlurImage {
         // 使用获取到的inSampleSize值再次解析图片  
         options.inJustDecodeBounds = false;  
         return BitmapFactory.decodeFile(Path, options);
+    }
+    
+    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,  
+            int reqWidth, int reqHeight) {  
+        // 第一次解析将inJustDecodeBounds设置为true，来获取图片大小  
+        final BitmapFactory.Options options = new BitmapFactory.Options();  
+        options.inJustDecodeBounds = true;  
+        BitmapFactory.decodeResource(res, resId, options);  
+        // 调用上面定义的方法计算inSampleSize值  
+        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);  
+        // 使用获取到的inSampleSize值再次解析图片  
+        options.inJustDecodeBounds = false;  
+        return BitmapFactory.decodeResource(res, resId, options);  
     }
     
     /**
@@ -100,7 +113,7 @@ public class BlurImage {
      * @param bmp
      * @return
      */
-    public static Drawable BoxBlurFilter(Bitmap bmp) {
+    public static Bitmap BoxBlurFilter(Bitmap bmp) {
         int width = bmp.getWidth();
         int height = bmp.getHeight();
         int[] inPixels = new int[width * height];
@@ -115,8 +128,8 @@ public class BlurImage {
         blurFractional(inPixels, outPixels, width, height, hRadius);
         blurFractional(outPixels, inPixels, height, width, vRadius);
         bitmap.setPixels(inPixels, 0, width, 0, 0, width, height);
-        Drawable drawable = new BitmapDrawable(bitmap);
-        return drawable;
+        //Drawable drawable = new BitmapDrawable(bitmap);
+        return bitmap;
     }
 
     public static void blur(int[] in, int[] out, int width, int height,

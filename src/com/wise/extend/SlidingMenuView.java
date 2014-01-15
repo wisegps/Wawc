@@ -46,7 +46,7 @@ public class SlidingMenuView extends ViewGroup{
     private boolean mAllowLongPress;
 
     private int mTouchSlop;
-
+    int rightWidth = 0;
     int totalWidth = 0;
     OnViewTouchMoveListener onViewTouchMoveListener;
     int width;
@@ -117,10 +117,13 @@ public class SlidingMenuView extends ViewGroup{
 	    View v1 = findViewById(R.id.left_sliding_tab);
 		v1.measure(width_v1, heightMeasureSpec);
 		View v2 = findViewById(R.id.sliding_body);
-	    v2.measure(widthMeasureSpec, heightMeasureSpec);	    
+	    v2.measure(widthMeasureSpec, heightMeasureSpec);
+	    View v3 = findViewById(R.id.ll_right);
+        v3.measure(widthMeasureSpec, heightMeasureSpec);
 	}
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        rightWidth = getChildAt(0).getMeasuredWidth();
     	int childLeft = 0;
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
@@ -268,23 +271,31 @@ public class SlidingMenuView extends ViewGroup{
 					deltaX = Even(deltaX);
 					if (deltaX < 0) {// 向右滑
 						if (getScrollX() > 0) {// 滚动的距离
-						    int scrollX = Math.max(-getScrollX(), deltaX);
-						    scrollBy(scrollX , 0);
-	                        if(onViewTouchMoveListener != null){
-	                            onViewTouchMoveListener.OnViewMove(getScrollX());
-	                        }
+						    if(getScrollX() > rightWidth){
+						        
+						    }else{
+						        int scrollX = Math.max(-getScrollX(), deltaX);
+	                            scrollBy(scrollX , 0);
+	                            if(onViewTouchMoveListener != null){
+	                                onViewTouchMoveListener.OnViewMove(getScrollX());
+	                            }
+						    }						    
 						}
 					} else if (deltaX > 0) {
-						final int availableToScroll = getChildAt(
-								getChildCount() - 1).getRight()
-								- getScrollX() - getWidth();
-						if (availableToScroll > 0) {
-						    int scrollX = Math.min(availableToScroll, deltaX);
-							scrollBy(scrollX , 0);
-							if(onViewTouchMoveListener != null){
-							    onViewTouchMoveListener.OnViewMove(getScrollX());
-							}
-						}
+					    if(getScrollX() >= rightWidth){
+	                        Log.d(TAG, "静止滑动");
+	                    }else{
+	                        final int availableToScroll = getChildAt(
+	                                getChildCount() - 1).getRight()
+	                                - getScrollX() - getWidth();
+	                        if (availableToScroll > 0) {
+	                            int scrollX = Math.min(availableToScroll, deltaX);
+	                            scrollBy(scrollX , 0);
+	                            if(onViewTouchMoveListener != null){
+	                                onViewTouchMoveListener.OnViewMove(getScrollX());
+	                            }
+	                        }
+	                    }						
 					}
 				}
 	            break;
@@ -295,9 +306,17 @@ public class SlidingMenuView extends ViewGroup{
 	                int velocityX = (int) velocityTracker.getXVelocity();
 	
 	                if (velocityX > SNAP_VELOCITY && mCurrentScreen > 0) {//向左滑                
-	                    snapToScreen(mCurrentScreen - 1);
+	                    if(mCurrentScreen == 2){
+                            Log.d(TAG, "不要滚动");
+                        }else{                            
+                            snapToScreen(mCurrentScreen - 1);
+                        }
 	                } else if (velocityX < -SNAP_VELOCITY && mCurrentScreen < getChildCount() - 1) {
-	                    snapToScreen(mCurrentScreen + 1);
+	                    if((mCurrentScreen + 1) == 2){
+                            
+                        }else{
+                            snapToScreen(mCurrentScreen + 1);
+                        }
 	                } else {
 	                    snapToDestination();
 	                }

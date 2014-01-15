@@ -9,7 +9,7 @@
         android:id="@+id/gv_hot_city"
         android:layout_width="fill_parent"
         android:layout_height="250dp"
-        android:numColumns="5"
+        android:numColumns="4"
         android:stretchMode="columnWidth"
         android:horizontalSpacing="10dp"/>
 </LinearLayout>

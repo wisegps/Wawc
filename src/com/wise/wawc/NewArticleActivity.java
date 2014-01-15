@@ -68,8 +68,8 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 		isSNS = intent.getBooleanExtra("isSNS", false);
 		if(isSNS){//初始化shareSDK
 			ShareSDK.initSDK(this);
-			Bitmap bitmap=intent.getParcelableExtra("bitmap");
-			ShowBitMap(bitmap);
+			//Bitmap bitmap=intent.getParcelableExtra("bitmap");
+			//ShowBitMap(bitmap);
 		}
 	}
 	class ClickListener implements OnClickListener{

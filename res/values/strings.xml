@@ -56,6 +56,11 @@
     <!-- 我的收藏 -->
     <string name="my_collection">我的收藏</string>
     <!-- 车务提醒 -->
+    <string name="update_date">修改时间</string>
+    <string name="deal_adress">处理地点</string>
+    <string name="call_insurance">拨打保险公司电话</string>
+    <string name="call_fours">拨打4S店电话</string>
+    <string name="go_my_car">去我的爱车设置</string>
     <string name="inspection">车辆年检提醒</string>
     <string name="inspection_title">车辆年检</string>
     <string name="inspection_content">需于%s前年检</string>
@@ -109,6 +114,8 @@
 
     <string name="search_result">搜索结果</string>
     
+    <!-- 我的账户 -->
+    <string name="contact_note">联系方式(用于购物发货)</string>
     
     <string name="please_login">请登录</string>
     

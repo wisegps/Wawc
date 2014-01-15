@@ -7,6 +7,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
@@ -20,6 +21,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -42,11 +45,13 @@ public class AccountActivity extends Activity{
 	private View view = null;
 	EditText et_activity_account_consignee,et_activity_account_adress,et_activity_account_phone;
 	TextView tv_activity_account_name,tv_activity_city;
+	ImageView iv_activity_account_pic;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_account);
 		view = findViewById(R.id.account_to_my_vehicle);
 		view.setOnClickListener(onClickListener);
+		iv_activity_account_pic = (ImageView)findViewById(R.id.iv_activity_account_pic);
 		tv_activity_account_name = (TextView)findViewById(R.id.tv_activity_account_name);
 		tv_activity_city = (TextView)findViewById(R.id.tv_activity_city);
 		ImageView iv_activity_account_menu = (ImageView)findViewById(R.id.iv_activity_account_menu);
@@ -141,6 +146,10 @@ public class AccountActivity extends Activity{
 	 * 获取本地数据
 	 */
 	private void GetSfData(){
+	    Bitmap bimage = BitmapFactory.decodeFile(Constant.BasePath + Constant.UserImage);
+        if(bimage != null){            
+            iv_activity_account_pic.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
+        }
 	    SharedPreferences preferences = getSharedPreferences(
                 Constant.sharedPreferencesName, Context.MODE_PRIVATE);
 	    et_activity_account_consignee.setText(preferences.getString(Constant.Consignee, ""));

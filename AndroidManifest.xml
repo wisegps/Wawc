@@ -40,13 +40,13 @@
         android:theme="@style/AppTheme" >
         
         <activity android:name=".WelcomeActivity" android:theme="@android:style/Theme.NoTitleBar">
+            
+        </activity>
+        <activity android:name=".MainActivity" android:theme="@android:style/Theme.NoTitleBar">                        
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".MainActivity" android:theme="@android:style/Theme.NoTitleBar">                        
-            
         </activity>
         <activity android:name=".HomeActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".CarRemindActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>

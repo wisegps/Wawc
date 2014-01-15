@@ -15,8 +15,11 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
@@ -43,6 +46,8 @@ public class CarRemindActivity extends Activity{
 	 * 驾照换证
 	 */
 	private static final int replacement = 4;
+	LinearLayout ll_inspection,ll_renewal,ll_maintenance,ll_examined,ll_replacement;
+	//RelativeLayout rl_inspection,rl_renewal,rl_maintenance,rl_examined,rl_replacement;
 	TextView tv_activity_car_remind_inspection,tv_activity_car_remind_remind_renewal;
 	
 	CarAdapter carAdapter;
@@ -58,27 +63,56 @@ public class CarRemindActivity extends Activity{
 		ImageView iv_activity_car_remind_home = (ImageView)findViewById(R.id.iv_activity_car_remind_home);
 		iv_activity_car_remind_home.setOnClickListener(onClickListener);
 		
-		ImageView iv_activity_car_remind_maintenance_note = (ImageView)findViewById(R.id.iv_activity_car_remind_maintenance_note);
-		iv_activity_car_remind_maintenance_note.setOnClickListener(onClickListener);
-		ImageView iv_activity_car_remind_inspection_note = (ImageView)findViewById(R.id.iv_activity_car_remind_inspection_note);
-		iv_activity_car_remind_inspection_note.setOnClickListener(onClickListener);
-		ImageView iv_activity_car_remind_renewal_note = (ImageView)findViewById(R.id.iv_activity_car_remind_renewal_note);
-		iv_activity_car_remind_renewal_note.setOnClickListener(onClickListener);
-		ImageView iv_activity_car_remind_examined_note = (ImageView)findViewById(R.id.iv_activity_car_remind_examined_note);
-		iv_activity_car_remind_examined_note.setOnClickListener(onClickListener);
-		ImageView iv_activity_car_remind_replacement_note = (ImageView)findViewById(R.id.iv_activity_car_remind_replacement_note);
-		iv_activity_car_remind_replacement_note.setOnClickListener(onClickListener);
-		
-		ImageView iv_activity_car_remind_inspection_problem = (ImageView)findViewById(R.id.iv_activity_car_remind_inspection_problem);
-		iv_activity_car_remind_inspection_problem.setOnClickListener(onClickListener);
-		ImageView iv_activity_car_remind_renewal_problem = (ImageView)findViewById(R.id.iv_activity_car_remind_renewal_problem);
-		iv_activity_car_remind_renewal_problem.setOnClickListener(onClickListener);
-		ImageView iv_activity_car_remind_maintenance_problem = (ImageView)findViewById(R.id.iv_activity_car_remind_maintenance_problem);
-		iv_activity_car_remind_maintenance_problem.setOnClickListener(onClickListener);
-		ImageView iv_activity_car_remind_examined_problem = (ImageView)findViewById(R.id.iv_activity_car_remind_examined_problem);
-		iv_activity_car_remind_examined_problem.setOnClickListener(onClickListener);
-		ImageView iv_activity_car_remind_replacement_problem = (ImageView)findViewById(R.id.iv_activity_car_remind_replacement_problem);
-		iv_activity_car_remind_replacement_problem.setOnClickListener(onClickListener);
+		//年检
+		ll_inspection = (LinearLayout)findViewById(R.id.ll_inspection);
+		RelativeLayout rl_inspection = (RelativeLayout)findViewById(R.id.rl_inspection);
+		rl_inspection.setOnClickListener(onClickListener);
+		ImageView iv_inspection = (ImageView)findViewById(R.id.iv_inspection);
+		iv_inspection.setOnClickListener(onClickListener);
+		Button bt_inspection_time = (Button)findViewById(R.id.bt_inspection_time);
+		bt_inspection_time.setOnClickListener(onClickListener);
+		Button bt_inspection_address = (Button)findViewById(R.id.bt_inspection_address);
+		bt_inspection_address.setOnClickListener(onClickListener);
+		//续保
+		ll_renewal = (LinearLayout)findViewById(R.id.ll_renewal);
+		RelativeLayout rl_renewal = (RelativeLayout)findViewById(R.id.rl_renewal);
+		rl_renewal.setOnClickListener(onClickListener);
+		ImageView iv_renewal = (ImageView)findViewById(R.id.iv_renewal);
+		iv_renewal.setOnClickListener(onClickListener);
+		Button bt_renewal_time = (Button)findViewById(R.id.bt_renewal_time);
+		bt_renewal_time.setOnClickListener(onClickListener);
+        Button bt_renewal_call = (Button)findViewById(R.id.bt_renewal_call);
+        bt_renewal_call.setOnClickListener(onClickListener);
+        //保养
+        ll_maintenance = (LinearLayout)findViewById(R.id.ll_maintenance);
+        RelativeLayout rl_maintenance = (RelativeLayout)findViewById(R.id.rl_maintenance);
+        rl_maintenance.setOnClickListener(onClickListener);
+        ImageView iv_maintenance = (ImageView)findViewById(R.id.iv_maintenance);
+        iv_maintenance.setOnClickListener(onClickListener);
+        Button bt_maintenance = (Button)findViewById(R.id.bt_maintenance);
+        bt_maintenance.setOnClickListener(onClickListener);
+        Button bt_maintenance_call = (Button)findViewById(R.id.bt_maintenance_call);
+        bt_maintenance_call.setOnClickListener(onClickListener);
+        //年审
+        ll_examined = (LinearLayout)findViewById(R.id.ll_examined);
+        RelativeLayout rl_examined = (RelativeLayout)findViewById(R.id.rl_examined);
+        rl_examined.setOnClickListener(onClickListener);
+        ImageView iv_examined = (ImageView)findViewById(R.id.iv_examined);
+        iv_examined.setOnClickListener(onClickListener);
+        Button bt_examined_time = (Button)findViewById(R.id.bt_examined_time);
+        bt_examined_time.setOnClickListener(onClickListener);
+        Button bt_examined_address = (Button)findViewById(R.id.bt_examined_address);
+        bt_examined_address.setOnClickListener(onClickListener);
+        //驾照
+        ll_replacement = (LinearLayout)findViewById(R.id.ll_replacement);
+        RelativeLayout rl_replacement = (RelativeLayout)findViewById(R.id.rl_replacement);
+        rl_replacement.setOnClickListener(onClickListener);
+        ImageView iv_replacement = (ImageView)findViewById(R.id.iv_replacement);
+        iv_replacement.setOnClickListener(onClickListener);
+        Button bt_replacement_time = (Button)findViewById(R.id.bt_replacement_time);
+        bt_replacement_time.setOnClickListener(onClickListener);
+        Button bt_replacement_address = (Button)findViewById(R.id.bt_replacement_address);
+        bt_replacement_address.setOnClickListener(onClickListener);
 		
 		tv_activity_car_remind_inspection = (TextView)findViewById(R.id.tv_activity_car_remind_inspection);
 		tv_activity_car_remind_remind_renewal = (TextView)findViewById(R.id.tv_activity_car_remind_remind_renewal);
@@ -138,41 +172,68 @@ public class CarRemindActivity extends Activity{
 					ActivityFactory.A.ToHome();
 				}
 				break;
-			case R.id.iv_activity_car_remind_maintenance_note://车辆保养
+			case R.id.rl_inspection:
+			    hideLinearlayout();
+			    ll_inspection.setVisibility(View.VISIBLE);
+			    break;
+			case R.id.rl_renewal:
+			    hideLinearlayout();
+			    ll_renewal.setVisibility(View.VISIBLE);
+                break;
+			case R.id.rl_maintenance:
+			    hideLinearlayout();
+			    ll_maintenance.setVisibility(View.VISIBLE);
+                break;
+			case R.id.rl_examined:
+			    hideLinearlayout();
+			    ll_examined.setVisibility(View.VISIBLE);
+                break;
+			case R.id.rl_replacement:
+			    hideLinearlayout();
+			    ll_replacement.setVisibility(View.VISIBLE);
+                break;
+			case R.id.bt_maintenance://车辆保养
 				Intent RemindIntent = new Intent(CarRemindActivity.this, MyVehicleActivity.class);
 				RemindIntent.putExtra("isJump", true);
 				CarRemindActivity.this.startActivity(RemindIntent);
 				break;
-			case R.id.iv_activity_car_remind_inspection_note://年检提醒
+			case R.id.bt_inspection_time://年检提醒
 				ShowDate(inspection);
 				break;
-			case R.id.iv_activity_car_remind_renewal_note://车辆续保
+			case R.id.bt_renewal_time://车辆续保
 				ShowDate(renewal);
 				break;
-			case R.id.iv_activity_car_remind_examined_note://驾照年审
+			case R.id.bt_examined_time://驾照年审
 				ShowDate(examined);
 				break;
-			case R.id.iv_activity_car_remind_replacement_note://驾照换证
+			case R.id.bt_replacement_time://驾照换证
 				ShowDate(replacement);
 				break;				
-			case R.id.iv_activity_car_remind_inspection_problem://年检提醒
+			case R.id.bt_inspection_address://年检提醒
 				ToDealAdress(getString(R.string.inspection_title));
 				break;
-			case R.id.iv_activity_car_remind_examined_problem://驾照年审
+			case R.id.bt_examined_address://驾照年审
 				ToDealAdress(getString(R.string.examined_title));
 				break;
-			case R.id.iv_activity_car_remind_replacement_problem://驾照换证
+			case R.id.bt_replacement_address://驾照换证
 				ToDealAdress(getString(R.string.replacement_title));
 				break;
-			case R.id.iv_activity_car_remind_renewal_problem://车辆续保
+			case R.id.bt_renewal_call://车辆续保
 				ToCall("phone");
 				break;
-			case R.id.iv_activity_car_remind_maintenance_problem://车辆保养
+			case R.id.bt_maintenance_call://车辆保养
 				ToCall("phone");
 				break;
 			}
 		}		
 	};
+	private void hideLinearlayout(){
+	    ll_inspection.setVisibility(View.GONE);
+	    ll_renewal.setVisibility(View.GONE);
+	    ll_maintenance.setVisibility(View.GONE);
+	    ll_examined.setVisibility(View.GONE);
+	    ll_replacement.setVisibility(View.GONE);
+	}
 	private void ToDealAdress(String Title){
 		Intent intent = new Intent(CarRemindActivity.this, DealAddressActivity.class);
 		intent.putExtra("Title", Title);

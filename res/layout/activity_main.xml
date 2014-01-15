@@ -10,14 +10,13 @@
         android:layout_height="fill_parent">
         <LinearLayout 
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="fill_parent">
             <ImageView 
-                android:id="@+id/iv_pic"          
+                android:id="@+id/iv_pic"     
+                android:scaleType="fitStart"     
                 android:layout_width="1000dp"
                 android:layout_height="fill_parent"
-                android:scaleType="fitStart"
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/bg"/>
+                android:contentDescription="@string/app_name"/>
         </LinearLayout>
     </com.wise.extend.PicHorizontalScrollView> 
     <com.wise.extend.SlidingMenuView
@@ -241,5 +240,208 @@
             android:layout_width="fill_parent"
         	android:layout_height="fill_parent">            
     	</com.wise.extend.MyFrameLayout >
+    	<LinearLayout 
+            android:id="@+id/ll_right"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <RelativeLayout
+		        android:id="@+id/rl_activity_home_top"
+		        android:layout_width="fill_parent"
+		        android:background="#FFFFFF"
+		        android:layout_height="44dp"
+		        android:padding="2dp">
+		        <ImageView
+		            android:id="@+id/iv_activity_home"
+		            android:layout_width="60dp"
+		            android:layout_height="36dp"
+		            android:layout_alignParentLeft="true"
+		            android:layout_centerVertical="true"
+		            android:contentDescription="@string/app_name"
+		            android:src="@drawable/ic_launcher"/>
+		        <TextView
+		            android:layout_width="fill_parent"
+		            android:layout_height="fill_parent"
+		            android:gravity="center"
+		            android:text="搜索"
+		            android:textColor="@color/black"
+		            android:textSize="@dimen/title"
+		            android:textStyle="bold" />
+		    </RelativeLayout>
+		    <RelativeLayout
+		        android:id="@+id/rl_activity_main_voice"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_margin="5dp"
+		        android:background="@drawable/border_bg"
+		        android:padding="5dp" >
+		
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_marginLeft="10dp"
+		            android:text="你要做什么"
+		            android:textColor="@color/black"
+		            android:textSize="@dimen/title" />
+		
+		        <ImageView
+		            android:layout_width="30dp"
+		            android:layout_height="30dp"
+		            android:layout_alignParentRight="true"
+		            android:contentDescription="@string/app_name"
+		            android:src="@drawable/ic_launcher" />
+		    </RelativeLayout>
+		
+		    <RelativeLayout
+		        android:id="@+id/rl_activity_main_oil"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_margin="5dp"
+		        android:background="@drawable/border_bg"
+		        android:padding="5dp" >
+		
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_marginLeft="10dp"
+		            android:text="我要加油"
+		            android:textColor="@color/black"
+		            android:textSize="@dimen/title" />
+		
+		        <ImageView
+		            android:layout_width="30dp"
+		            android:layout_height="30dp"
+		            android:layout_alignParentRight="true"
+		            android:contentDescription="@string/app_name"
+		            android:src="@drawable/ic_launcher" />
+		    </RelativeLayout>
+		
+		    <RelativeLayout
+		        android:id="@+id/rl_activity_main_maintain"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_margin="5dp"
+		        android:background="@drawable/border_bg"
+		        android:padding="5dp" >
+		
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_marginLeft="10dp"
+		            android:text="我要维保"
+		            android:textColor="@color/black"
+		            android:textSize="@dimen/title" />
+		
+		        <ImageView
+		            android:layout_width="30dp"
+		            android:layout_height="30dp"
+		            android:layout_alignParentRight="true"
+		            android:contentDescription="@string/app_name"
+		            android:src="@drawable/ic_launcher" />
+		    </RelativeLayout>
+		
+		    <RelativeLayout
+		        android:id="@+id/rl_activity_main_wash"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_margin="5dp"
+		        android:background="@drawable/border_bg"
+		        android:padding="5dp" >
+		
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_marginLeft="10dp"
+		            android:text="我要洗车"
+		            android:textColor="@color/black"
+		            android:textSize="@dimen/title" />
+		
+		        <ImageView
+		            android:layout_width="30dp"
+		            android:layout_height="30dp"
+		            android:layout_alignParentRight="true"
+		            android:contentDescription="@string/app_name"
+		            android:src="@drawable/ic_launcher" />
+		    </RelativeLayout>
+		
+		    <RelativeLayout
+		        android:id="@+id/rl_activity_main_help"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_margin="5dp"
+		        android:background="@drawable/border_bg"
+		        android:padding="5dp" >
+		
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_marginLeft="10dp"
+		            android:text="我要救援"
+		            android:textColor="@color/black"
+		            android:textSize="@dimen/title" />
+		
+		        <ImageView
+		            android:layout_width="30dp"
+		            android:layout_height="30dp"
+		            android:layout_alignParentRight="true"
+		            android:contentDescription="@string/app_name"
+		            android:src="@drawable/ic_launcher" />
+		    </RelativeLayout>
+		
+		    <RelativeLayout
+		        android:id="@+id/rl_activity_main_safety"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_margin="5dp"
+		        android:background="@drawable/border_bg"
+		        android:padding="5dp" >
+		
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_marginLeft="10dp"
+		            android:text="我要保险"
+		            android:textColor="@color/black"
+		            android:textSize="@dimen/title" />
+		
+		        <ImageView
+		            android:layout_width="30dp"
+		            android:layout_height="30dp"
+		            android:layout_alignParentRight="true"
+		            android:contentDescription="@string/app_name"
+		            android:src="@drawable/ic_launcher" />
+		    </RelativeLayout>
+		
+		    <RelativeLayout
+		        android:id="@+id/rl_activity_main_park"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:layout_margin="5dp"
+		        android:background="@drawable/border_bg"
+		        android:padding="5dp" >
+		
+		        <TextView
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:layout_centerVertical="true"
+		            android:layout_marginLeft="10dp"
+		            android:text="我要停车"
+		            android:textColor="@color/black"
+		            android:textSize="@dimen/title" />
+		
+		        <ImageView
+		            android:layout_width="30dp"
+		            android:layout_height="30dp"
+		            android:layout_alignParentRight="true"
+		            android:contentDescription="@string/app_name"
+		            android:src="@drawable/ic_launcher" />
+		    </RelativeLayout>
+        </LinearLayout>
     </com.wise.extend.SlidingMenuView>
 </RelativeLayout>

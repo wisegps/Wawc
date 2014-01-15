@@ -138,11 +138,13 @@ public class MainActivity extends ActivityGroup implements
                     }
                 });
         // 设置图片的宽高
-        //iv_pic = (ImageView) findViewById(R.id.iv_pic);
+        iv_pic = (ImageView) findViewById(R.id.iv_pic);
+        ShowBgImage();
         //iv_pic.setImageDrawable(getResources().getDrawable(R.drawable.bg));
         //Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.bg);
         //iv_pic.setImageDrawable(BlurImage.BoxBlurFilter(bmp));
-        
+        ImageView iv_activity_home = (ImageView)findViewById(R.id.iv_activity_home);
+        iv_activity_home.setOnClickListener(onClickListener);
         RelativeLayout rl_activity_main_home = (RelativeLayout) findViewById(R.id.rl_activity_main_home);
         rl_activity_main_home.setOnClickListener(onClickListener);
         iv_activity_main_login_sina = (ImageView) findViewById(R.id.iv_activity_main_login_sina);
@@ -230,7 +232,10 @@ public class MainActivity extends ActivityGroup implements
                 platformSina.SSOSetting(true);
                 platformSina.showUser(null);
                 platformWhat = platformSina;
-                break;            
+                break;  
+            case R.id.iv_activity_home:
+                RightMenu();
+                break;
             }
         }
     };
@@ -310,8 +315,7 @@ public class MainActivity extends ActivityGroup implements
             Variable.cust_name = platformQQ.getDb().getUserName();
             iv_activity_main_login_sina.setVisibility(View.GONE);
             iv_activity_main_login_qq.setVisibility(View.GONE);
-            //TODO 获取auth_code
-            platfromIsLogin();
+            platfromIsLogin(platformQQ);
             //绑定
             Login(platformQQ.getDb().getUserId(), platformQQ.getDb()
                     .getUserName(), LocationProvince, LocationCity, platformQQ.getDb()
@@ -322,7 +326,7 @@ public class MainActivity extends ActivityGroup implements
             Variable.cust_name = platformSina.getDb().getUserName();
             iv_activity_main_login_sina.setVisibility(View.GONE);
             iv_activity_main_login_qq.setVisibility(View.GONE);
-            platfromIsLogin();
+            platfromIsLogin(platformSina);
             Login(platformSina.getDb().getUserId(), platformSina.getDb()
                     .getUserName(), LocationProvince, LocationCity, platformSina.getDb()
                     .getUserIcon(), "remark");
@@ -335,10 +339,14 @@ public class MainActivity extends ActivityGroup implements
     /**
      * 已经登录过,初始化数据
      */
-    private void platfromIsLogin(){
+    private void platfromIsLogin(Platform platform){
         bimage = BitmapFactory.decodeFile(Constant.BasePath + Constant.UserImage);
         if(bimage != null){            
             iv_activity_main_logo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
+        }else{
+            //TODO 获取图片
+            new Thread(new GetBitMapFromUrlThread(platform.getDb()
+                    .getUserIcon())).start();
         }
         SharedPreferences preferences = getSharedPreferences(
                 Constant.sharedPreferencesName, Context.MODE_PRIVATE);
@@ -605,14 +613,21 @@ public class MainActivity extends ActivityGroup implements
         Variable.defaultCenter = saveSettingData.getDefaultCenter();
     }
     
-	public boolean isNetworkConnected(Context context) {
-		if (context != null) {
-			ConnectivityManager mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-			NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
-			if (mNetworkInfo != null) {
-				return mNetworkInfo.isAvailable();
-			}
-		}
-		return false;
-	}
+    private void ShowBgImage(){
+        //读取本地图片
+        //bimage = BitmapFactory.decodeFile(Constant.BasePath + Constant.UserImage);
+        String Path = Constant.BasePath + Constant.BgImage;
+        Bitmap bgBitmap = BlurImage.decodeSampledBitmapFromPath(Path, 500, 500);
+        if(bgBitmap == null){
+            Log.e(TAG, "没有背景图片");
+            //高斯处理
+            bgBitmap = BlurImage.decodeSampledBitmapFromResource(getResources(), R.drawable.bg, 500, 500);
+            bgBitmap = BlurImage.BoxBlurFilter(bgBitmap);
+            GetSystem.saveImageSD(bgBitmap, Constant.BgImage);
+            iv_pic.setImageBitmap(bgBitmap);
+            GetSystem.displayBriefMemory(MainActivity.this);
+        }else{
+            iv_pic.setImageBitmap(BlurImage.decodeSampledBitmapFromPath(Path, 500, 500));
+        }
+    }    
 }
