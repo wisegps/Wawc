@@ -79,8 +79,8 @@ public class UploadUtil {
 	 * @param RequestURL
 	 *            请求的URL
 	 */
-	public void uploadFile(String filePath, String fileKey, String RequestURL,
-			Map<String, String> param) {
+	public void uploadFile(String filePath, String fileKey, String RequestURL, Map<String, String> param) {
+		Log.e("filePath",filePath);
 		if (filePath == null) {
 			sendMessage(UPLOAD_FILE_NOT_EXISTS_CODE,"文件不存在");
 			return;
@@ -193,6 +193,8 @@ public class UploadUtil {
 			dos.write(params.getBytes());
 			/**上传文件*/
 			InputStream is = new FileInputStream(file);
+			Log.e("onUploadProcessListener == null",(onUploadProcessListener == null) + "");
+			Log.e("file == null",(file == null)+"");
 			onUploadProcessListener.initUpload((int)file.length());
 			byte[] bytes = new byte[1024];
 			int len = 0;
@@ -227,8 +229,7 @@ public class UploadUtil {
 				}
 				result = sb1.toString();
 				Log.e(TAG, "result : " + result);
-				sendMessage(UPLOAD_SUCCESS_CODE, "上传结果："
-						+ result);
+				sendMessage(UPLOAD_SUCCESS_CODE, result);
 				return;
 			} else {
 				Log.e(TAG, "request error");
@@ -284,8 +285,7 @@ public class UploadUtil {
 	
 	
 
-	public void setOnUploadProcessListener(
-			OnUploadProcessListener onUploadProcessListener) {
+	public void setOnUploadProcessListener(OnUploadProcessListener onUploadProcessListener) {
 		this.onUploadProcessListener = onUploadProcessListener;
 	}
 

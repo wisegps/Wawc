@@ -48,20 +48,26 @@
         android:scrollbars="vertical"
         />
     
-    <LinearLayout
-        android:id="@+id/my_linearLayout"
+    <HorizontalScrollView
+        
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dip"
-        android:orientation="horizontal" >
-        
+        android:scrollbarAlwaysDrawHorizontalTrack="false">
+    <LinearLayout 
+        android:id="@+id/my_linearLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
         <ImageView 
             android:id="@+id/take_photo"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:background="@drawable/camera"
             />
-    </LinearLayout>
+        </LinearLayout>
+    </HorizontalScrollView>
     <Button 
         android:id="@+id/publish"
         android:layout_height="wrap_content"

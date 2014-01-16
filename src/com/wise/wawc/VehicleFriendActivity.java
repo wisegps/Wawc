@@ -121,11 +121,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				ActivityFactory.A.LeftMenu();
 				break;
 			case R.id.publish_article:  //发表新文章
-				if("".equals(Constant.qqUserName)){
-					Toast.makeText(getApplicationContext(), getString(R.string.please_login), 0).show();
-				}else{
-					startActivity(new Intent(VehicleFriendActivity.this,NewArticleActivity.class));
-				}
+				startActivity(new Intent(VehicleFriendActivity.this,NewArticleActivity.class));
 				break;
 			case R.id.home:
 				ActivityFactory.A.ToHome();

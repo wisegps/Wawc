@@ -45,4 +45,11 @@ public class Variable {
     public static String defaultCenter = "车辆位置";
     
     public static List<CarData> carDatas;
+    
+    public static int bigImageReqWidth = 80;
+    public static int bigImageReqHeight = 80;
+    
+    
+    public static int smallImageReqHeight = 300;
+    public static int smallImageReqWidth = 300;
 }
