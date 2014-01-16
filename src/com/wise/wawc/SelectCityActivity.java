@@ -84,9 +84,6 @@ public class SelectCityActivity extends Activity {
         Intent intent = getIntent();
         isWelcome = intent.getBooleanExtra("Welcome", false);
         GetCity();
-        
-        String Citys = intent.getStringExtra("Citys");
-        String Hot_Citys = intent.getStringExtra("Hot_Citys");
         cityDatas = GetCityList(Citys);
         hotDatas = GetCityList(Hot_Citys);
         

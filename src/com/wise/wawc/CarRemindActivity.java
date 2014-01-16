@@ -137,7 +137,7 @@ public class CarRemindActivity extends Activity{
 		gv_activity_car_remind.setStretchMode(GridView.NO_STRETCH);
 		gv_activity_car_remind.setNumColumns(Variable.carDatas.size());
 		gv_activity_car_remind.setOnItemClickListener(onItemClickListener);	
-		GetDealAdress();
+		
 		//ShowText(carData);
 		
 		OpenDateDialog.SetCustomDateListener(new OpenDateDialogListener() {			
@@ -276,20 +276,7 @@ public class CarRemindActivity extends Activity{
             tv_activity_car_remind_remind_renewal.setText(Insurance_date);
         }
 	}
-	/**
-	 * 获取处理地点
-	 */
-	private void GetDealAdress(){
-	    SharedPreferences preferences = getSharedPreferences(
-                Constant.sharedPreferencesName, Context.MODE_PRIVATE);
-        String LocationCity = preferences.getString(Constant.LocationCity, "深圳");
-        try {
-            String Url = Constant.BaseUrl + "location?auth_code="+Variable.auth_code + "@city=" + URLEncoder.encode(LocationCity, "UTF-8");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-	    
-	}
+	
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

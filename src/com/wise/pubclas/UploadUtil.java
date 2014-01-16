@@ -230,6 +230,7 @@ public class UploadUtil {
 				result = sb1.toString();
 				Log.e(TAG, "result : " + result);
 				sendMessage(UPLOAD_SUCCESS_CODE, result);
+				//sendMessage(UPLOAD_SUCCESS_CODE, "上传结果："+ result);
 				return;
 			} else {
 				Log.e(TAG, "request error");

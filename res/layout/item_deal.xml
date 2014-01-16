@@ -1,0 +1,62 @@
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textColor="@color/black"
+            android:text="沙河西路加油站" />
+        <ImageView 
+            android:id="@+id/iv_Collect"
+            android:layout_height="30dp"
+            android:layout_width="30dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_launcher"/>
+    </RelativeLayout>
+	<RelativeLayout
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content" 
+	        android:padding="10dp">
+	        <TextView
+	            android:id="@+id/tv_address"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_centerVertical="true"
+	            android:textColor="@color/black"
+	            android:text="地址沙河西路" />
+	        <ImageView 
+	            android:id="@+id/iv_location"
+	            android:layout_height="30dp"
+	            android:layout_width="30dp"
+	            android:layout_alignParentRight="true"
+	            android:src="@drawable/ic_launcher"/>
+	    </RelativeLayout>
+	    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" 
+            android:padding="10dp">
+            <TextView
+                android:id="@+id/tv_tel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textColor="@color/black"
+                android:text="电话" />
+            <ImageView 
+                android:id="@+id/iv_tel"
+                android:layout_height="30dp"
+                android:layout_width="30dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_launcher"/>
+        </RelativeLayout>
+</LinearLayout>
