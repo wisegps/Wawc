@@ -1,12 +1,15 @@
 package com.wise.pubclas;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -26,6 +29,7 @@ import android.graphics.BitmapFactory;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Message;
 import android.util.Log;
 
 public class GetSystem {
@@ -156,16 +160,41 @@ public class GetSystem {
         }
     }
 	/**
+	 * 从服务器读取文件
+	 * @param url
+	 * @return
+	 */
+	public static String getStringFromURL(String url){
+	    try {
+	        URL myURL = new URL(url);
+	        URLConnection httpsConn = (URLConnection) myURL.openConnection();
+	        httpsConn.setConnectTimeout(20*1000);
+	        httpsConn.setReadTimeout(20*1000);
+	        InputStreamReader insr = new InputStreamReader(httpsConn.getInputStream(), "UTF-8");
+	        BufferedReader br = new BufferedReader(insr, 1024);
+	        String data = "";
+	        String line = "";
+	        while ((line = br.readLine()) != null) {
+	            data += line;
+	        }
+	        insr.close();
+	        return data;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+	}
+	/**
 	 * 保存图片在sd卡上
 	 * @param bitmap
 	 * @param name 图片名称a.jpg
 	 */
-	public static void saveImageSD(Bitmap bitmap,String name){
-        File file = new File(Constant.BasePath);
+	public static void saveImageSD(Bitmap bitmap,String path,String name){
+        File file = new File(path);
         if(!file.exists()){            
             file.mkdirs();// 创建文件夹  
         }        
-        String fileName = Constant.BasePath + name;  
+        String fileName = path + name;  
         FileOutputStream b = null;
         try {  
             b = new FileOutputStream(fileName);  

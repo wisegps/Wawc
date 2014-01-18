@@ -1,5 +1,6 @@
 package com.wise.wawc;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -132,7 +134,6 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         recognizerDialog.setEngine("sms", "", null);
         recognizerDialog.setSampleRate(RATE.rate16k);
         sb = new StringBuffer();
-
         
         getSp();
         GetOldWeather();// 获取本地存储的数据
@@ -141,6 +142,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         GetFuel();
         registerBroadcastReceiver();
         GetDBCars();
+        new Thread(new getLogoThread()).start();
     }
 
     OnClickListener onClickListener = new OnClickListener() {
@@ -296,7 +298,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                     isHaveDefaultVehicleID = true;
                 }else{
                     carData.setCheck(false);
-                }                
+                }    
                 carData.setObj_id(obj_id);
                 carData.setObj_name(obj_name);
                 carData.setCar_brand(car_brand);
@@ -312,6 +314,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 carData.setMaintain_next_mileage(maintain_next_mileage);
                 carData.setBuy_date(buy_date);
                 carDatas.add(carData);
+                System.out.println(carData.toString());
             }
             cursor.close();
             db.close();
@@ -322,7 +325,71 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         Log.e("查询数据库完毕","查询数据库完毕");
         Variable.carDatas = carDatas;
     }
-
+    class getLogoThread extends Thread{
+        @Override
+        public void run() {
+            super.run();
+            getVehicleLogo();
+        }
+    }
+    /**
+     * 获取图片
+     */
+    private void getVehicleLogo(){
+        List<Brand> brands = new ArrayList<Brand>();
+        //读取车的品牌
+        String url = Constant.BaseUrl + "base/car_brand";
+        String result = GetSystem.getStringFromURL(url);
+        if(!result.equals("")){
+            try {
+                JSONArray jsonArray = new JSONArray(result);
+                for(int i = 0 ; i < jsonArray.length() ; i++){
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    Brand brand = new Brand();
+                    brand.setName(jsonObject.getString("name"));
+                    brand.setUrl_icon(jsonObject.getString("url_icon"));
+                    brands.add(brand);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        for(int i = 0 ; i < Variable.carDatas.size() ; i++){
+            String brand = Variable.carDatas.get(i).getCar_brand();
+            String imagePath = Constant.VehicleLogoPath + brand + ".jpg";//SD卡路径
+            if(new File(imagePath).isFile()){//存在
+                
+            }else{//不存在
+                for(int j = 0 ; j < brands.size() ; j++){
+                   String name =  brands.get(j).getName();
+                   if(name.equals(brand)){
+                       String imageUrl = Constant.ImageUrl + brands.get(j).getUrl_icon();
+                       Bitmap bitmap = GetSystem.getBitmapFromURL(imageUrl);
+                        if(bitmap != null){
+                            GetSystem.saveImageSD(bitmap,Constant.VehicleLogoPath, brand + ".jpg");
+                        }
+                       break;
+                   }
+                }
+            }
+        }
+    }
+    private class Brand{
+        String name;
+        String url_icon;
+        public String getName() {
+            return name;
+        }
+        public void setName(String name) {
+            this.name = name;
+        }
+        public String getUrl_icon() {
+            return url_icon;
+        }
+        public void setUrl_icon(String url_icon) {
+            this.url_icon = url_icon;
+        }
+    }
     /**
      * 判断未来天气是插入数据库or更新数据库
      * 

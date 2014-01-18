@@ -400,7 +400,7 @@ public class MainActivity extends ActivityGroup implements
             super.run();
             bimage = GetSystem.getBitmapFromURL(url);
             if(bimage != null){
-                GetSystem.saveImageSD(bimage, Constant.UserImage);
+                GetSystem.saveImageSD(bimage, Constant.picPath, Constant.UserImage);
             }
             Message message = new Message();
             message.what = Get_Pic;
@@ -637,7 +637,7 @@ public class MainActivity extends ActivityGroup implements
             //高斯处理
             bgBitmap = BlurImage.decodeSampledBitmapFromResource(getResources(), R.drawable.bg, 500, 500);
             bgBitmap = BlurImage.BoxBlurFilter(bgBitmap);
-            GetSystem.saveImageSD(bgBitmap, Constant.BgImage);
+            GetSystem.saveImageSD(bgBitmap,Constant.picPath, Constant.BgImage);
             iv_pic.setImageBitmap(bgBitmap);
             GetSystem.displayBriefMemory(MainActivity.this);
         }else{
