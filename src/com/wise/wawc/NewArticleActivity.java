@@ -173,15 +173,14 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 				}
 				String imageDatas = jsonDatas.toString();
 				String temp = "";
-				String temp1 = "";
+				Log.e("生成的数据：",imageDatas);
 				if(!"[]".equals(imageDatas)){
 					temp = imageDatas.replaceAll("\\\\", "");
-					temp1 = temp.replaceAll("\"", "");
 				}else{
 					temp = jsonDatas.toString();
 				}
-				temp1 = "[{big_pic:\"http://img.wisegps.cn/images/1389927715000.jpg\",small_pic:\"http://img.wisegps.cn/images/1389927715000.jpg\"}]";
-				//发表文章
+				Log.e("处理的数据：",temp);
+//				//发表文章
 				List<NameValuePair> params = new ArrayList<NameValuePair>();
 				params.add(new BasicNameValuePair("cust_id",Variable.cust_id));
 				params.add(new BasicNameValuePair("city",preferences.getString(Constant.LocationCity, "")));
@@ -189,11 +188,10 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 				params.add(new BasicNameValuePair("title","title"));
 				params.add(new BasicNameValuePair("content",et_publish_article.getText().toString().trim()));
 				
-				params.add(new BasicNameValuePair("pics",temp1));
+				params.add(new BasicNameValuePair("pics",temp));
 				params.add(new BasicNameValuePair("lon",String.valueOf(Variable.Lon)));
 				params.add(new BasicNameValuePair("lat",String.valueOf(Variable.Lat)));
 				new Thread(new NetThread.postDataThread(myHandler, Constant.BaseUrl + "blog?auth_code=" + Variable.auth_code, params, publishArticle)).start();
-				Log.e("替换之后：",temp1);
 				break;
 				
 			case publishArticle:

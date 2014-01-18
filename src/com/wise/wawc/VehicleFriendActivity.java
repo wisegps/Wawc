@@ -4,7 +4,13 @@ package com.wise.wawc;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.wise.data.Article;
 import com.wise.list.XListView;
@@ -61,7 +67,8 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	
 	private static final int setUserIcon = 4;
-	private List<Article> artList = null;
+	private static final int getArticleList = 10;
+	private List<Article> articleDataList = new ArrayList<Article>();
 	private ProgressDialog myDialog = null;
 	
 	protected void onCreate(Bundle savedInstanceState) {
@@ -90,7 +97,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		Message msg = new Message();
 		msg.what = setUserIcon;
 		myHandler.sendMessage(msg);
-		myAdapter = new MyAdapter(this,saySomething,artList);
+		myAdapter = new MyAdapter(this,saySomething,articleDataList);
 		articleList.setAdapter(myAdapter);
 	
 		
@@ -111,7 +118,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	private void bindDate() {
 		myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 		myDialog.setCancelable(true);
-		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code, 10)).start();
+		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code, getArticleList)).start();
 	}
 	
 	class ClickListener implements OnClickListener{
@@ -191,49 +198,81 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				}else{
 					qqUserName.setText("未登录");
 				}
-				
-				/**
-				 * 测试用
-				 */
-				List<Date> dates = new ArrayList<Date>();
-				Date date1 = new Date("2013/05/22 13:08:34");
-				//用这个日期测试
-				Date date2 = new Date("2014/06/21 18:28:14");
-				Date date3 = new Date("2014/06/20 13:08:34");
-				Date date4 = new Date("2014/06/19 13:08:34");
-				Date date5 = new Date("2014/03/22 13:08:34");
-				Date date6 = new Date("2013/04/24 13:08:34");
-				Date date7 = new Date("2013/03/22 13:08:34");
-				Date date8 = new Date("2013/02/22 13:08:34");
-				Date date9 = new Date("2013/01/22 13:08:34");
-				Date date10 = new Date("2013/06/22 13:08:34");
-				dates.add(date10);
-				dates.add(date9);
-				dates.add(date8);
-				dates.add(date7);
-				dates.add(date6);
-				dates.add(date5);
-				dates.add(date4);
-				dates.add(date3);
-				dates.add(date2);
-				dates.add(date1);
-				
-//				模拟说说列表
-				
-//				if(dBOperation.selectArticle(0, 10).size() == 0){
-//					for(int i = 0 ; i < 10 ; i ++){
-//						SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//						sdf.format(dates.get(i));
-//						dBOperation.newArticle(new Object[]{"张三",sdf.format(dates.get(i)),"宝马",0});
-//					}
-//				}
 				break;
-			case 10:
+			case getArticleList:
 				myDialog.dismiss();
-				Log.e("文章列表",msg.obj.toString());
+				String temp1 = (msg.obj.toString()).replaceAll("\\\\", "");
+//				jsonToList(temp1);
+				Log.e("文章列表",temp1);
+//				try {
+//					JSONArray jsonArray = new JSONArray(msg.obj.toString());
+					
+//					for(int i = 0 ; i < jsonArray.length() ; i ++){
+//						String picuter = jsonArray.getJSONObject(i).getString("pics");
+//						String temp = picuter.substring(2,(picuter.length() - 2));
+//						String temp1 = temp.replaceAll("\\\\", "");
+//						JSONArray json = new JSONArray(temp1);
+//						for(int j = 0 ; j < json.length() ; j ++){
+//							JSONObject jsonObject = json.getJSONObject(j);
+//							Log.e("小图", jsonObject.getString("small_pic"));
+//							Log.e("大图", jsonObject.getString("big_pic"));
+//						}
+//						Log.e("pics:",temp1);
+//					}
+					
+//				} catch (JSONException e) {
+//					e.printStackTrace();
+//				}
 				break;
 			}
 			super.handleMessage(msg);
 		}
+	}
+	
+	
+	public List<Article> jsonToList(String JSON){
+		try {
+		JSONArray jsonArray = new JSONArray(JSON);
+		for(int i = 0 ; i < jsonArray.length() ; i ++){
+			Article article = new Article();
+			String oneArticle = (jsonArray.getJSONObject(i).toString()).replaceAll("\\\\", "");
+			article.setJSONDatas(oneArticle);
+			article.set_id(Integer.valueOf(jsonArray.getJSONObject(i).getString("_id")));
+			article.set_v(Integer.valueOf(jsonArray.getJSONObject(i).getString("＿v")));
+			article.setBlog_id(Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
+			article.setCity(jsonArray.getJSONObject(i).getString("city"));
+			List<String> commentList = new ArrayList<String>();
+			if(!"[]".equals(jsonArray.getJSONObject(i).getString("comments"))){
+				
+			}
+			article.setCommentList(commentList);
+			article.setContent(jsonArray.getJSONObject(i).getString("content"));
+			article.setCreate_time(jsonArray.getJSONObject(i).getString("create_time"));
+			article.setCust_id(Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
+			
+			Map<String,String> imageListTemp = new HashMap<String,String>();
+			List<Map<String,String>> imageList = null;
+			if(!"[]".equals(jsonArray.getJSONObject(i).getString("pics"))){
+				String picuter = jsonArray.getJSONObject(i).getString("pics");
+				String temp = picuter.substring(2,(picuter.length() - 2));
+				String temp1 = temp.replaceAll("\\\\", "");
+				JSONArray json = new JSONArray(temp1);
+//				for(int j = 0 ; j < json.length() ; j ++){
+//					JSONObject jsonObject = json.getJSONObject(j);
+//					imageList = new 
+//					imageListTemp.put("small_pic", jsonObject.getString("small_pic"));
+//					imageListTemp.put("small_pic", jsonObject.getString("small_pic"));
+//					Log.e("小图", jsonObject.getString("small_pic"));
+//					Log.e("大图", jsonObject.getString("big_pic"));
+//				}
+			}
+			article.setImageList(imageList);
+		}
+		
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		
+		return articleDataList;
 	}
 }
