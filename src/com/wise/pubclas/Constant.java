@@ -20,6 +20,22 @@ public class Constant {
      */
     public static String BasePath = Environment.getExternalStorageDirectory().getPath() + "/wiwc/image/";
     /**
+     * 个人头像和其他图片
+     */
+    public static String picPath = BasePath + "/pic/";
+    /**
+     * 车友圈
+     */
+    public static String VehiclePath = BasePath + "/vehicle/";
+    /**
+     * 车品牌logo
+     */
+    public static String VehicleLogoPath = BasePath + "/vehicleLogo/";
+    /**
+     * 车品牌背景
+     */
+    public static String VehicleSpellPath = BasePath + "/vehicleSpell/";
+    /**
      * 个人头像
      */
     public static final String UserImage = "UserIcon.jpg";
