@@ -70,6 +70,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
     String LocationCity = "";// 城市
     int DefaultVehicleID;//默认选中车辆id
     List<CarData> carDatas = new ArrayList<CarData>();
+    boolean isNeedGetLogoFromUrl = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,7 +143,9 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         GetFuel();
         registerBroadcastReceiver();
         GetDBCars();
-        new Thread(new getLogoThread()).start();
+        if(isNeedGetLogoFromUrl){
+          new Thread(new getLogoThread()).start();
+        }        
     }
 
     OnClickListener onClickListener = new OnClickListener() {
@@ -313,6 +316,13 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 carData.setMaintain_last_mileage(maintain_last_mileage);
                 carData.setMaintain_next_mileage(maintain_next_mileage);
                 carData.setBuy_date(buy_date);
+                String imagePath = Constant.VehicleLogoPath + car_brand + ".jpg";//SD卡路径
+                if(new File(imagePath).isFile()){//存在
+                    carData.setLogoPath(imagePath);
+                }else{
+                    isNeedGetLogoFromUrl = true;
+                    carData.setLogoPath("");
+                }
                 carDatas.add(carData);
                 System.out.println(carData.toString());
             }
@@ -347,7 +357,9 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     Brand brand = new Brand();
                     brand.setName(jsonObject.getString("name"));
-                    brand.setUrl_icon(jsonObject.getString("url_icon"));
+                    if(jsonObject.opt("url_icon") != null){
+                        brand.setUrl_icon(jsonObject.getString("url_icon"));
+                    }                    
                     brands.add(brand);
                 }
             } catch (Exception e) {
@@ -355,10 +367,10 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
             }
         }
         for(int i = 0 ; i < Variable.carDatas.size() ; i++){
-            String brand = Variable.carDatas.get(i).getCar_brand();
+            String brand = Variable.carDatas.get(i).getCar_brand();            
             String imagePath = Constant.VehicleLogoPath + brand + ".jpg";//SD卡路径
             if(new File(imagePath).isFile()){//存在
-                
+                System.out.println("文件存在");
             }else{//不存在
                 for(int j = 0 ; j < brands.size() ; j++){
                    String name =  brands.get(j).getName();
@@ -367,6 +379,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                        Bitmap bitmap = GetSystem.getBitmapFromURL(imageUrl);
                         if(bitmap != null){
                             GetSystem.saveImageSD(bitmap,Constant.VehicleLogoPath, brand + ".jpg");
+                            Variable.carDatas.get(i).setLogoPath(imagePath);
                         }
                        break;
                    }
