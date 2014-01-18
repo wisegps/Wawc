@@ -1,17 +1,13 @@
 package com.wise.wawc;
 
 import cn.sharesdk.framework.ShareSDK;
-
 import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.sharesdk.OnekeyShare;
-
-import android.R.string;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -67,7 +63,12 @@ public class ShareLocationActivity extends Activity{
                 startActivityForResult(intent, 1); 
 				break;
 			case R.id.bt_activity_share:
-			    showShare(true, null);
+			    String content = et_share_content.getText().toString().trim();
+			    if(content.equals("")){
+			        Toast.makeText(ShareLocationActivity.this, "内容不能为空", Toast.LENGTH_SHORT).show();
+			    }else{
+			        showShare(true, null);
+			    }
 			    break;
 			}
 		}
@@ -110,17 +111,16 @@ public class ShareLocationActivity extends Activity{
     }
     
     private void showShare(boolean silent, String platform) {
-        System.out.println("分享");
         final OnekeyShare oks = new OnekeyShare();
         oks.setNotification(R.drawable.ic_launcher, "app_name");
         //oks.setAddress("12345678901");
         oks.setTitle("share");
         //oks.setTitleUrl("http://sharesdk.cn");
         oks.setText(et_share_content.getText().toString().trim());
-        //oks.setImagePath(MainActivity.TEST_IMAGE);
+        oks.setImagePath(imagePath);
         //oks.setImageUrl("http://img.appgo.cn/imgs/sharesdk/content/2013/07/25/1374723172663.jpg");
         //oks.setUrl("http://www.sharesdk.cn");
-        oks.setFilePath(imagePath);
+        //oks.setFilePath(imagePath);
         //oks.setComment("share");
         //oks.setSite("wise");
         //oks.setSiteUrl("http://sharesdk.cn");

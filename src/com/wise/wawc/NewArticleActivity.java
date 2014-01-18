@@ -180,7 +180,7 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 				}else{
 					temp = jsonDatas.toString();
 				}
-				temp1 = "[{big_pic:\"http://img.wisegps.cn/images/1389927715000.jpg\",small_pic:\"http://img.wisegps.cn/images/1389927715000.jpg\"}]";
+				temp1 = "[{big_pic:\"http://img.wisegps.cn/images/999.jpg\",small_pic:\"http://img.wisegps.cn/images/1389927715000.jpg\"}]";
 				//发表文章
 				List<NameValuePair> params = new ArrayList<NameValuePair>();
 				params.add(new BasicNameValuePair("cust_id",Variable.cust_id));

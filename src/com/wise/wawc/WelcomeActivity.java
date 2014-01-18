@@ -86,7 +86,10 @@ public class WelcomeActivity extends Activity {
                     for(int i = 0 ; i < jsonArray.length(); i++){
                         try {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            JSONArray jsonArray1 = jsonObject.getJSONArray("pics");
+                            String pics = jsonObject.getString("pics");
+                            pics = pics.substring(2, pics.length() - 2).replace("\\", ""); 
+                            System.out.println(pics);
+                            JSONArray jsonArray1 = new JSONArray(pics);
                             for(int j = 0 ; j < jsonArray1.length();j++){
                                 JSONObject jsonObject1 = jsonArray1.getJSONObject(j);                                
                                 System.out.println(jsonObject1.getString("big_pic"));
