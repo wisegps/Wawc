@@ -1,5 +1,8 @@
 package com.wise.wawc;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
@@ -47,6 +50,8 @@ public class WelcomeActivity extends Activity {
         }else{
             //跳转到登录界面
             new Thread(new WaitThread()).start();
+            //String url = "http://wiwc.api.wisegps.cn/customer/72/blog?auth_code=e660b98668665e34b06002df886d8828";
+            //new Thread(new NetThread.GetDataThread(handler, url, 999)).start();
         }
     }
     String citys = "";
@@ -75,6 +80,26 @@ public class WelcomeActivity extends Activity {
                 InsertCity(hot_citys, "hotCity");
                 TurnActivity();
                 break;
+            case 999:
+                try {
+                    JSONArray jsonArray = new JSONArray(msg.obj.toString());
+                    for(int i = 0 ; i < jsonArray.length(); i++){
+                        try {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            JSONArray jsonArray1 = jsonObject.getJSONArray("pics");
+                            for(int j = 0 ; j < jsonArray1.length();j++){
+                                JSONObject jsonObject1 = jsonArray1.getJSONObject(j);                                
+                                System.out.println(jsonObject1.getString("big_pic"));
+                                System.out.println(jsonObject1.getString("small_pic"));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            break;
             }
         }
     };
@@ -127,7 +152,7 @@ public class WelcomeActivity extends Activity {
         @Override
         public void run() {
             super.run();
-            try {
+            try {                
                 Thread.sleep(1000);
                 Message message = new Message();
                 message.what = Wait;

@@ -6,6 +6,8 @@ import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.sharesdk.OnekeyShare;
+
+import android.R.string;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -31,6 +33,7 @@ public class ShareLocationActivity extends Activity{
     EditText et_share_content;
     ImageView iv_photo;
     String[] mItem = {"救援","保险"};
+    String imagePath = "";
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,7 +83,8 @@ public class ShareLocationActivity extends Activity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {  
+        if (resultCode == Activity.RESULT_OK) {
+            imagePath = "";
             String sdStatus = Environment.getExternalStorageState();  
             if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用  
                 Toast.makeText(this, "没有多余内存",Toast.LENGTH_SHORT).show();
@@ -97,7 +101,8 @@ public class ShareLocationActivity extends Activity{
             GetSystem.saveImageSD(bitmap, Constant.ShareImage);
             //显示到控件上
             bitmap = BlurImage.decodeSampledBitmapFromPath(Constant.BasePath + Constant.ShareImage, 80, 80);            
-            if(bitmap != null){            
+            if(bitmap != null){  
+                imagePath = Constant.BasePath + Constant.ShareImage;
                 iv_photo.setImageBitmap(bitmap);
             }
             GetSystem.displayBriefMemory(ShareLocationActivity.this);
@@ -115,7 +120,7 @@ public class ShareLocationActivity extends Activity{
         //oks.setImagePath(MainActivity.TEST_IMAGE);
         //oks.setImageUrl("http://img.appgo.cn/imgs/sharesdk/content/2013/07/25/1374723172663.jpg");
         //oks.setUrl("http://www.sharesdk.cn");
-        //oks.setFilePath(MainActivity.TEST_IMAGE);
+        oks.setFilePath(imagePath);
         //oks.setComment("share");
         //oks.setSite("wise");
         //oks.setSiteUrl("http://sharesdk.cn");

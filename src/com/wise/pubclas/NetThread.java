@@ -72,6 +72,7 @@ public class NetThread {
 						data += line;
 					}
 					insr.close();
+					
 					Message message = new Message();
 					message.what = what;
 					message.obj = data;
