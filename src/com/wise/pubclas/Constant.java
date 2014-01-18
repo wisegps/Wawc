@@ -12,6 +12,10 @@ public class Constant {
      */
     public static String BaseUrl = "http://wiwc.api.wisegps.cn/";
     /**
+     * 图片地址"http://img.wisegps.cn/logo/"
+     */
+    public static String ImageUrl = "http://img.wisegps.cn/logo/";
+    /**
      * 图片路径存储地址
      */
     public static String BasePath = Environment.getExternalStorageDirectory().getPath() + "/wiwc/image/";
