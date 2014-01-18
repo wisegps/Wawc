@@ -232,6 +232,8 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		oneCarData = Variable.carDatas.get(chickIndex);
 		msg.what = showCarData;
 		myHandler.sendMessage(msg);
+		
+		Log.e("MyVehicleActivity---num:",Variable.carDatas.size() +  "");
 	}
 
 
@@ -253,9 +255,11 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				}
 				break;
 			case R.id.my_vehicle_brank:    //选择汽车品牌
+				Variable.carDatas.remove(newCarImage);
 				Intent intent = new Intent(MyVehicleActivity.this,CarBrankListActivity.class);
 				intent.putExtra("code", resultCodeBrank);
 				startActivityForResult(intent, resultCodeBrank);
+				Log.e("选择品牌：" ,Variable.carDatas.size() + "");
 				break;
 			case R.id.my_vehicle_device:    //我的终端
 				startActivity(new Intent(MyVehicleActivity.this,MyDevicesActivity.class));
@@ -332,9 +336,6 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 //				Log.e("需要更改的车辆id",carDataList.get(chickIndex).getObj_id() + "");
 				break;
 			case R.id.my_vehilce_delete:
-//				if(){
-//					
-//				}
 				myDialog = ProgressDialog.show(MyVehicleActivity.this, "提示", "正在删除...");
 				myDialog.setCancelable(true);
 				new Thread(new NetThread.DeleteThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).getObj_id() + "?auth_code=" + Variable.auth_code, deleteCarData)).start();

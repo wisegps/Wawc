@@ -74,8 +74,7 @@ import android.widget.Toast;
  * 
  * @author honesty
  */
-public class MainActivity extends ActivityGroup implements
-        PlatformActionListener {
+public class MainActivity extends ActivityGroup implements PlatformActionListener {
     private static final String TAG = "MainActivity";
 
     private static final int Login = 1; //登录

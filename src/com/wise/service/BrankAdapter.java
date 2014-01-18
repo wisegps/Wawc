@@ -30,7 +30,6 @@ public class BrankAdapter extends BaseAdapter {
 		notifyDataSetChanged();
 	}
 	final static class ViewHolder {
-		ImageView logoView;
 		TextView tvLetter;
 		TextView tvTitle;
 	}
@@ -49,7 +48,6 @@ public class BrankAdapter extends BaseAdapter {
 		if (convertView == null) {
 			viewHolder = new ViewHolder();
 			convertView = LayoutInflater.from(context).inflate(R.layout.brank_adapter_list, null);
-			viewHolder.logoView = (ImageView) convertView.findViewById(R.id.logo);
 			viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.list_brank);
 			viewHolder.tvLetter = (TextView) convertView.findViewById(R.id.list_letter);
 			
@@ -68,7 +66,6 @@ public class BrankAdapter extends BaseAdapter {
 				}else{
 					viewHolder.tvLetter.setVisibility(View.GONE);
 				}
-				viewHolder.logoView.setBackgroundResource(R.drawable.image);
 				viewHolder.tvTitle.setText(this.brankKList.get(position).getVehicleBrank());
 		return convertView;
 	}

@@ -1,4 +1,5 @@
 package com.wise.service;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.wise.data.Article;
@@ -47,7 +48,7 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 	private ImageView imageView;
 	private int imageNumber = 0;
 	
-	private List<Article> articleList;
+	private List<Article> articleList = null;
 	
 	int padding = 40;
 	public MyAdapter(Context context,View v,List<Article> articleList){

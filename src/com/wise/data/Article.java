@@ -1,58 +1,118 @@
 package com.wise.data;
+
+import java.util.List;
+import java.util.Map;
+
 /**
  * 说说数据
  * @author Mr.Wang
- * article_comment_id  外键   关联评论表
  */
 public class Article {
+	private String create_time;
+	private String city;
+	private String lat;
+	private String lon;
+	private String content;
+	private String title;
+	private String name;
+	private int cust_id;
+	private int blog_id;
+	private int _id;
+	private List<String> praisesList;
+	private List<String> commentList;
+	private List<Map<String,String>> imageList;
+	private int _v;
 	
-	private int article_id;
+	private String JSONDatas;   //一篇文章的所有数据
+	public String getCreate_time() {
+		return create_time;
+	}
+	public void setCreate_time(String create_time) {
+		this.create_time = create_time;
+	}
+	public String getCity() {
+		return city;
+	}
+	public void setCity(String city) {
+		this.city = city;
+	}
+	public String getLat() {
+		return lat;
+	}
+	public void setLat(String lat) {
+		this.lat = lat;
+	}
+	public String getLon() {
+		return lon;
+	}
+	public void setLon(String lon) {
+		this.lon = lon;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public int getCust_id() {
+		return cust_id;
+	}
+	public void setCust_id(int cust_id) {
+		this.cust_id = cust_id;
+	}
+	public int getBlog_id() {
+		return blog_id;
+	}
+	public void setBlog_id(int blog_id) {
+		this.blog_id = blog_id;
+	}
+	public int get_id() {
+		return _id;
+	}
+	public void set_id(int _id) {
+		this._id = _id;
+	}
+	public List<String> getPraisesList() {
+		return praisesList;
+	}
+	public void setPraisesList(List<String> praisesList) {
+		this.praisesList = praisesList;
+	}
+	public List<String> getCommentList() {
+		return commentList;
+	}
+	public void setCommentList(List<String> commentList) {
+		this.commentList = commentList;
+	}
+	public List<Map<String, String>> getImageList() {
+		return imageList;
+	}
+	public void setImageList(List<Map<String, String>> imageList) {
+		this.imageList = imageList;
+	}
+	public int get_v() {
+		return _v;
+	}
+	public void set_v(int _v) {
+		this._v = _v;
+	}
+	public String getJSONDatas() {
+		return JSONDatas;
+	}
+	public void setJSONDatas(String jSONDatas) {
+		JSONDatas = jSONDatas;
+	}
 	
-	private String publish_user;
-	
-	private String publish_time;
-	
-	private String publish_content;
-	
-	private int article_comment_id;
-
-	public int getArticle_id() {
-		return article_id;
-	}
-
-	public void setArticle_id(int article_id) {
-		this.article_id = article_id;
-	}
-
-	public String getPublish_user() {
-		return publish_user;
-	}
-
-	public void setPublish_user(String publish_user) {
-		this.publish_user = publish_user;
-	}
-
-	public String getPublish_time() {
-		return publish_time;
-	}
-
-	public void setPublish_time(String publish_time) {
-		this.publish_time = publish_time;
-	}
-
-	public String getPublish_content() {
-		return publish_content;
-	}
-
-	public void setPublish_content(String publish_content) {
-		this.publish_content = publish_content;
-	}
-
-	public int getArticle_comment_id() {
-		return article_comment_id;
-	}
-
-	public void setArticle_comment_id(int article_comment_id) {
-		this.article_comment_id = article_comment_id;
-	}
 }
