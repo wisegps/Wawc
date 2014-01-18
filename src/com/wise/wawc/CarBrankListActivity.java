@@ -192,7 +192,6 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 		for(int i=0; i<date.length; i++){
 			BrankModel sortModel = new BrankModel();
 			sortModel.setVehicleBrank(date[i]);
-			Log.e("表情库--->",date[i]);
 			//汉字转换成拼音
 			String pinyin = characterParser.getSelling(date[i]);
 			String sortString = pinyin.substring(0, 1).toUpperCase();
@@ -350,6 +349,7 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 				}else{
 					sb.append(jsonObj.get("name"));
 				}
+				
 				//获取logo  TODO
 			}
 			brankTemp = sb.toString().split(",");

@@ -35,16 +35,6 @@
     android:orientation="horizontal"
     android:layout_weight="1.0"
     >
-    <ImageView 
-        android:id="@+id/logo"
-        android:layout_width="40dip"
-        android:layout_height="fill_parent"
-        android:paddingLeft="5dip"
-        android:paddingTop="5dip"
-        android:paddingBottom="5dip"
-        android:background="@drawable/image"
-        />
-    
     <TextView
         android:id="@+id/list_brank"
         android:layout_width="fill_parent"

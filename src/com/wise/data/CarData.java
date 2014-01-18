@@ -43,8 +43,15 @@ public class CarData {
 	public String obj_name;
 	private String maintain_last_date;
 	public int CarLogo;
+	private String logoPath;
 	public boolean isCheck;
 		
+	public String getLogoPath() {
+		return logoPath;
+	}
+	public void setLogoPath(String logoPath) {
+		this.logoPath = logoPath;
+	}
 	public int getObj_id() {
         return obj_id;
     }
