@@ -84,6 +84,10 @@ public class Constant {
 	 */
 	public static final String sp_auth_code = "sp_auth_code";
 	/**
+	 * sp默认车辆
+	 */
+	public static final String DefaultVehicleID = "DefaultVehicleID";
+	/**
 	 * QQ登录返回的数据
 	 */
 	public static String qqUserName = "";

@@ -19,7 +19,6 @@ import android.widget.Scroller;
  * @author honesty
  */
 public class SlidingMenuView extends ViewGroup{
-	private static final String TAG = "SlidingMenuView";
     private static final int INVALID_SCREEN = -1;
     private static final int SNAP_VELOCITY = 600;
     private int mDefaultScreen = 1;
@@ -280,7 +279,7 @@ public class SlidingMenuView extends ViewGroup{
 						}
 					} else if (deltaX > 0) {
 					    if(getScrollX() >= rightWidth){
-	                        Log.d(TAG, "静止滑动");
+	                        
 	                    }else{
 	                        final int availableToScroll = getChildAt(
 	                                getChildCount() - 1).getRight()
@@ -304,7 +303,7 @@ public class SlidingMenuView extends ViewGroup{
 	
 	                if (velocityX > SNAP_VELOCITY && mCurrentScreen > 0) {//向左滑                
 	                    if(mCurrentScreen == 2){
-                            Log.d(TAG, "不要滚动");
+                            
                         }else{                            
                             snapToScreen(mCurrentScreen - 1);
                         }
