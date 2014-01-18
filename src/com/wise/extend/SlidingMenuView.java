@@ -248,9 +248,6 @@ public class SlidingMenuView extends ViewGroup{
 
         final int action = ev.getAction();
         final float x = ev.getX();
-
-        //这里处理滑动否  在评论文章时 不应该滑动（与选择表情滑动分页冲突）  TODO
-        //if(MyAdapter.isClick != true){
 	        switch (action) {
 	        case MotionEvent.ACTION_DOWN:
 	            /*
@@ -330,7 +327,6 @@ public class SlidingMenuView extends ViewGroup{
 	        case MotionEvent.ACTION_CANCEL:
 	            mTouchState = TOUCH_STATE_REST;
 	        }
-        //}
         return true;
     }
     

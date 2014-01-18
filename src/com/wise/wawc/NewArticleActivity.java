@@ -136,6 +136,12 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 								myDialog = ProgressDialog.show(NewArticleActivity.this, "图片上传", "正在上传");
 								myDialog.setCancelable(true);
 								UploadUtil.getInstance().uploadFile(bitmapList.get(0).get(imageSize).toString(), "image", Constant.BaseUrl + "upload_image?auth_code=" + Variable.auth_code, new HashMap<String, String>());
+							}else{
+								myDialog = ProgressDialog.show(NewArticleActivity.this, "图片上传", "正在上传");
+								myDialog.setCancelable(true);
+								Message msg = new Message();
+								msg.what = removeImageCode;
+								myHandler.sendMessage(msg);
 							}
 						}else{
 							Toast.makeText(getApplicationContext(), "城市未选择",0).show();
@@ -165,7 +171,16 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 						linearLayout.removeView(viewList.get(i));
 					}
 				}
-				
+				String imageDatas = jsonDatas.toString();
+				String temp = "";
+				String temp1 = "";
+				if(!"[]".equals(imageDatas)){
+					temp = imageDatas.replaceAll("\\\\", "");
+					temp1 = temp.replaceAll("\"", "");
+				}else{
+					temp = jsonDatas.toString();
+				}
+				temp1 = "[{big_pic:\"http://img.wisegps.cn/images/1389927715000.jpg\",small_pic:\"http://img.wisegps.cn/images/1389927715000.jpg\"}]";
 				//发表文章
 				List<NameValuePair> params = new ArrayList<NameValuePair>();
 				params.add(new BasicNameValuePair("cust_id",Variable.cust_id));
@@ -174,11 +189,11 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 				params.add(new BasicNameValuePair("title","title"));
 				params.add(new BasicNameValuePair("content",et_publish_article.getText().toString().trim()));
 				
-				params.add(new BasicNameValuePair("pics",jsonDatas.toString()));
+				params.add(new BasicNameValuePair("pics",temp1));
 				params.add(new BasicNameValuePair("lon",String.valueOf(Variable.Lon)));
 				params.add(new BasicNameValuePair("lat",String.valueOf(Variable.Lat)));
 				new Thread(new NetThread.postDataThread(myHandler, Constant.BaseUrl + "blog?auth_code=" + Variable.auth_code, params, publishArticle)).start();
-				Log.e("图片数据：",jsonDatas.toString());
+				Log.e("替换之后：",temp1);
 				break;
 				
 			case publishArticle:

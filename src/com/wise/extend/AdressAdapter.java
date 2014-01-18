@@ -1,20 +1,33 @@
 package com.wise.extend;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.wise.data.AdressData;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
+import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
 import com.wise.wawc.HomeActivity;
 import com.wise.wawc.MyCollectionActivity;
+import com.wise.wawc.MyVehicleActivity;
 import com.wise.wawc.R;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +35,7 @@ import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 /**
  * 地点信息
  * @author honesty
@@ -32,12 +46,16 @@ public class AdressAdapter extends BaseAdapter{
 	Activity mActivity;
 	List<AdressData> adressDatas;
 	LayoutInflater mInflater;
-	
+	ProgressDialog myDialog = null;
+	private MyHandler myHandler = null;
+	private static final int addFavorite = 1;
+	AdressData adressData = null;
 	public AdressAdapter(Context context,List<AdressData> adressDatas,Activity mActivity){
 		this.context = context;
 		this.adressDatas = adressDatas;
 		this.mActivity = mActivity;
 		mInflater = LayoutInflater.from(context);
+		myHandler = new MyHandler();
 	}
 	@Override
 	public int getCount() {
@@ -69,7 +87,7 @@ public class AdressAdapter extends BaseAdapter{
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		final AdressData adressData = adressDatas.get(position);
+		adressData = adressDatas.get(position);
 		holder.tv_item_dealadress_name.setText(adressData.getName());
 		if(adressData.getDistance() != -1){
 			holder.tv_item_dealadress_distance.setText(adressData.getDistance() + "m");
@@ -89,15 +107,25 @@ public class AdressAdapter extends BaseAdapter{
 		holder.bt_item_dealadress_collection.setOnClickListener(new OnClickListener() {				
 			@Override
 			public void onClick(View v) {
-			    DBExcute dbExcute = new DBExcute();
-		        ContentValues values = new ContentValues();
-		        values.put("name", adressData.getName());
-		        values.put("address", adressData.getAdress());
-		        values.put("tel", adressData.getPhone());
-		        values.put("lon", adressData.getLon());
-		        values.put("lat", adressData.getLat());
-		        dbExcute.InsertDB(mActivity, values, Constant.TB_Collection);
-				mActivity.startActivity(new Intent(mActivity, MyCollectionActivity.class));
+				
+				//TODO  更新服务器   成功之后再操作 数据库
+				
+				if("".equals(Variable.auth_code)){
+					Toast.makeText(context, "请登录",0).show();
+					return;
+				}else{
+					myDialog = ProgressDialog.show(context,"提示", "收藏中...");
+					myDialog.setCancelable(true);
+					List<NameValuePair> params = new ArrayList<NameValuePair>();
+					params.add(new BasicNameValuePair("cust_id", Variable.cust_id));
+					params.add(new BasicNameValuePair("name", adressData.getName()));
+					params.add(new BasicNameValuePair("address", adressData.getAdress()));
+					params.add(new BasicNameValuePair("tel", adressData.getPhone()));
+					params.add(new BasicNameValuePair("lon", String.valueOf(adressData.getLon())));
+					params.add(new BasicNameValuePair("lat", String.valueOf(adressData.getLat())));
+					
+					new Thread(new NetThread.postDataThread(myHandler, Constant.BaseUrl + "favorite?auth_code=" + Variable.auth_code, params, addFavorite)).start();
+				}
 			}
 		});
 		//拨打电话
@@ -124,5 +152,37 @@ public class AdressAdapter extends BaseAdapter{
 	private class ViewHolder {
 		TextView tv_item_dealadress_name,tv_item_dealadress_adress,tv_item_dealadress_phone,tv_item_dealadress_distance;
 		Button bt_item_dealadress_collection,bt_item_dealadress_call,bt_item_dealadress_navigation;
+	}
+	
+	class MyHandler extends Handler{
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			switch(msg.what){
+			case addFavorite:
+				myDialog.dismiss();
+				Log.e("执行添加的结果：",msg.obj.toString());
+				try {
+					JSONObject jsonObject = new JSONObject(msg.obj.toString());
+					if(Integer.valueOf(jsonObject.getString("status_code")) == 0){
+						
+						DBExcute dbExcute = new DBExcute();
+				        ContentValues values = new ContentValues();
+				        values.put("Cust_id", Variable.cust_id);
+				        values.put("favorite_id", jsonObject.getString("favorite_id"));
+				        values.put("name", adressData.getName());
+				        values.put("address", adressData.getAdress());
+				        values.put("tel", adressData.getPhone());
+				        values.put("lon", adressData.getLon());
+				        values.put("lat", adressData.getLat());
+				        dbExcute.InsertDB(mActivity, values, Constant.TB_Collection);
+						Toast.makeText(mActivity, "添加成功", 0).show();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
+				break;
+			}
+		}
 	}
 }

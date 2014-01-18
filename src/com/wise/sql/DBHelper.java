@@ -26,7 +26,7 @@ public class DBHelper extends SQLiteOpenHelper{
 	//我的终端
 	private static final String CREATE_TB_Devices = "create table " + Constant.TB_Devices + "(_id integer primary key autoincrement,Cust_id text,DeviceID int,Content text)";
 	//我的收藏
-	private static final String CREATE_TB_Collection = "create table " + Constant.TB_Collection + "(_id integer primary key autoincrement,Cust_id text,name text,address text,tel text,lon text,lat text)";
+	private static final String CREATE_TB_Collection = "create table " + Constant.TB_Collection + "(_id integer primary key autoincrement,Cust_id text,favorite_id text,name text,address text,tel text,lon text,lat text)";
 	
 	public DBHelper(Context context){
 		super(context,DB_NAME,null,VERSION);

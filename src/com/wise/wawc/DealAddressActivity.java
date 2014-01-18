@@ -70,6 +70,7 @@ public class DealAddressActivity extends Activity {
             super.handleMessage(msg);
             switch (msg.what) {
             case get_deal:
+            	Log.e("处理地点数据：",msg.obj.toString());
                 jsonDealAdress(msg.obj.toString());
                 DealAdapter dealAdapter = new DealAdapter();
                 lv_activity_dealadress.setAdapter(dealAdapter);

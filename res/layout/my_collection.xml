@@ -32,15 +32,12 @@
             android:layout_weight="1"
             android:background="@drawable/ic_launcher" />
     </LinearLayout>
-    <View 
-        android:layout_width="fill_parent"
-        android:layout_height="1dip"
-        android:background="#000000"
-        />	
-    <ListView 
+    <com.wise.list.XListView 
         android:id="@+id/my_collection_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        ></ListView>
+        android:background="#00FFFFFF"
+        android:scrollingCache="false"
+        ></com.wise.list.XListView>
     
 </LinearLayout>

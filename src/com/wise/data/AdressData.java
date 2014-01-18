@@ -1,6 +1,7 @@
 package com.wise.data;
 
 public class AdressData {
+	private int _id;
 	private String name;
 	private String adress;
 	private String phone;
@@ -42,6 +43,12 @@ public class AdressData {
 	}
 	public void setDistance(int distance) {
 		this.distance = distance;
+	}
+	public int get_id() {
+		return _id;
+	}
+	public void set_id(int _id) {
+		this._id = _id;
 	}
 	@Override
 	public String toString() {
