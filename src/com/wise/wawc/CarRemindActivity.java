@@ -1,7 +1,5 @@
 package com.wise.wawc;
 
-import java.net.URLEncoder;
-
 import com.wise.data.CarData;
 import com.wise.extend.CarAdapter;
 import com.wise.extend.OpenDateDialog;
@@ -138,7 +136,11 @@ public class CarRemindActivity extends Activity{
 		gv_activity_car_remind.setNumColumns(Variable.carDatas.size());
 		gv_activity_car_remind.setOnItemClickListener(onItemClickListener);	
 		
-		//ShowText(carData);
+		if(Variable.carDatas != null && Variable.carDatas.size() > 0){
+		    carData = Variable.carDatas.get(0);
+		    ShowText(carData);
+		}
+		
 		
 		OpenDateDialog.SetCustomDateListener(new OpenDateDialogListener() {			
 			@Override

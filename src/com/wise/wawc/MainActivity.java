@@ -497,15 +497,18 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         message.what = Login;
         handler.sendMessage(message);
     }
-
+    /**
+     * 好友主页
+     */
     public void ToFriendHome() {
         if (platformQQ.getDb().isValid() || platformSina.getDb().isValid()) {
-            Intent i = new Intent(MainActivity.this, FriendHomeActivity.class);
-            View v = getLocalActivityManager().startActivity(
-                    FriendHomeActivity.class.getName(), i).getDecorView();
-            tabcontent.removeAllViews();
-            tabcontent.addView(v);
-            slidingMenuView.snapToScreen(1);
+            startActivity(new Intent(MainActivity.this, FriendHomeActivity.class));
+//            Intent i = new Intent(MainActivity.this, FriendHomeActivity.class);
+//            View v = getLocalActivityManager().startActivity(
+//                    FriendHomeActivity.class.getName(), i).getDecorView();
+//            tabcontent.removeAllViews();
+//            tabcontent.addView(v);
+//            slidingMenuView.snapToScreen(1);
         } else {
             Toast.makeText(getApplicationContext(), "请登录", Toast.LENGTH_SHORT)
                     .show();

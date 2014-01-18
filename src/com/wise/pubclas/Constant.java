@@ -12,9 +12,29 @@ public class Constant {
      */
     public static String BaseUrl = "http://wiwc.api.wisegps.cn/";
     /**
+     * 图片地址"http://img.wisegps.cn/logo/"
+     */
+    public static String ImageUrl = "http://img.wisegps.cn/logo/";
+    /**
      * 图片路径存储地址
      */
     public static String BasePath = Environment.getExternalStorageDirectory().getPath() + "/wiwc/image/";
+    /**
+     * 个人头像和其他图片
+     */
+    public static String picPath = BasePath + "/pic/";
+    /**
+     * 车友圈
+     */
+    public static String VehiclePath = BasePath + "/vehicle/";
+    /**
+     * 车品牌logo
+     */
+    public static String VehicleLogoPath = BasePath + "/vehicleLogo/";
+    /**
+     * 车品牌背景
+     */
+    public static String VehicleSpellPath = BasePath + "/vehicleSpell/";
     /**
      * 个人头像
      */
@@ -83,6 +103,10 @@ public class Constant {
 	 * 用户auth_code
 	 */
 	public static final String sp_auth_code = "sp_auth_code";
+	/**
+	 * sp默认车辆
+	 */
+	public static final String DefaultVehicleID = "DefaultVehicleID";
 	/**
 	 * QQ登录返回的数据
 	 */

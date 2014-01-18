@@ -66,7 +66,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
 
     String LocationCityCode = "";// 城市编码
     String LocationCity = "";// 城市
-
+    int DefaultVehicleID;//默认选中车辆id
     List<CarData> carDatas = new ArrayList<CarData>();
 
     @Override
@@ -133,16 +133,8 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         recognizerDialog.setSampleRate(RATE.rate16k);
         sb = new StringBuffer();
 
-        SharedPreferences preferences = getSharedPreferences(
-                Constant.sharedPreferencesName, Context.MODE_PRIVATE);
-        LocationCityCode = preferences.getString(Constant.LocationCityCode,
-                "101280601");
-        LocationCity = preferences.getString(Constant.LocationCity, "深圳");
-        String LocationCityFuel = preferences.getString(
-                Constant.LocationCityFuel, "");
-        Log.d(TAG, "LocationCityFuel = " + LocationCityFuel);
-        jsonFuel(LocationCityFuel);
-
+        
+        getSp();
         GetOldWeather();// 获取本地存储的数据
         GetFutureWeather();
         GetRealTimeWeather();
@@ -225,6 +217,17 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
             }
         }
     };
+    
+    private void getSp(){
+        SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+        LocationCityCode = preferences.getString(Constant.LocationCityCode,"101280601");
+        LocationCity = preferences.getString(Constant.LocationCity, "深圳");
+        String LocationCityFuel = preferences.getString(Constant.LocationCityFuel, "");
+        //默认显示车的object_id
+        DefaultVehicleID = preferences.getInt(Constant.DefaultVehicleID, 0);
+        tv_item_weather_city.setText(LocationCity);
+        jsonFuel(LocationCityFuel);
+    }
 
     boolean isHaveOldFutureWeather = false;
     boolean isHaveOldRealTimeWeather = false;
@@ -269,6 +272,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
             SQLiteDatabase db = dbHelper.getReadableDatabase();            
             Cursor cursor = db.rawQuery("select * from " + Constant.TB_Vehicle + " where Cust_id=?", new String[] {Variable.cust_id });
             Log.e("数据库数据总数：" , cursor.getCount() + "");
+            boolean isHaveDefaultVehicleID = false;
             while (cursor.moveToNext()) {
                 int obj_id = cursor.getInt(cursor.getColumnIndex("obj_id"));
                 String obj_name =  cursor.getString(cursor.getColumnIndex("obj_name"));
@@ -287,7 +291,12 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 
                 CarData carData = new CarData();
                 carData.setCarLogo(1);
-                carData.setCheck(false);
+                if(DefaultVehicleID == obj_id){
+                    carData.setCheck(true);
+                    isHaveDefaultVehicleID = true;
+                }else{
+                    carData.setCheck(false);
+                }                
                 carData.setObj_id(obj_id);
                 carData.setObj_name(obj_name);
                 carData.setCar_brand(car_brand);
@@ -306,7 +315,10 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
             }
             cursor.close();
             db.close();
-        }     
+            if(carDatas.size() > 0 && (!isHaveDefaultVehicleID)){
+                carDatas.get(0).setCheck(true);
+            }            
+        }
         Log.e("查询数据库完毕","查询数据库完毕");
         Variable.carDatas = carDatas;
     }
@@ -643,6 +655,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         Log.d(TAG, "requestCode = " + requestCode + " , resultCode = " + resultCode);
         if(resultCode == 1){
             Log.d(TAG, "城市设置完毕");
+            getSp();
             GetFutureWeather();
             GetRealTimeWeather();
             GetFuel();

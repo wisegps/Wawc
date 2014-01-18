@@ -180,7 +180,6 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 					temp = jsonDatas.toString();
 				}
 				Log.e("处理的数据：",temp);
-//				//发表文章
 				List<NameValuePair> params = new ArrayList<NameValuePair>();
 				params.add(new BasicNameValuePair("cust_id",Variable.cust_id));
 				params.add(new BasicNameValuePair("city",preferences.getString(Constant.LocationCity, "")));
