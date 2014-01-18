@@ -1,10 +1,15 @@
 package com.wise.service;
 
+import java.util.List;
+
 import com.baidu.mapapi.navi.BaiduMapNavigation;
 
 import com.baidu.mapapi.navi.BaiduMapAppNotSupportNaviException;
 import com.baidu.mapapi.navi.NaviPara;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
+import com.wise.data.AdressData;
+import com.wise.data.CarData;
+import com.wise.pubclas.Variable;
 import com.wise.wawc.R;
 
 import android.app.Activity;
@@ -29,32 +34,45 @@ public class CollectionAdapter extends BaseAdapter {
 	private LayoutInflater layoutInflater;
 	private ImageView call;
 	private TextView tel;
+	private TextView addressTV = null;
+	private TextView nameTV = null;
 	private View navigation = null;
+	List<AdressData> adrDataList = null;
 	
 	//天安门坐标
-	double mLat1 = 39.915291; 
-   	double mLon1 = 116.403857; 
+	double currentLat = Variable.Lat; 
+   	double currentLon = Variable.Lon; 
    	//百度大厦坐标
-   	double mLat2 = 40.056858;   
-   	double mLon2 = 116.308194;
-	public CollectionAdapter(Context context){
+   	double goToLat = 0d;   
+   	double goToLon = 0d;
+	public CollectionAdapter(Context context,List<AdressData> adrDataList){
 		this.context = context;
 		layoutInflater = LayoutInflater.from(context);
+		this.adrDataList = adrDataList;  
 	}
 	public int getCount() {
-		return 10;
+		return this.adrDataList.size();
 	}
 	public Object getItem(int position) {
-		return null;
+		return this.adrDataList.get(position);
 	}
 	public long getItemId(int position) {
-		return 0;
+		return position;
 	}
 	public View getView(int position, View convertView, ViewGroup parent) {
 		convertView = layoutInflater.inflate(R.layout.collection_list, null);
-		call = (ImageView) convertView.findViewById(R.id.collection_call);
-		tel = (TextView) convertView.findViewById(R.id.collection_tel);
-		navigation = convertView.findViewById(R.id.navigation);
+		call = (ImageView) convertView.findViewById(R.id.collection_iv_call_phone);
+		addressTV = (TextView) convertView.findViewById(R.id.collection_tv_address);
+		tel = (TextView) convertView.findViewById(R.id.collection_tv_tel);
+		nameTV = (TextView) convertView.findViewById(R.id.collection_tv_name);
+		addressTV.setText(this.adrDataList.get(position).getAdress());
+		tel.setText(this.adrDataList.get(position).getPhone());
+		nameTV.setText(this.adrDataList.get(position).getName());
+		
+		goToLat = this.adrDataList.get(position).getLat();
+		goToLon = this.adrDataList.get(position).getLon();
+		
+		navigation = convertView.findViewById(R.id.collection_iv_go_here);
 		navigation.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				//TODO   切换到导航页面
@@ -73,12 +91,17 @@ public class CollectionAdapter extends BaseAdapter {
 		});
 		return convertView;
 	}
-	   public void startNavi(){		
-			int lat = (int) (mLat1 *1E6);
-		   	int lon = (int) (mLon1 *1E6);   	
+	//刷新数据
+	public void refish(List<AdressData> adrDataList){
+		this.adrDataList = adrDataList;
+		CollectionAdapter.this.notifyDataSetChanged();
+	}
+	public void startNavi(){		
+			int lat = (int) (currentLat *1E6);
+		   	int lon = (int) (currentLon *1E6);   	
 		   	GeoPoint pt1 = new GeoPoint(lat, lon);
-			lat = (int) (mLat2 *1E6);
-		   	lon = (int) (mLon2 *1E6);
+			lat = (int) (goToLat *1E6);
+		   	lon = (int) (goToLon *1E6);
 		    GeoPoint pt2 = new GeoPoint(lat, lon);
 		    // 构建 导航参数
 	        NaviPara para = new NaviPara();
