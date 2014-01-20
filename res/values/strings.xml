@@ -117,6 +117,7 @@
     <string name="travels">车辆行程</string>
     <!-- 我的账户 -->
     <string name="contact_note">联系方式(用于购物发货)</string>
+    <string name="login_out">注销</string>
     
     <string name="please_login">请登录</string>
     

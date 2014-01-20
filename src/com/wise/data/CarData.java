@@ -149,7 +149,7 @@ public class CarData {
 	public void setMaintain_last_date(String maintain_last_date) {
 		this.maintain_last_date = maintain_last_date;
 	}
-	@Override
+    @Override
     public String toString() {
         return "CarData [obj_id=" + obj_id + ", car_brand=" + car_brand
                 + ", car_series=" + car_series + ", car_type=" + car_type
@@ -161,6 +161,7 @@ public class CarData {
                 + ", maintain_last_mileage=" + maintain_last_mileage
                 + ", maintain_next_mileage=" + maintain_next_mileage
                 + ", buy_date=" + buy_date + ", obj_name=" + obj_name
-                + ", isCheck=" + isCheck + "]";
+                + ", maintain_last_date=" + maintain_last_date + ", logoPath="
+                + logoPath + ", isCheck=" + isCheck + "]";
     }	
 }
