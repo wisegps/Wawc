@@ -2,8 +2,11 @@ package com.wise.extend;
 
 import java.util.List;
 import com.wise.data.CarData;
+import com.wise.pubclas.BlurImage;
+import com.wise.pubclas.Constant;
 import com.wise.wawc.R;
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,7 +58,16 @@ public class CarAdapter extends BaseAdapter{
 		}
 		CarData carData = carDatas.get(position);
 		holder.tv_item_carnumber.setText(carData.getObj_name());
-		holder.iv_item_cars.setImageResource(R.drawable.ic_launcher);
+		if(carData.getLogoPath().equals("")){
+		    holder.iv_item_cars.setImageResource(R.drawable.ic_launcher);
+		}else{
+		    Bitmap bitmap = BlurImage.decodeSampledBitmapFromPath(carData.getLogoPath(), 80, 80);            
+            if(bitmap != null){
+                holder.iv_item_cars.setImageBitmap(bitmap);
+            }else{
+                holder.iv_item_cars.setImageResource(R.drawable.ic_launcher);
+            }
+		}
 		if(carData.isCheck()){
 			holder.ll_item_cars.setBackgroundResource(R.color.bkg1);
 		}else{
