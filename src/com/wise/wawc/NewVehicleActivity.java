@@ -357,7 +357,6 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 					dBExcute.InsertDB(NewVehicleActivity.this, value, Constant.TB_Vehicle);
 					
 				    CarData carData = new CarData();
-	                carData.setCarLogo(1);
 	                carData.setCheck(false);
 	                carData.setObj_id(Integer.parseInt(obj_id));
 	                carData.setObj_name(carNumber.getText().toString().trim());

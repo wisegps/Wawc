@@ -22,19 +22,19 @@ public class Constant {
     /**
      * 个人头像和其他图片
      */
-    public static String picPath = BasePath + "/pic/";
+    public static String picPath = BasePath + "pic/";
     /**
      * 车友圈
      */
-    public static String VehiclePath = BasePath + "/vehicle/";
+    public static String VehiclePath = BasePath + "vehicle/";
     /**
      * 车品牌logo
      */
-    public static String VehicleLogoPath = BasePath + "/vehicleLogo/";
+    public static String VehicleLogoPath = BasePath + "vehicleLogo/";
     /**
      * 车品牌背景
      */
-    public static String VehicleSpellPath = BasePath + "/vehicleSpell/";
+    public static String VehicleSpellPath = BasePath + "vehicleSpell/";
     /**
      * 个人头像
      */

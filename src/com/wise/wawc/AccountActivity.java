@@ -88,6 +88,7 @@ public class AccountActivity extends Activity{
 				Platform platformSina = ShareSDK.getPlatform(AccountActivity.this,SinaWeibo.NAME);
 				platformQQ.removeAccount();
 				platformSina.removeAccount();
+				removeData();
 				Constant.qqUserName = "";
 				finish();
 				break;
@@ -146,7 +147,7 @@ public class AccountActivity extends Activity{
 	 * 获取本地数据
 	 */
 	private void GetSfData(){
-	    Bitmap bimage = BitmapFactory.decodeFile(Constant.BasePath + Constant.UserImage);
+	    Bitmap bimage = BitmapFactory.decodeFile(Constant.picPath + Constant.UserImage);
         if(bimage != null){            
             iv_activity_account_pic.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
         }
@@ -185,5 +186,16 @@ public class AccountActivity extends Activity{
         params.add(new BasicNameValuePair("tel", phone));
         
         new Thread(new NetThread.putDataThread(handler, url, params, Update_data)).start();
+	}
+	/**
+	 * 删除数据
+	 */
+	private void removeData(){
+	    SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+        Editor editor = preferences.edit();               
+        editor.putString(Constant.Consignee, "");
+        editor.putString(Constant.Adress, "");
+        editor.putString(Constant.Phone, "");
+        editor.commit();
 	}
 }

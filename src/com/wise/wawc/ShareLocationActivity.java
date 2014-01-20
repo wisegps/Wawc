@@ -97,13 +97,13 @@ public class ShareLocationActivity extends Activity{
             //bitmap.recycle();
             //bitmap = null;            
             //修改图片大小
-            bitmap = BlurImage.decodeSampledBitmapFromPath(Constant.BasePath + Constant.ShareImage, 480, 800);
+            bitmap = BlurImage.decodeSampledBitmapFromPath(Constant.picPath + Constant.ShareImage, 480, 800);
             //再存储到sd卡
             GetSystem.saveImageSD(bitmap,Constant.picPath, Constant.ShareImage);
             //显示到控件上
-            bitmap = BlurImage.decodeSampledBitmapFromPath(Constant.BasePath + Constant.ShareImage, 80, 80);            
+            bitmap = BlurImage.decodeSampledBitmapFromPath(Constant.picPath + Constant.ShareImage, 80, 80);            
             if(bitmap != null){  
-                imagePath = Constant.BasePath + Constant.ShareImage;
+                imagePath = Constant.picPath + Constant.ShareImage;
                 iv_photo.setImageBitmap(bitmap);
             }
             GetSystem.displayBriefMemory(ShareLocationActivity.this);

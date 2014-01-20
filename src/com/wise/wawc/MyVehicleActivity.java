@@ -178,7 +178,6 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		
 		//车辆数据
 		newCarImage = new CarData();
-		newCarImage.setCarLogo(R.drawable.new_vehicle);
 		Variable.carDatas.add(newCarImage);
 		int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, getResources().getDisplayMetrics());
 		LayoutParams params = new LayoutParams(Variable.carDatas.size() * (px + 10),LayoutParams.WRAP_CONTENT);
