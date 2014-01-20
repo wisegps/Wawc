@@ -686,4 +686,10 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
             }  
         }
 	}
+	protected void onPause() {
+		super.onPause();
+		if("newVehicle".equals(Variable.carDatas.get(Variable.carDatas.size() - 1).getCar_brand())){
+			Variable.carDatas.remove(newCarImage);
+		}
+	}
 }

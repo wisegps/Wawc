@@ -66,6 +66,14 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 	}
 	public View getView(int position, View convertView, ViewGroup parent) {
 		convertView = inflater.inflate(R.layout.article_adapter, null);
+		
+		for(int i = 0 ; i < articleList.get(position).getImageList().size() ; i ++){
+			Map<String,String> imageMap = articleList.get(position).getImageList().get(i);
+			//判断小图是否存在sd卡 /点击小图的时候再判断是否存在sd卡
+			Log.e("小图" + i,imageMap.get("big_pic"));
+			
+			Log.e("大图" + i,imageMap.get("small_pic"));
+		}
 		//动态添加用户发表的图片
 		TableLayout table = (TableLayout) convertView.findViewById(R.id.user_image);
 		TableRow row = new TableRow(context);
@@ -86,11 +94,6 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 			}else{
 				row.addView(t);
 			}
-		}
-		for(int i = 0 ; i < articleList.get(position).getImageList().size() ; i ++){
-			Map<String,String> imageMap = articleList.get(position).getImageList().get(i);
-			Log.e("小图" + i,imageMap.get("big_pic"));
-			Log.e("大图" + i,imageMap.get("small_pic"));
 		}
 		saySomething = (ImageView) convertView.findViewById(R.id.list_say_somthing);
 		userHead = (ImageView) convertView.findViewById(R.id.head_article);
