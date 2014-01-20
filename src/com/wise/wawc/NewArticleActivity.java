@@ -222,19 +222,20 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 			Toast.makeText(getApplicationContext(), "SDCard Is Not Exist!", 0).show();
 			return;
 		}else{
-			file = new File(getSDPath() + "/myImage/");
+//			file = new File(getSDPath() + "/myImage/");
+			file = new File(Constant.VehiclePath);
 			file.mkdirs();// 创建文件夹  
-	        fileName = getSDPath() + "/myImage/" + name + ".jpg"; 
+	        fileName = Constant.VehiclePath + name + ".jpg"; 
 	        createImage(fileName, bitmap);  //创建文件
 	        File imageFile = new File(fileName);
 	        //按照指定的大小压缩图片
 	        small_image = BlurImage.decodeSampledBitmapFromPath(fileName,Variable.smallImageReqHeight,Variable.smallImageReqHeight);
 	        big_image = BlurImage.decodeSampledBitmapFromPath(fileName,Variable.bigImageReqHeight,Variable.bigImageReqHeight);
-	        Log.e("图片存储路径：",getSDPath() + "/myImage/" + name + "small_image.jpg");
-	        createImage(getSDPath() + "/myImage/" + name + "small_image.jpg", small_image);
-	        createImage(getSDPath() + "/myImage/" + name + "big_image.jpg", big_image);
-	        filePathList.add(getSDPath() + "/myImage/" + name + "small_image.jpg");
-	        filePathList.add(getSDPath() + "/myImage/" + name + "big_image.jpg");
+	        Log.e("图片存储路径：",Constant.VehiclePath + name + "small_image.jpg");
+	        createImage(Constant.VehiclePath + name + "small_image.jpg", small_image);
+	        createImage(Constant.VehiclePath + name + "big_image.jpg", big_image);
+	        filePathList.add(Constant.VehiclePath + name + "small_image.jpg");
+	        filePathList.add(Constant.VehiclePath + name + "big_image.jpg");
 	        bitmapList.add(filePathList);
 	        
 	        Log.e("bitmapList.size()",bitmapList.size() + "");
@@ -342,7 +343,7 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 					if(smallImage.exists()){
 							String imageFileUrl = jsonObject.getString("image_file_url");
 							imageUrl.putOpt("small_pic", imageFileUrl);
-							String newPath = getSDPath() + "/myImage/" + imageFileUrl.substring(imageFileUrl.lastIndexOf("/") + 1);
+							String newPath = Constant.VehiclePath + imageFileUrl.substring(imageFileUrl.lastIndexOf("/") + 1);
 							File newFile = new File(newPath);
 							smallImage.renameTo(newFile);
 					}
@@ -356,7 +357,7 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 						String imageFileUrl = jsonObject.getString("image_file_url").toString();
 						Log.e("imageUrl == null",(imageUrl == null)+"");
 							imageUrl.putOpt("big_pic", imageFileUrl);
-							String newPath = getSDPath() + "/myImage/" + imageFileUrl.substring(imageFileUrl.lastIndexOf("/") + 1);
+							String newPath = Constant.VehiclePath + imageFileUrl.substring(imageFileUrl.lastIndexOf("/") + 1);
 							File newFile = new File(newPath);
 							bigImage.renameTo(newFile);
 							jsonDatas.put(imageUrl);

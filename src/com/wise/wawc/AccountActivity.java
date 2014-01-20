@@ -89,7 +89,6 @@ public class AccountActivity extends Activity{
 				platformQQ.removeAccount();
 				platformSina.removeAccount();
 				removeData();
-				Constant.qqUserName = "";
 				finish();
 				break;
 			case R.id.bt_activity_account_save:

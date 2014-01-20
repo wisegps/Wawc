@@ -1,6 +1,8 @@
 package com.wise.wawc;
 
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,15 +17,19 @@ import org.json.JSONObject;
 import com.wise.data.Article;
 import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
+import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.service.MyAdapter;
 import com.wise.sql.DBOperation;
+import com.wise.wawc.MainActivity.GetBitMapFromUrlThread;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -110,12 +116,9 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			public void onScroll(AbsListView view, int firstVisibleItem,int visibleItemCount, int totalItemCount) {
 			}
 		});
-		
-		bindDate();
-		
 	}
-	//TODO
-	private void bindDate() {
+	protected void onResume() {
+		super.onResume();
 		myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 		myDialog.setCancelable(true);
 		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code, getArticleList)).start();
@@ -192,9 +195,8 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				}else{
 					qqUserHead.setBackgroundResource(R.drawable.ic_launcher);
 				}
-				Log.e("用户昵称",Constant.qqUserName);
-				if(!"".equals(Constant.qqUserName)){
-					qqUserName.setText(Constant.qqUserName);
+				if(!"".equals(Variable.cust_name)){
+					qqUserName.setText(Variable.cust_name);
 				}else{
 					qqUserName.setText("未登录");
 				}
@@ -202,27 +204,9 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			case getArticleList:
 				myDialog.dismiss();
 				String temp1 = (msg.obj.toString()).replaceAll("\\\\", "");
-//				jsonToList(temp1);
+				jsonToList(temp1);
 				Log.e("文章列表",temp1);
-//				try {
-//					JSONArray jsonArray = new JSONArray(msg.obj.toString());
-					
-//					for(int i = 0 ; i < jsonArray.length() ; i ++){
-//						String picuter = jsonArray.getJSONObject(i).getString("pics");
-//						String temp = picuter.substring(2,(picuter.length() - 2));
-//						String temp1 = temp.replaceAll("\\\\", "");
-//						JSONArray json = new JSONArray(temp1);
-//						for(int j = 0 ; j < json.length() ; j ++){
-//							JSONObject jsonObject = json.getJSONObject(j);
-//							Log.e("小图", jsonObject.getString("small_pic"));
-//							Log.e("大图", jsonObject.getString("big_pic"));
-//						}
-//						Log.e("pics:",temp1);
-//					}
-					
-//				} catch (JSONException e) {
-//					e.printStackTrace();
-//				}
+				myAdapter.refreshDates(jsonToList(temp1));
 				break;
 			}
 			super.handleMessage(msg);
@@ -231,17 +215,20 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	
 	public List<Article> jsonToList(String JSON){
+		articleDataList.clear();
 		try {
+			if("[]".equals(JSON)){
+				return null;
+			}
 		JSONArray jsonArray = new JSONArray(JSON);
 		for(int i = 0 ; i < jsonArray.length() ; i ++){
 			Article article = new Article();
-			String oneArticle = (jsonArray.getJSONObject(i).toString()).replaceAll("\\\\", "");
-			article.setJSONDatas(oneArticle);
-			article.set_id(Integer.valueOf(jsonArray.getJSONObject(i).getString("_id")));
-			article.set_v(Integer.valueOf(jsonArray.getJSONObject(i).getString("＿v")));
+			article.setJSONDatas(JSON);
+			article.set_id(jsonArray.getJSONObject(i).getString("_id"));
 			article.setBlog_id(Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
 			article.setCity(jsonArray.getJSONObject(i).getString("city"));
-			List<String> commentList = new ArrayList<String>();
+			article.setName(jsonArray.getJSONObject(i).getString("name"));
+			List<String> commentList = new ArrayList<String>();  //评论者
 			if(!"[]".equals(jsonArray.getJSONObject(i).getString("comments"))){
 				
 			}
@@ -250,29 +237,25 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			article.setCreate_time(jsonArray.getJSONObject(i).getString("create_time"));
 			article.setCust_id(Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
 			
-			Map<String,String> imageListTemp = new HashMap<String,String>();
-			List<Map<String,String>> imageList = null;
+			//用户发表的图片
+			Map<String,String> imageListTemp = null;
+			List<Map<String,String>> imageList = new ArrayList<Map<String,String>>();
 			if(!"[]".equals(jsonArray.getJSONObject(i).getString("pics"))){
-				String picuter = jsonArray.getJSONObject(i).getString("pics");
-				String temp = picuter.substring(2,(picuter.length() - 2));
-				String temp1 = temp.replaceAll("\\\\", "");
-				JSONArray json = new JSONArray(temp1);
-//				for(int j = 0 ; j < json.length() ; j ++){
-//					JSONObject jsonObject = json.getJSONObject(j);
-//					imageList = new 
-//					imageListTemp.put("small_pic", jsonObject.getString("small_pic"));
-//					imageListTemp.put("small_pic", jsonObject.getString("small_pic"));
-//					Log.e("小图", jsonObject.getString("small_pic"));
-//					Log.e("大图", jsonObject.getString("big_pic"));
-//				}
+				JSONArray json = new JSONArray(jsonArray.getJSONObject(i).getString("pics"));
+				for(int j = 0 ; j < json.length() ; j ++){
+					JSONObject jsonObject = json.getJSONObject(j);
+					imageListTemp = new HashMap<String, String>();
+					imageListTemp.put("small_pic", jsonObject.getString("small_pic"));
+					imageListTemp.put("big_pic", jsonObject.getString("big_pic"));
+					imageList.add(imageListTemp);
+				}
 			}
 			article.setImageList(imageList);
+			articleDataList.add(article);
 		}
-		
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
 		return articleDataList;
 	}
 }

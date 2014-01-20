@@ -1,21 +1,20 @@
 package com.wise.service;
-import java.util.ArrayList;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 import com.wise.data.Article;
 import com.wise.wawc.ArticleDetailActivity;
 import com.wise.wawc.FriendHomeActivity;
-import com.wise.wawc.FriendInformationActivity;
 import com.wise.wawc.ImageActivity;
 import com.wise.wawc.R;
-
-import android.annotation.SuppressLint;
 import android.app.ActionBar.LayoutParams;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.text.Layout;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +22,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * 车友圈文章列表
@@ -58,8 +55,8 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 		this.articleList = articleList;
 	}
 	public int getCount() {
-		return 10;
-//		return articleList.size();
+//		return 10;
+		return articleList.size();
 	}
 	public Object getItem(int position) {
 		return null;
@@ -70,7 +67,6 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 	public View getView(int position, View convertView, ViewGroup parent) {
 		convertView = inflater.inflate(R.layout.article_adapter, null);
 		//动态添加用户发表的图片
-		
 		TableLayout table = (TableLayout) convertView.findViewById(R.id.user_image);
 		TableRow row = new TableRow(context);
 		for(int i = 0 ; i < 9 ; i ++){
@@ -91,15 +87,22 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 				row.addView(t);
 			}
 		}
+		for(int i = 0 ; i < articleList.get(position).getImageList().size() ; i ++){
+			Map<String,String> imageMap = articleList.get(position).getImageList().get(i);
+			Log.e("小图" + i,imageMap.get("big_pic"));
+			Log.e("大图" + i,imageMap.get("small_pic"));
+		}
 		saySomething = (ImageView) convertView.findViewById(R.id.list_say_somthing);
 		userHead = (ImageView) convertView.findViewById(R.id.head_article);
 		articel_user_name = (TextView) convertView.findViewById(R.id.article_user_name);
 		tv_article_content = (TextView) convertView.findViewById(R.id.tv_article_content);
 		publish_time = (TextView) convertView.findViewById(R.id.publish_time);
+		String str = articleList.get(position).getCreate_time();
+		String createTime = str.substring(0, str.indexOf(".")).replace("T"," ");
 		
-//		publish_time.setText(getTime(articleList.get(position).getPublish_time()));
-//		articel_user_name.setText(articleList.get(position).getPublish_user());
-//		tv_article_content.setText(articleList.get(position).getPublish_content());
+		publish_time.setText(getTime(createTime));
+		articel_user_name.setText(articleList.get(position).getName());
+		tv_article_content.setText(articleList.get(position).getContent());
 		
 		saySomething.setOnClickListener(this);
 		userHead.setOnClickListener(this);
@@ -134,21 +137,58 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 	}
 	
 	public String getTime(String time){
-	     String currentTime = "2014-06-21 18:28:14";
-	     if(Integer.parseInt(time.substring(0,4)) < Integer.parseInt(currentTime.substring(0,4))){
-	    	 return time.substring(0, 16);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+////	     String currentTime = "2014-06-21 18:28:14";
+		String currentTime = sdf.format(new Date());
+		String time1 =  transform(time);
+	     if(Integer.parseInt(time1.substring(0,4)) < Integer.parseInt(currentTime.substring(0,4))){
+	    	 return time1.substring(0, 16);
 	     }else{
-	    	 if((Integer.parseInt(currentTime.substring(8,10)) - Integer.parseInt(time.substring(8,10))) == 1){
-	    		 return "昨天" + time.substring(11, 16);
-	    	 }else if((Integer.parseInt(currentTime.substring(8,10)) - Integer.parseInt(time.substring(8,10))) == 2){
-	    		 return "前天" + time.substring(11, 16);
+	    	 if((Integer.parseInt(currentTime.substring(8,10)) - Integer.parseInt(time1.substring(8,10))) == 1){
+	    		 return "昨天" + time1.substring(11, 16);
+	    	 }else if((Integer.parseInt(currentTime.substring(8,10)) - Integer.parseInt(time1.substring(8,10))) == 2){
+	    		 return "前天" + time1.substring(11, 16);
+	    	 }else if((Integer.parseInt(currentTime.substring(8,10)) == Integer.parseInt(time1.substring(8,10)))){
+	    		 return time1.substring(11, 16);
 	    	 }
-	    	 return time.substring(5, 16);
+	    	 return time1.substring(5, 16);
 	     }
 	}
 	
+	
+		/*
+	    * 将String转成Date类型
+	    * 将GMT时间转换成当前时区时间
+	    */
+	    public static String transform(String from){
+	        String to = "";
+
+	        SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	        //本地时区
+	        Calendar nowCal = Calendar.getInstance();
+	        TimeZone localZone = nowCal.getTimeZone();
+	        //设定SDF的时区为本地
+	        simple.setTimeZone(localZone);
+
+
+	        SimpleDateFormat simple1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	        //设置 DateFormat的时间区域为GMT
+	        simple1.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+
+	        //把字符串转化为Date对象，然后格式化输出这个Date
+	        Date fromDate = new Date();
+	        try {
+	            //时间string解析成GMT时间
+	            fromDate = simple1.parse(from);
+	            //GMT时间转成当前时区的时间
+	            to = simple.format(fromDate);
+	        } catch (ParseException e1) {
+	            e1.printStackTrace();
+	        }
+	        return to;
+	    }
 	public void refreshDates(List<Article> articleList){ 
-		this.articleList.clear();
 		this.articleList = articleList;
 		this.notifyDataSetChanged();
 	}

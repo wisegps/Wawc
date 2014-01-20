@@ -186,8 +186,11 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		Log.e("MyVehicleActivity---num:",Variable.carDatas.size() +  "");
 		
 		//车辆数据
-		newCarImage = new CarData();
-		Variable.carDatas.add(newCarImage);
+		if(!"newVehicle".equals(Variable.carDatas.get(Variable.carDatas.size() - 1).getCar_brand())){
+			newCarImage = new CarData();
+			newCarImage.setCar_brand("newVehicle");
+			Variable.carDatas.add(newCarImage);
+		}
 		int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, getResources().getDisplayMetrics());
 		LayoutParams params = new LayoutParams(Variable.carDatas.size() * (px + 10),LayoutParams.WRAP_CONTENT);
 		vehicleGridView = (GridView) findViewById(R.id.gv_my_vehicle);
@@ -234,13 +237,11 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		isJump = intent.getBooleanExtra("isJump", false);
 
 		width = getWindowManager().getDefaultDisplay().getWidth();
-		
 		Message msg = new Message();
 		msg.obj = Variable.carDatas.get(chickIndex);
 		oneCarData = Variable.carDatas.get(chickIndex);
 		msg.what = showCarData;
 		myHandler.sendMessage(msg);
-		
 		Log.e("MyVehicleActivity---num:",Variable.carDatas.size() +  "");
 	}
 
