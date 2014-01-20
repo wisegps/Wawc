@@ -1,5 +1,9 @@
 package com.wise.wawc;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
@@ -15,6 +19,7 @@ import com.wise.data.CarData;
 import com.wise.extend.AbstractSpinerAdapter;
 import com.wise.extend.SpinerPopWindow;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.service.LogoAdapter;
@@ -29,6 +34,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -73,6 +80,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	public static final int resultCodeMaintain = 6;       //选择汽车品牌的识别码
 	public static final int showCarData = 8;       //显示汽车数据
 	public static final int deleteCarData = 10;       //删除汽车数据
+	private static final int setCarLogo = 11;      // 动态设置汽车Logo
 	
 	
 	private EditText etDialogMileage = null;   //输入里程
@@ -130,6 +138,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	
 	private int chickIndex = 0;
 	private CarData newCarImage = null;
+	private Bitmap imageBitmap = null;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -358,6 +367,9 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 			brank = (String) data.getSerializableExtra("brank");
 			carBrankId = (String) data.getSerializableExtra("carId");
 			myVehicleBrank.setText(brank);
+			Variable.carDatas.get(chickIndex).setCar_brand(brank);
+			Bitmap logo = logoImageIsExist(Constant.VehicleLogoPath,(String) data.getSerializableExtra("carLogo"));
+			Log.e("logo == null",(String) data.getSerializableExtra("carLogo"));
 		}
 		//选择保养店
 		if(resultCode == this.resultCodeMaintain){
@@ -477,7 +489,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 						carDatas.put("maintain_next_mileage", "2014");
 						carDatas.put("buy_date", buyTime.getText().toString().trim());
 						dBExcute.updataVehilce(getApplicationContext(), Constant.TB_Vehicle, carDatas, "obj_id = ?", new String[]{String.valueOf(Variable.carDatas.get(chickIndex).getObj_id())});
-						
+						logoAdapter.notifyDataSetChanged();
 						Toast.makeText(getApplicationContext(), "保存成功", 0).show();
 					}
 				} catch (NumberFormatException e) {
@@ -524,6 +536,10 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				
 				Log.e("删除车辆执行结果--->",msg.obj.toString());
 				break;
+				
+				case setCarLogo:
+					logoAdapter.notifyDataSetChanged();
+					break;
 			default:
 				return;
 			}
@@ -623,22 +639,51 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 			}
 		}
 	}
-	public void showUserCarData(CarData carData){
-		
-		Log.e("obj_id=",carData.getObj_id() + "");
-		Log.e("car_brand=",carData.getCar_brand());
-		Log.e("car_series=",carData.getCar_series());
-		Log.e("car_type=",carData.getCar_type());
-		Log.e("engine_no=",carData.getEngine_no());
-		Log.e("frame_no=",carData.getFrame_no());
-		Log.e("insurance_company=",carData.getInsurance_company());
-		Log.e("insurance_date=",carData.getInsurance_date());
-		Log.e("annual_inspect_date=",carData.getAnnual_inspect_date());
-		Log.e("maintain_company=",carData.getMaintain_company());
-		Log.e("maintain_last_mileage=",carData.getMaintain_last_mileage());
-		Log.e("maintain_next_mileage=",carData.getMaintain_next_mileage());
-		Log.e("buy_date=",carData.getBuy_date());
-		Log.e("obj_name=",carData.getObj_name());
-		
+	public Bitmap logoImageIsExist(final String imagePath,final String name){
+		File filePath = new File(imagePath);
+		File imageFile = new File(imagePath + name);
+		if(!filePath.exists()){
+			filePath.mkdir();
+		}
+		if(imageFile.exists()){
+			//将图片读取出来 
+			imageBitmap = BitmapFactory.decodeFile(imagePath + name);
+			Log.e("本地存在图片","本地存在图片");
+		}else{
+			  new Thread(new Runnable() {
+				public void run() {
+					//服务器获取logo图片
+					String imageUrl = Constant.ImageUrl + name;
+					imageBitmap = GetSystem.getBitmapFromURL(imageUrl);
+		              //存储到SD卡
+		              if(imageBitmap != null){
+		            	  createImage(imagePath + brank + ".jpg",imageBitmap);
+		            	  Message msg = new Message();
+		            	  msg.what = setCarLogo;
+		            	  myHandler.sendMessage(msg);
+		              }
+				}
+			}).start();
+              Log.e("服务器的图片","服务器的图片");
+		}
+		return imageBitmap;
+	}
+	
+	//向SD卡中添加图片
+	public void createImage(String fileName,Bitmap bitmap){
+		FileOutputStream b = null;
+		try {  
+            b = new FileOutputStream(fileName);  
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件  
+        } catch (FileNotFoundException e) {  
+            e.printStackTrace();  
+        } finally {  
+            try {  
+                b.flush();  
+                b.close();  
+            } catch (IOException e) {  
+                e.printStackTrace();  
+            }  
+        }
 	}
 }

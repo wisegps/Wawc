@@ -1,5 +1,9 @@
 package com.wise.wawc;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -8,6 +12,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import org.json.JSONArray;
@@ -33,6 +38,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -216,6 +223,8 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 			brank = (String)data.getSerializableExtra("brank");
 			vehicleBrank.setText(brank); 
 			carBrankId = (String) data.getSerializableExtra("carId");
+			Bitmap logo = logoImageIsExist(Constant.VehicleLogoPath,(String) data.getSerializableExtra("carLogo"));
+			Log.e("logo == null",(String) data.getSerializableExtra("carLogo"));
 		}else if(resultCode == newVehicleInsurance){   //设置保险公司
 			String insurance = (String)data.getSerializableExtra("ClickItem");
 			showInsurance.setText(insurance);
@@ -555,4 +564,50 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 				}
 		    });
 		}
+	/**
+	 * @param imagePath  路径
+	 * @param name  文件名
+	 * @return  图片对象
+	 */
+	public Bitmap logoImageIsExist(String imagePath,String name){
+		Bitmap imageBitmap = null;
+		File filePath = new File(imagePath);
+		File imageFile = new File(imagePath + name);
+		if(!filePath.exists()){
+			filePath.mkdir();
+		}
+		if(imageFile.exists()){
+			//将图片读取出来 
+			imageBitmap = BitmapFactory.decodeFile(imagePath + name);
+			Log.e("本地存在图片","本地存在图片");
+		}else{
+			//服务器获取logo图片
+			  String imageUrl = Constant.ImageUrl + name;
+			  imageBitmap = GetSystem.getBitmapFromURL(imageUrl);
+              //存储到SD卡
+              if(imageBitmap != null){
+            	  createImage(imagePath + brank + ".jpg",imageBitmap);
+              }
+              Log.e("服务器的图片","服务器的图片");
+		}
+		return imageBitmap;
+	}
+	
+	//向SD卡中添加图片
+	public void createImage(String fileName,Bitmap bitmap){
+		FileOutputStream b = null;
+		try {  
+            b = new FileOutputStream(fileName);  
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件  
+        } catch (FileNotFoundException e) {  
+            e.printStackTrace();  
+        } finally {  
+            try {  
+                b.flush();  
+                b.close();  
+            } catch (IOException e) {  
+                e.printStackTrace();  
+            }  
+        }
+	}
 }
