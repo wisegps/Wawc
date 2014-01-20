@@ -1,4 +1,5 @@
 package com.wise.wawc;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +16,7 @@ import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
+import com.wise.pubclas.Variable;
 import com.wise.service.BrankAdapter;
 import com.wise.service.ClearEditText;
 import com.wise.service.PinyinComparator;
@@ -80,6 +82,8 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 	
 	private DBExcute dBExcute = null;
 	private DBHelper dbHelper = null;
+	private String imageName = "";
+	
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -100,19 +104,26 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 				Log.e("click Index",arg2+"");
 				String beank = ((BrankModel)adapter.getItem(arg2 - 1)).getVehicleBrank();
 				String carId = carIdList.get(arg2 - 1);
-				finishCurrentActivity(beank,carId);
+				String carLogo = brankLogo.get(arg2 - 1);
+				finishCurrentActivity(beank,carId,carLogo);
 			}
 			
-			private void finishCurrentActivity(String brank,String carId) {
+			private void finishCurrentActivity(String brank,String carId,String carLogo) {
 				Intent intent = new Intent();
+				imageName = Constant.VehicleLogoPath + brank + ".jpg";
+				
 				intent.putExtra("brank", brank);
 				intent.putExtra("carId", carId);
-				if(code == MyVehicleActivity.resultCodeBrank){
-					CarBrankListActivity.this.setResult(MyVehicleActivity.resultCodeBrank, intent);
-				}else if(code == NewVehicleActivity.newVehicleBrank){
-					CarBrankListActivity.this.setResult(NewVehicleActivity.newVehicleBrank, intent);
+				intent.putExtra("carLogo", imageName);
+				if (code == MyVehicleActivity.resultCodeBrank) {
+					CarBrankListActivity.this.setResult(
+							MyVehicleActivity.resultCodeBrank, intent);
+				} else if (code == NewVehicleActivity.newVehicleBrank) {
+					CarBrankListActivity.this.setResult(
+							NewVehicleActivity.newVehicleBrank, intent);
 				}
 				CarBrankListActivity.this.finish();
+				
 			}
 		});
 	}
@@ -297,6 +308,7 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
+					
 					Log.e("刷新得到服务器获取的数据：",jsonArray.length()+"");
 					parseJSON(jsonArray);
 				}else{
@@ -325,7 +337,7 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 			progressDialog.dismiss();
 			try {
 				jsonArray = new JSONArray(cursor.getString(cursor.getColumnIndex("Content")));
-				Log.e("数据库获取的诗数据：",jsonArray.length()+"");
+				Log.e("数据长度：",jsonArray.length()+"");
 				parseJSON(jsonArray);
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -338,6 +350,8 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 	//解析json数据
 	public void parseJSON(JSONArray jsonArray){
 
+		
+		Log.e("数据库数据：",jsonArray.toString());
 		try {
 			int arrayLength = jsonArray.length();
 			StringBuffer sb = new StringBuffer();
@@ -349,8 +363,7 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 				}else{
 					sb.append(jsonObj.get("name"));
 				}
-				
-				//获取logo  TODO
+				brankLogo.add(jsonObj.getString("url_icon"));
 			}
 			brankTemp = sb.toString().split(",");
 		} catch (JSONException e) {

@@ -257,6 +257,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				Variable.carDatas.remove(newCarImage);
 				Intent intent = new Intent(MyVehicleActivity.this,CarBrankListActivity.class);
 				intent.putExtra("code", resultCodeBrank);
+				intent.putExtra("carDataIndex", chickIndex);
 				startActivityForResult(intent, resultCodeBrank);
 				Log.e("选择品牌：" ,Variable.carDatas.size() + "");
 				break;
