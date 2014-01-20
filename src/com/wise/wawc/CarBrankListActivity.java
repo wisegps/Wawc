@@ -110,11 +110,9 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 			
 			private void finishCurrentActivity(String brank,String carId,String carLogo) {
 				Intent intent = new Intent();
-				imageName = Constant.VehicleLogoPath + brank + ".jpg";
-				
 				intent.putExtra("brank", brank);
 				intent.putExtra("carId", carId);
-				intent.putExtra("carLogo", imageName);
+				intent.putExtra("carLogo", carLogo);
 				if (code == MyVehicleActivity.resultCodeBrank) {
 					CarBrankListActivity.this.setResult(
 							MyVehicleActivity.resultCodeBrank, intent);
@@ -187,8 +185,6 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 		progressDialog = ProgressDialog.show(CarBrankListActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 		progressDialog.setCancelable(true);
 		myHandler = new MyHandler();
-//		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "base/car_brand", GET_BRANK)).start();
-
 		
 		getDate();
 	}
@@ -363,7 +359,15 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 				}else{
 					sb.append(jsonObj.get("name"));
 				}
-				brankLogo.add(jsonObj.getString("url_icon"));
+				Log.e("品牌：",jsonObj.toString());
+				String logoImage;
+				try {
+					logoImage = jsonObj.getString("url_icon");
+				} catch (Exception e) {
+					logoImage = "";
+					continue;
+				}
+				brankLogo.add(logoImage);
 			}
 			brankTemp = sb.toString().split(",");
 		} catch (JSONException e) {

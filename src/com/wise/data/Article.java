@@ -17,7 +17,7 @@ public class Article {
 	private String name;
 	private int cust_id;
 	private int blog_id;
-	private int _id;
+	private String _id;
 	private List<String> praisesList;
 	private List<String> commentList;
 	private List<Map<String,String>> imageList;
@@ -78,12 +78,6 @@ public class Article {
 	public void setBlog_id(int blog_id) {
 		this.blog_id = blog_id;
 	}
-	public int get_id() {
-		return _id;
-	}
-	public void set_id(int _id) {
-		this._id = _id;
-	}
 	public List<String> getPraisesList() {
 		return praisesList;
 	}
@@ -114,5 +108,10 @@ public class Article {
 	public void setJSONDatas(String jSONDatas) {
 		JSONDatas = jSONDatas;
 	}
-	
+	public String get_id() {
+		return _id;
+	}
+	public void set_id(String _id) {
+		this._id = _id;
+	}
 }

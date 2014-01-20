@@ -108,10 +108,6 @@ public class Constant {
 	 */
 	public static final String DefaultVehicleID = "DefaultVehicleID";
 	/**
-	 * QQ登录返回的数据
-	 */
-	public static String qqUserName = "";
-	/**
 	 * QQ用户登录之后的头像
 	 */
 	public static Bitmap UserIcon = null;

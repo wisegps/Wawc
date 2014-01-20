@@ -345,6 +345,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     private void platfromIsLogin(Platform platform){
         System.out.println(Constant.picPath + Constant.UserImage);
         bimage = BitmapFactory.decodeFile(Constant.picPath + Constant.UserImage);
+        Constant.UserIcon = bimage;
         if(bimage != null){            
             iv_activity_main_logo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
         }else{
@@ -398,7 +399,8 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         @Override
         public void run() {
             super.run();
-            bimage = GetSystem.getBitmapFromURL(url);            
+            bimage = GetSystem.getBitmapFromURL(url);  
+            Constant.UserIcon = bimage;
             if(bimage != null){
                 GetSystem.saveImageSD(bimage, Constant.picPath, Constant.UserImage);
             }
