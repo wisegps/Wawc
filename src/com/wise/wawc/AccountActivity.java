@@ -7,6 +7,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.wise.data.CarData;
 import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
@@ -27,6 +28,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -44,39 +46,43 @@ public class AccountActivity extends Activity{
     
 	private View view = null;
 	EditText et_activity_account_consignee,et_activity_account_adress,et_activity_account_phone;
-	TextView tv_activity_account_name,tv_activity_city;
-	ImageView iv_activity_account_pic;
+	TextView tv_activity_account_name,tv_activity_city,tv_carBrand,tv_carNumber;
+	ImageView iv_activity_account_pic,iv_user_car_logo;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_account);
 		view = findViewById(R.id.account_to_my_vehicle);
 		view.setOnClickListener(onClickListener);
 		iv_activity_account_pic = (ImageView)findViewById(R.id.iv_activity_account_pic);
+		iv_user_car_logo = (ImageView)findViewById(R.id.iv_user_car_logo);
 		tv_activity_account_name = (TextView)findViewById(R.id.tv_activity_account_name);
 		tv_activity_city = (TextView)findViewById(R.id.tv_activity_city);
+		tv_carBrand = (TextView)findViewById(R.id.tv_carBrand);
+		tv_carNumber = (TextView)findViewById(R.id.tv_carNumber);
 		ImageView iv_activity_account_menu = (ImageView)findViewById(R.id.iv_activity_account_menu);
 		iv_activity_account_menu.setOnClickListener(onClickListener);
 		ImageView iv_activity_account_home = (ImageView)findViewById(R.id.iv_activity_account_home);
 		iv_activity_account_home.setOnClickListener(onClickListener);
 		Button bt_activity_account_logout = (Button)findViewById(R.id.bt_activity_account_logout);
 		bt_activity_account_logout.setOnClickListener(onClickListener);
-		Button bt_activity_account_save = (Button)findViewById(R.id.bt_activity_account_save);
-		bt_activity_account_save.setOnClickListener(onClickListener);
 		et_activity_account_consignee = (EditText)findViewById(R.id.et_activity_account_consignee);
 		et_activity_account_adress = (EditText)findViewById(R.id.et_activity_account_adress);
 		et_activity_account_phone = (EditText)findViewById(R.id.et_activity_account_phone);
 		ShareSDK.initSDK(this);
 		GetSfData();
+		GetCarData();
 	}
 	OnClickListener onClickListener = new OnClickListener() {	
 		@Override
 		public void onClick(View v) {
 			switch(v.getId()){
-			case R.id.iv_activity_account_menu:				
+			case R.id.iv_activity_account_menu:	
+			    saveData();
 				ActivityFactory.A.LeftMenu();
 				finish();
 				break;
 			case R.id.iv_activity_account_home:
+			    saveData();
 				ActivityFactory.A.ToHome();
 				finish();
 				break;
@@ -91,9 +97,6 @@ public class AccountActivity extends Activity{
 				removeData();
 				finish();
 				break;
-			case R.id.bt_activity_account_save:
-			    saveData();
-			    break;
 			}
 		}
 	};
@@ -150,8 +153,7 @@ public class AccountActivity extends Activity{
         if(bimage != null){            
             iv_activity_account_pic.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
         }
-	    SharedPreferences preferences = getSharedPreferences(
-                Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+	    SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
 	    et_activity_account_consignee.setText(preferences.getString(Constant.Consignee, ""));
 	    et_activity_account_adress.setText(preferences.getString(Constant.Adress, ""));
 	    et_activity_account_phone.setText(preferences.getString(Constant.Phone, ""));	    
@@ -169,6 +171,23 @@ public class AccountActivity extends Activity{
         new Thread(new NetThread.GetDataThread(handler, url, Get_data)).start();
 	}
 	/**
+	 * 获取车辆数据
+	 */
+	private void GetCarData(){
+	    for(CarData carData : Variable.carDatas){
+	        if(carData.isCheck){
+	            //显示我的爱车
+	            Bitmap bimage = BitmapFactory.decodeFile(carData.getLogoPath());
+	            if(bimage != null){            
+	                iv_user_car_logo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
+	            }
+	            tv_carBrand.setText(carData.getCar_brand() + carData.getCar_series());
+	            tv_carNumber.setText(carData.getObj_name());
+	            break;
+	        }
+	    }
+	}
+	/**
 	 * 保存数据
 	 */
 	private void saveData(){
@@ -176,7 +195,6 @@ public class AccountActivity extends Activity{
 	    String adress = et_activity_account_adress.getText().toString().trim();
 	    String phone = et_activity_account_phone.getText().toString().trim();
 	    String url = Constant.BaseUrl + "customer/" + Variable.cust_id +"?auth_code=" + Variable.auth_code;
-        Log.d(TAG, url);
 	    List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("cust_id", Variable.cust_id));
         params.add(new BasicNameValuePair("id_card_type", "B"));
@@ -196,5 +214,12 @@ public class AccountActivity extends Activity{
         editor.putString(Constant.Adress, "");
         editor.putString(Constant.Phone, "");
         editor.commit();
+	}
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    if (keyCode == KeyEvent.KEYCODE_BACK) {
+	        saveData();
+	    }
+	    return super.onKeyDown(keyCode, event);
 	}
 }
