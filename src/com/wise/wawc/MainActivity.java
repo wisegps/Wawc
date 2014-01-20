@@ -343,7 +343,8 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
      * 已经登录过,初始化数据
      */
     private void platfromIsLogin(Platform platform){
-        bimage = BitmapFactory.decodeFile(Constant.BasePath + Constant.UserImage);
+        System.out.println(Constant.picPath + Constant.UserImage);
+        bimage = BitmapFactory.decodeFile(Constant.picPath + Constant.UserImage);
         if(bimage != null){            
             iv_activity_main_logo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
         }else{
@@ -397,7 +398,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         @Override
         public void run() {
             super.run();
-            bimage = GetSystem.getBitmapFromURL(url);
+            bimage = GetSystem.getBitmapFromURL(url);            
             if(bimage != null){
                 GetSystem.saveImageSD(bimage, Constant.picPath, Constant.UserImage);
             }
@@ -628,8 +629,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     
     private void ShowBgImage(){
         //读取本地图片
-        //bimage = BitmapFactory.decodeFile(Constant.BasePath + Constant.UserImage);
-        String Path = Constant.BasePath + Constant.BgImage;
+        String Path = Constant.picPath + Constant.BgImage;
         Bitmap bgBitmap = BlurImage.decodeSampledBitmapFromPath(Path, 500, 500);
         if(bgBitmap == null){
             Log.e(TAG, "没有背景图片");

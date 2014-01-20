@@ -295,7 +295,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 String buy_date =  cursor.getString(cursor.getColumnIndex("buy_date"));
                 
                 CarData carData = new CarData();
-                carData.setCarLogo(1);
+                
                 if(DefaultVehicleID == obj_id){
                     carData.setCheck(true);
                     isHaveDefaultVehicleID = true;
@@ -596,8 +596,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 buy_date = buy_date.substring(0, 10);
                 
                 CarData carData = new CarData();
-                //q汽车logo图片  TODO
-                carData.setCarLogo(R.drawable.image);
+                
                 carData.setCheck(false);
                 carData.setObj_id(obj_id);
                 carData.setObj_name(obj_name);
@@ -613,7 +612,13 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 carData.setMaintain_last_mileage(maintain_last_mileage);
                 carData.setMaintain_next_mileage(maintain_next_mileage);
                 carData.setBuy_date(buy_date);
-                Log.d(TAG, carData.toString());
+                String imagePath = Constant.VehicleLogoPath + car_brand + ".jpg";//SD卡路径
+                if(new File(imagePath).isFile()){//存在
+                    carData.setLogoPath(imagePath);
+                }else{
+                    isNeedGetLogoFromUrl = true;
+                    carData.setLogoPath("");
+                }
                 carDatas.add(carData);
                 //存储在数据库
                 DBExcute dbExcute = new DBExcute();

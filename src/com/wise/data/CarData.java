@@ -42,7 +42,6 @@ public class CarData {
     
 	public String obj_name;
 	private String maintain_last_date;
-	public int CarLogo;
 	private String logoPath;
 	public boolean isCheck;
 		
@@ -135,13 +134,7 @@ public class CarData {
     }
     public void setBuy_date(String buy_date) {
         this.buy_date = buy_date;
-    }    
-	public int getCarLogo() {
-		return CarLogo;
-	}
-	public void setCarLogo(int carLogo) {
-		CarLogo = carLogo;
-	}	
+    }	
 	public boolean isCheck() {
 		return isCheck;
 	}
@@ -168,6 +161,6 @@ public class CarData {
                 + ", maintain_last_mileage=" + maintain_last_mileage
                 + ", maintain_next_mileage=" + maintain_next_mileage
                 + ", buy_date=" + buy_date + ", obj_name=" + obj_name
-                + ", CarLogo=" + CarLogo + ", isCheck=" + isCheck + "]";
+                + ", isCheck=" + isCheck + "]";
     }	
 }
