@@ -35,8 +35,9 @@ public class HScrollLayout extends ViewGroup{
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-		View v1 = findViewById(R.id.ll_item_weather);
-		int Height = v1.getHeight();
+		final View childView = getChildAt(0);
+		//View v1 = findViewById(R.id.ll_item_weather);
+		int Height = childView.getHeight();
 		int count = getChildCount();
 		for(int i = 0 ; i < count; i++){
 			getChildAt(i).measure(widthMeasureSpec,Height);//设置每个view的大小

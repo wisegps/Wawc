@@ -16,6 +16,7 @@ import com.iflytek.ui.RecognizerDialog;
 import com.iflytek.ui.RecognizerDialogListener;
 import com.wise.data.CarData;
 import com.wise.extend.HScrollLayout;
+import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
@@ -33,6 +34,7 @@ import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -61,7 +63,8 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
     TextView tv_item_weather_date, tv_item_weather_wd, tv_item_weather,
             tv_item_weather_sky, tv_item_weather_temp1,
             tv_item_weather_index_xc, tv_item_weather_city,tv_item_oil_90, tv_item_oil_93,
-            tv_item_oil_97, tv_item_oil_0;
+            tv_item_oil_97, tv_item_oil_0,tv_car_number;
+    ImageView iv_carLogo;
     private RecognizerDialog recognizerDialog = null; // 语音合成文字
     StringBuffer sb = null;
     private ImageView saySomething = null; // 语音识别
@@ -98,6 +101,8 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         bt_activity_home_share.setOnClickListener(onClickListener);
         TextView tv_activity_home_car_adress = (TextView) findViewById(R.id.tv_activity_home_car_adress);
         tv_activity_home_car_adress.setOnClickListener(onClickListener);
+        tv_car_number = (TextView)findViewById(R.id.tv_car_number);
+        iv_carLogo = (ImageView)findViewById(R.id.iv_carLogo);
 
         saySomething = (ImageView) findViewById(R.id.iv_home_say_something);
         saySomething.setOnClickListener(onClickListener);
@@ -143,6 +148,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         GetFuel();
         registerBroadcastReceiver();
         GetDBCars();
+        ShowCarInfo();
         if(isNeedGetLogoFromUrl){
           new Thread(new getLogoThread()).start();
         }        
@@ -157,7 +163,6 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 break;
             case R.id.iv_activity_car_home_search:
                 ActivityFactory.A.RightMenu();
-                //HomeActivity.this.startActivity(new Intent(HomeActivity.this,ActivitySearch.class));
                 break;
             case R.id.bt_activity_home_help:// 救援
                 ToShare();
@@ -218,6 +223,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 break;
             case Get_Cars:
                 jsonCars(msg.obj.toString());
+                ShowCarInfo();
                 break;
             }
         }
@@ -276,7 +282,6 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
             DBHelper dbHelper = new DBHelper(HomeActivity.this);
             SQLiteDatabase db = dbHelper.getReadableDatabase();            
             Cursor cursor = db.rawQuery("select * from " + Constant.TB_Vehicle + " where Cust_id=?", new String[] {Variable.cust_id });
-            Log.e("数据库数据总数：" , cursor.getCount() + "");
             boolean isHaveDefaultVehicleID = false;
             while (cursor.moveToNext()) {
                 int obj_id = cursor.getInt(cursor.getColumnIndex("obj_id"));
@@ -728,6 +733,26 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
             }
         }
     };
+    /**
+     * 显示车辆信息
+     */
+    private void ShowCarInfo(){
+        if(Variable.carDatas != null || Variable.carDatas.size() > 0){
+            for(CarData carData : Variable.carDatas){
+                if(carData.isCheck()){
+                    //TODO 显示车辆信息
+                    tv_car_number.setText(carData.getObj_name());
+                    Bitmap bimage = BitmapFactory.decodeFile(carData.getLogoPath());
+                    if(bimage != null){            
+                        iv_carLogo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
+                    }else{
+                        iv_carLogo.setImageResource(R.drawable.ic_launcher);
+                    }
+                    break;
+                }
+            }
+        }
+    }
 
     @Override
     protected void onDestroy() {
