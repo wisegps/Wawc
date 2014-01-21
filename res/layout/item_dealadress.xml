@@ -3,98 +3,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/border_bg"
+    android:background="@color/white"
     android:orientation="vertical">
-    <RelativeLayout 
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/bkg1"
-        android:padding="10dp">
+        android:layout_height="wrap_content" 
+        android:padding="5dp">
+        <TextView
+            android:id="@+id/tv_item_dealadress_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:textColor="@color/black"/>
         <TextView 
             android:id="@+id/tv_item_dealadress_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/tv_item_dealadress_name"/>
+        <ImageView 
+            android:id="@+id/iv_Collect"
+            android:layout_height="30dp"
+            android:layout_width="30dp"
+            android:contentDescription="@string/app_name"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:textSize="@dimen/title"
-        	android:textColor="@color/black"
-            android:layout_marginLeft="10dp"/>
-        <TextView 
-            android:id="@+id/tv_item_dealadress_name"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/tv_item_dealadress_distance"
-            android:layout_centerVertical="true"
-            android:textSize="@dimen/title"
-        	android:textColor="@color/black"/>
+            android:src="@drawable/emotionstore_progresscancelbtn"/>
     </RelativeLayout>
-    <LinearLayout
-        android:orientation="vertical" 
-        android:layout_width="fill_parent"
-        android:padding="10dp"
-        android:layout_height="wrap_content">
-        <TextView 
-            android:id="@+id/tv_item_dealadress_adress"
+    <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"            
-            android:text="地址：沙河西路1号"            
-            android:textColor="@color/black"
-	        android:textSize="@dimen/title"/>
-        <TextView 
-            android:id="@+id/tv_item_dealadress_phone"
+            android:layout_height="wrap_content" 
+            android:padding="5dp">
+            <ImageView 
+                android:id="@+id/iv_location"
+                android:layout_height="30dp"
+                android:layout_width="30dp"
+                android:contentDescription="@string/app_name"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_launcher"/>
+            <TextView
+                android:id="@+id/tv_item_dealadress_adress"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/iv_location"
+                android:textColor="@color/black"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/ll_adress_tel"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="电话：0755-8787878787"
-            android:textColor="@color/black"
-	        android:textSize="@dimen/title"/>
-    </LinearLayout>
-    <LinearLayout
-        android:background="@drawable/border_bg"
-        android:orientation="horizontal" 
-        android:padding="10dp"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout 
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-	        android:layout_weight="1">
-            <Button 
-                android:id="@+id/bt_item_dealadress_collection"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:drawableLeft="@drawable/ic_launcher"
-	            android:focusable="false"
-	            android:background="@null"
-	            android:text="收藏"/>
-        </LinearLayout>
-        <LinearLayout 
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-	        android:layout_weight="1">
-            <Button 
-                android:id="@+id/bt_item_dealadress_call"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:drawableLeft="@drawable/ic_launcher"
-	            android:focusable="false"
-	            android:background="@null"
-	            android:text="电话"/>
-        </LinearLayout>
-        <LinearLayout 
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-	        android:layout_weight="1">
-            <Button 
-                android:id="@+id/bt_item_dealadress_navigation"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:drawableLeft="@drawable/ic_launcher"
-	            android:focusable="false"
-	            android:background="@null"
-	            android:text="去这里"/>
-        </LinearLayout>
-    </LinearLayout>
+            android:layout_height="wrap_content" 
+            android:padding="5dp">
+            <TextView
+                android:id="@+id/tv_item_dealadress_phone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textColor="@color/black"/>
+            <ImageView 
+                android:id="@+id/iv_tel"
+                android:layout_height="30dp"
+                android:layout_width="30dp"
+                android:contentDescription="@string/app_name"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/ic_launcher"/>
+        </RelativeLayout>
 </LinearLayout>

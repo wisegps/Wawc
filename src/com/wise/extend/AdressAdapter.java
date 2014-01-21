@@ -34,6 +34,9 @@ import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 /**
@@ -49,7 +52,6 @@ public class AdressAdapter extends BaseAdapter{
 	ProgressDialog myDialog = null;
 	private MyHandler myHandler = null;
 	private static final int addFavorite = 1;
-	AdressData adressData = null;
 	public AdressAdapter(Context context,List<AdressData> adressDatas,Activity mActivity){
 		this.context = context;
 		this.adressDatas = adressDatas;
@@ -71,7 +73,7 @@ public class AdressAdapter extends BaseAdapter{
 		return position;
 	}
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		ViewHolder holder;
 		if (convertView == null) {
 			convertView = mInflater.inflate(R.layout.item_dealadress, null);
@@ -80,38 +82,33 @@ public class AdressAdapter extends BaseAdapter{
 			holder.tv_item_dealadress_distance = (TextView) convertView.findViewById(R.id.tv_item_dealadress_distance);
 			holder.tv_item_dealadress_adress = (TextView)convertView.findViewById(R.id.tv_item_dealadress_adress);
 			holder.tv_item_dealadress_phone = (TextView)convertView.findViewById(R.id.tv_item_dealadress_phone);
-			holder.bt_item_dealadress_collection = (Button)convertView.findViewById(R.id.bt_item_dealadress_collection);
-			holder.bt_item_dealadress_call = (Button)convertView.findViewById(R.id.bt_item_dealadress_call);
-			holder.bt_item_dealadress_navigation = (Button)convertView.findViewById(R.id.bt_item_dealadress_navigation);
+			holder.iv_Collect = (ImageView)convertView.findViewById(R.id.iv_Collect);
+			holder.iv_location = (ImageView)convertView.findViewById(R.id.iv_location);
+			holder.iv_tel = (ImageView)convertView.findViewById(R.id.iv_tel);
+			holder.ll_adress_tel = (RelativeLayout)convertView.findViewById(R.id.ll_adress_tel);
 			convertView.setTag(holder);
 		} else {
 			holder = (ViewHolder) convertView.getTag();
 		}
-		adressData = adressDatas.get(position);
+		final AdressData adressData = adressDatas.get(position);
 		holder.tv_item_dealadress_name.setText(adressData.getName());
 		if(adressData.getDistance() != -1){
 			holder.tv_item_dealadress_distance.setText(adressData.getDistance() + "m");
-		}
-		
-		holder.tv_item_dealadress_adress.setText(adressData.getAdress());
+		}		
+		holder.tv_item_dealadress_adress.setText("地址：" + adressData.getAdress());
 		holder.tv_item_dealadress_phone.setText("电话：" +adressData.getPhone());
-		System.out.println("电话：" + adressData.getPhone());
 		if(adressData.getPhone() == null || adressData.getPhone().equals("")){
-			System.out.println("隐藏");
-			holder.bt_item_dealadress_call.setVisibility(View.GONE);
+			holder.ll_adress_tel.setVisibility(View.GONE);
 		}else{
-			System.out.println("显示");
-			holder.bt_item_dealadress_call.setVisibility(View.VISIBLE);
+			holder.ll_adress_tel.setVisibility(View.VISIBLE);
 		}
 		//收藏
-		holder.bt_item_dealadress_collection.setOnClickListener(new OnClickListener() {				
+		holder.iv_Collect.setOnClickListener(new OnClickListener() {				
 			@Override
-			public void onClick(View v) {
-				
-				//TODO  更新服务器   成功之后再操作 数据库
-				
+			public void onClick(View v) {				
+				//TODO  更新服务器   成功之后再操作 数据库				
 				if("".equals(Variable.auth_code)){
-					Toast.makeText(context, "请登录",0).show();
+					Toast.makeText(context, "请登录",Toast.LENGTH_SHORT).show();
 					return;
 				}else{
 					myDialog = ProgressDialog.show(context,"提示", "收藏中...");
@@ -123,13 +120,12 @@ public class AdressAdapter extends BaseAdapter{
 					params.add(new BasicNameValuePair("tel", adressData.getPhone()));
 					params.add(new BasicNameValuePair("lon", String.valueOf(adressData.getLon())));
 					params.add(new BasicNameValuePair("lat", String.valueOf(adressData.getLat())));
-					
-					new Thread(new NetThread.postDataThread(myHandler, Constant.BaseUrl + "favorite?auth_code=" + Variable.auth_code, params, addFavorite)).start();
+					new Thread(new NetThread.postDataThread(myHandler, Constant.BaseUrl + "favorite?auth_code=" + Variable.auth_code, params, addFavorite,position)).start();
 				}
 			}
 		});
 		//拨打电话
-		holder.bt_item_dealadress_call.setOnClickListener(new OnClickListener() {				
+		holder.iv_location.setOnClickListener(new OnClickListener() {				
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:"+ adressData.getPhone()));  
@@ -137,7 +133,7 @@ public class AdressAdapter extends BaseAdapter{
 			}
 		});
 		//导航
-		holder.bt_item_dealadress_navigation.setOnClickListener(new OnClickListener() {				
+		holder.iv_tel.setOnClickListener(new OnClickListener() {				
 			@Override
 			public void onClick(View v) {
 				GeoPoint point = new GeoPoint((int) (Variable.Lat * 1E6),(int) (Variable.Lon * 1E6));
@@ -151,7 +147,8 @@ public class AdressAdapter extends BaseAdapter{
 	}
 	private class ViewHolder {
 		TextView tv_item_dealadress_name,tv_item_dealadress_adress,tv_item_dealadress_phone,tv_item_dealadress_distance;
-		Button bt_item_dealadress_collection,bt_item_dealadress_call,bt_item_dealadress_navigation;
+		ImageView iv_Collect,iv_location,iv_tel;
+		RelativeLayout ll_adress_tel;
 	}
 	
 	class MyHandler extends Handler{
@@ -163,8 +160,8 @@ public class AdressAdapter extends BaseAdapter{
 				Log.e("执行添加的结果：",msg.obj.toString());
 				try {
 					JSONObject jsonObject = new JSONObject(msg.obj.toString());
-					if(Integer.valueOf(jsonObject.getString("status_code")) == 0){
-						
+					if(jsonObject.getString("status_code").equals("0")){
+					    AdressData adressData = adressDatas.get(msg.arg1);
 						DBExcute dbExcute = new DBExcute();
 				        ContentValues values = new ContentValues();
 				        values.put("Cust_id", Variable.cust_id);
@@ -175,7 +172,8 @@ public class AdressAdapter extends BaseAdapter{
 				        values.put("lon", adressData.getLon());
 				        values.put("lat", adressData.getLat());
 				        dbExcute.InsertDB(mActivity, values, Constant.TB_Collection);
-						Toast.makeText(mActivity, "添加成功", 0).show();
+				        System.out.println(adressData.toString());
+						Toast.makeText(mActivity, "添加成功", Toast.LENGTH_SHORT).show();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

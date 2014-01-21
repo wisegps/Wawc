@@ -138,8 +138,8 @@ public class SearchMapActivity extends Activity {
 			for(MKPoiInfo mkPoiInfo : res.getAllPoi()){
 				int distance = (int) DistanceUtil.getDistance(point, mkPoiInfo.pt);
 				AdressData adressData = new AdressData();
-				adressData.setName(mkPoiInfo.address);
-				adressData.setAdress("地址："+mkPoiInfo.name);
+				adressData.setName(mkPoiInfo.name);
+				adressData.setAdress(mkPoiInfo.address);
 				adressData.setPhone(mkPoiInfo.phoneNum);
 				adressData.setLat(mkPoiInfo.pt.getLatitudeE6()/1e6);
 				adressData.setLon(mkPoiInfo.pt.getLongitudeE6()/1e6);

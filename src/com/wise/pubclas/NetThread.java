@@ -195,10 +195,13 @@ public class NetThread {
 		Handler handler;
 		String url;
 		int what;
+		int index = 0 ;
 		List<NameValuePair> params;
-		public postDataThread(String url,List<NameValuePair> params){
+		public postDataThread(Handler handler,String url,List<NameValuePair> params,int what,int index){
+		    this.handler = handler;
 			this.url = url;
 			this.params = params;
+			this.index = index;
 		}
 		public postDataThread(Handler handler,String url,List<NameValuePair> params,int what){
 			this.handler = handler;
@@ -221,18 +224,21 @@ public class NetThread {
 					 String strResult = EntityUtils.toString(httpResponse.getEntity());
 					 Message message = new Message();
 					 message.what = what;
+					 message.arg1 = index;
 					 message.obj = strResult;
 					 handler.sendMessage(message);			 
 				 }else{
 					 Log.d(TAG, "状态" +httpResponse.getStatusLine().getStatusCode());					 
 					 Message message = new Message();
 					 message.what = what;
+					 message.arg1 = index;
 					 message.obj = "";
 					 handler.sendMessage(message);
 				 }
 			} catch (Exception e) {
 				Message message = new Message();
 				message.what = what;
+				message.arg1 = index;
 				message.obj = "";
 				handler.sendMessage(message);			
 				e.printStackTrace();
