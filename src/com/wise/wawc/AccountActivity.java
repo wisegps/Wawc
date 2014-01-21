@@ -87,7 +87,9 @@ public class AccountActivity extends Activity{
 				finish();
 				break;
 			case R.id.account_to_my_vehicle:
-				startActivity(new Intent(AccountActivity.this,MyVehicleActivity.class));
+				Intent intent = new Intent(AccountActivity.this,MyVehicleActivity.class);
+				intent.putExtra("isJump", true);
+				startActivity(intent);
 				break;
 			case R.id.bt_activity_account_logout:
 				Platform platformQQ = ShareSDK.getPlatform(AccountActivity.this,QZone.NAME);

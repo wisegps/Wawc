@@ -4,8 +4,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -251,8 +249,10 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 			switch(v.getId()){
 			case R.id.my_vechile_menu:
 				if(isJump){
+					Log.e("跳转","加载");
 					finish();
 				}else{
+					Log.e("加载","加载");
 					ActivityFactory.A.LeftMenu();
 				}
 				break;
@@ -692,4 +692,25 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 			Variable.carDatas.remove(newCarImage);
 		}
 	}
+	
+	 long waitTime = 2000;
+	 long touchTime = 0;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+    	if(isJump){
+    		MyVehicleActivity.this.finish();
+    	}else{
+	        if (keyCode == KeyEvent.KEYCODE_BACK) {
+	            long currentTime = System.currentTimeMillis();
+	            if (touchTime == 0 || (currentTime - touchTime) >= waitTime) {
+	                Toast.makeText(this, "再按一次退出客户端", Toast.LENGTH_SHORT).show();
+	                touchTime = currentTime;
+	            } else {
+	                finish();
+	            }
+	            return true;
+	        }
+    	}
+        return super.onKeyDown(keyCode, event);
+    }
 }
