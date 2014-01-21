@@ -54,6 +54,7 @@ import android.widget.Toast;
  * @author 王庆文
  */
 public class VehicleFriendActivity extends Activity implements IXListViewListener{
+	private boolean isJump = false;//false 加载，true 跳转
 	private Button menuButton = null;
 	private Button homeButton = null;
 	private XListView articleList = null;
@@ -81,6 +82,8 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE); 
 		setContentView(R.layout.vehicle_friend);
+		Intent intent = getIntent();
+		isJump = intent.getBooleanExtra("isJump", false);
 		//设置无标题
 		menuButton = (Button) findViewById(R.id.menu);
 		menuButton.setOnClickListener(new ClickListener());

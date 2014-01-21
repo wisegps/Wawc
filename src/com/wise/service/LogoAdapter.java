@@ -21,6 +21,7 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class LogoAdapter extends BaseAdapter {
 	private Context context;
@@ -47,11 +48,13 @@ public class LogoAdapter extends BaseAdapter {
 		ViewHodler hodler = new ViewHodler();
 		hodler.linearLayout = (LinearLayout) convertView.findViewById(R.id.image_layout);
 		hodler.imageView = (ImageView) convertView.findViewById(R.id.image_view);
+		hodler.vehicleNum = (TextView) convertView.findViewById(R.id.vehicle_logo_num);
 		
 		if(carDataList.get(position).getCar_brand() != null){
 			Log.e("路径：",Constant.VehicleLogoPath + carDataList.get(position).getCar_brand() + ".jpg");
 			Bitmap bitmap = BitmapFactory.decodeFile(Constant.VehicleLogoPath + carDataList.get(position).getCar_brand() + ".jpg");
 			hodler.imageView.setImageBitmap(bitmap);
+			hodler.vehicleNum.setText(carDataList.get(position).getObj_name());
 		}else{
 			hodler.imageView.setBackgroundResource(R.drawable.image);
 		}
@@ -71,6 +74,7 @@ public class LogoAdapter extends BaseAdapter {
 	private class ViewHodler{
 		LinearLayout linearLayout;
 		ImageView imageView;
+		TextView vehicleNum;
 	}
 	
 	public void updataDatas(List<CarData> carDataList){
