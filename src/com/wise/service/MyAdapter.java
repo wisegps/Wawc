@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-
 import com.wise.data.Article;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
@@ -57,7 +56,6 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 	private Bitmap bitmap = null;
 	
 	private List<Article> articleList = null;
-	private List<Bitmap> smallImageList = new ArrayList<Bitmap>();
 	private List<Bitmap> bigImageList = new ArrayList<Bitmap>();
 	
 	int padding = 40;
@@ -80,40 +78,35 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 	}
 	public View getView(int position, View convertView, ViewGroup parent) {
 		convertView = inflater.inflate(R.layout.article_adapter, null);
+		List<Bitmap> smallImageList = new ArrayList<Bitmap>();
 		for(int i = 0 ; i < articleList.get(position).getImageList().size() ; i ++){
-			
 			Map<String,String> imageMap = articleList.get(position).getImageList().get(i);
 			//判断小图是否存在sd卡 /点击小图的时候再判断是否存在sd卡
 			String smallImage = imageMap.get("big_pic").substring(imageMap.get("big_pic").lastIndexOf("/"));
 			Bitmap smallBitmap = imageIsExist(Constant.VehiclePath + smallImage,imageMap.get("small_pic"));
 			smallImageList.add(smallBitmap);
-			Log.e("小图" + i,imageMap.get("big_pic"));
-			Log.e("大图" + i,imageMap.get("small_pic"));
 		}
-		Log.e("图片数量：",smallImageList.size()+"");
 		//动态添加用户发表的图片
 		TableLayout table = (TableLayout) convertView.findViewById(R.id.user_image);
 		TableRow row = new TableRow(context);
-		for(int i = 0 ; i < smallImageList.size() ; i ++){
+		//动态添加用户发表的图片
+		for(int i = 0; i < smallImageList.size() ; i ++){
 			ImageView t = new ImageView(context);
 			t.setClickable(true);
+			t.setId(i);
 			t.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					context.startActivity(new Intent(context,ImageActivity.class));
 				}
 			});
-//			t.setBackgroundResource(R.drawable.image);
 			t.setImageBitmap(smallImageList.get(i));
-			t.setId(i);
+			row.addView(t);
 			if((i%3 + 1) == 3){
-				row.addView(t);
 				table.addView(row,new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 				row = new TableRow(context);
-			}else{
-				row.addView(t);
+			}else if(i == (smallImageList.size() - 1)){
+				table.addView(row,new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 			}
-			
-			smallImageList.clear();
 		}
 		saySomething = (ImageView) convertView.findViewById(R.id.list_say_somthing);
 		userHead = (ImageView) convertView.findViewById(R.id.head_article);
@@ -217,13 +210,9 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 	}
 	
 	
-		/*
-	    * 将String转成Date类型
-	    * 将GMT时间转换成当前时区时间
-	    */
+		//转换时区
 	    public static String transform(String from){
 	        String to = "";
-
 	        SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	        //本地时区
 	        Calendar nowCal = Calendar.getInstance();
@@ -235,7 +224,6 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 	        SimpleDateFormat simple1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	        //设置 DateFormat的时间区域为GMT
 	        simple1.setTimeZone(TimeZone.getTimeZone("GMT"));
-
 
 	        //把字符串转化为Date对象，然后格式化输出这个Date
 	        Date fromDate = new Date();
