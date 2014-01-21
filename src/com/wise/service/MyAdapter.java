@@ -66,6 +66,7 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 		this.view = v;
 		this.context = context;
 		this.articleList = articleList;
+		
 	}
 	public int getCount() {
 //		return 10;

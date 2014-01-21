@@ -57,10 +57,6 @@ import android.widget.Toast;
  * @author 王庆文
  */
 public class NewArticleActivity extends Activity implements PlatformActionListener,OnUploadProcessListener{
-	/**
-	 * isSNS，true发布到微博orQQ控件；false发布新文章
-	 */
-	boolean isSNS = false;
 	private Button back = null;
 	private ImageView takePhoto;
 	private LinearLayout linearLayout = null;  //将照片动态添加到布局文件中
@@ -107,14 +103,7 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 		if(!"".equals(Variable.Adress)){
 			location.setText(Variable.Adress);
 		}
-
-		Intent intent = getIntent();
-		isSNS = intent.getBooleanExtra("isSNS", false);
-		if(isSNS){//初始化shareSDK
-			ShareSDK.initSDK(this);
-			Bitmap bitmap=intent.getParcelableExtra("bitmap");
-			ShowBitMap(bitmap);
-		}
+		
 	}
 	class ClickListener implements OnClickListener{
 		public void onClick(View v) {
@@ -126,29 +115,24 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 				Content = et_publish_article.getText().toString().trim();
 				if(Content.equals("")){
 					Toast.makeText(NewArticleActivity.this, R.string.content_null, Toast.LENGTH_SHORT).show();
-				}else{
-					if(isSNS){//发布到到微博orQQ空间
-						showShare(true, null);
-					}else{//发布新文章（发图片）
-						if(!"".equals(preferences.getString(Constant.LocationCity,""))){
-							if(bitmapList.size() > 0){
-								UploadUtil.getInstance().setOnUploadProcessListener(NewArticleActivity.this);
-								myDialog = ProgressDialog.show(NewArticleActivity.this, "图片上传", "正在上传");
-								myDialog.setCancelable(true);
-								UploadUtil.getInstance().uploadFile(bitmapList.get(0).get(imageSize).toString(), "image", Constant.BaseUrl + "upload_image?auth_code=" + Variable.auth_code, new HashMap<String, String>());
-							}else{
-								myDialog = ProgressDialog.show(NewArticleActivity.this, "图片上传", "正在上传");
-								myDialog.setCancelable(true);
-								Message msg = new Message();
-								msg.what = removeImageCode;
-								myHandler.sendMessage(msg);
-							}
+				}else{					
+					if(!"".equals(preferences.getString(Constant.LocationCity,""))){
+						if(bitmapList.size() > 0){
+							UploadUtil.getInstance().setOnUploadProcessListener(NewArticleActivity.this);
+							myDialog = ProgressDialog.show(NewArticleActivity.this, "图片上传", "正在上传");
+							myDialog.setCancelable(true);
+							UploadUtil.getInstance().uploadFile(bitmapList.get(0).get(imageSize).toString(), "image", Constant.BaseUrl + "upload_image?auth_code=" + Variable.auth_code, new HashMap<String, String>());
 						}else{
-							Toast.makeText(getApplicationContext(), "城市未选择",0).show();
+							myDialog = ProgressDialog.show(NewArticleActivity.this, "图片上传", "正在上传");
+							myDialog.setCancelable(true);
+							Message msg = new Message();
+							msg.what = removeImageCode;
+							myHandler.sendMessage(msg);
 						}
+					}else{
+						Toast.makeText(getApplicationContext(), "城市未选择",0).show();
 					}
-				}
-				
+				}				
 				break;
 			case R.id.take_photo:
 		       	//调用照相机

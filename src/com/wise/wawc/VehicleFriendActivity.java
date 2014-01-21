@@ -106,6 +106,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		Message msg = new Message();
 		msg.what = setUserIcon;
 		myHandler.sendMessage(msg);
+		
 		myAdapter = new MyAdapter(this,saySomething,articleDataList);
 		articleList.setAdapter(myAdapter);
 	
@@ -221,7 +222,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		articleDataList.clear();
 		try {
 			if("[]".equals(JSON)){
-				return null;
+				return articleDataList;
 			}
 		JSONArray jsonArray = new JSONArray(JSON);
 		for(int i = 0 ; i < jsonArray.length() ; i ++){
