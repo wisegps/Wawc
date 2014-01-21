@@ -12,18 +12,22 @@ import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
 import com.wise.data.Article;
+import com.wise.extend.FaceConversionUtil;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.wawc.ArticleDetailActivity;
 import com.wise.wawc.FriendHomeActivity;
 import com.wise.wawc.ImageActivity;
 import com.wise.wawc.R;
+import com.wise.wawc.VehicleFriendActivity;
+
 import android.app.ActionBar.LayoutParams;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.text.SpannableString;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +35,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -39,7 +44,7 @@ import android.widget.TextView;
  * 车友圈文章列表
  * @author 王庆文
  */
-public class MyAdapter extends BaseAdapter implements OnClickListener{
+public class MyAdapter extends BaseAdapter{
 	private LayoutInflater inflater;
 	private ImageView saySomething;
 	private ImageView userHead;
@@ -49,14 +54,10 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 	private TextView articel_user_name;  //点击查看详细信息
 	private TextView tv_article_content;
 	private TextView publish_time;
-	private TableLayout tableLayout;  //用户发表的图片
-	private TableRow tableRow;
-	private ImageView imageView;
-	private int imageNumber = 0;
 	private Bitmap bitmap = null;
+	private int commentUserId = 0;
 	
 	private List<Article> articleList = null;
-	private List<Bitmap> bigImageList = new ArrayList<Bitmap>();
 	
 	int padding = 40;
 	public MyAdapter(Context context,View v,List<Article> articleList){
@@ -73,11 +74,14 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 	public Object getItem(int position) {
 		return null;
 	}
+	//用于获取评论者的id
 	public long getItemId(int position) {
-		return position;
+		return commentUserId;
 	}
 	public View getView(int position, View convertView, ViewGroup parent) {
 		convertView = inflater.inflate(R.layout.article_adapter, null);
+		TextView articleCommentUser = (TextView) convertView.findViewById(R.id.article_comment_user);
+		TextView articleCommentContent = (TextView) convertView.findViewById(R.id.article_comment_content);
 		List<Bitmap> smallImageList = new ArrayList<Bitmap>();
 		for(int i = 0 ; i < articleList.get(position).getImageList().size() ; i ++){
 			Map<String,String> imageMap = articleList.get(position).getImageList().get(i);
@@ -89,7 +93,6 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 		//动态添加用户发表的图片
 		TableLayout table = (TableLayout) convertView.findViewById(R.id.user_image);
 		TableRow row = new TableRow(context);
-		//动态添加用户发表的图片
 		for(int i = 0; i < smallImageList.size() ; i ++){
 			ImageView t = new ImageView(context);
 			t.setClickable(true);
@@ -120,9 +123,14 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 		articel_user_name.setText(articleList.get(position).getName());
 		tv_article_content.setText(articleList.get(position).getContent());
 		
-		saySomething.setOnClickListener(this);
-		userHead.setOnClickListener(this);
-		articel_user_name.setOnClickListener(this);
+		saySomething.setOnClickListener(new MyClickListener(position));
+		userHead.setOnClickListener(new MyClickListener(position));
+		articel_user_name.setOnClickListener(new MyClickListener(position));
+		
+		String content = "测试[可爱]";  //模拟评论
+	    SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(context, content);
+	    articleCommentUser.setText("张三:");
+	    articleCommentContent.setText(spannableString);
 		return convertView;
 	}
 	private Bitmap imageIsExist(String path,final String loadUrl) {
@@ -162,32 +170,6 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
                 e.printStackTrace();  
             }  
         }
-	}
-	public void onClick(View v) {
-		switch(v.getId()){
-		case R.id.list_say_somthing:
-			//编辑框不可见，设置为可见
-			Log.e("onClick",String.valueOf(isClick));
-			if(!isClick){
-				isClick = true;
-				view.setVisibility(View.VISIBLE);
-			//编辑框可见，设置为不可见	
-			}else if(isClick){
-				isClick = false;
-				view.setVisibility(View.GONE);
-			}
-			break;
-		case R.id.head_article:   //点击用户头像 进入好友主页
-			context.startActivity(new Intent(context,FriendHomeActivity.class));
-			break;
-		case R.id.article_user_name:   //点击进入文章的详细介绍
-			Log.e("进入文章详情","进入文章详情");
-			context.startActivity(new Intent(context,ArticleDetailActivity.class));
-			break;
-		case 1:
-//			context.startActivity(new Intent(context,ImageActivity.class));
-			break;
-		}
 	}
 	
 	public String getTime(String time){
@@ -236,6 +218,44 @@ public class MyAdapter extends BaseAdapter implements OnClickListener{
 	            e1.printStackTrace();
 	        }
 	        return to;
+	    }
+	    
+	    class MyClickListener implements OnClickListener{
+	    	int chickIndex = 0;
+	    	MyClickListener(int chickIndex){
+	    		this.chickIndex = chickIndex;
+	    	}
+			public void onClick(View v) {
+				switch(v.getId()){
+
+				case R.id.list_say_somthing:
+					Log.e("点击的索引：" ,chickIndex + "");
+					VehicleFriendActivity.blogId = articleList.get(chickIndex).getBlog_id();
+					//编辑框不可见，设置为可见
+					Log.e("onClick",String.valueOf(isClick));
+					if(!isClick){
+						isClick = true;
+						view.setVisibility(View.VISIBLE);
+					//编辑框可见，设置为不可见	
+					}else if(isClick){
+						isClick = false;
+						view.setVisibility(View.GONE);
+					}
+					
+					
+					break;
+				case R.id.head_article:   //点击用户头像 进入好友主页
+					context.startActivity(new Intent(context,FriendHomeActivity.class));
+					break;
+				case R.id.article_user_name:   //点击进入文章的详细介绍
+					Log.e("进入文章详情","进入文章详情");
+					context.startActivity(new Intent(context,ArticleDetailActivity.class));
+					break;
+				case 1:
+//					context.startActivity(new Intent(context,ImageActivity.class));
+					break;
+				}
+			}
 	    }
 	public void refreshDates(List<Article> articleList){ 
 		this.articleList = articleList;
