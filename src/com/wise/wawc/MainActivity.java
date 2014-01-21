@@ -154,23 +154,23 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         tv_activity_main_name = (TextView) findViewById(R.id.tv_activity_main_name);
 
         // 车友圈
-        LinearLayout ll_circle = (LinearLayout) findViewById(R.id.ll_circle);
-        ll_circle.setOnClickListener(onClickListener);
+        TextView car_circle = (TextView) findViewById(R.id.car_circle);
+        car_circle.setOnClickListener(onClickListener);
         // 我的收藏
-        LinearLayout ll_collection = (LinearLayout) findViewById(R.id.ll_collection);
-        ll_collection.setOnClickListener(onClickListener);
+        TextView my_collect = (TextView) findViewById(R.id.my_collect);
+        my_collect.setOnClickListener(onClickListener);
         // 设置中心
-        LinearLayout ll_setting = (LinearLayout) findViewById(R.id.ll_setting);
-        ll_setting.setOnClickListener(onClickListener);
+        TextView setup_center = (TextView) findViewById(R.id.setup_center);
+        setup_center.setOnClickListener(onClickListener);
 
-        LinearLayout ll_activity_main_car_remind = (LinearLayout) findViewById(R.id.ll_activity_main_car_remind);
-        ll_activity_main_car_remind.setOnClickListener(onClickListener);
-        LinearLayout ll_activity_main_mycar = (LinearLayout) findViewById(R.id.ll_activity_main_mycar);
-        ll_activity_main_mycar.setOnClickListener(onClickListener);
-        LinearLayout ll_activity_main_terminal = (LinearLayout) findViewById(R.id.ll_activity_main_terminal);
-        ll_activity_main_terminal.setOnClickListener(onClickListener);
-        LinearLayout ll_activity_main_orders = (LinearLayout) findViewById(R.id.ll_activity_main_orders);
-        ll_activity_main_orders.setOnClickListener(onClickListener);
+        TextView car_remind = (TextView) findViewById(R.id.car_remind);
+        car_remind.setOnClickListener(onClickListener);
+        TextView my_car = (TextView) findViewById(R.id.my_car);
+        my_car.setOnClickListener(onClickListener);
+        TextView my_terminal = (TextView) findViewById(R.id.my_terminal);
+        my_terminal.setOnClickListener(onClickListener);
+        TextView my_orders = (TextView) findViewById(R.id.my_orders);
+        my_orders.setOnClickListener(onClickListener);
 
         
         getSpData();
@@ -200,27 +200,27 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                 ToFriendHome();
                 break;
             // 车友圈
-            case R.id.ll_circle:
+            case R.id.car_circle:
                 ToVehicleFriends();
                 break;
-            case R.id.ll_activity_main_car_remind:
+            case R.id.car_remind:
                 ToCarRemind();
                 break;
-            case R.id.ll_activity_main_mycar:
+            case R.id.my_car:
                 ToMyCar();
                 break;
             // 我的收藏
-            case R.id.ll_collection:
+            case R.id.my_collect:
                 ToMyCollection();
                 break;
-            case R.id.ll_activity_main_terminal:
+            case R.id.my_terminal:
                 ToCarTerminal();
                 break;
-            case R.id.ll_activity_main_orders:
+            case R.id.my_orders:
                 Toorders();
                 break;
             // 设置中心
-            case R.id.ll_setting:
+            case R.id.setup_center:
                 ToSettingCenter();
                 break;
             case R.id.iv_activity_main_login_qq:

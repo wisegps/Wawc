@@ -63,7 +63,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
     TextView tv_item_weather_date, tv_item_weather_wd, tv_item_weather,
             tv_item_weather_sky, tv_item_weather_temp1,
             tv_item_weather_index_xc, tv_item_weather_city,tv_item_oil_90, tv_item_oil_93,
-            tv_item_oil_97, tv_item_oil_0,tv_car_number;
+            tv_item_oil_97, tv_item_oil_0,tv_car_number,tv_activity_home_car_adress;
     ImageView iv_carLogo;
     private RecognizerDialog recognizerDialog = null; // 语音合成文字
     StringBuffer sb = null;
@@ -99,7 +99,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         bt_activity_home_traffic.setOnClickListener(onClickListener);
         Button bt_activity_home_share = (Button) findViewById(R.id.bt_activity_home_share);
         bt_activity_home_share.setOnClickListener(onClickListener);
-        TextView tv_activity_home_car_adress = (TextView) findViewById(R.id.tv_activity_home_car_adress);
+        tv_activity_home_car_adress = (TextView) findViewById(R.id.tv_activity_home_car_adress);
         tv_activity_home_car_adress.setOnClickListener(onClickListener);
         tv_car_number = (TextView)findViewById(R.id.tv_car_number);
         iv_carLogo = (ImageView)findViewById(R.id.iv_carLogo);
@@ -151,7 +151,10 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         ShowCarInfo();
         if(isNeedGetLogoFromUrl){
           new Thread(new getLogoThread()).start();
-        }        
+        }
+        if(Variable.Adress != null){
+            tv_activity_home_car_adress.setText(Variable.Adress);
+        }
     }
 
     OnClickListener onClickListener = new OnClickListener() {
@@ -192,8 +195,9 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                         CarLocationActivity.class));
                 break;
             case R.id.rl_activity_home_car: // 我的爱车
-                HomeActivity.this.startActivity(new Intent(HomeActivity.this,
-                        MyVehicleActivity.class));
+                Intent intent = new Intent(HomeActivity.this,MyVehicleActivity.class);
+                intent.putExtra("isJump", true);
+                HomeActivity.this.startActivity(intent);
                 break;
             case R.id.iv_home_say_something:
                 recognizerDialog.show();
@@ -236,6 +240,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         String LocationCityFuel = preferences.getString(Constant.LocationCityFuel, "");
         //默认显示车的object_id
         DefaultVehicleID = preferences.getInt(Constant.DefaultVehicleID, 0);
+        System.out.println("DefaultVehicleID = " + DefaultVehicleID);
         tv_item_weather_city.setText(LocationCity);
         jsonFuel(LocationCityFuel);
     }
@@ -471,8 +476,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
     private void jsonFutureWeather(String result) {
         try {
             String Weather = "";
-            JSONObject jsonObject = new JSONObject(result)
-                    .getJSONObject("weatherinfo");
+            JSONObject jsonObject = new JSONObject(result).getJSONObject("weatherinfo");
             if (jsonObject.opt("date_y") != null) {
                 String date_y = jsonObject.getString("date_y");
                 //tv_item_oil_update.setText(date_y + "更新");
@@ -489,8 +493,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 tv_item_weather_temp1.setText(jsonObject.getString("temp1"));
             }
             if (jsonObject.opt("index_xc") != null) {
-                tv_item_weather_index_xc.setText(jsonObject
-                        .getString("index_xc"));
+                tv_item_weather_index_xc.setText(jsonObject.getString("index_xc"));
             }
             tv_item_weather_date.setText(Weather);
         } catch (JSONException e) {
@@ -718,6 +721,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
     private void registerBroadcastReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Constant.A_Login);
+        intentFilter.addAction(Constant.A_City);
         registerReceiver(broadcastReceiver, intentFilter);
     }
 
@@ -730,6 +734,8 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                     Log.d(TAG, "获取车辆数据");
                     GetCars();
                 }
+            }else if(action.equals(Constant.A_City)){
+                tv_activity_home_car_adress.setText(intent.getStringExtra("AddrStr"));
             }
         }
     };

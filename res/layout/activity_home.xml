@@ -61,6 +61,8 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_centerVertical="true"
+	            android:textSize="@dimen/size_22"
+	            android:layout_marginLeft="10dp"
 	            android:layout_toRightOf="@id/iv_carLogo"
 	            android:textColor="@color/white"/>
 	        <ImageView
@@ -71,24 +73,13 @@
 	            android:layout_centerVertical="true"
 	            android:src="@drawable/ic_launcher"/>        
 	    </RelativeLayout>
-	    <LinearLayout        
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:padding="10dp"
-	        android:orientation="horizontal">
-	        <ImageView 
-	            android:contentDescription="@string/app_name"
-	            android:layout_width="20dp"
-	            android:layout_height="20dp"
-	            android:src="@drawable/ic_launcher"/>
-	        <TextView 
-	            android:id="@+id/tv_activity_home_car_adress"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:textColor="@color/white"
-	            android:layout_gravity="center_vertical"
-	            android:text="深圳市南山区南山大道115号，招商银行附近, 大厦B塔"/>
-	    </LinearLayout>
+	    <TextView 
+            android:id="@+id/tv_activity_home_car_adress"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:drawableLeft="@drawable/ic_launcher"
+            android:gravity="center_vertical"/>
 	    <TextView 
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"

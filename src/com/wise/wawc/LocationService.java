@@ -91,6 +91,7 @@ public class LocationService extends Service {
 	            //发送定位城市广播，选择城市用到
 	            Intent intent = new Intent(Constant.A_City);
 	            intent.putExtra("City", location.getCity());
+	            intent.putExtra("AddrStr", location.getAddrStr());
 	            sendBroadcast(intent);
 			}
 		}
