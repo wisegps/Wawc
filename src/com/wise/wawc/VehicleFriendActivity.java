@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,7 +63,9 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	private MyAdapter myAdapter = null;
 	
 	private ImageView newArticle = null;
-	private View saySomething;
+	private View saySomething;   //发表评论控件
+	private Button sendButton = null;
+	private TextView commentContent = null;
 	
 	private MyHandler myHandler = null;
 	private EditText searchView = null;
@@ -75,8 +79,10 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	private static final int setUserIcon = 4;
 	private static final int getArticleList = 10;
+	private static final int commentArticle = 18;
 	private List<Article> articleDataList = new ArrayList<Article>();
 	private ProgressDialog myDialog = null;
+	public static int blogId = 0;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -92,6 +98,9 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		newArticle = (ImageView) findViewById(R.id.publish_article);
 		newArticle.setOnClickListener(new ClickListener());
 		saySomething = (View) findViewById(R.id.say_something);
+		sendButton = (Button) findViewById(R.id.btn_send);
+		sendButton.setOnClickListener(new ClickListener());
+		commentContent = (TextView) findViewById(R.id.et_sendmessage);
 		searchView = (EditText) findViewById(R.id.search);
 		qqUserHead = (ImageView) findViewById(R.id.user_head);
 		qqUserHead.setOnClickListener(new ClickListener());
@@ -143,6 +152,25 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				
 			case R.id.user_head:    //用户资料
 				startActivity(new Intent(VehicleFriendActivity.this,AccountActivity.class));
+				break;
+				
+			case R.id.btn_send:
+				String commentMsg = commentContent.getText().toString().trim();
+				//发布到服务器/刷新文章内容显示/评论成功后清空编辑框/隐藏编辑框
+				
+				if("".equals(commentMsg)){
+					Toast.makeText(getApplicationContext(), "评论类容不能为空", 0).show();
+					return;
+				}else{
+					List<NameValuePair> params = new ArrayList<NameValuePair>();
+					params.add(new BasicNameValuePair("cust_id", Variable.cust_id));
+					params.add(new BasicNameValuePair("name", Variable.cust_name));
+					params.add(new BasicNameValuePair("content", commentMsg));
+					myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
+					myDialog.setCancelable(true);
+					new Thread(new NetThread.postDataThread(myHandler, Constant.BaseUrl + "blog/" + blogId + "/comment?auth_code=" + Variable.auth_code, params, commentArticle)).start();
+					Log.e("评论的url :",Constant.BaseUrl + "blog/" + blogId + "/comment?auth_code=" + Variable.auth_code);
+				}
 				break;
 			default:
 				return;
@@ -211,6 +239,20 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				jsonToList(temp1);
 				Log.e("文章列表",temp1);
 				myAdapter.refreshDates(jsonToList(temp1));
+				break;
+				
+			case commentArticle:
+				String commentResult = msg.obj.toString();
+				Log.e("评论结果：",msg.obj.toString());
+				try {
+					JSONObject jsonObject = new JSONObject(commentResult);
+					if(Integer.valueOf(jsonObject.getString("status_code")) == 0){
+						Toast.makeText(getApplicationContext(), "评论成功", 0).show();
+						myDialog.dismiss();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 				break;
 			}
 			super.handleMessage(msg);

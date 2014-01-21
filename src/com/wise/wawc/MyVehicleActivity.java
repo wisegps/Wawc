@@ -29,7 +29,10 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.AlertDialog.Builder;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -138,6 +141,8 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	private CarData newCarImage = null;
 	private Bitmap imageBitmap = null;
 	
+	private SharedPreferences preferences = null;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.my_vehicle);
@@ -162,20 +167,22 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		btDeleteVehicle = (Button) findViewById(R.id.my_vehilce_delete);
 		
 		
-		
 		ivCarSeries = (ImageView) findViewById(R.id.iv_car_series);
 		ivCarType = (ImageView) findViewById(R.id.iv_car_type);
 		tvCarSeries = (TextView) findViewById(R.id.tv_car_series);
 		tvCarType = (TextView) findViewById(R.id.tv_car_type);
 		
-	}
-	protected void onResume() {
-		super.onResume();
-
 		ivCarSeries.setOnClickListener(new ClickListener());
 		ivCarType.setOnClickListener(new ClickListener());
 		mSpinerPopWindow = new SpinerPopWindow(MyVehicleActivity.this);
 		mSpinerPopWindow.setItemListener(this);
+		
+		preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+		chickIndex = preferences.getInt(Constant.DefaultVehicleID, 0);
+		Log.e("默认的车辆id",chickIndex + "");
+	}
+	protected void onResume() {
+		super.onResume();
 		
 		myHandler = new MyHandler();
 		dBhalper = new DBHelper(MyVehicleActivity.this);
@@ -220,6 +227,11 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				}
 			}
 		});
+		for(int i = 0 ; i < Variable.carDatas.size() ; i++){
+			Variable.carDatas.get(i).setCheck(false);
+		}
+		Variable.carDatas.get(chickIndex).setCheck(true);
+		logoAdapter.notifyDataSetChanged();
 		
 		btSaveVehicleData.setOnClickListener(new ClickListener());
 		btDeleteVehicle.setOnClickListener(new ClickListener());
@@ -691,6 +703,11 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		if("newVehicle".equals(Variable.carDatas.get(Variable.carDatas.size() - 1).getCar_brand())){
 			Variable.carDatas.remove(newCarImage);
 		}
+		//存储用户选中的车辆
+		Editor editor = preferences.edit();
+		editor.putInt(Constant.DefaultVehicleID, chickIndex);
+		Log.e("提交的id",chickIndex + "");
+		editor.commit();
 	}
 	
 	 long waitTime = 2000;
