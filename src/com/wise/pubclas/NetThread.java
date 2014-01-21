@@ -200,6 +200,7 @@ public class NetThread {
 		public postDataThread(Handler handler,String url,List<NameValuePair> params,int what,int index){
 		    this.handler = handler;
 			this.url = url;
+			this.what = what;
 			this.params = params;
 			this.index = index;
 		}
@@ -222,11 +223,11 @@ public class NetThread {
 				 HttpResponse httpResponse = client.execute(httpPost);
 				 if(httpResponse.getStatusLine().getStatusCode() == 200){
 					 String strResult = EntityUtils.toString(httpResponse.getEntity());
-					 Message message = new Message();
+                     Message message = new Message();
 					 message.what = what;
 					 message.arg1 = index;
 					 message.obj = strResult;
-					 handler.sendMessage(message);			 
+					 handler.sendMessage(message);	
 				 }else{
 					 Log.d(TAG, "状态" +httpResponse.getStatusLine().getStatusCode());					 
 					 Message message = new Message();
