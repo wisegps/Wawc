@@ -2,6 +2,7 @@ package com.wise.pubclas;
 
 import java.util.List;
 
+import com.wise.data.Article;
 import com.wise.data.CarData;
 /**
  * 变量
@@ -45,6 +46,8 @@ public class Variable {
     public static String defaultCenter = "车辆位置";
     
     public static List<CarData> carDatas;
+    
+    public static List<Article> articleList;
     
     public static int bigImageReqWidth = 80;
     public static int bigImageReqHeight = 80;

@@ -116,9 +116,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		msg.what = setUserIcon;
 		myHandler.sendMessage(msg);
 		
-		myAdapter = new MyAdapter(this,saySomething,articleDataList);
-		articleList.setAdapter(myAdapter);
-	
 		
 		articleList.setOnScrollListener(new OnScrollListener() {
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -236,13 +233,18 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			case getArticleList:
 				myDialog.dismiss();
 				String temp1 = (msg.obj.toString()).replaceAll("\\\\", "");
-				jsonToList(temp1);
+				articleDataList = jsonToList(temp1);
+				Variable.articleList = articleDataList;
+				myAdapter = new MyAdapter(VehicleFriendActivity.this,saySomething,articleDataList);
+				articleList.setAdapter(myAdapter);
 				Log.e("文章列表",temp1);
-				myAdapter.refreshDates(jsonToList(temp1));
+//				myAdapter.refreshDates(articleDataList);
 				break;
 				
 			case commentArticle:
 				String commentResult = msg.obj.toString();
+				
+				//TODO 评论结果   404
 				Log.e("评论结果：",msg.obj.toString());
 				try {
 					JSONObject jsonObject = new JSONObject(commentResult);

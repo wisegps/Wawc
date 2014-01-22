@@ -15,6 +15,7 @@ import com.wise.data.Article;
 import com.wise.extend.FaceConversionUtil;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
+import com.wise.pubclas.Variable;
 import com.wise.wawc.ArticleDetailActivity;
 import com.wise.wawc.FriendHomeActivity;
 import com.wise.wawc.ImageActivity;
@@ -58,7 +59,6 @@ public class MyAdapter extends BaseAdapter{
 	private int commentUserId = 0;
 	
 	private List<Article> articleList = null;
-	
 	int padding = 40;
 	public MyAdapter(Context context,View v,List<Article> articleList){
 		inflater=LayoutInflater.from(context);
@@ -78,7 +78,7 @@ public class MyAdapter extends BaseAdapter{
 	public long getItemId(int position) {
 		return commentUserId;
 	}
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		convertView = inflater.inflate(R.layout.article_adapter, null);
 		TextView articleCommentUser = (TextView) convertView.findViewById(R.id.article_comment_user);
 		TextView articleCommentContent = (TextView) convertView.findViewById(R.id.article_comment_content);
@@ -99,7 +99,9 @@ public class MyAdapter extends BaseAdapter{
 			t.setId(i);
 			t.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
-					context.startActivity(new Intent(context,ImageActivity.class));
+					Intent intent = new Intent(context,ImageActivity.class);
+					intent.putExtra("position", position);
+					context.startActivity(intent);
 				}
 			});
 			t.setImageBitmap(smallImageList.get(i));
@@ -250,9 +252,6 @@ public class MyAdapter extends BaseAdapter{
 				case R.id.article_user_name:   //点击进入文章的详细介绍
 					Log.e("进入文章详情","进入文章详情");
 					context.startActivity(new Intent(context,ArticleDetailActivity.class));
-					break;
-				case 1:
-//					context.startActivity(new Intent(context,ImageActivity.class));
 					break;
 				}
 			}
