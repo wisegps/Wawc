@@ -19,7 +19,7 @@ public class Article {
 	private int blog_id;
 	private String _id;
 	private List<String> praisesList;
-	private List<String> commentList;
+	private List<String[]> commentList;
 	private List<Map<String,String>> imageList;
 	private int _v;
 	
@@ -84,10 +84,10 @@ public class Article {
 	public void setPraisesList(List<String> praisesList) {
 		this.praisesList = praisesList;
 	}
-	public List<String> getCommentList() {
+	public List<String[]> getCommentList() {
 		return commentList;
 	}
-	public void setCommentList(List<String> commentList) {
+	public void setCommentList(List<String[]> commentList) {
 		this.commentList = commentList;
 	}
 	public List<Map<String, String>> getImageList() {
