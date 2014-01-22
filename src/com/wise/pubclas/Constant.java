@@ -18,7 +18,7 @@ public class Constant {
     /**
      * 图片路径存储地址
      */
-    public static String BasePath = Environment.getExternalStorageDirectory().getPath() + "/wiwc/image/";
+    public static String BasePath = Environment.getExternalStorageDirectory().getPath() + "/wiwc/";
     /**
      * 个人头像和其他图片
      */
