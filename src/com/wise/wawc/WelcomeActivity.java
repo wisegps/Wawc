@@ -1,5 +1,7 @@
 package com.wise.wawc;
 
+import java.io.File;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -52,6 +54,11 @@ public class WelcomeActivity extends Activity {
             new Thread(new WaitThread()).start();
             //String url = "http://wiwc.api.wisegps.cn/customer/72/blog?auth_code=e660b98668665e34b06002df886d8828";
             //new Thread(new NetThread.GetDataThread(handler, url, 999)).start();
+//            File file = new File(Constant.picPath);
+//            if(!file.exists()){   
+//                System.out.println("创建文件夹");
+//                file.mkdirs();// 创建文件夹  
+//            } 
         }
     }
     String citys = "";

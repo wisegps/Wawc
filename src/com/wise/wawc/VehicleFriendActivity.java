@@ -168,7 +168,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 					params.add(new BasicNameValuePair("content", commentMsg));
 					myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 					myDialog.setCancelable(true);
-					new Thread(new NetThread.postDataThread(myHandler, Constant.BaseUrl + "blog/" + blogId + "/comment?auth_code=" + Variable.auth_code, params, commentArticle)).start();
+					new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "blog/" + blogId + "/comment?auth_code=" + Variable.auth_code, params, commentArticle)).start();
 					Log.e("评论的url :",Constant.BaseUrl + "blog/" + blogId + "/comment?auth_code=" + Variable.auth_code);
 				}
 				break;

@@ -191,13 +191,16 @@ public class GetSystem {
 	 */
 	public static void saveImageSD(Bitmap bitmap,String path,String name){
         File file = new File(path);
-        if(!file.exists()){            
+        System.out.println(path);
+        if(!file.exists()){   
+            System.out.println("创建文件夹");
             file.mkdirs();// 创建文件夹  
         }        
         String fileName = path + name;  
+        System.out.println("fileName = " + fileName);
         FileOutputStream b = null;
         try {  
-            b = new FileOutputStream(fileName);  
+            b = new FileOutputStream(fileName);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件  
         } catch (FileNotFoundException e) {  
             e.printStackTrace();  

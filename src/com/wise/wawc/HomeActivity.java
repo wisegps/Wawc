@@ -649,6 +649,9 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 dbExcute.InsertDB(HomeActivity.this, values, Constant.TB_Vehicle);
             }
             Variable.carDatas = carDatas;
+            if(Variable.carDatas.size() > 0){
+                Variable.carDatas.get(0).setCheck(true);
+            }
             Log.d(TAG, "Variable.carDatas = " + Variable.carDatas.size());
         } catch (JSONException e) {
             e.printStackTrace();
