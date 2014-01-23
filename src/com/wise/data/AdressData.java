@@ -1,5 +1,8 @@
 package com.wise.data;
-
+/**
+ * 收藏地点
+ * @author honesty
+ */
 public class AdressData {
 	private int _id;
 	private String name;
@@ -50,9 +53,10 @@ public class AdressData {
 	public void set_id(int _id) {
 		this._id = _id;
 	}
-	@Override
-	public String toString() {
-		return "AdressData [name=" + name + ", adress=" + adress + ", phone="
-				+ phone + ", Lat=" + Lat + ", Lon=" + Lon + "]";
-	}	
+    @Override
+    public String toString() {
+        return "AdressData [_id=" + _id + ", name=" + name + ", adress="
+                + adress + ", phone=" + phone + ", distance=" + distance
+                + ", Lat=" + Lat + ", Lon=" + Lon + "]";
+    }	
 }

@@ -40,6 +40,17 @@ public class BlurImage {
         canvas.drawBitmap(bitmap, rect, rect, paint);
         return output;
     }
+    /**
+     * 获取正方形图片
+     * @param bitmap
+     * @return
+     */
+    public static Bitmap getSquareBitmap(Bitmap bitmap){
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+        int y = (height - width)/2;
+        return Bitmap.createBitmap(bitmap, 0, y, width, width);
+    }
     
     /**
      * 缩小图片

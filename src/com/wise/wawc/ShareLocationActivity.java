@@ -101,7 +101,8 @@ public class ShareLocationActivity extends Activity{
             //再存储到sd卡
             GetSystem.saveImageSD(bitmap,Constant.picPath, Constant.ShareImage);
             //显示到控件上
-            bitmap = BlurImage.decodeSampledBitmapFromPath(Constant.picPath + Constant.ShareImage, 80, 80);            
+            bitmap = BlurImage.decodeSampledBitmapFromPath(Constant.picPath + Constant.ShareImage, 80, 80);  
+            bitmap = BlurImage.getSquareBitmap(bitmap);
             if(bitmap != null){  
                 imagePath = Constant.picPath + Constant.ShareImage;
                 iv_photo.setImageBitmap(bitmap);

@@ -1,142 +1,142 @@
 package com.wise.wawc;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import com.wise.data.AdressData;
 import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.service.CollectionAdapter;
 import com.wise.sql.DBExcute;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.ListView;
 /**
  * 我的收藏
  * @author 王庆文
  */
 public class MyCollectionActivity extends Activity implements IXListViewListener{
+    private static final int frist_getdata = 1;
 	private XListView collectionList;
 	private CollectionAdapter collectionAdapter;
-	private Button menuBt;
-	private Button homeBt;
 	
 	ProgressDialog myDialog = null;
-	private MyHandler myHandler = null;
-	private DBExcute dBExcute = null;
 	
-	private int start = 0;
-	private int pageSize = 5;   //每页内容
-	private int totalPage = 0;  //总页数
-	private int currentPage = 0;  //当前页
-	private List<AdressData> adressData = new ArrayList<AdressData>();
-	private static int excuteCode = 2;   //2：获取数据  1: 刷新数据
+	DBExcute dBExcute = new DBExcute();
+	List<AdressData> adressDatas = new ArrayList<AdressData>();
+	
+	boolean isGetDB = true; //上拉是否继续读取数据库
+	int Toal = 0; //从那条记录读起
+	int pageSize = 5 ; //每次读取的记录数目
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.my_collection);
 		collectionList = (XListView) findViewById(R.id.my_collection_list);
-		menuBt = (Button) findViewById(R.id.my_vechile_menu);
-		homeBt = (Button) findViewById(R.id.my_vechile_home);
-		myHandler = new MyHandler();
-		dBExcute = new DBExcute();
+		Button menuBt = (Button) findViewById(R.id.my_vechile_menu);
+		menuBt.setOnClickListener(onClickListener);
+		Button homeBt = (Button) findViewById(R.id.my_vechile_home);
+		homeBt.setOnClickListener(onClickListener);
+		
 		//不设置上拉加载无效
+		collectionList.setPullRefreshEnable(false);
 		collectionList.setPullLoadEnable(true);
 		collectionList.setXListViewListener(this);
-		homeBt.setOnClickListener(new ClickListener());
-		menuBt.setOnClickListener(new ClickListener());
 		
-		
-		//获取数据
-		adressData = getCollectionDatas(start,pageSize,excuteCode,adressData);
-		collectionAdapter = new CollectionAdapter(this,adressData);
-		collectionList.setAdapter(collectionAdapter);
-	}
-	
-	class MyHandler extends Handler{
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
+		if(dBExcute.getTotalCount(Constant.TB_Collection, MyCollectionActivity.this) > 0){
+		    //本地取数据
+	        getCollectionDatas(Toal, pageSize);
+		}else{
+		    //服务器取数据
+		    isGetDB = false;
+		    String url = Constant.BaseUrl + "customer/" + Variable.cust_id + "/favorite?auth_code=" + Variable.auth_code;
+		    new Thread(new NetThread.GetDataThread(handler, url, frist_getdata)).start();
 		}
+        
+		collectionAdapter = new CollectionAdapter(this,adressDatas);
+        collectionList.setAdapter(collectionAdapter);
 	}
 	
+	Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+            case frist_getdata:
+                try {
+                    
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
 
-	class ClickListener implements OnClickListener{
-		public void onClick(View v) {
-			switch(v.getId()){
-			case R.id.my_vechile_home:
-				ActivityFactory.A.ToHome();
-				break;
-			case R.id.my_vechile_menu:
-				ActivityFactory.A.LeftMenu();
-				break;
-			default :
-				return;
-			}
-		}
-	}
+            default:
+                break;
+            }
+        }	    
+	};
 	
-
+	OnClickListener onClickListener = new OnClickListener() {
+        
+        @Override
+        public void onClick(View v) {
+            switch(v.getId()){
+            case R.id.my_vechile_home:
+                ActivityFactory.A.ToHome();
+                break;
+            case R.id.my_vechile_menu:
+                ActivityFactory.A.LeftMenu();
+                break;
+            default :
+                return;
+            }
+        }
+    };
+	
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-		ActivityFactory.A.HideMenu();
-		return false;
-	}
-	@Override
-	public void onRefresh() {
-		excuteCode = 1;
-		Log.e("下拉刷新","下拉刷新");
-		myHandler.postDelayed(new Runnable() {
-			public void run() {
-				onLoad();
-			}
-		}, 2000);
-	}
+	public void onRefresh() {}
 	@Override
 	public void onLoadMore() {
 		Log.e("上拉加载","上拉加载");
-		myHandler.postDelayed(new Runnable() {
-			public void run() {
-				onLoad();
-			}
-		}, 2000);
-		int totalNum = dBExcute.getTotalCount(Constant.TB_Collection, MyCollectionActivity.this);
-		Log.e("总数据：",totalNum + "");
-		Log.e("当前页：",currentPage + "");
-		totalPage = totalNum%pageSize > 0 ? totalNum/pageSize + 1 : totalNum/pageSize;
-		if(totalPage - 1 > currentPage){
-			start = ((currentPage * pageSize) + pageSize);
-			currentPage ++ ;
-			excuteCode = 2;
-			adressData = getCollectionDatas(start,pageSize,excuteCode,adressData);
-			collectionAdapter.refish(adressData);
+		if(isGetDB){//读取数据库
+		    getCollectionDatas(Toal, pageSize);
+		    collectionAdapter.notifyDataSetChanged();
+		    onLoad();
+		}else{//读取服务器
+		    System.out.println("读取服务器数据");
+		    
 		}
-	}
-	public void PullUp() {
 	}
 	
 	private void onLoad() {
-		//获取当前时间
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
-		String temp = sdf.format(new Date());
-		String date = temp.substring(5, 16);
 		collectionList.stopRefresh();
 		collectionList.stopLoadMore();
-		collectionList.setRefreshTime(date);
 	}
-	
-	private List<AdressData> getCollectionDatas(int start,int pageSize,int excuteCode,List<AdressData> adressData) {
-		return dBExcute.getPageDatas(MyCollectionActivity.this, "select * from " + Constant.TB_Collection + " where Cust_id=? order by favorite_id desc limit ?,?", new String[]{Variable.cust_id,String.valueOf(start),String.valueOf(pageSize)},excuteCode,adressData);
+	/**
+	 * 
+	 * @param start 从第几条读起
+	 * @param pageSize 一次读取多少条
+	 */
+	private void getCollectionDatas(int start,int pageSize) {
+	    System.out.println("start = " + start);
+		List<AdressData> datas = dBExcute.getPageDatas(MyCollectionActivity.this, "select * from " + Constant.TB_Collection + " where Cust_id=? order by favorite_id desc limit ?,?", new String[]{Variable.cust_id,String.valueOf(start),String.valueOf(pageSize)});
+		adressDatas.addAll(datas);
+		Toal += datas.size();//记录位置
+		if(datas.size() == pageSize){
+		    //继续读取数据库
+		}else{
+		    //数据库读取完毕
+		    isGetDB = false;
+		}
 	}
 }
