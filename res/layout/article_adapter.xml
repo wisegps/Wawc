@@ -98,25 +98,31 @@
         >
 		
     </TableLayout>
-    
-     <LinearLayout 
-         android:id="@+id/article_comment_layout"
+    <LinearLayout 
+         android:id="@+id/article_praises_layout"
          android:layout_width="fill_parent"
          android:layout_height="wrap_content"
          android:orientation="horizontal"
          >
-     <TextView 
-         android:id="@+id/article_comment_user"
-         android:layout_width="wrap_content"
+		<ImageView 
+		    android:id="@+id/article_praises_star"
+		    android:layout_width="15dip"
+		    android:layout_height="15dip"
+		    android:background="@drawable/image"
+		    android:visibility="gone"
+		    />
+		<TextView 
+		    android:id="@+id/article_praises_user"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    />
+     </LinearLayout>
+     <LinearLayout 
+         android:id="@+id/article_comment_layout"
+         android:layout_width="fill_parent"
          android:layout_height="wrap_content"
-         android:text="小张:"
-         />
-     <TextView 
-         android:id="@+id/article_comment_content"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="不错"
-         />
+         android:orientation="vertical"
+         >
      </LinearLayout>
     </LinearLayout>
 </LinearLayout>

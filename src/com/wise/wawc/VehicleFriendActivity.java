@@ -41,6 +41,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ArrayAdapter;
@@ -80,6 +82,8 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	private static final int setUserIcon = 4;
 	private static final int getArticleList = 10;
 	private static final int commentArticle = 18;
+	private static final int commentRefresh = 19;
+	private static final int articleFavorite = 20;
 	private List<Article> articleDataList = new ArrayList<Article>();
 	private ProgressDialog myDialog = null;
 	public static int blogId = 0;
@@ -116,9 +120,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		msg.what = setUserIcon;
 		myHandler.sendMessage(msg);
 		
-		myAdapter = new MyAdapter(this,saySomething,articleDataList);
-		articleList.setAdapter(myAdapter);
-	
 		
 		articleList.setOnScrollListener(new OnScrollListener() {
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
@@ -236,9 +237,12 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			case getArticleList:
 				myDialog.dismiss();
 				String temp1 = (msg.obj.toString()).replaceAll("\\\\", "");
-				jsonToList(temp1);
+				articleDataList = jsonToList(temp1);
+				Variable.articleList = articleDataList;
+				myAdapter = new MyAdapter(VehicleFriendActivity.this,saySomething,articleDataList);
+				articleList.setAdapter(myAdapter);
 				Log.e("文章列表",temp1);
-				myAdapter.refreshDates(jsonToList(temp1));
+//				myAdapter.refreshDates(articleDataList);
 				break;
 				
 			case commentArticle:
@@ -247,12 +251,44 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				try {
 					JSONObject jsonObject = new JSONObject(commentResult);
 					if(Integer.valueOf(jsonObject.getString("status_code")) == 0){
-						Toast.makeText(getApplicationContext(), "评论成功", 0).show();
-						myDialog.dismiss();
+						commentContent.setText("");
+						//隐藏键盘
+						getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+						saySomething.setVisibility(View.GONE);
+						searchView.setVisibility(View.GONE);
+						myAdapter.isClick = false;
+						
+						//操作数据库  TODO
+						
+						//刷新
+						new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code, commentRefresh)).start();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
+				break;
+			case commentRefresh:
+				myDialog.dismiss();
+				String str = (msg.obj.toString()).replaceAll("\\\\", "");
+				articleDataList = jsonToList(str);
+				Variable.articleList = articleDataList;
+				myAdapter = new MyAdapter(VehicleFriendActivity.this,saySomething,articleDataList);
+				articleList.setAdapter(myAdapter);
+				Toast.makeText(getApplicationContext(), "评论成功", 0).show();
+				break;
+			case articleFavorite:
+				String result = msg.obj.toString();
+				try {
+					JSONObject jsonArray = new JSONObject(result);
+					if(Integer.valueOf(jsonArray.getString("status_code")) == 0){
+						//刷新成功
+						myDialog.dismiss();
+						Log.e("赞成功","赞成功");
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				
 				break;
 			}
 			super.handleMessage(msg);
@@ -274,11 +310,19 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			article.setBlog_id(Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
 			article.setCity(jsonArray.getJSONObject(i).getString("city"));
 			article.setName(jsonArray.getJSONObject(i).getString("name"));
-			List<String> commentList = new ArrayList<String>();  //评论者
+			List<String[]> comments = new ArrayList<String[]>();
 			if(!"[]".equals(jsonArray.getJSONObject(i).getString("comments"))){
-				
+				String commentjson = jsonArray.getJSONObject(i).getString("comments");
+				JSONArray  jsonArrayComment = new JSONArray(commentjson);
+				for(int m = 0; m < jsonArrayComment.length() ; m ++){
+					String[] commentList = new String[2];
+					JSONObject jsonObjectComment = jsonArrayComment.getJSONObject(m);
+					commentList[0] =  jsonObjectComment.getString("name");
+					commentList[1] =  jsonObjectComment.getString("content");
+					comments.add(commentList);
+				}
 			}
-			article.setCommentList(commentList);
+			article.setCommentList(comments);
 			article.setContent(jsonArray.getJSONObject(i).getString("content"));
 			article.setCreate_time(jsonArray.getJSONObject(i).getString("create_time"));
 			article.setCust_id(Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
@@ -295,6 +339,14 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 					imageListTemp.put("big_pic", jsonObject.getString("big_pic"));
 					imageList.add(imageListTemp);
 				}
+			}
+			if(!"[]".equals(jsonArray.getJSONObject(i).getString("praises"))){
+				JSONArray json = new JSONArray(jsonArray.getJSONObject(i).getString("praises"));
+				List<String> parisesList = new ArrayList<String>();
+				for(int k = 0 ; k < json.length(); k ++){
+					parisesList.add(json.getJSONObject(k).getString("name"));
+				}
+				article.setPraisesList(parisesList);
 			}
 			article.setImageList(imageList);
 			articleDataList.add(article);

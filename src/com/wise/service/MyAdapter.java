@@ -3,30 +3,44 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.wise.data.Article;
 import com.wise.extend.FaceConversionUtil;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
+import com.wise.pubclas.NetThread;
+import com.wise.pubclas.Variable;
 import com.wise.wawc.ArticleDetailActivity;
 import com.wise.wawc.FriendHomeActivity;
 import com.wise.wawc.ImageActivity;
 import com.wise.wawc.R;
 import com.wise.wawc.VehicleFriendActivity;
 
+import android.app.ProgressDialog;
 import android.app.ActionBar.LayoutParams;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.text.SpannableString;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,6 +53,7 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * 车友圈文章列表
@@ -56,15 +71,22 @@ public class MyAdapter extends BaseAdapter{
 	private TextView publish_time;
 	private Bitmap bitmap = null;
 	private int commentUserId = 0;
-	
+	private ImageView favorite = null;
+	private MyHandler myHandler = null;
+	private ImageView favoriteStart = null;
+	private TextView favoriteUser = null;
+	private StringBuffer sb = null;
+	private static final int articleFavorite = 123;
+	private static final int favoriteRefresh = 19;
+	private ProgressDialog myDialog = null;
 	private List<Article> articleList = null;
-	
 	int padding = 40;
 	public MyAdapter(Context context,View v,List<Article> articleList){
 		inflater=LayoutInflater.from(context);
 		this.view = v;
 		this.context = context;
 		this.articleList = articleList;
+		myHandler = new MyHandler();
 		
 	}
 	public int getCount() {
@@ -78,10 +100,8 @@ public class MyAdapter extends BaseAdapter{
 	public long getItemId(int position) {
 		return commentUserId;
 	}
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		convertView = inflater.inflate(R.layout.article_adapter, null);
-		TextView articleCommentUser = (TextView) convertView.findViewById(R.id.article_comment_user);
-		TextView articleCommentContent = (TextView) convertView.findViewById(R.id.article_comment_content);
 		List<Bitmap> smallImageList = new ArrayList<Bitmap>();
 		for(int i = 0 ; i < articleList.get(position).getImageList().size() ; i ++){
 			Map<String,String> imageMap = articleList.get(position).getImageList().get(i);
@@ -99,7 +119,9 @@ public class MyAdapter extends BaseAdapter{
 			t.setId(i);
 			t.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
-					context.startActivity(new Intent(context,ImageActivity.class));
+					Intent intent = new Intent(context,ImageActivity.class);
+					intent.putExtra("position", position);
+					context.startActivity(intent);
 				}
 			});
 			t.setImageBitmap(smallImageList.get(i));
@@ -111,6 +133,42 @@ public class MyAdapter extends BaseAdapter{
 				table.addView(row,new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 			}
 		}
+		
+		//动态添加用户的评论
+		LinearLayout commentLayout = (LinearLayout) convertView.findViewById(R.id.article_comment_layout);
+		for(int i = 0 ; i < articleList.get(position).getCommentList().size() ; i ++){
+			LinearLayout oneComment = new LinearLayout(context);
+			oneComment.setOrientation(LinearLayout.HORIZONTAL);
+			TextView commentName = new TextView(context);
+		    TextView commentContent = new TextView(context);
+			String[] commentStr = articleList.get(position).getCommentList().get(i);
+			commentName.setText(commentStr[0] + ":");
+			oneComment.addView(commentName, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(context, commentStr[1]);
+			commentContent.setText(spannableString);
+			oneComment.addView(commentContent, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			commentLayout.addView(oneComment, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		}
+		
+		favoriteStart = (ImageView) convertView.findViewById(R.id.article_praises_star);
+		favoriteUser = (TextView) convertView.findViewById(R.id.article_praises_user);
+
+		
+		if(articleList.get(position).getPraisesList() != null){
+			if(articleList.get(position).getPraisesList().size() != 0){
+				sb = new StringBuffer();
+				for(int f = 0 ; f < articleList.get(position).getPraisesList().size(); f ++){
+					sb.append(articleList.get(position).getPraisesList().get(f) + "、");
+				}
+				favoriteStart.setVisibility(View.VISIBLE);
+				favoriteUser.setText(sb.toString());
+			}else{
+				favoriteStart.setVisibility(View.GONE);
+			}
+		}else{
+			favoriteStart.setVisibility(View.GONE);
+		}
+		
 		saySomething = (ImageView) convertView.findViewById(R.id.list_say_somthing);
 		userHead = (ImageView) convertView.findViewById(R.id.head_article);
 		articel_user_name = (TextView) convertView.findViewById(R.id.article_user_name);
@@ -124,13 +182,15 @@ public class MyAdapter extends BaseAdapter{
 		tv_article_content.setText(articleList.get(position).getContent());
 		
 		saySomething.setOnClickListener(new MyClickListener(position));
+		favorite = (ImageView) convertView.findViewById(R.id.favorite);
+		favorite.setOnClickListener(new MyClickListener(position));
 		userHead.setOnClickListener(new MyClickListener(position));
 		articel_user_name.setOnClickListener(new MyClickListener(position));
 		
-		String content = "测试[可爱]";  //模拟评论
-	    SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(context, content);
-	    articleCommentUser.setText("张三:");
-	    articleCommentContent.setText(spannableString);
+//		String content = "测试[可爱]";  //模拟评论
+//	    SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(context, content);
+//	    articleCommentUser.setText("张三:");
+//	    articleCommentContent.setText(spannableString);
 		return convertView;
 	}
 	private Bitmap imageIsExist(String path,final String loadUrl) {
@@ -251,8 +311,42 @@ public class MyAdapter extends BaseAdapter{
 					Log.e("进入文章详情","进入文章详情");
 					context.startActivity(new Intent(context,ArticleDetailActivity.class));
 					break;
-				case 1:
-//					context.startActivity(new Intent(context,ImageActivity.class));
+				case R.id.favorite:
+					myDialog = ProgressDialog.show(context, "提示","数据提交中...");
+					myDialog.setCancelable(true);
+					List<NameValuePair> params = new ArrayList<NameValuePair>();
+					params.add(new BasicNameValuePair("name",Variable.cust_name));
+					params.add(new BasicNameValuePair("cust_id",Variable.cust_id));
+					new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "blog/" + articleList.get(chickIndex).getBlog_id()+"/praise?auth_code=" + Variable.auth_code, params, articleFavorite)).start();
+					break;
+				}
+			}
+	    }
+	    
+	    class MyHandler extends Handler{
+			public void handleMessage(Message msg) {
+				super.handleMessage(msg);
+				switch(msg.what){
+				case articleFavorite:
+					String result = msg.obj.toString();
+					try {
+						JSONObject jsonObject = new JSONObject(result);
+						if(Integer.valueOf(jsonObject.getString("status_code")) == 0){
+							Toast.makeText(context, "点赞成功", 0).show();
+							new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code, favoriteRefresh)).start();
+						}
+					} catch (NumberFormatException e) {
+						e.printStackTrace();
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+					break;
+				case 19:
+					String str = (msg.obj.toString()).replaceAll("\\\\", "");
+					myDialog.dismiss();
+					Log.e("刷新数据","刷新数据");
+					VehicleFriendActivity vehicleFriendActivity = new VehicleFriendActivity();
+					refreshDates(vehicleFriendActivity.jsonToList(str));
 					break;
 				}
 			}
