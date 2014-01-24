@@ -1,5 +1,6 @@
 package com.wise.pubclas;
 
+import android.R.string;
 import android.graphics.Bitmap;
 import android.os.Environment;
 /**
@@ -143,6 +144,10 @@ public class Constant {
 	 * 我的收藏
 	 */
 	public static String TB_Collection = "TB_Collection";
+	/**
+	 * 我的位置
+	 */
+	public static String TB_Traffic = "TB_Traffic";
 	/**
 	 * 定位成功发送广播，选择城市用到
 	 */

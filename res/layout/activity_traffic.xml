@@ -62,10 +62,10 @@
         android:textSize="@dimen/title"
         android:gravity="center_horizontal"
         android:text="累计扣分：6分          累积罚款：300元"/>
-	<ListView 
+	<com.wise.list.XListView
 	    android:layout_margin="5dp"
 	    android:id="@+id/lv_activity_traffic"
 	    android:cacheColorHint="#00000000"
 	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"></ListView>
+	    android:layout_height="fill_parent"/>
 </LinearLayout>

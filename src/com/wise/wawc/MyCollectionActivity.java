@@ -13,7 +13,10 @@ import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.service.CollectionAdapter;
+import com.wise.service.CollectionAdapter.CollectionItemListener;
 import com.wise.sql.DBExcute;
+import com.wise.wawc.R.string;
+
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
@@ -65,8 +68,9 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
 		    String url = Constant.BaseUrl + "customer/" + Variable.cust_id + "/favorite?auth_code=" + Variable.auth_code;
 		    new Thread(new NetThread.GetDataThread(handler, url, frist_getdata)).start();
 		}
-        
+		
 		collectionAdapter = new CollectionAdapter(this,adressDatas);
+		collectionAdapter.setCollectionItem(collectionItemListener);
         collectionList.setAdapter(collectionAdapter);
 	}
 	
@@ -100,6 +104,21 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
             default :
                 return;
             }
+        }
+    };
+    
+    CollectionItemListener collectionItemListener = new CollectionItemListener() {        
+        @Override
+        public void Delete(int position) {
+            System.out.println(position);
+            String url = Constant.BaseUrl + "favorite/" + adressDatas.get(position).get_id() + "?auth_code=" + Variable.auth_code;
+            //删除服务器记录
+            new Thread(new NetThread.DeleteThread(handler, url, 999)).start();
+            //删除本地数据库
+            dBExcute.DeleteDB(MyCollectionActivity.this, Constant.TB_Collection, "favorite_id = ?", new String[]{String.valueOf(adressDatas.get(position).get_id())});
+            
+            adressDatas.remove(position);
+            collectionAdapter.notifyDataSetChanged();
         }
     };
     
