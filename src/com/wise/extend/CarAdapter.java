@@ -60,7 +60,7 @@ public class CarAdapter extends BaseAdapter{
 		holder.tv_item_carnumber.setText(carData.getObj_name());
 		System.out.println(carData.toString());
 		System.out.println("(carData.getLogoPath() = " + (carData.getLogoPath()));
-		if(carData.getLogoPath().equals("")){
+		if(carData.getLogoPath() == null || carData.getLogoPath().equals("")){
 		    holder.iv_item_cars.setImageResource(R.drawable.ic_launcher);
 		}else{
 		    Bitmap bitmap = BlurImage.decodeSampledBitmapFromPath(carData.getLogoPath(), 80, 80);            

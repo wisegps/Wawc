@@ -21,7 +21,7 @@ public class DBExcute {
 	public void InsertDB(Context context, ContentValues values ,String table){
 		DBHelper dbHelper = new DBHelper(context);
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
-		db.insert(table, null, values);
+		System.out.println(db.insert(table, null, values));
 		Log.e("插入数据","插入数据");
 		db.close();
 		dbHelper.close();
