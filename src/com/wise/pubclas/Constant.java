@@ -105,7 +105,7 @@ public class Constant {
 	 */
 	public static final String sp_auth_code = "sp_auth_code";
 	/**
-	 * sp默认车辆
+	 * sp车辆所在列表位置
 	 */
 	public static final String DefaultVehicleID = "DefaultVehicleID";
 	/**
@@ -145,7 +145,7 @@ public class Constant {
 	 */
 	public static String TB_Collection = "TB_Collection";
 	/**
-	 * 我的位置
+	 * 我的违章
 	 */
 	public static String TB_Traffic = "TB_Traffic";
 	/**

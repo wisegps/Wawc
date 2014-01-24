@@ -2,10 +2,8 @@ package com.wise.wawc;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import com.wise.data.AdressData;
 import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
@@ -15,8 +13,6 @@ import com.wise.pubclas.Variable;
 import com.wise.service.CollectionAdapter;
 import com.wise.service.CollectionAdapter.CollectionItemListener;
 import com.wise.sql.DBExcute;
-import com.wise.wawc.R.string;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
@@ -33,6 +29,7 @@ import android.widget.Button;
  */
 public class MyCollectionActivity extends Activity implements IXListViewListener{
     private static final int frist_getdata = 1;
+    private static final int load_getdata = 2;
 	private XListView collectionList;
 	private CollectionAdapter collectionAdapter;
 	
@@ -62,16 +59,15 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
 		if(dBExcute.getTotalCount(Constant.TB_Collection, MyCollectionActivity.this) > 0){
 		    //本地取数据
 	        getCollectionDatas(Toal, pageSize);
+	        collectionAdapter = new CollectionAdapter(MyCollectionActivity.this,adressDatas);
+            collectionAdapter.setCollectionItem(collectionItemListener);
+            collectionList.setAdapter(collectionAdapter);
 		}else{
 		    //服务器取数据
 		    isGetDB = false;
 		    String url = Constant.BaseUrl + "customer/" + Variable.cust_id + "/favorite?auth_code=" + Variable.auth_code;
 		    new Thread(new NetThread.GetDataThread(handler, url, frist_getdata)).start();
 		}
-		
-		collectionAdapter = new CollectionAdapter(this,adressDatas);
-		collectionAdapter.setCollectionItem(collectionItemListener);
-        collectionList.setAdapter(collectionAdapter);
 	}
 	
 	Handler handler = new Handler(){
@@ -80,11 +76,16 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
             super.handleMessage(msg);
             switch (msg.what) {
             case frist_getdata:
-                jsonCollectionData(msg.obj.toString());
-                onLoad();
+                jsonCollectionData(msg.obj.toString());                
+                collectionAdapter = new CollectionAdapter(MyCollectionActivity.this,adressDatas);
+                collectionAdapter.setCollectionItem(collectionItemListener);
+                collectionList.setAdapter(collectionAdapter);
                 break;
 
-            default:
+            case load_getdata:
+                jsonCollectionData(msg.obj.toString());
+                collectionAdapter.notifyDataSetChanged();
+                onLoad();
                 break;
             }
         }	    
@@ -165,7 +166,7 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
 		    if(adressDatas.size() != 0){
 		        int id = adressDatas.get(adressDatas.size() - 1).get_id();
 		        String url = Constant.BaseUrl + "customer/" + Variable.cust_id + "/favorite?auth_code=" + Variable.auth_code + "&&min_id=" + id;
-	            new Thread(new NetThread.GetDataThread(handler, url, frist_getdata)).start();
+	            new Thread(new NetThread.GetDataThread(handler, url, load_getdata)).start();
 		    }		    
 		}
 	}

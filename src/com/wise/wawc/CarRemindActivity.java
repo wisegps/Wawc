@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
@@ -285,5 +286,10 @@ public class CarRemindActivity extends Activity{
 			return false;//拦截load页面的返回事件
 		}
 		return super.onKeyDown(keyCode, event);
+	}
+	@Override
+	protected void onDestroy() {
+	    super.onDestroy();
+	    Log.d(TAG, "onDestroy");
 	}
 }

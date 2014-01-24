@@ -1,40 +1,15 @@
 package com.wise.wawc;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.net.URLEncoder;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Locale;
-import java.util.Set;
-import java.util.Map.Entry;
 import org.json.JSONException;
 import org.json.JSONObject;
-import cn.jpush.android.api.JPushInterface;
-import cn.jpush.android.api.TagAliasCallback;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qzone.QZone;
-import com.iflytek.speech.RecognizerResult;
-import com.iflytek.speech.SpeechConfig.RATE;
-import com.iflytek.speech.SpeechError;
-import com.iflytek.ui.RecognizerDialog;
-import com.iflytek.ui.RecognizerDialogListener;
-import com.wise.data.BrankModel;
-import com.wise.data.CarData;
 import com.wise.extend.FaceConversionUtil;
-import com.wise.extend.FaceRelativeLayout;
 import com.wise.extend.OnViewTouchMoveListener;
 import com.wise.extend.PicHorizontalScrollView;
 import com.wise.extend.SlidingMenuView;
@@ -51,20 +26,19 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -88,7 +62,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     Platform platformSina;
     Platform platformWhat;
     ImageView iv_activity_main_logo,iv_activity_main_login_sina,
-            iv_activity_main_login_qq;
+            iv_activity_main_login_qq,iv_voice;
     TextView tv_activity_main_name;
     
     private ParseFaceThread thread = null;
@@ -171,7 +145,9 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         my_terminal.setOnClickListener(onClickListener);
         TextView my_orders = (TextView) findViewById(R.id.my_orders);
         my_orders.setOnClickListener(onClickListener);
-
+        
+        iv_voice = (ImageView)findViewById(R.id.iv_voice);
+        iv_voice.setOnClickListener(onClickListener);
         
         getSpData();
         
@@ -187,7 +163,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         startService(new Intent(MainActivity.this, LocationService.class));
         initSettingData();
     }
-
+    boolean isMove = false;
     OnClickListener onClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -236,6 +212,20 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                 break;  
             case R.id.iv_activity_home:
                 RightMenu();
+                break;
+            case R.id.iv_voice:
+                if(isMove){
+                    isMove = false;
+                    iv_voice.clearAnimation();
+                }else{
+                    isMove = true;
+                    Animation operatingAnim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.tip);  
+                    LinearInterpolator lin = new LinearInterpolator();  
+                    operatingAnim.setInterpolator(lin); 
+                    if (operatingAnim != null) {  
+                        iv_voice.startAnimation(operatingAnim);  
+                    }
+                }
                 break;
             }
         }

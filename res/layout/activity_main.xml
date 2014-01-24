@@ -355,6 +355,18 @@
 		            android:contentDescription="@string/app_name"
 		            android:src="@drawable/ic_launcher" />
 		    </RelativeLayout>
+		    <RelativeLayout 
+		        android:layout_width="fill_parent"
+		        android:layout_height="fill_parent">
+		        <ImageView 
+		            android:id="@+id/iv_voice"        
+		            android:scaleType="fitStart"                
+		            android:layout_width="100dp"
+		            android:layout_height="100dp"
+		            android:layout_alignParentBottom="true"
+		            android:layout_centerHorizontal="true"
+		            android:src="@drawable/ic_launcher"/>
+		    </RelativeLayout>
         </LinearLayout>
     </com.wise.extend.SlidingMenuView>
 </RelativeLayout>

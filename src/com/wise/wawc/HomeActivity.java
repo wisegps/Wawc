@@ -148,7 +148,6 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         GetFuel();
         registerBroadcastReceiver();
         GetDBCars();
-        ShowCarInfo();
         if(isNeedGetLogoFromUrl){
           new Thread(new getLogoThread()).start();
         }
@@ -287,7 +286,6 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
             DBHelper dbHelper = new DBHelper(HomeActivity.this);
             SQLiteDatabase db = dbHelper.getReadableDatabase();            
             Cursor cursor = db.rawQuery("select * from " + Constant.TB_Vehicle + " where Cust_id=?", new String[] {Variable.cust_id });
-            boolean isHaveDefaultVehicleID = false;
             while (cursor.moveToNext()) {
                 int obj_id = cursor.getInt(cursor.getColumnIndex("obj_id"));
                 String obj_name =  cursor.getString(cursor.getColumnIndex("obj_name"));
@@ -305,13 +303,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 String buy_date =  cursor.getString(cursor.getColumnIndex("buy_date"));
                 
                 CarData carData = new CarData();
-                
-                if(DefaultVehicleID == obj_id){
-                    carData.setCheck(true);
-                    isHaveDefaultVehicleID = true;
-                }else{
-                    carData.setCheck(false);
-                }    
+                carData.setCheck(false);   
                 carData.setObj_id(obj_id);
                 carData.setObj_name(obj_name);
                 carData.setCar_brand(car_brand);
@@ -334,13 +326,15 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                     carData.setLogoPath("");
                 }
                 carDatas.add(carData);
-                System.out.println(carData.toString());
             }
             cursor.close();
             db.close();
-            if(carDatas.size() > 0 && (!isHaveDefaultVehicleID)){
-                carDatas.get(0).setCheck(true);
-            }            
+            if(carDatas.size() > 0){
+                carDatas.get(DefaultVehicleID).setCheck(true);
+            }
+            for(CarData carData : carDatas){
+                System.out.println(carData.toString());
+            }
         }
         Log.e("查询数据库完毕",carDatas.size()+"");
         Variable.carDatas = carDatas;
@@ -762,11 +756,18 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
             }
         }
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        System.out.println("onResume");
+        ShowCarInfo();
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
+        Log.d(TAG, "onDestroy");
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -780,4 +781,5 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
             GetFuel();
         }
     }
+    
 }
