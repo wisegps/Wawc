@@ -73,13 +73,13 @@ public class MyAdapter extends BaseAdapter{
 	private Bitmap bitmap = null;
 	private int commentUserId = 0;
 	private int blogId = 0;
+	private int position = 0;
 	private ImageView favorite = null;
 	private MyHandler myHandler = null;
 	private ImageView favoriteStart = null;
 	private TextView favoriteUser = null;
 	private StringBuffer sb = null;
 	private static final int articleFavorite = 123;
-	private static final int favoriteRefresh = 19;
 	private ProgressDialog myDialog = null;
 	private List<Article> articleList = null;
 	private DBExcute dbExcute = null;
@@ -103,6 +103,7 @@ public class MyAdapter extends BaseAdapter{
 		return commentUserId;
 	}
 	public View getView(final int position, View convertView, ViewGroup parent) {
+		this.position = position;
 		convertView = inflater.inflate(R.layout.article_adapter, null);
 		List<Bitmap> smallImageList = new ArrayList<Bitmap>();
 		for(int i = 0 ; i < articleList.get(position).getImageList().size() ; i ++){
@@ -195,9 +196,7 @@ public class MyAdapter extends BaseAdapter{
 		File file = new File(path);
 		if(file.exists()){
 			bitmap = BitmapFactory.decodeFile(path);
-			Log.e("本地存在","本地存在");
 		}else{
-			Log.e("服务器获取","服务器获取");
 			new Thread(new Runnable() {
 				public void run() {
 					bitmap = GetSystem.getBitmapFromURL(loadUrl);
@@ -282,6 +281,7 @@ public class MyAdapter extends BaseAdapter{
 	    	int chickIndex = 0;
 	    	MyClickListener(int chickIndex){
 	    		this.chickIndex = chickIndex;
+	    		blogId = articleList.get(chickIndex).getBlog_id();
 	    	}
 			public void onClick(View v) {
 				switch(v.getId()){
@@ -289,7 +289,6 @@ public class MyAdapter extends BaseAdapter{
 				case R.id.list_say_somthing:
 					Log.e("点击的索引：" ,chickIndex + "");
 					VehicleFriendActivity.blogId = articleList.get(chickIndex).getBlog_id();
-					blogId = articleList.get(chickIndex).getBlog_id();
 					//编辑框不可见，设置为可见
 					Log.e("onClick",String.valueOf(isClick));
 					if(!isClick){
@@ -331,24 +330,18 @@ public class MyAdapter extends BaseAdapter{
 					try {
 						JSONObject jsonObject = new JSONObject(result);
 						if(Integer.valueOf(jsonObject.getString("status_code")) == 0){
-							Toast.makeText(context, "点赞成功", 0).show();
 							//更新数据库 
 							dbExcute.updateArticlePraises(context, Constant.TB_VehicleFriend, blogId, Variable.cust_name,Integer.valueOf(Variable.cust_id));
-							VehicleFriendActivity vehicleFriendActivity = new VehicleFriendActivity();
-							vehicleFriendActivity.currentPage -= 1;
-							vehicleFriendActivity.getArticleDatas();
+							Variable.articleList.get(MyAdapter.this.position).getPraisesList().add(Variable.cust_name);
+							refreshDates(Variable.articleList);
+							myDialog.dismiss();
+							Toast.makeText(context, "点赞成功", 0).show();
 						}
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
-					break;
-				case favoriteRefresh:
-					String str = (msg.obj.toString()).replaceAll("\\\\", "");
-					myDialog.dismiss();
-					Log.e("刷新数据","刷新数据");
-					
 					break;
 				}
 			}
