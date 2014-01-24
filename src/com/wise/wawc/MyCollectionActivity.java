@@ -1,9 +1,11 @@
 package com.wise.wawc;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.wise.data.AdressData;
 import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
@@ -14,6 +16,7 @@ import com.wise.service.CollectionAdapter;
 import com.wise.sql.DBExcute;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -73,11 +76,8 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
             super.handleMessage(msg);
             switch (msg.what) {
             case frist_getdata:
-                try {
-                    
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                jsonCollectionData(msg.obj.toString());
+                onLoad();
                 break;
 
             default:
@@ -102,6 +102,35 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
             }
         }
     };
+    
+    private void jsonCollectionData(String result){
+        try {
+            JSONArray jsonArray = new JSONArray(result);
+            for(int i = 0 ; i < jsonArray.length(); i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                AdressData adrDatas = new AdressData(); 
+                adrDatas.set_id(jsonObject.getInt("favorite_id"));
+                adrDatas.setAdress(jsonObject.getString("address"));
+                adrDatas.setName(jsonObject.getString("name"));
+                adrDatas.setPhone(jsonObject.getString("tel"));
+                adrDatas.setLat(Double.parseDouble(jsonObject.getString("lat")));
+                adrDatas.setLon(Double.parseDouble(jsonObject.getString("lon")));
+                adressDatas.add(adrDatas);
+                
+                ContentValues values = new ContentValues();
+                values.put("Cust_id", Variable.cust_id);
+                values.put("favorite_id", adrDatas.get_id());
+                values.put("name", adrDatas.getName());
+                values.put("address", adrDatas.getAdress());
+                values.put("tel", adrDatas.getPhone());
+                values.put("lon", adrDatas.getLon());
+                values.put("lat", adrDatas.getLat());
+                dBExcute.InsertDB(MyCollectionActivity.this, values, Constant.TB_Collection);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 	
 	@Override
 	public void onRefresh() {}
@@ -114,7 +143,11 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
 		    onLoad();
 		}else{//读取服务器
 		    System.out.println("读取服务器数据");
-		    
+		    if(adressDatas.size() != 0){
+		        int id = adressDatas.get(adressDatas.size() - 1).get_id();
+		        String url = Constant.BaseUrl + "customer/" + Variable.cust_id + "/favorite?auth_code=" + Variable.auth_code + "&&min_id=" + id;
+	            new Thread(new NetThread.GetDataThread(handler, url, frist_getdata)).start();
+		    }		    
 		}
 	}
 	

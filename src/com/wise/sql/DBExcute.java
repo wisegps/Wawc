@@ -96,7 +96,7 @@ public class DBExcute {
 		Cursor cursor = db.rawQuery(sql, whereClause);
 		while(cursor.moveToNext()){
 			AdressData adrDatas = new AdressData(); 
-			adrDatas.set_id(cursor.getInt(cursor.getColumnIndex("_id")));
+			adrDatas.set_id(cursor.getInt(cursor.getColumnIndex("favorite_id")));
 			adrDatas.setAdress(cursor.getString(cursor.getColumnIndex("address")));
 			adrDatas.setName(cursor.getString(cursor.getColumnIndex("name")));
 			adrDatas.setPhone(cursor.getString(cursor.getColumnIndex("tel")));

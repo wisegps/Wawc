@@ -1,22 +1,21 @@
 package com.wise.service;
 
 import java.util.List;
-
 import com.baidu.mapapi.navi.BaiduMapNavigation;
-
 import com.baidu.mapapi.navi.BaiduMapAppNotSupportNaviException;
 import com.baidu.mapapi.navi.NaviPara;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
+import com.wise.customView.SlidingView;
 import com.wise.data.AdressData;
 import com.wise.data.CarData;
 import com.wise.pubclas.Variable;
 import com.wise.wawc.R;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Address;
 import android.net.Uri;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -74,18 +73,21 @@ public class CollectionAdapter extends BaseAdapter {
             holder.iv_location = (ImageView) convertView.findViewById(R.id.iv_location);
             holder.iv_tel = (ImageView) convertView.findViewById(R.id.iv_tel);
             holder.rl_tel = (RelativeLayout) convertView.findViewById(R.id.rl_tel);
+            holder.slidingView = (SlidingView)convertView.findViewById(R.id.sv);
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
+        holder.slidingView.ScorllRestFast();
         final AdressData adressData = adrDataList.get(position);
         holder.tv_name.setText(adressData.getName());
-        holder.tv_address.setText(adressData.getAdress());
+        holder.tv_address.setText("地址：" + adressData.getAdress());
         //holder.tv_distance.setText(adressData.getDistance());
         if(adressData.getPhone() == null || adressData.getPhone().equals("")){
             holder.rl_tel.setVisibility(View.GONE);
         }else{
             holder.rl_tel.setVisibility(View.VISIBLE);
+            holder.tv_tel.setText("电话： " + adressData.getPhone());
         }
         holder.iv_location.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
@@ -106,6 +108,7 @@ public class CollectionAdapter extends BaseAdapter {
         TextView tv_name,tv_address,tv_tel,tv_distance;
         ImageView iv_location,iv_tel;
         RelativeLayout rl_tel;
+        SlidingView slidingView;
     }
     // 刷新数据
     public void refish(List<AdressData> adrDataList) {
