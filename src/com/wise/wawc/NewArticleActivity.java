@@ -184,7 +184,9 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 					if(Integer.parseInt(jsonObject.getString("status_code")) == 0){
 						myDialog.dismiss();
 						Toast.makeText(getApplicationContext(), "发表成功", 0).show();
-						NewArticleActivity.this.finishActivity(VehicleFriendActivity.newArticleResult);
+						NewArticleActivity.this.setResult(VehicleFriendActivity.newArticleResult);
+						VehicleFriendActivity.newArticleBlogId = jsonObject.getInt("blog_id");
+						NewArticleActivity.this.finish();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

@@ -213,10 +213,10 @@ public class DBExcute {
 		DBHelper dbHelper = new DBHelper(context);
 		SQLiteDatabase reader = dbHelper.getReadableDatabase();
 		SQLiteDatabase update = dbHelper.getWritableDatabase();
-		Cursor cursor = reader.rawQuery("select * from " + tableName + " where Blog_id=?", new String[]{String.valueOf(whereValue)});
+		Cursor cursor = reader.rawQuery("select * from " + tableName + " where Blog_id=? and Cust_id=?", new String[]{String.valueOf(whereValue),Variable.cust_id});
 		String content = "";
 		String newContent = "";
-		if(cursor.moveToFirst()){
+		if(cursor.moveToNext()){
 			content = cursor.getString(cursor.getColumnIndex("Content"));
 		}
 		try {

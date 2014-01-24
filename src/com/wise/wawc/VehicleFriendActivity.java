@@ -91,6 +91,8 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	private static int pageSize = 2;   //每页数量
 	private static int totalPage = 0;   //数据总量
 	public static int currentPage = 0;  //当前页
+	public static int newArticleBlogId = 0;
+	private static int loadMoreAction = 21;
 	private List<Article> articleDataList = new ArrayList<Article>();
 	private ProgressDialog myDialog = null;
 	public static int blogId = 0;
@@ -122,6 +124,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		qqUserHead = (ImageView) findViewById(R.id.user_head);
 		qqUserHead.setOnClickListener(new ClickListener());
 		qqUserName = (TextView) findViewById(R.id.tv_qq_user_name);
+		Log.e("current------>",""+currentPage);
 		
 		articleList = (XListView) findViewById(R.id.article_list);
 		articleList.setXListViewListener(this);
@@ -145,10 +148,12 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			public void onScroll(AbsListView view, int firstVisibleItem,int visibleItemCount, int totalItemCount) {
 			}
 		});
-		
-		getArticleDatas();
 	}
-	
+	protected void onResume() {
+		super.onResume();
+		getArticleDatas(0);
+	}
+
 	class ClickListener implements OnClickListener{
 		public void onClick(View v) {
 			switch(v.getId()){
@@ -225,12 +230,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	@Override   //上拉加载
 	public void onLoadMore() {
 		Log.e("上拉加载","上拉加载");
-//		getArticleDatas(start, pageSize, selectDatabasesCode, articleDataList);
-		myHandler.postDelayed(new Runnable() {
-			public void run() {
-				onLoad();
-			}
-		}, 2000);
+		getArticleDatas(loadMoreAction);
 	}
 	
 	private void onLoad() {
@@ -266,7 +266,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				if(!"[]".equals(msg.obj.toString())){
 				String temp1 = (msg.obj.toString()).replaceAll("\\\\", "");
 				jsonToList(temp1);
-				getArticleDatas();
+				getArticleDatas(0);
 				}
 				break;
 				
@@ -286,8 +286,8 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 						//更新数据库
 						dBExcute.updateArticleComments(VehicleFriendActivity.this, Constant.TB_VehicleFriend, blogId, commentMsg, Variable.cust_name, Integer.valueOf(Variable.cust_id));
 						currentPage -= 1;
-						articleDataList.clear();
-						getArticleDatas();
+//						articleDataList.clear();
+						getArticleDatas(0);
 						myDialog.dismiss();
 						Toast.makeText(getApplicationContext(), "评论成功", 0).show();
 					}
@@ -319,79 +319,44 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	public void jsonToList(String JSON){
 		try {
 		JSONArray jsonArray = new JSONArray(JSON);
-//		blogIdArray = new int[jsonArray.length()];
 		for(int i = 0 ; i < jsonArray.length() ; i ++){
-//			blogIdArray[i] = jsonArray.getJSONObject(i).getInt("blog_id");
-//			Article article = new Article();
-//			article.setJSONDatas(JSON);
-//			article.set_id(jsonArray.getJSONObject(i).getString("_id"));
-//			article.setBlog_id(Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
-//			article.setCity(jsonArray.getJSONObject(i).getString("city"));
-//			article.setName(jsonArray.getJSONObject(i).getString("name"));
-//			List<String[]> comments = new ArrayList<String[]>();
-//			if(!"[]".equals(jsonArray.getJSONObject(i).getString("comments"))){
-//				String commentjson = jsonArray.getJSONObject(i).getString("comments");
-//				JSONArray  jsonArrayComment = new JSONArray(commentjson);
-//				for(int m = 0; m < jsonArrayComment.length() ; m ++){
-//					String[] commentList = new String[2];
-//					JSONObject jsonObjectComment = jsonArrayComment.getJSONObject(m);
-//					commentList[0] =  jsonObjectComment.getString("name");
-//					commentList[1] =  jsonObjectComment.getString("content");
-//					comments.add(commentList);
-//				}
-//			}
-//			article.setCommentList(comments);
-//			article.setContent(jsonArray.getJSONObject(i).getString("content"));
-//			article.setCreate_time(jsonArray.getJSONObject(i).getString("create_time"));
-//			article.setCust_id(Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
-//			
-//			//用户发表的图片
-//			Map<String,String> imageListTemp = null;
-//			List<Map<String,String>> imageList = new ArrayList<Map<String,String>>();
-//			if(!"[]".equals(jsonArray.getJSONObject(i).getString("pics"))){
-//				JSONArray json = new JSONArray(jsonArray.getJSONObject(i).getString("pics"));
-//				for(int j = 0 ; j < json.length() ; j ++){
-//					JSONObject jsonObject = json.getJSONObject(j);
-//					imageListTemp = new HashMap<String, String>();
-//					imageListTemp.put("small_pic", jsonObject.getString("small_pic"));
-//					imageListTemp.put("big_pic", jsonObject.getString("big_pic"));
-//					imageList.add(imageListTemp);
-//				}
-//			}
-//			if(!"[]".equals(jsonArray.getJSONObject(i).getString("praises"))){
-//				JSONArray json = new JSONArray(jsonArray.getJSONObject(i).getString("praises"));
-//				List<String> parisesList = new ArrayList<String>();
-//				for(int k = 0 ; k < json.length(); k ++){
-//					parisesList.add(json.getJSONObject(k).getString("name"));
-//				}
-//				article.setPraisesList(parisesList);
-//			}
-//			article.setImageList(imageList);
-//			articleDataList.add(article);
 			//存储到数据库
 //			Cust_id text,FriendID int,Blog_id int,Content text)";
-			ContentValues values = new ContentValues();
-			values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
-			values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
-			values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
-			dBExcute.InsertDB(VehicleFriendActivity.this,values,Constant.TB_VehicleFriend);
+				if(Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")) == newArticleBlogId){
+					ContentValues values = new ContentValues();
+					values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
+					values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
+					values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
+					dBExcute.InsertDB(VehicleFriendActivity.this,values,Constant.TB_VehicleFriend);
+				}
+				if(newArticleBlogId == 0){
+					ContentValues values = new ContentValues();
+					values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
+					values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
+					values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
+					dBExcute.InsertDB(VehicleFriendActivity.this,values,Constant.TB_VehicleFriend);
+				}
+				
 		}
+		newArticleBlogId = 0;
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	//获取数据
-	public void getArticleDatas(){
+	public void getArticleDatas(int actionCode){
 		int totalNum = dBExcute.getTotalCount(Constant.TB_VehicleFriend, VehicleFriendActivity.this);
 		Log.e("数据总量",totalNum+"");
 		if(totalNum > 0){
 			//查询数据库
 			totalPage = totalNum%pageSize > 0 ? totalNum/pageSize + 1 : totalNum/pageSize;
+			Log.e("currentPage",""+currentPage);
 			if(totalPage - 1 >= currentPage){
 				start = currentPage*pageSize;
 				currentPage ++ ;
 				articleDataList = dBExcute.getArticlePageDatas(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(start),String.valueOf(pageSize)}, articleDataList);
+				Log.e("查询数据库","查询数据库");
 			}
 			if(totalPage - 1 == currentPage){
 				Log.e("请求服务器","请求服务器");
@@ -403,13 +368,16 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		}
 		Variable.articleList = articleDataList;
 		myAdapter.refreshDates(articleDataList);
+		if(loadMoreAction == actionCode){
+			onLoad();
+		}
 	}
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 		myDialog.setCancelable(true);
-		//文章发表成功后刷新数据库  列表  TODO
+		//文章发表成功后刷新数据库  列表  TODO    获取最大  blogId保存  刷新后首先保存到数据库     然后调用分页函数
 		if(requestCode == newArticleResult){
 			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code, getArticleList)).start();
 		}
