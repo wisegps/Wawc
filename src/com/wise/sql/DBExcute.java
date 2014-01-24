@@ -4,16 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.wise.data.AdressData;
 import com.wise.data.Article;
 import com.wise.pubclas.Constant;
-import com.wise.pubclas.Variable;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;

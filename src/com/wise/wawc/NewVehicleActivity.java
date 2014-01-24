@@ -332,22 +332,10 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
+				System.out.println(code);
 				if("0".equals(code)){
-//					  Log.e("车牌号",carNumber.getText().toString());
-//						vehicleBrank  品牌
-//						TvVehicleSeries.getText();  车型
-//						TvVehicleType.getText();   车款
-//				        Log.e("发动机型号",engineNumber.getText().toString());
-//				        Log.e("车架号",CJNumber.getText().toString());
-//						showInsurance  保险公司
-//						showMaintain   保养店
-//				        Log.e("保险到期时间",insuranceTime.getText().toString());
-//				        Log.e("年检时间",annualSurveyTime.getText().toString());
-//				        Log.e("最后保养里程",lastMileage.getText().toString());
-//				        Log.e("最后保养时间",lastMaintainTime.getText().toString());
-//				        Log.e("下次保养时间",nextMaintainMileage.getText().toString());
-//				        Log.e("购车时间",buyTime.getText().toString());
 					//添加到数据库
+				    System.out.println("保存到数据库");
 					ContentValues value = new ContentValues();
 					value.put("obj_id", obj_id);
 					value.put("Cust_id", Variable.cust_id);
