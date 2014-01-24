@@ -10,6 +10,8 @@ import org.json.JSONObject;
 import com.wise.data.AdressData;
 import com.wise.data.Article;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.Variable;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
