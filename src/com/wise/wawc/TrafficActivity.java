@@ -1,15 +1,27 @@
 package com.wise.wawc;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import com.wise.extend.CarAdapter;
+import com.wise.list.XListView;
+import com.wise.list.XListView.IXListViewListener;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
+import com.wise.sql.DBExcute;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,8 +39,12 @@ import android.widget.LinearLayout.LayoutParams;
  * 车辆违章
  * @author honesty
  */
-public class TrafficActivity extends Activity{
+public class TrafficActivity extends Activity implements IXListViewListener{
+    private static final String TAG = "TrafficActivity";
+    private static final int get_traffic = 1;
 	
+    XListView lv_activity_traffic;
+    DBExcute dbExcute = new DBExcute();
 	CarAdapter carAdapter;
 	List<TrafficData> trafficDatas = new ArrayList<TrafficData>();
 	TrafficAdapter trafficAdapter;
@@ -39,10 +55,7 @@ public class TrafficActivity extends Activity{
 		setContentView(R.layout.activity_traffic);
 		ImageView iv_activity_traffic_back = (ImageView)findViewById(R.id.iv_activity_traffic_back);
 		iv_activity_traffic_back.setOnClickListener(onClickListener);
-		ListView lv_activity_traffic = (ListView)findViewById(R.id.lv_activity_traffic);
-		GetData();
-		trafficAdapter = new TrafficAdapter();
-		lv_activity_traffic.setAdapter(trafficAdapter);
+		lv_activity_traffic = (XListView)findViewById(R.id.lv_activity_traffic);
 		ImageView iv_activity_traffic_help = (ImageView)findViewById(R.id.iv_activity_traffic_help);
 		iv_activity_traffic_help.setOnClickListener(onClickListener);
 		
@@ -60,6 +73,22 @@ public class TrafficActivity extends Activity{
 		gv_activity_traffic.setOnItemClickListener(onItemClickListener);		
 	}
 	
+	Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+            case get_traffic:
+                jsonTrafficData(msg.obj.toString());
+                trafficAdapter = new TrafficAdapter();
+                lv_activity_traffic.setAdapter(trafficAdapter);
+                break;
+
+            default:
+                break;
+            }
+        }	    
+	};
 	OnClickListener onClickListener = new OnClickListener() {		
 		@Override
 		public void onClick(View v) {
@@ -73,7 +102,7 @@ public class TrafficActivity extends Activity{
 			}
 		}
 	};
-	
+	String Car_name = "";
 	OnItemClickListener onItemClickListener = new OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
@@ -82,19 +111,57 @@ public class TrafficActivity extends Activity{
 			}
 			Variable.carDatas.get(arg2).setCheck(true);
 			carAdapter.notifyDataSetChanged();
+			Car_name = Variable.carDatas.get(arg2).getObj_name();
+			Car_name = "粤B9548T";
+			boolean isUrl = isGetDataUrl(Car_name);
+			if(isUrl){
+			    //从服务器读取数据
+			    Log.d(TAG, "从服务器读取数据");
+			    try {
+                    String url = Constant.BaseUrl + "vehicle/" + URLEncoder.encode(Car_name, "UTF-8") + "/violation?auth_code=" + Variable.auth_code;
+                    new Thread(new NetThread.GetDataThread(handler, url, get_traffic)).start();
+			    } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+			}else{
+			    Log.d(TAG, "从本地读取数据");
+			}
 		}
 	};
-	
-	private void GetData(){
-		for(int i = 0; i < 10 ; i++){
-			TrafficData trafficData = new TrafficData();
-			trafficData.setDate("违章时间：2013-06-21");
-			trafficData.setAdress("违章地点：广深高速");
-			trafficData.setContent("违章内容：超速行驶");
-			trafficData.setFraction("违章扣分：3分");
-			trafficData.setMoney("违章罚款：150元");
-			trafficDatas.add(trafficData);
-		}
+	/**
+	 * 判断本地是否有记录
+	 * @param Car_name
+	 * @return
+	 */
+	private boolean isGetDataUrl(String Car_name){
+	    String sql = "select * from " + Constant.TB_Traffic + " where Car_name=?";
+	    int Total = dbExcute.getTotalCount(getApplicationContext(), sql, new String[]{Car_name});
+	    if(Total == 0){
+	        return true;
+	    }else{
+	        return false;
+	    }
+	}
+	/**
+	 * 解析json数据
+	 * @param result
+	 */
+	private void jsonTrafficData(String result){
+	    try {
+            JSONArray jsonArray = new JSONArray(result);
+            for(int i = 0 ; i < jsonArray.length() ; i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                TrafficData trafficData = new TrafficData();
+                trafficData.setAction(jsonObject.getString("action"));
+                trafficData.setLocation(jsonObject.getString("location"));
+                trafficData.setDate(jsonObject.getString("create_time"));
+                trafficData.setScore(jsonObject.getInt("score"));
+                trafficData.setFine(jsonObject.getInt("fine"));
+                trafficDatas.add(trafficData);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 	}
 	
 	private class TrafficAdapter extends BaseAdapter{
@@ -127,11 +194,11 @@ public class TrafficActivity extends Activity{
 				holder = (ViewHolder) convertView.getTag();
 			}
 			TrafficData trafficData = trafficDatas.get(position);
-			holder.tv_item_traffic_data.setText(trafficData.getDate());
-			holder.tv_item_traffic_adress.setText(trafficData.getAdress());
-			holder.tv_item_traffic_content.setText(trafficData.getContent());
-			holder.tv_item_traffic_fraction.setText(trafficData.getFraction());
-			holder.tv_item_traffic_money.setText(trafficData.getMoney());
+			holder.tv_item_traffic_data.setText("违章时间："+trafficData.getDate());
+			holder.tv_item_traffic_adress.setText("违章地点："+trafficData.getLocation());
+			holder.tv_item_traffic_content.setText("违章内容："+trafficData.getAction());
+			holder.tv_item_traffic_fraction.setText("违章扣分："+trafficData.getScore());
+			holder.tv_item_traffic_money.setText("违章罚款："+trafficData.getFine());
 			return convertView;
 		}	
 		private class ViewHolder {
@@ -142,39 +209,50 @@ public class TrafficActivity extends Activity{
 	
 	private class TrafficData{
 		String date;
-		String adress;
-		String content;
-		String fraction;
-		String money;
-		public String getDate() {
-			return date;
-		}
-		public void setDate(String date) {
-			this.date = date;
-		}
-		public String getAdress() {
-			return adress;
-		}
-		public void setAdress(String adress) {
-			this.adress = adress;
-		}
-		public String getContent() {
-			return content;
-		}
-		public void setContent(String content) {
-			this.content = content;
-		}
-		public String getFraction() {
-			return fraction;
-		}
-		public void setFraction(String fraction) {
-			this.fraction = fraction;
-		}
-		public String getMoney() {
-			return money;
-		}
-		public void setMoney(String money) {
-			this.money = money;
-		}		
+		String action;
+		String location;
+		int score;
+		int fine;
+        public String getDate() {
+            return date;
+        }
+        public void setDate(String date) {
+            this.date = date;
+        }
+        public String getAction() {
+            return action;
+        }
+        public void setAction(String action) {
+            this.action = action;
+        }
+        public String getLocation() {
+            return location;
+        }
+        public void setLocation(String location) {
+            this.location = location;
+        }
+        public int getScore() {
+            return score;
+        }
+        public void setScore(int score) {
+            this.score = score;
+        }
+        public int getFine() {
+            return fine;
+        }
+        public void setFine(int fine) {
+            this.fine = fine;
+        }		
 	}
+
+    @Override
+    public void onRefresh() {
+        // TODO Auto-generated method stub
+        
+    }
+    @Override
+    public void onLoadMore() {
+        // TODO Auto-generated method stub
+        
+    }
 }

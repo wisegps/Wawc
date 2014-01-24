@@ -123,4 +123,20 @@ public class DBExcute {
 		db.close();
 		return totalPage;
 	}
+	/**
+	 * 带条件的查询总记录数目
+	 * @param context
+	 * @param sql
+	 * @param whereClause
+	 * @return
+	 */
+	public int getTotalCount(Context context,String sql,String[] whereClause){
+        DBHelper dbHelper = new DBHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, whereClause);
+        int totalPage = cursor.getCount();
+        cursor.close();
+        db.close();
+        return totalPage;
+    }
 }

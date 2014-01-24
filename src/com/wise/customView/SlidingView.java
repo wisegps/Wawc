@@ -40,14 +40,6 @@ public class SlidingView extends ViewGroup{
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int specWidthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int specWidthSize = MeasureSpec.getSize(widthMeasureSpec);
-        System.out.println("specWidthMode = " + specWidthMode + " , specWidthSize = " + specWidthSize);
-        
-        int specHeightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int specHeightSize = MeasureSpec.getSize(heightMeasureSpec);
-        System.out.println("specHeightMode = " + specHeightMode + " , specHeightSize = " + specHeightSize);
-        //int Height = MeasureSpec.makeMeasureSpec(100, MeasureSpec.UNSPECIFIED);        
         int count = getChildCount();
         for(int i = 0 ; i < count; i++){            
             getChildAt(i).measure(widthMeasureSpec, heightMeasureSpec);//设置每个view的大小
