@@ -19,5 +19,4 @@ public class PinyinComparator implements Comparator<BrankModel> {
 			return o1.getVehicleLetter().compareTo(o2.getVehicleLetter());
 		}
 	}
-
 }

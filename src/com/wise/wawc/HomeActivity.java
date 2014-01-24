@@ -342,7 +342,7 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 carDatas.get(0).setCheck(true);
             }            
         }
-        Log.e("查询数据库完毕","查询数据库完毕");
+        Log.e("查询数据库完毕",carDatas.size()+"");
         Variable.carDatas = carDatas;
     }
     class getLogoThread extends Thread{

@@ -338,6 +338,7 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 				    System.out.println("保存到数据库");
 					ContentValues value = new ContentValues();
 					value.put("obj_id", obj_id);
+					value.put("Cust_id", Variable.cust_id);
 					value.put("obj_name", carNumber.getText().toString().trim());
 					value.put("car_brand", vehicleBrank.getText().toString());
 					value.put("car_series", TvVehicleSeries.getText().toString());
@@ -352,6 +353,7 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 					value.put("maintain_next_mileage", nextMaintainMileage.getText().toString().trim());
 					value.put("buy_date", buyTime.getText().toString());
 					dBExcute.InsertDB(NewVehicleActivity.this, value, Constant.TB_Vehicle);
+					Log.e("添加到数据库","添加到数据库");
 					
 				    CarData carData = new CarData();
 	                carData.setCheck(false);
@@ -370,7 +372,6 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	                carData.setMaintain_next_mileage(nextMaintainMileage.getText().toString().trim());
 	                carData.setBuy_date( buyTime.getText().toString());
 	                Variable.carDatas.add(carData);
-					startActivity(new Intent(NewVehicleActivity.this,MyVehicleActivity.class));
 					NewVehicleActivity.this.finish();
 				}else{
 					Toast.makeText(getApplicationContext(), "添加失败，请重试", 0).show();
