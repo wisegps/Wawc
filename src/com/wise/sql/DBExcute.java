@@ -29,7 +29,6 @@ public class DBExcute {
 		DBHelper dbHelper = new DBHelper(context);
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		db.insert(table, null, values);
-		Log.e("插入数据","插入数据");
 		db.close();
 		dbHelper.close();
 	}
@@ -95,26 +94,25 @@ public class DBExcute {
 	}
 	
 	
-	/**
-	 * 分页查询（我的收藏）
-	 */
-	public List<AdressData> getCollectionPageDatas(Context context,String sql,String[] whereClause,List<AdressData> adressData){
+	//分页查询
+	public List<AdressData> getPageDatas(Context context,String sql,String[] whereClause){
+	    List<AdressData> adressDatas = new ArrayList<AdressData>();
 		DBHelper dbHelper = new DBHelper(context);
-		SQLiteDatabase db = null;
-			db = dbHelper.getWritableDatabase();
-			Cursor cursor = db.rawQuery(sql, whereClause);
-			while(cursor.moveToNext()){
-				AdressData adrDatas = new AdressData(); 
-				adrDatas.set_id(cursor.getInt(cursor.getColumnIndex("_id")));
-				adrDatas.setAdress(cursor.getString(cursor.getColumnIndex("address")));
-				adrDatas.setName(cursor.getString(cursor.getColumnIndex("name")));
-				adrDatas.setPhone(cursor.getString(cursor.getColumnIndex("tel")));
-				adrDatas.setLat(Double.parseDouble(cursor.getString(cursor.getColumnIndex("lat"))));
-				adrDatas.setLon(Double.parseDouble(cursor.getString(cursor.getColumnIndex("lon"))));
-				adressData.add(adrDatas);
-			}
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		Cursor cursor = db.rawQuery(sql, whereClause);
+		while(cursor.moveToNext()){
+			AdressData adrDatas = new AdressData(); 
+			adrDatas.set_id(cursor.getInt(cursor.getColumnIndex("favorite_id")));
+			adrDatas.setAdress(cursor.getString(cursor.getColumnIndex("address")));
+			adrDatas.setName(cursor.getString(cursor.getColumnIndex("name")));
+			adrDatas.setPhone(cursor.getString(cursor.getColumnIndex("tel")));
+			adrDatas.setLat(Double.parseDouble(cursor.getString(cursor.getColumnIndex("lat"))));
+			adrDatas.setLon(Double.parseDouble(cursor.getString(cursor.getColumnIndex("lon"))));
+			adressDatas.add(adrDatas);
+		}
+		cursor.close();
 		db.close();
-		return adressData;
+		return adressDatas;
 	}
 	
 	/**
@@ -249,6 +247,7 @@ public class DBExcute {
 		String sql = "select * from " + tableName + ";";
 		Cursor cursor = db.rawQuery(sql, new String[]{});
 		int totalPage = cursor.getCount();
+		cursor.close();
 		db.close();
 		return totalPage;
 	}

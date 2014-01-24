@@ -3,8 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#FFFFFF"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
     <!-- 头部 -->
     <LinearLayout
         android:layout_width="fill_parent"
@@ -38,6 +37,5 @@
         android:layout_height="wrap_content"
         android:background="#00FFFFFF"
         android:scrollingCache="false"
-        ></com.wise.list.XListView>
-    
+        ></com.wise.list.XListView>    
 </LinearLayout>

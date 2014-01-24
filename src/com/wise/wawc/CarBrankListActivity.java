@@ -259,11 +259,6 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 		vehicleBrankList.stopLoadMore();
 		vehicleBrankList.setRefreshTime(date);
 	}
-	@Override
-	public void PullUp() {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	class MyHandler extends Handler{
 		@Override
