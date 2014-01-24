@@ -43,7 +43,6 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
 	private int totalPage = 0;  //总页数
 	private int currentPage = 0;  //当前页
 	private List<AdressData> adressData = new ArrayList<AdressData>();
-	private static int excuteCode = 2;   //2：获取数据  1: 刷新数据
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.my_collection);
@@ -60,7 +59,7 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
 		
 		
 		//获取数据
-		adressData = getCollectionDatas(start,pageSize,excuteCode,adressData);
+		adressData = getCollectionDatas(start,pageSize,adressData);
 		collectionAdapter = new CollectionAdapter(this,adressData);
 		collectionList.setAdapter(collectionAdapter);
 	}
@@ -95,7 +94,6 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
 	}
 	@Override
 	public void onRefresh() {
-		excuteCode = 1;
 		Log.e("下拉刷新","下拉刷新");
 		myHandler.postDelayed(new Runnable() {
 			public void run() {
@@ -118,8 +116,7 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
 		if(totalPage - 1 > currentPage){
 			start = ((currentPage * pageSize) + pageSize);
 			currentPage ++ ;
-			excuteCode = 2;
-			adressData = getCollectionDatas(start,pageSize,excuteCode,adressData);
+			adressData = getCollectionDatas(start,pageSize,adressData);
 			collectionAdapter.refish(adressData);
 		}
 	}
@@ -136,7 +133,7 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
 		collectionList.setRefreshTime(date);
 	}
 	
-	private List<AdressData> getCollectionDatas(int start,int pageSize,int excuteCode,List<AdressData> adressData) {
-		return dBExcute.getPageDatas(MyCollectionActivity.this, "select * from " + Constant.TB_Collection + " where Cust_id=? order by favorite_id desc limit ?,?", new String[]{Variable.cust_id,String.valueOf(start),String.valueOf(pageSize)},excuteCode,adressData);
+	private List<AdressData> getCollectionDatas(int start,int pageSize,List<AdressData> adressData) {
+		return dBExcute.getCollectionPageDatas(MyCollectionActivity.this, "select * from " + Constant.TB_Collection + " where Cust_id=? order by favorite_id desc limit ?,?", new String[]{Variable.cust_id,String.valueOf(start),String.valueOf(pageSize)},adressData);
 	}
 }

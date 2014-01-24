@@ -381,8 +381,9 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	                carData.setMaintain_last_mileage(lastMileage.getText().toString().trim());
 	                carData.setMaintain_next_mileage(nextMaintainMileage.getText().toString().trim());
 	                carData.setBuy_date( buyTime.getText().toString());
+	                Log.e("添加前","" + Variable.carDatas.size());
 	                Variable.carDatas.add(carData);
-					startActivity(new Intent(NewVehicleActivity.this,MyVehicleActivity.class));
+	                Log.e("添加后","" + Variable.carDatas.size());
 					NewVehicleActivity.this.finish();
 				}else{
 					Toast.makeText(getApplicationContext(), "添加失败，请重试", 0).show();

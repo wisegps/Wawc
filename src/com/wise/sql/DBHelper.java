@@ -14,7 +14,7 @@ public class DBHelper extends SQLiteOpenHelper{
 	//基础表
 	private static final String CREATE_TB_Base = "create table " + Constant.TB_Base + "(_id integer primary key autoincrement,Cust_id text,Title text,Content text)";
 	//车友圈文章
-	private static final String CREATE_TB_VehicleFriend = "create table " + Constant.TB_VehicleFriend + "(_id integer primary key autoincrement,Cust_id text,FriendID int,Content text)";
+	private static final String CREATE_TB_VehicleFriend = "create table " + Constant.TB_VehicleFriend + "(_id integer primary key autoincrement,Cust_id int,FriendID int,Blog_id int,Content text)";
 	//爱车故障
 	private static final String CREATE_TB_Faults = "create table " + Constant.TB_Faults + "(_id integer primary key autoincrement,Cust_id text,CarID int,Content text)";
 	//行程记录

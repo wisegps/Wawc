@@ -25,6 +25,7 @@ import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
+import com.wise.sql.DBExcute;
 import com.wise.wawc.ArticleDetailActivity;
 import com.wise.wawc.FriendHomeActivity;
 import com.wise.wawc.ImageActivity;
@@ -71,6 +72,7 @@ public class MyAdapter extends BaseAdapter{
 	private TextView publish_time;
 	private Bitmap bitmap = null;
 	private int commentUserId = 0;
+	private int blogId = 0;
 	private ImageView favorite = null;
 	private MyHandler myHandler = null;
 	private ImageView favoriteStart = null;
@@ -80,6 +82,7 @@ public class MyAdapter extends BaseAdapter{
 	private static final int favoriteRefresh = 19;
 	private ProgressDialog myDialog = null;
 	private List<Article> articleList = null;
+	private DBExcute dbExcute = null;
 	int padding = 40;
 	public MyAdapter(Context context,View v,List<Article> articleList){
 		inflater=LayoutInflater.from(context);
@@ -87,10 +90,9 @@ public class MyAdapter extends BaseAdapter{
 		this.context = context;
 		this.articleList = articleList;
 		myHandler = new MyHandler();
-		
+		dbExcute = new DBExcute();
 	}
 	public int getCount() {
-//		return 10;
 		return articleList.size();
 	}
 	public Object getItem(int position) {
@@ -187,10 +189,6 @@ public class MyAdapter extends BaseAdapter{
 		userHead.setOnClickListener(new MyClickListener(position));
 		articel_user_name.setOnClickListener(new MyClickListener(position));
 		
-//		String content = "测试[可爱]";  //模拟评论
-//	    SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(context, content);
-//	    articleCommentUser.setText("张三:");
-//	    articleCommentContent.setText(spannableString);
 		return convertView;
 	}
 	private Bitmap imageIsExist(String path,final String loadUrl) {
@@ -291,6 +289,7 @@ public class MyAdapter extends BaseAdapter{
 				case R.id.list_say_somthing:
 					Log.e("点击的索引：" ,chickIndex + "");
 					VehicleFriendActivity.blogId = articleList.get(chickIndex).getBlog_id();
+					blogId = articleList.get(chickIndex).getBlog_id();
 					//编辑框不可见，设置为可见
 					Log.e("onClick",String.valueOf(isClick));
 					if(!isClick){
@@ -333,7 +332,11 @@ public class MyAdapter extends BaseAdapter{
 						JSONObject jsonObject = new JSONObject(result);
 						if(Integer.valueOf(jsonObject.getString("status_code")) == 0){
 							Toast.makeText(context, "点赞成功", 0).show();
-							new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code, favoriteRefresh)).start();
+							//更新数据库 
+							dbExcute.updateArticlePraises(context, Constant.TB_VehicleFriend, blogId, Variable.cust_name,Integer.valueOf(Variable.cust_id));
+							VehicleFriendActivity vehicleFriendActivity = new VehicleFriendActivity();
+							vehicleFriendActivity.currentPage -= 1;
+							vehicleFriendActivity.getArticleDatas();
 						}
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
@@ -341,12 +344,11 @@ public class MyAdapter extends BaseAdapter{
 						e.printStackTrace();
 					}
 					break;
-				case 19:
+				case favoriteRefresh:
 					String str = (msg.obj.toString()).replaceAll("\\\\", "");
 					myDialog.dismiss();
 					Log.e("刷新数据","刷新数据");
-					VehicleFriendActivity vehicleFriendActivity = new VehicleFriendActivity();
-					refreshDates(vehicleFriendActivity.jsonToList(str));
+					
 					break;
 				}
 			}
