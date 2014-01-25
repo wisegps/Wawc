@@ -286,4 +286,10 @@ public class CarRemindActivity extends Activity{
 		}
 		return super.onKeyDown(keyCode, event);
 	}
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		System.out.print("CarRemindActivity onDestroy");
+	}
 }

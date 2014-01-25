@@ -310,7 +310,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             e.printStackTrace();
         }
     }
-
     private void isLogin() {
         if (platformQQ.getDb().isValid()) {
             System.out.println("qq登录");
@@ -427,6 +426,8 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                 Toast.makeText(this, "再按一次退出客户端", Toast.LENGTH_SHORT).show();
                 touchTime = currentTime;
             } else {
+//            	  int nPid = android.os.Process.myPid();
+//            	  android.os.Process.killProcess(nPid); 
                 finish();
             }
             return true;
@@ -444,6 +445,11 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             app.mBMapManager = null;
         }
         stopService(new Intent(MainActivity.this, LocationService.class));
+        Constant.start = 0;  // 开始页
+        Constant.pageSize = 2;   //每页数量
+        Constant.totalPage = 0;   //数据总量
+        Constant.currentPage = 0;  //当前页
+        VehicleFriendActivity.newArticleBlogId = 0;
     }
 
     /**

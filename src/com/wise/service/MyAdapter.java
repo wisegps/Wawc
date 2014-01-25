@@ -281,16 +281,13 @@ public class MyAdapter extends BaseAdapter{
 	    	int chickIndex = 0;
 	    	MyClickListener(int chickIndex){
 	    		this.chickIndex = chickIndex;
-	    		blogId = articleList.get(chickIndex).getBlog_id();
 	    	}
 			public void onClick(View v) {
 				switch(v.getId()){
 
 				case R.id.list_say_somthing:
-					Log.e("点击的索引：" ,chickIndex + "");
 					VehicleFriendActivity.blogId = articleList.get(chickIndex).getBlog_id();
 					//编辑框不可见，设置为可见
-					Log.e("onClick",String.valueOf(isClick));
 					if(!isClick){
 						isClick = true;
 						view.setVisibility(View.VISIBLE);
@@ -306,10 +303,10 @@ public class MyAdapter extends BaseAdapter{
 					context.startActivity(new Intent(context,FriendHomeActivity.class));
 					break;
 				case R.id.article_user_name:   //点击进入文章的详细介绍
-					Log.e("进入文章详情","进入文章详情");
 					context.startActivity(new Intent(context,ArticleDetailActivity.class));
 					break;
 				case R.id.favorite:
+					blogId = articleList.get(chickIndex).getBlog_id();
 					myDialog = ProgressDialog.show(context, "提示","数据提交中...");
 					myDialog.setCancelable(true);
 					List<NameValuePair> params = new ArrayList<NameValuePair>();
@@ -330,11 +327,22 @@ public class MyAdapter extends BaseAdapter{
 					try {
 						JSONObject jsonObject = new JSONObject(result);
 						if(Integer.valueOf(jsonObject.getString("status_code")) == 0){
-							//更新数据库 
-							dbExcute.updateArticlePraises(context, Constant.TB_VehicleFriend, blogId, Variable.cust_name,Integer.valueOf(Variable.cust_id));
-							Variable.articleList.get(MyAdapter.this.position).getPraisesList().add(Variable.cust_name);
-							refreshDates(Variable.articleList);
+							
+							//更新数据库
+							dbExcute.updateArticlePraises(context, Constant.TB_VehicleFriend, blogId, Variable.cust_name, Integer.valueOf(Variable.cust_id));
+							
+							VehicleFriendActivity vehicleFriendActivity = new VehicleFriendActivity();
+							Log.e("---->",Constant.start + "");
+							//更新列表
+							List<Article> oldArticlList = vehicleFriendActivity.getArticleDataList();
+							oldArticlList.clear();
+							vehicleFriendActivity.setArticleDataList(oldArticlList);
+							List<Article> newArticlList = MyAdapter.this.dbExcute.getArticlePageDatas(context, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(0),String.valueOf(Constant.start + Constant.pageSize)}, vehicleFriendActivity.getArticleDataList());
+							Variable.articleList = newArticlList;
+							vehicleFriendActivity.setArticleDataList(newArticlList);
+							MyAdapter.this.refreshDates(newArticlList);
 							myDialog.dismiss();
+							
 							Toast.makeText(context, "点赞成功", 0).show();
 						}
 					} catch (NumberFormatException e) {
