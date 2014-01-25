@@ -4,10 +4,10 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import com.wise.data.AdressData;
 import com.wise.extend.CarAdapter;
 import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
@@ -15,9 +15,14 @@ import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
+import com.wise.sql.DBHelper;
 
 import android.app.Activity;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -32,7 +37,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 /**
@@ -42,22 +46,30 @@ import android.widget.LinearLayout.LayoutParams;
 public class TrafficActivity extends Activity implements IXListViewListener{
     private static final String TAG = "TrafficActivity";
     private static final int get_traffic = 1;
+    private static final int refresh_traffic = 2;
+    private static final int load_traffic = 3;
 	
     XListView lv_activity_traffic;
     DBExcute dbExcute = new DBExcute();
 	CarAdapter carAdapter;
 	List<TrafficData> trafficDatas = new ArrayList<TrafficData>();
 	TrafficAdapter trafficAdapter;
-	
+
+    String Car_name = "";
+	boolean isGetDB = true; //上拉是否继续读取数据库
+    int Toal = 0; //从那条记录读起
+    int pageSize = 5 ; //每次读取的记录数目
+    
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_traffic);
 		ImageView iv_activity_traffic_back = (ImageView)findViewById(R.id.iv_activity_traffic_back);
 		iv_activity_traffic_back.setOnClickListener(onClickListener);
-		lv_activity_traffic = (XListView)findViewById(R.id.lv_activity_traffic);
 		ImageView iv_activity_traffic_help = (ImageView)findViewById(R.id.iv_activity_traffic_help);
 		iv_activity_traffic_help.setOnClickListener(onClickListener);
+        lv_activity_traffic = (XListView)findViewById(R.id.lv_activity_traffic);
+        lv_activity_traffic.setXListViewListener(this);
 		
 		GridView gv_activity_traffic = (GridView)findViewById(R.id.gv_activity_traffic);
         carAdapter = new CarAdapter(TrafficActivity.this,Variable.carDatas);
@@ -79,12 +91,20 @@ public class TrafficActivity extends Activity implements IXListViewListener{
             super.handleMessage(msg);
             switch (msg.what) {
             case get_traffic:
-                jsonTrafficData(msg.obj.toString());
+                trafficDatas.addAll(jsonTrafficData(msg.obj.toString()));
                 trafficAdapter = new TrafficAdapter();
                 lv_activity_traffic.setAdapter(trafficAdapter);
                 break;
 
-            default:
+            case refresh_traffic:
+                trafficDatas.addAll(0, jsonTrafficData(msg.obj.toString()));
+                trafficAdapter.notifyDataSetChanged();
+                onLoad();
+                break;
+            case load_traffic:
+                trafficDatas.addAll(jsonTrafficData(msg.obj.toString()));
+                trafficAdapter.notifyDataSetChanged();
+                onLoad();
                 break;
             }
         }	    
@@ -102,7 +122,6 @@ public class TrafficActivity extends Activity implements IXListViewListener{
 			}
 		}
 	};
-	String Car_name = "";
 	OnItemClickListener onItemClickListener = new OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
@@ -111,10 +130,13 @@ public class TrafficActivity extends Activity implements IXListViewListener{
 			}
 			Variable.carDatas.get(arg2).setCheck(true);
 			carAdapter.notifyDataSetChanged();
+			trafficDatas.clear();
 			Car_name = Variable.carDatas.get(arg2).getObj_name();
 			Car_name = "粤B9548T";
+			Toal = 0;
 			boolean isUrl = isGetDataUrl(Car_name);
 			if(isUrl){
+			    isGetDB = false;
 			    //从服务器读取数据
 			    Log.d(TAG, "从服务器读取数据");
 			    try {
@@ -124,7 +146,11 @@ public class TrafficActivity extends Activity implements IXListViewListener{
                     e.printStackTrace();
                 }
 			}else{
+			    isGetDB = true;
 			    Log.d(TAG, "从本地读取数据");
+			    trafficDatas.addAll(getTrafficDatas(Toal, pageSize));
+                trafficAdapter = new TrafficAdapter();
+                lv_activity_traffic.setAdapter(trafficAdapter);
 			}
 		}
 	};
@@ -146,23 +172,69 @@ public class TrafficActivity extends Activity implements IXListViewListener{
 	 * 解析json数据
 	 * @param result
 	 */
-	private void jsonTrafficData(String result){
+	private List<TrafficData> jsonTrafficData(String result){
+	    List<TrafficData> Datas = new ArrayList<TrafficData>();
 	    try {
             JSONArray jsonArray = new JSONArray(result);
             for(int i = 0 ; i < jsonArray.length() ; i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 TrafficData trafficData = new TrafficData();
+                trafficData.setObj_id(jsonObject.getString("vio_id"));
                 trafficData.setAction(jsonObject.getString("action"));
                 trafficData.setLocation(jsonObject.getString("location"));
                 trafficData.setDate(jsonObject.getString("create_time"));
                 trafficData.setScore(jsonObject.getInt("score"));
                 trafficData.setFine(jsonObject.getInt("fine"));
-                trafficDatas.add(trafficData);
+                Datas.add(trafficData);
+                
+                ContentValues values = new ContentValues();
+                values.put("obj_id", Variable.cust_id);
+                values.put("Car_name", jsonObject.getString("obj_name"));
+                values.put("create_time", trafficData.getDate());
+                values.put("action", trafficData.getAction());
+                values.put("location", trafficData.getLocation());
+                values.put("score", trafficData.getScore());
+                values.put("fine", trafficData.getFine());
+                dbExcute.InsertDB(TrafficActivity.this, values, Constant.TB_Traffic);                
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+	    return Datas;
 	}
+	
+	private List<TrafficData> getTrafficDatas(int start,int pageSize) {
+        System.out.println("start = " + start);
+        List<TrafficData> datas = getPageDatas(TrafficActivity.this, "select * from " + Constant.TB_Traffic + " where Car_name=? order by obj_id desc limit ?,?", new String[]{Car_name,String.valueOf(start),String.valueOf(pageSize)});
+        Toal += datas.size();//记录位置
+        if(datas.size() == pageSize){
+            //继续读取数据库
+        }else{
+            //数据库读取完毕
+            isGetDB = false;
+        }
+        return datas;
+    }
+	
+	public List<TrafficData> getPageDatas(Context context,String sql,String[] whereClause){
+        DBHelper dbHelper = new DBHelper(context);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(sql, whereClause);
+        List<TrafficData> Datas = new ArrayList<TrafficData>();
+        while(cursor.moveToNext()){
+            TrafficData trafficData = new TrafficData();
+            trafficData.setObj_id(cursor.getString(cursor.getColumnIndex("obj_id")));
+            trafficData.setAction(cursor.getString(cursor.getColumnIndex("action")));
+            trafficData.setLocation(cursor.getString(cursor.getColumnIndex("location")));
+            trafficData.setDate(cursor.getString(cursor.getColumnIndex("create_time")));
+            trafficData.setScore(cursor.getInt(cursor.getColumnIndex("score")));
+            trafficData.setFine(cursor.getInt(cursor.getColumnIndex("fine")));
+            Datas.add(trafficData);
+        }
+        cursor.close();
+        db.close();
+        return Datas;
+    }
 	
 	private class TrafficAdapter extends BaseAdapter{
 		LayoutInflater mInflater = LayoutInflater.from(TrafficActivity.this);
@@ -208,11 +280,19 @@ public class TrafficActivity extends Activity implements IXListViewListener{
 	}
 	
 	private class TrafficData{
+	    String obj_id;
 		String date;
 		String action;
 		String location;
 		int score;
 		int fine;
+		
+        public String getObj_id() {
+            return obj_id;
+        }
+        public void setObj_id(String obj_id) {
+            this.obj_id = obj_id;
+        }
         public String getDate() {
             return date;
         }
@@ -247,12 +327,30 @@ public class TrafficActivity extends Activity implements IXListViewListener{
 
     @Override
     public void onRefresh() {
-        // TODO Auto-generated method stub
-        
+        try {
+            String url = Constant.BaseUrl + "vehicle/" + URLEncoder.encode(Car_name, "UTF-8") + "/violation?auth_code=" + Variable.auth_code + "&max_id=" + trafficDatas.get(0).getObj_id();
+            new Thread(new NetThread.GetDataThread(handler, url, refresh_traffic)).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }        
     }
     @Override
     public void onLoadMore() {
-        // TODO Auto-generated method stub
-        
+        if(isGetDB){
+            trafficDatas.addAll(getTrafficDatas(Toal, pageSize));
+            trafficAdapter.notifyDataSetChanged();
+        }else{
+            try {
+                String min_id = trafficDatas.get(trafficDatas.size() - 1).getObj_id();
+                String url = Constant.BaseUrl + "vehicle/" + URLEncoder.encode(Car_name, "UTF-8") + "/violation?auth_code=" + Variable.auth_code + "&min_id=" + min_id;
+                new Thread(new NetThread.GetDataThread(handler, url, load_traffic)).start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }        
+    }
+    private void onLoad() {
+        lv_activity_traffic.stopRefresh();
+        lv_activity_traffic.stopLoadMore();
     }
 }

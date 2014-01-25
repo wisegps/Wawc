@@ -70,7 +70,6 @@ public class AccountActivity extends Activity{
 		et_activity_account_phone = (EditText)findViewById(R.id.et_activity_account_phone);
 		ShareSDK.initSDK(this);
 		GetSfData();
-		GetCarData();
 	}
 	OnClickListener onClickListener = new OnClickListener() {	
 		@Override
@@ -216,6 +215,11 @@ public class AccountActivity extends Activity{
         editor.putString(Constant.Adress, "");
         editor.putString(Constant.Phone, "");
         editor.commit();
+	}
+	@Override
+	protected void onResume() {
+	    super.onResume();
+        GetCarData();
 	}
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

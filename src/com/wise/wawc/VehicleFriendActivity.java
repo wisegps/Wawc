@@ -63,6 +63,7 @@ import android.widget.Toast;
  * @author 王庆文
  */
 public class VehicleFriendActivity extends Activity implements IXListViewListener{
+    private static final String TAG = "VehicleFriendActivity";
 	private boolean isJump = false;//false 加载，true 跳转
 	private Button menuButton = null;
 	private Button homeButton = null;
@@ -360,7 +361,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code, newArticleResult)).start();
 		}
 	}
-	
 	public List<Article> getArticleDataList() {
 		return articleDataList;
 	}
