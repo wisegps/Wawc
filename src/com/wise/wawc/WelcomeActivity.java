@@ -1,6 +1,7 @@
 package com.wise.wawc;
 
 import java.io.File;
+import java.util.Iterator;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -52,13 +53,8 @@ public class WelcomeActivity extends Activity {
         }else{
             //跳转到登录界面
             new Thread(new WaitThread()).start();
-            //String url = "http://wiwc.api.wisegps.cn/customer/72/blog?auth_code=e660b98668665e34b06002df886d8828";
+            //String url = "http://wiwc.api.wisegps.cn/violation/city?auth_code=bba2204bcd4c1f87a19";
             //new Thread(new NetThread.GetDataThread(handler, url, 999)).start();
-//            File file = new File(Constant.picPath);
-//            if(!file.exists()){   
-//                System.out.println("创建文件夹");
-//                file.mkdirs();// 创建文件夹  
-//            } 
         }
     }
     String citys = "";
@@ -89,21 +85,17 @@ public class WelcomeActivity extends Activity {
                 break;
             case 999:
                 try {
-                    JSONArray jsonArray = new JSONArray(msg.obj.toString());
-                    for(int i = 0 ; i < jsonArray.length(); i++){
-                        try {
-                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            String pics = jsonObject.getString("pics");
-                            pics = pics.substring(2, pics.length() - 2).replace("\\", ""); 
-                            System.out.println(pics);
-                            JSONArray jsonArray1 = new JSONArray(pics);
-                            for(int j = 0 ; j < jsonArray1.length();j++){
-                                JSONObject jsonObject1 = jsonArray1.getJSONObject(j);                                
-                                System.out.println(jsonObject1.getString("big_pic"));
-                                System.out.println(jsonObject1.getString("small_pic"));
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                    JSONObject jsonObject = new JSONObject(msg.obj.toString()).getJSONObject("result");
+                    Iterator it = jsonObject.keys();
+                    while(it.hasNext()){
+                        String key = (String) it.next();
+                        System.out.println("key = " + key);
+                        JSONObject jsonObject2 = jsonObject.getJSONObject(key);
+                        System.out.println(jsonObject2.getString("province"));
+                        JSONArray jsonArray = jsonObject2.getJSONArray("citys");
+                        for(int i = 0 ; i < jsonArray.length(); i++){
+                            JSONObject jsonObject3 = jsonArray.getJSONObject(i);
+                            System.out.println(jsonObject3.getString("city_name"));
                         }
                     }
                 } catch (Exception e) {

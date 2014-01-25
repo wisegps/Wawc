@@ -387,6 +387,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	protected void onDestroy() {
 	    // TODO Auto-generated method stub
 	    super.onDestroy();
-	    Log.d(TAG, "onDestroy");
+	    Log.d(TAG, "onDestroy, currentPage = " + currentPage);
 	}
 }

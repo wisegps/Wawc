@@ -21,25 +21,15 @@
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_toLeftOf="@+id/iv_activity_vehicle_status_search"
-            android:layout_toRightOf="@+id/iv_activity_vehicle_status_back"
             android:gravity="center"
-            android:text="爱车车况"
+            android:text="@string/vehicle_status"
             android:textColor="@color/black"
             android:textSize="@dimen/title"
             android:textStyle="bold" />
-		<ImageView
-            android:id="@+id/iv_activity_vehicle_status_search"
-            android:visibility="invisible"
-            android:layout_width="60dp"
-	        android:layout_height="36dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/app_name"/>
 	</RelativeLayout>
 	<HorizontalScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="50dp">
 		<LinearLayout 
 		    android:layout_width="wrap_content"
 			android:layout_height="wrap_content" 
@@ -53,6 +43,12 @@
 			    android:horizontalSpacing="10dp"/>
 		</LinearLayout>
 	</HorizontalScrollView>
+	<TextView 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:padding="5dp"
+	    android:textSize="@dimen/title"
+	    android:text="故障：2 报警：3"/>
 	<TableLayout 
 	    android:stretchColumns="*" 
 	    android:layout_width="fill_parent"
@@ -143,12 +139,39 @@
 	            android:gravity="center_horizontal"
 	            android:text="3"/>
 	    </TableRow>
-	</TableLayout>
+	</TableLayout>	
+    <RelativeLayout 
+        android:background="@color/bkg1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <TextView 
+            android:id="@+id/tv_activity_vehicle_status_data"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textColor="@color/black"
+            android:text="2013-12"/>
+        <ImageView 
+            android:id="@+id/iv_activity_vehicle_status_data_previous" 
+            android:contentDescription="@string/app_name"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_toLeftOf="@id/tv_activity_vehicle_status_data"
+            android:src="@drawable/ic_launcher"/>
+        <ImageView
+            android:id="@+id/iv_activity_vehicle_status_data_next" 
+            android:contentDescription="@string/app_name"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_toRightOf="@id/tv_activity_vehicle_status_data"
+            android:src="@drawable/ic_launcher"/>
+    </RelativeLayout>
 	<RelativeLayout 
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent">
 	    <com.wise.extend.EnergyCurveView
 	        android:id="@+id/erenergycurve"
+	        android:visibility="gone"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"/>	    
 	    <RelativeLayout 
@@ -174,33 +197,6 @@
 	            android:layout_centerHorizontal="true"
 	            android:textColor="@color/black"            
 	            android:text="[点击查看详情]"/>
-	    </RelativeLayout>
-	    <RelativeLayout 
-	        android:layout_alignParentBottom="true"
-	        android:background="@color/bkg1"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content">
-	        <TextView 
-	            android:id="@+id/tv_activity_vehicle_status_data"
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_centerInParent="true"
-	            android:textColor="@color/black"
-	            android:text="2013-12"/>
-	        <ImageView 
-	            android:id="@+id/iv_activity_vehicle_status_data_previous" 
-	            android:contentDescription="@string/app_name"
-	            android:layout_width="40dp"
-	            android:layout_height="40dp"
-	            android:layout_toLeftOf="@id/tv_activity_vehicle_status_data"
-	            android:src="@drawable/ic_launcher"/>
-	        <ImageView
-	            android:id="@+id/iv_activity_vehicle_status_data_next" 
-	            android:contentDescription="@string/app_name"
-	            android:layout_width="40dp"
-	            android:layout_height="40dp"
-	            android:layout_toRightOf="@id/tv_activity_vehicle_status_data"
-	            android:src="@drawable/ic_launcher"/>
 	    </RelativeLayout>
 	</RelativeLayout>	
 </LinearLayout>
