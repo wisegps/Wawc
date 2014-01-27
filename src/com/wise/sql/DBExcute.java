@@ -29,6 +29,7 @@ public class DBExcute {
 		db.insert(table, null, values);
 		db.close();
 		dbHelper.close();
+		System.out.println("插入成功");
 	}
 	/**
 	 * 更新基础数据表

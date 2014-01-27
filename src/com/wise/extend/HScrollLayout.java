@@ -2,10 +2,11 @@ package com.wise.extend;
 /**
  * 自定义首页滑动控件
  */
+import com.wise.extend.OnViewChangeListener;
 import com.wise.wawc.ActivityFactory;
-import com.wise.wawc.R;
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Scroller;
 
 public class HScrollLayout extends ViewGroup{
+    private static final String TAG = "HScrollLayout";
 	private VelocityTracker velocityTracker;//判断手势
 	private static final int SNAP_VELOCITY = 600;  //滑动速度
 	private int mCurScreen = 0;    			//当前所在屏幕	
@@ -35,15 +37,11 @@ public class HScrollLayout extends ViewGroup{
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-		final View childView = getChildAt(0);
-		//View v1 = findViewById(R.id.ll_item_weather);
-		int Height = childView.getHeight();
 		int count = getChildCount();
-		for(int i = 0 ; i < count; i++){
-			getChildAt(i).measure(widthMeasureSpec,Height);//设置每个view的大小
-		}
-		setMeasuredDimension(widthMeasureSpec, Height);
-		scrollTo(0, 0);//Scroller定位
+        for(int i = 0 ; i < count; i++){
+            getChildAt(i).measure(widthMeasureSpec, heightMeasureSpec);//设置每个view的大小
+        }
+        scrollTo(0, 0);//Scroller定位
 	}
 	@Override
 	protected void onLayout(boolean changed, int l, int t, int r, int b) {
@@ -70,6 +68,7 @@ public class HScrollLayout extends ViewGroup{
         switch (ev.getAction()){  
         case MotionEvent.ACTION_DOWN:  
             mLastMotionY = y;  
+            downMotionX = ev.getY();
             mTouchState = scroller.isFinished() ? TOUCH_STATE_REST : TOUCH_STATE_SCROLLING;
             break;  
         case MotionEvent.ACTION_MOVE:  
@@ -85,6 +84,7 @@ public class HScrollLayout extends ViewGroup{
             break;  
         }  
         //true滑动容器里感应不到点击事件，false，滑动容器里控件感应到点击事件
+        Log.d(TAG, "" + (mTouchState != TOUCH_STATE_REST));
 		return mTouchState != TOUCH_STATE_REST;
 	}
 	

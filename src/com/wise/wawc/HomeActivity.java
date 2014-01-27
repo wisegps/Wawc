@@ -14,6 +14,7 @@ import com.iflytek.speech.SpeechConfig.RATE;
 import com.iflytek.speech.SpeechError;
 import com.iflytek.ui.RecognizerDialog;
 import com.iflytek.ui.RecognizerDialogListener;
+import com.wise.customView.EnergyGroup;
 import com.wise.data.CarData;
 import com.wise.extend.HScrollLayout;
 import com.wise.pubclas.BlurImage;

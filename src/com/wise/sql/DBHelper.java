@@ -17,8 +17,10 @@ public class DBHelper extends SQLiteOpenHelper{
 	private static final String CREATE_TB_VehicleFriend = "create table " + Constant.TB_VehicleFriend + "(_id integer primary key autoincrement,Cust_id int,FriendID int,Blog_id int,Content text)";
 	//爱车故障
 	private static final String CREATE_TB_Faults = "create table " + Constant.TB_Faults + "(_id integer primary key autoincrement,Cust_id text,CarID int,Content text)";
+	//行程统计
+	private static final String CREATE_TB_TripTotal = "create table " + Constant.TB_TripTotal + "(_id integer primary key autoincrement,device_id text,tDate text,Content text)";
 	//行程记录
-	private static final String CREATE_TB_TripList = "create table " + Constant.TB_TripList + "(_id integer primary key autoincrement,Cust_id text,CarID int,Date text,Content text)";
+	private static final String CREATE_TB_TripList = "create table " + Constant.TB_TripList + "(_id integer primary key autoincrement,device_id text,tDate text,Content text)";
 	//行程记录
 	private static final String CREATE_TB_Trip = "create table " + Constant.TB_Trip + "(_id integer primary key autoincrement,Cust_id text,TripID int,Content text)";
 	//我的爱车
@@ -41,6 +43,7 @@ public class DBHelper extends SQLiteOpenHelper{
 		db.execSQL(CREATE_TB_Base);
 		db.execSQL(CREATE_TB_VehicleFriend);
 		db.execSQL(CREATE_TB_Faults);
+		db.execSQL(CREATE_TB_TripTotal);
 		db.execSQL(CREATE_TB_TripList);
 		db.execSQL(CREATE_TB_Trip);
 		db.execSQL(CREATE_TB_Vehicle);

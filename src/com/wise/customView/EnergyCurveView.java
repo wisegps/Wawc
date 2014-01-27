@@ -1,9 +1,12 @@
-package com.wise.extend;
+package com.wise.customView;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+
 import com.wise.data.EnergyItem;
+import com.wise.extend.OnViewTouchListener;
 import com.wise.wawc.R;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,6 +14,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -18,11 +22,12 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.ViewConfiguration;
 /**
  * 油耗曲线
  * @author honesty
  */
-public class EnergyCurveView extends View implements OnTouchListener {
+public class EnergyCurveView extends View implements OnTouchListener{
 	private static final String TAG = "EnergyCurveView";
 	Context context;
 	private static final float SPACING_SCALE = 40f; // 缩放间距 用于背景图过大
@@ -51,25 +56,53 @@ public class EnergyCurveView extends View implements OnTouchListener {
 	private EnergyItem maxEnergy; //y坐标最大的单元
 	private float moveXOfFirst; // 单个按下的X坐标
 	OnViewTouchListener onViewTouchListener;
+	//长按事件Runnable
+	private Runnable mLongPressRunnable;
+	//移动的阀值，炒作这个距离算移动
+	private static int TOUCH_SLOP;
+	//是否长按
+	boolean isLongPress = false;
 
 	public EnergyCurveView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		this.context = context;
 		setOnTouchListener(this);
+		TOUCH_SLOP = ViewConfiguration.get(getContext()).getScaledTouchSlop();
+		mLongPressRunnable = new Runnable() {            
+            @Override
+            public void run() {
+                isLongPress = true;
+                invalidate();
+            }
+        };
 	}
 	boolean isSend = false;
-
+	float x = 0;
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
 	    isSend = true;
-	    Log.d(TAG, "Touch");
+	    Log.d(TAG, "Touch = " + event.getAction());
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			moveXOfFirst = event.getX(0);			
+			moveXOfFirst = event.getX(0);
+			x = moveXOfFirst;
+			isLongPress = false;
+			postDelayed(mLongPressRunnable, ViewConfiguration.getLongPressTimeout());
 		}
 		if (event.getAction() == MotionEvent.ACTION_MOVE) {
 			moveXOfFirst = event.getX(0);
+			if(Math.abs(moveXOfFirst-x) > TOUCH_SLOP) {  
+                //移动超过阈值，则表示移动了  
+                removeCallbacks(mLongPressRunnable);  
+            }
+			if(isLongPress){
+			    getParent().requestDisallowInterceptTouchEvent(true);
+			    invalidate();
+			}
 		}
 		if (event.getAction() == MotionEvent.ACTION_UP) {
+		    isLongPress = false;
+		    getParent().requestDisallowInterceptTouchEvent(false);
+		    removeCallbacks(mLongPressRunnable);
 			moveXOfFirst = event.getX(0);
 			float x_Distance = 0;
 			boolean isLast = true;
@@ -78,7 +111,7 @@ public class EnergyCurveView extends View implements OnTouchListener {
 				float x = textPoint.x - moveXOfFirst;
 				float x_abc = Math.abs(x);
 				if(i == 0){
-					//TODO
+					//
 				}else{
 					if(x_abc > x_Distance){
 						moveXOfFirst = points.get(i-1).x;
@@ -90,10 +123,14 @@ public class EnergyCurveView extends View implements OnTouchListener {
 			}
 			if(isLast){
 				moveXOfFirst = points.get(points.size()-1).x;
-			}			
+			}
+			invalidate();
 		}
-		Log.d(TAG, "onTouch");
-		invalidate();
+		if(event.getAction() == MotionEvent.ACTION_CANCEL){
+		    isLongPress = false;
+		    getParent().requestDisallowInterceptTouchEvent(false);
+            removeCallbacks(mLongPressRunnable);
+		}
 		return true;
 	}
 	
@@ -104,7 +141,9 @@ public class EnergyCurveView extends View implements OnTouchListener {
 		// 初始化绘制
 		initDraw(canvas, paint);
 		// 点击屏幕时 进行的操作, 单点，多点
-		SinglePointTouch(canvas, paint);
+		if(isLongPress){
+	        SinglePointTouch(canvas, paint);
+		}
 		Log.d(TAG, "onDraw");
 	}
 
@@ -116,13 +155,15 @@ public class EnergyCurveView extends View implements OnTouchListener {
 	private void initDraw(Canvas canvas, Paint paint) {
 		paint.setColor(Color.GREEN);
 		paint.setAntiAlias(true);
+		//TODO 绘制
 		float dottedSpacing = (mGradientHeight - WEIGHT) / 5;//垂直大间隔,实线距离
 		float smallDotted = dottedSpacing / 5;//里面虚线距离
+		float value = maxEnergy.value/5;
 		/* 水平线和文字 */
 		for (int i = 0; i <= 5; i++) {
 			paint.setStrokeWidth(3);
 			paint.setColor(Color.GRAY);
-			canvas.drawText(new BigDecimal(3*i).toString(), SPACING - 25,mGradientHeight + SPACING_HEIGHT - dottedSpacing * i + 5,paint);
+			canvas.drawText(""+value * i, SPACING - 25,mGradientHeight + SPACING_HEIGHT - dottedSpacing * i + 5,paint);
 			canvas.drawLine(SPACING, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i, mGradientWidth, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i, paint);
 			paint.setStrokeWidth(1);
 			paint.setColor(0xff999999);
@@ -140,7 +181,19 @@ public class EnergyCurveView extends View implements OnTouchListener {
 				canvas.drawBitmap(mLastPoint,startPoint.x - mLastPoint.getWidth() / 2, startPoint.y - mLastPoint.getHeight() / 2, paint);
 				break;
 			}
-			PointF endPoint = points.get(i + 1);
+            PointF endPoint = points.get(i + 1);
+			if(i%2 == 0){
+                //画阴影
+                paint.setColor(Color.GRAY);// 设置灰色  
+                paint.setStyle(Paint.Style.FILL);//设置填满  
+                Path path = new Path();
+                path.moveTo(startPoint.x, mGradientHeight + SPACING_HEIGHT);// 此点为多边形的起点  
+                path.lineTo(startPoint.x, startPoint.y);  
+                path.lineTo(endPoint.x, endPoint.y);  
+                path.lineTo(endPoint.x, mGradientHeight + SPACING_HEIGHT);  
+                path.close(); // 使这些点构成封闭的多边形  
+                canvas.drawPath(path, paint); 
+            }
 			// 绘制曲线，并且覆盖剪切后的锯齿
 			canvas.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y,paint);
 			canvas.drawBitmap(mLastPoint,startPoint.x - mLastPoint.getWidth() / 2, startPoint.y - mLastPoint.getHeight() / 2, paint);
@@ -153,7 +206,7 @@ public class EnergyCurveView extends View implements OnTouchListener {
 	 * @param paint
 	 */
 	private void SinglePointTouch(Canvas canvas, Paint paint) {
-		// TODO 顶部的度数框
+		//顶部的度数框
 		if (moveXOfFirst < points.get(0).x) {
 			moveXOfFirst = points.get(0).x;
 		}
@@ -316,6 +369,7 @@ public class EnergyCurveView extends View implements OnTouchListener {
 		maxEnergy = findMaxPowers(energys);
 		spacingOfX = (mGradientWidth - mLastPoint.getWidth()) / (energys.size()) + 1;
 		spacingOfY = (mGradientHeight - WEIGHT) / ((maxEnergy.value) / 4 + maxEnergy.value);
+		Log.d(TAG, "spacingOfY = " + spacingOfY + "maxEnergy.value = " + maxEnergy.value);
 	}
 
 	/**
