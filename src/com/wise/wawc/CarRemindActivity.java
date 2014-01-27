@@ -289,7 +289,8 @@ public class CarRemindActivity extends Activity{
 	}
 	@Override
 	protected void onDestroy() {
-	    super.onDestroy();
-	    Log.d(TAG, "onDestroy");
+		// TODO Auto-generated method stub
+		super.onDestroy();
+		System.out.print("CarRemindActivity onDestroy");
 	}
 }
