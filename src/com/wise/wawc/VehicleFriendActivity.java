@@ -1,23 +1,18 @@
 package com.wise.wawc;
 
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.wise.data.AdressData;
 import com.wise.data.Article;
+import com.wise.extend.AbstractSpinerAdapter;
+import com.wise.extend.SpinerPopWindow;
 import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
 import com.wise.pubclas.BlurImage;
@@ -27,42 +22,34 @@ import com.wise.pubclas.Variable;
 import com.wise.service.MyAdapter;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
-import com.wise.sql.DBOperation;
-import com.wise.wawc.MainActivity.GetBitMapFromUrlThread;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 /**
  * 车友圈
- * @author 王庆文
+ * @author Mr.Wang
  */
-public class VehicleFriendActivity extends Activity implements IXListViewListener{
+public class VehicleFriendActivity extends Activity implements IXListViewListener, AbstractSpinerAdapter.IOnItemSelectListener {
     private static final String TAG = "VehicleFriendActivity";
 	private boolean isJump = false;//false 加载，true 跳转
 	private Button menuButton = null;
@@ -80,6 +67,11 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	private ImageView qqUserHead = null;
 	private TextView qqUserName = null;
+	private TextView TVTitle = null;
+	
+	
+	private SpinerPopWindow mSpinerPopWindow;//文章筛选列表
+	private List<String> titleList = new ArrayList<String>();
 	
 	
 	private static final int setUserIcon = 4;
@@ -87,18 +79,24 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	private static final int commentArticle = 18;
 	private static final int articleFavorite = 20;
 	public static final int newArticleResult = 67;
+	private static final int loadMoreCode = 68;
 	private static int loadMoreAction = 21;
+	private int totalNum = 0;
+	private int screenWidth = 0;
 	
 	public static int newArticleBlogId = 0;
 	private List<Article> articleDataList = new ArrayList<Article>();
 	private ProgressDialog myDialog = null;
 	public static int blogId = 0;
 	private  int[] blogIdArray = null;
+	private boolean isLoadMore = false;
 	
 	//操作数据库
 	private DBExcute dBExcute = null;
 	
 	private String commentMsg = null;
+	
+	public static int minBlogId = 0;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -124,6 +122,16 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		qqUserName = (TextView) findViewById(R.id.tv_qq_user_name);
 		articleList = (XListView) findViewById(R.id.article_list);
 		articleList.setXListViewListener(this);
+		screenWidth = (int) (getWindowManager().getDefaultDisplay().getWidth()*0.5);
+
+		titleList.add("车友圈");
+		titleList.add("同城车友");
+		titleList.add("同车型车友");
+		titleList.add("附近车友");
+		titleList.add("我的收藏");
+		
+		TVTitle = (TextView) findViewById(R.id.tv_vehicle_friend_title);
+		TVTitle.setOnClickListener(new ClickListener());
 		//不设置上拉加载无效
 		articleList.setPullLoadEnable(true);
 		
@@ -144,6 +152,9 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			public void onScroll(AbsListView view, int firstVisibleItem,int visibleItemCount, int totalItemCount) {
 			}
 		});
+		
+		mSpinerPopWindow = new SpinerPopWindow(VehicleFriendActivity.this);
+		mSpinerPopWindow.setItemListener(this);
 		getArticleDatas(0);
 	}
 
@@ -182,6 +193,12 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 					new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "blog/" + blogId + "/comment?auth_code=" + Variable.auth_code, params, commentArticle)).start();
 				}
 				break;
+			case R.id.tv_vehicle_friend_title:
+				mSpinerPopWindow.refreshData(titleList, 0);
+				mSpinerPopWindow.setWidth(screenWidth);
+				mSpinerPopWindow.setHeight(300);
+				mSpinerPopWindow.showAsDropDown(TVTitle);
+				break;
 			default:
 				return;
 			}
@@ -206,7 +223,21 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	}
 	@Override
 	public void onLoadMore() {
-		getArticleDatas(loadMoreAction);
+		if(!isLoadMore){
+			getArticleDatas(loadMoreAction);
+		}else{
+			//  TODO  加载更多
+			DBHelper dBHelper = new DBHelper(VehicleFriendActivity.this);
+			SQLiteDatabase  sQLiteDatabase = dBHelper.getReadableDatabase();
+			Cursor cursor = sQLiteDatabase.rawQuery("select * from " + Constant.TB_VehicleFriend, new String[]{});
+			if(cursor.moveToLast()){
+				minBlogId = cursor.getInt(cursor.getColumnIndex("Blog_id"));
+			}
+//			List<NameValuePair> params = new ArrayList<NameValuePair>();
+//			params.add(new BasicNameValuePair("main_id", String.valueOf(minBlogId)));
+			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog=" + minBlogId + "?auth_code=" + Variable.auth_code, loadMoreCode)).start();
+			Log.e("请求服务器加载更多","请求服务器加载更多");
+		}
 	}
 	
 	private void onLoad() {
@@ -227,7 +258,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			switch(msg.what){
 			case setUserIcon:
 				if(Constant.UserIcon != null){
-					qqUserHead.setImageBitmap(Constant.UserIcon);
+					qqUserHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(Constant.UserIcon));
 				}else{
 					qqUserHead.setBackgroundResource(R.drawable.ic_launcher);
 				}
@@ -264,13 +295,13 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 					e.printStackTrace();
 				}
 
-//				jsonToList(temp1);
 				articleDataList.clear();
 				articleDataList = dBExcute.getArticlePageDatas(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(0),String.valueOf(Constant.start + Constant.pageSize + 1)}, articleDataList);
 				Variable.articleList = articleDataList;
 				setArticleDataList(articleDataList);
 				myAdapter.refreshDates(articleDataList);
 				}
+				newArticleBlogId = 0;
 				break;
 			case commentArticle:
 				String commentResult = msg.obj.toString();
@@ -300,6 +331,11 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 					e.printStackTrace();
 				}
 				break;
+				//加载更多
+			case loadMoreCode:
+				Log.e("加载更多结果：",msg.obj.toString());
+				onLoad();
+				break;
 			}
 			super.handleMessage(msg);
 		}
@@ -319,7 +355,10 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
 				values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
 				dBExcute.InsertDB(VehicleFriendActivity.this,values,Constant.TB_VehicleFriend);
-				
+				if(i == (jsonArray.length()-1)){
+					minBlogId = Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id"));
+				}
+				Log.e("content:",jsonArray.length()+"");
 		}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -328,7 +367,8 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	//获取数据
 	public void getArticleDatas(int actionCode){
-		int totalNum = dBExcute.getTotalCount(Constant.TB_VehicleFriend, VehicleFriendActivity.this);
+		totalNum = dBExcute.getTotalCount(Constant.TB_VehicleFriend, VehicleFriendActivity.this);
+		Log.e("数据总量:",totalNum+"");
 		if(totalNum > 0){
 			//查询数据库
 			Constant.totalPage = totalNum%Constant.pageSize > 0 ? totalNum/Constant.pageSize + 1 : totalNum/Constant.pageSize;
@@ -338,12 +378,16 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				articleDataList = dBExcute.getArticlePageDatas(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
 				setArticleDataList(articleDataList);
 			}
-			if(Constant.totalPage - 1 == Constant.currentPage){
+			Log.e("currentPage:" + Constant.currentPage , "totalPage:" + Constant.totalPage);
+			if(Constant.totalPage == Constant.currentPage){
+				isLoadMore = true;
 			}
 		}else{
 			myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 			myDialog.setCancelable(true);
+			//  TODO  获取文章列表
 			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code, getArticleList)).start();
+			Log.e("获取文章url:",Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code);
 		}
 		Variable.articleList = articleDataList;
 		myAdapter.refreshDates(articleDataList);
@@ -354,11 +398,13 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
-		myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
-		myDialog.setCancelable(true);
-		//文章发表成功后刷新数据库  列表  TODO    获取最大  blogId保存  刷新后首先保存到数据库     然后调用分页函数
+		//文章发表成功后刷新数据库  
 		if(requestCode == newArticleResult){
+			if(newArticleBlogId != 0){
+			myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
+			myDialog.setCancelable(true);
 			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code, newArticleResult)).start();
+			}
 		}
 	}
 	public List<Article> getArticleDataList() {
@@ -366,5 +412,23 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	}
 	public void setArticleDataList(List<Article> articleDataList) {
 		this.articleDataList = articleDataList;
+	}
+	
+	//模拟加载更多
+	protected void onDestroy() {
+		super.onDestroy();
+//		DBHelper dbHelper = new DBHelper(VehicleFriendActivity.this);
+//		SQLiteDatabase db = dbHelper.getWritableDatabase();		
+//		Cursor cursor = db.rawQuery("select * from " + Constant.TB_VehicleFriend, new String[]{});
+//		String blogIds = "";
+//		if(cursor.moveToLast()){
+//			blogIds = cursor.getInt(cursor.getColumnIndex("Blog_id"))+"";
+//			Log.e("Blog_id:",blogIds);
+//		}
+//		Log.e("onDestroy---","onDestroy");
+//		dBExcute.DeleteDB(VehicleFriendActivity.this, Constant.TB_VehicleFriend, "Blog_id=?", new String[]{blogIds});
+	}
+	public void onItemClick(int pos, int type) {
+		
 	}
 }

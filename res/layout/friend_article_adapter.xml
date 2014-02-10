@@ -11,6 +11,8 @@
         android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
         >
+        
+        <!-- 发表时间/赞 -->
         <TableRow 
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -24,9 +26,9 @@
                 android:textColor="#000000"
                 />
             <TextView 
+                android:id="@+id/friend_article_content"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:text="途安保养技巧"
                 android:layout_weight="2"
                 android:textColor="#000000"
                 />
@@ -52,6 +54,8 @@
                     />
             </LinearLayout>
         </TableRow>
+        
+        
         <TableRow 
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -86,15 +90,43 @@
                     android:layout_margin="5dip"
                     />
             </LinearLayout>
-            
             <LinearLayout 
+         android:id="@+id/article_comment_layout"
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="vertical"
+         >
+                
+     </LinearLayout>
+        </TableRow>
+        <!-- 点赞者 -->
+   <LinearLayout 
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:orientation="horizontal"
+         >
+		<ImageView 
+		    android:id="@+id/friend_article_praises_star"
+		    android:layout_width="15dip"
+		    android:layout_height="15dip"
+		    android:background="@drawable/image"
+		    android:visibility="gone"
+		    />
+		<TextView 
+		    android:id="@+id/friend_article_praises_user"
+		    android:layout_width="wrap_content"
+		    android:layout_height="wrap_content"
+		    android:text="iiii"
+		    />
+     </LinearLayout>
+        <LinearLayout 
+            	android:id="@+id/friend_article_comment"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_weight="1"
                 >
             </LinearLayout>
-        </TableRow>
         
     </TableLayout>
 </LinearLayout>

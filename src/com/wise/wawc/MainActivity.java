@@ -19,11 +19,15 @@ import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.service.SaveSettingData;
+import com.wise.sql.DBExcute;
+import com.wise.sql.DBHelper;
+
 import android.app.ActivityGroup;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -64,7 +68,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     ImageView iv_activity_main_logo,iv_activity_main_login_sina,
             iv_activity_main_login_qq,iv_voice;
     TextView tv_activity_main_name;
-    
+    RelativeLayout refuel,maintain,wishCar,help,insurance,park;
     private ParseFaceThread thread = null;
     private SaveSettingData saveSettingData;
     double Multiple = 0.5;
@@ -86,6 +90,22 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         hsv_pic = (PicHorizontalScrollView) findViewById(R.id.hsv_pic);
         ActivityFactory.A = this;
         slidingMenuView = (SlidingMenuView) findViewById(R.id.sliding_menu_view);
+        
+        refuel = (RelativeLayout) findViewById(R.id.rl_activity_main_oil);  //加油
+        maintain = (RelativeLayout) findViewById(R.id.rl_activity_main_maintain);  //维保
+        wishCar = (RelativeLayout) findViewById(R.id.rl_activity_main_wash);   //洗车
+        help = (RelativeLayout) findViewById(R.id.rl_activity_main_help);   //救援
+        insurance = (RelativeLayout) findViewById(R.id.rl_activity_main_safety);   //保险
+        park = (RelativeLayout) findViewById(R.id.rl_activity_main_park);    //停车
+        refuel.setOnClickListener(onClickListener);
+        maintain.setOnClickListener(onClickListener);
+        wishCar.setOnClickListener(onClickListener);
+        help.setOnClickListener(onClickListener);
+        insurance.setOnClickListener(onClickListener);
+        park.setOnClickListener(onClickListener);
+        
+        
+        
         tabcontent = (ViewGroup) slidingMenuView
                 .findViewById(R.id.sliding_body);
         ActivityFactory.v = tabcontent;
@@ -227,6 +247,25 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                     }
                 }
                 break;
+            case R.id.rl_activity_main_oil:   //加油
+            	voiceSerachResult("加油站");
+            	Log.e("加油站","加油站");
+            	break;
+            case R.id.rl_activity_main_maintain:   //维保
+            	voiceSerachResult("车辆维修");
+            	break;
+            case R.id.rl_activity_main_wash:    //洗车
+            	voiceSerachResult("洗车店");
+            	break;
+            case R.id.rl_activity_main_help:   //救援
+            	voiceSerachResult("车辆救援");
+            	break;
+            case R.id.rl_activity_main_safety:   //保险
+            	voiceSerachResult("车辆保险");
+            	break;
+            case R.id.rl_activity_main_park:    //停车
+            	voiceSerachResult("停车场");
+            	break;
             }
         }
     };
@@ -440,6 +479,12 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         Constant.totalPage = 0;   //数据总量
         Constant.currentPage = 0;  //当前页
         VehicleFriendActivity.newArticleBlogId = 0;
+        
+        //测试  车友圈刷新
+        DBHelper dbHelper = new DBHelper(MainActivity.this);
+        SQLiteDatabase write = dbHelper.getWritableDatabase();
+        write.delete(Constant.TB_VehicleFriend, "Blog_id=?", new String[]{String.valueOf(VehicleFriendActivity.minBlogId)});
+        VehicleFriendActivity.minBlogId = 0;
     }
 
     /**
@@ -641,4 +686,11 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             iv_pic.setImageBitmap(BlurImage.decodeSampledBitmapFromPath(Path, 500, 500));
         }
     }    
+    
+    
+    public void voiceSerachResult(String order){
+    	Intent intent = new Intent(MainActivity.this, SearchMapActivity.class);
+		intent.putExtra("keyWord", order);
+		startActivity(intent);
+    }
 }

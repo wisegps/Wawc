@@ -6,6 +6,7 @@ import java.util.List;
 import com.wise.wawc.R;
 
 import android.content.Context;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +73,7 @@ public abstract class AbstractSpinerAdapter<T> extends BaseAdapter {
 	    	 convertView = mInflater.inflate(R.layout.spiner_item_layout, null);
 	         viewHolder = new ViewHolder();
 	         viewHolder.mTextView = (TextView) convertView.findViewById(R.id.textView);
+	         viewHolder.mTextView.setGravity(Gravity.CENTER);
 	         convertView.setTag(viewHolder);
 	     } else {
 	         viewHolder = (ViewHolder) convertView.getTag();

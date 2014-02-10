@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.wise.data.CarData;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.Variable;
 import com.wise.wawc.R;
 
 import android.annotation.SuppressLint;
@@ -33,6 +34,13 @@ public class LogoAdapter extends BaseAdapter {
 		this.context = context;
 		layoutInflater = LayoutInflater.from(context);
 		this.carDataList = carDataList;
+		
+		for(int i = 0 ; i < this.carDataList.size() ; i ++){
+			String carNumber =  this.carDataList.get(i).getObj_name();
+			String carNumber1 = carNumber == null?"":carNumber;
+			Log.e("车牌号----->",carNumber1);
+			Log.e("品牌：",this.carDataList.get(i).car_brand);
+		}
 	}
 	public int getCount() {
 		return carDataList.size();
@@ -50,17 +58,17 @@ public class LogoAdapter extends BaseAdapter {
 		hodler.imageView = (ImageView) convertView.findViewById(R.id.image_view);
 		hodler.vehicleNum = (TextView) convertView.findViewById(R.id.vehicle_logo_num);
 		
-		if(carDataList.get(position).getCar_brand() != null){
-			Log.e("路径：",Constant.VehicleLogoPath + carDataList.get(position).getCar_brand() + ".jpg");
+		if(!"newVehicle".equals(carDataList.get(position).getCar_brand())){
 			Bitmap bitmap = BitmapFactory.decodeFile(Constant.VehicleLogoPath + carDataList.get(position).getCar_brand() + ".jpg");
 			hodler.imageView.setImageBitmap(bitmap);
-			hodler.vehicleNum.setText(carDataList.get(position).getObj_name());
+			String str = this.carDataList.get(position).getObj_name();
+			String str2 = str==null?"null":str;
+//			Log.e("getView()--车牌号：",str2);
+			hodler.vehicleNum.setText(str2);
 		}else{
 			hodler.imageView.setBackgroundResource(R.drawable.image);
 		}
-		hodler.imageView.setBackgroundResource(R.drawable.image);
 		if(position == carDataList.size()){
-			hodler.imageView = (ImageView) convertView.findViewById(R.id.image_view);
 			hodler.imageView.setBackgroundResource(R.drawable.new_vehicle);
 		}
 		

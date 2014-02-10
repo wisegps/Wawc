@@ -9,11 +9,13 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import com.iflytek.speech.RecognizerResult;
-import com.iflytek.speech.SpeechConfig.RATE;
-import com.iflytek.speech.SpeechError;
-import com.iflytek.ui.RecognizerDialog;
-import com.iflytek.ui.RecognizerDialogListener;
+import com.iflytek.cloud.speech.RecognizerListener;
+import com.iflytek.cloud.speech.RecognizerResult;
+import com.iflytek.cloud.speech.SpeechConstant;
+import com.iflytek.cloud.speech.SpeechError;
+import com.iflytek.cloud.speech.SpeechListener;
+import com.iflytek.cloud.speech.SpeechRecognizer;
+import com.iflytek.cloud.speech.SpeechUser;
 import com.wise.data.CarData;
 import com.wise.extend.HScrollLayout;
 import com.wise.pubclas.BlurImage;
@@ -21,6 +23,7 @@ import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
+import com.wise.service.JsonParser;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
 import android.app.Activity;
@@ -42,6 +45,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -50,10 +56,9 @@ import android.widget.Toast;
 
 /**
  * 首页
- * 
  * @author honesty
  */
-public class HomeActivity extends Activity implements RecognizerDialogListener {
+public class HomeActivity extends Activity{
     private static final String TAG = "HomeActivity";
     private static final int Get_FutureWeather = 1; // 获取未来天气
     private static final int Get_RealTimeWeather = 2; // 获取实时天气
@@ -65,9 +70,9 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
             tv_item_weather_index_xc, tv_item_weather_city,tv_item_oil_90, tv_item_oil_93,
             tv_item_oil_97, tv_item_oil_0,tv_car_number,tv_activity_home_car_adress;
     ImageView iv_carLogo;
-    private RecognizerDialog recognizerDialog = null; // 语音合成文字
-    StringBuffer sb = null;
     private ImageView saySomething = null; // 语音识别
+  	private SpeechRecognizer iatRecognizer;   //识别对象
+  	private StringBuffer sb = null;
 
     String LocationCityCode = "";// 城市编码
     String LocationCity = "";// 城市
@@ -106,7 +111,9 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
 
         saySomething = (ImageView) findViewById(R.id.iv_home_say_something);
         saySomething.setOnClickListener(onClickListener);
-        sb = new StringBuffer();
+        //用户登录(使用SpeechRecognizer类需要授权)
+      	SpeechUser.getUser().login(HomeActivity.this, null, null,"appid=" + Variable.MscKey, listener);
+      	iatRecognizer=SpeechRecognizer.createRecognizer(HomeActivity.this);
 
         HScrollLayout ScrollLayout_other = (HScrollLayout) findViewById(R.id.ScrollLayout_other);
         LayoutInflater mLayoutInflater = LayoutInflater.from(HomeActivity.this);
@@ -134,12 +141,6 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         tv_item_oil_0 = (TextView) oilView.findViewById(R.id.tv_item_oil_0);
         //tv_item_oil_update = (TextView) oilView.findViewById(R.id.tv_item_oil_update);
 
-        // 注册（将语音转文字）
-        recognizerDialog = new RecognizerDialog(this, "appid=5281eaf4");
-        recognizerDialog.setListener(this);
-        recognizerDialog.setEngine("sms", "", null);
-        recognizerDialog.setSampleRate(RATE.rate16k);
-        sb = new StringBuffer();
         
         getSp();
         GetOldWeather();// 获取本地存储的数据
@@ -199,7 +200,11 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 HomeActivity.this.startActivity(intent);
                 break;
             case R.id.iv_home_say_something:
-                recognizerDialog.show();
+            	iatRecognizer=SpeechRecognizer.createRecognizer(HomeActivity.this);
+				iatRecognizer.setParameter(SpeechConstant.CLOUD_GRAMMAR, null);
+				iatRecognizer.setParameter(SpeechConstant.DOMAIN, "iat");
+				iatRecognizer.setParameter(SpeechConstant.SAMPLE_RATE, "16000");
+				iatRecognizer.startListening(recognizerListener);
                 break;
             case R.id.tv_item_weather_city:
                 startActivityForResult(new Intent(HomeActivity.this, SelectCityActivity.class), 0);
@@ -589,11 +594,13 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
                 String insurance_company = jsonObject.getString("insurance_company");
                 String insurance_date = jsonObject.getString("insurance_date");
                 insurance_date = insurance_date.substring(0, 10);
-                String annual_inspect_date = jsonObject.getString("annual_inspect_date");
-                annual_inspect_date = annual_inspect_date.substring(0, 10);
+//                String annual_inspect_date = jsonObject.getString("annual_inspect_date");
+//                annual_inspect_date = annual_inspect_date.substring(0, 10);
+                String annual_inspect_date = "已取消";
                 String maintain_company = jsonObject.getString("maintain_company");
                 String maintain_last_mileage = jsonObject.getString("maintain_last_mileage");
-                String maintain_next_mileage = jsonObject.getString("maintain_next_mileage");
+//                String maintain_next_mileage = jsonObject.getString("maintain_next_mileage");
+                String maintain_next_mileage = "已取消";
                 String buy_date = jsonObject.getString("buy_date");
                 buy_date = buy_date.substring(0, 10);
                 
@@ -703,18 +710,6 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         HomeActivity.this.startActivity(intent);
     }
 
-    @Override
-    public void onEnd(SpeechError arg0) {
-        Toast.makeText(getApplicationContext(), sb.toString(), 0).show();
-        sb.delete(0, sb.length());
-    }
-
-    public void onResults(ArrayList<RecognizerResult> results, boolean arg1) {
-        for (RecognizerResult recognizerResult : results) {
-            sb.append(recognizerResult.text);
-        }
-    }
-
     private void registerBroadcastReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Constant.A_Login);
@@ -782,4 +777,54 @@ public class HomeActivity extends Activity implements RecognizerDialogListener {
         }
     }
     
+	/**
+	 * 用户授权回调监听器.
+	 */
+	private SpeechListener listener = new SpeechListener()
+	{
+		public void onData(byte[] arg0) {
+		}
+		public void onCompleted(SpeechError error) {
+			if(error != null) {
+				Toast.makeText(HomeActivity.this, "授权失败" + error, Toast.LENGTH_SHORT).show();
+			}			
+		}
+		public void onEvent(int arg0, Bundle arg1) {
+		}		
+	};
+	
+	RecognizerListener recognizerListener=new RecognizerListener(){
+		public void onBeginOfSpeech() {	
+			sb = new StringBuffer();
+			Toast.makeText(getApplicationContext(), "开始说话", 0).show();
+		}
+
+		public void onError(SpeechError err) {
+			Toast.makeText(getApplicationContext(), "识别出错，稍后再试", 0).show();
+			Log.e("错误码：",err+"");
+		}
+		public void onEndOfSpeech() {
+		}
+		public void onEvent(int eventType, int arg1, int arg2, String msg) {
+
+		}
+		public void onResult(RecognizerResult results, boolean isLast) {		
+			String text = JsonParser.parseIatResult(results.getResultString());
+			sb.append(text);
+			Toast.makeText(getApplicationContext(), sb.toString(), 0).show();
+		}
+		public void onVolumeChanged(int volume) {
+			if(volume == 0){
+				saySomething.clearAnimation();
+			}else{
+				Animation animation = saySomething.getAnimation();
+				if(animation == null){
+					animation = AnimationUtils.loadAnimation(HomeActivity.this, R.anim.tip);
+					 LinearInterpolator lin = new LinearInterpolator();  
+					 animation.setInterpolator(lin); 
+					 saySomething.startAnimation(animation);
+				}
+			}
+		}
+	};
 }

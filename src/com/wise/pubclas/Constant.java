@@ -12,6 +12,7 @@ public class Constant {
      * 服务器地址："http://wiwc.api.wisegps.cn/"
      */
     public static String BaseUrl = "http://wiwc.api.wisegps.cn/";
+	
     /**
      * 图片地址"http://img.wisegps.cn/logo/"
      */
@@ -177,4 +178,9 @@ public class Constant {
 	public static int pageSize = 2;   //每页数量
 	public static int totalPage = 0;   //数据总量
 	public static int currentPage = 0;  //当前页
+	
+	public static int start1 = 0;  // 开始页
+	public static int pageSize1 = 2;   //每页数量
+	public static int totalPage1 = 0;   //数据总量
+	public static int currentPage1 = 0;  //当前页
 }
