@@ -126,6 +126,10 @@ public class Constant {
 	 */
 	public static String TB_Faults = "TB_Faults";
 	/**
+	 * 行程统计
+	 */
+	public static String TB_TripTotal = "TB_TripTotal";
+	/**
 	 * 行程记录
 	 */
 	public static String TB_TripList = "TB_TripList";

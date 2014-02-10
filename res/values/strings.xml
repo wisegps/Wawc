@@ -110,6 +110,10 @@
     <string name="search_error">搜索出错啦..</string>
 
     <string name="search_result">搜索结果</string>
+    <!--爱车车况-->
+    <string name="month_hk_fuel">百公里油耗\n%sL</string>
+    <string name="month_fuel">月总油耗\n%sL</string>
+    <string name="month_distance">月行驶里程\n%sKM</string>
     <!-- 车辆行程 -->
     <string name="travels">车辆行程</string>
     <!-- 我的账户 -->

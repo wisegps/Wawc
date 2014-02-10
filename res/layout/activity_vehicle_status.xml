@@ -29,7 +29,7 @@
 	</RelativeLayout>
 	<HorizontalScrollView
         android:layout_width="fill_parent"
-        android:layout_height="50dp">
+        android:layout_height="wrap_content">
 		<LinearLayout 
 		    android:layout_width="wrap_content"
 			android:layout_height="wrap_content" 
@@ -49,97 +49,36 @@
 	    android:padding="5dp"
 	    android:textSize="@dimen/title"
 	    android:text="故障：2 报警：3"/>
-	<TableLayout 
-	    android:stretchColumns="*" 
+	<LinearLayout 
 	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content">
-	    <TableRow android:background="@color/black">
-	        <TextView
-	            android:layout_margin="0.5dp"
-	            android:paddingTop="5dp"
-	            android:paddingBottom="5dp"
-	            android:background="@color/white"
-	            android:textColor="@color/black"
-	            android:textSize="@dimen/title"
-	            android:gravity="center_horizontal"
-	            android:text="百公里油耗"/>
-	        <TextView
-	            android:layout_margin="0.5dp" 
-	            android:paddingTop="5dp"
-	            android:paddingBottom="5dp"
-	            android:background="@color/white"
-	            android:textColor="@color/black"
-	            android:textSize="@dimen/title"
-	            android:gravity="center_horizontal"
-	            android:text="月行驶里程"/>
-	        <TextView
-	            android:layout_margin="0.5dp" 
-	            android:paddingTop="5dp"
-	            android:paddingBottom="5dp"
-	            android:background="@color/white"
-	            android:textColor="@color/black"
-	            android:textSize="@dimen/title"
-	            android:gravity="center_horizontal"
-	            android:text="月总耗油"/>
-	        <TextView
-	            android:layout_margin="0.5dp"
-	            android:paddingTop="5dp"
-	            android:paddingBottom="5dp"
-	            android:background="@color/white" 
-	            android:textColor="@color/black"
-	            android:textSize="@dimen/title"
-	            android:gravity="center_horizontal"
-	            android:text="故障"/>
-	    </TableRow>
-	    <TableRow 
-	        android:background="@color/black">
-	        <TextView 
-	            android:layout_marginLeft="0.5dp"
-	            android:layout_marginRight="0.5dp"
-	            android:layout_marginBottom="0.5dp"
-	            android:paddingTop="5dp"
-	            android:paddingBottom="5dp"
-	            android:background="@color/white"
-	            android:textColor="@color/black"
-	            android:textSize="@dimen/title"
-	            android:gravity="center_horizontal"
-	            android:text="10.24L"/>
-	        <TextView 
-	            android:layout_marginLeft="0.5dp"
-	            android:layout_marginRight="0.5dp"
-	            android:layout_marginBottom="0.5dp"
-	            android:paddingTop="5dp"
-	            android:paddingBottom="5dp"
-	            android:background="@color/white"
-	            android:textColor="@color/black"
-	            android:textSize="@dimen/title"
-	            android:gravity="center_horizontal"
-	            android:text="173KM"/>
-	        <TextView 
-	            android:layout_marginLeft="0.5dp"
-	            android:layout_marginRight="0.5dp"
-	            android:layout_marginBottom="0.5dp"
-	            android:paddingTop="5dp"
-	            android:paddingBottom="5dp"
-	            android:background="@color/white"
-	            android:textColor="@color/black"
-	            android:textSize="@dimen/title"
-	            android:gravity="center_horizontal"
-	            android:text="16.24L"/>
-	        <TextView
-	            android:id="@+id/tv_activity_vehicle_status_fault" 
-	            android:layout_marginLeft="0.5dp"
-	            android:layout_marginRight="0.5dp"
-	            android:layout_marginBottom="0.5dp"
-	            android:paddingTop="5dp"
-	            android:paddingBottom="5dp"
-	            android:background="@color/white"
-	            android:textColor="@color/red"
-	            android:textSize="@dimen/title"
-	            android:gravity="center_horizontal"
-	            android:text="3"/>
-	    </TableRow>
-	</TableLayout>	
+	    android:layout_height="wrap_content"
+	    android:layout_marginTop="10dp"
+	    android:orientation="horizontal">
+	    <TextView 
+	        android:id="@+id/tv_month_hk_fuel"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:layout_weight="1"
+	        android:padding="5dp"
+	        android:textSize="@dimen/title"
+	        android:gravity="center_horizontal"/>
+	    <TextView 
+	        android:id="@+id/tv_month_distance"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:textSize="@dimen/title"
+            android:gravity="center_horizontal"/>
+	    <TextView 
+	        android:id="@+id/tv_month_fuel"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="5dp"
+            android:textSize="@dimen/title"
+            android:gravity="center_horizontal"/>
+	</LinearLayout>	
     <RelativeLayout 
         android:background="@color/bkg1"
         android:layout_width="fill_parent"
@@ -169,9 +108,8 @@
 	<RelativeLayout 
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent">
-	    <com.wise.extend.EnergyCurveView
-	        android:id="@+id/erenergycurve"
-	        android:visibility="gone"
+	    <com.wise.customView.EnergyGroup
+	        android:id="@+id/hscrollLayout"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"/>	    
 	    <RelativeLayout 
