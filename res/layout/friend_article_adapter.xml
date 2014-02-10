@@ -6,127 +6,126 @@
     android:background="#FFFFFF"
     android:orientation="vertical"
     android:padding="4dip">
-    
     <TableLayout 
         android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
+        android:layout_height="wrap_content"
         >
-        
-        <!-- 发表时间/赞 -->
         <TableRow 
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+           	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
             >
             <TextView 
-                android:id="@+id/publish_time"
+                android:id="@+id/friend_article_publish_time"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:text="今天"
                 android:layout_weight="1"
-                android:textColor="#000000"
                 />
             <TextView 
                 android:id="@+id/friend_article_content"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:layout_weight="2"
-                android:textColor="#000000"
                 />
             <LinearLayout 
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_weight="1"
-                android:gravity="right"
                 >
                 <ImageView 
-                    android:layout_width="30dip"
-                    android:layout_height="30dip"
-                    android:background="@drawable/image"
-                    android:layout_margin="5dip"
+                    android:id="@+id/friend_article_praises"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/image"
                     />
                 <ImageView 
                     android:id="@+id/friend_article_comment"
-                    android:layout_width="30dip"
-                    android:layout_height="30dip"
-                    android:background="@drawable/image"
-                    android:layout_marginTop="5dip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="6dip"
+                    android:layout_weight="1"
+                    android:src="@drawable/image"
                     />
             </LinearLayout>
         </TableRow>
-        
-        
         <TableRow 
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+           	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
             >
             <TextView 
                 android:layout_width="0dip"
-            	android:layout_height="wrap_content"
-            	android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
                 />
-            <LinearLayout 
-                android:layout_width="0dip"
-            	android:layout_height="wrap_content"
-            	android:orientation="horizontal"
-            	android:layout_weight="2"
-                >
-                <ImageView 
-                    android:layout_width="40dip"
-                    android:layout_height="40dip"
-                    android:background="@drawable/image"
-                    android:layout_margin="5dip"
-                    />
-                <ImageView 
-                    android:layout_width="40dip"
-                    android:layout_height="40dip"
-                    android:background="@drawable/image"
-                    android:layout_margin="5dip"
-                    />
-                <ImageView 
-                    android:layout_width="40dip"
-                    android:layout_height="40dip"
-                    android:background="@drawable/image"
-                    android:layout_margin="5dip"
-                    />
-            </LinearLayout>
-            <LinearLayout 
-         android:id="@+id/article_comment_layout"
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content"
-         android:orientation="vertical"
-         >
-                
-     </LinearLayout>
-        </TableRow>
-        <!-- 点赞者 -->
-   <LinearLayout 
-         android:layout_width="fill_parent"
-         android:layout_height="wrap_content"
-         android:orientation="horizontal"
-         >
-		<ImageView 
-		    android:id="@+id/friend_article_praises_star"
-		    android:layout_width="15dip"
-		    android:layout_height="15dip"
-		    android:background="@drawable/image"
-		    android:visibility="gone"
-		    />
-		<TextView 
-		    android:id="@+id/friend_article_praises_user"
-		    android:layout_width="wrap_content"
-		    android:layout_height="wrap_content"
-		    android:text="iiii"
-		    />
-     </LinearLayout>
-        <LinearLayout 
-            	android:id="@+id/friend_article_comment"
+            
+           <!-- 用户图片 -->
+
+            <TableLayout
+                android:id="@+id/friend_home_image"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:orientation="horizontal"
+                android:layout_weight="2"
+                 >
+            </TableLayout>
+
+            <TextView 
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
+                />
+        </TableRow>
+        
+        <TableRow 
+           	android:layout_width="fill_parent"
+        	android:layout_height="wrap_content"
+            >
+            <TextView 
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                />
+            <RelativeLayout 
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="3"
                 >
-            </LinearLayout>
+		    <LinearLayout 
+		         android:id="@+id/friend_article_praises_layout"
+		         android:layout_width="wrap_content"
+		         android:layout_height="wrap_content"
+		         android:orientation="horizontal"
+		         >
+				<ImageView 
+				    android:id="@+id/friend_article_praises_star"
+				    android:layout_width="15dip"
+				    android:layout_height="15dip"
+				    android:background="@drawable/image"
+				    android:visibility="visible"
+				    />
+				<TextView 
+				    android:id="@+id/friend_article_praises_user"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    />
+		     </LinearLayout>
+		     <LinearLayout 
+		         android:id="@+id/friend_article_comment_layout"
+		         android:layout_below="@id/friend_article_praises_layout"
+		         android:layout_width="fill_parent"
+		         android:layout_height="wrap_content"
+		         android:orientation="vertical"
+		         >
+				<TextView 
+				    android:id="@+id/friend_article_praises_user"
+				    android:layout_width="wrap_content"
+				    android:layout_height="wrap_content"
+				    />
+		     </LinearLayout>
+		     </RelativeLayout>
+        </TableRow>
         
     </TableLayout>
 </LinearLayout>

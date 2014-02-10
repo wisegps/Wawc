@@ -63,7 +63,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	private TextView commentContent = null;
 	
 	private MyHandler myHandler = null;
-	private EditText searchView = null;
 	
 	private ImageView qqUserHead = null;
 	private TextView qqUserName = null;
@@ -79,7 +78,8 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	private static final int commentArticle = 18;
 	private static final int articleFavorite = 20;
 	public static final int newArticleResult = 67;
-	private static final int loadMoreCode = 68;
+	private static final int loadMoreCode = 87;
+	private static final int refreshCode = 89;
 	private static int loadMoreAction = 21;
 	private int totalNum = 0;
 	private int screenWidth = 0;
@@ -97,6 +97,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	private String commentMsg = null;
 	
 	public static int minBlogId = 0;
+	public static int maxBlogId = 0;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -116,7 +117,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		sendButton = (Button) findViewById(R.id.btn_send);
 		sendButton.setOnClickListener(new ClickListener());
 		commentContent = (TextView) findViewById(R.id.et_sendmessage);
-		searchView = (EditText) findViewById(R.id.search);
 		qqUserHead = (ImageView) findViewById(R.id.user_head);
 		qqUserHead.setOnClickListener(new ClickListener());
 		qqUserName = (TextView) findViewById(R.id.tv_qq_user_name);
@@ -146,7 +146,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		articleList.setOnScrollListener(new OnScrollListener() {
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 				saySomething.setVisibility(View.GONE);
-				searchView.setVisibility(View.GONE);
 				myAdapter.isClick = false;
 			}
 			public void onScroll(AbsListView view, int firstVisibleItem,int visibleItemCount, int totalItemCount) {
@@ -214,29 +213,33 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	@Override  //下拉刷新
 	public void onRefresh() {
-		searchView.setVisibility(View.VISIBLE);
-		myHandler.postDelayed(new Runnable() {
-			public void run() {
-				onLoad();
-			}
-		}, 2000);
+		
+		DBHelper dBHelper = new DBHelper(VehicleFriendActivity.this);
+		SQLiteDatabase  sQLiteDatabase = dBHelper.getReadableDatabase();
+		Cursor cursor = sQLiteDatabase.rawQuery("select * from " + Constant.TB_VehicleFriend, new String[]{});
+		if(cursor.moveToFirst()){
+			maxBlogId = cursor.getInt(cursor.getColumnIndex("Blog_id"));
+		}
+		
+		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code + "&max_id=" + maxBlogId, refreshCode)).start();
+//		myHandler.postDelayed(new Runnable() {
+//			public void run() {
+//				onLoad();
+//			}
+//		}, 2000);
 	}
 	@Override
 	public void onLoadMore() {
 		if(!isLoadMore){
 			getArticleDatas(loadMoreAction);
 		}else{
-			//  TODO  加载更多
 			DBHelper dBHelper = new DBHelper(VehicleFriendActivity.this);
 			SQLiteDatabase  sQLiteDatabase = dBHelper.getReadableDatabase();
 			Cursor cursor = sQLiteDatabase.rawQuery("select * from " + Constant.TB_VehicleFriend, new String[]{});
 			if(cursor.moveToLast()){
 				minBlogId = cursor.getInt(cursor.getColumnIndex("Blog_id"));
 			}
-//			List<NameValuePair> params = new ArrayList<NameValuePair>();
-//			params.add(new BasicNameValuePair("main_id", String.valueOf(minBlogId)));
-			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog=" + minBlogId + "?auth_code=" + Variable.auth_code, loadMoreCode)).start();
-			Log.e("请求服务器加载更多","请求服务器加载更多");
+			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code + "&min_id=" + minBlogId, loadMoreCode)).start();
 		}
 	}
 	
@@ -248,9 +251,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		articleList.stopRefresh();
 		articleList.stopLoadMore();
 		articleList.setRefreshTime(date);
-	}
-	public void PullUp() {
-		searchView.setVisibility(View.GONE);
 	}
 	
 	class MyHandler extends Handler{
@@ -312,7 +312,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 						//隐藏键盘
 						getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 						saySomething.setVisibility(View.GONE);
-						searchView.setVisibility(View.GONE);
 						myAdapter.isClick = false;
 						
 						//更新数据库
@@ -333,7 +332,20 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				break;
 				//加载更多
 			case loadMoreCode:
+				String result = msg.obj.toString();
 				Log.e("加载更多结果：",msg.obj.toString());
+				if(!"".equals(result)){
+					jsonToList(msg.obj.toString());
+					isLoadMore = false;
+					getArticleDatas(0);
+				}
+				onLoad();	
+				break;
+			case refreshCode:
+				Log.e("刷新数据结果：",msg.obj.toString());
+				if(!"[]".equals(msg.obj.toString())){
+					
+				}
 				onLoad();
 				break;
 			}
@@ -358,8 +370,12 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				if(i == (jsonArray.length()-1)){
 					minBlogId = Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id"));
 				}
-				Log.e("content:",jsonArray.length()+"");
+				Log.e("解析数据:minBlogId",jsonArray.getJSONObject(i).getString("blog_id"));
 		}
+		DBHelper dBHelper = new DBHelper(getApplicationContext());
+		SQLiteDatabase db = dBHelper.getReadableDatabase();
+		Cursor cursor = db.rawQuery("select * from " + Constant.TB_VehicleFriend, new String[]{});
+		Log.e("服务器获取的数据总量：",cursor.getCount() + "");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -368,7 +384,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	//获取数据
 	public void getArticleDatas(int actionCode){
 		totalNum = dBExcute.getTotalCount(Constant.TB_VehicleFriend, VehicleFriendActivity.this);
-		Log.e("数据总量:",totalNum+"");
 		if(totalNum > 0){
 			//查询数据库
 			Constant.totalPage = totalNum%Constant.pageSize > 0 ? totalNum/Constant.pageSize + 1 : totalNum/Constant.pageSize;
@@ -385,9 +400,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		}else{
 			myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 			myDialog.setCancelable(true);
-			//  TODO  获取文章列表
 			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code, getArticleList)).start();
-			Log.e("获取文章url:",Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code);
 		}
 		Variable.articleList = articleDataList;
 		myAdapter.refreshDates(articleDataList);
@@ -417,16 +430,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	//模拟加载更多
 	protected void onDestroy() {
 		super.onDestroy();
-//		DBHelper dbHelper = new DBHelper(VehicleFriendActivity.this);
-//		SQLiteDatabase db = dbHelper.getWritableDatabase();		
-//		Cursor cursor = db.rawQuery("select * from " + Constant.TB_VehicleFriend, new String[]{});
-//		String blogIds = "";
-//		if(cursor.moveToLast()){
-//			blogIds = cursor.getInt(cursor.getColumnIndex("Blog_id"))+"";
-//			Log.e("Blog_id:",blogIds);
-//		}
-//		Log.e("onDestroy---","onDestroy");
-//		dBExcute.DeleteDB(VehicleFriendActivity.this, Constant.TB_VehicleFriend, "Blog_id=?", new String[]{blogIds});
 	}
 	public void onItemClick(int pos, int type) {
 		
