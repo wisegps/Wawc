@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -8,9 +8,12 @@
     <!-- 头部 -->
 
     <LinearLayout
+        android:id="@+id/friend_home_top"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+         >
 
         <Button
             android:id="@+id/friend_back"
@@ -37,6 +40,8 @@
     <!-- 标题 -->
 
     <RelativeLayout
+        android:layout_below="@id/friend_home_top"
+        android:id="@+id/friend_home_title"
         android:layout_width="fill_parent"
         android:layout_height="120dip"
         android:background="@drawable/car"
@@ -61,32 +66,26 @@
         </LinearLayout>
     </RelativeLayout>
     <!-- 显示详细评论信息 -->
-	
-	<RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
 		     <com.wise.list.XListView
 		        android:id="@+id/friend_home_article_list"
+		        android:layout_below="@id/friend_home_title"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:cacheColorHint="#00000000"
 		         >
 		    </com.wise.list.XListView>
-		    <LinearLayout 
-		        android:layout_width="fill_parent"
-        		android:layout_height="wrap_content"
-        		android:layout_alignParentBottom="true"
-        		android:orientation="vertical"
-		        >
-            	<EditText
-            	    android:id="@+id/friend_home_say_something"
-	                android:layout_width="fill_parent"
-	                android:layout_height="50dip"
-	                android:hint="说点什么..." 
-	                android:drawableRight="@drawable/ic_launcher"
-	                android:visibility="gone"
-	                android:minHeight="10dip"
-                />
-		    </LinearLayout>
-    </RelativeLayout>
-</LinearLayout>
+     <LinearLayout
+	      android:id="@+id/friend_home_say_something"
+	      android:layout_width="fill_parent"
+	      android:layout_height="wrap_content"
+	      android:orientation="vertical"
+	      android:layout_alignParentBottom="true"
+	      android:visibility="gone"
+	      >
+	                <!-- 聊天输入框 -->
+	      <include
+	           android:layout_width="fill_parent"
+	           android:layout_height="wrap_content"
+	           layout="@layout/custom_facerelativelayout" />
+	  </LinearLayout>
+</RelativeLayout>

@@ -184,7 +184,7 @@ public class Constant {
 	public static int currentPage = 0;  //当前页
 	
 	public static int start1 = 0;  // 开始页
-	public static int pageSize1 = 2;   //每页数量
+	public static int pageSize1 = 10;   //每页数量
 	public static int totalPage1 = 0;   //数据总量
 	public static int currentPage1 = 0;  //当前页
 }

@@ -310,11 +310,6 @@ public class XListView extends ListView implements OnScrollListener {
 			}
 			break;
 		}
-//		if(MotionEvent.ACTION_UP == ev.getAction()){
-//			if(number > ev.getRawY()){
-//				mListViewListener.PullUp();
-//			}
-//		}
 		if(Constant.isHideFooter){
 			mFooterView.hide();
 		}
