@@ -229,9 +229,9 @@ public class MyAdapter extends BaseAdapter{
         }
 	}
 	
-	public String getTime(String time){
+	public static String getTime(String time){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-////	     String currentTime = "2014-06-21 18:28:14";
+////	String currentTime = "2014-06-21 18:28:14";
 		String currentTime = sdf.format(new Date());
 		String time1 =  transform(time);
 	     if(Integer.parseInt(time1.substring(0,4)) < Integer.parseInt(currentTime.substring(0,4))){
@@ -300,7 +300,9 @@ public class MyAdapter extends BaseAdapter{
 					
 					break;
 				case R.id.head_article:   //点击用户头像 进入好友主页
-					context.startActivity(new Intent(context,FriendHomeActivity.class));
+					Intent intent = new Intent(context,FriendHomeActivity.class);
+					intent.putExtra("cust_id", String.valueOf(articleList.get(chickIndex).getCust_id()));
+					context.startActivity(intent);
 					break;
 				case R.id.article_user_name:   //点击进入文章的详细介绍
 					context.startActivity(new Intent(context,ArticleDetailActivity.class));

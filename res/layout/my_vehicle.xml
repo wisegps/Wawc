@@ -1,17 +1,19 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#FFFFFF"
-    android:orientation="vertical"
     tools:context=".VehicleStatusActivity" >
 
     <!-- 头部 -->
 
     <LinearLayout
+        android:id="@+id/my_vehicle_top"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+         >
 
         <Button
             android:id="@+id/my_vechile_menu"
@@ -28,13 +30,17 @@
             android:textColor="#000000"
             android:textSize="10pt" />
 
-        <Button
-            android:id="@+id/my_vechile_home"
+        <TextView
+            android:id="@+id/my_vechile_edit"
             android:layout_width="wrap_content"
             android:layout_height="40dip"
-            android:background="@drawable/ic_launcher" />
+            android:gravity="center"
+            android:textSize="9pt" 
+            android:text="编辑"/>
     </LinearLayout>
     	<HorizontalScrollView
+    	    android:id="@+id/horizontalscrollview"
+    	    android:layout_below="@id/my_vehicle_top"
 	           android:layout_width="fill_parent"
 	           android:layout_height="wrap_content"
 	           android:scrollbars="horizontal"
@@ -52,7 +58,16 @@
 	                   android:stretchMode="columnWidth" />
 	           </LinearLayout>
 	       </HorizontalScrollView>	
-    <ScrollView 
+	       
+    	<View 
+    	    android:id="@+id/black_line"
+    	    android:layout_below="@+id/horizontalscrollview" 
+    	    android:layout_width="fill_parent"
+    	    android:layout_height="1dip"
+    	    android:background="#000000"
+    	    />
+    <ScrollView
+        android:layout_below="@+id/black_line" 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         >
@@ -61,40 +76,11 @@
 	    android:layout_width="fill_parent"
 	   	android:background="#000000"
 	    >
-	               <!-- 
-	    <TableRow 
-	        android:layout_height="fill_parent"
-	    	android:layout_width="fill_parent"
-	    	android:background="#F0F0F0"
-	    	android:layout_marginTop="1dip"
-	    	android:layout_marginLeft="1dip"
-	    	android:layout_marginRight="1dip"
-	        >
-	       <HorizontalScrollView
-	           android:layout_width="fill_parent"
-	           android:layout_height="wrap_content" >
-	           <LinearLayout
-	               android:layout_width="wrap_content"
-	               android:layout_height="wrap_content"
-	               android:orientation="horizontal" >
-	               <GridView
-	                   android:id="@+id/gv_my_vehicle"
-	                   android:layout_width="fill_parent"
-	                   android:layout_height="wrap_content"
-	                   android:horizontalSpacing="10dp"
-	                   android:numColumns="auto_fit"
-	                   android:stretchMode="columnWidth" />
-	           </LinearLayout>
-	       </HorizontalScrollView>
-
-	    </TableRow>
-	     -->
 	    <!-- 基本资料 -->
 	    <TableRow 
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
 	    	android:background="#ffffff"
-	    	android:layout_marginTop="1dip"
 	    	android:layout_marginLeft="1dip"
 	    	android:layout_marginRight="1dip"
 	        >
@@ -316,9 +302,9 @@
 	    		android:text="123456"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
+	    		android:inputType="number"
 	    		android:textColor="#000000"
 	            />
-	        
 	    </TableRow>
 	    <TableRow 
 	        android:layout_height="fill_parent"
@@ -344,6 +330,7 @@
 	    		android:text="123456"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
+	    		android:inputType="number"
 	    		android:textColor="#000000"
 	            />
 	    </TableRow>
@@ -422,19 +409,12 @@
 	            android:id="@+id/my_vehicle_tv_insurance"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="wrap_content"
-	    		android:text="2013年-2015年"
+	    		android:text="2015年"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
 	    		android:gravity="center"
 	    		android:textColor="#000000"
 	            />
-	        <ImageView
-	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
-	    		android:layout_weight="1"
-	    		android:background="@drawable/image"
-	            />
-	        
 	    </TableRow>
 	    <TableRow 
 	        android:layout_height="fill_parent"
@@ -489,7 +469,7 @@
 	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
-	        <TextView 
+	        <EditText 
 	            android:id="@+id/my_vehicle_mileage"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="wrap_content"
@@ -497,6 +477,7 @@
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
 	    		android:gravity="center"
+	    		android:inputType="number"
 	    		android:textColor="#000000"
 	            />
 	        <ImageView 
@@ -532,6 +513,7 @@
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
 	    		android:gravity="center"
+	    		android:inputType="number"
 	    		android:textColor="#000000"
 	            />
 	    </TableRow>
@@ -552,7 +534,7 @@
 	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
-	        <EditText 
+	        <TextView 
 	            android:id="@+id/my_vehicle_ed_buy_time"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
@@ -563,15 +545,18 @@
 	    		android:textColor="#000000"
 	            />
 	    </TableRow>
-	    <TableRow 
-	        android:layout_height="fill_parent"
-	    	android:layout_width="fill_parent"
-	    	android:background="#F0F0F0"
-	    	android:layout_marginTop="1dip"
-	    	android:layout_marginLeft="1dip"
-	    	android:layout_marginRight="1dip"
-	        >
-	        <Button 
+	</TableLayout>
+	</ScrollView>
+	
+    <LinearLayout 
+	    android:id="@+id/my_vehicle_buttom_view"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="horizontal"
+	    android:layout_alignParentBottom="true"
+	    android:visibility="gone"
+	    >
+	    <Button 
 	            android:id="@+id/my_vehilce_save"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="wrap_content"
@@ -585,7 +570,5 @@
 	    		android:layout_weight="1"
 	    		android:text="@string/delete"
 	            />
-	    </TableRow>
-	</TableLayout>
-	</ScrollView>
-</LinearLayout>
+	</LinearLayout>
+</RelativeLayout>

@@ -123,7 +123,7 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 							myDialog.setCancelable(true);
 							UploadUtil.getInstance().uploadFile(bitmapList.get(0).get(imageSize).toString(), "image", Constant.BaseUrl + "upload_image?auth_code=" + Variable.auth_code, new HashMap<String, String>());
 						}else{
-							myDialog = ProgressDialog.show(NewArticleActivity.this, "图片上传", "正在上传");
+							myDialog = ProgressDialog.show(NewArticleActivity.this, "数据提交", "提交中...");
 							myDialog.setCancelable(true);
 							Message msg = new Message();
 							msg.what = removeImageCode;
@@ -174,19 +174,33 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 				params.add(new BasicNameValuePair("pics",temp));
 				params.add(new BasicNameValuePair("lon",String.valueOf(Variable.Lon)));
 				params.add(new BasicNameValuePair("lat",String.valueOf(Variable.Lat)));
+				
+				Log.e("cust_id",Variable.cust_id);
+				Log.e("city",preferences.getString(Constant.LocationCity, ""));
+				Log.e("name",Variable.cust_name);
+				Log.e("content",et_publish_article.getText().toString().trim());
+				Log.e("pics",temp);
+				Log.e("lon",String.valueOf(Variable.Lon));
+				Log.e("lat",String.valueOf(Variable.Lat));
+				
+				
 				new Thread(new NetThread.postDataThread(myHandler, Constant.BaseUrl + "blog?auth_code=" + Variable.auth_code, params, publishArticle)).start();
+
 				break;
 				
 			case publishArticle:
 				Log.e("文章发表结果:",msg.obj.toString());
 				try {
 					JSONObject jsonObject = new JSONObject(msg.obj.toString());
+					myDialog.dismiss();
 					if(Integer.parseInt(jsonObject.getString("status_code")) == 0){
-						myDialog.dismiss();
 						Toast.makeText(getApplicationContext(), "发表成功", 0).show();
 						NewArticleActivity.this.setResult(VehicleFriendActivity.newArticleResult);
 						VehicleFriendActivity.newArticleBlogId = jsonObject.getInt("blog_id");
 						NewArticleActivity.this.finish();
+					}else{
+						VehicleFriendActivity.newArticleBlogId = 0;
+						Toast.makeText(getApplicationContext(), "发表失败，请重试...", 0).show();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();

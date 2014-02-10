@@ -64,7 +64,7 @@ import android.widget.Toast;
 public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapter.IOnItemSelectListener {
 	
 	private Button cancleAdd = null;   //取消新车辆的添加
-	private Button saveAdd = null;     //保存添加
+	private TextView saveAdd = null;     //保存添加
 	private ImageView choiceBrank = null;    //选择品牌
 	public static final int newVehicleBrank = 4;
 	public static final int newVehicleInsurance = 5;
@@ -121,7 +121,7 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_vehicle);
 		cancleAdd = (Button) findViewById(R.id.add_vechile_cancle);
-		saveAdd = (Button) findViewById(R.id.add_vechile_save);
+		saveAdd = (TextView) findViewById(R.id.add_vechile_save);
 		choiceBrank = (ImageView) findViewById(R.id.add_vehicle_choice_brank);
 		vehicleBrank = (TextView) findViewById(R.id.new_vehicle_brank );
 		choiceInsurance = (ImageView) findViewById(R.id.add_vehicle_choice_insurance);
@@ -143,10 +143,11 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 		getDateView(lastMaintainTime);
 		lastMileage = (EditText) findViewById(R.id.et_last_insurance_mileage);
 		buyTime = (EditText) findViewById(R.id.et_new_vehicle_buy_car_time);
-		nextMaintainMileage = (EditText) findViewById(R.id.et_next_maintain_mileage);
-		annualSurveyTime = (EditText) findViewById(R.id.annual_survey_time);
-		getDateView(annualSurveyTime);
-		getDateView(annualSurveyTime);
+		getDateView(buyTime);
+//		nextMaintainMileage = (EditText) findViewById(R.id.et_next_maintain_mileage);
+//		annualSurveyTime = (EditText) findViewById(R.id.annual_survey_time);
+//		getDateView(annualSurveyTime);
+//		getDateView(annualSurveyTime);
 		
 		
 		myHandler = new MyHandler();
@@ -245,36 +246,23 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
         params.add(new BasicNameValuePair("frame_no", CJNumber.getText().toString().trim()));
         params.add(new BasicNameValuePair("insurance_company", showInsurance.getText().toString()));
         params.add(new BasicNameValuePair("insurance_date", insuranceTime.getText().toString()));
-        params.add(new BasicNameValuePair("annual_inspect_date", annualSurveyTime.getText().toString()));
+//        params.add(new BasicNameValuePair("annual_inspect_date", annualSurveyTime.getText().toString()));
+        params.add(new BasicNameValuePair("annual_inspect_date", ""));
         params.add(new BasicNameValuePair("maintain_company", showMaintain.getText().toString()));
         params.add(new BasicNameValuePair("maintain_last_mileage", lastMileage.getText().toString().trim()));
         params.add(new BasicNameValuePair("maintain_last_date", lastMaintainTime.getText().toString()));
-        params.add(new BasicNameValuePair("maintain_next_mileage",nextMaintainMileage.getText().toString().trim()));
+//        params.add(new BasicNameValuePair("maintain_next_mileage",nextMaintainMileage.getText().toString().trim()));
+        params.add(new BasicNameValuePair("maintain_next_mileage",""));
         params.add(new BasicNameValuePair("buy_date", buyTime.getText().toString()));
         
-        
-//        Log.e("车牌号",carNumber.getText().toString());
-//		vehicleBrank  品牌
-//		TvVehicleSeries.getText();  车型
-//		TvVehicleType.getText();   车款
-//        Log.e("发动机型号",engineNumber.getText().toString());
-//        Log.e("车架号",CJNumber.getText().toString());
-//		showInsurance  保险公司
-//		showMaintain   保养店
-//        Log.e("保险到期时间",insuranceTime.getText().toString());
-//        Log.e("年检时间",annualSurveyTime.getText().toString());
-//        Log.e("最后保养里程",lastMileage.getText().toString());
-//        Log.e("最后保养时间",lastMaintainTime.getText().toString());
-//        Log.e("下次保养时间",nextMaintainMileage.getText().toString());
-//        Log.e("购车时间",buyTime.getText().toString());
         Log.e("车牌号",carNumber.getText().toString());
         Log.e("发动机型号",engineNumber.getText().toString());
         Log.e("车架号",CJNumber.getText().toString());
         Log.e("保险到期时间",insuranceTime.getText().toString());
-        Log.e("年检时间",annualSurveyTime.getText().toString());
+//        Log.e("年检时间",annualSurveyTime.getText().toString());
         Log.e("最后保养里程",lastMileage.getText().toString());
         Log.e("最后保养时间",lastMaintainTime.getText().toString());
-        Log.e("下次保养时间",nextMaintainMileage.getText().toString());
+//        Log.e("下次保养时间",nextMaintainMileage.getText().toString());
         Log.e("购车时间",buyTime.getText().toString());
         myDialog = ProgressDialog.show(NewVehicleActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
         new Thread(new NetThread.postDataThread(myHandler, url, params, addCar)).start();
@@ -347,10 +335,12 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 					value.put("frame_no", CJNumber.getText().toString().trim());
 					value.put("insurance_company", showInsurance.getText().toString());
 					value.put("insurance_date", insuranceTime.getText().toString());
-					value.put("annual_inspect_date", annualSurveyTime.getText().toString());
+//					value.put("annual_inspect_date", annualSurveyTime.getText().toString());
+					value.put("annual_inspect_date", "");
 					value.put("maintain_company", showMaintain.getText().toString());
 					value.put("maintain_last_mileage", lastMileage.getText().toString().trim());
-					value.put("maintain_next_mileage", nextMaintainMileage.getText().toString().trim());
+//					value.put("maintain_next_mileage", nextMaintainMileage.getText().toString().trim());
+					value.put("maintain_next_mileage", "");
 					value.put("buy_date", buyTime.getText().toString());
 					dBExcute.InsertDB(NewVehicleActivity.this, value, Constant.TB_Vehicle);
 					Log.e("添加到数据库","添加到数据库");
@@ -366,10 +356,12 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	                carData.setFrame_no(CJNumber.getText().toString().trim());
 	                carData.setInsurance_company(showInsurance.getText().toString());
 	                carData.setInsurance_date(insuranceTime.getText().toString());
-	                carData.setAnnual_inspect_date(annualSurveyTime.getText().toString());
+//	                carData.setAnnual_inspect_date(annualSurveyTime.getText().toString());
+	                carData.setAnnual_inspect_date("");
 	                carData.setMaintain_company(showMaintain.getText().toString());
 	                carData.setMaintain_last_mileage(lastMileage.getText().toString().trim());
-	                carData.setMaintain_next_mileage(nextMaintainMileage.getText().toString().trim());
+	                carData.setMaintain_next_mileage("");
+//	                carData.setMaintain_next_mileage(nextMaintainMileage.getText().toString().trim());
 	                carData.setBuy_date( buyTime.getText().toString());
 	                Variable.carDatas.add(carData);
 					NewVehicleActivity.this.finish();
@@ -506,18 +498,18 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 			lastMaintainTime.setError("最后保养时间不能为空");
 			return;
 		}
-		if("".equals(nextMaintainMileage.getText().toString().trim())){
-			nextMaintainMileage.setError("下次保养不能为空");
-			return;
-		}
-		if("".equals(annualSurveyTime.getText().toString().trim())){
-			annualSurveyTime.setError("年检时间不能为空");
-			return;
-		}
-		if("".equals(annualSurveyTime.getText().toString().trim())){
-			annualSurveyTime.setError("年检时间不能为空");
-			return;
-		}
+//		if("".equals(nextMaintainMileage.getText().toString().trim())){
+//			nextMaintainMileage.setError("下次保养不能为空");
+//			return;
+//		}
+//		if("".equals(annualSurveyTime.getText().toString().trim())){
+//			annualSurveyTime.setError("年检时间不能为空");
+//			return;
+//		}
+//		if("".equals(annualSurveyTime.getText().toString().trim())){
+//			annualSurveyTime.setError("年检时间不能为空");
+//			return;
+//		}
 		if("".equals(insuranceTime.getText().toString().trim())){
 			insuranceTime.setError("保险到期时间不能为空");
 			return;

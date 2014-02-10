@@ -27,11 +27,13 @@
             android:textSize="10pt"
             android:textColor="#000000" />
 
-        <Button
+        <TextView
             android:id="@+id/add_vechile_save"
             android:layout_width="wrap_content"
             android:layout_height="40dip"
-            android:background="@drawable/ic_launcher" />
+            android:textSize="10pt"
+            android:textColor="#000000" 
+            android:text="保存"/>
     </LinearLayout>
     <ScrollView 
         android:layout_width="fill_parent"
@@ -388,7 +390,7 @@
 	        </EditText>
 
 	    </TableRow>
-	    
+	    <!-- 年检时间（ui暂时去除）
 	    <TableRow 
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
@@ -416,6 +418,7 @@
 	    		android:textColor="#000000"
 	            />
 	    </TableRow>
+	     -->
 	    
 	    <TableRow 
 	        android:layout_height="fill_parent"
@@ -440,6 +443,7 @@
 	    		android:layout_width="0dip"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
+	    		android:inputType="number"
 	    		android:textColor="#000000"
 	            />
 	    </TableRow>
@@ -471,6 +475,7 @@
 	    		android:textColor="#000000"
 	            />
 	    </TableRow>
+	    <!-- 下次保养时间（ui暂时去除）
 	    <TableRow 
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
@@ -497,6 +502,7 @@
 	    		android:textColor="#000000"
 	            />
 	    </TableRow>
+	     -->
 	    <TableRow 
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
@@ -520,7 +526,7 @@
 	    		android:layout_width="0dip"
 	    		android:layout_weight="1"
 	    		android:textSize="7pt"
-	    		android:inputType="none"
+	    		android:inputType="number"
 	    		android:textColor="#000000"
 	            />
 	    </TableRow>

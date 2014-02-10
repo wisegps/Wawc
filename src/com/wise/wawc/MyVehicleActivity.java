@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
@@ -26,6 +27,8 @@ import com.wise.sql.DBHelper;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
+import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.ProgressDialog;
 import android.app.AlertDialog.Builder;
 import android.content.ContentValues;
@@ -54,9 +57,12 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
@@ -71,7 +77,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	private static final int getCarType = 7;
 	private static final int saveVehicleData = 9;
 	private Button menu = null;
-	private Button home = null;
+	private TextView editVehicle = null;
 	private ImageView brand = null;
 	private ImageView device = null;
 	private ImageView insuranceCompany = null;
@@ -98,13 +104,15 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	private EditText engineNum = null;
 	private EditText frameNum = null;
 	private EditText lastMaintain = null;
-	private EditText buyTime = null;
+	private TextView buyTime = null;
 	private TextView ivInsuranceDate = null;
+	private LinearLayout buttomView = null;
 	
 	private GridView vehicleGridView = null;
 	private LogoAdapter logoAdapter = null;
 	AlertDialog dlg = null;
-	boolean isJump = false;//false从菜单页跳转过来返回打开菜单，true从首页跳转返回关闭页面
+	boolean isJump = false; //false从菜单页跳转过来返回打开菜单，true从首页跳转返回关闭页面
+	private boolean buttomViewIsShow = false;
 	
 	private int width = 0 ; 
 	
@@ -128,6 +136,9 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	private List<String> carSeriesNameList = new ArrayList<String>();
 	private List<String> carSeriesIdList = new ArrayList<String>();
 	
+	//保险时间段
+	String time1 = "";
+	String time2 = "";
 	private String carBrankId = "";
 	private String carSeriesId = "";
 	private static String carSeriesTitle = "carSeries";
@@ -147,9 +158,9 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.my_vehicle);
 		menu = (Button) findViewById(R.id.my_vechile_menu);
-		home = (Button) findViewById(R.id.my_vechile_home);
+		editVehicle = (TextView) findViewById(R.id.my_vechile_edit);
 		brand = (ImageView) findViewById(R.id.my_vehicle_brank);
-		device = (ImageView) findViewById(R.id.	my_vehicle_device);
+		device = (ImageView) findViewById(R.id.my_vehicle_device);
 		insuranceCompany = (ImageView)findViewById(R.id.insurance_company);
 		showInsuranceCompany = (TextView) findViewById(R.id.show_insurance_company);
 		insuranceTime = (ImageView) findViewById(R.id.insurance_mileage);
@@ -161,10 +172,13 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		engineNum = (EditText)findViewById(R.id.my_vehicle_ed_engine_num);
 		frameNum = (EditText)findViewById(R.id.my_vehilce_ed_fram_num);
 		lastMaintain = (EditText)findViewById(R.id.my_vehicle_ed_last_maintain);
-		buyTime = (EditText)findViewById(R.id.my_vehicle_ed_buy_time);
+		buyTime = (TextView)findViewById(R.id.my_vehicle_ed_buy_time);
+		getDateView(buyTime);
 		ivInsuranceDate = (TextView) findViewById(R.id.my_vehicle_tv_insurance);
+		getDateView(ivInsuranceDate);
 		btSaveVehicleData = (Button) findViewById(R.id.my_vehilce_save);
 		btDeleteVehicle = (Button) findViewById(R.id.my_vehilce_delete);
+		buttomView = (LinearLayout) findViewById(R.id.my_vehicle_buttom_view);
 		
 		
 		ivCarSeries = (ImageView) findViewById(R.id.iv_car_series);
@@ -238,7 +252,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		choiceMaintian.setOnClickListener(new ClickListener());
 		device.setOnClickListener(new ClickListener());
 		menu.setOnClickListener(new ClickListener());
-		home.setOnClickListener(new ClickListener());
+		editVehicle.setOnClickListener(new ClickListener());
 		brand.setOnClickListener(new ClickListener());
 		insuranceCompany.setOnClickListener(new ClickListener());
 		insuranceTime.setOnClickListener(new ClickListener());
@@ -297,7 +311,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 			case R.id.dialog_mileage_sure:  //确定同步里程
 				String mileageValue = etDialogMileage.getText().toString();
 				if("".equals(mileageValue.trim())){
-					Toast.makeText(MyVehicleActivity.this, "请输入正确的里程", 0).show();
+					showToast("请输入正确的里程");
 				}else{
 					tvMileage.setText(mileageValue.trim() + "Km");
 					dlg.cancel();
@@ -317,7 +331,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				myDialog = ProgressDialog.show(MyVehicleActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 				myDialog.setCancelable(true);
 				if("".equals(carBrankId)){
-					Toast.makeText(getApplicationContext(), "请选择品牌", 0).show();
+					showToast("请选择品牌");
 					myDialog.dismiss();
 					return;
 				}
@@ -329,7 +343,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 					mSpinerPopWindow.setHeight(300);
 					mSpinerPopWindow.showAsDropDown(tvCarType);
 				}else{
-					Toast.makeText(getApplicationContext(), "请选择车型", 0).show();
+					showToast("请选择车型");
 				}
 				break;
 				
@@ -361,6 +375,15 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				myDialog = ProgressDialog.show(MyVehicleActivity.this, "提示", "正在删除...");
 				myDialog.setCancelable(true);
 				new Thread(new NetThread.DeleteThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).getObj_id() + "?auth_code=" + Variable.auth_code, deleteCarData)).start();
+				break;
+			case R.id.my_vechile_edit:
+				if(!buttomViewIsShow){
+					buttomView.setVisibility(View.VISIBLE);
+					buttomViewIsShow = true;
+				}else if(buttomViewIsShow){
+					buttomView.setVisibility(View.GONE);
+					buttomViewIsShow = false;
+				}
 				break;
 			default:
 				return;
@@ -502,7 +525,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 						carDatas.put("buy_date", buyTime.getText().toString().trim());
 						dBExcute.updataVehilce(getApplicationContext(), Constant.TB_Vehicle, carDatas, "obj_id = ?", new String[]{String.valueOf(Variable.carDatas.get(chickIndex).getObj_id())});
 						logoAdapter.notifyDataSetChanged();
-						Toast.makeText(getApplicationContext(), "保存成功", 0).show();
+						showToast("保存成功");
 					}
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
@@ -539,8 +562,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 							Variable.carDatas.remove(newCarImage);
 							startActivity(new Intent(MyVehicleActivity.this,NewVehicleActivity.class));
 						}
-						
-						Toast.makeText(getApplicationContext(), "删除成功", 0).show();
+						showToast("删除成功");
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -720,7 +742,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	        if (keyCode == KeyEvent.KEYCODE_BACK) {
 	            long currentTime = System.currentTimeMillis();
 	            if (touchTime == 0 || (currentTime - touchTime) >= waitTime) {
-	                Toast.makeText(this, "再按一次退出客户端", Toast.LENGTH_SHORT).show();
+	            	showToast("再按一次退出客户端");
 	                touchTime = currentTime;
 	            } else {
 	                finish();
@@ -729,5 +751,77 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	        }
     	}
         return super.onKeyDown(keyCode, event);
+    }
+    
+    public void getDateView(final TextView textView){
+    	switch(textView.getId()){
+    	case R.id.my_vehicle_ed_buy_time:  //购车时间
+    		textView.setOnClickListener(new View.OnClickListener() {  
+    			public void onClick(View v) {
+    				Calendar c = Calendar.getInstance();
+    				new DatePickerDialog(MyVehicleActivity.this,
+    						new DatePickerDialog.OnDateSetListener() {
+    							public void onDateSet(DatePicker view, int year,int monthOfYear, int dayOfMonth) {
+    								textView.setText(year + "/"+ (monthOfYear + 1) + "/" + dayOfMonth);
+    							}
+    						}, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
+    			}
+    	    });
+    		break;
+    	case R.id.my_vehicle_tv_insurance:   //保险时间段
+    		textView.setOnClickListener(new View.OnClickListener() {  
+    			public void onClick(View v) {
+    				
+    				Calendar c = Calendar.getInstance();
+    				DatePickerDialog datePickerDialog = new DatePickerDialog(MyVehicleActivity.this, new DateDialogListener("start"), c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+    				datePickerDialog.setTitle("开始时间");
+    				datePickerDialog.show();
+    			}
+    	    });
+    		break;
+    	default:
+    		return;
+    	}
+	}
+    
+    class DateDialogListener implements OnDateSetListener{
+    	String DataTypes = "";
+    	DateDialogListener(String DataTypes){
+    		this.DataTypes = DataTypes;
+    	}
+		public void onDateSet(DatePicker view, int year, int monthOfYear,int dayOfMonth) {
+			if("start".equals(this.DataTypes)){
+				time1 = year + "/"+ (monthOfYear + 1) + "/" + dayOfMonth;
+				Calendar c = Calendar.getInstance();
+				DatePickerDialog datePickerDialog = new DatePickerDialog(MyVehicleActivity.this, new DateDialogListener("end"), c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+				datePickerDialog.setTitle("结束时间");
+				datePickerDialog.show();
+			}else if("end".equals(this.DataTypes)){
+				time2 = year + "/"+ (monthOfYear + 1) + "/" + dayOfMonth;
+				if(time1.equals(time2)){
+					showToast("非法的时间段");
+				}
+				if(Integer.valueOf(time1.substring(0, 4)) > Integer.valueOf(time2.substring(0, 4))){
+					showToast("非法的时间段");
+					return;
+				}else{
+					if(Integer.valueOf(time1.substring(5, 6)) > Integer.valueOf(time2.substring(5, 6))){
+						showToast("非法的时间段");
+						return;
+					}else{
+						if(Integer.valueOf(time1.substring(7)) > Integer.valueOf(time2.substring(7))){
+							showToast("非法的时间段");
+							return;
+						}else{
+							ivInsuranceDate.setText(time1+"-"+time2);
+						}
+					}
+				}
+			}
+		}
+    }
+    
+   public void showToast(String showContent){
+	   Toast.makeText(getApplicationContext(), showContent, 0).show();
     }
 }

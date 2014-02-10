@@ -32,7 +32,6 @@
 		                android:layout_height="wrap_content"
 		                android:layout_gravity="center"
 		                android:textColor="#FF3300"
-		                android:text="用户名"
 		                />
 			          <TextView 
 			            android:id="@+id/tv_article_content"
@@ -40,7 +39,6 @@
 		                android:layout_height="wrap_content"
 		                android:layout_gravity="center"
 		                android:textColor="#FF3300"
-		                android:text="简略内容"
 		                />  
 		        	</LinearLayout>
 		        	
@@ -59,7 +57,6 @@
 		                android:layout_height="wrap_content"
 		                android:layout_gravity="center"
 		                android:textColor="#FF3300"
-		                android:text="1分钟前"
 		                />
 
 					          <LinearLayout
@@ -96,7 +93,6 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         >
-		
     </TableLayout>
     <LinearLayout 
          android:id="@+id/article_praises_layout"
