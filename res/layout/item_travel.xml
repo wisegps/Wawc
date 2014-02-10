@@ -86,7 +86,7 @@
 	            android:background="@color/white"
 	            android:textColor="@color/black"
 	            android:textSize="@dimen/title"
-	            android:gravity="left"
+	            android:gravity="center_vertical"
 	            android:text="百公里油耗：9.9l"/>
 	        <TextView
 	            android:id="@+id/tv_item_travel_oil" 
@@ -95,7 +95,7 @@
 	            android:background="@color/white"
 	            android:textColor="@color/black"
 	            android:textSize="@dimen/title"
-	            android:gravity="center_horizontal"
+	            android:gravity="center_vertical"
 	            android:text="油耗：1.15L"/>
 	    </TableRow>
 	    <TableRow>
@@ -106,7 +106,7 @@
 	            android:background="@color/white"
 	            android:textColor="@color/black"
 	            android:textSize="@dimen/title"
-	            android:gravity="left"
+	            android:gravity="center_vertical"
 	            android:text="平均速度:25.75KM/H"/>
 	        <TextView 
 	            android:id="@+id/tv_item_travel_cost"
@@ -115,7 +115,7 @@
 	            android:background="@color/white"
 	            android:textColor="@color/black"
 	            android:textSize="@dimen/title"
-	            android:gravity="center_horizontal"
+	            android:gravity="center_vertical"
 	            android:text="花费：11.34元"/>
 	    </TableRow>
 	</TableLayout>

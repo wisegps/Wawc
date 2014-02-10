@@ -1,12 +1,9 @@
 package com.wise.customView;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-
 import com.wise.data.EnergyItem;
 import com.wise.extend.OnViewTouchListener;
 import com.wise.wawc.R;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,7 +21,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewConfiguration;
 /**
- * 油耗曲线
+ * 我的车况油耗曲线
  * @author honesty
  */
 public class EnergyCurveView extends View implements OnTouchListener{
@@ -38,7 +35,7 @@ public class EnergyCurveView extends View implements OnTouchListener{
 	/**
 	 * y轴最高刻度 距离 y轴绘制的 间距
 	 */
-	private static final float WEIGHT = 20f;
+	private static final float WEIGHT = 0;
 	/**
 	 * 距离左边的间距
 	 */
@@ -46,7 +43,10 @@ public class EnergyCurveView extends View implements OnTouchListener{
 	private Bitmap mTrendLine; // 点击显示的竖线
 	private Bitmap mLastPoint; // 曲线图最后一个绘制灰色圆点
 	private Bitmap mMovePoint; // 曲线图移动中绘制的圆点
-	private float mGradientWidth; // 渐变条的宽度
+	/**
+	 * 实际画布宽度
+	 */
+	private float mGradientWidth;
 	private float mGradientHeight = 450; // 渐变条的高度
 	private DisplayMetrics dm; // 手机屏幕的宽高
 	private ArrayList<PointF> points; // 有消耗的电量时间点
@@ -62,6 +62,7 @@ public class EnergyCurveView extends View implements OnTouchListener{
 	private static int TOUCH_SLOP;
 	//是否长按
 	boolean isLongPress = false;
+	boolean isUp = false;
 
 	public EnergyCurveView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -76,16 +77,15 @@ public class EnergyCurveView extends View implements OnTouchListener{
             }
         };
 	}
-	boolean isSend = false;
+	int index = 0;
 	float x = 0;
 	@Override
 	public boolean onTouch(View v, MotionEvent event) {
-	    isSend = true;
-	    Log.d(TAG, "Touch = " + event.getAction());
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			moveXOfFirst = event.getX(0);
 			x = moveXOfFirst;
 			isLongPress = false;
+			isUp = false;
 			postDelayed(mLongPressRunnable, ViewConfiguration.getLongPressTimeout());
 		}
 		if (event.getAction() == MotionEvent.ACTION_MOVE) {
@@ -100,7 +100,7 @@ public class EnergyCurveView extends View implements OnTouchListener{
 			}
 		}
 		if (event.getAction() == MotionEvent.ACTION_UP) {
-		    isLongPress = false;
+		    isUp = true;
 		    getParent().requestDisallowInterceptTouchEvent(false);
 		    removeCallbacks(mLongPressRunnable);
 			moveXOfFirst = event.getX(0);
@@ -115,6 +115,7 @@ public class EnergyCurveView extends View implements OnTouchListener{
 				}else{
 					if(x_abc > x_Distance){
 						moveXOfFirst = points.get(i-1).x;
+						index = i - 1;
 						isLast = false;
 						break;
 					}
@@ -123,7 +124,9 @@ public class EnergyCurveView extends View implements OnTouchListener{
 			}
 			if(isLast){
 				moveXOfFirst = points.get(points.size()-1).x;
+				index = points.size()-1;
 			}
+			//TODO 计算松手后停靠那个点
 			invalidate();
 		}
 		if(event.getAction() == MotionEvent.ACTION_CANCEL){
@@ -141,10 +144,13 @@ public class EnergyCurveView extends View implements OnTouchListener{
 		// 初始化绘制
 		initDraw(canvas, paint);
 		// 点击屏幕时 进行的操作, 单点，多点
-		if(isLongPress){
+		if(isLongPress && (energyItems.size() > 0)){
 	        SinglePointTouch(canvas, paint);
+	        if(!isUp){
+	            // 绘制 移动的 点
+	            onPointMove(canvas, paint, moveX);
+	        }
 		}
-		Log.d(TAG, "onDraw");
 	}
 
 	/**
@@ -216,9 +222,7 @@ public class EnergyCurveView extends View implements OnTouchListener{
 		moveX = moveXOfFirst;
 		// 绘制度数框 背景后的 横线
 		//canvas.drawBitmap(mTrendLine, SPACING, mGradientHeight + SPACING_HEIGHT - mTrendLine.getHeight() + 5, paint);
-		// 绘制 移动的 点
-		onPointMove(canvas, paint, moveXOfFirst);
-
+		
 		// 绘制 变动的 能耗为多少
 		float moveY = getMoveY(moveXOfFirst);
 		float energyHeight = (float) (mGradientHeight + SPACING_HEIGHT) - moveY;
@@ -231,11 +235,9 @@ public class EnergyCurveView extends View implements OnTouchListener{
 		}
 		int indexOf = energyText.indexOf(".");
 		String substring = energyText.substring(0, indexOf + 2);
+		
 		if(onViewTouchListener != null){
-		    Log.d(TAG, "SinglePointTouch");
-		    if(isSend){
-		        onViewTouchListener.OnViewTouch(substring);
-		    }
+		    onViewTouchListener.OnViewTouch(substring,index);
 		}
 	}
 
@@ -354,6 +356,7 @@ public class EnergyCurveView extends View implements OnTouchListener{
 		for (int i = 0; i < energys.size(); i++) {
 			float f = energys.get(i).value;
 			float y = ((mGradientHeight + SPACING_HEIGHT) - f * spacingOfY);
+			
 			float x = (i * spacingOfX + SPACING + mLastPoint.getWidth());
 			PointF point = new PointF(x, y);
 			points.add(point);
@@ -368,7 +371,7 @@ public class EnergyCurveView extends View implements OnTouchListener{
 	private void getSpacingOfXY(ArrayList<EnergyItem> energys) {
 		maxEnergy = findMaxPowers(energys);
 		spacingOfX = (mGradientWidth - mLastPoint.getWidth()) / (energys.size()) + 1;
-		spacingOfY = (mGradientHeight - WEIGHT) / ((maxEnergy.value) / 4 + maxEnergy.value);
+		spacingOfY = (mGradientHeight - WEIGHT) / maxEnergy.value;
 		Log.d(TAG, "spacingOfY = " + spacingOfY + "maxEnergy.value = " + maxEnergy.value);
 	}
 
@@ -391,7 +394,6 @@ public class EnergyCurveView extends View implements OnTouchListener{
 		this.onViewTouchListener = onViewTouchListener;
 	}
 	public void RefreshView(){
-		Log.d(TAG, "RefreshView");
 		invalidate();
 	}
 }

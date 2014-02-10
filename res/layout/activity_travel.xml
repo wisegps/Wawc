@@ -33,11 +33,10 @@
         android:background="@drawable/border_bg"
         android:padding="2dp">
         <TextView
-            android:id="@+id/tv_activity_travel_data"
+            android:id="@+id/tv_travel_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="2013-12-01"
             android:textColor="@color/black"
             android:textSize="@dimen/title"
             android:textStyle="bold" />
@@ -46,14 +45,14 @@
             android:contentDescription="@string/app_name"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_toLeftOf="@id/tv_activity_travel_data"
+            android:layout_toLeftOf="@id/tv_travel_date"
             android:src="@drawable/ic_launcher"/>
         <ImageView
             android:id="@+id/iv_activity_travel_data_next" 
             android:contentDescription="@string/app_name"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_toRightOf="@id/tv_activity_travel_data"
+            android:layout_toRightOf="@id/tv_travel_date"
             android:src="@drawable/ic_launcher"/>
     </RelativeLayout>
 	<TableLayout 
@@ -64,6 +63,7 @@
 	    android:layout_height="wrap_content">
 	    <TableRow android:background="@color/black">
 	        <TextView
+	            android:id="@+id/tv_distance"
 	            android:paddingTop="5dp"
 	            android:paddingBottom="5dp"
 	            android:background="@color/white"
@@ -72,6 +72,7 @@
 	            android:gravity="left"
 	            android:text="行驶总里程：37.00KM"/>
 	        <TextView
+	            android:id="@+id/tv_fuel"
 	            android:paddingTop="5dp"
 	            android:paddingBottom="5dp"
 	            android:background="@color/white"
@@ -83,6 +84,7 @@
 	    <TableRow 
 	        android:background="@color/black">
 	        <TextView 
+	            android:id="@+id/tv_hk_fuel"
 	            android:paddingTop="5dp"
 	            android:paddingBottom="5dp"
 	            android:background="@color/white"
@@ -91,6 +93,7 @@
 	            android:gravity="left"
 	            android:text="百公里油耗：11.20L"/>
 	        <TextView 
+	            android:id="@+id/tv_money"
 	            android:paddingTop="5dp"
 	            android:paddingBottom="5dp"
 	            android:background="@color/white"

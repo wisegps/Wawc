@@ -109,10 +109,8 @@ public class GetSystem {
     /**
      * 获取指定月份
      * 
-     * @param Month
-     *            2013-12
-     * @param number
-     *            上个月填-1 ,下个月填1
+     * @param Month 2013-12
+     * @param number 上个月填-1 ,下个月填1
      * @return
      */
     public static TimeData GetNextMonth(String Month, int number) {
@@ -132,7 +130,6 @@ public class GetSystem {
             return null;
         }
     }
-
     /**
      * 获取指定天
      * 

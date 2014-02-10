@@ -22,7 +22,7 @@ public class DBHelper extends SQLiteOpenHelper{
 	//行程记录
 	private static final String CREATE_TB_TripList = "create table " + Constant.TB_TripList + "(_id integer primary key autoincrement,device_id text,tDate text,Content text)";
 	//行程记录
-	private static final String CREATE_TB_Trip = "create table " + Constant.TB_Trip + "(_id integer primary key autoincrement,Cust_id text,TripID int,Content text)";
+	private static final String CREATE_TB_Trip = "create table " + Constant.TB_Trip + "(_id integer primary key autoincrement,Device_id text,tDate text,Content text)";
 	//我的爱车
 	private static final String CREATE_TB_Vehicle = "create table " + Constant.TB_Vehicle + "(_id integer primary key autoincrement,Cust_id text,obj_id int,obj_name text,car_brand text,car_series text,car_type text,engine_no text,frame_no text,insurance_company text,insurance_date text,annual_inspect_date text,maintain_company text,maintain_last_mileage text,maintain_next_mileage text,buy_date text)";
 	//我的终端

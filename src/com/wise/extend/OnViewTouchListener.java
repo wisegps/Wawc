@@ -4,5 +4,5 @@ package com.wise.extend;
  * @author honesty
  */
 public interface OnViewTouchListener {
-	public abstract void OnViewTouch(String value);
+	public abstract void OnViewTouch(String value,int index);
 }

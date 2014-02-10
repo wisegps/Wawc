@@ -1,7 +1,6 @@
 package com.wise.customView;
 
 import com.wise.extend.OnViewChangeListener;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -11,9 +10,12 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.Scroller;
-
+/**
+ * 我的车况滑滑动控件
+ * @author honesty
+ */
 public class EnergyGroup extends ViewGroup{
-    private static final String TAG = "EnergyGroup";
+    //private static final String TAG = "EnergyGroup";
     private VelocityTracker velocityTracker;//判断手势
     private static final int SNAP_VELOCITY = 600;  //滑动速度
     private int TOUCH_SLOP; //判断移动的阀值
@@ -51,7 +53,7 @@ public class EnergyGroup extends ViewGroup{
         for(int i = 0 ; i < count; i++){
             final View childView = getChildAt(i);
             final int width = childView.getMeasuredWidth();
-            childView.layout(childLeft, 0, childLeft+width, childView.getMeasuredHeight());//��������
+            childView.layout(childLeft, 0, childLeft+width, childView.getMeasuredHeight());
             childLeft += width;
         }
     }
@@ -164,7 +166,7 @@ public class EnergyGroup extends ViewGroup{
     }
     
     @Override
-    public void computeScroll() {//不需要，不然松手后不会滑动
+    public void computeScroll() {//需要，不然松手后不会滑动
         if (scroller.computeScrollOffset()) {    
             scrollTo(scroller.getCurrX(), scroller.getCurrY());  
             postInvalidate();    

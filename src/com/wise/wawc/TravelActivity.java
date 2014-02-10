@@ -2,12 +2,23 @@ package com.wise.wawc;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
-
+import com.wise.pubclas.NetThread;
+import com.wise.pubclas.Variable;
+import com.wise.sql.DBExcute;
+import com.wise.sql.DBHelper;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,28 +32,39 @@ import android.widget.TextView;
  * @author honesty
  */
 public class TravelActivity extends Activity{
+    private static final String TAG = "TravelActivity";
+	private static final int get_data = 1;
+	TextView tv_travel_date,tv_distance,tv_fuel,tv_hk_fuel,tv_money;
+	ListView lv_activity_travel;
 	
-	TextView tv_activity_travel_data;
-	
+	DBExcute dbExcute = new DBExcute();
 	List<TravelData> travelDatas = new ArrayList<TravelData>();
 	TravelAdapter travelAdapter;
-	String Date = "2013-12-01";
+	String Date;
+	String device_id = "3";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_travel);
-		tv_activity_travel_data = (TextView)findViewById(R.id.tv_activity_travel_data);
+		tv_travel_date = (TextView)findViewById(R.id.tv_travel_date);
+		tv_distance = (TextView)findViewById(R.id.tv_distance);
+		tv_fuel = (TextView)findViewById(R.id.tv_fuel);
+		tv_hk_fuel = (TextView)findViewById(R.id.tv_hk_fuel);
+		tv_money = (TextView)findViewById(R.id.tv_money);
 		ImageView iv_activity_travel_back = (ImageView)findViewById(R.id.iv_activity_travel_back);
 		iv_activity_travel_back.setOnClickListener(onClickListener);
 		ImageView iv_activity_travel_data_next = (ImageView)findViewById(R.id.iv_activity_travel_data_next);
 		iv_activity_travel_data_next.setOnClickListener(onClickListener);
 		ImageView iv_activity_travel_data_previous = (ImageView)findViewById(R.id.iv_activity_travel_data_previous);
 		iv_activity_travel_data_previous.setOnClickListener(onClickListener);
-		ListView lv_activity_travel = (ListView)findViewById(R.id.lv_activity_travel);
-		GetData();
-		travelAdapter = new TravelAdapter();
-		lv_activity_travel.setAdapter(travelAdapter);
+		lv_activity_travel = (ListView)findViewById(R.id.lv_activity_travel);
+        travelAdapter = new TravelAdapter();
+        lv_activity_travel.setAdapter(travelAdapter);
+        Intent intent = getIntent();
+        Date = intent.getStringExtra("Date");
+        tv_travel_date.setText(Date);
+        GetTripDB();
 	}
 	OnClickListener onClickListener = new OnClickListener() {		
 		@Override
@@ -54,31 +76,98 @@ public class TravelActivity extends Activity{
 
 			case R.id.iv_activity_travel_data_next://下一日
 				Date = GetSystem.GetNextData(Date, 1);
-				tv_activity_travel_data.setText(Date);
+				tv_travel_date.setText(Date);
+				GetTripDB();
 				break;
 			case R.id.iv_activity_travel_data_previous://上一日
 				Date = GetSystem.GetNextData(Date, -1);
-				tv_activity_travel_data.setText(Date);
+				tv_travel_date.setText(Date);
+				GetTripDB();
 				break;
 			}
 		}
 	};
-	
-	private void GetData(){		
-		for(int i = 0 ; i < 8; i++){
-			TravelData travelData = new TravelData();
-			travelData.setStartTime("19:27");
-			travelData.setStopTime("20:04");
-			travelData.setSpacingTime("37分钟");
-			travelData.setStartPlace("桃源村");
-			travelData.setStopPlace("世界之窗");
-			travelData.setSpacingDistance("15.35公里");
-			travelData.setAverageOil("百公里油耗：9.9L");
-			travelData.setOil("油耗：1.52L");
-			travelData.setSpeed("平均速度：25.75km/h");
-			travelData.setCost("话费：11.34");
-			travelDatas.add(travelData);
-		}
+	Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+            case get_data:
+                jsonData(msg.obj.toString());
+                ContentValues value = new ContentValues();
+                value.put("Device_id", device_id);
+                value.put("tDate", Date);
+                value.put("Content", msg.obj.toString());
+                dbExcute.InsertDB(TravelActivity.this, value, Constant.TB_Trip);
+                break;
+
+            default:
+                break;
+            }
+        }	    
+	};
+	/**
+	 * 解析数据
+	 * @param result
+	 */
+	private void jsonData(String result){
+	    try {
+	        travelDatas.clear();
+            JSONObject jsonObject = new JSONObject(result);
+            String distance = String.format(
+                    getResources().getString(R.string.distance),
+                    jsonObject.getString("day_distance"));
+            tv_distance.setText(distance);
+            String fuel = String.format(
+                    getResources().getString(R.string.fuel),
+                    jsonObject.getString("day_fuel"));
+            tv_fuel.setText(fuel);
+            String hk_fuel = String.format(
+                    getResources().getString(R.string.hk_fuel),
+                    jsonObject.getString("day_hk_fuel"));
+            tv_hk_fuel.setText(hk_fuel);
+            
+            JSONArray jsonArray = jsonObject.getJSONArray("data");
+            for(int i = 0 ; i < jsonArray.length(); i++){
+                JSONObject jsonObject2 = jsonArray.getJSONObject(i);
+                TravelData travelData = new TravelData();
+                travelData.setStartTime(jsonObject2.getString("start_time").substring(11, 16));
+                travelData.setStopTime(jsonObject2.getString("end_time").substring(11, 16));
+                travelData.setSpacingTime(jsonObject2.getString("travel_duration"));
+                travelData.setStartPlace("桃源村");
+                travelData.setStopPlace("世界之窗");
+                travelData.setSpacingDistance(jsonObject2.getString("distance"));
+                travelData.setAverageOil("百公里油耗：9.9L");
+                travelData.setOil("油耗："+jsonObject2.getString("act_fuel"));
+                travelData.setSpeed("平均速度："+jsonObject2.getString("avg_speed") +"km/h");
+                travelData.setCost("话费：11.34元");
+                travelDatas.add(travelData);
+            }  
+            travelAdapter.notifyDataSetChanged();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+	}
+	private void GetTripDB(){
+        DBHelper dbHelper = new DBHelper(getApplicationContext());
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + Constant.TB_Trip
+                + " where Device_id=? and tDate =? ", new String[] {device_id,Date});
+        if(cursor.moveToFirst()){
+            jsonData(cursor.getString(cursor.getColumnIndex("Content")));
+        }else{
+            GetDataTrip();
+        }
+        cursor.close();
+        db.close();
+    }
+	/**
+	 * 从服务器上获取数据
+	 */
+	private void GetDataTrip(){
+	    String url = Constant.BaseUrl + "device/3/trip?auth_code=" + Variable.auth_code + 
+	            "&day=" + Date;
+	    new Thread(new NetThread.GetDataThread(handler, url, get_data)).start();
 	}
 	
 	

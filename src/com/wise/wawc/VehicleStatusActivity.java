@@ -1,10 +1,8 @@
 package com.wise.wawc;
 
 import java.util.ArrayList;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
 import com.wise.customView.EnergyCurveView;
 import com.wise.customView.EnergyGroup;
 import com.wise.data.EnergyItem;
@@ -18,7 +16,6 @@ import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -28,9 +25,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Html;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -57,13 +52,13 @@ public class VehicleStatusActivity extends Activity {
 
     RelativeLayout rl_activity_vehicle_status_oil;
     TextView tv_activity_vehicle_status_oil, tv_month_hk_fuel,
-            tv_month_distance, tv_month_fuel;
+            tv_month_distance, tv_month_fuel,tv_vehicle_status_date;
     EnergyGroup hScrollLayout;
     CarAdapter carAdapter;
     // List<CarData> carDatas;
     boolean isWait = true;
-    String oil;
     String device_id = "3";
+    int index ; //选择哪一天
     TimeData timeData;
 
     DBExcute dbExcute = new DBExcute();
@@ -85,6 +80,7 @@ public class VehicleStatusActivity extends Activity {
                 .setOnClickListener(onClickListener);
         ImageView iv_activity_vehicle_status_back = (ImageView) findViewById(R.id.iv_activity_vehicle_status_back);
         iv_activity_vehicle_status_back.setOnClickListener(onClickListener);
+        tv_vehicle_status_date = (TextView)findViewById(R.id.tv_vehicle_status_date);
         tv_activity_vehicle_status_oil = (TextView) findViewById(R.id.tv_activity_vehicle_status_oil);
         tv_month_hk_fuel = (TextView) findViewById(R.id.tv_month_hk_fuel);
         tv_month_hk_fuel.setOnClickListener(onClickListener);
@@ -95,13 +91,6 @@ public class VehicleStatusActivity extends Activity {
 
         hScrollLayout = (EnergyGroup) findViewById(R.id.hscrollLayout);
         hScrollLayout.setOnViewChangeListener(onViewChangeListener);
-        // erenergyCurve.setOnViewTouchListener(new OnViewTouchListener() {
-        // @Override
-        // public void OnViewTouch(String value) {
-        // oil = value;
-        // ViewTouch(oil);
-        // }
-        // });
         GridView gv_activity_vehicle_status = (GridView) findViewById(R.id.gv_activity_vehicle_status);
         carAdapter = new CarAdapter(VehicleStatusActivity.this,
                 Variable.carDatas);
@@ -119,13 +108,9 @@ public class VehicleStatusActivity extends Activity {
         gv_activity_vehicle_status.setOnItemClickListener(onItemClickListener);
 
         new Thread(new waitThread()).start();
-        // TimeData timeData = GetSystem.GetNowMonth();
-        // System.out.println(timeData.toString());
-        // System.out.println(GetSystem.GetNextMonth(timeData.getDate(), 1));
-        timeData = new TimeData();
-        timeData.setDate("2014-01");
-        timeData.setYear("2014");
-        timeData.setMonth("1");
+        timeData = GetSystem.GetNowMonth();
+        tv_vehicle_status_date.setText(timeData.getDate());      
+        initView();  
         GetTotalDB();
         GetTripListDB();
     }
@@ -157,38 +142,23 @@ public class VehicleStatusActivity extends Activity {
             // CarFaultActivity.class));
             // break;
             case R.id.rl_activity_vehicle_status_oil:
-                startActivity(new Intent(VehicleStatusActivity.this,
-                        TravelActivity.class));
+                Intent intent = new Intent(VehicleStatusActivity.this, TravelActivity.class);
+                intent.putExtra("Date", timeData.getDate() +"-" + Edistance.get(index).date);
+                startActivity(intent);
                 break;
             case R.id.iv_activity_vehicle_status_data_next:
-                isFrist = true;
-                Toast.makeText(VehicleStatusActivity.this, "NEXT",
-                        Toast.LENGTH_SHORT).show();
-                ArrayList<EnergyItem> energys = new ArrayList<EnergyItem>();
-                energys.add(new EnergyItem("1", 4.0f, "a"));
-                energys.add(new EnergyItem("2", 5.0f, "a"));
-                energys.add(new EnergyItem("3", 4.0f, "a"));
-                energys.add(new EnergyItem("4", 6.5f, "a"));
-                energys.add(new EnergyItem("5", 3.8f, "a"));
-                energys.add(new EnergyItem("6", 8.0f, "a"));
-                energys.add(new EnergyItem("7", 7.0f, "a"));
-                tv_activity_vehicle_status_oil.setText("4.0L");
-                // erenergyCurve.initPoints(energys);
-                // erenergyCurve.RefreshView();
+                Toast.makeText(VehicleStatusActivity.this, "NEXT", Toast.LENGTH_SHORT).show();
+                timeData = GetSystem.GetNextMonth(timeData.getDate(), 1);
+                tv_vehicle_status_date.setText(timeData.getDate());  
+                GetTotalDB();
+                GetTripListDB();
                 break;
             case R.id.iv_activity_vehicle_status_data_previous:
-                isFrist = true;
-                ArrayList<EnergyItem> energy = new ArrayList<EnergyItem>();
-                energy.add(new EnergyItem("1", 9.0f, "a"));
-                energy.add(new EnergyItem("2", 8.0f, "a"));
-                energy.add(new EnergyItem("3", 7.0f, "a"));
-                energy.add(new EnergyItem("4", 6.5f, "a"));
-                energy.add(new EnergyItem("5", 7.8f, "a"));
-                energy.add(new EnergyItem("6", 8.0f, "a"));
-                energy.add(new EnergyItem("7", 7.0f, "a"));
-                tv_activity_vehicle_status_oil.setText("9.0L");
-                // erenergyCurve.initPoints(energy);
-                // erenergyCurve.RefreshView();
+                Toast.makeText(VehicleStatusActivity.this, "LAST", Toast.LENGTH_SHORT).show();
+                timeData = GetSystem.GetNextMonth(timeData.getDate(), -1);
+                tv_vehicle_status_date.setText(timeData.getDate());  
+                GetTotalDB();
+                GetTripListDB();
                 break;
             }
         }
@@ -215,9 +185,8 @@ public class VehicleStatusActivity extends Activity {
                 value.put("device_id", device_id);
                 value.put("tDate", timeData.getDate());
                 value.put("Content", msg.obj.toString());
-                dbExcute.InsertDB(VehicleStatusActivity.this, value, Constant.TB_TripTotal);
+                dbExcute.InsertDB(VehicleStatusActivity.this, value, Constant.TB_TripList);
                 jsonDays(msg.obj.toString());
-                bindView();
                 break;
             }
         }
@@ -233,20 +202,14 @@ public class VehicleStatusActivity extends Activity {
             carAdapter.notifyDataSetChanged();
         }
     };
-
+    /**
+     * 显示提示框
+     * @param value
+     */
     private void ViewTouch(String value) {
         rl_activity_vehicle_status_oil.setVisibility(View.VISIBLE);
-        tv_activity_vehicle_status_oil.setText(oil + "L");
+        tv_activity_vehicle_status_oil.setText(value + "L");
         wait = 4;
-        // System.out.println("isFrist = " + isFrist);
-        // if(isFrist){
-        // isFrist = false;
-        // rl_activity_vehicle_status_oil.setVisibility(View.GONE);
-        // }else{
-        // rl_activity_vehicle_status_oil.setVisibility(View.VISIBLE);
-        // tv_activity_vehicle_status_oil.setText(oil + "L");
-        // wait = 6;
-        // }
     }
 
     boolean isFrist = true;
@@ -356,51 +319,60 @@ public class VehicleStatusActivity extends Activity {
     private void GetDayFromUrl(int device_id, String year, String month) {
         String url = Constant.BaseUrl + "device/" + device_id
                 + "/trip_stat/day?auth_code=" + Variable.auth_code
-                + "&year=2014&month=1";
+                + "&year=" + year + "&month=" + month;
         new Thread(new NetThread.GetDataThread(handler, url, get_day)).start();
     }
 
     private void jsonDays(String result) {
         try {
+            Edistance.clear();
+            Efuel.clear();
+            Ehk_fuel.clear();
             JSONArray jsonArray = new JSONArray(result);
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 String _id = jsonObject.getString("_id");
-                float day_distance = Float.valueOf(jsonObject
-                        .getString("day_distance"));
-                float day_fuel = Float
-                        .valueOf(jsonObject.getString("day_fuel"));
-                float day_hk_fuel = Float.valueOf(jsonObject
-                        .getString("day_hk_fuel"));
+                float day_distance = Float.valueOf(jsonObject.getString("day_distance"));
+                float day_fuel = Float.valueOf(jsonObject.getString("day_fuel"));
+                float day_hk_fuel = Float.valueOf(jsonObject.getString("day_hk_fuel"));
                 Edistance.add(new EnergyItem(_id, day_distance, "a"));
                 Efuel.add(new EnergyItem(_id, day_fuel, "a"));
                 Ehk_fuel.add(new EnergyItem(_id, day_hk_fuel, "a"));
             }
+            refreshView();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-    private void bindView() {
+    EnergyCurveView View_hk_fuel,View_distance,View_ful;
+    private void initView() {
         getWindowManager().getDefaultDisplay().getMetrics(dm);
 
-        EnergyCurveView View_hk_fuel = new EnergyCurveView(
-                getApplicationContext(), null);
+        View_hk_fuel = new EnergyCurveView(getApplicationContext(), null);
         View_hk_fuel.setWindowsWH(dm);
         View_hk_fuel.initPoints(Ehk_fuel);
+        View_hk_fuel.setOnViewTouchListener(onViewTouchListener);
         hScrollLayout.addView(View_hk_fuel);
 
-        EnergyCurveView View_distance = new EnergyCurveView(
-                getApplicationContext(), null);
+        View_distance = new EnergyCurveView(getApplicationContext(), null);
         View_distance.setWindowsWH(dm);
         View_distance.initPoints(Edistance);
+        View_distance.setOnViewTouchListener(onViewTouchListener);
         hScrollLayout.addView(View_distance);
 
-        EnergyCurveView View_ful = new EnergyCurveView(getApplicationContext(),
-                null);
+        View_ful = new EnergyCurveView(getApplicationContext(),null);
         View_ful.setWindowsWH(dm);
         View_ful.initPoints(Efuel);
+        View_ful.setOnViewTouchListener(onViewTouchListener);
         hScrollLayout.addView(View_ful);
+    }
+    private void refreshView(){
+        View_hk_fuel.initPoints(Ehk_fuel);
+        View_hk_fuel.RefreshView();
+        View_distance.initPoints(Edistance);
+        View_distance.RefreshView();
+        View_ful.initPoints(Efuel);
+        View_ful.RefreshView();
     }
 
     private void setBackground() {
@@ -408,6 +380,16 @@ public class VehicleStatusActivity extends Activity {
         tv_month_distance.setBackgroundColor(Color.WHITE);
         tv_month_fuel.setBackgroundColor(Color.WHITE);
     }
+    
+    /**
+     * view长按后触发的touch事件
+     */
+    OnViewTouchListener onViewTouchListener = new OnViewTouchListener() {
+        @Override
+        public void OnViewTouch(String value, int index) {
+            ViewTouch(value);
+        }
+    };
 
     OnViewChangeListener onViewChangeListener = new OnViewChangeListener() {
 

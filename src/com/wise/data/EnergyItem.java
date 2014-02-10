@@ -18,4 +18,9 @@ public class EnergyItem {
 		this.value = value;
 		this.time = time;
 	}
+    @Override
+    public String toString() {
+        return "EnergyItem [date=" + date + ", value=" + value + ", time="
+                + time + "]";
+    }	
 }
