@@ -4,9 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/bkg2"
-    android:orientation="vertical">
+    android:orientation="vertical">  
     <LinearLayout 
-        android:layout_marginTop="20dp"
+        android:id="@+id/ll_item_car_fault"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="10dp"></LinearLayout>
+    <LinearLayout 
+        android:layout_marginBottom="5dp"
         android:layout_width="fill_parent"
         android:orientation="horizontal"
         android:layout_height="wrap_content">
@@ -51,19 +56,13 @@
                 android:layout_below="@id/tv_item_car_fault_info"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/ic_launcher"/>
+            <TextView 
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_item_car_fault_info"
+                android:layout_alignParentLeft="true"
+                android:text="12:50"/>
         </RelativeLayout>
-    </LinearLayout>
-    <LinearLayout 
-        android:id="@+id/ll_item_car_fault"
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <TextView 
-	        android:layout_width="fill_parent"
-	        android:layout_height="40dp"/>
-	    <TextView 
-	        android:layout_width="fill_parent"
-	        android:layout_height="1dp"
-	        android:background="@color/red"/>
-    </LinearLayout>    
+    </LinearLayout>   
 </LinearLayout>

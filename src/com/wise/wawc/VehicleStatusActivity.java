@@ -51,7 +51,7 @@ public class VehicleStatusActivity extends Activity {
     private DisplayMetrics dm = new DisplayMetrics();
 
     RelativeLayout rl_activity_vehicle_status_oil;
-    TextView tv_activity_vehicle_status_oil, tv_month_hk_fuel,
+    TextView tv_activity_vehicle_status_oil, tv_month_hk_fuel,tv_fault,
             tv_month_distance, tv_month_fuel,tv_vehicle_status_date;
     EnergyGroup hScrollLayout;
     CarAdapter carAdapter;
@@ -88,6 +88,8 @@ public class VehicleStatusActivity extends Activity {
         tv_month_distance.setOnClickListener(onClickListener);
         tv_month_fuel = (TextView) findViewById(R.id.tv_month_fuel);
         tv_month_fuel.setOnClickListener(onClickListener);
+        tv_fault = (TextView) findViewById(R.id.tv_fault);
+        tv_fault.setOnClickListener(onClickListener);
 
         hScrollLayout = (EnergyGroup) findViewById(R.id.hscrollLayout);
         hScrollLayout.setOnViewChangeListener(onViewChangeListener);
@@ -123,24 +125,17 @@ public class VehicleStatusActivity extends Activity {
                 finish();
                 break;
             case R.id.tv_month_hk_fuel:
-                // setBackground();
-                // tv_month_hk_fuel.setBackgroundResource(R.color.bkg6);
                 hScrollLayout.snapToScreen(0);
                 break;
             case R.id.tv_month_distance:
-                // setBackground();
-                // tv_month_distance.setBackgroundResource(R.color.bkg6);
                 hScrollLayout.snapToScreen(1);
                 break;
             case R.id.tv_month_fuel:
-                // setBackground();
-                // tv_month_fuel.setBackgroundResource(R.color.bkg6);
                 hScrollLayout.snapToScreen(2);
                 break;
-            // case R.id.tv_activity_vehicle_status_fault:
-            // startActivity(new Intent(VehicleStatusActivity.this,
-            // CarFaultActivity.class));
-            // break;
+            case R.id.tv_fault:
+                startActivity(new Intent(VehicleStatusActivity.this,CarFaultActivity.class));
+             break;
             case R.id.rl_activity_vehicle_status_oil:
                 Intent intent = new Intent(VehicleStatusActivity.this, TravelActivity.class);
                 intent.putExtra("Date", timeData.getDate() +"-" + Edistance.get(index).date);

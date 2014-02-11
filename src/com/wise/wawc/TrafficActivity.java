@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import com.wise.data.AdressData;
 import com.wise.extend.CarAdapter;
 import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
@@ -16,7 +14,6 @@ import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;

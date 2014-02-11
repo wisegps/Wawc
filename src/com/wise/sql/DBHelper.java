@@ -1,12 +1,10 @@
 package com.wise.sql;
 
 import com.wise.pubclas.Constant;
-
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
-import android.util.Log;
 
 public class DBHelper extends SQLiteOpenHelper{
 	private static final int VERSION = 1;
@@ -16,7 +14,7 @@ public class DBHelper extends SQLiteOpenHelper{
 	//车友圈文章
 	private static final String CREATE_TB_VehicleFriend = "create table " + Constant.TB_VehicleFriend + "(_id integer primary key autoincrement,Cust_id int,FriendID int,Blog_id int,Content text)";
 	//爱车故障
-	private static final String CREATE_TB_Faults = "create table " + Constant.TB_Faults + "(_id integer primary key autoincrement,Cust_id text,CarID int,Content text)";
+	private static final String CREATE_TB_Faults = "create table " + Constant.TB_Faults + "(_id integer primary key autoincrement,DeviceID text,fault_id int,fault_code text,fault_desc text,create_time text)";
 	//行程统计
 	private static final String CREATE_TB_TripTotal = "create table " + Constant.TB_TripTotal + "(_id integer primary key autoincrement,device_id text,tDate text,Content text)";
 	//行程记录

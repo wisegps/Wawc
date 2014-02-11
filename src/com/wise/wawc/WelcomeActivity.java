@@ -1,6 +1,11 @@
 package com.wise.wawc;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 
 import org.json.JSONArray;
@@ -52,11 +57,76 @@ public class WelcomeActivity extends Activity {
             GetCityList();
         }else{
             //跳转到登录界面
+            //test();
             new Thread(new WaitThread()).start();
             //String url = "http://wiwc.api.wisegps.cn/violation/city?auth_code=bba2204bcd4c1f87a19";
             //new Thread(new NetThread.GetDataThread(handler, url, 999)).start();
         }
     }
+    private void test(){
+        String time1 = "2014-02-11T06:17:08.751Z";
+        time1 = time1.substring(0, time1.length() - 8).replace("T", " ");
+        System.out.println(formatDateTime(time1)[0] + "," + formatDateTime(time1)[1]);
+        
+        String time2 = "2014-02-10T06:17:08.751Z";
+        time2 = time2.substring(0, time2.length() - 8).replace("T", " ");
+        System.out.println(formatDateTime(time2)[0] + "," + formatDateTime(time2)[1]);
+        
+        String time3 = "2014-01-25T06:17:08.751Z";
+        time3 = time3.substring(0, time3.length() - 8).replace("T", " ");
+        System.out.println(formatDateTime(time3)[0] + "," + formatDateTime(time3)[1]);
+        
+    }
+    
+    private static String[] formatDateTime(String time) {  
+        SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm");   
+        if(time==null ||"".equals(time)){  
+            return null;  
+        }  
+        Date date = null;  
+        try {  
+            date = format.parse(time);  
+        } catch (ParseException e) {  
+            e.printStackTrace();  
+        }  
+          
+        Calendar current = Calendar.getInstance();  
+          
+        Calendar today = Calendar.getInstance();    //今天  
+          
+        today.set(Calendar.YEAR, current.get(Calendar.YEAR));  
+        today.set(Calendar.MONTH, current.get(Calendar.MONTH));  
+        today.set(Calendar.DAY_OF_MONTH,current.get(Calendar.DAY_OF_MONTH));  
+        //  Calendar.HOUR——12小时制的小时数 Calendar.HOUR_OF_DAY——24小时制的小时数  
+        today.set( Calendar.HOUR_OF_DAY, 0);  
+        today.set( Calendar.MINUTE, 0);  
+        today.set(Calendar.SECOND, 0);  
+          
+        Calendar yesterday = Calendar.getInstance();    //昨天  
+          
+        yesterday.set(Calendar.YEAR, current.get(Calendar.YEAR));  
+        yesterday.set(Calendar.MONTH, current.get(Calendar.MONTH));  
+        yesterday.set(Calendar.DAY_OF_MONTH,current.get(Calendar.DAY_OF_MONTH)-1);  
+        yesterday.set( Calendar.HOUR_OF_DAY, 0);  
+        yesterday.set( Calendar.MINUTE, 0);  
+        yesterday.set(Calendar.SECOND, 0);  
+          
+        current.setTime(date);  
+        String[] myDate = new String[2];
+        if(current.after(today)){  
+            myDate[0] = "今天";
+            myDate[1] = time.split(" ")[1];
+        }else if(current.before(today) && current.after(yesterday)){  
+            myDate[0] = "昨天";
+            myDate[1] = time.split(" ")[1];
+        }else{ 
+            myDate[0] = time.substring(0, 10);
+            myDate[1] = time.split(" ")[1];
+            int index = time.indexOf("-")+1;  
+        }  
+        return myDate;
+    }
+    
     String citys = "";
     String hot_citys = "";
     boolean isCity = false;
