@@ -32,6 +32,7 @@ import com.wise.wawc.ImageActivity;
 import com.wise.wawc.R;
 import com.wise.wawc.VehicleFriendActivity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.ActionBar.LayoutParams;
 import android.content.Context;
@@ -65,7 +66,7 @@ public class MyAdapter extends BaseAdapter{
 	private ImageView saySomething;
 	private ImageView userHead;
 	private View view;
-	private Context context;
+	private Activity activity;
 	public static boolean isClick = false;
 	private TextView articel_user_name;  //点击查看详细信息
 	private TextView tv_article_content;
@@ -84,10 +85,10 @@ public class MyAdapter extends BaseAdapter{
 	private List<Article> articleList = null;
 	private DBExcute dbExcute = null;
 	int padding = 40;
-	public MyAdapter(Context context,View v,List<Article> articleList){
-		inflater=LayoutInflater.from(context);
+	public MyAdapter(Activity activity,View v,List<Article> articleList){
+		inflater=LayoutInflater.from(activity);
 		this.view = v;
-		this.context = context;
+		this.activity = activity;
 		this.articleList = articleList;
 		myHandler = new MyHandler();
 		dbExcute = new DBExcute();
@@ -115,23 +116,23 @@ public class MyAdapter extends BaseAdapter{
 		}
 		//动态添加用户发表的图片
 		TableLayout table = (TableLayout) convertView.findViewById(R.id.user_image);
-		TableRow row = new TableRow(context);
+		TableRow row = new TableRow(activity);
 		for(int i = 0; i < smallImageList.size() ; i ++){
-			ImageView t = new ImageView(context);
+			ImageView t = new ImageView(activity);
 			t.setClickable(true);
 			t.setId(i);
 			t.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
-					Intent intent = new Intent(context,ImageActivity.class);
+					Intent intent = new Intent(activity,ImageActivity.class);
 					intent.putExtra("position", position);
-					context.startActivity(intent);
+					activity.startActivity(intent);
 				}
 			});
 			t.setImageBitmap(smallImageList.get(i));
 			row.addView(t);
 			if((i%3 + 1) == 3){
 				table.addView(row,new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-				row = new TableRow(context);
+				row = new TableRow(activity);
 			}else if(i == (smallImageList.size() - 1)){
 				table.addView(row,new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 			}
@@ -140,14 +141,14 @@ public class MyAdapter extends BaseAdapter{
 		//动态添加用户的评论
 		LinearLayout commentLayout = (LinearLayout) convertView.findViewById(R.id.article_comment_layout);
 		for(int i = 0 ; i < articleList.get(position).getCommentList().size() ; i ++){
-			LinearLayout oneComment = new LinearLayout(context);
+			LinearLayout oneComment = new LinearLayout(activity);
 			oneComment.setOrientation(LinearLayout.HORIZONTAL);
-			TextView commentName = new TextView(context);
-		    TextView commentContent = new TextView(context);
+			TextView commentName = new TextView(activity);
+		    TextView commentContent = new TextView(activity);
 			String[] commentStr = articleList.get(position).getCommentList().get(i);
 			commentName.setText(commentStr[0] + ":");
 			oneComment.addView(commentName, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-			SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(context, commentStr[1]);
+			SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(activity, commentStr[1]);
 			commentContent.setText(spannableString);
 			oneComment.addView(commentContent, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 			commentLayout.addView(oneComment, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
@@ -300,16 +301,16 @@ public class MyAdapter extends BaseAdapter{
 					
 					break;
 				case R.id.head_article:   //点击用户头像 进入好友主页
-					Intent intent = new Intent(context,FriendHomeActivity.class);
+					Intent intent = new Intent(activity,FriendHomeActivity.class);
 					intent.putExtra("cust_id", String.valueOf(articleList.get(chickIndex).getCust_id()));
-					context.startActivity(intent);
+					activity.startActivity(intent);
 					break;
 				case R.id.article_user_name:   //点击进入文章的详细介绍
-					context.startActivity(new Intent(context,ArticleDetailActivity.class));
+					activity.startActivity(new Intent(activity,ArticleDetailActivity.class));
 					break;
 				case R.id.favorite:
 					blogId = articleList.get(chickIndex).getBlog_id();
-					myDialog = ProgressDialog.show(context, "提示","数据提交中...");
+					myDialog = ProgressDialog.show(activity, "提示","数据提交中...");
 					myDialog.setCancelable(true);
 					List<NameValuePair> params = new ArrayList<NameValuePair>();
 					params.add(new BasicNameValuePair("name",Variable.cust_name));
@@ -331,7 +332,7 @@ public class MyAdapter extends BaseAdapter{
 						if(Integer.valueOf(jsonObject.getString("status_code")) == 0){
 							
 							//更新数据库
-							dbExcute.updateArticlePraises(context, Constant.TB_VehicleFriend, blogId, Variable.cust_name, Integer.valueOf(Variable.cust_id));
+							dbExcute.updateArticlePraises(activity, Constant.TB_VehicleFriend, blogId, Variable.cust_name, Integer.valueOf(Variable.cust_id));
 							
 							VehicleFriendActivity vehicleFriendActivity = new VehicleFriendActivity();
 							Log.e("---->",Constant.start + "");
@@ -339,13 +340,13 @@ public class MyAdapter extends BaseAdapter{
 							List<Article> oldArticlList = vehicleFriendActivity.getArticleDataList();
 							oldArticlList.clear();
 							vehicleFriendActivity.setArticleDataList(oldArticlList);
-							List<Article> newArticlList = MyAdapter.this.dbExcute.getArticlePageDatas(context, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(0),String.valueOf(Constant.start + Constant.pageSize)}, vehicleFriendActivity.getArticleDataList());
+							List<Article> newArticlList = MyAdapter.this.dbExcute.getArticlePageDatas(activity, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(0),String.valueOf(Constant.start + Constant.pageSize)}, vehicleFriendActivity.getArticleDataList());
 							Variable.articleList = newArticlList;
 							vehicleFriendActivity.setArticleDataList(newArticlList);
 							MyAdapter.this.refreshDates(newArticlList);
 							myDialog.dismiss();
 							
-							Toast.makeText(context, "点赞成功", 0).show();
+							Toast.makeText(activity, "点赞成功", 0).show();
 						}
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
