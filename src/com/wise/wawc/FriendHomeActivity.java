@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -22,6 +23,7 @@ import com.wise.sql.DBHelper;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -29,6 +31,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AbsListView;
@@ -64,6 +67,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 	private static final int getArticleList = 3;
 	private static final int commentArticle = 4;
 	private static final int loadMoreAction = 5;
+	private static final int loadMoreCode = 6;
 	private String cust_id = "";
 	private int friendArticleTotalNum = 0;
 	private boolean isLoadMore = false;
@@ -92,11 +96,15 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 		lastPageDatas = getIntent();
 		dBExcute = new DBExcute();
 		cust_id = lastPageDatas.getStringExtra("cust_id");
-		Log.e(MyTag,cust_id);
 		myHandler = new MyHandler();
 		Message msg = new Message();
 		msg.what = initDatas;
 		myHandler.sendMessage(msg);
+		
+		
+		friendArticleList.setXListViewListener(this);
+		//不设置上拉加载无效
+		friendArticleList.setPullLoadEnable(true);
 		friendArticleList.setOnScrollListener(new OnScrollListener() {
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 				saySomething.setVisibility(View.GONE);
@@ -105,8 +113,8 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 			public void onScroll(AbsListView view, int firstVisibleItem,int visibleItemCount, int totalItemCount) {
 			}
 		});
+		Log.e("onCreate","onCreate-----------------------------------------------------------------------");
 	}
-	
 	class OnClickListener implements android.view.View.OnClickListener{
 		public void onClick(View v) {
 			switch(v.getId()){
@@ -115,10 +123,6 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 						FriendInformationActivity.class));
 				break;
 			case R.id.friend_back:
-				Constant.start1 = 0;  // 开始页
-				Constant.pageSize1 = 2;   //每页数量
-				Constant.totalPage1 = 0;   //数据总量
-				Constant.currentPage1 = 0;  //当前页
 				FriendHomeActivity.this.finish();
 				break;
 			case R.id.btn_send:
@@ -145,8 +149,6 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 			}
 		}
 	}
-	
-	
 	class MyHandler extends Handler{
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
@@ -183,6 +185,16 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
+				break;
+			case loadMoreCode:
+				String result = msg.obj.toString();
+				Log.e("加载更多结果：",msg.obj.toString());
+				if(!"".equals(result)){
+					jsonToList(msg.obj.toString());
+					isLoadMore = false;
+					getArticleDatas(0);
+				}
+				onLoad();
 				break;
 			default:
 				return;
@@ -223,22 +235,45 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 			}
 		}
 		
+		//解析数据
+		public void jsonToList(String JSON){
+			try {
+			JSONArray jsonArray = new JSONArray(JSON);
+			for(int i = 0 ; i < jsonArray.length() ; i ++){
+					//存储到数据库
+					ContentValues values = new ContentValues();
+					values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
+					values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
+					values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
+					dBExcute.InsertDB(FriendHomeActivity.this,values,Constant.TB_VehicleFriend);
+					if(i == (jsonArray.length()-1)){
+						minBlogId = Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id"));
+					}
+					Log.e("解析数据:minBlogId",jsonArray.getJSONObject(i).getString("blog_id"));
+			}
+			DBHelper dBHelper = new DBHelper(getApplicationContext());
+			SQLiteDatabase db = dBHelper.getReadableDatabase();
+			Cursor cursor = db.rawQuery("select * from " + Constant.TB_VehicleFriend, new String[]{});
+			Log.e("服务器获取的数据总量：",cursor.getCount() + "");
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
+		}
+		
 		public void onRefresh() {
 		}
 		public void onLoadMore() {
 			if(!isLoadMore){
 				getArticleDatas(loadMoreAction);
 			}else{
-				//  TODO  加载更多
 				DBHelper dBHelper = new DBHelper(FriendHomeActivity.this);
 				SQLiteDatabase  sQLiteDatabase = dBHelper.getReadableDatabase();
 				Cursor cursor = sQLiteDatabase.rawQuery("select * from " + Constant.TB_VehicleFriend, new String[]{});
 				if(cursor.moveToLast()){
 					minBlogId = cursor.getInt(cursor.getColumnIndex("Blog_id"));
 				}
-//				List<NameValuePair> params = new ArrayList<NameValuePair>();
-//				params.add(new BasicNameValuePair("main_id", String.valueOf(minBlogId)));
-//				new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog=" + minBlogId + "?auth_code=" + Variable.auth_code, loadMoreCode)).start();
+				
+				new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code + "&min_id=" + minBlogId, loadMoreCode)).start();
 			}
 		}
 		private void onLoad() {
@@ -250,11 +285,24 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 			friendArticleList.stopLoadMore();
 			friendArticleList.setRefreshTime(date);
 		}
+		public boolean onKeyDown(int keyCode, KeyEvent event) {
+			if (keyCode == KeyEvent.KEYCODE_BACK) {
+				FriendHomeActivity.this.finish();
+			}
+			return super.onKeyDown(keyCode, event);
+		}
 
 		public List<Article> getArticleDataList() {
 			return articleDataList;
 		}
 		public void setArticleDataList(List<Article> articleDataList) {
 			this.articleDataList = articleDataList;
+		}
+		protected void onDestroy() {
+			Constant.start1 = 0;  // 开始页
+			Constant.pageSize1 = 10;   //每页数量
+			Constant.totalPage1 = 0;   //数据总量
+			Constant.currentPage1 = 0;  //当前页
+			super.onDestroy();
 		}
 }

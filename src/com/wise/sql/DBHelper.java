@@ -13,6 +13,8 @@ public class DBHelper extends SQLiteOpenHelper{
 	private static final String CREATE_TB_Base = "create table " + Constant.TB_Base + "(_id integer primary key autoincrement,Cust_id text,Title text,Content text)";
 	//车友圈文章
 	private static final String CREATE_TB_VehicleFriend = "create table " + Constant.TB_VehicleFriend + "(_id integer primary key autoincrement,Cust_id int,FriendID int,Blog_id int,Content text)";
+	//车友圈文章类型
+	private static final String CREATE_TB_VehicleFriendType = "create table " + Constant.TB_VehicleFriendType + "(_id integer primary key autoincrement,Type_id int,Blog_id int)";
 	//爱车故障
 	private static final String CREATE_TB_Faults = "create table " + Constant.TB_Faults + "(_id integer primary key autoincrement,DeviceID text,fault_id int,fault_code text,fault_desc text,create_time text)";
 	//行程统计
@@ -48,6 +50,7 @@ public class DBHelper extends SQLiteOpenHelper{
 		db.execSQL(CREATE_TB_Devices);
 		db.execSQL(CREATE_TB_Collection);
 		db.execSQL(CREATE_TB_Traffic);
+		db.execSQL(CREATE_TB_VehicleFriendType);
 	}
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}

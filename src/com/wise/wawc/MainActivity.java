@@ -475,9 +475,13 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         }
         stopService(new Intent(MainActivity.this, LocationService.class));
         Constant.start = 0;  // 开始页
-        Constant.pageSize = 2;   //每页数量
+        Constant.pageSize = 10;   //每页数量
         Constant.totalPage = 0;   //数据总量
         Constant.currentPage = 0;  //当前页
+        Constant.start1 = 0;  // 开始页
+        Constant.pageSize1 = 10;   //每页数量
+        Constant.totalPage1 = 0;   //数据总量
+        Constant.currentPage1 = 0;  //当前页
         VehicleFriendActivity.newArticleBlogId = 0;
         
         //测试  车友圈刷新

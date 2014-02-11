@@ -81,6 +81,8 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	private static final int loadMoreCode = 87;
 	private static final int refreshCode = 89;
 	private static int loadMoreAction = 21;
+	private static final int sameCityFriend = 11;
+	
 	private int totalNum = 0;
 	private int screenWidth = 0;
 	
@@ -348,6 +350,10 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				}
 				onLoad();
 				break;
+			case sameCityFriend:
+				myDialog.cancel();
+				Log.e("同城车友：",msg.obj.toString());
+				break;
 			}
 			super.handleMessage(msg);
 		}
@@ -393,7 +399,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				articleDataList = dBExcute.getArticlePageDatas(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
 				setArticleDataList(articleDataList);
 			}
-			Log.e("currentPage:" + Constant.currentPage , "totalPage:" + Constant.totalPage);
 			if(Constant.totalPage == Constant.currentPage){
 				isLoadMore = true;
 			}
@@ -432,6 +437,24 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		super.onDestroy();
 	}
 	public void onItemClick(int pos, int type) {
+		Constant.start = 0;
+		Constant.start = 0;  // 开始页
+		Constant.pageSize = 10;   //每页数量
+		Constant.totalPage = 0;   //数据总量
+		Constant.currentPage = 0;  //当前页
+		if(pos == 0){    //车友圈
+			
+		}else if(pos == 1){   //同城车友
+			myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
+			myDialog.setCancelable(true);
+			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "blog?auth_code=" + Variable.auth_code + "&type=1&cust_id=" + Variable.cust_id, sameCityFriend)).start();
+		}else if(pos == 2){   // 同车型的车友
+			
+		}else if(pos == 3){    //附近车友
+			
+		}else if(pos == 4){   //我的收藏
+			
+		}
 		
 	}
 }

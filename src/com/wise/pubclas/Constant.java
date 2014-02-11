@@ -122,6 +122,11 @@ public class Constant {
 	 */
 	public static String TB_VehicleFriend = "TB_VehicleFriend";
 	/**
+	 * 车友圈类型
+	 */
+	public static String TB_VehicleFriendType = "TB_VehicleFriendType";
+	
+	/**
 	 * 爱车故障
 	 */
 	public static String TB_Faults = "TB_Faults";
@@ -179,7 +184,7 @@ public class Constant {
 	 * 车友圈分页变量
 	 */
 	public static int start = 0;  // 开始页
-	public static int pageSize = 2;   //每页数量
+	public static int pageSize = 10;   //每页数量
 	public static int totalPage = 0;   //数据总量
 	public static int currentPage = 0;  //当前页
 	
