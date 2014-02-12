@@ -10,7 +10,6 @@ import com.baidu.mapapi.map.MapController;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.map.OverlayItem;
-import com.baidu.mapapi.map.PoiOverlay;
 import com.baidu.mapapi.search.MKAddrInfo;
 import com.baidu.mapapi.search.MKBusLineResult;
 import com.baidu.mapapi.search.MKDrivingRouteResult;
@@ -26,14 +25,16 @@ import com.baidu.mapapi.utils.DistanceUtil;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.wise.data.AdressData;
 import com.wise.extend.AdressAdapter;
+import com.wise.extend.AdressAdapter.OnCollectListener;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
-
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -47,6 +48,7 @@ import android.widget.Toast;
  * @author honesty
  */
 public class SearchMapActivity extends Activity {
+    private final int getIsCollect = 1;
 	WawcApplication app;
 	MapView mMapView = null;
 	MapController mMapController = null;
@@ -109,6 +111,24 @@ public class SearchMapActivity extends Activity {
 			}
 		}
 	};
+	
+	Handler handler = new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+            case getIsCollect:
+                System.out.println(msg.obj.toString());
+                break;
+
+            default:
+                break;
+            }
+        }
+	    
+	};
+	
 	OnItemClickListener onItemClickListener = new OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
@@ -135,6 +155,7 @@ public class SearchMapActivity extends Activity {
 				Toast.makeText(SearchMapActivity.this, R.string.search_error,Toast.LENGTH_SHORT).show();
 				return;
 			}
+			String str ="";
 			for(MKPoiInfo mkPoiInfo : res.getAllPoi()){
 				int distance = (int) DistanceUtil.getDistance(point, mkPoiInfo.pt);
 				AdressData adressData = new AdressData();
@@ -145,9 +166,21 @@ public class SearchMapActivity extends Activity {
 				adressData.setLon(mkPoiInfo.pt.getLongitudeE6()/1e6);
 				adressData.setDistance(distance);
 				adressDatas.add(adressData);
+				str = str + mkPoiInfo.name + ",";
 			}
+			System.out.println(str);
+			String url = Constant.BaseUrl + "favorite/is_collect?auth_code=" + Variable.auth_code + 
+			        "&names=" + str + "&cust_id=" + Variable.cust_id;
+			new Thread(new NetThread.GetDataThread(handler, url, getIsCollect)).start();
 			Collections.sort(adressDatas, new Comparator());
-			AdressAdapter adressAdapter = new AdressAdapter(SearchMapActivity.this, adressDatas,SearchMapActivity.this);
+			final AdressAdapter adressAdapter = new AdressAdapter(SearchMapActivity.this, adressDatas,SearchMapActivity.this);
+			adressAdapter.setOnCollectListener(new OnCollectListener() {                
+                @Override
+                public void OnCollect(int index) {
+                    adressDatas.get(index).setIs_collect(true);
+                    adressAdapter.notifyDataSetChanged();
+                }
+            });
 			lv_activity_search_map.setAdapter(adressAdapter);
 			for(int i = 0; i < adressDatas.size() ; i++){
 				GeoPoint point1 = new GeoPoint((int) (adressDatas.get(i).getLat() * 1E6),(int) (adressDatas.get(i).getLon() * 1E6));

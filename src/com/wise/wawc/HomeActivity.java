@@ -18,6 +18,7 @@ import com.iflytek.cloud.speech.SpeechRecognizer;
 import com.iflytek.cloud.speech.SpeechUser;
 import com.wise.data.CarData;
 import com.wise.extend.HScrollLayout;
+import com.wise.extend.OnViewChangeListener;
 import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
@@ -51,6 +52,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,7 +71,7 @@ public class HomeActivity extends Activity{
             tv_item_weather_sky, tv_item_weather_temp1,
             tv_item_weather_index_xc, tv_item_weather_city,tv_item_oil_90, tv_item_oil_93,
             tv_item_oil_97, tv_item_oil_0,tv_car_number,tv_activity_home_car_adress;
-    ImageView iv_carLogo;
+    ImageView iv_carLogo,iv_page;
     private ImageView saySomething = null; // 语音识别
   	private SpeechRecognizer iatRecognizer;   //识别对象
   	private StringBuffer sb = null;
@@ -108,6 +110,7 @@ public class HomeActivity extends Activity{
         tv_activity_home_car_adress.setOnClickListener(onClickListener);
         tv_car_number = (TextView)findViewById(R.id.tv_car_number);
         iv_carLogo = (ImageView)findViewById(R.id.iv_carLogo);
+        iv_page = (ImageView)findViewById(R.id.iv_page);
 
         saySomething = (ImageView) findViewById(R.id.iv_home_say_something);
         saySomething.setOnClickListener(onClickListener);
@@ -140,8 +143,22 @@ public class HomeActivity extends Activity{
         tv_item_oil_97 = (TextView) oilView.findViewById(R.id.tv_item_oil_97);
         tv_item_oil_0 = (TextView) oilView.findViewById(R.id.tv_item_oil_0);
         //tv_item_oil_update = (TextView) oilView.findViewById(R.id.tv_item_oil_update);
-
-        
+        ScrollLayout_other.setOnViewChangeListener(new OnViewChangeListener() {            
+            @Override
+            public void OnViewChange(int view) {
+                System.out.println("view = " + view);
+                switch (view) {
+                case 0:
+                    iv_page.setBackgroundResource(R.drawable.home_body_cutover_left);
+                    break;
+                case 1:
+                    iv_page.setBackgroundResource(R.drawable.home_body_cutover_right);
+                    break;
+                }
+            }            
+            @Override
+            public void OnLastView() {}
+        });
         getSp();
         GetOldWeather();// 获取本地存储的数据
         GetFutureWeather();

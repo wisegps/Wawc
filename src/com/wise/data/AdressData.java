@@ -11,6 +11,7 @@ public class AdressData {
 	private int distance = -1;
 	private double Lat;
 	private double Lon;
+	private boolean is_collect;
 	public String getName() {
 		return name;
 	}
@@ -53,6 +54,13 @@ public class AdressData {
 	public void set_id(int _id) {
 		this._id = _id;
 	}
+	
+    public boolean isIs_collect() {
+        return is_collect;
+    }
+    public void setIs_collect(boolean is_collect) {
+        this.is_collect = is_collect;
+    }
     @Override
     public String toString() {
         return "AdressData [_id=" + _id + ", name=" + name + ", adress="

@@ -8,6 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import com.wise.data.AdressData;
 import com.wise.extend.AdressAdapter;
+import com.wise.extend.AdressAdapter.OnCollectListener;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
@@ -37,17 +38,30 @@ public class DealAddressActivity extends Activity {
     private static final String TAG = "DealAddressActivity";
 
     private static final int get_deal = 1;
-    ListView lv_activity_dealadress;
+    ListView lv_activity_dealadress;    
     List<AdressData> adressDatas = new ArrayList<AdressData>();
-
+    AdressAdapter adressAdapter;
+    int Type;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dealadress);
         lv_activity_dealadress = (ListView) findViewById(R.id.lv_activity_dealadress);
-
+        adressAdapter = new AdressAdapter(DealAddressActivity.this, adressDatas, DealAddressActivity.this);
+        adressAdapter.setOnCollectListener(new OnCollectListener() {            
+            @Override
+            public void OnCollect(int index) {
+                System.out.println("收藏:" + index);
+                adressDatas.get(index).setIs_collect(true);
+                adressAdapter.notifyDataSetChanged();
+            }
+        });
+        lv_activity_dealadress.setAdapter(adressAdapter);
+        
         ImageView iv_activity_dealadress_back = (ImageView) findViewById(R.id.iv_activity_dealadress_back);
         iv_activity_dealadress_back.setOnClickListener(onClickListener);
+        Type = getIntent().getIntExtra("Type", 1);
+        Log.d(TAG, "Type = " + Type);
         GetDealAdress();
     }
 
@@ -70,10 +84,8 @@ public class DealAddressActivity extends Activity {
             super.handleMessage(msg);
             switch (msg.what) {
             case get_deal:
-            	Log.e("处理地点数据：",msg.obj.toString());
                 jsonDealAdress(msg.obj.toString());
-                DealAdapter dealAdapter = new DealAdapter();
-                lv_activity_dealadress.setAdapter(dealAdapter);
+                adressAdapter.notifyDataSetChanged();
                 break;
 
             default:
@@ -93,7 +105,7 @@ public class DealAddressActivity extends Activity {
         try {
             String url = Constant.BaseUrl + "location?auth_code="
                     + Variable.auth_code + "&city="
-                    + URLEncoder.encode(LocationCity, "UTF-8") + "&Type=1";
+                    + URLEncoder.encode(LocationCity, "UTF-8") + "&type=" + Type + "&cust_id=" + Variable.cust_id;
             new Thread(new NetThread.GetDataThread(handler, url, get_deal))
                     .start();
         } catch (Exception e) {
@@ -111,16 +123,26 @@ public class DealAddressActivity extends Activity {
             for(int i = 0 ; i < jsonArray.length(); i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 AdressData adressData = new AdressData();
-                adressData.setAddress(jsonObject.getString("address"));
+                adressData.setAdress(jsonObject.getString("address"));
                 adressData.setName(jsonObject.getString("name"));
-                adressData.setTel(jsonObject.getString("tel"));
+                adressData.setPhone(jsonObject.getString("tel"));
+                adressData.setLat(jsonObject.getDouble("lat"));
+                adressData.setLon(jsonObject.getDouble("lon"));
+                if(jsonObject.getString("is_collect").equals("1")){
+                    //收藏
+                    adressData.setIs_collect(true);
+                }else{
+                    //未收藏
+                    adressData.setIs_collect(false);
+                }
+                adressDatas.add(adressData);   
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
     
-    private class DealAdapter extends BaseAdapter{
+    private class DealAdapter1 extends BaseAdapter{
         LayoutInflater mInflater  = LayoutInflater.from(DealAddressActivity.this);
         @Override
         public int getCount() {
@@ -152,8 +174,8 @@ public class DealAddressActivity extends Activity {
             }
             AdressData adressData = adressDatas.get(position);
             holder.tv_name.setText(adressData.getName());
-            holder.tv_address.setText(adressData.getAddress());
-            holder.tv_tel.setText(adressData.getTel());
+            //holder.tv_address.setText(adressData.getAddress());
+            //holder.tv_tel.setText(adressData.getTel());
             return convertView;
         }
         private class ViewHolder {
@@ -162,7 +184,7 @@ public class DealAddressActivity extends Activity {
         }
     }
     
-    private class AdressData{
+    private class AdressData1{
         private String name;
         private String address;
         private String tel;

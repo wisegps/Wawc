@@ -35,6 +35,7 @@ import android.net.NetworkInfo;
 import android.os.Message;
 import android.text.format.Time;
 import android.util.Log;
+import android.widget.Toast;
 
 public class GetSystem {
     /**
@@ -230,6 +231,7 @@ public class GetSystem {
         } catch (BaiduMapAppNotSupportNaviException e) {
             // 在此处理异常
             e.printStackTrace();
+            Toast.makeText(mActivity, "未安装百度地图，请安装百度地图后在使用导航功能", Toast.LENGTH_SHORT).show();
         }
     }
 

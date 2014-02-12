@@ -139,6 +139,8 @@ public class TrafficActivity extends Activity implements IXListViewListener{
 			    try {
                     String url = Constant.BaseUrl + "vehicle/" + URLEncoder.encode(Car_name, "UTF-8") + "/violation?auth_code=" + Variable.auth_code;
                     new Thread(new NetThread.GetDataThread(handler, url, get_traffic)).start();
+                    String url1 = Constant.BaseUrl + "vehicle/" + URLEncoder.encode(Car_name, "UTF-8") + "/violation_stat?auth_code=" + Variable.auth_code;
+                    Log.d(TAG, url1);
 			    } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }

@@ -57,6 +57,7 @@ public class CarFaultActivity extends Activity implements IXListViewListener{
 		ImageView iv_activity_car_fault_back = (ImageView)findViewById(R.id.iv_activity_car_fault_back);
 		iv_activity_car_fault_back.setOnClickListener(onClickListener);
 		lv_activity_car_fault = (XListView)findViewById(R.id.lv_activity_car_fault);
+		lv_activity_car_fault.setXListViewListener(this);
 		
 		faultAdapter = new FaultAdapter(CarFaultActivity.this,faultDatas);
 		lv_activity_car_fault.setAdapter(faultAdapter);
@@ -197,7 +198,6 @@ public class CarFaultActivity extends Activity implements IXListViewListener{
             String fault_code = cursor.getString(cursor.getColumnIndex("fault_code"));
             String fault_desc = cursor.getString(cursor.getColumnIndex("fault_desc"));
             int fault_id = cursor.getInt(cursor.getColumnIndex("fault_id"));
-            
             String[] str = GetSystem.formatDateTime(create_time);
             
             faultData.setData(str[2]);
@@ -339,6 +339,7 @@ public class CarFaultActivity extends Activity implements IXListViewListener{
     public void onRefresh() {
         String url = Constant.BaseUrl + "device/" + device_id + "/fault?auth_code=" + 
                 Variable.auth_code + "&max_id=" + faultDatas.get(0).getFault_id();
+        System.out.println("onREfresh");
         new Thread(new NetThread.GetDataThread(handler, url, refresh_data)).start();
     }
     @Override

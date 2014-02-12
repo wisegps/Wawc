@@ -214,13 +214,13 @@ public class CarRemindActivity extends Activity{
 				ShowDate(replacement);
 				break;				
 			case R.id.bt_inspection_address://年检提醒
-				ToDealAdress(getString(R.string.inspection_title));
+				ToDealAdress(getString(R.string.inspection_title),1);
 				break;
 			case R.id.bt_examined_address://驾照年审
-				ToDealAdress(getString(R.string.examined_title));
+				ToDealAdress(getString(R.string.examined_title),2);
 				break;
 			case R.id.bt_replacement_address://驾照换证
-				ToDealAdress(getString(R.string.replacement_title));
+				ToDealAdress(getString(R.string.replacement_title),2);
 				break;
 			case R.id.bt_renewal_call://车辆续保
 				ToCall("phone");
@@ -238,9 +238,10 @@ public class CarRemindActivity extends Activity{
 	    ll_examined.setVisibility(View.GONE);
 	    ll_replacement.setVisibility(View.GONE);
 	}
-	private void ToDealAdress(String Title){
+	private void ToDealAdress(String Title,int Type){
 		Intent intent = new Intent(CarRemindActivity.this, DealAddressActivity.class);
 		intent.putExtra("Title", Title);
+		intent.putExtra("Type", Type);
 		startActivity(intent);
 	}
 	private void ToCall(String phone){
