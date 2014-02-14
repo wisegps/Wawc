@@ -12,6 +12,7 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.View.MeasureSpec;
 import android.widget.Scroller;
 
 public class HScrollLayout extends ViewGroup {
@@ -43,11 +44,13 @@ public class HScrollLayout extends ViewGroup {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
          int count = getChildCount();
+         int Height = 0;
          for(int i = 0 ; i < count; i++){
-             getChildAt(i).measure(widthMeasureSpec,
-                     100);//设置每个view的大小
+             Height = MeasureSpec.makeMeasureSpec(getChildAt(0).getHeight(), MeasureSpec.AT_MOST);
+             getChildAt(i).measure(widthMeasureSpec,heightMeasureSpec);//设置每个view的大小
          }
          scrollTo(0, 0);//Scroller定位
+         setMeasuredDimension(widthMeasureSpec, Height);  
     }
 
     @Override

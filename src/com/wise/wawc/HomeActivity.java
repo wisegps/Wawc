@@ -119,40 +119,34 @@ public class HomeActivity extends Activity{
       	iatRecognizer=SpeechRecognizer.createRecognizer(HomeActivity.this);
 
         HScrollLayout ScrollLayout_other = (HScrollLayout) findViewById(R.id.ScrollLayout_other);
-        LayoutInflater mLayoutInflater = LayoutInflater.from(HomeActivity.this);
-        View weatherView = mLayoutInflater.inflate(R.layout.item_weather, null);
-        View oilView = mLayoutInflater.inflate(R.layout.item_oil, null);
-        ScrollLayout_other.addView(weatherView);
-        ScrollLayout_other.addView(oilView);
-        tv_item_weather_date = (TextView) weatherView
-                .findViewById(R.id.tv_item_weather_date);
-        tv_item_weather_wd = (TextView) weatherView
-                .findViewById(R.id.tv_item_weather_wd);
-        tv_item_weather = (TextView) weatherView
-                .findViewById(R.id.tv_item_weather);
-        tv_item_weather_sky = (TextView) weatherView
-                .findViewById(R.id.tv_item_weather_sky);
-        tv_item_weather_temp1 = (TextView) weatherView
-                .findViewById(R.id.tv_item_weather_temp1);
-        tv_item_weather_index_xc = (TextView) weatherView.findViewById(R.id.tv_item_weather_index_xc);
-        tv_item_weather_city = (TextView) weatherView.findViewById(R.id.tv_item_weather_city);
+        //LayoutInflater mLayoutInflater = LayoutInflater.from(HomeActivity.this);
+        //View weatherView = mLayoutInflater.inflate(R.layout.item_weather, null);
+        //View oilView = mLayoutInflater.inflate(R.layout.item_oil, null);
+        //ScrollLayout_other.addView(weatherView);
+        //ScrollLayout_other.addView(oilView);
+        tv_item_weather_date = (TextView)findViewById(R.id.tv_item_weather_date);
+        tv_item_weather_wd = (TextView)findViewById(R.id.tv_item_weather_wd);
+        tv_item_weather = (TextView)findViewById(R.id.tv_item_weather);
+        tv_item_weather_sky = (TextView)findViewById(R.id.tv_item_weather_sky);
+        tv_item_weather_temp1 = (TextView)findViewById(R.id.tv_item_weather_temp1);
+        tv_item_weather_index_xc = (TextView)findViewById(R.id.tv_item_weather_index_xc);
+        tv_item_weather_city = (TextView)findViewById(R.id.tv_item_weather_city);
         tv_item_weather_city.setOnClickListener(onClickListener);
         
-        tv_item_oil_90 = (TextView) oilView.findViewById(R.id.tv_item_oil_90);
-        tv_item_oil_93 = (TextView) oilView.findViewById(R.id.tv_item_oil_93);
-        tv_item_oil_97 = (TextView) oilView.findViewById(R.id.tv_item_oil_97);
-        tv_item_oil_0 = (TextView) oilView.findViewById(R.id.tv_item_oil_0);
+        tv_item_oil_90 = (TextView)findViewById(R.id.tv_item_oil_90);
+        tv_item_oil_93 = (TextView)findViewById(R.id.tv_item_oil_93);
+        tv_item_oil_97 = (TextView)findViewById(R.id.tv_item_oil_97);
+        tv_item_oil_0 = (TextView)findViewById(R.id.tv_item_oil_0);
         //tv_item_oil_update = (TextView) oilView.findViewById(R.id.tv_item_oil_update);
         ScrollLayout_other.setOnViewChangeListener(new OnViewChangeListener() {            
             @Override
             public void OnViewChange(int view) {
-                System.out.println("view = " + view);
                 switch (view) {
                 case 0:
-                    iv_page.setBackgroundResource(R.drawable.home_body_cutover_left);
+                    iv_page.setImageResource(R.drawable.home_body_cutover_left);
                     break;
                 case 1:
-                    iv_page.setBackgroundResource(R.drawable.home_body_cutover_right);
+                    iv_page.setImageResource(R.drawable.home_body_cutover_right);
                     break;
                 }
             }            
