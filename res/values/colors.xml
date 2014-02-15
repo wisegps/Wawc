@@ -1,11 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 灰色 -->
     <color name="gray">#d8d9e1</color>
+    <!-- 蓝色 -->
     <color name="blue">#3b5197</color>
+    <!-- 红色 -->
     <color name="red">#e41d34</color>
+    <!-- 车辆限行 -->
     <color name="yellow">#ee810c</color>
+    <!-- 洗车指数 -->
     <color name="blue_bg">#3a5197</color>
-    
+    <!-- 常规字体颜色 -->
+    <color name="common">#313131</color>
+    <!-- 未激活字体颜色 -->
+    <color name="common_inactive">#7f313131</color>
+    <!-- 蓝色字体 -->
+    <color name="common_blue">#436af5</color>
+    <!-- 红色字体 -->
+    <color name="common_red">#e41d34</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color> 
 </resources>

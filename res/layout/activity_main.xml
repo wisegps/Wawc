@@ -30,8 +30,10 @@
 	       	android:layout_height="fill_parent">
 	       	<RelativeLayout 
 	       	    android:id="@+id/rl_activity_main_home"
-	       	    android:padding="10dp"
-	       	    android:layout_height="60dp"
+	       	    android:paddingLeft="20dp"
+	       	    android:paddingTop="40dp"
+	       	    android:paddingBottom="40dp"
+	       	    android:layout_height="wrap_content"
 	       	    android:layout_width="fill_parent">
 	       	    <ImageView
 	       	        android:id="@+id/iv_activity_main_logo"
@@ -46,21 +48,32 @@
 	       	        android:layout_height="wrap_content"
 	       	        android:layout_centerVertical="true"
 	       	        android:layout_toRightOf="@id/iv_activity_main_logo"
+	       	        android:text="未登录"
+	       	        android:textSize="@dimen/title"
 	       	        android:textColor="@color/white"/>
+	       	    <ImageView
+                    android:id="@+id/iv_activity_main_arrow"
+                    android:layout_height="20dp"
+                    android:layout_width="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:contentDescription="@string/app_name"
+                    android:visibility="invisible"
+                    android:src="@drawable/body_arrow"/>
 	       	     <ImageView
 	       	        android:id="@+id/iv_activity_main_login_qq"
 	       	        android:layout_height="30dp"
 	       	        android:layout_width="30dp"
-	       	        android:layout_alignParentRight="true"
 	       	        android:layout_centerVertical="true"
-	       	        android:contentDescription="@string/app_name"
+	       	        android:contentDescription="@string/app_name"	       	        
+                    android:layout_toLeftOf="@id/iv_activity_main_arrow"
 	       	        android:src="@drawable/home_qq"/>
 	       	     <ImageView
 	       	        android:id="@+id/iv_activity_main_login_sina"
 	       	        android:layout_height="30dp"
 	       	        android:layout_width="30dp"
 	       	        android:layout_toLeftOf="@id/iv_activity_main_login_qq"
-	       	        android:layout_marginLeft= "10dp"
+	       	        android:layout_marginRight="10dp"
 	       	        android:layout_centerVertical="true"
 	       	        android:contentDescription="@string/app_name"
 	       	        android:src="@drawable/home_sina"/> 	    
@@ -73,6 +86,7 @@
 	            android:drawableLeft="@drawable/home_ring"
 	            android:text="@string/car_circle"
 	            android:padding="10dp"
+                android:drawablePadding="10dp"
 	            android:textSize="@dimen/title"
 	            android:gravity="center_vertical"/>
 	       	<View 
@@ -86,9 +100,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:drawableLeft="@drawable/home_remind"
+                android:drawableLeft="@drawable/home_side_remind"
                 android:text="@string/car_remind"
                 android:padding="10dp"
+                android:drawablePadding="10dp"
                 android:textSize="@dimen/title"
                 android:gravity="center_vertical"/>	
             <TextView 
@@ -96,9 +111,10 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:drawableLeft="@drawable/home_condition"
+                android:drawableLeft="@drawable/home_side_car"
                 android:text="@string/my_car"
                 android:padding="10dp"
+                android:drawablePadding="10dp"
                 android:textSize="@dimen/title"
                 android:gravity="center_vertical"/>
             <TextView 
@@ -109,6 +125,7 @@
                 android:drawableLeft="@drawable/home_terminal"
                 android:text="@string/my_terminal"
                 android:padding="10dp"
+                android:drawablePadding="10dp"
                 android:textSize="@dimen/title"
                 android:gravity="center_vertical"/>
 	       	<TextView 
@@ -119,6 +136,7 @@
                 android:drawableLeft="@drawable/home_order"
                 android:text="@string/my_orders"
                 android:padding="10dp"
+                android:drawablePadding="10dp"
                 android:textSize="@dimen/title"
                 android:gravity="center_vertical"/>
 	       	<TextView 
@@ -129,6 +147,7 @@
                 android:drawableLeft="@drawable/home_collect"
                 android:text="@string/my_collect"
                 android:padding="10dp"
+                android:drawablePadding="10dp"
                 android:textSize="@dimen/title"
                 android:gravity="center_vertical"/>	       	
             <View 
@@ -145,6 +164,7 @@
                 android:drawableLeft="@drawable/ic_launcher"
                 android:text="@string/setup_center"
                 android:padding="10dp"
+                android:drawablePadding="10dp"
                 android:textSize="@dimen/title"
                 android:gravity="center_vertical"/>       
 	   	</LinearLayout>   	

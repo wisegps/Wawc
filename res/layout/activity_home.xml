@@ -8,15 +8,15 @@
         android:id="@+id/rl_activity_home_top"
         android:layout_width="fill_parent"
         android:background="@drawable/nav_bg"
-        android:layout_height="50dp"
-        android:padding="2dp">
+        android:layout_height="@dimen/title_hight">
 		<ImageView
             android:id="@+id/iv_activity_home_menu"
-            android:layout_width="60dp"
-	        android:layout_height="32dp"
+            android:layout_width="@dimen/title_image"
+	        android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:clickable="true"
+            android:layout_marginLeft="@dimen/margins"
             android:contentDescription="@string/app_name"
             android:src="@drawable/side_left"/>
         <TextView
@@ -27,14 +27,15 @@
             android:gravity="center"
             android:text="@string/app_name"
             android:textColor="@color/white"
-            android:textSize="22sp"/>
+            android:textSize="@dimen/head"/>
 		<ImageView
             android:id="@+id/iv_activity_car_home_search"
-            android:layout_width="60dp"
-	        android:layout_height="32dp"
+            android:layout_width="@dimen/title_image"
+	        android:layout_height="@dimen/title_image"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/app_name"
+            android:layout_marginRight="@dimen/margins"
             android:src="@drawable/side_right"/>
 	</RelativeLayout>
     <LinearLayout 
@@ -43,17 +44,17 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="#6c000000"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/double_margins"
         android:orientation="vertical">
         <RelativeLayout 
             android:id="@+id/rl_activity_home_car"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:padding="10dp">
+	        android:padding="@dimen/margins">
 	        <ImageView
 	            android:id="@+id/iv_carLogo" 
-	            android:layout_width="50dp"
-	            android:layout_height="50dp"
+	            android:layout_width="@dimen/image_logo"
+	            android:layout_height="@dimen/image_logo"
 	            android:contentDescription="@string/app_name"
 	            android:src="@drawable/ic_launcher"/>
 	        <TextView 
@@ -61,8 +62,8 @@
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:layout_centerVertical="true"
-	            android:textSize="22sp"
-	            android:layout_marginLeft="10dp"
+	            android:textSize="@dimen/head"
+	            android:layout_marginLeft="@dimen/margins"
 	            android:layout_toRightOf="@id/iv_carLogo"
 	            android:drawableRight="@drawable/car_arrow"
 	            android:textColor="@color/white"/>       
@@ -70,16 +71,16 @@
 	    <View 
 	        android:layout_width="fill_parent"
 	        android:layout_height="1dp"
-	        android:layout_marginLeft="10dp"
-	        android:layout_marginRight="10dp"
+	        android:layout_marginLeft="@dimen/margins"
+	        android:layout_marginRight="@dimen/margins"
 	        android:background="@drawable/body_line"/>
 	    <TextView 
             android:id="@+id/tv_activity_home_car_adress"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:layout_margin="10dp"
-            android:textSize="18sp"
+            android:layout_margin="@dimen/margins"
+            android:textSize="@dimen/main"
             android:drawableLeft="@drawable/home_lbs"
             android:gravity="center_vertical"/>
 	    <TextView 
@@ -87,11 +88,11 @@
 	        android:layout_height="wrap_content"
 	        android:textColor="@color/white"
 	        android:gravity="right"
-	        android:layout_marginBottom="10dp"
+	        android:layout_marginBottom="@dimen/margins"
 	        android:text="5分钟前更新"/>
 	    <LinearLayout
 	        android:orientation="horizontal" 
-	        android:padding="10dp"
+	        android:padding="@dimen/margins"
 	        android:background="#88000000"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content">
@@ -107,7 +108,7 @@
 		            android:textColor="@color/white"
 		            android:drawableTop="@drawable/home_condition"
 		            android:background="@null"
-		            android:textSize="16sp"
+		            android:textSize="@dimen/main"
 		            android:text="@string/vehicle_status"/>
 	        </LinearLayout>
 	        <LinearLayout 
@@ -122,7 +123,7 @@
 		            android:textColor="@color/white"
 		            android:drawableTop="@drawable/home_remind"
 		            android:background="@null"
-		            android:textSize="16sp"
+		            android:textSize="@dimen/main"
 		            android:text="@string/car_remind"/>
 	        </LinearLayout>
 	        <LinearLayout 
@@ -137,7 +138,7 @@
 		            android:textColor="@color/white"
 		            android:drawableTop="@drawable/home_violate"
 		            android:background="@null"
-		            android:textSize="16sp"
+		            android:textSize="@dimen/main"
 		            android:text="@string/traffic"/>
 	        </LinearLayout>
 	        <LinearLayout 
@@ -152,7 +153,7 @@
 		            android:textColor="@color/white"
 		            android:drawableTop="@drawable/home_share"
 		            android:background="@null"
-		            android:textSize="16sp"
+		            android:textSize="@dimen/main"
 		            android:text="@string/shareLocation"/>
 	        </LinearLayout>
 	    </LinearLayout>
@@ -167,13 +168,13 @@
 	          android:id="@+id/ScrollLayout_other"  
 	          android:layout_width="fill_parent"   
 	          android:layout_height="wrap_content"
-	          android:layout_marginTop="10dp"
+	          android:layout_marginTop="@dimen/margins"
 	          android:background="#6c000000">
 	        <LinearLayout 
 	            android:id="@+id/ll_weather"
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
-		        android:padding="20dp"
+		        android:padding="@dimen/double_margins"
 		        android:orientation="vertical">
 		        <RelativeLayout 
 		            android:layout_width="fill_parent"
@@ -184,14 +185,15 @@
 		                android:layout_height="wrap_content"
 		                android:layout_alignParentRight="true"
 		                android:textColor="@color/white"
-		                android:background="@drawable/home_change_city"
-		                android:textSize="16sp"
+		                android:clickable="true"
+		                android:background="@drawable/home_btn_changecity"
+		                android:textSize="@dimen/content"
 		                android:text="深圳"/>
 		        </RelativeLayout>
 		        <LinearLayout 
 		            android:layout_height="wrap_content"
 		            android:layout_width="fill_parent"
-		            android:layout_marginBottom="20dp"
+		            android:layout_marginBottom="@dimen/double_margins"
 		            android:orientation="horizontal">
 		            <TextView 
 		                android:id="@+id/tv_item_weather_wd"
@@ -206,7 +208,7 @@
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
 		                android:textColor="@color/white"
-		                android:textSize="18sp"
+		                android:textSize="@dimen/main"
 		                android:text="多云转晴"/>
 		        </LinearLayout>
 		        <TextView 
@@ -214,7 +216,7 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:textColor="@color/white"
-		            android:textSize="16sp"
+		            android:textSize="@dimen/content"
 		            android:layout_marginBottom="5dp"
 		            android:text="10月27日  星期一"/>
 		        <LinearLayout 
@@ -228,14 +230,14 @@
 		                android:layout_height="wrap_content"
 		                android:layout_marginRight="10dp"
 		                android:textColor="@color/white"
-		                android:textSize="16sp"
+		                android:textSize="@dimen/content"
 		                android:text="6-18°C"/>
 		            <TextView 
 		                android:id="@+id/tv_item_weather"
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
 		                android:textColor="@color/white"
-		                android:textSize="16sp"
+		                android:textSize="@dimen/content"
 		                android:text="东风3级    湿度84%"/>
 		        </LinearLayout>
 		        
@@ -247,28 +249,28 @@
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
 		                android:textColor="@color/white"
-		                android:textSize="16sp"
+		                android:textSize="@dimen/content"
 		                android:text="洗车指数:"/>
 		            <TextView
 		                android:id="@+id/tv_item_weather_index_xc" 
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
 		                android:textColor="@color/white"
-		                android:textSize="16sp"
-		                android:background="@drawable/default_bg"
+		                android:textSize="@dimen/content"
+		                android:background="@drawable/home_xc"
 		                android:text="适宜"/>
 		            <TextView 
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
 		                android:textColor="@color/white"
-		                android:textSize="16sp"
+		                android:textSize="@dimen/content"
 		                android:text="车辆限行:"/>
 		            <TextView 
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
 		                android:textColor="@color/white"
-		                android:background="@color/yellow"
-		                android:textSize="16sp"
+		                android:background="@drawable/home_xx"
+		                android:textSize="@dimen/content"
 		                android:text="限行"/>
 		        </LinearLayout>
 		    </LinearLayout>

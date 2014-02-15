@@ -1,10 +1,19 @@
 <resources>
     <!-- 头部高度 -->
     <dimen name="title_hight">44dp</dimen>
-    <!-- 头部高度边距 -->
-    <dimen name="title_padding">2dp</dimen>
-	<!-- 标题文字大小 -->
+    <!-- 头部图片按钮大小 -->
+    <dimen name="title_image">30dp</dimen>
+    <!-- 图标,略缩图大小 -->
+    <dimen name="image_logo">50dp</dimen>
+    <!-- 内容边距 -->
+    <dimen name="margins">10dp</dimen>
+    <dimen name="double_margins">20dp</dimen>
+    <!-- 头部字体 -->
+    <dimen name="head">25sp</dimen>
+	<!-- 标题文字 -->
     <dimen name="title">20sp</dimen>
+    <!-- 辅助字体，按钮 -->
+    <dimen name="main">18sp</dimen>
     <!-- 内容文字大小 -->
     <dimen name="content">16sp</dimen>
     <dimen name="size_22">22sp</dimen>
