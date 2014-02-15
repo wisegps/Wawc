@@ -10,8 +10,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import com.baidu.mapapi.navi.BaiduMapAppNotSupportNaviException;
 import com.baidu.mapapi.navi.BaiduMapNavigation;
@@ -33,6 +35,7 @@ import android.net.NetworkInfo;
 import android.os.Message;
 import android.text.format.Time;
 import android.util.Log;
+import android.widget.Toast;
 
 public class GetSystem {
     /**
@@ -133,10 +136,8 @@ public class GetSystem {
     /**
      * 获取指定天
      * 
-     * @param Date
-     *            2013-12-01
-     * @param number
-     *            前一天填-1 ,后一天填1
+     * @param Date 2013-12-01
+     * @param number 前一天填-1 ,后一天填1
      * @return
      */
     public static String GetNextData(String Date, int number) {
@@ -151,6 +152,61 @@ public class GetSystem {
             e.printStackTrace();
             return null;
         }
+    }
+    /**
+     * 格式化显示时间，今天，昨天，日期
+     * @param time 2014-02-10 06:17
+     * @return 数组：0 日期，1 时间
+     */
+    public static String[] formatDateTime(String time) {  
+        SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm");   
+        if(time==null ||"".equals(time)){  
+            return null;  
+        }  
+        Date date = null;  
+        try {  
+            date = format.parse(time);  
+        } catch (ParseException e) {  
+            e.printStackTrace();  
+        }  
+          
+        Calendar current = Calendar.getInstance();  
+          
+        Calendar today = Calendar.getInstance();    //今天  
+          
+        today.set(Calendar.YEAR, current.get(Calendar.YEAR));  
+        today.set(Calendar.MONTH, current.get(Calendar.MONTH));  
+        today.set(Calendar.DAY_OF_MONTH,current.get(Calendar.DAY_OF_MONTH));  
+        //  Calendar.HOUR——12小时制的小时数 Calendar.HOUR_OF_DAY——24小时制的小时数  
+        today.set( Calendar.HOUR_OF_DAY, 0);  
+        today.set( Calendar.MINUTE, 0);  
+        today.set(Calendar.SECOND, 0);  
+          
+        Calendar yesterday = Calendar.getInstance();    //昨天  
+          
+        yesterday.set(Calendar.YEAR, current.get(Calendar.YEAR));  
+        yesterday.set(Calendar.MONTH, current.get(Calendar.MONTH));  
+        yesterday.set(Calendar.DAY_OF_MONTH,current.get(Calendar.DAY_OF_MONTH)-1);  
+        yesterday.set( Calendar.HOUR_OF_DAY, 0);  
+        yesterday.set( Calendar.MINUTE, 0);  
+        yesterday.set(Calendar.SECOND, 0);  
+          
+        current.setTime(date);  
+        String[] myDate = new String[3];
+        if(current.after(today)){  
+            myDate[0] = "今天";
+            myDate[1] = time.split(" ")[1];
+            myDate[2] = "今天";
+        }else if(current.before(today) && current.after(yesterday)){  
+            myDate[0] = "昨天";
+            myDate[1] = time.split(" ")[1];
+            myDate[2] = "昨天";
+        }else{ 
+            myDate[0] = time.substring(0, 10);
+            myDate[1] = time.split(" ")[1];
+            myDate[2] = time.substring(5, 10);
+        }  
+        return myDate;
     }
 
     /**
@@ -175,6 +231,7 @@ public class GetSystem {
         } catch (BaiduMapAppNotSupportNaviException e) {
             // 在此处理异常
             e.printStackTrace();
+            Toast.makeText(mActivity, "未安装百度地图，请安装百度地图后在使用导航功能", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -251,7 +308,7 @@ public class GetSystem {
      * 
      * @param bitmap
      * @param name
-     *            图片名称a.jpg
+     *            图片名称a.png
      */
     public static void saveImageSD(Bitmap bitmap, String path, String name) {
         File file = new File(path);
@@ -265,7 +322,7 @@ public class GetSystem {
         FileOutputStream b = null;
         try {
             b = new FileOutputStream(fileName);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {

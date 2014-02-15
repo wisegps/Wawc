@@ -73,7 +73,7 @@ public class LogoAdapter extends BaseAdapter {
 		}
 		
 		 if(carDataList.get(position).isCheck()){
-			 hodler.linearLayout.setBackgroundResource(R.color.bkg1);
+			 hodler.linearLayout.setBackgroundResource(R.color.gray);
          }else{
         	 hodler.linearLayout.setBackgroundDrawable(null);
          }

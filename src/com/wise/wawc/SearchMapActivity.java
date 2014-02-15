@@ -1,8 +1,15 @@
 package com.wise.wawc;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.map.ItemizedOverlay;
 import com.baidu.mapapi.map.MKEvent;
@@ -10,7 +17,6 @@ import com.baidu.mapapi.map.MapController;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Overlay;
 import com.baidu.mapapi.map.OverlayItem;
-import com.baidu.mapapi.map.PoiOverlay;
 import com.baidu.mapapi.search.MKAddrInfo;
 import com.baidu.mapapi.search.MKBusLineResult;
 import com.baidu.mapapi.search.MKDrivingRouteResult;
@@ -26,14 +32,16 @@ import com.baidu.mapapi.utils.DistanceUtil;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.wise.data.AdressData;
 import com.wise.extend.AdressAdapter;
+import com.wise.extend.AdressAdapter.OnCollectListener;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
-
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -47,6 +55,7 @@ import android.widget.Toast;
  * @author honesty
  */
 public class SearchMapActivity extends Activity {
+    private final int getIsCollect = 1;
 	WawcApplication app;
 	MapView mMapView = null;
 	MapController mMapController = null;
@@ -54,6 +63,8 @@ public class SearchMapActivity extends Activity {
 	MKSearch mkSearch;
 	List<AdressData> adressDatas = new ArrayList<AdressData>();
 	ListView lv_activity_search_map;
+	AdressAdapter adressAdapter;
+	
 	OverlayCar overlayCar;
 	GeoPoint point;//当前位置
 	
@@ -69,8 +80,19 @@ public class SearchMapActivity extends Activity {
 			app.mBMapManager.init(WawcApplication.strKey, null);
 		}
 		setContentView(R.layout.activity_search_map);
+		
 		lv_activity_search_map = (ListView) findViewById(R.id.lv_activity_search_map);
 		lv_activity_search_map.setOnItemClickListener(onItemClickListener);
+        adressAdapter = new AdressAdapter(SearchMapActivity.this, adressDatas,SearchMapActivity.this);
+        lv_activity_search_map.setAdapter(adressAdapter);
+        adressAdapter.setOnCollectListener(new OnCollectListener() {                
+            @Override
+            public void OnCollect(int index) {
+                adressDatas.get(index).setIs_collect(true);
+                adressAdapter.notifyDataSetChanged();
+            }
+        });
+        
 		ImageView iv_activity_search_map_back = (ImageView)findViewById(R.id.iv_activity_search_map_back);
 		iv_activity_search_map_back.setOnClickListener(onClickListener);
 		TextView tv_activity_search_map_title = (TextView)findViewById(R.id.tv_activity_search_map_title);
@@ -109,6 +131,26 @@ public class SearchMapActivity extends Activity {
 			}
 		}
 	};
+	
+	Handler handler = new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+            case getIsCollect:
+                System.out.println(msg.obj.toString());
+                jsonCollect(msg.obj.toString());
+                adressAdapter.notifyDataSetChanged();
+                break;
+
+            default:
+                break;
+            }
+        }
+	    
+	};
+	
 	OnItemClickListener onItemClickListener = new OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
@@ -116,6 +158,27 @@ public class SearchMapActivity extends Activity {
 			mMapController.setCenter(point);// 设置地图中心点
 		}
 	};
+	/**
+	 * 解析返回的数据
+	 * @param result
+	 */
+	private void jsonCollect(String result){
+	    try {
+            JSONArray jsonArray = new JSONArray(result);
+            for(int i = 0 ; i < jsonArray.length() ; i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String name = jsonObject.getString("name");
+                for(int j = 0 ; j < adressDatas.size() ; j++){
+                    if(adressDatas.get(j).getName().equals(name)){
+                        adressDatas.get(j).setIs_collect(true);
+                        break;
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+	}
 	
 	MKSearchListener mkSearchListener = new MKSearchListener() {
 		@Override
@@ -135,6 +198,7 @@ public class SearchMapActivity extends Activity {
 				Toast.makeText(SearchMapActivity.this, R.string.search_error,Toast.LENGTH_SHORT).show();
 				return;
 			}
+			String str ="";//用户判断是否已经收藏
 			for(MKPoiInfo mkPoiInfo : res.getAllPoi()){
 				int distance = (int) DistanceUtil.getDistance(point, mkPoiInfo.pt);
 				AdressData adressData = new AdressData();
@@ -145,16 +209,25 @@ public class SearchMapActivity extends Activity {
 				adressData.setLon(mkPoiInfo.pt.getLongitudeE6()/1e6);
 				adressData.setDistance(distance);
 				adressDatas.add(adressData);
+				str = str + mkPoiInfo.name + ",";
 			}
-			Collections.sort(adressDatas, new Comparator());
-			AdressAdapter adressAdapter = new AdressAdapter(SearchMapActivity.this, adressDatas,SearchMapActivity.this);
-			lv_activity_search_map.setAdapter(adressAdapter);
+			Collections.sort(adressDatas, new Comparator());//排序
+			adressAdapter.notifyDataSetChanged();
 			for(int i = 0; i < adressDatas.size() ; i++){
 				GeoPoint point1 = new GeoPoint((int) (adressDatas.get(i).getLat() * 1E6),(int) (adressDatas.get(i).getLon() * 1E6));
 				OverlayItem item = new OverlayItem(point1, "item2", "item2");
 				overlayCar.addItem(item);
 			}
 			mMapView.refresh();
+			//判断是否收藏
+            String url;
+            try {
+                url = Constant.BaseUrl + "favorite/is_collect?auth_code=" + Variable.auth_code + 
+                        "&names=" + URLEncoder.encode(str, "UTF-8") + "&cust_id=" + Variable.cust_id;
+                new Thread(new NetThread.GetDataThread(handler, url, getIsCollect)).start();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
 		}
 		@Override
 		public void onGetPoiDetailSearchResult(int arg0, int arg1) {}

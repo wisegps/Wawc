@@ -52,6 +52,7 @@ public class AdressAdapter extends BaseAdapter{
 	ProgressDialog myDialog = null;
 	private MyHandler myHandler = null;
 	private static final int addFavorite = 1;
+	int index;
 	public AdressAdapter(Context context,List<AdressData> adressDatas,Activity mActivity){
 		this.context = context;
 		this.adressDatas = adressDatas;
@@ -102,6 +103,11 @@ public class AdressAdapter extends BaseAdapter{
 		}else{
 			holder.ll_adress_tel.setVisibility(View.VISIBLE);
 		}
+		if(adressData.isIs_collect()){
+		    holder.iv_Collect.setImageResource(R.drawable.ib_face);
+		}else{
+		    holder.iv_Collect.setImageResource(R.drawable.img_cancel);
+		}
 		//收藏
 		holder.iv_Collect.setOnClickListener(new OnClickListener() {				
 			@Override
@@ -111,16 +117,19 @@ public class AdressAdapter extends BaseAdapter{
 					Toast.makeText(context, "请登录",Toast.LENGTH_SHORT).show();
 					return;
 				}else{
-					myDialog = ProgressDialog.show(context,"提示", "收藏中...");
-					myDialog.setCancelable(true);
-					List<NameValuePair> params = new ArrayList<NameValuePair>();
-					params.add(new BasicNameValuePair("cust_id", Variable.cust_id));
-					params.add(new BasicNameValuePair("name", adressData.getName()));
-					params.add(new BasicNameValuePair("address", adressData.getAdress()));
-					params.add(new BasicNameValuePair("tel", adressData.getPhone()));
-					params.add(new BasicNameValuePair("lon", String.valueOf(adressData.getLon())));
-					params.add(new BasicNameValuePair("lat", String.valueOf(adressData.getLat())));
-					new Thread(new NetThread.postDataThread(myHandler, Constant.BaseUrl + "favorite?auth_code=" + Variable.auth_code, params, addFavorite,position)).start();
+				    if(!adressData.isIs_collect()){
+				        index = position;
+	                    myDialog = ProgressDialog.show(context,"提示", "收藏中...");
+	                    myDialog.setCancelable(true);
+	                    List<NameValuePair> params = new ArrayList<NameValuePair>();
+	                    params.add(new BasicNameValuePair("cust_id", Variable.cust_id));
+	                    params.add(new BasicNameValuePair("name", adressData.getName()));
+	                    params.add(new BasicNameValuePair("address", adressData.getAdress()));
+	                    params.add(new BasicNameValuePair("tel", adressData.getPhone()));
+	                    params.add(new BasicNameValuePair("lon", String.valueOf(adressData.getLon())));
+	                    params.add(new BasicNameValuePair("lat", String.valueOf(adressData.getLat())));
+	                    new Thread(new NetThread.postDataThread(myHandler, Constant.BaseUrl + "favorite?auth_code=" + Variable.auth_code, params, addFavorite,position)).start();
+				    }				    
 				}
 			}
 		});
@@ -174,6 +183,9 @@ public class AdressAdapter extends BaseAdapter{
 				        dbExcute.InsertDB(mActivity, values, Constant.TB_Collection);
 				        System.out.println(adressData.toString());
 						Toast.makeText(mActivity, "添加成功", Toast.LENGTH_SHORT).show();
+						if(onCollectListener != null){
+						    onCollectListener.OnCollect(index);
+						}
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -182,5 +194,12 @@ public class AdressAdapter extends BaseAdapter{
 				break;
 			}
 		}
+	}
+	OnCollectListener onCollectListener;
+	public void setOnCollectListener(OnCollectListener onCollectListener){
+        this.onCollectListener = onCollectListener;
+    }
+	public interface OnCollectListener {
+	    public abstract void OnCollect(int index);
 	}
 }

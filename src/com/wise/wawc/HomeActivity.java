@@ -18,6 +18,7 @@ import com.iflytek.cloud.speech.SpeechRecognizer;
 import com.iflytek.cloud.speech.SpeechUser;
 import com.wise.data.CarData;
 import com.wise.extend.HScrollLayout;
+import com.wise.extend.OnViewChangeListener;
 import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
@@ -51,6 +52,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,7 +71,7 @@ public class HomeActivity extends Activity{
             tv_item_weather_sky, tv_item_weather_temp1,
             tv_item_weather_index_xc, tv_item_weather_city,tv_item_oil_90, tv_item_oil_93,
             tv_item_oil_97, tv_item_oil_0,tv_car_number,tv_activity_home_car_adress;
-    ImageView iv_carLogo;
+    ImageView iv_carLogo,iv_page;
     private ImageView saySomething = null; // 语音识别
   	private SpeechRecognizer iatRecognizer;   //识别对象
   	private StringBuffer sb = null;
@@ -108,6 +110,7 @@ public class HomeActivity extends Activity{
         tv_activity_home_car_adress.setOnClickListener(onClickListener);
         tv_car_number = (TextView)findViewById(R.id.tv_car_number);
         iv_carLogo = (ImageView)findViewById(R.id.iv_carLogo);
+        iv_page = (ImageView)findViewById(R.id.iv_page);
 
         saySomething = (ImageView) findViewById(R.id.iv_home_say_something);
         saySomething.setOnClickListener(onClickListener);
@@ -116,32 +119,35 @@ public class HomeActivity extends Activity{
       	iatRecognizer=SpeechRecognizer.createRecognizer(HomeActivity.this);
 
         HScrollLayout ScrollLayout_other = (HScrollLayout) findViewById(R.id.ScrollLayout_other);
-        LayoutInflater mLayoutInflater = LayoutInflater.from(HomeActivity.this);
-        View weatherView = mLayoutInflater.inflate(R.layout.item_weather, null);
-        View oilView = mLayoutInflater.inflate(R.layout.item_oil, null);
-        ScrollLayout_other.addView(weatherView);
-        ScrollLayout_other.addView(oilView);
-        tv_item_weather_date = (TextView) weatherView
-                .findViewById(R.id.tv_item_weather_date);
-        tv_item_weather_wd = (TextView) weatherView
-                .findViewById(R.id.tv_item_weather_wd);
-        tv_item_weather = (TextView) weatherView
-                .findViewById(R.id.tv_item_weather);
-        tv_item_weather_sky = (TextView) weatherView
-                .findViewById(R.id.tv_item_weather_sky);
-        tv_item_weather_temp1 = (TextView) weatherView
-                .findViewById(R.id.tv_item_weather_temp1);
-        tv_item_weather_index_xc = (TextView) weatherView.findViewById(R.id.tv_item_weather_index_xc);
-        tv_item_weather_city = (TextView) weatherView.findViewById(R.id.tv_item_weather_city);
+        tv_item_weather_date = (TextView)findViewById(R.id.tv_item_weather_date);
+        tv_item_weather_wd = (TextView)findViewById(R.id.tv_item_weather_wd);
+        tv_item_weather = (TextView)findViewById(R.id.tv_item_weather);
+        tv_item_weather_sky = (TextView)findViewById(R.id.tv_item_weather_sky);
+        tv_item_weather_temp1 = (TextView)findViewById(R.id.tv_item_weather_temp1);
+        tv_item_weather_index_xc = (TextView)findViewById(R.id.tv_item_weather_index_xc);
+        tv_item_weather_city = (TextView)findViewById(R.id.tv_item_weather_city);
         tv_item_weather_city.setOnClickListener(onClickListener);
         
-        tv_item_oil_90 = (TextView) oilView.findViewById(R.id.tv_item_oil_90);
-        tv_item_oil_93 = (TextView) oilView.findViewById(R.id.tv_item_oil_93);
-        tv_item_oil_97 = (TextView) oilView.findViewById(R.id.tv_item_oil_97);
-        tv_item_oil_0 = (TextView) oilView.findViewById(R.id.tv_item_oil_0);
+        tv_item_oil_90 = (TextView)findViewById(R.id.tv_item_oil_90);
+        tv_item_oil_93 = (TextView)findViewById(R.id.tv_item_oil_93);
+        tv_item_oil_97 = (TextView)findViewById(R.id.tv_item_oil_97);
+        tv_item_oil_0 = (TextView)findViewById(R.id.tv_item_oil_0);
         //tv_item_oil_update = (TextView) oilView.findViewById(R.id.tv_item_oil_update);
-
-        
+        ScrollLayout_other.setOnViewChangeListener(new OnViewChangeListener() {            
+            @Override
+            public void OnViewChange(int view) {
+                switch (view) {
+                case 0:
+                    iv_page.setImageResource(R.drawable.home_body_cutover_left);
+                    break;
+                case 1:
+                    iv_page.setImageResource(R.drawable.home_body_cutover_right);
+                    break;
+                }
+            }            
+            @Override
+            public void OnLastView() {}
+        });
         getSp();
         GetOldWeather();// 获取本地存储的数据
         GetFutureWeather();
@@ -323,7 +329,7 @@ public class HomeActivity extends Activity{
                 carData.setMaintain_last_mileage(maintain_last_mileage);
                 carData.setMaintain_next_mileage(maintain_next_mileage);
                 carData.setBuy_date(buy_date);
-                String imagePath = Constant.VehicleLogoPath + car_brand + ".jpg";//SD卡路径
+                String imagePath = Constant.VehicleLogoPath + car_brand + ".png";//SD卡路径
                 if(new File(imagePath).isFile()){//存在
                     carData.setLogoPath(imagePath);
                 }else{
@@ -377,7 +383,7 @@ public class HomeActivity extends Activity{
         }
         for(int i = 0 ; i < Variable.carDatas.size() ; i++){
             String brand = Variable.carDatas.get(i).getCar_brand();            
-            String imagePath = Constant.VehicleLogoPath + brand + ".jpg";//SD卡路径
+            String imagePath = Constant.VehicleLogoPath + brand + ".png";//SD卡路径
             if(new File(imagePath).isFile()){//存在
                 System.out.println("文件存在");
             }else{//不存在
@@ -385,9 +391,10 @@ public class HomeActivity extends Activity{
                    String name =  brands.get(j).getName();
                    if(name.equals(brand)){
                        String imageUrl = Constant.ImageUrl + brands.get(j).getUrl_icon();
+                       Log.d(TAG, "imageUrl = " + imageUrl);
                        Bitmap bitmap = GetSystem.getBitmapFromURL(imageUrl);
                         if(bitmap != null){
-                            GetSystem.saveImageSD(bitmap,Constant.VehicleLogoPath, brand + ".jpg");
+                            GetSystem.saveImageSD(bitmap,Constant.VehicleLogoPath, brand + ".png");
                             Variable.carDatas.get(i).setLogoPath(imagePath);
                         }
                        break;
@@ -395,6 +402,7 @@ public class HomeActivity extends Activity{
                 }
             }
         }
+        ShowCarInfo();
     }
     private class Brand{
         String name;
@@ -742,7 +750,7 @@ public class HomeActivity extends Activity{
                     tv_car_number.setText(carData.getObj_name());
                     Bitmap bimage = BitmapFactory.decodeFile(carData.getLogoPath());
                     if(bimage != null){            
-                        iv_carLogo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
+                        iv_carLogo.setImageBitmap(bimage);
                     }else{
                         iv_carLogo.setImageResource(R.drawable.ic_launcher);
                     }

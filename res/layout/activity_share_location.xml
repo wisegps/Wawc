@@ -38,7 +38,7 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical"
-	    android:background="@color/bkg1"
+	    android:background="@color/gray"
 	    android:padding="10dp">
 	    <LinearLayout 
 	        android:layout_width="fill_parent"

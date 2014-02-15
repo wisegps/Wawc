@@ -186,6 +186,7 @@ public class UploadUtil {
 					+ "\"; filename=\"" + file.getName() + "\"" + LINE_END);
 			sb.append("Content-Type:image/pjpeg" + LINE_END); // 这里配置的Content-type很重要的 ，用于服务器端辨别文件的类型的
 			sb.append(LINE_END);
+			System.out.println(sb.toString());
 			params = sb.toString();
 			sb = null;
 			

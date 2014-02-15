@@ -12,7 +12,6 @@
         <RelativeLayout
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content" 
-	        android:background="@color/bkg6"
 	        android:padding="10dp">
 	        <TextView
 	            android:id="@+id/tv_name"
@@ -38,8 +37,7 @@
                     android:layout_height="50dp"
                     android:text="删除"
                     android:textColor="@color/white"
-                    android:gravity="center"
-                    android:background="@color/bkg3">                        
+                    android:gravity="center">                        
             </TextView>
         </LinearLayout>
     </com.wise.customView.SlidingView>

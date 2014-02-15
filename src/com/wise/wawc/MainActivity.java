@@ -66,7 +66,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     Platform platformSina;
     Platform platformWhat;
     ImageView iv_activity_main_logo,iv_activity_main_login_sina,
-            iv_activity_main_login_qq,iv_voice;
+            iv_activity_main_login_qq,iv_voice,iv_activity_main_arrow;
     TextView tv_activity_main_name;
     RelativeLayout refuel,maintain,wishCar,help,insurance,park;
     private ParseFaceThread thread = null;
@@ -145,6 +145,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         iv_activity_main_login_qq = (ImageView) findViewById(R.id.iv_activity_main_login_qq);
         iv_activity_main_login_qq.setOnClickListener(onClickListener);
         iv_activity_main_logo = (ImageView) findViewById(R.id.iv_activity_main_logo);
+        iv_activity_main_arrow = (ImageView) findViewById(R.id.iv_activity_main_arrow);
         tv_activity_main_name = (TextView) findViewById(R.id.tv_activity_main_name);
 
         // 车友圈
@@ -345,7 +346,8 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             tv_activity_main_name.setText(platformQQ.getDb().getUserName());
             Variable.cust_name = platformQQ.getDb().getUserName();
             iv_activity_main_login_sina.setVisibility(View.GONE);
-            iv_activity_main_login_qq.setVisibility(View.GONE);
+            iv_activity_main_login_qq.setVisibility(View.VISIBLE);
+            iv_activity_main_arrow.setVisibility(View.VISIBLE);
             platfromIsLogin(platformQQ);
             //绑定
             Login(platformQQ.getDb().getUserId(), platformQQ.getDb()
@@ -355,7 +357,8 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             System.out.println("sina登录");
             tv_activity_main_name.setText(platformSina.getDb().getUserName());
             Variable.cust_name = platformSina.getDb().getUserName();
-            iv_activity_main_login_sina.setVisibility(View.GONE);
+            iv_activity_main_login_sina.setVisibility(View.VISIBLE);
+            iv_activity_main_arrow.setVisibility(View.VISIBLE);
             iv_activity_main_login_qq.setVisibility(View.GONE);
             platfromIsLogin(platformSina);
             Login(platformSina.getDb().getUserId(), platformSina.getDb()

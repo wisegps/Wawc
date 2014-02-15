@@ -7,17 +7,18 @@
     <RelativeLayout
         android:id="@+id/rl_activity_home_top"
         android:layout_width="fill_parent"
-        android:background="#FFFFFF"
-        android:layout_height="44dp"
-        android:padding="2dp">
+        android:background="@drawable/nav_bg"
+        android:layout_height="@dimen/title_hight">
 		<ImageView
             android:id="@+id/iv_activity_home_menu"
-            android:layout_width="60dp"
-	        android:layout_height="36dp"
+            android:layout_width="@dimen/title_image"
+	        android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:clickable="true"
+            android:layout_marginLeft="@dimen/margins"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_launcher"/>
+            android:src="@drawable/side_left"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -25,17 +26,17 @@
             android:layout_toRightOf="@+id/iv_activity_home_menu"
             android:gravity="center"
             android:text="@string/app_name"
-            android:textColor="@color/black"
-            android:textSize="@dimen/title"
-            android:textStyle="bold" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/head"/>
 		<ImageView
             android:id="@+id/iv_activity_car_home_search"
-            android:layout_width="60dp"
-	        android:layout_height="36dp"
+            android:layout_width="@dimen/title_image"
+	        android:layout_height="@dimen/title_image"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_launcher"/>
+            android:layout_marginRight="@dimen/margins"
+            android:src="@drawable/side_right"/>
 	</RelativeLayout>
     <LinearLayout 
         android:id="@+id/ll_car"
@@ -43,52 +44,55 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="#6c000000"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/double_margins"
         android:orientation="vertical">
         <RelativeLayout 
             android:id="@+id/rl_activity_home_car"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:padding="10dp">
+	        android:padding="@dimen/margins">
 	        <ImageView
 	            android:id="@+id/iv_carLogo" 
-	            android:layout_width="50dp"
-	            android:layout_height="50dp"
+	            android:layout_width="@dimen/image_logo"
+	            android:layout_height="@dimen/image_logo"
 	            android:contentDescription="@string/app_name"
 	            android:src="@drawable/ic_launcher"/>
 	        <TextView 
 	            android:id="@+id/tv_car_number"
-	            android:layout_width="wrap_content"
+	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:layout_centerVertical="true"
-	            android:textSize="@dimen/size_22"
-	            android:layout_marginLeft="10dp"
+	            android:textSize="@dimen/head"
+	            android:layout_marginLeft="@dimen/margins"
 	            android:layout_toRightOf="@id/iv_carLogo"
-	            android:textColor="@color/white"/>
-	        <ImageView
-	            android:contentDescription="@string/app_name"
-	            android:layout_alignParentRight="true"
-	            android:layout_width="30dp"
-	            android:layout_height="30dp"
-	            android:layout_centerVertical="true"
-	            android:src="@drawable/ic_launcher"/>        
+	            android:drawableRight="@drawable/car_arrow"
+	            android:textColor="@color/white"/>       
 	    </RelativeLayout>
+	    <View 
+	        android:layout_width="fill_parent"
+	        android:layout_height="1dp"
+	        android:layout_marginLeft="@dimen/margins"
+	        android:layout_marginRight="@dimen/margins"
+	        android:background="@drawable/body_line"/>
 	    <TextView 
             android:id="@+id/tv_activity_home_car_adress"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:drawableLeft="@drawable/ic_launcher"
+            android:layout_margin="@dimen/margins"
+            android:textSize="@dimen/main"
+            android:drawableLeft="@drawable/home_lbs"
             android:gravity="center_vertical"/>
 	    <TextView 
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:textColor="@color/white"
 	        android:gravity="right"
+	        android:layout_marginBottom="@dimen/margins"
 	        android:text="5分钟前更新"/>
 	    <LinearLayout
 	        android:orientation="horizontal" 
-	        android:padding="10dp"
+	        android:padding="@dimen/margins"
 	        android:background="#88000000"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content">
@@ -102,8 +106,9 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:textColor="@color/white"
-		            android:drawableTop="@drawable/ic_launcher"
+		            android:drawableTop="@drawable/home_condition"
 		            android:background="@null"
+		            android:textSize="@dimen/main"
 		            android:text="@string/vehicle_status"/>
 	        </LinearLayout>
 	        <LinearLayout 
@@ -116,8 +121,9 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:textColor="@color/white"
-		            android:drawableTop="@drawable/ic_launcher"
+		            android:drawableTop="@drawable/home_remind"
 		            android:background="@null"
+		            android:textSize="@dimen/main"
 		            android:text="@string/car_remind"/>
 	        </LinearLayout>
 	        <LinearLayout 
@@ -130,8 +136,9 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:textColor="@color/white"
-		            android:drawableTop="@drawable/ic_launcher"
+		            android:drawableTop="@drawable/home_violate"
 		            android:background="@null"
+		            android:textSize="@dimen/main"
 		            android:text="@string/traffic"/>
 	        </LinearLayout>
 	        <LinearLayout 
@@ -144,42 +151,250 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:textColor="@color/white"
-		            android:drawableTop="@drawable/ic_launcher"
+		            android:drawableTop="@drawable/home_share"
 		            android:background="@null"
+		            android:textSize="@dimen/main"
 		            android:text="@string/shareLocation"/>
 	        </LinearLayout>
 	    </LinearLayout>
     </LinearLayout>
-	<com.wise.extend.HScrollLayout
-          xmlns:android="http://schemas.android.com/apk/res/android"    
-		  android:id="@+id/ScrollLayout_other"    
-		  android:layout_below="@id/ll_car"
-		  android:layout_width="fill_parent"   
-		  android:layout_marginTop="10dp"
-		  android:background="#6c000000"
-		  android:layout_height="wrap_content"/>    
+    <LinearLayout
+        android:layout_below="@id/ll_car"
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">      
+	    <com.wise.extend.HScrollLayout
+	          xmlns:android="http://schemas.android.com/apk/res/android"    
+	          android:id="@+id/ScrollLayout_other"  
+	          android:layout_width="fill_parent"   
+	          android:layout_height="wrap_content"
+	          android:layout_marginTop="@dimen/margins"
+	          android:background="#6c000000">
+	        <LinearLayout 
+	            android:id="@+id/ll_weather"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content"
+		        android:padding="@dimen/double_margins"
+		        android:orientation="vertical">
+		        <RelativeLayout 
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content">
+		            <TextView 
+		                android:id="@+id/tv_item_weather_city"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_alignParentRight="true"
+		                android:textColor="@color/white"
+		                android:clickable="true"
+		                android:background="@drawable/home_btn_changecity"
+		                android:textSize="@dimen/content"
+		                android:text="深圳"/>
+		        </RelativeLayout>
+		        <LinearLayout 
+		            android:layout_height="wrap_content"
+		            android:layout_width="fill_parent"
+		            android:layout_marginBottom="@dimen/double_margins"
+		            android:orientation="horizontal">
+		            <TextView 
+		                android:id="@+id/tv_item_weather_wd"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:textStyle="normal"
+		                android:textSize="40sp"
+		                android:textColor="@color/white"
+		                android:text="12°"/>
+		            <TextView 
+		                android:id="@+id/tv_item_weather_sky"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:textColor="@color/white"
+		                android:textSize="@dimen/main"
+		                android:text="多云转晴"/>
+		        </LinearLayout>
+		        <TextView 
+		            android:id="@+id/tv_item_weather_date"
+		            android:layout_width="wrap_content"
+		            android:layout_height="wrap_content"
+		            android:textColor="@color/white"
+		            android:textSize="@dimen/content"
+		            android:layout_marginBottom="5dp"
+		            android:text="10月27日  星期一"/>
+		        <LinearLayout 
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:orientation="horizontal"
+		            android:layout_marginBottom="5dp">
+		            <TextView 
+		                android:id="@+id/tv_item_weather_temp1"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_marginRight="10dp"
+		                android:textColor="@color/white"
+		                android:textSize="@dimen/content"
+		                android:text="6-18°C"/>
+		            <TextView 
+		                android:id="@+id/tv_item_weather"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:textColor="@color/white"
+		                android:textSize="@dimen/content"
+		                android:text="东风3级    湿度84%"/>
+		        </LinearLayout>
+		        
+		        <LinearLayout 
+		            android:layout_height="wrap_content"
+		            android:layout_width="fill_parent"
+		            android:orientation="horizontal">
+		            <TextView 
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:textColor="@color/white"
+		                android:textSize="@dimen/content"
+		                android:text="洗车指数:"/>
+		            <TextView
+		                android:id="@+id/tv_item_weather_index_xc" 
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:textColor="@color/white"
+		                android:textSize="@dimen/content"
+		                android:background="@drawable/home_xc"
+		                android:text="适宜"/>
+		            <TextView 
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:textColor="@color/white"
+		                android:textSize="@dimen/content"
+		                android:text="车辆限行:"/>
+		            <TextView 
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:textColor="@color/white"
+		                android:background="@drawable/home_xx"
+		                android:textSize="@dimen/content"
+		                android:text="限行"/>
+		        </LinearLayout>
+		    </LinearLayout>
+		    
+	        <LinearLayout 
+			    android:layout_width="match_parent"
+			    android:layout_height="wrap_content"
+			    android:padding="20dp"
+			    android:orientation="vertical">
+			    <TextView 
+			        android:layout_width="fill_parent"
+			        android:layout_height="wrap_content"
+			        android:textColor="@color/white"
+			        android:layout_marginBottom="10dp"
+			        android:text="最新油价"/>
+			    <LinearLayout 
+			        android:layout_width="fill_parent"
+			        android:layout_height="wrap_content"
+			        android:orientation="vertical">
+			        <LinearLayout 
+			            android:layout_width="fill_parent"
+			            android:layout_height="wrap_content"
+			            android:orientation="horizontal">
+			            <TextView 
+			                android:layout_width="fill_parent"
+			                android:layout_height="wrap_content"
+			                android:gravity="center_horizontal"
+			                android:layout_weight="1"
+			                android:text="90#"/>
+			            <TextView 
+			                android:layout_width="fill_parent"
+			                android:layout_height="wrap_content"
+			                android:gravity="center_horizontal"
+			                android:layout_weight="1"
+			                android:text="93#"/>
+			            <TextView 
+			                android:layout_width="fill_parent"
+			                android:layout_height="wrap_content"
+			                android:gravity="center_horizontal"
+			                android:layout_weight="1"
+			                android:text="97#"/>
+			            <TextView 
+			                android:layout_width="fill_parent"
+			                android:layout_height="wrap_content"
+			                android:gravity="center_horizontal"
+			                android:layout_weight="1"
+			                android:text="0#"/>
+			        </LinearLayout>
+			        <LinearLayout 
+			            android:layout_width="fill_parent"
+			            android:layout_height="wrap_content"
+			            android:orientation="horizontal">
+			            <TextView 
+			                android:id="@+id/tv_item_oil_90"
+			                android:layout_width="fill_parent"
+			                android:layout_height="wrap_content"
+			                android:gravity="center_horizontal"
+			                android:layout_weight="1"
+			                android:text="0.00"/>
+			            <TextView 
+			                android:id="@+id/tv_item_oil_93"
+			                android:layout_width="fill_parent"
+			                android:layout_height="wrap_content"
+			                android:gravity="center_horizontal"
+			                android:layout_weight="1"
+			                android:text="0.00"/>
+			            <TextView 
+			                android:id="@+id/tv_item_oil_97"
+			                android:layout_width="fill_parent"
+			                android:layout_height="wrap_content"
+			                android:gravity="center_horizontal"
+			                android:layout_weight="1"
+			                android:text="0.00"/>
+			            <TextView 
+			                android:id="@+id/tv_item_oil_0"
+			                android:layout_width="fill_parent"
+			                android:layout_height="wrap_content"
+			                android:gravity="center_horizontal"
+			                android:layout_weight="1"
+			                android:text="0.00"/>
+			        </LinearLayout>
+			    </LinearLayout>
+			</LinearLayout>
+	    </com.wise.extend.HScrollLayout>	      
+        <ImageView 
+            android:id="@+id/iv_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/home_body_cutover_left"/>
+    </LinearLayout>   
 	<RelativeLayout 
 	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
+	    android:layout_height="50dp"
 	    android:layout_alignParentBottom="true"
-	    android:background="@color/grey">
+	    android:background="#88000000">
 	    <Button
 	        android:id="@+id/bt_activity_home_help" 
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
+	        android:drawableLeft="@drawable/home_help"
+	        android:layout_marginLeft="10dp"
+	        android:layout_centerVertical="true"
+	        android:background="@null"
+	        android:textColor="@color/white"
+	        android:textSize="20sp"
 	        android:text="救援"/>
 	    <Button
 	        android:id="@+id/bt_activity_home_risk" 
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_toRightOf="@+id/bt_activity_home_help"
+	        android:drawableLeft="@drawable/home_call"
+	        android:layout_marginLeft="10dp"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:textColor="@color/white"
+            android:textSize="20sp"
 	        android:text="报险"/>
 	    <ImageView 
 	        android:id="@+id/iv_home_say_something"
-	        android:scaleType="fitStart"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:layout_alignParentRight="true"
-	        android:src="@drawable/ic_launcher"/>	        
+	        android:src="@drawable/body_icon_voice"/>	        
 	</RelativeLayout>
 </RelativeLayout>

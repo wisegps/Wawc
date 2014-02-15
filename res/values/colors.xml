@@ -1,32 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 灰色 -->
+    <color name="gray">#d8d9e1</color>
+    <!-- 蓝色 -->
+    <color name="blue">#3b5197</color>
+    <!-- 红色 -->
+    <color name="red">#e41d34</color>
+    <!-- 车辆限行 -->
+    <color name="yellow">#ee810c</color>
+    <!-- 洗车指数 -->
+    <color name="blue_bg">#3a5197</color>
+    <!-- 常规字体颜色 -->
+    <color name="common">#313131</color>
+    <!-- 未激活字体颜色 -->
+    <color name="common_inactive">#7f313131</color>
+    <!-- 蓝色字体 -->
+    <color name="common_blue">#436af5</color>
+    <!-- 红色字体 -->
+    <color name="common_red">#e41d34</color>
     <color name="white">#FFFFFF</color>
-	<color name="yellow">#FFFF00</color>
-	<color name="red">#FF0000</color>
-	<color name="blue">#0000CC</color>
-
-    <color name="solid_red">#f00</color>
-    <color name="solid_blue">#0000ff</color>
-    <color name="solid_green">#f0f0</color>
-    <color name="solid_yellow">#ffffff00</color>
-    <color name="black">#000000</color>
-    <color name="grey">#5b5b5b</color>
-    <color name="bkg1">#e6ecf1</color>
-    <color name="bkg2">#edf8fb</color>
-    <color name="celendar_month">#ceeffe</color>
-    <color name="celendar_daynames">#8bcbe9</color>
-    <color name="celendar_body">#95a9b6</color>
-    <color name="celendar_text">#6b8597</color>
-    <color name="transparent_background">#50000000</color>  
-    <color name="bkg3">#ac5818</color>  
-    <color name="bkg4">#d0a079</color>  
-    <color name="bkg5">#4f3105</color>  
-    <color name="bkg6">#ff903e</color>  
-    <color name="orange">#da6528</color>  
-    
-    
-	<color name="unfocused">#cccccccc</color>
-	<color name="pressed">#fff22fff</color>
-	<color name="selected">#FFFFFF</color>
-	<color name="focused">#ffff44ff</color>
+    <color name="black">#000000</color> 
 </resources>

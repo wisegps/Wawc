@@ -253,13 +253,18 @@ public class MyAdapter extends BaseAdapter{
 			new Thread(new Runnable() {
 				public void run() {
 					bitmap = GetSystem.getBitmapFromURL(loadUrl);
-					if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
-						File imagePath = new File(Constant.VehiclePath);
-						if(!imagePath.exists()){
-							imagePath.mkdir();
-						}
-						createImage(Constant.VehiclePath + loadUrl.substring(loadUrl.lastIndexOf("/")),bitmap);
+					if(bitmap != null){
+					    if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+	                        File imagePath = new File(Constant.VehiclePath);
+	                        if(!imagePath.exists()){
+	                            imagePath.mkdir();
+	                        }
+	                        createImage(Constant.VehiclePath + loadUrl.substring(loadUrl.lastIndexOf("/")),bitmap);
+	                    }
+					}else{
+					    Log.e("MyAdapter", "图片为空");
 					}
+					
 				}
 			}).start();
 			return null;
