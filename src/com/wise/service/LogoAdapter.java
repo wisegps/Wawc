@@ -59,7 +59,8 @@ public class LogoAdapter extends BaseAdapter {
 		hodler.vehicleNum = (TextView) convertView.findViewById(R.id.vehicle_logo_num);
 		
 		if(!"newVehicle".equals(carDataList.get(position).getCar_brand())){
-			Bitmap bitmap = BitmapFactory.decodeFile(Constant.VehicleLogoPath + carDataList.get(position).getCar_brand() + ".jpg");
+		    //carDataList.get(position).getLogoPath();
+			Bitmap bitmap = BitmapFactory.decodeFile(Constant.VehicleLogoPath + carDataList.get(position).getCar_brand() + ".png");
 			hodler.imageView.setImageBitmap(bitmap);
 			String str = this.carDataList.get(position).getObj_name();
 			String str2 = str==null?"null":str;
