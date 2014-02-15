@@ -175,7 +175,7 @@ public class MyAdapter extends BaseAdapter{
 //			}
 //		}
 		
-		LinearLayout commentLayout = null;
+		LinearLayout commentLayout = (LinearLayout) convertView.findViewById(R.id.article_comment_layout);
 		//动态添加用户的评论
 		if(articleList.get(position).getCommentList().size() == 0){
 			line.setVisibility(View.GONE);
@@ -183,7 +183,6 @@ public class MyAdapter extends BaseAdapter{
 		}else{
 			line.setVisibility(View.VISIBLE);
 			commentLayout.setVisibility(View.VISIBLE);
-			commentLayout = (LinearLayout) convertView.findViewById(R.id.article_comment_layout);
 			for(int i = 0 ; i < articleList.get(position).getCommentList().size() ; i ++){
 				LinearLayout oneComment = new LinearLayout(activity);
 				oneComment.setOrientation(LinearLayout.HORIZONTAL);
