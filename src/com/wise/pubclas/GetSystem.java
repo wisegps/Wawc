@@ -308,7 +308,7 @@ public class GetSystem {
      * 
      * @param bitmap
      * @param name
-     *            图片名称a.jpg
+     *            图片名称a.png
      */
     public static void saveImageSD(Bitmap bitmap, String path, String name) {
         File file = new File(path);
@@ -322,7 +322,7 @@ public class GetSystem {
         FileOutputStream b = null;
         try {
             b = new FileOutputStream(fileName);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {

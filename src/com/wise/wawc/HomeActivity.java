@@ -119,11 +119,6 @@ public class HomeActivity extends Activity{
       	iatRecognizer=SpeechRecognizer.createRecognizer(HomeActivity.this);
 
         HScrollLayout ScrollLayout_other = (HScrollLayout) findViewById(R.id.ScrollLayout_other);
-        //LayoutInflater mLayoutInflater = LayoutInflater.from(HomeActivity.this);
-        //View weatherView = mLayoutInflater.inflate(R.layout.item_weather, null);
-        //View oilView = mLayoutInflater.inflate(R.layout.item_oil, null);
-        //ScrollLayout_other.addView(weatherView);
-        //ScrollLayout_other.addView(oilView);
         tv_item_weather_date = (TextView)findViewById(R.id.tv_item_weather_date);
         tv_item_weather_wd = (TextView)findViewById(R.id.tv_item_weather_wd);
         tv_item_weather = (TextView)findViewById(R.id.tv_item_weather);
@@ -334,7 +329,7 @@ public class HomeActivity extends Activity{
                 carData.setMaintain_last_mileage(maintain_last_mileage);
                 carData.setMaintain_next_mileage(maintain_next_mileage);
                 carData.setBuy_date(buy_date);
-                String imagePath = Constant.VehicleLogoPath + car_brand + ".jpg";//SD卡路径
+                String imagePath = Constant.VehicleLogoPath + car_brand + ".png";//SD卡路径
                 if(new File(imagePath).isFile()){//存在
                     carData.setLogoPath(imagePath);
                 }else{
@@ -388,7 +383,7 @@ public class HomeActivity extends Activity{
         }
         for(int i = 0 ; i < Variable.carDatas.size() ; i++){
             String brand = Variable.carDatas.get(i).getCar_brand();            
-            String imagePath = Constant.VehicleLogoPath + brand + ".jpg";//SD卡路径
+            String imagePath = Constant.VehicleLogoPath + brand + ".png";//SD卡路径
             if(new File(imagePath).isFile()){//存在
                 System.out.println("文件存在");
             }else{//不存在
@@ -396,9 +391,10 @@ public class HomeActivity extends Activity{
                    String name =  brands.get(j).getName();
                    if(name.equals(brand)){
                        String imageUrl = Constant.ImageUrl + brands.get(j).getUrl_icon();
+                       Log.d(TAG, "imageUrl = " + imageUrl);
                        Bitmap bitmap = GetSystem.getBitmapFromURL(imageUrl);
                         if(bitmap != null){
-                            GetSystem.saveImageSD(bitmap,Constant.VehicleLogoPath, brand + ".jpg");
+                            GetSystem.saveImageSD(bitmap,Constant.VehicleLogoPath, brand + ".png");
                             Variable.carDatas.get(i).setLogoPath(imagePath);
                         }
                        break;
@@ -406,6 +402,7 @@ public class HomeActivity extends Activity{
                 }
             }
         }
+        ShowCarInfo();
     }
     private class Brand{
         String name;
@@ -753,7 +750,7 @@ public class HomeActivity extends Activity{
                     tv_car_number.setText(carData.getObj_name());
                     Bitmap bimage = BitmapFactory.decodeFile(carData.getLogoPath());
                     if(bimage != null){            
-                        iv_carLogo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
+                        iv_carLogo.setImageBitmap(bimage);
                     }else{
                         iv_carLogo.setImageResource(R.drawable.ic_launcher);
                     }

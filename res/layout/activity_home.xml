@@ -184,6 +184,7 @@
 		                android:layout_height="wrap_content"
 		                android:layout_alignParentRight="true"
 		                android:textColor="@color/white"
+		                android:background="@drawable/home_change_city"
 		                android:textSize="16sp"
 		                android:text="深圳"/>
 		        </RelativeLayout>
@@ -266,7 +267,7 @@
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
 		                android:textColor="@color/white"
-		                android:background="@color/bkg4"
+		                android:background="@color/yellow"
 		                android:textSize="16sp"
 		                android:text="限行"/>
 		        </LinearLayout>

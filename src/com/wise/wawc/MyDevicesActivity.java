@@ -270,7 +270,7 @@ public class MyDevicesActivity extends Activity{
             holder.tv_item_carnumber.setText(devicesData.getSerial());
             holder.iv_item_cars.setImageResource(R.drawable.ic_launcher);
             if(devicesData.isCheck()){
-                holder.ll_item_cars.setBackgroundResource(R.color.bkg1);
+                holder.ll_item_cars.setBackgroundResource(R.color.gray);
             }else{
                 holder.ll_item_cars.setBackgroundDrawable(null);
             }
