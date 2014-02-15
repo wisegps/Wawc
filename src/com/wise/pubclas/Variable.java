@@ -56,4 +56,11 @@ public class Variable {
     public static int smallImageReqHeight = 300;
     public static int smallImageReqWidth = 300;
     public static String MscKey = "5281f227";
+    
+    
+    public static int distance = 10;  //附近车友距离（公里）
+    
+    
+    public static  int articleAdapterImageWidth = 150;
+    public static  int articleAdapterImageHeight = 150;
 }

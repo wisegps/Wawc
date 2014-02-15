@@ -223,7 +223,6 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 			Toast.makeText(getApplicationContext(), "SDCard Is Not Exist!", 0).show();
 			return;
 		}else{
-//			file = new File(getSDPath() + "/myImage/");
 			file = new File(Constant.VehiclePath);
 			file.mkdirs();// 创建文件夹  
 	        fileName = Constant.VehiclePath + name + ".jpg"; 

@@ -10,30 +10,32 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:orientation="horizontal" 
+        android:background="#3E5396"
+        >
 
-        <Button
+        <ImageView
             android:id="@+id/menu"
-            android:layout_width="fill_parent"
+            android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:background="@drawable/ic_launcher" />
+            android:background="@drawable/menu" />
 
         <TextView
             android:id="@+id/tv_vehicle_friend_title"
-            android:layout_width="fill_parent"
+            android:layout_width="0dip"
             android:layout_height="fill_parent"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:gravity="center"
             android:text="@string/car_circle"
             android:textSize="12pt" />
 
-        <Button
-            android:id="@+id/home"
-            android:layout_width="fill_parent"
+        <ImageView
+            android:id="@+id/publish_article"
+            android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:background="@drawable/ic_launcher" />
+            android:background="@drawable/new_article" />
     </LinearLayout>
     <!-- 标题 -->
 
@@ -88,6 +90,7 @@
 		        android:cacheColorHint="#00000000"
 		         >
 		    </com.wise.list.XListView>
+		    <!-- 
 		    <RelativeLayout 
 		        android:layout_width="fill_parent"
         		android:layout_height="wrap_content"
@@ -97,14 +100,15 @@
 		            android:id="@+id/publish_article"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:background="@drawable/image"
+		            android:background="@drawable/new_article"
 		            android:layout_alignParentRight="true"
 		             />
+		              -->
 			    <LinearLayout
 	                android:id="@+id/say_something"
 	                android:layout_width="fill_parent"
 	                android:layout_height="wrap_content"
-	                android:layout_alignTop="@id/publish_article"
+	                android:layout_alignParentBottom="true"
 	                android:visibility="gone"
 	                >
 	                <!-- 聊天输入框 -->
@@ -113,6 +117,8 @@
 	                    android:layout_height="wrap_content"
 	                    layout="@layout/custom_facerelativelayout" />
 	            </LinearLayout>
+	            <!-- 
 		    </RelativeLayout>
+		     -->
     </RelativeLayout>
 </LinearLayout>

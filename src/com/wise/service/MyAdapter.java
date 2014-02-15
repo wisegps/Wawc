@@ -21,6 +21,7 @@ import org.json.JSONObject;
 
 import com.wise.data.Article;
 import com.wise.extend.FaceConversionUtil;
+import com.wise.list.XListView;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
@@ -52,6 +53,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -79,19 +82,25 @@ public class MyAdapter extends BaseAdapter{
 	private MyHandler myHandler = null;
 	private ImageView favoriteStart = null;
 	private TextView favoriteUser = null;
+	private View line = null;
+	private TableLayout tablelayout = null;
 	private StringBuffer sb = null;
 	private static final int articleFavorite = 123;
+	private static final int refreshList = 555;
 	private ProgressDialog myDialog = null;
+	private XListView listView = null;
 	private List<Article> articleList = null;
 	private DBExcute dbExcute = null;
 	int padding = 40;
-	public MyAdapter(Activity activity,View v,List<Article> articleList){
+	private int selection = 0;
+	public MyAdapter(Activity activity,View v,List<Article> articleList,XListView listView){
 		inflater=LayoutInflater.from(activity);
 		this.view = v;
 		this.activity = activity;
 		this.articleList = articleList;
 		myHandler = new MyHandler();
 		dbExcute = new DBExcute();
+		this.listView = listView;
 	}
 	public int getCount() {
 		return articleList.size();
@@ -109,49 +118,85 @@ public class MyAdapter extends BaseAdapter{
 		List<Bitmap> smallImageList = new ArrayList<Bitmap>();
 		for(int i = 0 ; i < articleList.get(position).getImageList().size() ; i ++){
 			Map<String,String> imageMap = articleList.get(position).getImageList().get(i);
-			//判断小图是否存在sd卡 /点击小图的时候再判断是否存在sd卡
-			String smallImage = imageMap.get("big_pic").substring(imageMap.get("big_pic").lastIndexOf("/"));
+			//判断小图是否存在sd卡 /点击小图的时候再判断大图是否存在sd卡  TODO
+			String smallImage = imageMap.get("small_pic").substring(imageMap.get("small_pic").lastIndexOf("/") + 1);
+			
+			//本地不存在图片  存null  
 			Bitmap smallBitmap = imageIsExist(Constant.VehiclePath + smallImage,imageMap.get("small_pic"));
-			smallImageList.add(smallBitmap);
+			smallImageList.add(i, smallBitmap);
 		}
-		//动态添加用户发表的图片
-		TableLayout table = (TableLayout) convertView.findViewById(R.id.user_image);
-		TableRow row = new TableRow(activity);
-		for(int i = 0; i < smallImageList.size() ; i ++){
-			ImageView t = new ImageView(activity);
-			t.setClickable(true);
-			t.setId(i);
-			t.setOnClickListener(new OnClickListener() {
-				public void onClick(View v) {
-					Intent intent = new Intent(activity,ImageActivity.class);
-					intent.putExtra("position", position);
-					activity.startActivity(intent);
+		line = convertView.findViewById(R.id.article_adapter_line);
+		//文章评论布局
+		tablelayout = (TableLayout) convertView.findViewById(R.id.tablelayout);
+		LinearLayout linearLayout = (LinearLayout) convertView.findViewById(R.id.user_image);
+//		
+//		if(articleList.get(position).getImageList().size() == 0 && articleList.get(position).getCommentList().size() == 0 && articleList.get(position).getPraisesList().size() == 0){
+//			tablelayout.setVisibility(View.GONE);
+//		}else{
+//			tablelayout.setVisibility(View.VISIBLE);
+//		}
+		for (int i = 0; i < smallImageList.size(); i++) {
+			if(i < 3){
+				Bitmap bitmap = smallImageList.get(i);
+				if(bitmap == null){   //显示转圈圈加载
+					selection = position;
+					ProgressBar progressBar = new ProgressBar(activity);
+					progressBar.setVisibility(View.VISIBLE);
+					linearLayout.addView(progressBar,i,new LinearLayout.LayoutParams(Variable.articleAdapterImageWidth, Variable.articleAdapterImageWidth));
+				}else{
+					ImageView imageView = new ImageView(activity);
+					imageView.setImageBitmap(smallImageList.get(i));
+					imageView.setPadding(0, 0,10, 0);
+					linearLayout.addView(imageView,i,new LinearLayout.LayoutParams(Variable.articleAdapterImageWidth, Variable.articleAdapterImageWidth));
 				}
-			});
-			t.setImageBitmap(smallImageList.get(i));
-			row.addView(t);
-			if((i%3 + 1) == 3){
-				table.addView(row,new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-				row = new TableRow(activity);
-			}else if(i == (smallImageList.size() - 1)){
-				table.addView(row,new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 			}
 		}
+		//动态添加用户发表的图片
+//		TableLayout table = (TableLayout) convertView.findViewById(R.id.user_image);
+//		TableRow row = new TableRow(activity);
+//		for(int i = 0; i < smallImageList.size() ; i ++){
+//			ImageView t = new ImageView(activity);
+//			t.setClickable(true);
+//			t.setId(i);
+//			t.setOnClickListener(new OnClickListener() {
+//				public void onClick(View v) {
+//					Intent intent = new Intent(activity,ImageActivity.class);
+//					intent.putExtra("position", position);
+//					activity.startActivity(intent);
+//				}
+//			});
+//			t.setImageBitmap(smallImageList.get(i));
+//			row.addView(t);
+//			if((i%3 + 1) == 3){
+//				table.addView(row,new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+//				row = new TableRow(activity);
+//			}else if(i == (smallImageList.size() - 1)){
+//				table.addView(row,new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+//			}
+//		}
 		
+		LinearLayout commentLayout = null;
 		//动态添加用户的评论
-		LinearLayout commentLayout = (LinearLayout) convertView.findViewById(R.id.article_comment_layout);
-		for(int i = 0 ; i < articleList.get(position).getCommentList().size() ; i ++){
-			LinearLayout oneComment = new LinearLayout(activity);
-			oneComment.setOrientation(LinearLayout.HORIZONTAL);
-			TextView commentName = new TextView(activity);
-		    TextView commentContent = new TextView(activity);
-			String[] commentStr = articleList.get(position).getCommentList().get(i);
-			commentName.setText(commentStr[0] + ":");
-			oneComment.addView(commentName, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-			SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(activity, commentStr[1]);
-			commentContent.setText(spannableString);
-			oneComment.addView(commentContent, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-			commentLayout.addView(oneComment, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		if(articleList.get(position).getCommentList().size() == 0){
+			line.setVisibility(View.GONE);
+			commentLayout.setVisibility(View.GONE);
+		}else{
+			line.setVisibility(View.VISIBLE);
+			commentLayout.setVisibility(View.VISIBLE);
+			commentLayout = (LinearLayout) convertView.findViewById(R.id.article_comment_layout);
+			for(int i = 0 ; i < articleList.get(position).getCommentList().size() ; i ++){
+				LinearLayout oneComment = new LinearLayout(activity);
+				oneComment.setOrientation(LinearLayout.HORIZONTAL);
+				TextView commentName = new TextView(activity);
+			    TextView commentContent = new TextView(activity);
+				String[] commentStr = articleList.get(position).getCommentList().get(i);
+				commentName.setText(commentStr[0] + ":");
+				oneComment.addView(commentName, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+				SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(activity, commentStr[1]);
+				commentContent.setText(spannableString);
+				oneComment.addView(commentContent, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+				commentLayout.addView(oneComment, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			}
 		}
 		
 		favoriteStart = (ImageView) convertView.findViewById(R.id.article_praises_star);
@@ -162,7 +207,7 @@ public class MyAdapter extends BaseAdapter{
 			if(articleList.get(position).getPraisesList().size() != 0){
 				sb = new StringBuffer();
 				for(int f = 0 ; f < articleList.get(position).getPraisesList().size(); f ++){
-					sb.append(articleList.get(position).getPraisesList().get(f) + "、");
+					sb.append(articleList.get(position).getPraisesList().get(f) + ",");
 				}
 				favoriteStart.setVisibility(View.VISIBLE);
 				favoriteUser.setText(sb.toString());
@@ -193,11 +238,18 @@ public class MyAdapter extends BaseAdapter{
 		
 		return convertView;
 	}
+	
+	//判断图片是否存在SD卡   TODO
 	private Bitmap imageIsExist(String path,final String loadUrl) {
 		File file = new File(path);
+		Log.e("图片路径：",path);
+		Log.e("图片：",file.exists()+"");
 		if(file.exists()){
 			bitmap = BitmapFactory.decodeFile(path);
-		}else{
+			Log.e("本地存在图片-----------","本地存在图片-----------");
+			return bitmap;
+		}
+		else{
 			new Thread(new Runnable() {
 				public void run() {
 					bitmap = GetSystem.getBitmapFromURL(loadUrl);
@@ -210,8 +262,8 @@ public class MyAdapter extends BaseAdapter{
 					}
 				}
 			}).start();
+			return null;
 		}
-		return bitmap;
 	}
 	public void createImage(String fileName,Bitmap bitmap){
 		FileOutputStream b = null;
@@ -228,11 +280,14 @@ public class MyAdapter extends BaseAdapter{
                 e.printStackTrace();  
             }  
         }
+		Message msg = new Message();
+		msg.what = refreshList;
+		myHandler.sendMessage(msg);
+		Log.e("创建图片","创建图片");
 	}
 	
 	public static String getTime(String time){
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-////	String currentTime = "2014-06-21 18:28:14";
 		String currentTime = sdf.format(new Date());
 		String time1 =  transform(time);
 	     if(Integer.parseInt(time1.substring(0,4)) < Integer.parseInt(currentTime.substring(0,4))){
@@ -354,11 +409,16 @@ public class MyAdapter extends BaseAdapter{
 						e.printStackTrace();
 					}
 					break;
+				case refreshList:
+					MyAdapter.this.notifyDataSetChanged();
+					listView.setSelection(selection);
+					break;
 				}
 			}
 	    }
 	public void refreshDates(List<Article> articleList){ 
 		this.articleList = articleList;
 		this.notifyDataSetChanged();
+		Log.e("列表刷新","列表刷新");
 	}
 }

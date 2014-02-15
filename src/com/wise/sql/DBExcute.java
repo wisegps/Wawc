@@ -120,61 +120,37 @@ public class DBExcute {
 		public List<Article> getArticlePageDatas(Context context,String sql,String[] whereClause,List<Article> articleData){
 			DBHelper dbHelper = new DBHelper(context);
 			SQLiteDatabase db = null;
-				db = dbHelper.getWritableDatabase();
+				db = dbHelper.getReadableDatabase();
 				Cursor cursor = db.rawQuery(sql, whereClause);
 				while(cursor.moveToNext()){
-					try {
-						JSONObject jsonObject = new JSONObject(cursor.getString(cursor.getColumnIndex("Content")));
-						Article article = new Article();
-						article.setBlog_id(Integer.valueOf(cursor.getString(cursor.getColumnIndex("Blog_id"))));
-						article.setCity(jsonObject.getString("city"));
-						article.setName(jsonObject.getString("name"));
-						List<String[]> comments = new ArrayList<String[]>();
-						if(!"[]".equals(jsonObject.getString("comments"))){
-							String commentjson = jsonObject.getString("comments");
-							JSONArray  jsonArrayComment = new JSONArray(commentjson);
-							for(int m = 0; m < jsonArrayComment.length() ; m ++){
-								String[] commentList = new String[2];
-								JSONObject jsonObjectComment = jsonArrayComment.getJSONObject(m);
-								commentList[0] =  jsonObjectComment.getString("name");
-								commentList[1] =  jsonObjectComment.getString("content");
-								comments.add(commentList);
-							}
-						}
-						article.setCommentList(comments);
-						article.setContent(jsonObject.getString("content"));
-						article.setCreate_time(jsonObject.getString("create_time"));
-						article.setCust_id(cursor.getInt(cursor.getColumnIndex("Cust_id")));
-//						
-//						//用户发表的图片
-						Map<String,String> imageListTemp = null;
-						List<Map<String,String>> imageList = new ArrayList<Map<String,String>>();
-						if(!"[]".equals(jsonObject.getString("pics"))){
-							JSONArray json = new JSONArray(jsonObject.getString("pics"));
-							for(int j = 0 ; j < json.length() ; j ++){
-								JSONObject jsonObj = json.getJSONObject(j);
-								imageListTemp = new HashMap<String, String>();
-								imageListTemp.put("small_pic", jsonObj.getString("small_pic"));
-								imageListTemp.put("big_pic", jsonObj.getString("big_pic"));
-								imageList.add(imageListTemp);
-							}
-						}
-						if(!"[]".equals(jsonObject.getString("praises"))){
-							JSONArray json = new JSONArray(jsonObject.getString("praises"));
-							List<String> parisesList = new ArrayList<String>();
-							for(int k = 0 ; k < json.length(); k ++){
-								parisesList.add(json.getJSONObject(k).getString("name"));
-							}
-							article.setPraisesList(parisesList);
-						}
-						article.setImageList(imageList);
-						articleData.add(article);
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
+					articleData.add(parseDBDatas(cursor));
 				}
 				db.close();
 				return articleData;
+		}
+		
+		/**
+		 * 分类查询车友圈文章  TODO
+		 */
+		public List<Article> getArticleTypeList(Context context,String sql,String[] whereClause,List<Article> articleData){
+			DBHelper dbHelper = new DBHelper(context);
+			SQLiteDatabase db = dbHelper.getReadableDatabase();
+			Cursor cursor = db.rawQuery(sql, whereClause);
+//			Cursor ccc = db.rawQuery("select * from " + Constant.TB_VehicleFriendType, new String[]{});
+//			while(ccc.moveToNext()){
+//				Log.e("Type_id:"+ccc.getInt(ccc.getColumnIndex("Type_id")) ,"Blog_id:" + ccc.getInt(ccc.getColumnIndex("Blog_id")));
+//			}
+//			
+			while(cursor.moveToNext()){
+				int blog_id = cursor.getInt(cursor.getColumnIndex("Blog_id"));
+				//通过文章类型中的blog_id 在文章表中查询文章详细信息
+				SQLiteDatabase reader = dbHelper.getReadableDatabase();
+				Cursor cursors = reader.rawQuery("select * from " + Constant.TB_VehicleFriend + " where Blog_id=?", new String[]{String.valueOf(blog_id)});
+				while(cursors.moveToNext()){
+					articleData.add(parseDBDatas(cursors));
+				}
+			}
+			return articleData;
 		}
 		
 	/**
@@ -266,4 +242,58 @@ public class DBExcute {
         db.close();
         return totalPage;
     }
+	
+	public Article parseDBDatas(Cursor cursor){
+		Article article = null;
+		try {
+			JSONObject jsonObject = new JSONObject(cursor.getString(cursor.getColumnIndex("Content")));
+			article = new Article();
+			article.setBlog_id(Integer.valueOf(cursor.getString(cursor.getColumnIndex("Blog_id"))));
+			article.setCity(jsonObject.getString("city"));
+			article.setName(jsonObject.getString("name"));
+			List<String[]> comments = new ArrayList<String[]>();
+			if(!"[]".equals(jsonObject.getString("comments"))){
+				String commentjson = jsonObject.getString("comments");
+				JSONArray  jsonArrayComment = new JSONArray(commentjson);
+				for(int m = 0; m < jsonArrayComment.length() ; m ++){
+					String[] commentList = new String[2];
+					JSONObject jsonObjectComment = jsonArrayComment.getJSONObject(m);
+					commentList[0] =  jsonObjectComment.getString("name");
+					commentList[1] =  jsonObjectComment.getString("content");
+					comments.add(commentList);
+				}
+			}
+			article.setCommentList(comments);
+			article.setContent(jsonObject.getString("content"));
+			article.setCreate_time(jsonObject.getString("create_time"));
+			article.setCust_id(cursor.getInt(cursor.getColumnIndex("Cust_id")));
+//			
+//			//用户发表的图片
+			Map<String,String> imageListTemp = null;
+			List<Map<String,String>> imageList = new ArrayList<Map<String,String>>();
+			if(!"[]".equals(jsonObject.getString("pics"))){
+				JSONArray json = new JSONArray(jsonObject.getString("pics"));
+				for(int j = 0 ; j < json.length() ; j ++){
+					JSONObject jsonObj = json.getJSONObject(j);
+					imageListTemp = new HashMap<String, String>();
+					imageListTemp.put("small_pic", jsonObj.getString("small_pic"));
+					imageListTemp.put("big_pic", jsonObj.getString("big_pic"));
+					imageList.add(imageListTemp);
+				}
+			}
+			if(!"[]".equals(jsonObject.getString("praises"))){
+				JSONArray json = new JSONArray(jsonObject.getString("praises"));
+				List<String> parisesList = new ArrayList<String>();
+				for(int k = 0 ; k < json.length(); k ++){
+					parisesList.add(json.getJSONObject(k).getString("name"));
+				}
+				article.setPraisesList(parisesList);
+			}
+			article.setImageList(imageList);
+//			articleData.add(article);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return article;
+	}
 }
