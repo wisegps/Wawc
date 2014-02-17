@@ -31,13 +31,18 @@ import com.baidu.mapapi.search.MKWalkingRouteResult;
 import com.baidu.mapapi.utils.DistanceUtil;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.wise.data.AdressData;
+import com.wise.data.CarData;
 import com.wise.extend.AdressAdapter;
 import com.wise.extend.AdressAdapter.OnCollectListener;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -56,6 +61,7 @@ import android.widget.Toast;
  */
 public class SearchMapActivity extends Activity {
     private final int getIsCollect = 1;
+    private final int get4s = 2;
 	WawcApplication app;
 	MapView mMapView = null;
 	MapController mMapController = null;
@@ -107,10 +113,32 @@ public class SearchMapActivity extends Activity {
 		Intent intent = getIntent();
 		String keyWord = intent.getStringExtra("keyWord");
 		tv_activity_search_map_title.setText(keyWord);
-		//搜索关键字
-		mkSearch = new MKSearch();
-		mkSearch.init(app.mBMapManager, mkSearchListener);
-		mkSearch.poiSearchNearBy(keyWord, point, 5000);
+		if(keyWord.equals(getResources().getString(R.string.four_s))){
+		    //4S店数据去自己服务器读取
+		    if(Variable.carDatas != null || Variable.carDatas.size() > 0){
+	            for(CarData carData : Variable.carDatas){
+	                if(carData.isCheck()){
+	                    String car_brand = carData.getCar_brand();
+	                    SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+	                    String City = preferences.getString(Constant.LocationCity, "深圳");
+	                    try {
+                            String url = Constant.BaseUrl + "base/dealer?city=" + URLEncoder.encode(City, "UTF-8") + 
+                                    "&brand=" + URLEncoder.encode(car_brand, "UTF-8") + "&lon=" + Variable.Lon + 
+                                    "&lat=" + Variable.Lat + "&cust_id=" + Variable.cust_id;
+                            new Thread(new NetThread.GetDataThread(handler, url, get4s)).start();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+	                    break;
+	                }
+	            }
+	        }
+		}else{
+		    //搜索关键字
+	        mkSearch = new MKSearch();
+	        mkSearch.init(app.mBMapManager, mkSearchListener);
+	        mkSearch.poiSearchNearBy(keyWord, point, 5000);
+		}		
 		//显示自己位置
 		Drawable mark= getResources().getDrawable(R.drawable.ic_launcher);
 		overlayCar = new OverlayCar(mark, mMapView);
@@ -143,8 +171,8 @@ public class SearchMapActivity extends Activity {
                 jsonCollect(msg.obj.toString());
                 adressAdapter.notifyDataSetChanged();
                 break;
-
-            default:
+            case get4s:
+                System.out.println(msg.obj.toString());
                 break;
             }
         }

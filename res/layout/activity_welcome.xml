@@ -3,43 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF">
-    <LinearLayout 
+    android:background="@drawable/default_bg">
+    <ImageView 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:orientation="vertical">        
-	    <ImageView 
-	        android:layout_width="80dp"
-	        android:layout_height="80dp"
-	        android:contentDescription="@string/app_name"
-	        android:src="@drawable/ic_launcher"/>
-	    <TextView 
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:textColor="@color/black"
-	        android:textSize="@dimen/size_22"
-	        android:layout_marginTop="10dp"
-	        android:layout_gravity="center_horizontal"
-	        android:text="@string/app_name"/>
-	    <TextView 
-	        android:id="@+id/tv_activity_welcom_version "
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:textColor="@color/black"
-	        android:textSize="@dimen/content"
-	        android:layout_marginBottom="200dp"
-	        android:layout_marginTop="5dp"
-	        android:layout_gravity="center_horizontal"
-	        android:text="V1.0"/>
-    </LinearLayout>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
-        android:textColor="@color/black"
-        android:text="Copyght @ 2009-2013 Wise Inc" />
-
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/default_logo"/>
 </RelativeLayout>

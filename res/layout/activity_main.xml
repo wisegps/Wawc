@@ -10,7 +10,7 @@
         android:layout_height="fill_parent">
         <LinearLayout 
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent">a
             <ImageView 
                 android:id="@+id/iv_pic"     
                 android:scaleType="fitStart"     
