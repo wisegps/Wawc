@@ -11,6 +11,7 @@
     <string name="content_null">内容不能为空</string>
 	
     <string name="car_circle">车友圈</string>
+    <string name="new_article_title">发车友圈</string>
     <string name="car_remind">车务提醒</string>
     <string name="my_car">我的爱车</string>
     <string name="my_terminal">我的终端</string>
@@ -131,4 +132,5 @@
     <string name="annual_survey">年检时间</string>
     <string name="mantain_last_time">最后保养时间</string>
     <string name="mantain_next_time">下次保养里程</string>
+    <string name="publish_new_article">发送</string>
 </resources>

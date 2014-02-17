@@ -88,7 +88,7 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_article);
-		Button publish = (Button)findViewById(R.id.publish);
+		TextView publish = (TextView)findViewById(R.id.publish);
 		publish.setOnClickListener(new ClickListener());
 		back = (Button) findViewById(R.id.back);
 		back.setOnClickListener(new ClickListener());

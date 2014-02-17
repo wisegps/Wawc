@@ -1,4 +1,5 @@
 <resources>
+    <dimen name="vehicle_friend_logo_bg">150dp</dimen>
     <!-- 头部高度 -->
     <dimen name="title_hight">44dp</dimen>
     <!-- 头部图片按钮大小 -->
