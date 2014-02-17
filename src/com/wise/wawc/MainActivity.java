@@ -377,6 +377,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         System.out.println(Constant.picPath + Constant.UserImage);
         bimage = BitmapFactory.decodeFile(Constant.picPath + Constant.UserImage);
         Constant.UserIcon = bimage;
+        Constant.UserIconUrl = platform.getDb().getUserIcon();
         if(bimage != null){            
             iv_activity_main_logo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
         }else{

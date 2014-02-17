@@ -168,24 +168,14 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 				params.add(new BasicNameValuePair("cust_id",Variable.cust_id));
 				params.add(new BasicNameValuePair("city",preferences.getString(Constant.LocationCity, "")));
 				params.add(new BasicNameValuePair("name",Variable.cust_name));
+				params.add(new BasicNameValuePair("logo",Constant.UserIconUrl));
 				params.add(new BasicNameValuePair("title","title"));
 				params.add(new BasicNameValuePair("content",et_publish_article.getText().toString().trim()));
-				
 				params.add(new BasicNameValuePair("pics",temp));
 				params.add(new BasicNameValuePair("lon",String.valueOf(Variable.Lon)));
 				params.add(new BasicNameValuePair("lat",String.valueOf(Variable.Lat)));
 				
-				Log.e("cust_id",Variable.cust_id);
-				Log.e("city",preferences.getString(Constant.LocationCity, ""));
-				Log.e("name",Variable.cust_name);
-				Log.e("content",et_publish_article.getText().toString().trim());
-				Log.e("pics",temp);
-				Log.e("lon",String.valueOf(Variable.Lon));
-				Log.e("lat",String.valueOf(Variable.Lat));
-				
-				
 				new Thread(new NetThread.postDataThread(myHandler, Constant.BaseUrl + "blog?auth_code=" + Variable.auth_code, params, publishArticle)).start();
-
 				break;
 				
 			case publishArticle:

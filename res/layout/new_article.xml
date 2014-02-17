@@ -4,9 +4,7 @@
     android:layout_height="fill_parent"
     android:background="#FFFFFF"
     android:orientation="vertical" >
-
     <!-- 头部 -->
-
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -19,34 +17,47 @@
             android:layout_gravity="left"
             android:background="@drawable/ic_launcher" />
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dip"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/back"
-            android:layout_width="wrap_content"
-            android:layout_height="20dip"
-            android:layout_gravity="left"
-            android:background="@drawable/image" />
-        
-        <TextView 
-            android:id="@+id/localtion"
-            android:layout_height="wrap_content"
-            android:layout_width="fill_parent"
-            android:text="沙河西路1号"
-            />
-    </LinearLayout>
     
+    <LinearLayout 
+        android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="vertical"
+    	android:layout_margin="3dip"
+        >
     <EditText 
         android:id="@+id/et_publish_article"
         android:layout_width="fill_parent"
-        android:layout_marginTop="5dip"
-        android:layout_height="200dip"
+        android:layout_marginTop="20dip"
+        android:layout_marginLeft="20dip"
+        android:layout_height="wrap_content"
+        android:lines = "8"
+        android:gravity = "top"
         android:scrollbars="vertical"
+        android:background="@null"
         />
+    <LinearLayout 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        
+        <ImageView 
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:background="@drawable/body_icon_lbs_2"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            />
+        <TextView 
+            android:id="@+id/localtion"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:text="广东省深圳市南山区南山大道115号"
+            android:layout_marginLeft="3dip"
+            android:layout_weight="18"
+            />
+    </LinearLayout>
+    </LinearLayout>
     
     <HorizontalScrollView
         
