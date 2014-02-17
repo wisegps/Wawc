@@ -45,10 +45,8 @@ public class WelcomeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        TextView tv_activity_welcom_version = (TextView) findViewById(R.id.tv_activity_welcom_version);
-        tv_activity_welcom_version.setText("V"
-                + GetSystem.GetVersion(getApplicationContext(),
-                        Constant.PackageName));
+        //TextView tv_activity_welcom_version = (TextView) findViewById(R.id.tv_activity_welcom_version);
+        //tv_activity_welcom_version.setText("V" + GetSystem.GetVersion(getApplicationContext(), Constant.PackageName));
         if (isOffline()) {
             // 没有网络
             setNetworkMethod();
