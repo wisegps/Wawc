@@ -681,20 +681,21 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     }
     
     private void ShowBgImage(){
+        iv_pic.setImageResource(R.drawable.bg);
         //读取本地图片
-        String Path = Constant.picPath + Constant.BgImage;
-        Bitmap bgBitmap = BlurImage.decodeSampledBitmapFromPath(Path, 500, 500);
-        if(bgBitmap == null){
-            Log.e(TAG, "没有背景图片");
-            //高斯处理
-            bgBitmap = BlurImage.decodeSampledBitmapFromResource(getResources(), R.drawable.bg, 500, 500);
-            bgBitmap = BlurImage.BoxBlurFilter(bgBitmap);
-            GetSystem.saveImageSD(bgBitmap,Constant.picPath, Constant.BgImage);
-            iv_pic.setImageBitmap(bgBitmap);
-            GetSystem.displayBriefMemory(MainActivity.this);
-        }else{
-            iv_pic.setImageBitmap(BlurImage.decodeSampledBitmapFromPath(Path, 500, 500));
-        }
+//        String Path = Constant.picPath + Constant.BgImage;
+//        Bitmap bgBitmap = BlurImage.decodeSampledBitmapFromPath(Path, 500, 500);
+//        if(bgBitmap == null){
+//            Log.e(TAG, "没有背景图片");
+//            //高斯处理
+//            bgBitmap = BlurImage.decodeSampledBitmapFromResource(getResources(), R.drawable.bg, 500, 500);
+//            bgBitmap = BlurImage.BoxBlurFilter(bgBitmap);
+//            GetSystem.saveImageSD(bgBitmap,Constant.picPath, Constant.BgImage);
+//            iv_pic.setImageBitmap(bgBitmap);
+//            GetSystem.displayBriefMemory(MainActivity.this);
+//        }else{
+//            iv_pic.setImageBitmap(BlurImage.decodeSampledBitmapFromPath(Path, 500, 500));
+//        }
     }    
     
     

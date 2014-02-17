@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 /**
  * 车辆信息，车牌，车标
@@ -58,6 +59,7 @@ public class CarAdapter extends BaseAdapter{
 		}
 		CarData carData = carDatas.get(position);
 		holder.tv_item_carnumber.setText(carData.getObj_name());
+		System.out.println("carData.getLogoPath()=" + carData.getLogoPath());
 		if(carData.getLogoPath() == null || carData.getLogoPath().equals("")){
 		    holder.iv_item_cars.setImageResource(R.drawable.ic_launcher);
 		}else{
