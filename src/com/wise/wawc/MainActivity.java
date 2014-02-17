@@ -347,6 +347,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             Variable.cust_name = platformQQ.getDb().getUserName();
             iv_activity_main_login_sina.setVisibility(View.GONE);
             iv_activity_main_login_qq.setVisibility(View.VISIBLE);
+            iv_activity_main_login_qq.setImageResource(R.drawable.side_icon_qq_press);
             iv_activity_main_arrow.setVisibility(View.VISIBLE);
             platfromIsLogin(platformQQ);
             //绑定
@@ -358,6 +359,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             tv_activity_main_name.setText(platformSina.getDb().getUserName());
             Variable.cust_name = platformSina.getDb().getUserName();
             iv_activity_main_login_sina.setVisibility(View.VISIBLE);
+            iv_activity_main_login_sina.setImageResource(R.drawable.side_icon_sina_press);
             iv_activity_main_arrow.setVisibility(View.VISIBLE);
             iv_activity_main_login_qq.setVisibility(View.GONE);
             platfromIsLogin(platformSina);

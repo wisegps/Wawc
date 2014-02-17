@@ -8,6 +8,10 @@
     <!-- 内容边距 -->
     <dimen name="margins">10dp</dimen>
     <dimen name="double_margins">20dp</dimen>
+    <!-- 内容与屏幕边距 -->
+    <dimen name="body_padding">10dp</dimen>
+    <!-- 圆角 -->
+    <dimen name="corners">2dp</dimen>
     <!-- 头部字体 -->
     <dimen name="head">25sp</dimen>
 	<!-- 标题文字 -->

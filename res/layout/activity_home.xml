@@ -378,6 +378,10 @@
 	        android:textColor="@color/white"
 	        android:textSize="20sp"
 	        android:text="救援"/>
+	    <View 
+	        android:layout_width="1dp"
+	        android:layout_height="fill_parent"
+	        android:background="@drawable/body_line_imageoptim"/>
 	    <Button
 	        android:id="@+id/bt_activity_home_risk" 
 	        android:layout_width="wrap_content"

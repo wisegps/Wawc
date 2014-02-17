@@ -4,10 +4,10 @@
 	<solid android:color="@color/blue_bg" />
 	<!-- 圆角 -->  
 	<corners  
-	    android:topRightRadius="2dp"  
-        android:bottomLeftRadius="2dp"  
-        android:topLeftRadius="2dp" 
-        android:bottomRightRadius="2dp"/>
+	    android:topRightRadius="@dimen/corners"  
+        android:bottomLeftRadius="@dimen/corners"  
+        android:topLeftRadius="@dimen/corners" 
+        android:bottomRightRadius="@dimen/corners"/>
 	<padding  
         android:left="5dp"  
         android:top="1dp"  
