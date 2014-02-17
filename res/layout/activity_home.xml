@@ -84,12 +84,12 @@
             android:drawableLeft="@drawable/home_lbs"
             android:gravity="center_vertical"/>
 	    <TextView 
-	        android:layout_width="wrap_content"
+	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:textColor="@color/white"
+	        android:textColor="@color/white_inactive"
 	        android:gravity="right"
+	        android:layout_marginRight="@dimen/margins"
 	        android:layout_marginBottom="@dimen/margins"
-	        android:background="@drawable/bt_bg"
 	        android:text="5分钟前更新"/>
 	    <LinearLayout
 	        android:orientation="horizontal" 
@@ -106,7 +106,7 @@
 	                android:id="@+id/bt_activity_home_vehicle_status"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:textColor="@color/white"
+		            android:textColor="@color/text_color_selector"
 		            android:drawableTop="@drawable/home_condition"
 		            android:background="@null"
 		            android:textSize="@dimen/main"
@@ -121,7 +121,7 @@
 	                android:id="@+id/bt_activity_home_car_remind"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:textColor="@color/white"
+		            android:textColor="@color/text_color_selector"
 		            android:drawableTop="@drawable/home_remind"
 		            android:background="@null"
 		            android:textSize="@dimen/main"
@@ -136,7 +136,7 @@
 	                android:id="@+id/bt_activity_home_traffic"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:textColor="@color/white"
+		            android:textColor="@color/text_color_selector"
 		            android:drawableTop="@drawable/home_violate"
 		            android:background="@null"
 		            android:textSize="@dimen/main"
@@ -151,26 +151,31 @@
 	                android:id="@+id/bt_activity_home_share"
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
-		            android:textColor="@color/white"
+		            android:textColor="@color/text_color_selector"
 		            android:drawableTop="@drawable/home_share"
 		            android:background="@null"
 		            android:textSize="@dimen/main"
 		            android:text="@string/shareLocation"/>
 	        </LinearLayout>
 	    </LinearLayout>
+	    <View 
+	        android:layout_width="fill_parent"
+	        android:layout_height="2dp"
+	        android:layout_marginBottom="@dimen/margins"
+	        android:background="@color/blue_bg"/>
     </LinearLayout>
     <LinearLayout
         android:layout_below="@id/ll_car"
         android:orientation="vertical"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">      
+        android:layout_height="wrap_content"
+        android:background="#6c000000">      
 	    <com.wise.extend.HScrollLayout
 	          xmlns:android="http://schemas.android.com/apk/res/android"    
 	          android:id="@+id/ScrollLayout_other"  
 	          android:layout_width="fill_parent"   
 	          android:layout_height="wrap_content"
-	          android:layout_marginTop="@dimen/margins"
-	          android:background="#6c000000">
+	          android:layout_marginTop="@dimen/margins">
 	        <LinearLayout 
 	            android:id="@+id/ll_weather"
 		        android:layout_width="fill_parent"
@@ -361,11 +366,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/margins"
             android:src="@drawable/home_body_cutover_left"/>
     </LinearLayout>   
 	<RelativeLayout 
 	    android:layout_width="fill_parent"
-	    android:layout_height="50dp"
+	    android:layout_height="@dimen/title_hight"
 	    android:layout_alignParentBottom="true">
 	    <Button
 	        android:id="@+id/bt_activity_home_help" 
@@ -379,14 +385,18 @@
 	        android:textSize="20sp"
 	        android:text="救援"/>
 	    <View 
+	        android:id="@+id/view_line"
 	        android:layout_width="1dp"
-	        android:layout_height="fill_parent"
+	        android:layout_height="20dp"
+	        android:layout_marginLeft="@dimen/margins"
+	        android:layout_centerVertical="true"
+	        android:layout_toRightOf="@+id/bt_activity_home_help"
 	        android:background="@drawable/body_line_imageoptim"/>
 	    <Button
 	        android:id="@+id/bt_activity_home_risk" 
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_toRightOf="@+id/bt_activity_home_help"
+	        android:layout_toRightOf="@+id/view_line"
 	        android:drawableLeft="@drawable/home_call"
 	        android:layout_marginLeft="10dp"
             android:layout_centerVertical="true"
