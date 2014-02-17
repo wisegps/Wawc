@@ -81,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="44dip"
+            android:paddingTop="@dimen/margins"
             >
    		<ImageView
             android:id="@+id/user_head"
