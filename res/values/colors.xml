@@ -10,6 +10,8 @@
     <color name="yellow">#ee810c</color>
     <!-- 洗车指数 -->
     <color name="blue_bg">#3a5197</color>
+    <!-- 车友圈 -->
+    <color name="adress_gray">#666666</color>
     <!-- 常规字体颜色 -->
     <color name="common">#313131</color>
     <!-- 未激活字体颜色 -->
@@ -18,6 +20,7 @@
     <color name="common_blue">#436af5</color>
     <!-- 红色字体 -->
     <color name="common_red">#e41d34</color>
+    <color name="white_inactive">#7fFFFFFF</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color> 
 </resources>
