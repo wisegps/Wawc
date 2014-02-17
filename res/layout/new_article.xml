@@ -11,13 +11,37 @@
         android:orientation="horizontal"
         android:background="@color/blue"
          >
-
         <Button
             android:id="@+id/back"
-            android:layout_width="wrap_content"
+            android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
-            android:background="@drawable/ic_launcher" />
+            android:layout_gravity="left|center_vertical"
+            android:layout_weight="1"
+            android:background="@drawable/nav_icon_back" />
+        <TextView 
+            android:layout_width="0dip"
+            android:layout_weight="8"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:text="@string/new_article_title"
+            android:paddingLeft="20dip"
+            android:textSize="@dimen/head"
+            android:textColor="@color/white"
+            />
+        <TextView 
+            android:id="@+id/publish"
+            android:layout_width="0dip"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/margins"
+            android:text="@string/publish_new_article"
+            android:textSize="@dimen/main"
+            android:background="@drawable/bt_bg"
+            android:textColor="@color/white"
+            />
     </LinearLayout>
     
     <LinearLayout 
@@ -58,15 +82,14 @@
             android:text="广东省深圳市南山区南山大道115号"
             android:layout_marginLeft="@dimen/margins"
             android:layout_weight="18"
+            android:textColor="@color/adress_gray"
             />
     </LinearLayout>
     </LinearLayout>
     
     <HorizontalScrollView
-        
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dip"
         android:scrollbarAlwaysDrawHorizontalTrack="false">
     <LinearLayout 
         android:id="@+id/my_linearLayout"
@@ -82,10 +105,4 @@
             />
         </LinearLayout>
     </HorizontalScrollView>
-    <Button 
-        android:id="@+id/publish"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:text="发送"
-        />
 </LinearLayout>

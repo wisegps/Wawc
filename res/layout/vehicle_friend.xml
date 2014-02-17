@@ -5,13 +5,13 @@
     android:background="#FFFFFF"
     android:orientation="vertical" >
 
+    
     <!-- 头部 -->
-
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/title_hight"
         android:orientation="horizontal" 
-        android:background="#3E5396"
+        android:background="@color/blue"
         >
 
         <ImageView
@@ -19,29 +19,60 @@
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:background="@drawable/menu" />
+            android:paddingLeft="@dimen/margins"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/nav_icon_menu" />
 
-        <TextView
-            android:id="@+id/tv_vehicle_friend_title"
+        
+        <LinearLayout 
             android:layout_width="0dip"
             android:layout_height="fill_parent"
+            android:orientation="horizontal"
             android:layout_weight="3"
             android:gravity="center"
+            >
+        <TextView
+            android:id="@+id/tv_vehicle_friend_title"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="center"
             android:text="@string/car_circle"
-            android:textSize="12pt" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/head" />
+        <ImageView 
+            android:id="@+id/vehicle_friend_title_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/body_arrow"
+            />
+        </LinearLayout>
 
-        <ImageView
-            android:id="@+id/publish_article"
+        <LinearLayout 
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1"
-            android:background="@drawable/new_article" />
+            android:orientation="horizontal"
+            android:gravity="center"
+            >
+        <ImageView
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/nav_icon_search" />
+        <ImageView
+            android:id="@+id/publish_article"
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginLeft="@dimen/margins"
+            android:background="@drawable/nav_icon_add" />
+        </LinearLayout>
     </LinearLayout>
     <!-- 标题 -->
 
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="120dip"
+        android:layout_height="@dimen/vehicle_friend_logo_bg"
         android:background="@drawable/car"
         android:gravity="center"
          >
@@ -50,7 +81,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="3dip"
+            android:paddingTop="@dimen/margins"
             >
    		<ImageView
             android:id="@+id/user_head"
@@ -90,20 +121,6 @@
 		        android:cacheColorHint="#00000000"
 		         >
 		    </com.wise.list.XListView>
-		    <!-- 
-		    <RelativeLayout 
-		        android:layout_width="fill_parent"
-        		android:layout_height="wrap_content"
-        		android:layout_alignParentBottom="true"
-		        >
-		        <ImageView
-		            android:id="@+id/publish_article"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:background="@drawable/new_article"
-		            android:layout_alignParentRight="true"
-		             />
-		              -->
 			    <LinearLayout
 	                android:id="@+id/say_something"
 	                android:layout_width="fill_parent"
@@ -117,8 +134,5 @@
 	                    android:layout_height="wrap_content"
 	                    layout="@layout/custom_facerelativelayout" />
 	            </LinearLayout>
-	            <!-- 
-		    </RelativeLayout>
-		     -->
     </RelativeLayout>
 </LinearLayout>
