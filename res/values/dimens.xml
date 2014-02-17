@@ -20,5 +20,4 @@
     <dimen name="main">18sp</dimen>
     <!-- 内容文字大小 -->
     <dimen name="content">16sp</dimen>
-    <dimen name="size_22">22sp</dimen>
 </resources>
