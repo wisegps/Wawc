@@ -7,8 +7,10 @@
     <!-- 头部 -->
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_height="@dimen/title_hight"
+        android:orientation="horizontal"
+        android:background="@color/blue"
+         >
 
         <Button
             android:id="@+id/back"
@@ -22,13 +24,14 @@
         android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
     	android:orientation="vertical"
-    	android:layout_margin="3dip"
+    	android:layout_margin="@dimen/body_padding"
+    	android:background="@drawable/new_article_edit_border"
         >
     <EditText 
         android:id="@+id/et_publish_article"
         android:layout_width="fill_parent"
-        android:layout_marginTop="20dip"
-        android:layout_marginLeft="20dip"
+        android:layout_marginTop="@dimen/margins"
+        android:layout_marginLeft="@dimen/margins"
         android:layout_height="wrap_content"
         android:lines = "8"
         android:gravity = "top"
@@ -53,7 +56,7 @@
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:text="广东省深圳市南山区南山大道115号"
-            android:layout_marginLeft="3dip"
+            android:layout_marginLeft="@dimen/margins"
             android:layout_weight="18"
             />
     </LinearLayout>
