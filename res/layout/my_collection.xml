@@ -2,40 +2,45 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#FFFFFF"
+    android:background="@color/gray"
     android:orientation="vertical">
-    <!-- 头部 -->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-        <Button
+        android:layout_height="@dimen/title_hight"
+        android:background="@drawable/nav_bg">
+        <ImageView
             android:id="@+id/my_vechile_menu"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:background="@drawable/ic_launcher" />
-
+            android:layout_width="@dimen/title_image"
+            android:layout_height="@dimen/title_image"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:clickable="true"
+            android:layout_marginLeft="@dimen/margins"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/nav_back"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1"
             android:gravity="center"
-            android:text="@string/my_collection"
-            android:textSize="10pt" />
-
-        <Button
+            android:text="我的收藏"
+            android:textColor="@color/white"
+            android:textSize="@dimen/title"
+            android:textStyle="bold" />
+        <Button 
             android:id="@+id/my_vechile_home"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:background="@drawable/ic_launcher" />
-    </LinearLayout>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:text="编辑"
+            android:layout_marginRight="@dimen/margins"
+            android:textColor="@color/white"
+            android:textSize="@dimen/main"
+            android:background="@drawable/bt_bg"/>
+    </RelativeLayout>
     <com.wise.list.XListView 
         android:id="@+id/my_collection_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#00FFFFFF"
-        android:scrollingCache="false"
-        ></com.wise.list.XListView>    
+        android:divider="@null"></com.wise.list.XListView>    
 </LinearLayout>

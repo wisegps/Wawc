@@ -48,9 +48,10 @@ public class SlidingView extends ViewGroup{
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         int left = 0;
+        int width = 0;
         for(int i = 0 ; i < getChildCount() ; i++){
             View childView = getChildAt(i);
-            int width = childView.getMeasuredWidth();
+            width = childView.getMeasuredWidth();
             childView.layout(left, 0, left+width, childView.getMeasuredHeight());
             left += width;
         }
