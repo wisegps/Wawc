@@ -55,42 +55,49 @@
 		</LinearLayout>
 	</HorizontalScrollView>
 	<ScrollView 
+	    android:layout_marginTop="@dimen/double_margins"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent">
 	    <LinearLayout 
 	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
+	        android:layout_height="wrap_content"	        
 	        android:orientation="vertical">
 	        <RelativeLayout 
 	            android:id="@+id/rl_inspection"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
-	            android:padding="5dp"
-	            android:background="@drawable/border_bg">
+	            android:background="@color/white"
+	            android:padding="@dimen/margins">
 	            <TextView 
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:textColor="@color/black"
+	                android:textColor="@color/common"
 	                android:layout_centerVertical="true"
 	                android:text="@string/inspection"/>
 	            <ImageView
 	                android:id="@+id/iv_inspection" 
-	                android:layout_width="40dp"
-	                android:layout_height="40dp"
+	                android:layout_width="@dimen/double_margins"
+	                android:layout_height="@dimen/double_margins"
+                    android:src="@drawable/body_icon_down"
 	                android:contentDescription="@string/app_name"
-	                android:layout_alignParentRight="true"
-	                android:src="@drawable/ic_launcher"/>
+	                android:layout_alignParentRight="true"/>
 	            <TextView 
 	                android:id="@+id/tv_activity_car_remind_inspection"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:textColor="@color/black"
+	                android:layout_marginRight="@dimen/margins"
+	                android:textColor="@color/common_inactive"
 	                android:layout_toLeftOf ="@id/iv_inspection"
 	                android:layout_centerVertical="true"/>
 	        </RelativeLayout>
+            <View 
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/body_line"/>
 	        <LinearLayout
 	            android:id="@+id/ll_inspection"
 	            android:visibility="gone" 
+	            android:background="@color/white"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:orientation="horizontal">
@@ -99,11 +106,17 @@
 	                android:layout_width="fill_parent"
 	                android:layout_height="wrap_content"
 	                android:layout_weight="1"
+	                android:layout_margin="@dimen/margins"
+	                android:textColor="@color/common_blue"
+	                android:background="@drawable/bt_bg_blue"
 	                android:text="@string/update_date"/>
 	            <Button 
 	                android:id="@+id/bt_inspection_address"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/margins"
+                    android:textColor="@color/common_blue"
+                    android:background="@drawable/bt_bg_blue"
                     android:layout_weight="1"
                     android:text="@string/deal_adress"/>
 	        </LinearLayout>
@@ -111,32 +124,38 @@
 	            android:id="@+id/rl_renewal"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
-	            android:padding="5dp"
-	            android:background="@drawable/border_bg">
+	            android:background="@color/white"
+                android:padding="@dimen/margins">
 	            <TextView 
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:textColor="@color/black"
+	                android:textColor="@color/common"
 	                android:layout_centerVertical="true"
 	                android:text="@string/renewal"/>
 	            <ImageView
 	                android:id="@+id/iv_renewal" 
-	                android:layout_width="40dp"
-	                android:layout_height="40dp"
+                    android:layout_width="@dimen/double_margins"
+                    android:layout_height="@dimen/double_margins"
+                    android:src="@drawable/body_icon_down"
 	                android:contentDescription="@string/app_name"
-	                android:layout_alignParentRight="true"
-	                android:src="@drawable/ic_launcher"/>
+	                android:layout_alignParentRight="true"/>
 	            <TextView 
 	                android:id="@+id/tv_activity_car_remind_remind_renewal"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:textColor="@color/black"
+	                android:layout_marginRight="@dimen/margins"
+	                android:textColor="@color/common_inactive"
 	                android:layout_toLeftOf ="@id/iv_renewal"
 	                android:layout_centerVertical="true"/>
 	        </RelativeLayout>
+            <View 
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/body_line"/>
 	        <LinearLayout
                 android:id="@+id/ll_renewal"
                 android:visibility="gone" 
+                android:background="@color/white"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -145,45 +164,57 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_margin="@dimen/margins"
+                    android:textColor="@color/common_blue"
+                    android:background="@drawable/bt_bg_blue"
                     android:text="@string/update_date"/>
                 <Button 
                     android:id="@+id/bt_renewal_call"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_margin="@dimen/margins"
+                    android:textColor="@color/common_blue"
+                    android:background="@drawable/bt_bg_blue"
                     android:text="@string/call_insurance"/>
             </LinearLayout>
 	        <RelativeLayout 
 	            android:id="@+id/rl_maintenance"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
-	            android:padding="5dp"
-	            android:background="@drawable/border_bg">
+	            android:background="@color/white"
+                android:padding="@dimen/margins">
 	            <TextView 
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:textColor="@color/black"
+	                android:textColor="@color/common"
 	                android:layout_centerVertical="true"
 	                android:text="@string/maintenance"/>
 	            <ImageView
 	                android:id="@+id/iv_maintenance" 
-	                android:layout_width="40dp"
-	                android:layout_height="40dp"
+                    android:layout_width="@dimen/double_margins"
+                    android:layout_height="@dimen/double_margins"
+                    android:src="@drawable/body_icon_down"
 	                android:contentDescription="@string/app_name"
-	                android:layout_alignParentRight="true"
-	                android:src="@drawable/ic_launcher"/>
+	                android:layout_alignParentRight="true"/>
 	            <TextView 
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:textColor="@color/black"
+	                android:layout_marginRight="@dimen/margins"
+	                android:textColor="@color/common_inactive"
 	                android:layout_toLeftOf ="@id/iv_maintenance"
 	                android:layout_centerVertical="true"
 	                android:text="离下次保养还有100km"/>
 	        </RelativeLayout>
+	        <View 
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/body_line"/>
 	        <LinearLayout
                 android:id="@+id/ll_maintenance"
                 android:visibility="gone" 
                 android:layout_width="fill_parent"
+                android:background="@color/white"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <Button
@@ -191,45 +222,57 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_margin="@dimen/margins"
+                    android:textColor="@color/common_blue"
+                    android:background="@drawable/bt_bg_blue"
                     android:text="@string/go_my_car"/>
                 <Button
                     android:id="@+id/bt_maintenance_call"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_margin="@dimen/margins"
+                    android:textColor="@color/common_blue"
+                    android:background="@drawable/bt_bg_blue"
                     android:text="@string/call_fours"/>
             </LinearLayout>
 	        <RelativeLayout 
 	            android:id="@+id/rl_examined"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
-	            android:padding="5dp"
-	            android:layout_marginTop="20dp"
-	            android:background="@drawable/border_bg">
+	            android:background="@color/white"
+                android:padding="@dimen/margins"
+	            android:layout_marginTop="@dimen/margins">
 	            <TextView 
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:textColor="@color/black"
+	                android:textColor="@color/common"
 	                android:layout_centerVertical="true"
 	                android:text="@string/examined"/>
 	            <ImageView
 	                android:id="@+id/iv_examined" 
-	                android:layout_width="40dp"
-	                android:layout_height="40dp"
+                    android:layout_width="@dimen/double_margins"
+                    android:layout_height="@dimen/double_margins"
+                    android:src="@drawable/body_icon_down"
 	                android:contentDescription="@string/app_name"
-	                android:layout_alignParentRight="true"
-	                android:src="@drawable/ic_launcher"/>
+	                android:layout_alignParentRight="true"/>
 	            <TextView 
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:textColor="@color/black"
+	                android:textColor="@color/common_inactive"
 	                android:layout_toLeftOf ="@id/iv_examined"
+	                android:layout_marginRight="@dimen/margins"
 	                android:layout_centerVertical="true"
 	                android:text="需于2014-08-01前年审"/>
 	        </RelativeLayout>
+            <View 
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/body_line"/>
 	        <LinearLayout
                 android:id="@+id/ll_examined"
                 android:visibility="gone" 
+                android:background="@color/white"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -238,44 +281,56 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_margin="@dimen/margins"
+                    android:textColor="@color/common_blue"
+                    android:background="@drawable/bt_bg_blue"
                     android:text="@string/update_date"/>
                 <Button 
                     android:id="@+id/bt_examined_address"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_margin="@dimen/margins"
+                    android:textColor="@color/common_blue"
+                    android:background="@drawable/bt_bg_blue"
                     android:text="@string/deal_adress"/>
             </LinearLayout>
 	        <RelativeLayout 
 	            android:id="@+id/rl_replacement"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
-	            android:padding="5dp"
-	            android:background="@drawable/border_bg">
+	            android:background="@color/white"
+                android:padding="@dimen/margins">
 	            <TextView 
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:textColor="@color/black"
+	                android:textColor="@color/common"
 	                android:layout_centerVertical="true"
 	                android:text="@string/replacement"/>
 	            <ImageView
 	                android:id="@+id/iv_replacement" 
-	                android:layout_width="40dp"
-	                android:layout_height="40dp"
+                    android:layout_width="@dimen/double_margins"
+                    android:layout_height="@dimen/double_margins"
+                    android:src="@drawable/body_icon_down"
 	                android:contentDescription="@string/app_name"
-	                android:layout_alignParentRight="true"
-	                android:src="@drawable/ic_launcher"/>
+	                android:layout_alignParentRight="true"/>
 	            <TextView 
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:textColor="@color/black"
+	                android:textColor="@color/common_inactive"
+	                android:layout_marginRight="@dimen/margins"
 	                android:layout_toLeftOf ="@id/iv_replacement"
 	                android:layout_centerVertical="true"
 	                android:text="需于2014-08-01前换证"/>
 	        </RelativeLayout>
+            <View 
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@drawable/body_line"/>
 	        <LinearLayout
                 android:id="@+id/ll_replacement"
-                android:visibility="gone" 
+                android:visibility="gone"
+                android:background="@color/white" 
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
@@ -284,12 +339,18 @@
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_margin="@dimen/margins"
+                    android:textColor="@color/common_blue"
+                    android:background="@drawable/bt_bg_blue"
                     android:text="@string/update_date"/>
                 <Button 
                     android:id="@+id/bt_replacement_address"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:layout_margin="@dimen/margins"
+                    android:textColor="@color/common_blue"
+                    android:background="@drawable/bt_bg_blue"
                     android:text="@string/deal_adress"/>
             </LinearLayout>
 	    </LinearLayout>

@@ -71,7 +71,7 @@ public class CarAdapter extends BaseAdapter{
             }
 		}
 		if(carData.isCheck()){
-			holder.ll_item_cars.setBackgroundResource(R.color.gray);
+			holder.ll_item_cars.setBackgroundResource(R.drawable.bg_car_logo);
 		}else{
 			holder.ll_item_cars.setBackgroundDrawable(null);
 		}

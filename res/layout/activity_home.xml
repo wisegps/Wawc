@@ -43,7 +43,7 @@
         android:layout_below="@id/rl_activity_home_top"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#6c000000"
+        android:background="@color/bg_home1"
         android:layout_marginTop="@dimen/double_margins"
         android:orientation="vertical">
         <RelativeLayout 
@@ -94,7 +94,7 @@
 	    <LinearLayout
 	        android:orientation="horizontal" 
 	        android:padding="@dimen/margins"
-	        android:background="#88000000"
+	        android:background="@color/bg_home"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content">
 	        <LinearLayout 
@@ -161,7 +161,6 @@
 	    <View 
 	        android:layout_width="fill_parent"
 	        android:layout_height="2dp"
-	        android:layout_marginBottom="@dimen/margins"
 	        android:background="@color/blue_bg"/>
     </LinearLayout>
     <LinearLayout
@@ -169,7 +168,8 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="#6c000000">      
+        android:layout_marginTop="@dimen/double_margins"
+        android:background="@color/bg_home1">      
 	    <com.wise.extend.HScrollLayout
 	          xmlns:android="http://schemas.android.com/apk/res/android"    
 	          android:id="@+id/ScrollLayout_other"  
@@ -390,6 +390,7 @@
 	<RelativeLayout 
 	    android:layout_width="fill_parent"
 	    android:layout_height="@dimen/title_hight"
+	    android:background="@color/bg_home1"
 	    android:layout_alignParentBottom="true">
 	    <Button
 	        android:id="@+id/bt_activity_home_help" 
