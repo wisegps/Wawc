@@ -12,6 +12,7 @@ import android.graphics.Bitmap.Config;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 
 public class BlurImage {
     
@@ -45,11 +46,21 @@ public class BlurImage {
      * @param bitmap
      * @return
      */
-    public static Bitmap getSquareBitmap(Bitmap bitmap){
-        int width = bitmap.getWidth();
-        int height = bitmap.getHeight();
-        int y = (height - width)/2;
-        return Bitmap.createBitmap(bitmap, 0, y, width, width);
+    public static Bitmap getSquareBitmap(Bitmap bitmap,int width,int height){
+        int imageWidth = bitmap.getWidth();
+        int imageHeight = bitmap.getHeight();
+        Log.e("imageWidth",imageWidth+"");
+        Log.e("imageHeight",imageHeight+"");
+        int y = 0;
+        Bitmap image = null;
+        if(imageHeight > imageWidth){
+        	y = (imageHeight - imageWidth)/2;
+        	image = Bitmap.createBitmap(bitmap, 0, y, width, height);
+        }else{
+        	y = (imageWidth - imageHeight)/2;
+        	image = Bitmap.createBitmap(bitmap, y, 0, width, height);
+        }
+        return image;
     }
     
     /**
@@ -72,8 +83,7 @@ public class BlurImage {
         return BitmapFactory.decodeFile(Path, options);
     }
     
-    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId,  
-            int reqWidth, int reqHeight) {  
+    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId, int reqWidth, int reqHeight) {  
         // 第一次解析将inJustDecodeBounds设置为true，来获取图片大小  
         final BitmapFactory.Options options = new BitmapFactory.Options();  
         options.inJustDecodeBounds = true;  

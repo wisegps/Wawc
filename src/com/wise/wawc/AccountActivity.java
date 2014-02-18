@@ -150,7 +150,7 @@ public class AccountActivity extends Activity{
 	 * 获取本地数据
 	 */
 	private void GetSfData(){
-	    Bitmap bimage = BitmapFactory.decodeFile(Constant.picPath + Constant.UserImage);
+	    Bitmap bimage = BitmapFactory.decodeFile(Constant.userIconPath + Constant.UserImage);
         if(bimage != null){            
             iv_activity_account_pic.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
         }

@@ -157,13 +157,11 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 				}
 				String imageDatas = jsonDatas.toString();
 				String temp = "";
-				Log.e("生成的数据：",imageDatas);
 				if(!"[]".equals(imageDatas)){
 					temp = imageDatas.replaceAll("\\\\", "");
 				}else{
 					temp = jsonDatas.toString();
 				}
-				Log.e("处理的数据：",temp);
 				List<NameValuePair> params = new ArrayList<NameValuePair>();
 				params.add(new BasicNameValuePair("cust_id",Variable.cust_id));
 				params.add(new BasicNameValuePair("city",preferences.getString(Constant.LocationCity, "")));
@@ -179,7 +177,6 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 				break;
 				
 			case publishArticle:
-				Log.e("文章发表结果:",msg.obj.toString());
 				try {
 					JSONObject jsonObject = new JSONObject(msg.obj.toString());
 					myDialog.dismiss();
@@ -219,16 +216,15 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 	        createImage(fileName, bitmap);  //创建文件
 	        File imageFile = new File(fileName);
 	        //按照指定的大小压缩图片
-	        small_image = BlurImage.decodeSampledBitmapFromPath(fileName,Variable.smallImageReqHeight,Variable.smallImageReqHeight);
+	        Bitmap smallBitmap = BitmapFactory.decodeFile(fileName);
+	        small_image = BlurImage.getSquareBitmap(smallBitmap,Variable.smallImageReqHeight,Variable.smallImageReqHeight);
 	        big_image = BlurImage.decodeSampledBitmapFromPath(fileName,Variable.bigImageReqHeight,Variable.bigImageReqHeight);
-	        Log.e("图片存储路径：",Constant.VehiclePath + name + "small_image.jpg");
 	        createImage(Constant.VehiclePath + name + "small_image.jpg", small_image);
 	        createImage(Constant.VehiclePath + name + "big_image.jpg", big_image);
 	        filePathList.add(Constant.VehiclePath + name + "small_image.jpg");
 	        filePathList.add(Constant.VehiclePath + name + "big_image.jpg");
 	        bitmapList.add(filePathList);
 	        
-	        Log.e("bitmapList.size()",bitmapList.size() + "");
 	        
 	        if(imageFile.exists()){
 	        	imageFile.delete();
@@ -257,33 +253,6 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
             ShowBitMap(bitmap);
         }  
     }
-	
-	
-	private void showShare(boolean silent, String platform) {
-		System.out.println("分享");
-		final OnekeyShare oks = new OnekeyShare();
-		oks.setNotification(R.drawable.ic_launcher, "app_name");
-		//oks.setAddress("12345678901");
-		oks.setTitle("share");
-		//oks.setTitleUrl("http://sharesdk.cn");
-		oks.setText(Content);
-		//oks.setImagePath(MainActivity.TEST_IMAGE);
-		//oks.setImageUrl("http://img.appgo.cn/imgs/sharesdk/content/2013/07/25/1374723172663.jpg");
-		//oks.setUrl("http://www.sharesdk.cn");
-		//oks.setFilePath(MainActivity.TEST_IMAGE);
-		//oks.setComment("share");
-		//oks.setSite("wise");
-		//oks.setSiteUrl("http://sharesdk.cn");
-		//oks.setVenueName("Share SDK");
-		//oks.setVenueDescription("This is a beautiful place!");
-		//oks.setLatitude(23.056081f);
-		//oks.setLongitude(113.385708f);
-		oks.setSilent(silent);
-		if (platform != null) {
-			oks.setPlatform(platform);
-		}
-		oks.show(NewArticleActivity.this);
-	}
 	
 	public void createImage(String fileName,Bitmap bitmap){
 		FileOutputStream b = null;
@@ -321,7 +290,6 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 			try {
 				JSONObject jsonObject = new JSONObject(message);
 				if(imageSize == 0){
-					Log.e("创建","创建");
 					imageUrl = new JSONObject();
 				}
 			// 存储返回的图片url   
@@ -329,7 +297,6 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 				//  小图上传成功
 				if(imageSize == 0){
 					File smallImage = new File(bitmapList.get(imageNum).get(imageSize).toString());
-					Log.e("smallImage",smallImage.toString());
 					if(smallImage.exists()){
 							String imageFileUrl = jsonObject.getString("image_file_url");
 							imageUrl.putOpt("small_pic", imageFileUrl);
@@ -342,10 +309,8 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 					return;
 				}else{
 					File bigImage = new File(bitmapList.get(imageNum).get(imageSize).toString());
-					Log.e("bigImage",bigImage.toString());
 					if(bigImage.exists()){
 						String imageFileUrl = jsonObject.getString("image_file_url").toString();
-						Log.e("imageUrl == null",(imageUrl == null)+"");
 							imageUrl.putOpt("big_pic", imageFileUrl);
 							String newPath = Constant.VehiclePath + imageFileUrl.substring(imageFileUrl.lastIndexOf("/") + 1);
 							File newFile = new File(newPath);
@@ -358,7 +323,6 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 						UploadUtil.getInstance().uploadFile(bitmapList.get(imageNum).get(imageSize).toString(), "image", Constant.BaseUrl + "upload_image?auth_code=" + Variable.auth_code, new HashMap<String, String>());
 					}
 				}
-				Log.e("上传结果","第" + imageNum + "张上传成功");
 			}
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -369,11 +333,10 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 				Message msg = new Message();
 				msg.what = removeImageCode;
 				myHandler.sendMessage(msg);
-				Log.e("上传成功" + imageNum,"上传成功");
+				imageNum = 0;
 			}
 			break;
 		case UploadUtil.UPLOAD_SERVER_ERROR_CODE:
-			Log.e("服务器出错","服务器出错");
 			break;
 		}
 	}

@@ -67,7 +67,7 @@ public class LogoAdapter extends BaseAdapter {
 //			Log.e("getView()--车牌号：",str2);
 			hodler.vehicleNum.setText(str2);
 		}else{
-			hodler.imageView.setBackgroundResource(R.drawable.image);
+			hodler.imageView.setBackgroundResource(R.drawable.ic_launcher);
 		}
 		if(position == carDataList.size()){
 			hodler.imageView.setBackgroundResource(R.drawable.new_vehicle);

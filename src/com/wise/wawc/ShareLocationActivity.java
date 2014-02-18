@@ -4,6 +4,7 @@ import cn.sharesdk.framework.ShareSDK;
 import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
+import com.wise.pubclas.Variable;
 import com.wise.sharesdk.OnekeyShare;
 import android.app.Activity;
 import android.content.Intent;
@@ -102,7 +103,7 @@ public class ShareLocationActivity extends Activity{
             GetSystem.saveImageSD(bitmap,Constant.picPath, Constant.ShareImage);
             //显示到控件上
             bitmap = BlurImage.decodeSampledBitmapFromPath(Constant.picPath + Constant.ShareImage, 80, 80);  
-            bitmap = BlurImage.getSquareBitmap(bitmap);
+            bitmap = BlurImage.getSquareBitmap(bitmap,Variable.smallImageReqWidth,Variable.smallImageReqWidth);
             if(bitmap != null){  
                 imagePath = Constant.picPath + Constant.ShareImage;
                 iv_photo.setImageBitmap(bitmap);

@@ -40,6 +40,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -67,7 +68,7 @@ import android.widget.Toast;
 public class MyAdapter extends BaseAdapter{
 	private LayoutInflater inflater;
 	private ImageView saySomething;
-	private ImageView userHead;
+	private ImageView userHead = null;
 	private View view;
 	private Activity activity;
 	public static boolean isClick = false;
@@ -120,16 +121,21 @@ public class MyAdapter extends BaseAdapter{
 			Map<String,String> imageMap = articleList.get(position).getImageList().get(i);
 			//判断小图是否存在sd卡 /点击小图的时候再判断大图是否存在sd卡  TODO
 			String smallImage = imageMap.get("small_pic").substring(imageMap.get("small_pic").lastIndexOf("/") + 1);
-			
 			//本地不存在图片  存null  
-			Bitmap smallBitmap = imageIsExist(Constant.VehiclePath + smallImage,imageMap.get("small_pic"));
+			Bitmap smallBitmap = imageIsExist(Constant.VehiclePath + smallImage,imageMap.get("small_pic"),3,0);
 			smallImageList.add(i, smallBitmap);
+		}
+		
+		//将用户头像url存储起来
+		File userIconPath = new File(Constant.userIconPath);
+		if(!userIconPath.exists()){
+			userIconPath.mkdir();
 		}
 		line = convertView.findViewById(R.id.article_adapter_line);
 		//文章评论布局
 		tablelayout = (TableLayout) convertView.findViewById(R.id.tablelayout);
 		LinearLayout linearLayout = (LinearLayout) convertView.findViewById(R.id.user_image);
-//		
+		
 //		if(articleList.get(position).getImageList().size() == 0 && articleList.get(position).getCommentList().size() == 0 && articleList.get(position).getPraisesList().size() == 0){
 //			tablelayout.setVisibility(View.GONE);
 //		}else{
@@ -234,12 +240,20 @@ public class MyAdapter extends BaseAdapter{
 		favorite.setOnClickListener(new MyClickListener(position));
 		userHead.setOnClickListener(new MyClickListener(position));
 		articel_user_name.setOnClickListener(new MyClickListener(position));
-		
+		//设置用户头像   TODO
+		//TODO
+		Bitmap userIcons = imageIsExist(Constant.userIconPath + articleList.get(position).getCust_id() + ".jpg",articleList.get(position).getUserLogo(),4,articleList.get(position).getCust_id());
+		if(userIcons == null){
+			userHead.setBackgroundResource(R.drawable.ic_launcher);
+		}else{
+			Bitmap user = BitmapFactory.decodeFile(Constant.userIconPath + articleList.get(position).getCust_id()+".jpg");
+			userHead.setImageBitmap(user);
+		}
 		return convertView;
 	}
 	
 	//判断图片是否存在SD卡   TODO
-	private Bitmap imageIsExist(String path,final String loadUrl) {
+	private Bitmap imageIsExist(String path,final String loadUrl,final int action,final int custId) {
 		File file = new File(path);
 		Log.e("图片路径：",path);
 		Log.e("图片：",file.exists()+"");
@@ -258,7 +272,13 @@ public class MyAdapter extends BaseAdapter{
 	                        if(!imagePath.exists()){
 	                            imagePath.mkdir();
 	                        }
-	                        createImage(Constant.VehiclePath + loadUrl.substring(loadUrl.lastIndexOf("/")),bitmap);
+	                        if(action == 3){
+	                        	createImage(Constant.VehiclePath + loadUrl.substring(loadUrl.lastIndexOf("/")),bitmap);
+	                        }
+	                        if(action == 4){
+	                        	//  TODO
+	                        	createImage(Constant.userIconPath + custId + ".jpg",bitmap);
+	                        }
 	                    }
 					}else{
 					    Log.e("MyAdapter", "图片为空");

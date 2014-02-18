@@ -7,5 +7,5 @@
     <item             
           android:state_enabled="true"    
           android:state_checked="false"
-          android:drawable="@drawable/image" />     
+          android:drawable="@drawable/ic_launcher" />     
 </selector>

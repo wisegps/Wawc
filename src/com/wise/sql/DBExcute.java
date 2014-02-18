@@ -136,11 +136,6 @@ public class DBExcute {
 			DBHelper dbHelper = new DBHelper(context);
 			SQLiteDatabase db = dbHelper.getReadableDatabase();
 			Cursor cursor = db.rawQuery(sql, whereClause);
-//			Cursor ccc = db.rawQuery("select * from " + Constant.TB_VehicleFriendType, new String[]{});
-//			while(ccc.moveToNext()){
-//				Log.e("Type_id:"+ccc.getInt(ccc.getColumnIndex("Type_id")) ,"Blog_id:" + ccc.getInt(ccc.getColumnIndex("Blog_id")));
-//			}
-//			
 			while(cursor.moveToNext()){
 				int blog_id = cursor.getInt(cursor.getColumnIndex("Blog_id"));
 				//通过文章类型中的blog_id 在文章表中查询文章详细信息
@@ -249,6 +244,7 @@ public class DBExcute {
 			JSONObject jsonObject = new JSONObject(cursor.getString(cursor.getColumnIndex("Content")));
 			article = new Article();
 			article.setBlog_id(Integer.valueOf(cursor.getString(cursor.getColumnIndex("Blog_id"))));
+			article.setUserLogo(cursor.getString(cursor.getColumnIndex("UserLogo")));
 			article.setCity(jsonObject.getString("city"));
 			article.setName(jsonObject.getString("name"));
 			List<String[]> comments = new ArrayList<String[]>();
@@ -267,8 +263,8 @@ public class DBExcute {
 			article.setContent(jsonObject.getString("content"));
 			article.setCreate_time(jsonObject.getString("create_time"));
 			article.setCust_id(cursor.getInt(cursor.getColumnIndex("Cust_id")));
-//			
-//			//用户发表的图片
+			
+//			用户发表的图片
 			Map<String,String> imageListTemp = null;
 			List<Map<String,String>> imageList = new ArrayList<Map<String,String>>();
 			if(!"[]".equals(jsonObject.getString("pics"))){

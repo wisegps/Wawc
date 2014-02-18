@@ -21,4 +21,9 @@
     <dimen name="main">18sp</dimen>
     <!-- 内容文字大小 -->
     <dimen name="content">16sp</dimen>
+    <!-- 文章评论布局高 -->
+    <dimen name="article_favorite_height">56dp</dimen>
+    <dimen name="article_list_item_to_screen_top">10dp</dimen>
+    
+    <dimen name="margins1">5dp</dimen>
 </resources>

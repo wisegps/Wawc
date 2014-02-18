@@ -376,8 +376,8 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
      * 已经登录过,初始化数据
      */
     private void platfromIsLogin(Platform platform){
-        System.out.println(Constant.picPath + Constant.UserImage);
-        bimage = BitmapFactory.decodeFile(Constant.picPath + Constant.UserImage);
+        System.out.println(Constant.userIconPath + Constant.UserImage);
+        bimage = BitmapFactory.decodeFile(Constant.userIconPath + Constant.UserImage);
         Constant.UserIcon = bimage;
         Constant.UserIconUrl = platform.getDb().getUserIcon();
         if(bimage != null){            
@@ -436,7 +436,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             bimage = GetSystem.getBitmapFromURL(url);  
             Constant.UserIcon = bimage;
             if(bimage != null){
-                GetSystem.saveImageSD(bimage, Constant.picPath, Constant.UserImage);
+                GetSystem.saveImageSD(bimage, Constant.userIconPath, Constant.UserImage);
             }
             Message message = new Message();
             message.what = Get_Pic;

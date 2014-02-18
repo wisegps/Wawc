@@ -37,7 +37,7 @@ public class MaintainAdapter extends BaseAdapter{
 	public View getView(int position, View convertView, ViewGroup parent) {
 		convertView = inflater.inflate(R.layout.maintain_item, null);
 		maintainLogo = (ImageView) convertView.findViewById(R.id.vehicle_maintain_shop);
-		maintainLogo.setBackgroundResource(R.drawable.image);
+		maintainLogo.setBackgroundResource(R.drawable.ic_launcher);
 		maintainName = (TextView) convertView.findViewById(R.id.vehicle_maintain_name);
 		maintainName.setText(maintainList.get(position));
 		

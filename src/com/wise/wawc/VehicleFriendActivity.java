@@ -43,6 +43,7 @@ import android.widget.AbsListView.OnScrollListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 /**
@@ -107,6 +108,8 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	private int article = 6;  //文章类型
 	
+	private LinearLayout titleLayout = null;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE); 
@@ -137,7 +140,8 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		titleList.add("我的收藏");
 		
 		TVTitle = (TextView) findViewById(R.id.tv_vehicle_friend_title);
-		TVTitle.setOnClickListener(new ClickListener());
+		titleLayout = (LinearLayout) findViewById(R.id.vehicle_friend_title);
+		titleLayout.setOnClickListener(new ClickListener());
 		//不设置上拉加载无效
 		articleList.setPullLoadEnable(true);
 		
@@ -173,10 +177,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				Intent newArticle  = new Intent(VehicleFriendActivity.this,NewArticleActivity.class);
 				startActivityForResult(newArticle,newArticleResult);
 				break;
-//			case R.id.home:
-//				ActivityFactory.A.ToHome();
-//				break;
-				
 			case R.id.user_head:    //用户资料
 				startActivity(new Intent(VehicleFriendActivity.this,AccountActivity.class));
 				break;
@@ -198,11 +198,11 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 					new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "blog/" + blogId + "/comment?auth_code=" + Variable.auth_code, params, commentArticle)).start();
 				}
 				break;
-			case R.id.tv_vehicle_friend_title:
+			case R.id.vehicle_friend_title:
 				mSpinerPopWindow.refreshData(titleList, 0);
 				mSpinerPopWindow.setWidth(screenWidth);
 				mSpinerPopWindow.setHeight(300);
-				mSpinerPopWindow.showAsDropDown(TVTitle);
+				mSpinerPopWindow.showAsDropDown(titleLayout);
 				break;
 			default:
 				return;
@@ -388,9 +388,8 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 						JSONArray jsonArray = new JSONArray(results);
 						int[] blogIdList = new int[jsonArray.length()];
 						for(int i = 0 ; i < jsonArray.length() ; i ++){
-							JSONObject jobj = jsonArray.getJSONObject(i);
+							JSONObject jsonObject = jsonArray.getJSONObject(i);
 							//判断车友圈文章表里面是否存在此blog_id   存在   操作类型表    不存在   将这条数据添加到车友圈文章表  TODO
-							JSONObject jsonObject = jobj.getJSONObject("obj");
 							int blog_id = Integer.valueOf(jsonObject.getString("blog_id"));
 //							
 							blogIdList[i] = blog_id;
@@ -405,6 +404,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 								ContentValues values = new ContentValues();
 								values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
 								values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
+								values.put("UserLogo", jsonArray.getJSONObject(i).getString("logo"));
 								values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
 								dBExcute.InsertDB(VehicleFriendActivity.this,values,Constant.TB_VehicleFriend);
 								
@@ -455,6 +455,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				ContentValues values = new ContentValues();
 				values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
 				values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
+				values.put("UserLogo", jsonArray.getJSONObject(i).getString("logo"));
 				values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
 				dBExcute.InsertDB(VehicleFriendActivity.this,values,Constant.TB_VehicleFriend);
 				if(i == (jsonArray.length()-1)){
@@ -529,6 +530,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		Constant.totalPage = 0;   //数据总量
 		Constant.currentPage = 0;  //当前页
 		isLoadMore = false;
+		
 		if(Variable.articleList != null){
 			Variable.articleList.clear();
 		}
