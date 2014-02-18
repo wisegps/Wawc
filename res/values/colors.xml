@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 灰色 -->
+    <!-- 灰色背景 -->
     <color name="gray">#d8d9e1</color>
-    <!-- 蓝色 -->
+    <!-- 蓝色背景 -->
     <color name="blue">#3b5197</color>
-    <!-- 红色 -->
+    <color name="blue_light">#993b5197</color>
+    <!-- 红色背景 -->
     <color name="red">#e41d34</color>
+    <color name="bg_home">#4c121220</color>
+    <color name="bg_home1">#4c313131</color>
     <!-- 车辆限行 -->
     <color name="yellow">#ee810c</color>
     <!-- 洗车指数 -->
