@@ -151,7 +151,7 @@
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:layout_weight="1"
-	    		android:background="@drawable/image"
+	    		android:background="@drawable/ic_launcher"
 	            />
 	    </TableRow>
 	    <TableRow 
@@ -186,7 +186,7 @@
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:layout_weight="1"
-	    		android:background="@drawable/image"
+	    		android:background="@drawable/ic_launcher"
 	            />
 	    </TableRow>
 	    <TableRow 
@@ -222,7 +222,7 @@
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:layout_weight="1"
-	    		android:background="@drawable/image"
+	    		android:background="@drawable/ic_launcher"
 	            />
 	        
 	    </TableRow>
@@ -257,7 +257,7 @@
 	            android:layout_height="fill_parent"
 	    		android:layout_width="wrap_content"
 	    		android:layout_weight="1"
-	    		android:background="@drawable/image"
+	    		android:background="@drawable/ic_launcher"
 	            />
 	    </TableRow>
 	    <!-- 违章查询 -->
@@ -385,7 +385,7 @@
 	            android:layout_height="fill_parent"
 	    		android:layout_width="wrap_content"
 	    		android:layout_weight="1"
-	    		android:background="@drawable/image"
+	    		android:background="@drawable/ic_launcher"
 	            />
 	    </TableRow>
 	    <TableRow 
@@ -448,7 +448,7 @@
 	            android:layout_height="fill_parent"
 	    		android:layout_width="wrap_content"
 	    		android:layout_weight="1"
-	    		android:background="@drawable/image"
+	    		android:background="@drawable/ic_launcher"
 	            />
 	    </TableRow>
 	    
@@ -485,7 +485,7 @@
 	            android:layout_height="fill_parent"
 	    		android:layout_width="wrap_content"
 	    		android:layout_weight="1"
-	    		android:background="@drawable/image"
+	    		android:background="@drawable/ic_launcher"
 	            />
 	    </TableRow>
 	    <TableRow 

@@ -16,6 +16,8 @@
     <color name="yellow">#ee810c</color>
     <!-- 洗车指数 -->
     <color name="blue_bg">#3a5197</color>
+    <!-- 车友圈用户名字体颜色 -->
+    <color name="article_user_name">#3a5195</color>
     <!-- 车友圈 -->
     <color name="adress_gray">#666666</color>
     <!-- 常规字体颜色 -->

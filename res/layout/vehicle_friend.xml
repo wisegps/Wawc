@@ -25,6 +25,7 @@
 
         
         <LinearLayout 
+            android:id="@+id/vehicle_friend_title"
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:orientation="horizontal"

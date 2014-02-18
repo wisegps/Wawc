@@ -7,7 +7,7 @@
     <TableLayout 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dip"
+        android:paddingTop="@dimen/article_list_item_to_screen_top"
         >
         <TableRow 
             android:layout_width="fill_parent"
@@ -16,9 +16,11 @@
         <ImageView 
             android:id="@+id/head_article"
             android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@drawable/ic_launcher"
+            android:layout_height="fill_parent"
+            android:layout_weight="1.5"
+            android:paddingLeft="@dimen/margins1"
+            android:layout_marginRight="@dimen/margins1"
+            android:layout_marginLeft="@dimen/margins1"
             />
         <TableLayout 
             android:layout_width="0dip"
@@ -29,12 +31,14 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="5dip"
+                android:layout_marginTop="@dimen/article_list_item_to_screen_top"
                 >
                 <TextView 
                     android:id="@+id/article_user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/article_user_name"
+                    android:textSize="@dimen/title"
                     android:text="用户名"
                     />
                 <TextView 
@@ -42,6 +46,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="内容"
+                    android:textColor="@color/common"
+                    android:textSize="@dimen/main"
                     />
             </LinearLayout>
         </TableLayout>
@@ -60,7 +66,9 @@
             <View 
                 android:layout_width="0dip"
                 android:layout_height="0dip"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
+                android:layout_marginRight="@dimen/margins1"
+            	android:layout_marginLeft="@dimen/margins1"
                 />
             
             <!-- 动态添加图片控件 -->
@@ -87,7 +95,9 @@
             <View
                 android:layout_width="0dip"
                 android:layout_height="0dip"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
+                android:layout_marginRight="@dimen/margins1"
+            	android:layout_marginLeft="@dimen/margins1"
                 />
             <TableRow 
                 android:layout_width="0dip"
@@ -101,6 +111,8 @@
                 	android:text="10:30"
                 	android:layout_weight="1"
                 	android:layout_gravity="left|center_vertical"
+                	android:textColor="@color/gray"
+                	android:textSize="@dimen/content"
                      />
                 <LinearLayout 
                     android:layout_width="0dip"
@@ -114,13 +126,13 @@
                         android:layout_width="wrap_content"
                 		android:layout_height="wrap_content"
                 		android:layout_marginRight="10dip"
-                		android:background="@drawable/image1"
+                		android:background="@drawable/body_icon_heart"
                         />
                     <ImageView 
                         android:id="@+id/list_say_somthing"
                         android:layout_width="wrap_content"
                 		android:layout_height="wrap_content"
-                		android:background="@drawable/image2"
+                		android:background="@drawable/body_icon_comment"
                         />
                 </LinearLayout>
             </TableRow>
@@ -142,7 +154,9 @@
             <View
                 android:layout_width="0dip"
                 android:layout_height="0dip"
-                android:layout_weight="1"
+                android:layout_weight="1.5"
+                android:layout_marginRight="@dimen/margins1"
+            	android:layout_marginLeft="@dimen/margins1"
                 />
             
             <TableLayout 
@@ -153,14 +167,14 @@
                 >
             <TableRow 
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/article_favorite_height"
                 android:layout_marginTop="10dip"
                 >
                 <ImageView
                     android:id="@+id/article_praises_star"
                     android:layout_width="20dip"
                 	android:layout_height="20dip"
-                	android:background="@drawable/start"
+                	android:background="@drawable/body_icon_heart_press"
                      />
                 <TextView 
                     android:id="@+id/article_praises_user"
@@ -169,6 +183,7 @@
                 	android:maxLength="30"
                     />
             </TableRow>
+            
               <View 
                   	android:id="@+id/article_adapter_line"
                    	android:layout_width="fill_parent"

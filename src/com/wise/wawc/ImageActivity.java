@@ -31,9 +31,9 @@ public class ImageActivity extends Activity {
 	private Gallery gallery = null;
 	private HorizontalScrollView horizontalScroller;
 	private Bitmap bitmap = null;
-	int mImageResourceIds1[] = new int[]{R.drawable.a,R.drawable.image,
-			R.drawable.image,R.drawable.image,R.drawable.image,R.drawable.image,
-			R.drawable.image,R.drawable.image,R.drawable.image};
+	int mImageResourceIds1[] = new int[]{R.drawable.a,R.drawable.ic_launcher,
+			R.drawable.ic_launcher,R.drawable.ic_launcher,R.drawable.ic_launcher,R.drawable.ic_launcher,
+			R.drawable.ic_launcher,R.drawable.ic_launcher,R.drawable.ic_launcher};
 	private ImageAdapter adapter = null;
 	private List<Bitmap> imageModel = new ArrayList<Bitmap>();
 	public static int screenHeight = 0;

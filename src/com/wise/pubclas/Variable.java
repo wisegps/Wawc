@@ -53,8 +53,8 @@ public class Variable {
     public static int bigImageReqHeight = 80;
     
     
-    public static int smallImageReqHeight = 300;
-    public static int smallImageReqWidth = 300;
+    public static int smallImageReqHeight = 105;
+    public static int smallImageReqWidth = 105;
     public static String MscKey = "5281f227";
     
     

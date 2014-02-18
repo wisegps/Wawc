@@ -9,6 +9,7 @@ import java.util.Map;
  */
 public class Article {
 	private String create_time;
+	private String userLogo;
 	private String city;
 	private String lat;
 	private String lon;
@@ -113,5 +114,11 @@ public class Article {
 	}
 	public void set_id(String _id) {
 		this._id = _id;
+	}
+	public String getUserLogo() {
+		return userLogo;
+	}
+	public void setUserLogo(String userLogo) {
+		this.userLogo = userLogo;
 	}
 }

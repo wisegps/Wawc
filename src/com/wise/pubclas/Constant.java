@@ -26,6 +26,10 @@ public class Constant {
      */
     public static String picPath = BasePath + "pic/";
     /**
+     * 存放用户头像
+     */
+    public static String userIconPath = BasePath + "userIcon/";
+    /**
      * 车友圈
      */
     public static String VehiclePath = BasePath + "vehicle/";

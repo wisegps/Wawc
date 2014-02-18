@@ -114,7 +114,7 @@
 	     <ImageView 
 	         android:layout_width="20dip"
 	         android:layout_height="20dip"
-	         android:background="@drawable/image"
+	         android:background="@drawable/ic_launcher"
 	         android:layout_centerVertical="true"
 	         android:layout_alignParentRight="true"
 	         android:layout_marginRight="5dip"/>
