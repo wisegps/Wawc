@@ -28,6 +28,8 @@ import com.wise.service.JsonParser;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -51,6 +53,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -72,9 +75,12 @@ public class HomeActivity extends Activity{
             tv_item_weather_index_xc, tv_item_weather_city,tv_item_oil_90, tv_item_oil_93,
             tv_item_oil_97, tv_item_oil_0,tv_car_number,tv_activity_home_car_adress;
     ImageView iv_carLogo,iv_page;
+    
     private ImageView saySomething = null; // 语音识别
   	private SpeechRecognizer iatRecognizer;   //识别对象
   	private StringBuffer sb = null;
+  	ImageView voiceImage = null;
+  	VoiceDialog voiceDialog = null;
 
     String LocationCityCode = "";// 城市编码
     String LocationCity = "";// 城市
@@ -211,6 +217,10 @@ public class HomeActivity extends Activity{
 				iatRecognizer.setParameter(SpeechConstant.DOMAIN, "iat");
 				iatRecognizer.setParameter(SpeechConstant.SAMPLE_RATE, "16000");
 				iatRecognizer.startListening(recognizerListener);
+				//显示语音识别Dialog  TODO
+				voiceDialog = new VoiceDialog(HomeActivity.this);
+				voiceDialog.show();
+				voiceDialog.setCancelable(true);
                 break;
             case R.id.tv_item_weather_city:
                 startActivityForResult(new Intent(HomeActivity.this, SelectCityActivity.class), 0);
@@ -800,7 +810,7 @@ public class HomeActivity extends Activity{
 		public void onEvent(int arg0, Bundle arg1) {
 		}		
 	};
-	
+	//TODO 更改语音识别ui布局
 	RecognizerListener recognizerListener=new RecognizerListener(){
 		public void onBeginOfSpeech() {	
 			sb = new StringBuffer();
@@ -808,6 +818,7 @@ public class HomeActivity extends Activity{
 		}
 
 		public void onError(SpeechError err) {
+			voiceDialog.dismiss();
 			Toast.makeText(getApplicationContext(), "识别出错，稍后再试", 0).show();
 			Log.e("错误码：",err+"");
 		}
@@ -816,23 +827,35 @@ public class HomeActivity extends Activity{
 		public void onEvent(int eventType, int arg1, int arg2, String msg) {
 
 		}
-		public void onResult(RecognizerResult results, boolean isLast) {		
+		public void onResult(RecognizerResult results, boolean isLast) {
+			voiceDialog.dismiss();
 			String text = JsonParser.parseIatResult(results.getResultString());
 			sb.append(text);
 			Toast.makeText(getApplicationContext(), sb.toString(), 0).show();
 		}
 		public void onVolumeChanged(int volume) {
 			if(volume == 0){
-				saySomething.clearAnimation();
+				voiceImage.clearAnimation();
 			}else{
-				Animation animation = saySomething.getAnimation();
+				Animation animation = voiceImage.getAnimation();
 				if(animation == null){
 					animation = AnimationUtils.loadAnimation(HomeActivity.this, R.anim.tip);
 					 LinearInterpolator lin = new LinearInterpolator();  
 					 animation.setInterpolator(lin); 
-					 saySomething.startAnimation(animation);
+					 voiceImage.startAnimation(animation);
 				}
 			}
 		}
 	};
+	
+	class VoiceDialog extends AlertDialog{
+		public VoiceDialog(Context context) {
+			super(context);
+		}
+		protected void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState);
+			setContentView(R.layout.voice_dialog);
+			voiceImage = (ImageView) findViewById(R.id.do_something_voice_image);
+		}
+	}
 }

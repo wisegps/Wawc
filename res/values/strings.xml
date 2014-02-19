@@ -9,6 +9,7 @@
     <string name="sure">确定</string>
     <string name="cancle">取消</string>
     <string name="content_null">内容不能为空</string>
+    <string name="save">完成</string>
 	
     <string name="car_circle">车友圈</string>
     <string name="new_article_title">发车友圈</string>
@@ -26,6 +27,7 @@
     <!-- 欢迎界面-->
     <string name="set_network">设置网络</string>
     <string name="network_error">网络连接不可用,请检查网络设置.</string>
+    <string name="vehicle_edit">编辑</string>
     <!-- 我的爱车 -->
     <string name="base_information">基本资料</string>
     <string name="brand">品牌</string>
@@ -38,12 +40,13 @@
     <string name="engine_number">发动机型号</string>
     <string name="vehicle_number">车架号</string>
     <string name="insurance_company">保险公司</string>
-    <string name="insurance_time">保险时间</string>
+    <string name="insurance_time">保险时间到期</string>
     <string name="maintain_shop">4S保养店</string>
     <string name="current_mileage">当前里程</string>
     <string name="last_insurance_mileage">最后保养里程</string>
+    <string name="last_insurance_time">最后保养时间</string>
     <string name="shopping_time">购车时间</string>
-    <string name="save">保存</string>
+    <string name="delete_vehicle">删除当前车辆</string>
     <string name="delete">删除</string>
     <string name="exit">退出</string>
     
@@ -133,4 +136,6 @@
     <string name="mantain_last_time">最后保养时间</string>
     <string name="mantain_next_time">下次保养里程</string>
     <string name="publish_new_article">发送</string>
+    <string name="add">添加我的爱车</string>
+    <string name="want_to_do">请说出你想做什么</string>
 </resources>

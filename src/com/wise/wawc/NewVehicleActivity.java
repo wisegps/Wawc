@@ -63,7 +63,7 @@ import android.widget.Toast;
  */
 public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapter.IOnItemSelectListener {
 	
-	private Button cancleAdd = null;   //取消新车辆的添加
+	private ImageView cancleAdd = null;   //取消新车辆的添加
 	private TextView saveAdd = null;     //保存添加
 	private ImageView choiceBrank = null;    //选择品牌
 	public static final int newVehicleBrank = 4;
@@ -86,11 +86,11 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	private EditText carNumber = null;
 	private EditText engineNumber = null;
 	private EditText CJNumber = null;
-	private EditText insuranceTime = null;
-	private EditText lastMaintainTime = null;
+	private TextView insuranceTime = null;
+	private TextView lastMaintainTime = null;
 	private EditText nextMaintainMileage = null;
 	private EditText lastMileage = null;
-	private EditText buyTime = null;
+	private TextView buyTime = null;
 	private EditText annualSurveyTime = null;
 	
 	private DatePickerDialog mDateDialog = null;
@@ -120,7 +120,7 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_vehicle);
-		cancleAdd = (Button) findViewById(R.id.add_vechile_cancle);
+		cancleAdd = (ImageView) findViewById(R.id.add_vechile_cancle);
 		saveAdd = (TextView) findViewById(R.id.add_vechile_save);
 		choiceBrank = (ImageView) findViewById(R.id.add_vehicle_choice_brank);
 		vehicleBrank = (TextView) findViewById(R.id.new_vehicle_brank );
@@ -137,12 +137,12 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 		carNumber = (EditText) findViewById(R.id.et_new_vercher_number);
 		engineNumber = (EditText) findViewById(R.id.et_new_vehicle_engine_number);
 		CJNumber = (EditText) findViewById(R.id.et_new_car_number);
-		insuranceTime = (EditText) findViewById(R.id.et_insurance_over_time);
+		insuranceTime = (TextView) findViewById(R.id.et_insurance_over_time);
 		getDateView(insuranceTime);
-		lastMaintainTime = (EditText) findViewById(R.id.et_last_maintain_time);
+		lastMaintainTime = (TextView) findViewById(R.id.et_last_maintain_time);
 		getDateView(lastMaintainTime);
 		lastMileage = (EditText) findViewById(R.id.et_last_insurance_mileage);
-		buyTime = (EditText) findViewById(R.id.et_new_vehicle_buy_car_time);
+		buyTime = (TextView) findViewById(R.id.et_new_vehicle_buy_car_time);
 		getDateView(buyTime);
 //		nextMaintainMileage = (EditText) findViewById(R.id.et_next_maintain_mileage);
 //		annualSurveyTime = (EditText) findViewById(R.id.annual_survey_time);
@@ -518,7 +518,7 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	}
 	
 	
-	public void getDateView(final EditText editText){
+	public void getDateView(final TextView editText){
 			editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {  
 		        public void onFocusChange(View v, boolean hasFocus) {  
 		            if(hasFocus){  

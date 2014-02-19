@@ -2,69 +2,77 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="#D9D9E1"
     android:orientation="vertical"
     tools:context=".VehicleStatusActivity" >
-     <!-- 头部 -->
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_height="@dimen/title_hight"
+        android:background="@color/blue"
+        android:gravity="center" >
 
-        <Button
+        <ImageView
             android:id="@+id/add_vechile_cancle"
-            android:layout_width="wrap_content"
-            android:layout_height="40dip"
-            android:background="@drawable/ic_launcher" />
+            android:layout_width="@dimen/title_image"
+            android:layout_height="@dimen/title_image"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/nav_icon_back" />
 
         <TextView
-            android:layout_width="0dip"
+            android:id="@+id/tv_add_vechile_title"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@id/add_vechile_cancle"
+            android:layout_marginRight="@dimen/double_margins"
             android:gravity="center"
             android:text="@string/add_car"
-            android:layout_weight="1"
-            android:textSize="10pt"
-            android:textColor="#000000" />
-
+            android:textColor="@color/white"
+            android:textSize="@dimen/head" />
         <TextView
             android:id="@+id/add_vechile_save"
             android:layout_width="wrap_content"
-            android:layout_height="40dip"
-            android:textSize="10pt"
-            android:textColor="#000000" 
-            android:text="保存"/>
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margins"
+            android:background="@drawable/bt_bg"
+            android:layout_centerVertical="true"
+            android:text="@string/save"
+            android:textColor="@color/white"
+            android:textSize="@dimen/main" />
+    </RelativeLayout>
+
     <ScrollView 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         >
-	<TableLayout 
+        
+        <TableLayout 
 	    android:layout_height="wrap_content"
 	    android:layout_width="fill_parent"
-	   	android:background="#000000"
 	    >
 	    <!-- 基本资料 -->
 	    <TableRow 
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
-	    	android:background="#ffffff"
-	    	android:layout_marginTop="1dip"
-	    	android:layout_marginLeft="1dip"
-	    	android:layout_marginRight="1dip"
+	    	android:layout_margin="@dimen/margins"
+	    	android:textSize="@dimen/main"
 	        >
 	        <TextView 
 	            android:layout_height="fill_parent"
 	    		android:layout_width="fill_parent"
 	    		android:text="@string/base_information"
-	    		android:textSize="10pt"
+	    		android:textSize="@dimen/main"
 	    		android:textColor="#000000"
 	            />
 	    </TableRow>
+	    <!-- 车牌号 -->
 	    <TableRow 
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
-	    	android:background="#F0F0F0"
+	    	android:background="#FFFFFF"
 	    	android:layout_marginTop="1dip"
 	    	android:layout_marginLeft="1dip"
 	    	android:layout_marginRight="1dip"
@@ -73,26 +81,35 @@
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="@string/car_number"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
+	    		android:layout_weight="4"
 	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
 	            />
 	        <EditText 
-	            android:id="@+id/et_new_vercher_number"
+	            android:id="@+id/et_new_car_number"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
-	    		android:text="粤B12345"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
-	    		android:layout_gravity="right"
+	    		android:hint="粤B14445"
+	    		android:layout_weight="4"
 	    		android:textColor="#000000"
+	    		android:background="@null"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
+	            />
+	        <View 
+	            android:layout_width="0dip"
+	            android:layout_height="fill_parent"
+	            android:layout_weight="1"
 	            />
 	    </TableRow>
+	    
+	    <!-- 品牌 -->
 	    <TableRow 
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
-	    	android:background="#F0F0F0"
+	    	android:background="#FFFFFF"
 	    	android:layout_marginTop="1dip"
 	    	android:layout_marginLeft="1dip"
 	    	android:layout_marginRight="1dip"
@@ -101,19 +118,21 @@
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="@string/brand"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
 	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
-	        <TextView
-	            android:id="@+id/new_vehicle_brank" 
+	        <TextView 
+	            android:id="@+id/new_vehicle_brank"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="大众"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
-	    		android:gravity="center"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
+	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
 	        <ImageView 
@@ -121,13 +140,17 @@
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:layout_weight="1"
-	    		android:background="@drawable/ic_launcher"
+	    		android:layout_marginTop="@dimen/margins"
+	    		android:layout_marginBottom="@dimen/margins"
+	    		android:gravity="center_vertical"
+	    		android:background="@drawable/body_icon_arrow2"
 	            />
 	    </TableRow>
+	    <!-- 车型 -->
 	    <TableRow 
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
-	    	android:background="#F0F0F0"
+	    	android:background="#FFFFFF"
 	    	android:layout_marginTop="1dip"
 	    	android:layout_marginLeft="1dip"
 	    	android:layout_marginRight="1dip"
@@ -136,8 +159,9 @@
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="@string/model"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
 	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
@@ -146,9 +170,9 @@
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="途安"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
-	    		android:gravity="center"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
 	    		android:textColor="#000000"
 	            />
 	        <ImageView 
@@ -156,23 +180,29 @@
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:layout_weight="1"
-	    		android:background="@drawable/ic_launcher"
+	    		android:layout_marginTop="@dimen/margins"
+	    		android:layout_marginBottom="@dimen/margins"
+	    		android:gravity="center_vertical"
+	    		android:background="@drawable/body_icon_arrow2"
 	            />
 	    </TableRow>
+	    <!-- 车款 -->
 	    <TableRow 
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
-	    	android:background="#F0F0F0"
+	    	android:background="#FFFFFF"
 	    	android:layout_marginTop="1dip"
 	    	android:layout_marginLeft="1dip"
 	    	android:layout_marginRight="1dip"
 	        >
 	        <TextView 
+	            
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="@string/vehicle_style"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
 	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
@@ -181,9 +211,11 @@
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="自动豪华睿智版"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
-	    		android:gravity="center"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
+	    		android:gravity="center_vertical"
+	    		android:maxLines="1"
 	    		android:textColor="#000000"
 	            />
 	        <ImageView 
@@ -191,32 +223,73 @@
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:layout_weight="1"
-	    		android:background="@drawable/ic_launcher"
+	    		android:layout_marginTop="@dimen/margins"
+	    		android:layout_marginBottom="@dimen/margins"
+	    		android:gravity="center_vertical"
+	    		android:background="@drawable/body_icon_arrow2"
 	            />
-	        
+	    </TableRow>
+	    <!-- 终端 -->
+	    <TableRow 
+	        android:layout_height="fill_parent"
+	    	android:layout_width="fill_parent"
+	    	android:background="#FFFFFF"
+	    	android:layout_marginTop="1dip"
+	    	android:layout_marginLeft="1dip"
+	    	android:layout_marginRight="1dip"
+	        >
+	        <TextView 
+	            android:layout_height="fill_parent"
+	    		android:layout_width="0dip"
+	    		android:text="@string/cloud_terminal"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
+	    		android:gravity="center_vertical"
+	    		android:textColor="#000000"
+	            />
+	        <TextView 
+	            android:layout_height="fill_parent"
+	    		android:layout_width="0dip"
+	    		android:text="未绑定终端"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
+	    		android:gravity="center_vertical"
+	    		android:textColor="#000000"
+	            />
+	        <ImageView 
+	            android:id="@+id/my_vehicle_device"
+	            android:layout_height="fill_parent"
+	    		android:layout_width="0dip"
+	    		android:layout_weight="1"
+	    		android:layout_marginTop="@dimen/margins"
+	    		android:layout_marginBottom="@dimen/margins"
+	    		android:gravity="center_vertical"
+	    		android:background="@drawable/body_icon_arrow2"
+	            />
 	    </TableRow>
 	    <!-- 违章查询 -->
 	    <TableRow 
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
-	    	android:background="#ffffff"
-	    	android:layout_marginTop="1dip"
-	    	android:layout_marginLeft="1dip"
-	    	android:layout_marginRight="1dip"
+	    	android:layout_margin="@dimen/margins"
+	    	android:textSize="@dimen/main"
 	        >
 	       <TextView 
 	            android:layout_height="fill_parent"
 	    		android:layout_width="fill_parent"
 	    		android:text="@string/against_rules"
-	    		android:textSize="10pt"
-	    		android:gravity="center"
+	    		android:textSize="@dimen/main"
+	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
 	    </TableRow>
+	    <!-- 发动机型号 -->
 	    <TableRow 
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
-	    	android:background="#F0F0F0"
+	    	android:background="#FFFFFF"
 	    	android:layout_marginTop="1dip"
 	    	android:layout_marginLeft="1dip"
 	    	android:layout_marginRight="1dip"
@@ -225,8 +298,9 @@
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="@string/engine_number"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
 	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
@@ -234,19 +308,25 @@
 	            android:id="@+id/et_new_vehicle_engine_number"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
-	    		android:text="123456"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
+	    		android:hint="144456"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
 	    		android:inputType="number"
+	    		android:background="@null"
 	    		android:textColor="#000000"
 	            />
-	        
+	        <View 
+	            android:layout_width="0dip"
+	            android:layout_height="fill_parent"
+	            android:layout_weight="1"
+	            />
 	    </TableRow>
+	    <!-- 车架号 -->
 	    <TableRow 
-	        
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
-	    	android:background="#F0F0F0"
+	    	android:background="#FFFFFF"
 	    	android:layout_marginTop="1dip"
 	    	android:layout_marginLeft="1dip"
 	    	android:layout_marginRight="1dip"
@@ -255,116 +335,92 @@
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="@string/vehicle_number"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
 	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
 	        <EditText 
-	            android:id="@+id/et_new_car_number"
+	            android:id="@+id/et_new_vercher_number"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
-	    		android:text="123456"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
+	    		android:hint="144456"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
 	    		android:inputType="number"
+	    		android:background="@null"
 	    		android:textColor="#000000"
+	            />
+	        <View 
+	            android:layout_width="0dip"
+	            android:layout_height="fill_parent"
+	            android:layout_weight="1"
 	            />
 	    </TableRow>
 	    <!-- 车务提醒 -->
 	    <TableRow 
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
-	    	android:background="#ffffff"
-	    	android:layout_marginTop="1dip"
-	    	android:layout_marginLeft="1dip"
-	    	android:layout_marginRight="1dip"
+	    	android:layout_margin="@dimen/margins"
+	    	android:textSize="@dimen/main"
 	        >
 	        <TextView 
 	            android:layout_height="fill_parent"
 	    		android:layout_width="fill_parent"
 	    		android:text="@string/traffic_department"
-	    		android:textSize="10pt"
+	    		android:textSize="@dimen/main"
 	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
-	        
 	    </TableRow>
+	    <!-- 保险公司 -->
 	    <TableRow 
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
-	    	android:background="#F0F0F0"
+	    	android:background="#FFFFFF"
 	    	android:layout_marginTop="1dip"
 	    	android:layout_marginLeft="1dip"
 	    	android:layout_marginRight="1dip"
 	        >
 	        <TextView 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="@string/insurance_company"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
 	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
 	        <TextView 
 	            android:id="@+id/add_vehicle_show_insurance"
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:text="太平洋保险"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
-	    		android:gravity="center"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
+	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
 	        <ImageView
 	            android:id="@+id/add_vehicle_choice_insurance" 
 	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
+	    		android:layout_width="0dip"
 	    		android:layout_weight="1"
-	    		android:background="@drawable/ic_launcher"
+	    		android:layout_marginTop="@dimen/margins"
+	    		android:layout_marginBottom="@dimen/margins"
+	    		android:gravity="center_vertical"
+	    		android:background="@drawable/body_icon_arrow2"
 	            />
 	    </TableRow>
+	    <!-- 保险到期时间 -->
 	    <TableRow 
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
-	    	android:background="#F0F0F0"
-	    	android:layout_marginTop="1dip"
-	    	android:layout_marginLeft="1dip"
-	    	android:layout_marginRight="1dip"
-	        >
-	        <TextView 
-	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
-	    		android:text="@string/maintain_shop"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
-	    		android:gravity="center_vertical"
-	    		android:textColor="#000000"
-	            />
-	        <TextView
-				android:id="@+id/add_vehicle_show_maintain"
-	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
-	    		android:text="西丽大众4s店"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
-	    		android:gravity="center"
-	    		android:textColor="#000000"
-	            />
-	        <ImageView
-	            android:id="@+id/add_vehicle_maintain" 
-	            android:layout_height="fill_parent"
-	    		android:layout_width="wrap_content"
-	    		android:layout_weight="1"
-	    		android:background="@drawable/ic_launcher"
-	            />
-	    </TableRow>
-	    
-	      <TableRow 
-	        android:layout_height="fill_parent"
-	    	android:layout_width="fill_parent"
-	    	android:background="#F0F0F0"
+	    	android:background="#FFFFFF"
 	    	android:layout_marginTop="1dip"
 	    	android:layout_marginLeft="1dip"
 	    	android:layout_marginRight="1dip"
@@ -373,28 +429,34 @@
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="@string/insurance_time"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
 	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
-
-	        <EditText
+	        <TextView 
 	            android:id="@+id/et_insurance_over_time"
+	            android:layout_height="fill_parent"
+	    		android:layout_width="0dip"
+	    		android:text="4015年"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
+	    		android:gravity="center_vertical"
+	    		android:textColor="#000000"
+	            />
+	        <View 
 	            android:layout_width="0dip"
 	            android:layout_height="fill_parent"
 	            android:layout_weight="1"
-	            android:textColor="#000000"
-	            android:inputType="none"
-	            android:textSize="7pt" >
-	        </EditText>
-
+	            />
 	    </TableRow>
-	    <!-- 年检时间（ui暂时去除）
+	    <!-- 4s店 -->
 	    <TableRow 
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
-	    	android:background="#F0F0F0"
+	    	android:background="#FFFFFF"
 	    	android:layout_marginTop="1dip"
 	    	android:layout_marginLeft="1dip"
 	    	android:layout_marginRight="1dip"
@@ -402,28 +464,83 @@
 	        <TextView 
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
-	    		android:text="@string/annual_survey"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
+	    		android:text="@string/maintain_shop"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
 	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
-	        <EditText
-	            android:id="@+id/annual_survey_time"
+	        <TextView 
+	            android:id="@+id/add_vehicle_show_maintain"
+	            android:layout_height="fill_parent"
+	    		android:layout_width="0dip"
+	    		android:text="西丽大众4s店"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
+	    		android:gravity="center_vertical"
+	    		android:textColor="#000000"
+	            />
+	        <ImageView
+	            android:id="@+id/add_vehicle_maintain" 
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:layout_weight="1"
-	    		android:textSize="7pt"
-	    		android:inputType="none"
-	    		android:textColor="#000000"
+	    		android:layout_marginTop="@dimen/margins"
+	    		android:layout_marginBottom="@dimen/margins"
+	    		android:gravity="center_vertical"
+	    		android:background="@drawable/body_icon_arrow2"
 	            />
 	    </TableRow>
-	     -->
-	    
+	    <!-- 当前里程 -->
 	    <TableRow 
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
-	    	android:background="#F0F0F0"
+	    	android:background="#FFFFFF"
+	    	android:layout_marginTop="1dip"
+	    	android:layout_marginLeft="1dip"
+	    	android:layout_marginRight="1dip"
+	        >
+	        <TextView 
+	            android:layout_height="fill_parent"
+	    		android:layout_width="0dip"
+	    		android:text="@string/current_mileage"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
+	    		android:gravity="center_vertical"
+	    		android:textColor="#000000"
+	            />
+	        <EditText 
+	            android:id="@+id/my_vehicle_mileage"
+	            android:layout_height="fill_parent"
+	    		android:layout_width="0dip"
+	    		android:hint="46000Km"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
+	    		android:gravity="center_vertical"
+	    		android:inputType="number"
+	    		android:textColor="#000000"
+	    		android:background="@null"
+	            />
+	        <ImageView 
+	            android:id="@+id/insurance_mileage" 
+	            android:layout_height="fill_parent"
+	    		android:layout_width="0dip"
+	    		android:layout_weight="1"
+	    		android:layout_marginTop="@dimen/margins"
+	    		android:layout_marginBottom="@dimen/margins"
+	    		android:gravity="center_vertical"
+	    		android:background="@drawable/body_icon_arrow2"
+	            />
+	    </TableRow>
+	    <!-- 最后保养里程 -->
+	    <TableRow 
+	        android:layout_height="fill_parent"
+	    	android:layout_width="fill_parent"
+	    	android:background="#FFFFFF"
 	    	android:layout_marginTop="1dip"
 	    	android:layout_marginLeft="1dip"
 	    	android:layout_marginRight="1dip"
@@ -432,8 +549,9 @@
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="@string/last_insurance_mileage"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
 	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
@@ -441,17 +559,25 @@
 	            android:id="@+id/et_last_insurance_mileage"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
+	    		android:hint="46000Km"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
+	    		android:gravity="center_vertical"
 	    		android:inputType="number"
 	    		android:textColor="#000000"
+	    		android:background="@null"
+	            />
+	        <View 
+	            android:layout_width="0dip"
+	            android:layout_height="fill_parent"
+	            android:layout_weight="1"
 	            />
 	    </TableRow>
-	    
 	    <TableRow 
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
-	    	android:background="#F0F0F0"
+	    	android:background="#FFFFFF"
 	    	android:layout_marginTop="1dip"
 	    	android:layout_marginLeft="1dip"
 	    	android:layout_marginRight="1dip"
@@ -459,54 +585,35 @@
 	        <TextView 
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
-	    		android:text="@string/mantain_last_time"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
+	    		android:text="@string/last_insurance_time"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
 	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
-	        <EditText 
+	        <TextView 
 	            android:id="@+id/et_last_maintain_time"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
-	    		android:inputType="none"
-	    		android:textColor="#000000"
-	            />
-	    </TableRow>
-	    <!-- 下次保养时间（ui暂时去除）
-	    <TableRow 
-	        android:layout_height="fill_parent"
-	    	android:layout_width="fill_parent"
-	    	android:background="#F0F0F0"
-	    	android:layout_marginTop="1dip"
-	    	android:layout_marginLeft="1dip"
-	    	android:layout_marginRight="1dip"
-	        >
-	        <TextView 
-	            android:layout_height="fill_parent"
-	    		android:layout_width="0dip"
-	    		android:text="@string/mantain_next_time"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
+	    		android:text="4015年"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
 	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
-	        <EditText 
-	            android:id="@+id/et_next_maintain_mileage"
+	        <View 
+	            android:layout_width="0dip"
 	            android:layout_height="fill_parent"
-	    		android:layout_width="0dip"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
-	    		android:textColor="#000000"
+	            android:layout_weight="1"
 	            />
 	    </TableRow>
-	     -->
+	    <!-- 购车时间 -->
 	    <TableRow 
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
-	    	android:background="#F0F0F0"
+	    	android:background="#FFFFFF"
 	    	android:layout_marginTop="1dip"
 	    	android:layout_marginLeft="1dip"
 	    	android:layout_marginRight="1dip"
@@ -515,19 +622,27 @@
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="@string/shopping_time"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
 	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
 	            />
-	        <EditText 
+	        <TextView 
 	            android:id="@+id/et_new_vehicle_buy_car_time"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
-	    		android:layout_weight="1"
-	    		android:textSize="7pt"
-	    		android:inputType="number"
+	    		android:text="4009"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
+	    		android:gravity="center_vertical"
 	    		android:textColor="#000000"
+	            />
+	        <View 
+	            android:layout_width="0dip"
+	            android:layout_height="fill_parent"
+	            android:layout_weight="1"
 	            />
 	    </TableRow>
 	</TableLayout>

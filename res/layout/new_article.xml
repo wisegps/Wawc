@@ -90,6 +90,7 @@
     <HorizontalScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margins"
         android:scrollbarAlwaysDrawHorizontalTrack="false">
     <LinearLayout 
         android:id="@+id/my_linearLayout"
@@ -101,7 +102,7 @@
             android:id="@+id/take_photo"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:background="@drawable/camera"
+            android:background="@drawable/body_icon_photo"
             />
         </LinearLayout>
     </HorizontalScrollView>

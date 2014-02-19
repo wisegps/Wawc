@@ -57,18 +57,11 @@ public class LogoAdapter extends BaseAdapter {
 		hodler.linearLayout = (LinearLayout) convertView.findViewById(R.id.image_layout);
 		hodler.imageView = (ImageView) convertView.findViewById(R.id.image_view);
 		hodler.vehicleNum = (TextView) convertView.findViewById(R.id.vehicle_logo_num);
-		
-		if(!"newVehicle".equals(carDataList.get(position).getCar_brand())){
-		    //carDataList.get(position).getLogoPath();
 			Bitmap bitmap = BitmapFactory.decodeFile(Constant.VehicleLogoPath + carDataList.get(position).getCar_brand() + ".png");
 			hodler.imageView.setImageBitmap(bitmap);
 			String str = this.carDataList.get(position).getObj_name();
 			String str2 = str==null?"null":str;
-//			Log.e("getView()--车牌号：",str2);
 			hodler.vehicleNum.setText(str2);
-		}else{
-			hodler.imageView.setBackgroundResource(R.drawable.ic_launcher);
-		}
 		if(position == carDataList.size()){
 			hodler.imageView.setBackgroundResource(R.drawable.new_vehicle);
 		}
