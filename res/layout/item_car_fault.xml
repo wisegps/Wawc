@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/gray"
+    android:background="@color/white"
     android:orientation="vertical">  
     <LinearLayout 
         android:id="@+id/ll_item_car_fault"
         android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="10dp"></LinearLayout>
+        android:layout_height="@dimen/margins"></LinearLayout>
     <LinearLayout 
         android:layout_marginBottom="5dp"
         android:layout_width="fill_parent"
@@ -19,11 +19,11 @@
             android:id="@+id/tv_item_car_fault_data"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
+            android:textColor="@color/common"
             android:textStyle="bold"
-            android:textSize="22sp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:textSize="@dimen/title"
+            android:layout_marginLeft="@dimen/margins"
+            android:layout_marginRight="@dimen/margins"
             android:text="今天"/>
         <RelativeLayout 
             android:layout_width="fill_parent"
@@ -31,14 +31,14 @@
             android:layout_marginRight="20dp"
             android:paddingLeft="10dp"
             android:paddingTop="5dp"
-            android:background="@color/white">
+            android:background="@color/gray_light">
             <TextView 
                 android:id="@+id/tv_item_car_fault_code"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
-                android:textSize="@dimen/title"
-                android:textColor="@color/black"
+                android:textSize="@dimen/content"
+                android:textColor="@color/common"
                 android:text="故障码：1234"/>
             <TextView 
                 android:id="@+id/tv_item_car_fault_info"
@@ -46,22 +46,24 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_below="@id/tv_item_car_fault_code"
-                android:textSize="@dimen/title"
-                android:textColor="@color/black"
+                android:textSize="@dimen/content"
+                android:textColor="@color/common"
                 android:text="故障描述：发动机有故障"/>
             <ImageView 
                 android:id="@+id/iv_item_car_fault_share"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="@dimen/title_image"
+                android:layout_height="@dimen/title_image"
                 android:layout_below="@id/tv_item_car_fault_info"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/ic_launcher"/>
+                android:src="@drawable/nav_share"/>
             <TextView 
                 android:id="@+id/tv_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margins"
                 android:layout_below="@id/tv_item_car_fault_info"
                 android:layout_alignParentLeft="true"
+                android:textColor="@color/common_inactive"
                 android:text="12:50"/>
         </RelativeLayout>
     </LinearLayout>   

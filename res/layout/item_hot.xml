@@ -6,9 +6,9 @@
     <TextView
         android:id="@+id/tv_item_hot" 
         android:layout_width="fill_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margins"
         android:gravity="center"
         android:text="粤B12345"
-        android:textSize="@dimen/title"
-        android:textColor="@color/black"/>
+        android:textColor="@color/common"/>
 </LinearLayout>

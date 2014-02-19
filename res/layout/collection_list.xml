@@ -12,53 +12,66 @@
         <RelativeLayout
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content" 
-	        android:padding="10dp">
+	        android:padding="@dimen/margins"
+            android:background="@color/gray_light" >
+            <TextView
+                android:id="@+id/tv_distance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="20M"
+                android:textColor="@color/common_inactive" />
 	        <TextView
 	            android:id="@+id/tv_name"
-	            android:layout_width="wrap_content"
+	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:layout_centerVertical="true"
-	            android:textColor="@color/black"
+	            android:textColor="@color/common"
+	            android:layout_toLeftOf="@id/tv_distance"
+                android:layout_marginRight="@dimen/margins"
 	            android:text="沙河西路加油站" />
-	        <TextView 
-	            android:id="@+id/tv_distance"
-	            android:layout_height="wrap_content"
-	            android:layout_width="wrap_content"
-	            android:layout_centerVertical="true"
-	            android:layout_alignParentRight="true"
-	            android:text="20M"/>
 	    </RelativeLayout>        
         <LinearLayout 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">        
             <TextView 
-                    android:id="@+id/tv_del"
-                    android:layout_width="200px"
-                    android:layout_height="50dp"
-                    android:text="删除"
-                    android:textColor="@color/white"
-                    android:gravity="center">                        
+                 android:id="@+id/tv_del"
+                 android:layout_width="wrap_content"
+                 android:paddingLeft="@dimen/double_margins"
+                 android:paddingRight="@dimen/double_margins"
+                 android:layout_height="50dp"
+                 android:text="删除"
+                 android:textColor="@color/white"
+                 android:background="@color/yellow"
+                 android:gravity="center">                        
             </TextView>
         </LinearLayout>
     </com.wise.customView.SlidingView>
     <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" 
-            android:padding="10dp">
-            <TextView
-                android:id="@+id/tv_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:textColor="@color/black"
-                android:text="地址沙河西路" />
+            android:padding="@dimen/margins">
             <ImageView 
                 android:id="@+id/iv_location"
-                android:layout_height="30dp"
-                android:layout_width="30dp"
+                android:layout_height="@dimen/title_image"
+                android:layout_width="@dimen/title_image"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/ic_launcher"/>
+                android:src="@drawable/lbs"/>
+            <TextView
+                android:id="@+id/tv_address"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/iv_location"
+                android:layout_marginRight="@dimen/margins"
+                android:textColor="@color/common"
+                android:text="地址沙河西路" />
         </RelativeLayout>
+        <View 
+	        android:layout_width="fill_parent"
+	        android:layout_height="1dp"
+	        android:background="@drawable/body_line"/>
         <RelativeLayout
             android:id="@+id/rl_tel"
             android:layout_width="fill_parent"
@@ -69,13 +82,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:textColor="@color/black"
+                android:textColor="@color/common" 
                 android:text="电话" />
             <ImageView 
                 android:id="@+id/iv_tel"
-                android:layout_height="30dp"
-                android:layout_width="30dp"
+                android:layout_height="@dimen/title_image"
+                android:layout_width="@dimen/title_image"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/ic_launcher"/>
+                android:src="@drawable/phone"/>
         </RelativeLayout>
+        <TextView 
+	        android:layout_width="fill_parent"
+	        android:layout_height="@dimen/margins"
+	        android:background="@color/gray"/>
 </LinearLayout>

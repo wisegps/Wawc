@@ -7,22 +7,22 @@
     android:background="#FFFFFF">
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="44dp"
-        android:background="@drawable/border_bg"
-        android:padding="2dp">
+        android:layout_height="@dimen/title_hight"
+        android:background="@drawable/nav_bg">
 		<ImageView
             android:id="@+id/iv_activity_share_location_back"
-            android:layout_width="60dp"
-	        android:layout_height="36dp"
+            android:layout_width="@dimen/title_image"
+	        android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_launcher"/>
+            android:layout_marginLeft="@dimen/margins"
+            android:src="@drawable/nav_back"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="@dimen/title"
             android:text="位置分享"
             android:textStyle="bold" />
@@ -32,38 +32,48 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:background="@drawable/bt_bg"
+            android:textColor="@color/white"
+            android:layout_marginRight="@dimen/margins"
             android:text="分享"/>
 	</RelativeLayout>
 	<LinearLayout 
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical"
-	    android:background="@color/gray"
 	    android:padding="10dp">
 	    <LinearLayout 
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="@dimen/margins"
+	        android:background="@drawable/bg_share"
 	        android:orientation="horizontal">
-	        <ImageView 
-	            android:layout_width="30dp"
-	            android:layout_height="30dp"
-	            android:src="@drawable/ic_launcher"/>
+	        <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="当前位置"
+                android:layout_marginRight="@dimen/double_margins"
+                android:textColor="@color/common"
+                android:textSize="@dimen/content"/>
 	        <TextView 
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="沙河西路1号"
-	            android:textColor="@color/blue"
-	            android:textSize="@dimen/title"/>
+	            android:textColor="@color/common"
+	            android:textSize="@dimen/content"/>
 	    </LinearLayout>
 	    <RelativeLayout 
 	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content">
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="@dimen/margins"
+            android:background="@drawable/bg_share">
 	        <TextView 
 	            android:id="@+id/tv_activity_share_location"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_centerVertical="true"
-	            android:textColor="@color/black"
+	            android:layout_marginRight="@dimen/double_margins"
+                android:textColor="@color/common"
+                android:textSize="@dimen/content"
 	            android:text="分享原因："/>
 	        <Spinner 
 	            android:id="@+id/sp_reason"
@@ -72,26 +82,44 @@
 	            android:layout_alignParentRight="true"
 	            android:layout_toRightOf="@id/tv_activity_share_location"/>
 	    </RelativeLayout>
-	    <EditText 
-	        android:id="@+id/et_share_content"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:hint="详情描述"
-	        android:maxLength="5"/>
+	    <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margins"
+            android:background="@drawable/bg_share"
+            android:orientation="horizontal">
+            <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="详情描述"
+                android:layout_marginRight="@dimen/double_margins"
+                android:textColor="@color/common"
+                android:textSize="@dimen/content"/>            
+		        <EditText 
+		            android:id="@+id/et_share_content"
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:background="@null"
+		            android:hint="详情描述"
+		            android:maxLength="5"/>
+        </LinearLayout>
 	    <LinearLayout 
 	        android:layout_width="fill_parent"
-	        android:layout_height="50dp"
+	        android:layout_height="wrap_content"
 	        android:orientation="horizontal">
 	        <ImageView 
 	            android:id="@+id/iv_photo"
-	            android:layout_width="50dp"
-	            android:layout_height="50dp"
+	            android:layout_width="80dp"
+	            android:layout_height="80dp"
+	            android:contentDescription="@string/app_name"
+	            android:layout_marginRight="@dimen/margins"
 	            android:src="@drawable/bg"/>
 	        <ImageView 
 	            android:id="@+id/iv_camera"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:src="@drawable/ic_launcher"/>
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:contentDescription="@string/app_name"
+                android:src="@drawable/body_icon_photo"/>
 	    </LinearLayout>
 	</LinearLayout>	
 </LinearLayout>

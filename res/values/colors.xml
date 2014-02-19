@@ -2,6 +2,11 @@
 <resources>
     <!-- 灰色背景 -->
     <color name="gray">#d8d9e1</color>
+    <color name="gray_lights">#80d8d9e1</color>
+    <color name="gray_light">#4cd8d9e1</color>
+    <color name="gray_light_ten">#19d8d9e1</color>
+    <!-- 选择城市 -->
+    <color name="gray_weak">#f2f1f7</color>
     <!-- 蓝色背景 -->
     <color name="blue">#3b5197</color>
     <color name="blue_light">#993b5197</color>

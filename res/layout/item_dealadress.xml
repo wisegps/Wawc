@@ -1,71 +1,90 @@
-<LinearLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:orientation="vertical">
+    android:orientation="vertical" >
+
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" 
-        android:padding="5dp">
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margins"
+        android:background="@color/gray_light" >
+
         <TextView
             android:id="@+id/tv_item_dealadress_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:textColor="@color/black"/>
-        <TextView 
+            android:text="深圳红岭北路3002号梅园仓库区9号楼南面"
+            android:textColor="@color/common" />
+
+        <TextView
             android:id="@+id/tv_item_dealadress_distance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/margins"
             android:layout_toRightOf="@+id/tv_item_dealadress_name"/>
-        <ImageView 
+
+        <ImageView
             android:id="@+id/iv_Collect"
-            android:layout_height="30dp"
-            android:layout_width="30dp"
-            android:contentDescription="@string/app_name"
+            android:layout_width="@dimen/title_image"
+            android:layout_height="@dimen/title_image"
             android:layout_alignParentRight="true"
-            android:src="@drawable/emotionstore_progresscancelbtn"/>
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/collect" />
     </RelativeLayout>
+
     <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" 
+        android:padding="@dimen/margins">
+
+        <ImageView
+            android:id="@+id/iv_location"
+            android:layout_width="@dimen/title_image"
+            android:layout_height="@dimen/title_image"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/lbs" />
+
+        <TextView
+            android:id="@+id/tv_item_dealadress_adress"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" 
-            android:padding="5dp">
-            <ImageView 
-                android:id="@+id/iv_location"
-                android:layout_height="30dp"
-                android:layout_width="30dp"
-                android:contentDescription="@string/app_name"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/ic_launcher"/>
-            <TextView
-                android:id="@+id/tv_item_dealadress_adress"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toLeftOf="@id/iv_location"
-                android:textColor="@color/black"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:id="@+id/ll_adress_tel"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" 
-            android:padding="5dp">
-            <TextView
-                android:id="@+id/tv_item_dealadress_phone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:textColor="@color/black"/>
-            <ImageView 
-                android:id="@+id/iv_tel"
-                android:layout_height="30dp"
-                android:layout_width="30dp"
-                android:contentDescription="@string/app_name"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/ic_launcher"/>
-        </RelativeLayout>
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/iv_location"
+            android:layout_marginRight="@dimen/margins"
+            android:text="深圳市福田区大昌汽车服务有限公司汽车检测站"
+            android:textColor="@color/common" />
+    </RelativeLayout>
+    <TextView 
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/body_line"/>
+    <RelativeLayout
+        android:id="@+id/ll_adress_tel"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margins">
+        <TextView
+            android:id="@+id/tv_item_dealadress_phone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="0755-25846135"
+            android:textColor="@color/common" />
+        <ImageView
+            android:id="@+id/iv_tel"
+            android:layout_width="@dimen/title_image"
+            android:layout_height="@dimen/title_image"
+            android:layout_alignParentRight="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/phone" />
+    </RelativeLayout>
+    <TextView 
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/margins"
+        android:background="@color/gray"/>
 </LinearLayout>

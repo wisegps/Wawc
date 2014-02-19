@@ -3,25 +3,28 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:background="#E0E0E0"
     android:orientation="vertical">
     <TextView
         android:id="@+id/tv_item_select_city_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:background="#FFFFFF"
-        android:textColor="#336598"
+        android:paddingLeft="@dimen/margins"
+        android:paddingRight="@dimen/margins"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:background="@color/gray_weak"
+        android:textColor="@color/common_inactive"
         android:text="hhhh"/>    
     <View 
         android:layout_width="fill_parent"
-        android:layout_height="0.5dip"
+        android:layout_height="1dip"
+        android:visibility="gone"
         android:background="#000000"/>
     <TextView
         android:id="@+id/tv_item_select_city"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textColor="@color/black"
+        android:padding="@dimen/margins"
+        android:textColor="@color/common"
         android:text="深圳市" />
 </LinearLayout>

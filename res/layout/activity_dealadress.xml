@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@drawable/border_bg">
+    android:orientation="vertical"    
+    android:background="@color/gray">
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight"
@@ -13,6 +13,7 @@
             android:id="@+id/iv_activity_dealadress_back"
             android:layout_width="@dimen/title_image"
 	        android:layout_height="@dimen/title_image"
+	        android:layout_marginLeft="@dimen/margins"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/app_name"
@@ -31,7 +32,6 @@
 	    android:id="@+id/lv_activity_dealadress"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
-	    android:layout_margin="10dp"
         android:divider="@null"
         android:cacheColorHint="#00000000"></ListView>
 </LinearLayout>

@@ -51,8 +51,8 @@ public class TravelMapActivity extends Activity{
 		mMapController.setZoom(12);//设置地图zoom级别  
 		overlays = mMapView.getOverlays();
 		
-		ImageView iv_activity_car_home_search = (ImageView)findViewById(R.id.iv_activity_car_home_search);
-		iv_activity_car_home_search.setOnClickListener(onClickListener);
+		//ImageView iv_activity_car_home_search = (ImageView)findViewById(R.id.iv_activity_car_home_search);
+		//iv_activity_car_home_search.setOnClickListener(onClickListener);
 		ImageView iv_activity_travel_back = (ImageView)findViewById(R.id.iv_activity_travel_back);
 		iv_activity_travel_back.setOnClickListener(onClickListener);
 	}

@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 /**
  * 我的收藏
  * @author 王庆文
@@ -46,7 +47,7 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.my_collection);
 		collectionList = (XListView) findViewById(R.id.my_collection_list);
-		Button menuBt = (Button) findViewById(R.id.my_vechile_menu);
+		ImageView menuBt = (ImageView) findViewById(R.id.my_vechile_menu);
 		menuBt.setOnClickListener(onClickListener);
 		Button homeBt = (Button) findViewById(R.id.my_vechile_home);
 		homeBt.setOnClickListener(onClickListener);

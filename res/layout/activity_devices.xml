@@ -4,34 +4,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFFFFF">
+    android:background="@color/gray">
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="44dp"
-        android:background="@drawable/border_bg"
-        android:padding="2dp">
+        android:layout_height="@dimen/title_hight"
+        android:background="@drawable/nav_bg">
 		<ImageView
             android:id="@+id/iv_activity_devices_menu"
-            android:layout_width="60dp"
-	        android:layout_height="36dp"
+            android:layout_width="@dimen/title_image"
+	        android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margins"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_launcher"/>
+            android:src="@drawable/side_left"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_toLeftOf="@+id/iv_activity_devices_home"
-            android:layout_toRightOf="@+id/iv_activity_devices_menu"
             android:gravity="center"
             android:text="我的终端"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="@dimen/title"
             android:textStyle="bold" />
 		<ImageView
             android:id="@+id/iv_activity_devices_home"
             android:layout_width="60dp"
 	        android:layout_height="36dp"
+	        android:visibility="gone"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/app_name"

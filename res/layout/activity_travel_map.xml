@@ -4,145 +4,128 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/border_bg">
+    android:background="@color/white">
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="44dp"
-        android:background="@drawable/border_bg"
-        android:padding="2dp">
+        android:layout_height="@dimen/title_hight"
+        android:background="@drawable/nav_bg">
 		<ImageView
             android:id="@+id/iv_activity_travel_back"
-            android:layout_width="60dp"
-	        android:layout_height="36dp"
+            android:layout_width="@dimen/title_image"
+	        android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_launcher"/>
+            android:src="@drawable/nav_back"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_toLeftOf="@+id/iv_activity_car_home_search"
-            android:layout_toRightOf="@+id/iv_activity_travel_back"
             android:gravity="center"
-            android:text="19:27至20:04总共37分钟"
-            android:textColor="@color/black"
+            android:text="车辆行程地图"
+            android:textColor="@color/white"
             android:textSize="@dimen/title"
             android:textStyle="bold" />
-		<ImageView
-            android:id="@+id/iv_activity_car_home_search"
-            android:layout_width="60dp"
-	        android:layout_height="36dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_launcher"/>
 	</RelativeLayout>
 	<LinearLayout
-        android:background="@drawable/border_bg"
-        android:orientation="horizontal" 
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
+        android:orientation="vertical" 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
         <RelativeLayout 
+            android:layout_marginLeft="@dimen/margins"
+            android:layout_marginRight="@dimen/margins"
+            android:layout_marginTop="@dimen/margins"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_weight="1">
-            <ImageView
-                android:id="@+id/iv_item_travel_start" 
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_launcher"
-                android:layout_width="30dp"
-                android:layout_height="30dp"/>
-	        <TextView
-	            android:id="@+id/tv_item_travel_startPlace"  
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_centerVertical="true"
-	            android:layout_toRightOf="@id/iv_item_travel_start"
-	            android:textColor="@color/black"
-		        android:textSize="@dimen/title"
-	            android:text="桃源村"/>
+            android:layout_height="wrap_content">
+            <TextView 
+                android:id="@+id/tv_travel_startPlace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="桃源村"            
+                android:textColor="@color/common"
+                android:textSize="@dimen/content"/>
+            <TextView 
+                android:id="@+id/tv_travel_startTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="20:04"
+                android:textColor="@color/common"
+                android:textSize="@dimen/content"/>
         </RelativeLayout>
         <RelativeLayout 
+            android:layout_marginLeft="@dimen/margins"
+            android:layout_marginRight="@dimen/margins"
+            android:layout_marginBottom="@dimen/margins"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+            <TextView 
+                android:id="@+id/tv_travel_stopPlace"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:text="世界之窗"            
+                android:textColor="@color/common"
+                android:textSize="@dimen/content"/>
+            <TextView 
+                android:id="@+id/tv_travel_stopTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:text="20:04"
+                android:textColor="@color/common"
+                android:textSize="@dimen/content"/>
+        </RelativeLayout>
+        <View 
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_lights"/>       
+        <TextView 
+            android:id="@+id/tv_travel_spacingDistance"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_weight="1">
-            <ImageView
-                android:id="@+id/iv_item_travel_stop" 
-                android:contentDescription="@string/app_name"
-                android:src="@drawable/ic_launcher"
-                android:layout_width="30dp"
-                android:layout_height="30dp"/>
-	        <TextView
-	            android:id="@+id/tv_item_travel_stopPlace" 
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_centerVertical="true"
-	            android:layout_toRightOf="@id/iv_item_travel_stop"
-	            android:textColor="@color/black"
-		        android:textSize="@dimen/title"
-	            android:text="世界之窗"/>
-        </RelativeLayout>
-        <TextView 
-            android:id="@+id/tv_item_travel_spacingDistance" 
-            android:layout_width="fill_parent"
-            android:layout_height="30dp"
-            android:gravity="center"
-            android:text="15.35KM"
-            android:textColor="@color/black"
-	        android:textSize="@dimen/title"
-            android:layout_weight="1"/>
-    </LinearLayout>
-	<TableLayout 
-        android:background="@drawable/border_bg"
-	    android:stretchColumns="*" 
-	    android:padding="10dp"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content">
-	    <TableRow>
-	        <TextView
-	            android:id="@+id/tv_item_travel_averageOil" 
-	            android:paddingTop="5dp"
-	            android:paddingBottom="5dp"
-	            android:background="@color/white"
-	            android:textColor="@color/black"
-	            android:textSize="@dimen/title"
-	            android:gravity="left"
-	            android:text="百公里油耗：9.9l"/>
-	        <TextView
-	            android:id="@+id/tv_item_travel_oil" 
-	            android:paddingTop="5dp"
-	            android:paddingBottom="5dp"
-	            android:background="@color/white"
-	            android:textColor="@color/black"
-	            android:textSize="@dimen/title"
-	            android:gravity="center_horizontal"
-	            android:text="油耗：1.15L"/>
-	    </TableRow>
-	    <TableRow>
-	        <TextView 
-	            android:id="@+id/tv_item_travel_speed" 
-	            android:paddingTop="5dp"
-	            android:paddingBottom="5dp"
-	            android:background="@color/white"
-	            android:textColor="@color/black"
-	            android:textSize="@dimen/title"
-	            android:gravity="left"
-	            android:text="平均速度:25.75KM/H"/>
-	        <TextView 
-	            android:id="@+id/tv_item_travel_cost"
-	            android:paddingTop="5dp"
-	            android:paddingBottom="5dp"
-	            android:background="@color/white"
-	            android:textColor="@color/black"
-	            android:textSize="@dimen/title"
-	            android:gravity="center_horizontal"
-	            android:text="花费：11.34元"/>
-	    </TableRow>
-	</TableLayout>
+            android:padding="@dimen/margins"
+            android:text="37分钟"
+            android:textColor="@color/common_inactive"
+            android:textSize="@dimen/main"/>
+    </LinearLayout>    
+    <TableLayout 
+        android:stretchColumns="*" 
+        android:background="@color/gray_light"
+        android:padding="@dimen/margins"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+        <TableRow>
+            <TextView
+                android:id="@+id/tv_travel_averageOil" 
+                android:textColor="@color/common"
+                android:textSize="@dimen/content"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="@dimen/margins"
+                android:text="百公里油耗：9.9l"/>
+            <TextView
+                android:id="@+id/tv_travel_oil" 
+                android:textColor="@color/common"
+                android:textSize="@dimen/content"
+                android:gravity="center_vertical"
+                android:layout_marginBottom="@dimen/margins"
+                android:text="油耗：1.15L"/>
+        </TableRow>
+        <TableRow>
+            <TextView 
+                android:id="@+id/tv_travel_speed" 
+                android:textColor="@color/common"
+                android:textSize="@dimen/content"
+                android:gravity="center_vertical"
+                android:text="平均速度:25.75KM/H"/>
+            <TextView 
+                android:id="@+id/tv_travel_cost"
+                android:textColor="@color/common"
+                android:textSize="@dimen/content"
+                android:gravity="center_vertical"
+                android:text="花费：11.34元"/>
+        </TableRow>
+    </TableLayout>
 	<com.baidu.mapapi.map.MapView 
         android:id="@+id/mv_travel_map"  
         android:layout_width="fill_parent"  

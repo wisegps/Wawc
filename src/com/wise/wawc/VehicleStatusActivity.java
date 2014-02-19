@@ -33,6 +33,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -50,7 +51,7 @@ public class VehicleStatusActivity extends Activity {
     private static final int get_day = 3;
     private DisplayMetrics dm = new DisplayMetrics();
 
-    RelativeLayout rl_activity_vehicle_status_oil;
+    LinearLayout ll_activity_vehicle_status_oil;
     TextView tv_activity_vehicle_status_oil, tv_month_hk_fuel,tv_fault,
             tv_month_distance, tv_month_fuel,tv_vehicle_status_date;
     EnergyGroup hScrollLayout;
@@ -70,8 +71,8 @@ public class VehicleStatusActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehicle_status);
-        rl_activity_vehicle_status_oil = (RelativeLayout) findViewById(R.id.rl_activity_vehicle_status_oil);
-        rl_activity_vehicle_status_oil.setOnClickListener(onClickListener);
+        ll_activity_vehicle_status_oil = (LinearLayout) findViewById(R.id.ll_activity_vehicle_status_oil);
+        ll_activity_vehicle_status_oil.setOnClickListener(onClickListener);
         ImageView iv_activity_vehicle_status_data_next = (ImageView) findViewById(R.id.iv_activity_vehicle_status_data_next);
         iv_activity_vehicle_status_data_next
                 .setOnClickListener(onClickListener);
@@ -136,7 +137,7 @@ public class VehicleStatusActivity extends Activity {
             case R.id.tv_fault:
                 startActivity(new Intent(VehicleStatusActivity.this,CarFaultActivity.class));
              break;
-            case R.id.rl_activity_vehicle_status_oil:
+            case R.id.ll_activity_vehicle_status_oil:
                 Intent intent = new Intent(VehicleStatusActivity.this, TravelActivity.class);
                 intent.putExtra("Date", timeData.getDate() +"-" + Edistance.get(index).date);
                 startActivity(intent);
@@ -164,7 +165,7 @@ public class VehicleStatusActivity extends Activity {
             super.handleMessage(msg);
             switch (msg.what) {
             case Hide_rl:
-                rl_activity_vehicle_status_oil.setVisibility(View.GONE);
+                ll_activity_vehicle_status_oil.setVisibility(View.GONE);
                 break;
 
             case get_data:
@@ -202,7 +203,7 @@ public class VehicleStatusActivity extends Activity {
      * @param value
      */
     private void ViewTouch(String value) {
-        rl_activity_vehicle_status_oil.setVisibility(View.VISIBLE);
+        ll_activity_vehicle_status_oil.setVisibility(View.VISIBLE);
         tv_activity_vehicle_status_oil.setText(value + "L");
         wait = 4;
     }
@@ -371,9 +372,12 @@ public class VehicleStatusActivity extends Activity {
     }
 
     private void setBackground() {
-        tv_month_hk_fuel.setBackgroundColor(Color.WHITE);
-        tv_month_distance.setBackgroundColor(Color.WHITE);
-        tv_month_fuel.setBackgroundColor(Color.WHITE);
+        tv_month_hk_fuel.setBackgroundResource(R.color.white);
+        tv_month_hk_fuel.setTextColor(getResources().getColor(R.color.common));
+        tv_month_distance.setBackgroundResource(R.color.white);
+        tv_month_distance.setTextColor(getResources().getColor(R.color.common));
+        tv_month_fuel.setBackgroundResource(R.color.white);
+        tv_month_fuel.setTextColor(getResources().getColor(R.color.common));
     }
     
     /**
@@ -393,15 +397,18 @@ public class VehicleStatusActivity extends Activity {
             switch (view) {
             case 0:
                 setBackground();
-                tv_month_hk_fuel.setBackgroundColor(Color.BLUE);
+                tv_month_hk_fuel.setBackgroundResource(R.color.blue);
+                tv_month_hk_fuel.setTextColor(getResources().getColor(R.color.white));
                 break;
             case 1:
                 setBackground();
-                tv_month_distance.setBackgroundColor(Color.BLUE);
+                tv_month_distance.setBackgroundResource(R.color.blue);
+                tv_month_distance.setTextColor(getResources().getColor(R.color.white));
                 break;
             case 2:
                 setBackground();
-                tv_month_fuel.setBackgroundColor(Color.BLUE);
+                tv_month_fuel.setBackgroundResource(R.color.blue);
+                tv_month_fuel.setTextColor(getResources().getColor(R.color.white));
                 break;
             }
         }
