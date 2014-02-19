@@ -139,9 +139,7 @@ public class TrafficActivity extends Activity implements IXListViewListener{
 			    try {
                     String url = Constant.BaseUrl + "vehicle/" + URLEncoder.encode(Car_name, "UTF-8") + "/violation?auth_code=" + Variable.auth_code;
                     new Thread(new NetThread.GetDataThread(handler, url, get_traffic)).start();
-                    String url1 = Constant.BaseUrl + "vehicle/" + URLEncoder.encode(Car_name, "UTF-8") + "/violation_stat?auth_code=" + Variable.auth_code;
-                    Log.d(TAG, url1);
-			    } catch (UnsupportedEncodingException e) {
+                } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
 			}else{
@@ -174,7 +172,8 @@ public class TrafficActivity extends Activity implements IXListViewListener{
 	private List<TrafficData> jsonTrafficData(String result){
 	    List<TrafficData> Datas = new ArrayList<TrafficData>();
 	    try {
-            JSONArray jsonArray = new JSONArray(result);
+	        JSONObject jsonObject1 = new JSONObject(result);
+	        JSONArray jsonArray = jsonObject1.getJSONArray("data");
             for(int i = 0 ; i < jsonArray.length() ; i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 TrafficData trafficData = new TrafficData();
