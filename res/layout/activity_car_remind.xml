@@ -78,7 +78,7 @@
 	                android:id="@+id/iv_inspection" 
 	                android:layout_width="@dimen/double_margins"
 	                android:layout_height="@dimen/double_margins"
-                    android:src="@drawable/body_icon_down"
+                    android:src="@drawable/body_icon_arrow2"
 	                android:contentDescription="@string/app_name"
 	                android:layout_alignParentRight="true"/>
 	            <TextView 
@@ -136,7 +136,7 @@
 	                android:id="@+id/iv_renewal" 
                     android:layout_width="@dimen/double_margins"
                     android:layout_height="@dimen/double_margins"
-                    android:src="@drawable/body_icon_down"
+                    android:src="@drawable/body_icon_arrow2"
 	                android:contentDescription="@string/app_name"
 	                android:layout_alignParentRight="true"/>
 	            <TextView 
@@ -194,7 +194,7 @@
 	                android:id="@+id/iv_maintenance" 
                     android:layout_width="@dimen/double_margins"
                     android:layout_height="@dimen/double_margins"
-                    android:src="@drawable/body_icon_down"
+                    android:src="@drawable/body_icon_arrow2"
 	                android:contentDescription="@string/app_name"
 	                android:layout_alignParentRight="true"/>
 	            <TextView 
@@ -253,7 +253,7 @@
 	                android:id="@+id/iv_examined" 
                     android:layout_width="@dimen/double_margins"
                     android:layout_height="@dimen/double_margins"
-                    android:src="@drawable/body_icon_down"
+                    android:src="@drawable/body_icon_arrow2"
 	                android:contentDescription="@string/app_name"
 	                android:layout_alignParentRight="true"/>
 	            <TextView 
@@ -311,7 +311,7 @@
 	                android:id="@+id/iv_replacement" 
                     android:layout_width="@dimen/double_margins"
                     android:layout_height="@dimen/double_margins"
-                    android:src="@drawable/body_icon_down"
+                    android:src="@drawable/body_icon_arrow2"
 	                android:contentDescription="@string/app_name"
 	                android:layout_alignParentRight="true"/>
 	            <TextView 
