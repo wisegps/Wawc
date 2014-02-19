@@ -41,9 +41,14 @@ public class SlidingView extends ViewGroup{
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int count = getChildCount();
-        for(int i = 0 ; i < count; i++){            
-            getChildAt(i).measure(widthMeasureSpec, heightMeasureSpec);//设置每个view的大小
+        for(int i = 0 ; i < count; i++){
+            if(i == 0){
+                getChildAt(i).measure(widthMeasureSpec, heightMeasureSpec);//设置每个view的大小
+            }else{
+                getChildAt(i).measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+            }
         }
+        setMeasuredDimension(widthMeasureSpec, heightMeasureSpec);  
     }
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
@@ -55,6 +60,7 @@ public class SlidingView extends ViewGroup{
             childView.layout(left, 0, left+width, childView.getMeasuredHeight());
             left += width;
         }
+        rightWidth = width;
     }
     private float mLastMotionX;
     /**

@@ -66,7 +66,7 @@ public class CarLocationActivity extends Activity {
 		GeoPoint p1 = new GeoPoint((int) (Variable.Lat * 1E6),
 				(int) (Variable.Lon * 1E6));
 		OverlayItem item1 = new OverlayItem(p1, "item1", "item1");
-		Drawable mark = getResources().getDrawable(R.drawable.ic_launcher);
+		Drawable mark = getResources().getDrawable(R.drawable.body_icon_location);
 		item1.setMarker(mark);
 		item1.setAnchor(OverlayItem.ALING_CENTER);
 		OverlayCar overlayCar = new OverlayCar(mark, mMapView);

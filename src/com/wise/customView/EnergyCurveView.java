@@ -306,6 +306,7 @@ public class EnergyCurveView extends View implements OnTouchListener{
 		int windowW = (int) (dm.widthPixels - SPACING_SCALE);
 		mGradientWidth = windowW;
 		mGradientHeight = (float) (windowW*0.75);
+		Log.d(TAG, "mGradientWidth = " + mGradientWidth + ", mGradientHeight = " + mGradientHeight);
 		// 移动的黄色的线条
 		mTrendLine = BitmapFactory.decodeResource(getResources(),R.drawable.energy_trendline);
 		int height = mTrendLine.getHeight();

@@ -55,6 +55,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/iv_location"
+            android:layout_marginRight="@dimen/margins"
             android:text="深圳市福田区大昌汽车服务有限公司汽车检测站"
             android:textColor="@color/common" />
     </RelativeLayout>

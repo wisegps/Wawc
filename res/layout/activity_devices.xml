@@ -15,6 +15,7 @@
 	        android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margins"
             android:contentDescription="@string/app_name"
             android:src="@drawable/side_left"/>
         <TextView

@@ -4,32 +4,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFFFFF">
+    android:background="@color/white">
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="44dp"
-        android:background="@drawable/border_bg"
-        android:padding="2dp">
+        android:layout_height="@dimen/title_hight"
+        android:background="@drawable/nav_bg">
 		<ImageView
             android:id="@+id/iv_activity_vehicle_status_back"
-            android:layout_width="60dp"
-	        android:layout_height="36dp"
+            android:layout_width="@dimen/title_image"
+	        android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_launcher"/>
+            android:layout_marginLeft="@dimen/margins"
+            android:src="@drawable/side_left"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="center"
             android:text="@string/vehicle_status"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="@dimen/title"
             android:textStyle="bold" />
 	</RelativeLayout>
 	<HorizontalScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
 		<LinearLayout 
 		    android:layout_width="wrap_content"
 			android:layout_height="wrap_content" 
@@ -47,13 +48,18 @@
 	    android:id="@+id/tv_fault"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:padding="5dp"
-	    android:textSize="@dimen/title"
+	    android:background="@color/gray_light"
+	    android:padding="@dimen/margins"
+	    android:textSize="@dimen/main"
+	    android:textColor="@color/common"
 	    android:text="故障：2 报警：3"/>
+	<View 
+	    android:layout_width="fill_parent"
+	    android:layout_height="@dimen/double_margins"
+	    android:background="@color/gray"/>
 	<LinearLayout 
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:layout_marginTop="10dp"
 	    android:orientation="horizontal">
 	    <TextView 
 	        android:id="@+id/tv_month_hk_fuel"
@@ -61,7 +67,8 @@
 	        android:layout_height="wrap_content"
 	        android:layout_weight="1"
 	        android:padding="5dp"
-	        android:textSize="@dimen/title"
+	        android:textSize="@dimen/main"
+	        android:textColor="@color/common"
 	        android:gravity="center_horizontal"/>
 	    <TextView 
 	        android:id="@+id/tv_month_distance"
@@ -69,7 +76,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="5dp"
-            android:textSize="@dimen/title"
+            android:textSize="@dimen/main"
+            android:textColor="@color/common"
             android:gravity="center_horizontal"/>
 	    <TextView 
 	        android:id="@+id/tv_month_fuel"
@@ -77,11 +85,13 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:padding="5dp"
-            android:textSize="@dimen/title"
+            android:textSize="@dimen/main"
+            android:textColor="@color/common"
             android:gravity="center_horizontal"/>
 	</LinearLayout>	
     <RelativeLayout 
-        android:background="@color/gray"
+        android:padding="@dimen/margins"
+        android:background="@color/gray_light"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
         <TextView 
@@ -89,22 +99,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textColor="@color/black"
+            android:textSize="@dimen/main"
+            android:textColor="@color/common"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:text="2013-12"/>
         <ImageView 
             android:id="@+id/iv_activity_vehicle_status_data_previous" 
             android:contentDescription="@string/app_name"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/title_image"
+            android:layout_height="@dimen/title_image"
+            android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/tv_vehicle_status_date"
-            android:src="@drawable/ic_launcher"/>
+            android:src="@drawable/body_icon_arrow_contrary"/>
         <ImageView
             android:id="@+id/iv_activity_vehicle_status_data_next" 
             android:contentDescription="@string/app_name"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="@dimen/title_image"
+            android:layout_height="@dimen/title_image"
+            android:layout_centerVertical="true"
             android:layout_toRightOf="@id/tv_vehicle_status_date"
-            android:src="@drawable/ic_launcher"/>
+            android:src="@drawable/body_icon_arrow2"/>
     </RelativeLayout>
 	<RelativeLayout 
 	    android:layout_width="fill_parent"
@@ -118,29 +133,36 @@
 	            android:layout_height="wrap_content">	            
 	        </com.wise.customView.EnergyGroup> 
         </LinearLayout>          
-	    <RelativeLayout 
-	        android:id="@+id/rl_activity_vehicle_status_oil"
+	    <LinearLayout 
+	        android:id="@+id/ll_activity_vehicle_status_oil"
 	        android:layout_centerHorizontal="true"
 	        android:layout_marginTop="80dp"
-	        android:background="@drawable/energy_degree"
-	        android:visibility="gone"
+	        android:background="@drawable/bg_status"
+	        android:visibility="visible"
+	        android:orientation="vertical"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content">
 	        <TextView
 	            android:id="@+id/tv_activity_vehicle_status_oil" 
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:layout_centerHorizontal="true"
-	            android:textColor="@color/black"    
+	            android:textColor="@color/white"    
+	            android:layout_gravity="center_horizontal"   
 	            android:textSize="30sp"        
 	            android:text="11.20L"/>
 	        <TextView 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:layout_gravity="center_horizontal"            
+                android:text="12月11日"/>
+	        <Button 
 	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:layout_below="@id/tv_activity_vehicle_status_oil"
-	            android:layout_centerHorizontal="true"
-	            android:textColor="@color/black"            
-	            android:text="[点击查看详情]"/>
-	    </RelativeLayout>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"    
+                android:textColor="@color/white"    
+                android:background="@drawable/bt_bg"        
+                android:text="[点击查看详情]"/>
+	    </LinearLayout>
 	</RelativeLayout>	
 </LinearLayout>

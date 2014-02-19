@@ -193,7 +193,6 @@ public class TravelActivity extends Activity{
 				holder = new ViewHolder();
 				holder.tv_item_travel_startTime = (TextView) convertView.findViewById(R.id.tv_item_travel_startTime);
 				holder.tv_item_travel_stopTime = (TextView)convertView.findViewById(R.id.tv_item_travel_stopTime);
-				holder.tv_item_travel_spacingTime = (TextView)convertView.findViewById(R.id.tv_item_travel_spacingTime);
 				holder.tv_item_travel_startPlace = (TextView)convertView.findViewById(R.id.tv_item_travel_startPlace);
 				holder.tv_item_travel_stopPlace = (TextView)convertView.findViewById(R.id.tv_item_travel_stopPlace);
 				holder.tv_item_travel_spacingDistance = (TextView)convertView.findViewById(R.id.tv_item_travel_spacingDistance);
@@ -210,7 +209,6 @@ public class TravelActivity extends Activity{
 			TravelData travelData = travelDatas.get(position);
 			holder.tv_item_travel_startTime.setText(travelData.getStartTime());
 			holder.tv_item_travel_stopTime.setText(travelData.getStopTime());
-			holder.tv_item_travel_spacingTime.setText(travelData.getSpacingTime());
 			holder.tv_item_travel_startPlace.setText(travelData.getStartPlace());
 			holder.tv_item_travel_stopPlace.setText(travelData.getStopPlace());
 			holder.tv_item_travel_spacingDistance.setText(travelData.getSpacingDistance());
@@ -235,7 +233,7 @@ public class TravelActivity extends Activity{
 			return convertView;
 		}
 		private class ViewHolder {
-			TextView tv_item_travel_startTime,tv_item_travel_stopTime,tv_item_travel_spacingTime,
+			TextView tv_item_travel_startTime,tv_item_travel_stopTime,
 					tv_item_travel_startPlace,tv_item_travel_stopPlace,tv_item_travel_spacingDistance,
 					tv_item_travel_averageOil,tv_item_travel_oil,tv_item_travel_speed,tv_item_travel_cost;
 			ImageView iv_item_travel_map,iv_item_travel_share;
