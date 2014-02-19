@@ -7,31 +7,30 @@
     android:background="@color/gray">
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="44dp"
-        android:background="@drawable/border_bg"
-        android:padding="2dp">
+        android:layout_height="@dimen/title_hight"
+        android:background="@drawable/nav_bg">
 		<ImageView
             android:id="@+id/iv_activity_account_menu"
-            android:layout_width="60dp"
-	        android:layout_height="36dp"
+            android:layout_width="@dimen/title_image"
+	        android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margins"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_launcher"/>
+            android:src="@drawable/nav_back"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_toLeftOf="@+id/iv_activity_account_home"
-            android:layout_toRightOf="@+id/iv_activity_account_menu"
             android:gravity="center"
             android:text="@string/my_account"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="@dimen/title"
             android:textStyle="bold" />
 		<ImageView
             android:id="@+id/iv_activity_account_home"
             android:layout_width="60dp"
 	        android:layout_height="36dp"
+	        android:visibility="gone"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/app_name"
@@ -41,53 +40,62 @@
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:background="@color/white"
-	    android:layout_marginBottom="20dp"
-	    android:padding="10dp">
+	    android:layout_marginBottom="@dimen/double_margins"
+	    android:padding="@dimen/margins">
 	    <ImageView 
 	        android:id="@+id/iv_activity_account_pic"
-	        android:src="@drawable/ic_launcher"
-	        android:layout_marginRight="10dp"
+	        android:src="@drawable/side_icon_avatar"
+	        android:contentDescription="@string/app_name"
+	        android:layout_marginRight="@dimen/margins"
+	        android:layout_centerVertical="true"
 	        android:layout_width="40dp"
 	        android:layout_height="40dp"/>
 	    <TextView
 	        android:id="@+id/tv_activity_account_name" 
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:textColor="@color/black"
-	        android:textSize="@dimen/title"
+	        android:textColor="@color/common"
+	        android:textSize="@dimen/main"
 	        android:layout_toRightOf="@id/iv_activity_account_pic"/>
 	    <TextView 
 	        android:id="@+id/tv_activity_city"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:textColor="@color/black"
-	        android:textSize="@dimen/title"
+	        android:textColor="@color/common"
+            android:textSize="@dimen/main"
 	        android:layout_below="@id/tv_activity_account_name"
 	        android:layout_toRightOf="@id/iv_activity_account_pic"/>
 	    <TextView 
 	        android:id="@+id/tv_Balance"
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="10dp"
-	        android:textColor="@color/black"
-            android:textSize="@dimen/title"
+	        android:layout_marginLeft="@dimen/margins"
+	        android:textColor="@color/common"
+            android:textSize="@dimen/main"
 	        android:layout_below="@id/tv_activity_account_name"
 	        android:layout_toRightOf="@id/tv_activity_city"
 	        android:text="账户余额：0元"/>
 	</RelativeLayout> 
-	<TextView 
-	    android:background="@drawable/border_bg"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="@dimen/title"
-        android:padding="10dp"
-        android:text="我的爱车"/>
+	<LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:background="@color/white">	    
+	    <TextView 
+	        android:background="@color/gray_light"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/common"
+	        android:textSize="@dimen/main"
+	        android:padding="@dimen/margins"
+	        android:text="我的爱车"/>
+	</LinearLayout>
     <RelativeLayout 
         android:id="@+id/account_to_my_vehicle"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:background="@color/white"
+        android:layout_marginBottom="@dimen/double_margins"
+        android:padding="@dimen/margins">
         <ImageView 
             android:id="@+id/iv_user_car_logo"
             android:layout_width="40dp"
@@ -97,10 +105,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="大众途安"
-            android:textSize="10pt"
+            android:textSize="@dimen/main"
             android:layout_alignTop="@id/iv_user_car_logo"
             android:layout_toRightOf="@id/iv_user_car_logo"
-            android:textColor="#000000"
+            android:textColor="@color/common"
             android:layout_marginLeft="5dip"/>
         <TextView 
             android:id="@+id/tv_carNumber"
@@ -110,80 +118,115 @@
             android:layout_marginLeft="5dip"
             android:layout_alignBottom="@id/iv_user_car_logo"
             android:layout_toRightOf="@id/iv_user_car_logo"
-            android:textColor="#000000"/>        
+            android:textColor="@color/common"/>        
 	     <ImageView 
-	         android:layout_width="20dip"
-	         android:layout_height="20dip"
-	         android:background="@drawable/ic_launcher"
+	         android:layout_width="@dimen/double_margins"
+	         android:layout_height="@dimen/double_margins"
+	         android:background="@drawable/body_icon_arrow2"
 	         android:layout_centerVertical="true"
 	         android:layout_alignParentRight="true"
-	         android:layout_marginRight="5dip"/>
+	         android:layout_marginRight="@dimen/margins"/>
     </RelativeLayout>
-	<TextView 
-	    android:background="@drawable/border_bg"
+    <LinearLayout 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
-        android:textSize="@dimen/title"
-        android:padding="10dp"
-        android:text="@string/contact_note"/>
+        android:background="@color/white">	
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/margins"
+            android:background="@color/gray_light">                       
+	        <TextView 
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:textColor="@color/common"
+	            android:textSize="@dimen/main"
+	            android:layout_marginRight="@dimen/margins"
+	            android:text="联系方式"/>
+	        <TextView 
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            android:textColor="@color/common_inactive"
+	            android:textSize="@dimen/content"
+	            android:text="(用于购物发货)"/>
+        </LinearLayout>
+    </LinearLayout>
 	<RelativeLayout 
         android:layout_width="fill_parent"        
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:background="@color/white"
+        android:padding="@dimen/margins">
         <TextView
             android:id="@+id/tv_activity_account_consignee"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@string/consignee"
-            android:textColor="@color/black"
-            android:textSize="@dimen/title"/>
+            android:textColor="@color/common"
+            android:textSize="@dimen/content"/>
 	     <EditText 
 	         android:id="@+id/et_activity_account_consignee"
 	         android:layout_width="fill_parent"
 	         android:layout_height="wrap_content"
+	         android:textColor="@color/common"
+             android:textSize="@dimen/content"
 	         android:inputType="text"
              android:background="@null"
 	         android:layout_toRightOf="@id/tv_activity_account_consignee"
 	         android:layout_alignParentRight="true"/>
     </RelativeLayout>
+    <View 
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/body_line"/>
     <RelativeLayout 
         android:layout_width="fill_parent"        
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:background="@color/white"
+        android:padding="@dimen/margins">
         <TextView
             android:id="@+id/tv_activity_account_adress"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@string/address"
-            android:textColor="@color/black"
-            android:textSize="@dimen/title"/>
+            android:textColor="@color/common"
+            android:textSize="@dimen/content"/>
 	     <EditText 
 	         android:id="@+id/et_activity_account_adress"
 	         android:layout_width="fill_parent"
 	         android:layout_height="wrap_content"
+	         android:textColor="@color/common"
+             android:textSize="@dimen/content"
 	         android:inputType="text"
 	         android:background="@null"
 	         android:layout_toRightOf="@id/tv_activity_account_adress"
 	         android:layout_alignParentRight="true"/>
     </RelativeLayout>
+    <View 
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/body_line"/>
     <RelativeLayout 
         android:layout_width="fill_parent"        
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:background="@color/white"
+        android:layout_marginBottom="@dimen/double_margins"
+        android:padding="@dimen/margins">
         <TextView
             android:id="@+id/tv_activity_account_phone"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@string/tel"
-            android:textColor="@color/black"
-            android:textSize="@dimen/title"/>
+            android:textColor="@color/common"
+            android:textSize="@dimen/content"/>
 	     <EditText 
 	         android:id="@+id/et_activity_account_phone"
 	         android:layout_width="fill_parent"
 	         android:layout_height="wrap_content"
 	         android:inputType="phone"
              android:background="@null"
+             android:textColor="@color/common"
+             android:textSize="@dimen/content"
 	         android:layout_toRightOf="@id/tv_activity_account_phone"
 	         android:layout_alignParentRight="true"/>
     </RelativeLayout>
@@ -191,5 +234,9 @@
         android:id="@+id/bt_activity_account_logout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="@dimen/margins"
+        android:textSize="@dimen/main"
+        android:textColor="@color/red_light"
         android:text="@string/login_out"/>
 </LinearLayout>

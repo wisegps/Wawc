@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFFFFF">
+    android:background="@color/gray">
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight"
@@ -39,6 +39,7 @@
 	</RelativeLayout>
 	<HorizontalScrollView
         android:layout_width="fill_parent"
+        android:background="@color/white"
         android:layout_height="wrap_content">
 		<LinearLayout 
 		    android:layout_width="wrap_content"
@@ -53,19 +54,24 @@
 			    android:horizontalSpacing="10dp"/>
 		</LinearLayout>
 	</HorizontalScrollView>
-	<TextView 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/border_bg"
-        android:textColor="@color/black"
-        android:padding="10dp"
-        android:textSize="@dimen/title"
-        android:gravity="center_horizontal"
-        android:text="累计扣分：6分          累积罚款：300元"/>
+	<LinearLayout 
+	    android:background="@color/white"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content">
+	    <TextView 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:textColor="@color/common"
+	        android:padding="@dimen/margins"
+	        android:textSize="@dimen/main"
+	        android:background="@color/gray_light"
+	        android:text="累计扣分：6分          累积罚款：300元"/>
+	</LinearLayout>	
 	<com.wise.list.XListView
-	    android:layout_margin="5dp"
+	    android:layout_marginTop="@dimen/double_margins"
 	    android:id="@+id/lv_activity_traffic"
 	    android:cacheColorHint="#00000000"
+	    android:divider="@null"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"/>
 </LinearLayout>
