@@ -4,6 +4,7 @@ import com.wise.data.CarData;
 import com.wise.extend.CarAdapter;
 import com.wise.extend.OpenDateDialog;
 import com.wise.extend.OpenDateDialogListener;
+import com.wise.pubclas.Constant;
 import com.wise.pubclas.Variable;
 import android.app.Activity;
 import android.content.Intent;
@@ -124,7 +125,7 @@ public class CarRemindActivity extends Activity{
         carAdapter = new CarAdapter(CarRemindActivity.this,Variable.carDatas);
         gv_activity_car_remind.setAdapter(carAdapter);
         
-        int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 120, getResources().getDisplayMetrics());
+        int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Constant.ImageWidth, getResources().getDisplayMetrics());
 		LayoutParams params = new LayoutParams(Variable.carDatas.size() * (px + 10),LayoutParams.WRAP_CONTENT);
 		gv_activity_car_remind.setLayoutParams(params);
 		gv_activity_car_remind.setColumnWidth(px);

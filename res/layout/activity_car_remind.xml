@@ -108,7 +108,7 @@
 	                android:layout_weight="1"
 	                android:layout_margin="@dimen/margins"
 	                android:textColor="@color/common_blue"
-	                android:background="@drawable/bt_bg_blue"
+	                android:background="@drawable/bg_bt_blue"
 	                android:text="@string/update_date"/>
 	            <Button 
 	                android:id="@+id/bt_inspection_address"
@@ -116,7 +116,7 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/margins"
                     android:textColor="@color/common_blue"
-                    android:background="@drawable/bt_bg_blue"
+                    android:background="@drawable/bg_bt_blue"
                     android:layout_weight="1"
                     android:text="@string/deal_adress"/>
 	        </LinearLayout>
@@ -166,7 +166,7 @@
                     android:layout_weight="1"
                     android:layout_margin="@dimen/margins"
                     android:textColor="@color/common_blue"
-                    android:background="@drawable/bt_bg_blue"
+                    android:background="@drawable/bg_bt_blue"
                     android:text="@string/update_date"/>
                 <Button 
                     android:id="@+id/bt_renewal_call"
@@ -175,7 +175,7 @@
                     android:layout_weight="1"
                     android:layout_margin="@dimen/margins"
                     android:textColor="@color/common_blue"
-                    android:background="@drawable/bt_bg_blue"
+                    android:background="@drawable/bg_bt_blue"
                     android:text="@string/call_insurance"/>
             </LinearLayout>
 	        <RelativeLayout 
@@ -224,7 +224,7 @@
                     android:layout_weight="1"
                     android:layout_margin="@dimen/margins"
                     android:textColor="@color/common_blue"
-                    android:background="@drawable/bt_bg_blue"
+                    android:background="@drawable/bg_bt_blue"
                     android:text="@string/go_my_car"/>
                 <Button
                     android:id="@+id/bt_maintenance_call"
@@ -233,7 +233,7 @@
                     android:layout_weight="1"
                     android:layout_margin="@dimen/margins"
                     android:textColor="@color/common_blue"
-                    android:background="@drawable/bt_bg_blue"
+                    android:background="@drawable/bg_bt_blue"
                     android:text="@string/call_fours"/>
             </LinearLayout>
 	        <RelativeLayout 
@@ -242,7 +242,7 @@
 	            android:layout_height="wrap_content"
 	            android:background="@color/white"
                 android:padding="@dimen/margins"
-	            android:layout_marginTop="@dimen/margins">
+	            android:layout_marginTop="@dimen/double_margins">
 	            <TextView 
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
@@ -283,7 +283,7 @@
                     android:layout_weight="1"
                     android:layout_margin="@dimen/margins"
                     android:textColor="@color/common_blue"
-                    android:background="@drawable/bt_bg_blue"
+                    android:background="@drawable/bg_bt_blue"
                     android:text="@string/update_date"/>
                 <Button 
                     android:id="@+id/bt_examined_address"
@@ -292,7 +292,7 @@
                     android:layout_weight="1"
                     android:layout_margin="@dimen/margins"
                     android:textColor="@color/common_blue"
-                    android:background="@drawable/bt_bg_blue"
+                    android:background="@drawable/bg_bt_blue"
                     android:text="@string/deal_adress"/>
             </LinearLayout>
 	        <RelativeLayout 
@@ -341,7 +341,7 @@
                     android:layout_weight="1"
                     android:layout_margin="@dimen/margins"
                     android:textColor="@color/common_blue"
-                    android:background="@drawable/bt_bg_blue"
+                    android:background="@drawable/bg_bt_blue"
                     android:text="@string/update_date"/>
                 <Button 
                     android:id="@+id/bt_replacement_address"
@@ -350,7 +350,7 @@
                     android:layout_weight="1"
                     android:layout_margin="@dimen/margins"
                     android:textColor="@color/common_blue"
-                    android:background="@drawable/bt_bg_blue"
+                    android:background="@drawable/bg_bt_blue"
                     android:text="@string/deal_adress"/>
             </LinearLayout>
 	    </LinearLayout>

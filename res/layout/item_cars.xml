@@ -8,17 +8,17 @@
     <RelativeLayout 
         android:layout_width="120dp"
         android:layout_height="120dp">        
-	    <TextView
-	        android:id="@+id/tv_item_carnumber" 
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:text="粤B12345"
-	        android:layout_alignParentBottom="true"
-	        android:layout_centerHorizontal="true"
-	        android:layout_marginTop="5dp"
-	        android:layout_marginBottom="@dimen/margins"
-	        android:textSize="@dimen/main"
-	        android:textColor="@color/black"/>
+        <TextView
+            android:id="@+id/tv_item_carnumber" 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="粤B12345"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="@dimen/margins"
+            android:textSize="@dimen/main"
+            android:textColor="@color/black"/>
         <ImageView 
             android:id="@+id/iv_item_cars"
             android:layout_above="@id/tv_item_carnumber"

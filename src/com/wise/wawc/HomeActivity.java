@@ -69,6 +69,7 @@ public class HomeActivity extends Activity{
     private static final int Get_RealTimeWeather = 2; // 获取实时天气
     private static final int Get_Fuel = 3; // 获取城市油价
     private static final int Get_Cars = 4; // 获取车辆数据
+    private static final int Get_CarsLogo = 5; // 获取车辆图标
 
     TextView tv_item_weather_date, tv_item_weather_wd, tv_item_weather,
             tv_item_weather_sky, tv_item_weather_temp1,
@@ -249,6 +250,9 @@ public class HomeActivity extends Activity{
                 jsonCars(msg.obj.toString());
                 ShowCarInfo();
                 break;
+            case Get_CarsLogo:
+                ShowCarInfo();
+                break;
             }
         }
     };
@@ -412,7 +416,9 @@ public class HomeActivity extends Activity{
                 }
             }
         }
-        ShowCarInfo();
+        Message message = new Message();
+        message.what = Get_CarsLogo;
+        handler.sendMessage(message);
     }
     private class Brand{
         String name;
@@ -594,7 +600,7 @@ public class HomeActivity extends Activity{
      * 解析车辆数据
      * @param result
      */
-    private void jsonCars(String result) {// TODO Cars
+    private void jsonCars(String result) {
     	carDatas.clear();
         try {
             JSONArray jsonArray = new JSONArray(result);

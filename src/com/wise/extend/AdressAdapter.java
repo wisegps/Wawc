@@ -104,9 +104,9 @@ public class AdressAdapter extends BaseAdapter{
 			holder.ll_adress_tel.setVisibility(View.VISIBLE);
 		}
 		if(adressData.isIs_collect()){
-		    holder.iv_Collect.setImageResource(R.drawable.ib_face);
+		    holder.iv_Collect.setImageResource(R.drawable.body_icon_collect_press);
 		}else{
-		    holder.iv_Collect.setImageResource(R.drawable.img_cancel);
+		    holder.iv_Collect.setImageResource(R.drawable.collect);
 		}
 		//收藏
 		holder.iv_Collect.setOnClickListener(new OnClickListener() {				

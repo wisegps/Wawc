@@ -7,6 +7,7 @@ import com.wise.pubclas.Constant;
 import com.wise.wawc.R;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -63,7 +64,8 @@ public class CarAdapter extends BaseAdapter{
 		if(carData.getLogoPath() == null || carData.getLogoPath().equals("")){
 		    holder.iv_item_cars.setImageResource(R.drawable.ic_launcher);
 		}else{
-		    Bitmap bitmap = BlurImage.decodeSampledBitmapFromPath(carData.getLogoPath(), 80, 80);            
+		    Bitmap bitmap = BitmapFactory.decodeFile(carData.getLogoPath());
+		    //Bitmap bitmap = BlurImage.decodeSampledBitmapFromPath(carData.getLogoPath(), 80, 80);            
             if(bitmap != null){
                 holder.iv_item_cars.setImageBitmap(bitmap);
             }else{

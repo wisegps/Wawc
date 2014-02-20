@@ -1,6 +1,5 @@
 package com.wise.pubclas;
 
-import android.R.string;
 import android.graphics.Bitmap;
 import android.os.Environment;
 /**
@@ -199,4 +198,8 @@ public class Constant {
 	
 	
 	public static String UserIconUrl = null;
+	/**
+	 * 水平滑动选择logo的宽度
+	 */
+	public static int ImageWidth = 120;
 }

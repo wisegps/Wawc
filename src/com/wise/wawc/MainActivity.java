@@ -147,8 +147,10 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         iv_activity_main_logo = (ImageView) findViewById(R.id.iv_activity_main_logo);
         iv_activity_main_arrow = (ImageView) findViewById(R.id.iv_activity_main_arrow);
         tv_activity_main_name = (TextView) findViewById(R.id.tv_activity_main_name);
-
-        // 车友圈
+        // 首页
+        TextView home = (TextView) findViewById(R.id.home);
+        home.setOnClickListener(onClickListener);
+        // 车友圈home
         TextView car_circle = (TextView) findViewById(R.id.car_circle);
         car_circle.setOnClickListener(onClickListener);
         // 我的收藏
@@ -195,6 +197,14 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                 break;
             case R.id.rl_activity_main_home:
                 ToFriendHome();
+                break;
+            case R.id.home:
+                slidingMenuView.snapToScreen(1);
+                Intent i = new Intent(MainActivity.this, HomeActivity.class);
+                View view = getLocalActivityManager().startActivity(
+                        HomeActivity.class.getName(), i).getDecorView();
+                tabcontent.removeAllViews();
+                tabcontent.addView(view);
                 break;
             // 车友圈
             case R.id.car_circle:

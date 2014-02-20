@@ -93,7 +93,7 @@
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:layout_alignParentRight="true"
-             android:background="@drawable/bt_bg_blue"
+             android:background="@drawable/bg_bt_blue"
              android:textColor="@color/common_blue"
              android:textSize="@dimen/content"
              android:text="查询物流"/>

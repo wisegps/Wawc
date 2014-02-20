@@ -54,8 +54,8 @@
             android:padding="@dimen/margins">
             <ImageView 
                 android:id="@+id/iv_location"
-                android:layout_height="@dimen/title_image"
-                android:layout_width="@dimen/title_image"
+                android:layout_height="@dimen/double_margins"
+                android:layout_width="@dimen/double_margins"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/lbs"/>
             <TextView
@@ -86,13 +86,13 @@
                 android:text="电话" />
             <ImageView 
                 android:id="@+id/iv_tel"
-                android:layout_height="@dimen/title_image"
-                android:layout_width="@dimen/title_image"
+                android:layout_height="@dimen/double_margins"
+                android:layout_width="@dimen/double_margins"
                 android:layout_alignParentRight="true"
                 android:src="@drawable/phone"/>
         </RelativeLayout>
         <TextView 
 	        android:layout_width="fill_parent"
-	        android:layout_height="@dimen/margins"
+	        android:layout_height="@dimen/double_margins"
 	        android:background="@color/gray"/>
 </LinearLayout>

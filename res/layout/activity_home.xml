@@ -53,8 +53,8 @@
 	        android:padding="@dimen/margins">
 	        <ImageView
 	            android:id="@+id/iv_carLogo" 
-	            android:layout_width="@dimen/image_logo"
-	            android:layout_height="@dimen/image_logo"
+	            android:layout_width="50dp"
+	            android:layout_height="50dp"
 	            android:contentDescription="@string/app_name"
 	            android:src="@drawable/ic_launcher"/>
 	        <TextView 
@@ -193,7 +193,6 @@
 		                android:textColor="@color/white"
 		                android:clickable="true"
 		                android:background="@drawable/home_btn_changecity"
-		                android:textSize="@dimen/content"
 		                android:text="深圳"/>
 		        </RelativeLayout>
 		        <LinearLayout 
@@ -256,7 +255,7 @@
 		                android:layout_height="wrap_content"
 		                android:textColor="@color/white"
 		                android:textSize="@dimen/content"
-		                android:text="洗车指数:"/>
+		                android:text="洗车指数："/>
 		            <TextView
 		                android:id="@+id/tv_item_weather_index_xc" 
 		                android:layout_width="wrap_content"
@@ -270,7 +269,7 @@
 		                android:layout_height="wrap_content"
 		                android:textColor="@color/white"
 		                android:textSize="@dimen/content"
-		                android:text="车辆限行:"/>
+		                android:text="车辆限行："/>
 		            <TextView 
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"

@@ -39,7 +39,7 @@
 	       	        android:id="@+id/iv_activity_main_logo"
 	       	        android:layout_height="50dp"
 	       	        android:layout_width="50dp"
-	       	        android:layout_marginRight="10dp"
+	       	        android:layout_marginRight="@dimen/margins"
 	       	        android:contentDescription="@string/app_name"
 	       	        android:src="@drawable/side_icon_avatar"/>
 	       	    <TextView 
@@ -53,8 +53,9 @@
 	       	        android:textColor="@color/white"/>
 	       	    <ImageView
                     android:id="@+id/iv_activity_main_arrow"
-                    android:layout_height="20dp"
-                    android:layout_width="20dp"
+                    android:layout_height="@dimen/double_margins"
+                    android:layout_width="@dimen/double_margins"
+                    android:layout_marginRight="@dimen/margins"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:contentDescription="@string/app_name"
@@ -67,17 +68,28 @@
 	       	        android:layout_centerVertical="true"
 	       	        android:contentDescription="@string/app_name"	       	        
                     android:layout_toLeftOf="@id/iv_activity_main_arrow"
+                    android:layout_marginRight="@dimen/margins"
 	       	        android:src="@drawable/home_qq"/>
 	       	     <ImageView
 	       	        android:id="@+id/iv_activity_main_login_sina"
 	       	        android:layout_height="30dp"
 	       	        android:layout_width="30dp"
 	       	        android:layout_toLeftOf="@id/iv_activity_main_login_qq"
-	       	        android:layout_marginRight="10dp"
+	       	        android:layout_marginRight="@dimen/margins"
 	       	        android:layout_centerVertical="true"
 	       	        android:contentDescription="@string/app_name"
 	       	        android:src="@drawable/home_sina"/> 	    
 	       	</RelativeLayout>
+	       	<TextView 
+                android:id="@+id/home"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:drawableLeft="@drawable/home_ring"
+                android:text="首页"
+                android:padding="@dimen/margins"
+                android:drawablePadding="@dimen/margins"
+                android:textSize="@dimen/title"/>
 	       	<TextView 
 	            android:id="@+id/car_circle"
 	            android:layout_width="fill_parent"
@@ -85,15 +97,15 @@
 	            android:textColor="@color/white"
 	            android:drawableLeft="@drawable/home_ring"
 	            android:text="@string/car_circle"
-	            android:padding="10dp"
-                android:drawablePadding="10dp"
+	            android:padding="@dimen/margins"
+                android:drawablePadding="@dimen/margins"
 	            android:textSize="@dimen/title"
 	            android:gravity="center_vertical"/>
 	       	<View 
 	            android:layout_width="fill_parent"
 	            android:layout_height="1dp"
-	            android:layout_marginLeft="10dp"
-	            android:layout_marginRight="10dp"
+	            android:layout_marginLeft="@dimen/margins"
+	            android:layout_marginRight="@dimen/margins"
 	            android:background="@drawable/body_line"/>
 	       	<TextView 
                 android:id="@+id/car_remind"
@@ -102,8 +114,9 @@
                 android:textColor="@color/white"
                 android:drawableLeft="@drawable/home_side_remind"
                 android:text="@string/car_remind"
-                android:padding="10dp"
-                android:drawablePadding="10dp"
+                android:padding="@dimen/margins"
+                android:layout_marginTop="@dimen/margins"
+                android:drawablePadding="@dimen/margins"
                 android:textSize="@dimen/title"
                 android:gravity="center_vertical"/>	
             <TextView 
@@ -113,8 +126,8 @@
                 android:textColor="@color/white"
                 android:drawableLeft="@drawable/home_side_car"
                 android:text="@string/my_car"
-                android:padding="10dp"
-                android:drawablePadding="10dp"
+                android:padding="@dimen/margins"
+                android:drawablePadding="@dimen/margins"
                 android:textSize="@dimen/title"
                 android:gravity="center_vertical"/>
             <TextView 
@@ -124,8 +137,8 @@
                 android:textColor="@color/white"
                 android:drawableLeft="@drawable/home_terminal"
                 android:text="@string/my_terminal"
-                android:padding="10dp"
-                android:drawablePadding="10dp"
+                android:padding="@dimen/margins"
+                android:drawablePadding="@dimen/margins"
                 android:textSize="@dimen/title"
                 android:gravity="center_vertical"/>
 	       	<TextView 
@@ -135,8 +148,8 @@
                 android:textColor="@color/white"
                 android:drawableLeft="@drawable/home_order"
                 android:text="@string/my_orders"
-                android:padding="10dp"
-                android:drawablePadding="10dp"
+                android:padding="@dimen/margins"
+                android:drawablePadding="@dimen/margins"
                 android:textSize="@dimen/title"
                 android:gravity="center_vertical"/>
 	       	<TextView 
@@ -146,9 +159,10 @@
                 android:textColor="@color/white"
                 android:drawableLeft="@drawable/home_collect"
                 android:text="@string/my_collect"
-                android:padding="10dp"
-                android:drawablePadding="10dp"
+                android:padding="@dimen/margins"
+                android:drawablePadding="@dimen/margins"
                 android:textSize="@dimen/title"
+                android:layout_marginBottom="@dimen/margins"
                 android:gravity="center_vertical"/>	       	
             <View 
                 android:layout_width="fill_parent"
@@ -163,8 +177,8 @@
                 android:textColor="@color/white"
                 android:drawableLeft="@drawable/side_setting"
                 android:text="@string/setup_center"
-                android:padding="10dp"
-                android:drawablePadding="10dp"
+                android:padding="@dimen/margins"
+                android:drawablePadding="@dimen/margins"
                 android:textSize="@dimen/title"
                 android:gravity="center_vertical"/>       
 	   	</LinearLayout>   	
@@ -213,7 +227,7 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:layout_centerVertical="true"
-		            android:layout_marginLeft="10dp"
+		            android:layout_marginLeft="@dimen/margins"
 		            android:text="你要做什么"
 		            android:textColor="@color/black"
 		            android:textSize="@dimen/title" />
@@ -238,7 +252,7 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:layout_centerVertical="true"
-		            android:layout_marginLeft="10dp"
+		            android:layout_marginLeft="@dimen/margins"
 		            android:text="我要加油"
 		            android:textColor="@color/black"
 		            android:textSize="@dimen/title" />
@@ -263,7 +277,7 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:layout_centerVertical="true"
-		            android:layout_marginLeft="10dp"
+		            android:layout_marginLeft="@dimen/margins"
 		            android:text="我要维保"
 		            android:textColor="@color/black"
 		            android:textSize="@dimen/title" />
@@ -288,7 +302,7 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:layout_centerVertical="true"
-		            android:layout_marginLeft="10dp"
+		            android:layout_marginLeft="@dimen/margins"
 		            android:text="我要洗车"
 		            android:textColor="@color/black"
 		            android:textSize="@dimen/title" />
@@ -313,7 +327,7 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:layout_centerVertical="true"
-		            android:layout_marginLeft="10dp"
+		            android:layout_marginLeft="@dimen/margins"
 		            android:text="我要救援"
 		            android:textColor="@color/black"
 		            android:textSize="@dimen/title" />
@@ -338,7 +352,7 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:layout_centerVertical="true"
-		            android:layout_marginLeft="10dp"
+		            android:layout_marginLeft="@dimen/margins"
 		            android:text="我要保险"
 		            android:textColor="@color/black"
 		            android:textSize="@dimen/title" />
@@ -363,7 +377,7 @@
 		            android:layout_width="wrap_content"
 		            android:layout_height="wrap_content"
 		            android:layout_centerVertical="true"
-		            android:layout_marginLeft="10dp"
+		            android:layout_marginLeft="@dimen/margins"
 		            android:text="我要停车"
 		            android:textColor="@color/black"
 		            android:textSize="@dimen/title" />
