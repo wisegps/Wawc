@@ -49,8 +49,6 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
 		collectionList = (XListView) findViewById(R.id.my_collection_list);
 		ImageView menuBt = (ImageView) findViewById(R.id.my_vechile_menu);
 		menuBt.setOnClickListener(onClickListener);
-		Button homeBt = (Button) findViewById(R.id.my_vechile_home);
-		homeBt.setOnClickListener(onClickListener);
 		
 		//不设置上拉加载无效
 		collectionList.setPullRefreshEnable(false);

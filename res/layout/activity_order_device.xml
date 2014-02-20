@@ -4,118 +4,115 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/border_bg">
+    android:background="@color/gray">
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="44dp"
-        android:background="@drawable/border_bg"
-        android:padding="2dp">
+        android:layout_height="@dimen/title_hight"
+        android:background="@drawable/nav_bg">
 		<ImageView
             android:id="@+id/iv_activity_order_device_back"
-            android:layout_width="60dp"
-	        android:layout_height="36dp"
+            android:layout_width="@dimen/title_image"
+            android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_launcher"/>
+            android:layout_marginLeft="@dimen/margins"
+            android:src="@drawable/nav_back"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_toLeftOf="@+id/iv_activity_order_device"
-            android:layout_toRightOf="@+id/iv_activity_order_device_back"
             android:gravity="center"
             android:text="订购终端"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="@dimen/title"
             android:textStyle="bold" />
-		<ImageView
-            android:id="@+id/iv_activity_order_device"
-            android:layout_width="60dp"
-	        android:layout_height="36dp"
-	        android:visibility="invisible"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_launcher"/>
 	</RelativeLayout>
 	<LinearLayout 
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:padding="10dp"
+	    android:background="@color/white"
 	    android:orientation="vertical">
 	    <RelativeLayout 
-	        android:background="@drawable/border_bg"
+	        android:padding="@dimen/margins"
+	        android:background="@color/gray_light"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content">
 	        <TextView
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="位智0BD云终端"
-	            android:padding="5dp"
-	            android:textColor="@color/black"
-	            android:textSize="@dimen/title"/>
+	            android:textColor="@color/common"
+	            android:textSize="@dimen/main"/>
 		     <TextView
 		         android:id="@+id/tv_item_travel_startPlace"  
 		         android:layout_width="wrap_content"
 		         android:layout_height="wrap_content"
 		         android:layout_alignParentRight="true"
-		         android:textColor="@color/blue"
-		      	 android:textSize="@dimen/title"
-		      	 android:padding="5dp"
+		         android:textColor="@color/blue_light"
+		      	 android:textSize="@dimen/content"
+		      	 android:drawableRight="@drawable/body_icon_arrow2"
 		         android:text="了解详情"/>
-	    </RelativeLayout>    
+	    </RelativeLayout>	    
+        <View 
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_lights"/>   
 		<LinearLayout
-	        android:background="@drawable/border_bg"
-	        android:padding="10dp"
+	        android:padding="@dimen/margins"
 	        android:layout_width="fill_parent"
 	        android:layout_height="200dp">
 		    <TextView
 		        android:layout_width="fill_parent"
 	        	android:layout_height="wrap_content"
-		        android:textColor="@color/black"
-	            android:textSize="@dimen/title"
+		        android:textColor="@color/common"
+                android:textSize="@dimen/content"
 	            android:text="清单：主机一套主机一套主机一套主机一套主机一套主机一套主机一套主机一套主机一套主机一套主机一套主机一套"/>
 	    </LinearLayout>
-	    <RelativeLayout 
-	        android:background="@drawable/border_bg"
+        <View 
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_lights"/> 
+	    <RelativeLayout
+	        android:padding="@dimen/margins"
 	        android:layout_width="fill_parent"        
 	        android:layout_height="wrap_content">
 	        <TextView
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="单价"
-	            android:padding="10dp"
-	            android:textColor="@color/black"
-	            android:textSize="@dimen/title"/>
+	            android:textColor="@color/common"
+	            android:textSize="@dimen/content"/>
 		     <TextView
 		         android:id="@+id/tv_item_travel_startPlace"  
 		         android:layout_width="wrap_content"
 		         android:layout_height="wrap_content"
 		         android:layout_alignParentRight="true"
-		         android:textColor="@color/black"
-		      	 android:textSize="@dimen/title"
-		      	 android:padding="10dp"
+		         android:textColor="@color/common"
+                 android:textSize="@dimen/content"
 		         android:text="388"/>
 	    </RelativeLayout>
+	    <View 
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_lights"/> 
 	    <RelativeLayout 
-	        android:background="@drawable/border_bg"
+	        android:padding="@dimen/margins"
 	        android:layout_width="fill_parent"        
 	        android:layout_height="wrap_content">
 	        <TextView
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="数量"
-	            android:padding="10dp"
-	            android:textColor="@color/black"
-	            android:textSize="@dimen/title"/>
+	            android:textColor="@color/common"
+                android:textSize="@dimen/content"/>
 	        <RelativeLayout 
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content">
 	            <ImageView
 	                android:id="@+id/iv_activity_order_device_add" 
-	                android:layout_width="30dp"
-	                android:layout_height="30dp"
-	                android:src="@drawable/ic_launcher"
+	                android:layout_width="@dimen/double_margins"
+	                android:layout_height="@dimen/double_margins"
+	                android:src="@drawable/body_icon_arrow2"
 	                android:contentDescription="@string/app_name"
 	                android:layout_alignParentRight="true"/>
 			     <TextView
@@ -123,45 +120,52 @@
 			         android:layout_width="wrap_content"
 			         android:layout_height="wrap_content"
 			         android:layout_toLeftOf="@id/iv_activity_order_device_add"
-			         android:textColor="@color/black"
-			      	 android:textSize="@dimen/title"
-			      	 android:padding="10dp"
+			         android:layout_marginLeft="@dimen/margins"
+			         android:layout_marginRight="@dimen/margins"
+			         android:textColor="@color/common"
+                     android:textSize="@dimen/content"
 			         android:text="1"/>
 			     <ImageView
 	                android:id="@+id/iv_activity_order_device_minus" 
-	                android:layout_width="30dp"
-	                android:layout_height="30dp"
-	                android:src="@drawable/ic_launcher"
+	                android:layout_width="@dimen/double_margins"
+                    android:layout_height="@dimen/double_margins"
+	                android:src="@drawable/body_icon_arrow_contrary"
 	                android:contentDescription="@string/app_name"
 	                android:layout_toLeftOf="@id/tv_activity_order_device_number"/>
 	        </RelativeLayout>
 	    </RelativeLayout>
+	    <View 
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_lights"/>
 	    <RelativeLayout 
-	        android:background="@drawable/border_bg"
+	        android:padding="@dimen/margins"
 	        android:layout_width="fill_parent"        
 	        android:layout_height="wrap_content">
 	        <TextView
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:text="总价"
-	            android:padding="10dp"
-	            android:textColor="@color/black"
-	            android:textSize="@dimen/title"/>
+	            android:textColor="@color/common"
+                android:textSize="@dimen/content"/>
 		     <TextView
 		         android:id="@+id/tv_item_travel_startPlace"  
 		         android:layout_width="wrap_content"
 		         android:layout_height="wrap_content"
 		         android:layout_alignParentRight="true"
-		         android:textColor="@color/black"
-		      	 android:textSize="@dimen/title"
-		      	 android:padding="10dp"
+		         android:textColor="@color/blue_light"
+                 android:textSize="@dimen/content"
 		         android:text="388.00"/>
 	    </RelativeLayout>
-	    <Button 
-	        android:id="@+id/bt_activity_order_device_submit"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="10dp"
-	        android:text="提交订单"/>
 	</LinearLayout>	
+    <Button 
+        android:id="@+id/bt_activity_order_device_submit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/double_margins"
+        android:padding="@dimen/margins"
+        android:background="@color/white"
+        android:textColor="@color/blue"
+        android:textSize="@dimen/main"
+        android:text="提交订单"/>
 </LinearLayout>

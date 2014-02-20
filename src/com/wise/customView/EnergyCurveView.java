@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import com.wise.data.EnergyItem;
 import com.wise.extend.OnViewTouchListener;
 import com.wise.wawc.R;
+import com.wise.wawc.R.color;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -168,14 +170,14 @@ public class EnergyCurveView extends View implements OnTouchListener{
 		/* 水平线和文字 */
 		for (int i = 0; i <= 5; i++) {
 			paint.setStrokeWidth(3);
-			paint.setColor(Color.GRAY);
+			paint.setColor(getResources().getColor(R.color.common));
 			canvas.drawText(""+value * i, SPACING - 25,mGradientHeight + SPACING_HEIGHT - dottedSpacing * i + 5,paint);
-			canvas.drawLine(SPACING, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i, mGradientWidth, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i, paint);
+			//canvas.drawLine(SPACING, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i, mGradientWidth, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i, paint);
 			paint.setStrokeWidth(1);
 			paint.setColor(0xff999999);
 			if(i != 0){
 				for (int j = 1; j <= 4; j++) {
-					canvas.drawLine(SPACING, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i + smallDotted * j,mGradientWidth, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i + smallDotted * j,paint);
+					//canvas.drawLine(SPACING, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i + smallDotted * j,mGradientWidth, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i + smallDotted * j,paint);
 				}
 			}			
 		}
@@ -184,13 +186,14 @@ public class EnergyCurveView extends View implements OnTouchListener{
 			paint.setStrokeWidth(3);
 			PointF startPoint = points.get(i);
 			if (i + 1 == points.size()) {// 绘制 最后一个圆点 为剪切的图片
-				canvas.drawBitmap(mLastPoint,startPoint.x - mLastPoint.getWidth() / 2, startPoint.y - mLastPoint.getHeight() / 2, paint);
-				break;
+				//canvas.drawBitmap(mLastPoint,startPoint.x - mLastPoint.getWidth() / 2, startPoint.y - mLastPoint.getHeight() / 2, paint);
+			    canvas.drawCircle(startPoint.x, startPoint.y, 3, paint);
+			    break;
 			}
             PointF endPoint = points.get(i + 1);
 			if(i%2 == 0){
                 //画阴影
-                paint.setColor(Color.GRAY);// 设置灰色  
+                paint.setColor(getResources().getColor(R.color.gray_light_ten));// 设置灰色  
                 paint.setStyle(Paint.Style.FILL);//设置填满  
                 Path path = new Path();
                 path.moveTo(startPoint.x, mGradientHeight + SPACING_HEIGHT);// 此点为多边形的起点  
@@ -201,8 +204,9 @@ public class EnergyCurveView extends View implements OnTouchListener{
                 canvas.drawPath(path, paint); 
             }
 			// 绘制曲线，并且覆盖剪切后的锯齿
+			paint.setColor(getResources().getColor(R.color.common_blue));
 			canvas.drawLine(startPoint.x, startPoint.y, endPoint.x, endPoint.y,paint);
-			canvas.drawBitmap(mLastPoint,startPoint.x - mLastPoint.getWidth() / 2, startPoint.y - mLastPoint.getHeight() / 2, paint);
+			canvas.drawCircle(startPoint.x, startPoint.y, 3, paint);
 		}
 	}
 	float moveX;

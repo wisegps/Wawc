@@ -268,7 +268,7 @@ public class MyDevicesActivity extends Activity{
             }
             DevicesData devicesData = devicesDatas.get(position);
             holder.tv_item_carnumber.setText(devicesData.getSerial());
-            holder.iv_item_cars.setImageResource(R.drawable.ic_launcher);
+            holder.iv_item_cars.setImageResource(R.drawable.body_icon_add);
             if(devicesData.isCheck()){
                 holder.ll_item_cars.setBackgroundResource(R.color.gray);
             }else{

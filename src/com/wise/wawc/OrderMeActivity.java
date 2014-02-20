@@ -48,8 +48,8 @@ public class OrderMeActivity extends Activity{
 		lv_activity_order_me = (ListView)findViewById(R.id.lv_activity_order_me);
 		ImageView iv_activity_order_me_menu = (ImageView)findViewById(R.id.iv_activity_order_me_menu);
 		iv_activity_order_me_menu.setOnClickListener(onClickListener);
-		ImageView iv_activity_order_me_home = (ImageView)findViewById(R.id.iv_activity_order_me_home);
-		iv_activity_order_me_home.setOnClickListener(onClickListener);
+		//ImageView iv_activity_order_me_home = (ImageView)findViewById(R.id.iv_activity_order_me_home);
+		//iv_activity_order_me_home.setOnClickListener(onClickListener);
 		GetOrderDB();
         GetOrder();
 	}
@@ -61,10 +61,10 @@ public class OrderMeActivity extends Activity{
 				ActivityFactory.A.LeftMenu();
 				break;
 
-			case R.id.iv_activity_order_me_home:
-				ActivityFactory.A.ToHome();
+			//case R.id.iv_activity_order_me_home:
+				//ActivityFactory.A.ToHome();
 				//OrderMeActivity.this.startActivity(new Intent(OrderMeActivity.this, SelectCityActivity.class));
-				break;
+				//break;
 			}
 		}
 	};

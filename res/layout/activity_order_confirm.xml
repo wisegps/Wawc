@@ -4,265 +4,309 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/border_bg">
+    android:background="@color/gray">
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="44dp"
-        android:background="@drawable/border_bg"
-        android:padding="2dp">
+        android:layout_height="@dimen/title_hight"
+        android:background="@drawable/nav_bg">
 		<ImageView
             android:id="@+id/iv_activity_order_confirm_back"
-            android:layout_width="60dp"
-	        android:layout_height="36dp"
+            android:layout_width="@dimen/title_image"
+	        android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:layout_margin="@dimen/margins"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_launcher"/>
+            android:src="@drawable/nav_back"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_toLeftOf="@+id/iv_activity_order_device"
-            android:layout_toRightOf="@+id/iv_activity_order_confirm_back"
             android:gravity="center"
             android:text="订单确认"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:textSize="@dimen/title"
             android:textStyle="bold" />
-		<ImageView
-            android:id="@+id/iv_activity_order_device"
-            android:layout_width="60dp"
-	        android:layout_height="36dp"
-	        android:visibility="invisible"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_launcher"/>
 	</RelativeLayout>
 	<LinearLayout 
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
+	    android:background="@color/white"
+	    android:orientation="vertical">	    
+        <RelativeLayout 
+            android:padding="@dimen/margins"
+            android:background="@color/gray_light"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">           
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="位智OBD云终端"
+                android:textColor="@color/common"
+                android:textSize="@dimen/main"/>
+             <TextView
+                 android:id="@+id/tv_item_travel_startPlace"  
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_alignParentRight="true"
+                 android:textColor="@color/blue_light"
+                 android:textSize="@dimen/content"
+                 android:drawableRight="@drawable/body_icon_arrow2"
+                 android:text="了解详情"/>
+        </RelativeLayout>
+        <View 
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_lights"/>
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/margins">
+            <LinearLayout 
+                android:orientation="horizontal"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content">
+	            <TextView
+	                android:layout_width="100dp"
+	                android:layout_height="wrap_content"
+	                android:text="单价"
+	                android:textColor="@color/common"
+	                android:textSize="@dimen/content"/>
+	             <TextView
+	                 android:id="@+id/tv_item_travel_startPlace"  
+	                 android:layout_width="wrap_content"
+	                 android:layout_height="wrap_content"
+	                 android:layout_alignParentRight="true"
+	                 android:textColor="@color/common"
+	                 android:textSize="@dimen/content"
+	                 android:text="388"/>
+	        </LinearLayout>
+	        <LinearLayout 
+                android:orientation="horizontal"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content">
+	            <TextView
+	                android:layout_width="100dp"
+	                android:layout_height="wrap_content"
+	                android:text="数量"
+	                android:textColor="@color/common"
+	                android:textSize="@dimen/content"/>
+	             <TextView
+	                 android:id="@+id/tv_item_travel_startPlace"  
+	                 android:layout_width="wrap_content"
+	                 android:layout_height="wrap_content"
+	                 android:layout_alignParentRight="true"
+	                 android:textColor="@color/common"
+	                 android:textSize="@dimen/content"
+	                 android:text="x1"/>
+	        </LinearLayout>
+	        <LinearLayout 
+                android:orientation="horizontal"
+	            android:layout_width="fill_parent"
+	            android:layout_height="wrap_content">
+	            <TextView
+	                android:layout_width="100dp"
+	                android:layout_height="wrap_content"
+	                android:text="总价"
+	                android:textColor="@color/common"
+	                android:textSize="@dimen/content"/>
+	             <TextView
+	                 android:id="@+id/tv_item_travel_startPlace"  
+	                 android:layout_width="wrap_content"
+	                 android:layout_height="wrap_content"
+	                 android:layout_alignParentRight="true"
+	                 android:textColor="@color/blue_light"
+	                 android:textSize="@dimen/content"
+	                 android:text="388"/>
+	        </LinearLayout>   
+        </LinearLayout>
+        <View 
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_lights"/>
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/margins">
+            <LinearLayout 
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="我的余额"
+                    android:textColor="@color/common"
+                    android:textSize="@dimen/content"/>
+                 <TextView
+                     android:id="@+id/tv_item_travel_startPlace"  
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentRight="true"
+                     android:textColor="@color/common"
+                     android:textSize="@dimen/content"
+                     android:text="x1"/>
+            </LinearLayout>
+            <LinearLayout 
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:text="还需支付"
+                    android:textColor="@color/common"
+                    android:textSize="@dimen/content"/>
+                 <TextView
+                     android:id="@+id/tv_item_travel_startPlace"  
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_alignParentRight="true"
+                     android:textColor="@color/red_light"
+                     android:textSize="@dimen/content"
+                     android:text="388.00"/>
+            </LinearLayout>
+        </LinearLayout>        
+	</LinearLayout>
+	<LinearLayout 
+	    android:visibility="gone"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
 	    android:orientation="vertical"
-	    android:padding="10dp">
-		<RelativeLayout 
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content">	        
-			<TextView
-		        android:layout_width="wrap_content"
-		        android:layout_height="wrap_content"
-		        android:text="位智OBD云终端"
-		        android:textColor="@color/black"
-		        android:textSize="@dimen/title"/>
-		     <TextView
-		         android:id="@+id/tv_item_travel_startPlace"  
-		         android:layout_width="wrap_content"
-		         android:layout_height="wrap_content"
-		         android:layout_alignParentRight="true"
-		         android:textColor="@color/blue"
-		      	 android:textSize="@dimen/title"
-		      	 android:padding="5dp"
-		         android:text="了解详情"/>
-	    </RelativeLayout>
-	    <RelativeLayout 
-	        android:background="@drawable/border_bg"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content">
-	        <TextView
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="单价"
-	            android:padding="5dp"
-	            android:textColor="@color/black"
-	            android:textSize="@dimen/title"/>
-		     <TextView
-		         android:id="@+id/tv_item_travel_startPlace"  
-		         android:layout_width="wrap_content"
-		         android:layout_height="wrap_content"
-		         android:layout_alignParentRight="true"
-		         android:textColor="@color/black"
-		      	 android:textSize="@dimen/title"
-		      	 android:padding="5dp"
-		         android:text="388"/>
-	    </RelativeLayout>
-	    <RelativeLayout 
-	        android:background="@drawable/border_bg"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content">
-	        <TextView
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="数量"
-	            android:padding="5dp"
-	            android:textColor="@color/black"
-	            android:textSize="@dimen/title"/>
-		     <TextView
-		         android:id="@+id/tv_item_travel_startPlace"  
-		         android:layout_width="wrap_content"
-		         android:layout_height="wrap_content"
-		         android:layout_alignParentRight="true"
-		         android:textColor="@color/black"
-		      	 android:textSize="@dimen/title"
-		      	 android:padding="5dp"
-		         android:text="x1"/>
-	    </RelativeLayout>
-	    <RelativeLayout 
-	        android:background="@drawable/border_bg"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content">
-	        <TextView
-	            android:layout_width="wrap_content"
-	            android:layout_height="wrap_content"
-	            android:text="总价"
-	            android:padding="5dp"
-	            android:textColor="@color/black"
-	            android:textSize="@dimen/title"/>
-		     <TextView
-		         android:id="@+id/tv_item_travel_startPlace"  
-		         android:layout_width="wrap_content"
-		         android:layout_height="wrap_content"
-		         android:layout_alignParentRight="true"
-		         android:textColor="@color/black"
-		      	 android:textSize="@dimen/title"
-		      	 android:padding="5dp"
-		         android:text="388"/>
-	    </RelativeLayout>   
-		<LinearLayout
-	        android:background="@drawable/border_bg"
-	        android:layout_marginTop="10dp"
-	        android:padding="10dp"
-	        android:orientation="vertical"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content">
-		    <RelativeLayout 
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content">
-		        <TextView
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:text="我的余额"
-		            android:padding="5dp"
-		            android:textColor="@color/black"
-		            android:textSize="@dimen/title"/>
-			     <TextView
-			         android:id="@+id/tv_item_travel_startPlace"  
-			         android:layout_width="wrap_content"
-			         android:layout_height="wrap_content"
-			         android:layout_alignParentRight="true"
-			         android:textColor="@color/black"
-			      	 android:textSize="@dimen/title"
-			      	 android:padding="5dp"
-			         android:text="0"/>
-		    </RelativeLayout>
-		    <RelativeLayout 
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content">
-		        <TextView
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:text="还需要支付"
-		            android:padding="5dp"
-		            android:textColor="@color/black"
-		            android:textSize="@dimen/title"/>
-			     <TextView
-			         android:id="@+id/tv_item_travel_startPlace"  
-			         android:layout_width="wrap_content"
-			         android:layout_height="wrap_content"
-			         android:layout_alignParentRight="true"
-			         android:textColor="@color/black"
-			      	 android:textSize="@dimen/title"
-			      	 android:padding="5dp"
-			         android:text="388"/>
-		    </RelativeLayout>
-	    </LinearLayout>
-	    
+	    android:layout_marginTop="@dimen/double_margins"
+	    android:background="@color/white">
+	    <TextView 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margins"
+            android:textColor="@color/common"
+            android:textSize="@dimen/main"
+            android:text="支付方式"/>	 
+        <View 
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_lights"/>   
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margins"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="支付宝客户端支付"
+                android:textColor="@color/common"
+                android:textSize="@dimen/content"/>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/common_inactive"
+                android:text="推荐安装支付宝客户端的用户使用"/>
+        </LinearLayout>
+        <View 
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_lights"/>   
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margins"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="支付宝网页支付"
+                android:textColor="@color/common"
+                android:textSize="@dimen/content"/>
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/common_inactive"
+                android:text="推荐安装支付宝客户端的用户使用"/>
+        </LinearLayout>
+	</LinearLayout>
+	<LinearLayout 
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    android:background="@color/white"
+	    android:layout_marginTop="@dimen/double_margins">		
 		<TextView 
-		    android:layout_width="fill_parent"
-		    android:layout_height="wrap_content"
-		    android:padding="10dp"
-		    android:textColor="@color/black"
-		    android:textSize="@dimen/title"
-		    android:text="支付方式"/>
-		
-		<LinearLayout
-	        android:background="@drawable/border_bg"
-	        android:padding="10dp"
-	        android:orientation="vertical"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content">
-		    <LinearLayout 
-		        android:layout_width="fill_parent"
-		        android:layout_height="wrap_content"
-		        android:orientation="vertical">
-		        <TextView
-		            android:layout_width="fill_parent"
-		            android:layout_height="wrap_content"
-		            android:text="支付宝客户端支付"
-		            android:textColor="@color/black"
-		            android:textSize="@dimen/title"/>
-		        <TextView
-		            android:layout_width="fill_parent"
-		            android:layout_height="wrap_content"
-		            android:text="推荐安装支付宝客户端的用户使用"/>
-		    </LinearLayout>
-	    </LinearLayout>		
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margins"
+            android:textColor="@color/common"
+            android:textSize="@dimen/main"
+            android:background="@color/gray_light"
+            android:text="收获地址"/> 
+        <View 
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray_lights"/>       		
 	    <RelativeLayout 
-	        android:background="@drawable/border_bg"
+	        android:padding="@dimen/margins"
 	        android:layout_width="fill_parent"        
 	        android:layout_height="wrap_content">
 	        <TextView
 	            android:id="@+id/tv_activity_order_confirm_consignee"
-	            android:layout_width="wrap_content"
+	            android:layout_width="100dp"
 	            android:layout_height="wrap_content"
 	            android:text="收货人"
-	            android:padding="10dp"
-	            android:textColor="@color/black"
-	            android:textSize="@dimen/title"/>
+	            android:textColor="@color/common"
+	            android:textSize="@dimen/content"/>
 		     <EditText 
 		         android:layout_width="fill_parent"
 		         android:layout_height="wrap_content"
+		         android:background="@null"
 		         android:layout_toRightOf="@id/tv_activity_order_confirm_consignee"
 		         android:layout_alignParentRight="true"/>
 	    </RelativeLayout>
 	    <RelativeLayout 
-	        android:background="@drawable/border_bg"
+	        android:padding="@dimen/margins"
 	        android:layout_width="fill_parent"        
 	        android:layout_height="wrap_content">
 	        <TextView
 	            android:id="@+id/tv_activity_order_confirm_consignee"
-	            android:layout_width="wrap_content"
+	            android:layout_width="100dp"
 	            android:layout_height="wrap_content"
 	            android:text="地址"
-	            android:padding="10dp"
-	            android:textColor="@color/black"
-	            android:textSize="@dimen/title"/>
+	            android:textColor="@color/common"
+                android:textSize="@dimen/content"/>
 		     <EditText 
 		         android:layout_width="fill_parent"
 		         android:layout_height="wrap_content"
+		         android:background="@null"
 		         android:layout_toRightOf="@id/tv_activity_order_confirm_consignee"
 		         android:layout_alignParentRight="true"/>
 	    </RelativeLayout>
 	    <RelativeLayout 
-	        android:background="@drawable/border_bg"
+	        android:padding="@dimen/margins"
 	        android:layout_width="fill_parent"        
 	        android:layout_height="wrap_content">
 	        <TextView
 	            android:id="@+id/tv_activity_order_confirm_consignee"
-	            android:layout_width="wrap_content"
+	            android:layout_width="100dp"
 	            android:layout_height="wrap_content"
 	            android:text="电话"
-	            android:padding="10dp"
-	            android:textColor="@color/black"
-	            android:textSize="@dimen/title"/>
+	            android:textColor="@color/common"
+                android:textSize="@dimen/content"/>
 		     <EditText 
 		         android:layout_width="fill_parent"
 		         android:layout_height="wrap_content"
+		         android:background="@null"
 		         android:layout_toRightOf="@id/tv_activity_order_confirm_consignee"
 		         android:layout_alignParentRight="true"/>
 	    </RelativeLayout>
-	    <Button 
-	        android:id="@+id/bt_activity_order_confirm_submit"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:layout_marginTop="10dp"
-	        android:text="提交订单"/>
 	</LinearLayout>
+    <Button 
+        android:id="@+id/bt_activity_order_confirm_submit"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/double_margins"
+        android:padding="@dimen/margins"
+        android:background="@color/white"
+        android:textColor="@color/blue"
+        android:textSize="@dimen/main"
+        android:text="确认支付"/>
 </LinearLayout>

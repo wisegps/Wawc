@@ -10,7 +10,6 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/margins"
         android:background="@color/gray_light" >
-
         <TextView
             android:id="@+id/tv_item_dealadress_name"
             android:layout_width="wrap_content"
@@ -29,8 +28,8 @@
 
         <ImageView
             android:id="@+id/iv_Collect"
-            android:layout_width="@dimen/title_image"
-            android:layout_height="@dimen/title_image"
+            android:layout_width="@dimen/double_margins"
+            android:layout_height="@dimen/double_margins"
             android:layout_alignParentRight="true"
             android:contentDescription="@string/app_name"
             android:src="@drawable/collect" />
@@ -43,8 +42,8 @@
 
         <ImageView
             android:id="@+id/iv_location"
-            android:layout_width="@dimen/title_image"
-            android:layout_height="@dimen/title_image"
+            android:layout_width="@dimen/double_margins"
+            android:layout_height="@dimen/double_margins"
             android:layout_alignParentRight="true"
             android:contentDescription="@string/app_name"
             android:src="@drawable/lbs" />
@@ -62,7 +61,7 @@
     <TextView 
         android:layout_width="fill_parent"
         android:layout_height="1dp"
-        android:background="@drawable/body_line"/>
+        android:background="@color/gray_lights"/>
     <RelativeLayout
         android:id="@+id/ll_adress_tel"
         android:layout_width="fill_parent"
@@ -77,8 +76,8 @@
             android:textColor="@color/common" />
         <ImageView
             android:id="@+id/iv_tel"
-            android:layout_width="@dimen/title_image"
-            android:layout_height="@dimen/title_image"
+            android:layout_width="@dimen/double_margins"
+            android:layout_height="@dimen/double_margins"
             android:layout_alignParentRight="true"
             android:contentDescription="@string/app_name"
             android:src="@drawable/phone" />
