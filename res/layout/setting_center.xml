@@ -8,360 +8,394 @@
 
     <!-- 头部 -->
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_height="@dimen/title_hight"
+        android:background="@color/blue"
+        >
 
         <Button
             android:id="@+id/setting_center_menu"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:background="@drawable/ic_launcher" />
+            android:layout_width="@dimen/title_image"
+            android:layout_height="@dimen/title_image"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/side_back" />
 
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:text="@string/setup_center"
-            android:textSize="10pt" />
+            android:textSize="@dimen/head" 
+            android:gravity="center"
+            android:layout_toRightOf="@id/setting_center_menu"
+            android:textColor="@color/white"
+            />
 
-        <Button
-            android:id="@+id/setting_center_home"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:background="@drawable/ic_launcher" />
-    </LinearLayout>
+        <View
+            android:layout_width="@dimen/title_hight"
+            android:layout_height="@dimen/title_hight"
+            android:layout_alignParentRight="true"
+            />
+    </RelativeLayout>
     
-    
+    <ScrollView 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        >
     <TableLayout 
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#000000"
+        android:background="#D9D9E1"
         >
         <TableRow 
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:padding="2dip"
-            android:layout_marginLeft="1dip"
-            android:layout_marginRight="1dip"
-            android:layout_marginTop="1dip"
+            android:background="#F2F1F7"
             >
             <TextView 
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/search_setting"
-                android:layout_gravity="center"
                 android:textColor="#000000"
-                android:textSize="10pt"
+                android:textSize="@dimen/title"
+                android:layout_margin="@dimen/margins"
                 />
         </TableRow>
-        
+        <!-- 默认中心 -->
          <TableRow 
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:padding="2dip"
-            android:layout_marginLeft="1dip"
-            android:layout_marginRight="1dip"
+            android:background="@drawable/side_seting_item"
             android:layout_marginTop="1dip"
-            >
-            <TextView 
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:text="@string/default_center"
-                android:gravity="left"
-                android:layout_weight="1"
-                android:textColor="#000000"
-                android:textSize="16dip"
-                />
-			            <TextView
-		                android:id="@+id/tv_value"
-		                android:layout_width="fill_parent"
-		                android:layout_height="wrap_content"
-			            android:layout_centerVertical="true"
-		                android:text="车辆粤B12345的位置"
-		                android:layout_weight="1"
-		                android:textColor="#000000"
-		                android:textSize="16dip"
-		                >
-			            </TextView>
-			            
-		            	<ImageButton
-		                android:id="@+id/bt_dropdown"
-		                android:layout_width="15dip"
-		                android:layout_height="15dip"
-		                android:background="@drawable/down_arrow"
-		                android:layout_weight="1" />
-        </TableRow>
-        
-        <TableRow 
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:padding="2dip"
-            android:layout_marginLeft="1dip"
-            android:layout_marginRight="1dip"
-            android:layout_marginTop="1dip"
-            >
-            <TextView 
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:text="@string/push_setting"
-                android:layout_gravity="center"
-                android:textColor="#000000"
-                android:textSize="10pt"
-                />
-        </TableRow>
-        <TableRow 
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:padding="2dip"
-            android:layout_marginLeft="1dip"
-            android:layout_marginRight="1dip"
-            android:layout_marginTop="1dip"
+            android:id="@+id/default_center_layout"
+            android:clickable="true"
             >
             <RelativeLayout 
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="@dimen/margins"
+                >
+            <TextView 
+                android:id="@+id/car_location_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/default_center"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:textColor="#000000"
+                android:textSize="@dimen/content"
+                />
+
+            
+            <LinearLayout 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                >
+                <TextView
+			         android:id="@+id/tv_value"
+			         android:layout_width="fill_parent"
+			         android:layout_height="wrap_content"
+			         android:text="车辆粤B12345的位置"
+			         android:textColor="#000000"
+			         android:layout_weight="3"
+			         android:textSize="@dimen/content" >
+			     </TextView>
+			     <ImageView
+			        android:layout_marginLeft="@dimen/margins"
+	                android:id="@+id/bt_dropdown"
+	                android:layout_weight="1"
+	                android:layout_height="@dimen/double_margins"
+                    android:layout_width="@dimen/double_margins"
+                    android:paddingLeft="@dimen/double_margins"
+	                android:background="@drawable/body_icon_arrow2" />
+                
+            </LinearLayout>
+			     </RelativeLayout>
+
+        </TableRow>
+        
+        <TableRow 
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#F2F1F7"
+            android:layout_marginTop="@dimen/double_margins"
+            >
+            <TextView 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/push_setting"
+                android:textColor="#000000"
+                android:textSize="@dimen/title"
+                android:layout_margin="@dimen/margins"
+                />
+        </TableRow>
+        <!-- 违章推送 -->
+        <TableRow 
+            android:id="@+id/against_push_row"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/side_seting_item"
+            android:layout_marginTop="1dip"
+            android:clickable="true"
+            >
+            <RelativeLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="@dimen/margins"
                 >
                 <TextView 
 	                android:layout_width="fill_parent"
 	                android:layout_height="wrap_content"
 	                android:text="@string/against_push"
-	                android:layout_gravity="center"
+	                android:layout_centerVertical="true"
+	                android:layout_alignParentLeft="true"
 	                android:textColor="#000000"
-	                android:textSize="16dip"
+	                android:textSize="@dimen/content"
                 />
                 <CheckBox 
                     android:id="@+id/against_push"
                     android:layout_height="20dip"
                     android:layout_width="40dip"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
+                    android:layout_centerVertical="true"
                     android:checked="true"
+                    android:clickable="false"
                     />
             </RelativeLayout>
         </TableRow>
-        
+        <!-- 故障推送 -->
         <TableRow 
+            android:id="@+id/bug_push_row"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:padding="2dip"
-            android:layout_marginLeft="1dip"
-            android:layout_marginRight="1dip"
+            android:background="@drawable/side_seting_item"
+            android:clickable="true"
             android:layout_marginTop="1dip"
             >
             <RelativeLayout 
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="@dimen/margins"
                 >
                 <TextView 
 	                android:layout_width="fill_parent"
 	                android:layout_height="wrap_content"
 	                android:text="@string/bug_push"
-	                android:layout_gravity="center"
+	                android:layout_centerVertical="true"
 	                android:textColor="#000000"
-	                android:textSize="16dip"
+	                android:textSize="@dimen/content"
                 />
                 <CheckBox
                     android:id="@+id/fault_push"
                     android:layout_width="40dip"
                     android:layout_height="20dip"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
+                    android:layout_centerVertical="true"
                     android:checked="true"
+                    android:clickable="false"
                     />
                 
             </RelativeLayout>
         </TableRow>
-        
-        <TableRow 
+        <!-- 车务提醒 -->
+        <TableRow
+            android:id="@+id/remaind_push_row"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:padding="2dip"
-            android:layout_marginLeft="1dip"
-            android:layout_marginRight="1dip"
+            android:background="@drawable/side_seting_item"
+            android:clickable="true"
             android:layout_marginTop="1dip"
             >
             <RelativeLayout 
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="@dimen/margins"
                 >
                 <TextView 
 	                android:layout_width="fill_parent"
 	                android:layout_height="wrap_content"
 	                android:text="@string/traffic_department"
-	                android:layout_gravity="center"
+	                android:layout_alignParentLeft="true"
+	                android:layout_centerVertical="true"
 	                android:textColor="#000000"
-	                android:textSize="16dip"
+	                android:textSize="@dimen/content"
                 />
                 <CheckBox
                     android:id="@+id/remaind_push"
                     android:layout_width="40dip"
                     android:layout_height="20dip"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
+                    android:layout_centerVertical="true"
                     android:checked="true"
+                    android:clickable="false"
                     />
             </RelativeLayout>
         </TableRow>
         <TableRow 
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:padding="2dip"
+            android:background="#F2F1F7"
             android:layout_marginLeft="1dip"
             android:layout_marginRight="1dip"
-            android:layout_marginTop="1dip"
+            android:layout_marginTop="@dimen/double_margins"
             >
             <TextView 
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:text="@string/system_setting"
-                android:layout_gravity="center"
                 android:textColor="#000000"
-                android:textSize="10pt"
+                 android:textSize="@dimen/title"
+                android:layout_margin="@dimen/margins"
                 />
         </TableRow>
+        <!-- 分享有礼 -->
         <TableRow 
+            android:id="@+id/share_have_gift"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:padding="2dip"
-            android:layout_marginLeft="1dip"
-            android:layout_marginRight="1dip"
+            android:background="@drawable/side_seting_item"
+            android:clickable="true"
             android:layout_marginTop="1dip"
             >
             <RelativeLayout 
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="@dimen/margins"
                 >
                 <TextView 
 	                android:layout_width="fill_parent"
 	                android:layout_height="wrap_content"
 	                android:text="@string/share_gift"
-	                android:layout_gravity="center"
 	                android:textColor="#000000"
-	                android:textSize="16dip"
+	                android:layout_alignParentLeft="true"
+	                android:layout_centerVertical="true"
+	                android:textSize="@dimen/content"
                 />
                 <ImageView 
-                    android:id="@+id/share_have_gift"
-                    android:layout_height="20dip"
-                    android:layout_width="40dip"
+                    android:layout_height="@dimen/double_margins"
+                    android:layout_width="@dimen/double_margins"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:background="@drawable/ic_launcher"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="@dimen/double_margins"
+                    android:background="@drawable/body_icon_arrow2"
                     />
             </RelativeLayout>
         </TableRow>
+        <!-- 意见反馈 -->
         <TableRow 
+            android:id="@+id/feedback"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:padding="2dip"
-            android:layout_marginLeft="1dip"
-            android:layout_marginRight="1dip"
+            android:background="@drawable/side_seting_item"
+            android:clickable="true"
             android:layout_marginTop="1dip"
             >
             <RelativeLayout 
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="@dimen/margins"
                 >
                 <TextView 
 	                android:layout_width="fill_parent"
 	                android:layout_height="wrap_content"
 	                android:text="@string/feedbaack"
-	                android:layout_gravity="center"
+	                android:layout_alignParentLeft="true"
+	                android:layout_centerVertical="true"
 	                android:textColor="#000000"
-	                android:textSize="16dip"
+	                android:textSize="@dimen/content"
                 />
                 <ImageView 
-                    android:id="@+id/feedback"
-                    android:layout_height="20dip"
-                    android:layout_width="40dip"
+                    android:layout_height="@dimen/double_margins"
+                    android:layout_width="@dimen/double_margins"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:background="@drawable/ic_launcher"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="@dimen/double_margins"
+                    android:background="@drawable/body_icon_arrow2"
                     />
             </RelativeLayout>
         </TableRow>
+        <!-- 评分 -->
         <TableRow 
+            android:id="@+id/give_us_score"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:padding="2dip"
-            android:layout_marginLeft="1dip"
-            android:layout_marginRight="1dip"
+            android:background="@drawable/side_seting_item"
+            android:clickable="true"
             android:layout_marginTop="1dip"
             >
             <RelativeLayout 
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="@dimen/margins"
                 >
                 <TextView 
 	                android:layout_width="fill_parent"
 	                android:layout_height="wrap_content"
 	                android:text="@string/give_us_score"
-	                android:layout_gravity="center"
+	                android:layout_alignParentLeft="true"
+	                android:layout_centerVertical="true"
 	                android:textColor="#000000"
-	                android:textSize="16dip"
+	                android:textSize="@dimen/content"
                 />
                 <ImageView 
-                    android:id="@+id/give_us_score"
-                    android:layout_height="20dip"
-                    android:layout_width="40dip"
+                    android:layout_height="@dimen/double_margins"
+                    android:layout_width="@dimen/double_margins"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:background="@drawable/ic_launcher"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="@dimen/double_margins"
+                    android:background="@drawable/body_icon_arrow2"
                     />
             </RelativeLayout>
         </TableRow>
-        
+        <!-- 关于我爱我车 -->
         <TableRow 
+            android:id="@+id/about_appliaction"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:padding="2dip"
-            android:layout_marginLeft="1dip"
-            android:layout_marginRight="1dip"
+            android:background="@drawable/side_seting_item"
+            android:clickable="true"
             android:layout_marginTop="1dip"
             >
             <RelativeLayout 
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:layout_margin="@dimen/margins"
                 >
                 <TextView 
 	                android:layout_width="fill_parent"
 	                android:layout_height="wrap_content"
 	                android:text="@string/about_appliaction"
-	                android:layout_gravity="center"
+	                android:layout_alignParentLeft="true"
+	                android:layout_centerVertical="true"
 	                android:textColor="#000000"
-	                android:textSize="16dip"
+	                android:textSize="@dimen/content"
                 />
                 <ImageView 
-                    android:id="@+id/about_appliaction"
-                    android:layout_height="20dip"
-                    android:layout_width="40dip"
+                    android:layout_height="@dimen/double_margins"
+                    android:layout_width="@dimen/double_margins"
                     android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:background="@drawable/ic_launcher"
+                    android:layout_centerVertical="true"
+                    android:paddingLeft="@dimen/double_margins"
+                    android:background="@drawable/body_icon_arrow2"
                     />
             </RelativeLayout>
         </TableRow>
     </TableLayout>
+    </ScrollView>
 </LinearLayout>

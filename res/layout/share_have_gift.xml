@@ -3,33 +3,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_height="@dimen/title_hight"
+        android:background="@color/blue"
+         >
 
-        <Button
+        <ImageView
             android:id="@+id/share_gift_back"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:background="@drawable/ic_launcher" />
+            android:layout_width="@dimen/title_image"
+            android:layout_height="@dimen/title_image"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+           	android:background="@drawable/side_back" 
+           	android:clickable="true"
+           	 />
 
         <TextView
             android:id="@+id/web_title"
+            android:layout_toRightOf="@id/share_gift_back"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
             android:gravity="center"
             android:text="@string/article_detaile"
-            android:textSize="8pt" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/head" />
 
         <TextView
+            android:layout_alignParentRight="true"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1"
             />
-    </LinearLayout>
+    </RelativeLayout>
     <WebView 
         android:id="@+id/share_web"
         android:layout_width="fill_parent"

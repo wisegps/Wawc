@@ -6,46 +6,60 @@
     android:orientation="vertical">
 
     <!-- 头部 -->
-
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_height="@dimen/title_hight"
+        android:background="@color/blue"
+         >
 
-        <Button
+        <ImageView
             android:id="@+id/feed_back_cancle"
-            android:layout_width="40dip"
-            android:layout_height="40dip"
-            android:layout_weight="1"
-            android:background="@drawable/ic_launcher" />
+            android:layout_width="@dimen/title_image"
+            android:layout_height="@dimen/title_image"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+           	android:background="@drawable/side_back" 
+           	android:clickable="true"
+           	 />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_toRightOf="@id/feed_back_cancle"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
             android:gravity="center"
             android:text="@string/feedbaack"
-            android:layout_weight="1"
-            android:textSize="10pt" />
+            android:textColor="@color/white"
+            android:textSize="@dimen/head" />
 
         <TextView
-            android:id="@+id/my_vechile_home"
-            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="3"/>
-	    </LinearLayout>	
+            />
+    </RelativeLayout>
+    
 	    <EditText 
+	        android:layout_margin="@dimen/margins"
 	        android:layout_width="fill_parent"
 	        android:layout_height="150dip"
 	        android:hint="说点什么...."
+	        android:gravity="top"
+	        android:maxLines="8"
 	        android:scrollbars="vertical"
+	        android:background="@drawable/new_article_edit_border"
 	        />
 	    <EditText 
+	        android:layout_margin="@dimen/margins"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
-	        android:hint="联系方式"
+	        android:hint="qq或邮箱地址（选填）"
+	        android:background="@drawable/new_article_edit_border"
 	        android:scrollbars="vertical"
 	        />
 	    <Button 
+	        android:layout_margin="@dimen/margins"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content"
 	        android:text="@string/send_suggest"
