@@ -95,9 +95,9 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
         @Override
         public void onClick(View v) {
             switch(v.getId()){
-            case R.id.my_vechile_home:
-                ActivityFactory.A.ToHome();
-                break;
+//            case R.id.my_vechile_home:
+//                ActivityFactory.A.ToHome();
+//                break;
             case R.id.my_vechile_menu:
                 ActivityFactory.A.LeftMenu();
                 break;

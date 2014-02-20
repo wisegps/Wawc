@@ -269,13 +269,13 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				}
 				commitData();
 				break;
-			case R.id.my_vechile_home:
-				if(isJump){
-					finish();
-				}else{
-					ActivityFactory.A.ToHome();
-				}
-				break;
+//			case R.id.my_vechile_home:
+//				if(isJump){
+//					finish();
+//				}else{
+//					ActivityFactory.A.ToHome();
+//				}
+//				break;
 			case R.id.my_vehicle_brank:    //选择汽车品牌
 				Variable.carDatas.remove(newCarImage);
 				Intent intent = new Intent(MyVehicleActivity.this,CarBrankListActivity.class);
