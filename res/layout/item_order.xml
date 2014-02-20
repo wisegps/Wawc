@@ -3,97 +3,103 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:orientation="vertical">
     <LinearLayout 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="vertical">       
-        <RelativeLayout 
-            android:background="@drawable/border_bg"
-            android:layout_width="fill_parent"        
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/tv_item_order_product_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ODB终端一套"
-                android:padding="10dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/title"/>
-             <TextView
-                 android:id="@+id/tv_item_order_unit_price"  
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_alignParentRight="true"
-                 android:textColor="@color/black"
-                 android:textSize="@dimen/title"
-                 android:padding="10dp"
-                 android:text="388"/>
-        </RelativeLayout>
-        <RelativeLayout 
-            android:background="@drawable/border_bg"
+        android:padding="@dimen/margins"
+        android:orientation="vertical">              
+	    <RelativeLayout 
+	        android:layout_width="fill_parent"        
+	        android:layout_height="wrap_content">
+	        <TextView
+	            android:id="@+id/tv_item_order_product_name"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:text="ODB终端一套"
+	            android:textColor="@color/common"
+	            android:textSize="@dimen/content"/>
+	         <TextView
+	             android:id="@+id/tv_item_order_unit_price"  
+	             android:layout_width="wrap_content"
+	             android:layout_height="wrap_content"
+	             android:layout_alignParentRight="true"
+	             android:textColor="@color/common"
+                 android:textSize="@dimen/content"
+	             android:text="388"/>
+	    </RelativeLayout>
+	    <RelativeLayout 
             android:layout_width="fill_parent"        
             android:layout_height="wrap_content">
             <TextView
                 android:id="@+id/tv_item_order_create_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="购买时间：2013-12-01"
-                android:padding="10dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/title"/>
-            <TextView
-                 android:id="@+id/tv_item_order_quantity"
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_alignParentRight="true"
-                 android:textColor="@color/black"
-                 android:textSize="@dimen/title"
-                 android:padding="10dp"
-                 android:text="X1"/>
-        </RelativeLayout>
-        <RelativeLayout 
-            android:background="@drawable/border_bg"
-            android:layout_width="fill_parent"        
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="总价"
-                android:padding="10dp"
-                android:textColor="@color/black"
-                android:textSize="@dimen/title"/>
+                android:text="购买时间"
+                android:textColor="@color/common"
+                android:textSize="@dimen/content"/>
              <TextView
-                 android:id="@+id/tv_item_order_total_price"  
+                 android:id="@+id/tv_item_order_quantity"  
                  android:layout_width="wrap_content"
                  android:layout_height="wrap_content"
                  android:layout_alignParentRight="true"
-                 android:textColor="@color/black"
-                 android:textSize="@dimen/title"
-                 android:padding="10dp"
-                 android:text="388.00"/>
+                 android:textColor="@color/common"
+                 android:textSize="@dimen/content"
+                 android:text="388"/>
         </RelativeLayout>
-        <RelativeLayout 
-            android:background="@drawable/border_bg"
-            android:layout_width="fill_parent"        
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="已支付"
-                android:padding="10dp"
-                android:textColor="@color/blue"
-                android:textSize="@dimen/title"/>
-             <Button
-                 android:id="@+id/bt_item_order_total_logistics"  
-                 android:layout_width="wrap_content"
-                 android:layout_height="wrap_content"
-                 android:layout_alignParentRight="true"
-                 android:textColor="@color/black"
-                 android:textSize="@dimen/title"
-                 android:padding="10dp"
-                 android:text="查询物流"/>
-        </RelativeLayout>
-    </LinearLayout> 
+    </LinearLayout>
+    <View 
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_lights"/>
+    <RelativeLayout 
+        android:padding="@dimen/margins"
+        android:layout_width="fill_parent"        
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="总价"
+            android:textColor="@color/common"
+            android:textSize="@dimen/content"/>
+         <TextView
+             android:id="@+id/tv_item_order_total_price"  
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignParentRight="true"
+             android:textColor="@color/common_blue"
+             android:textSize="@dimen/content"
+             android:text="388.00"/>
+    </RelativeLayout>
+    <View 
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:background="@color/gray_lights"/>
+    <RelativeLayout 
+        android:padding="@dimen/margins"
+        android:background="@color/gray_light"
+        android:layout_width="fill_parent"        
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已支付"
+            android:layout_centerVertical="true"
+            android:textColor="@color/common"
+            android:textSize="@dimen/content"/>
+         <TextView
+             android:id="@+id/bt_item_order_total_logistics"  
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignParentRight="true"
+             android:background="@drawable/bt_bg_blue"
+             android:textColor="@color/common_blue"
+             android:textSize="@dimen/content"
+             android:text="查询物流"/>
+    </RelativeLayout>
+    <View 
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/double_margins"
+        android:background="@color/gray"/>
 </LinearLayout>
