@@ -36,6 +36,7 @@
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_launcher"/>
 	</RelativeLayout>
+	
 	<com.wise.service.ClearEditText
         android:id="@+id/filter_edit"
         android:layout_marginTop="5dip"

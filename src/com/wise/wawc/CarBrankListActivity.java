@@ -40,9 +40,11 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,7 +73,7 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 	private BrankAdapter adapter = null;
 	
 	//组件
-	private Button choiceBrankBack = null;
+	private ImageView choiceBrankBack = null;
 	private Intent parentIntent = null;
 	private int code = 0;
 	
@@ -88,6 +90,7 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.brank_list);
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 		parentIntent = getIntent();
 		code = parentIntent.getIntExtra("code", 0);
 		
@@ -138,7 +141,7 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 		letterIndex = (TextView) findViewById(R.id.dialog);
 		sideBar = (SideBar) findViewById(R.id.sidrbar);
 		
-		choiceBrankBack = (Button) findViewById(R.id.choice_vechile_back);
+		choiceBrankBack = (ImageView) findViewById(R.id.choice_vechile_back);
 		choiceBrankBack.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				CarBrankListActivity.this.finish();

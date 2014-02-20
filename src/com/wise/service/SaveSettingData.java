@@ -30,7 +30,7 @@ public class SaveSettingData {
 	}
 	
 	public String getDefaultCenter(){
-		return userData.getString("defaultCenter", Variable.defaultCenter);
+		return userData.getString(Constant.defaultCenter_key, Variable.defaultCenter);
 	}
 	public boolean getAgainstPush(){
 		return userData.getBoolean("againstPush", true);

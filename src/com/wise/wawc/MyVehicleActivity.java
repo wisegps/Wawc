@@ -263,20 +263,19 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 			switch(v.getId()){
 			case R.id.my_vechile_menu:
 				if(isJump){
-					Log.e("跳转","加载");
 					finish();
 				}else{
-					Log.e("加载","加载");
 					ActivityFactory.A.LeftMenu();
 				}
+				commitData();
 				break;
-			case R.id.my_vechile_home:
-				if(isJump){
-					finish();
-				}else{
-					ActivityFactory.A.ToHome();
-				}
-				break;
+//			case R.id.my_vechile_home:
+//				if(isJump){
+//					finish();
+//				}else{
+//					ActivityFactory.A.ToHome();
+//				}
+//				break;
 			case R.id.my_vehicle_brank:    //选择汽车品牌
 				Variable.carDatas.remove(newCarImage);
 				Intent intent = new Intent(MyVehicleActivity.this,CarBrankListActivity.class);
@@ -709,10 +708,14 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	protected void onPause() {
 		super.onPause();
 		//存储用户选中的车辆
-		Editor editor = preferences.edit();
-		editor.putInt(Constant.DefaultVehicleID, chickIndex);
-		Log.e("提交的id",chickIndex + "");
-		editor.commit();
+//		Editor editor = preferences.edit();
+//		editor.putInt(Constant.DefaultVehicleID, chickIndex);
+//		editor.putString(Constant.defaultCenter_key, Variable.carDatas.get(chickIndex).getObj_name());
+//		String str = Variable.carDatas.get(chickIndex).getObj_name();
+//		String str2 = str==null?"null":str;
+//		Log.e("车牌号:",str2);
+//		Log.e("提交的id",chickIndex+"");
+//		editor.commit();
 	}
 	
 	 long waitTime = 2000;
@@ -728,6 +731,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	            	showToast("再按一次退出客户端");
 	                touchTime = currentTime;
 	            } else {
+	            	commitData();
 	                finish();
 	            }
 	            return true;
@@ -803,7 +807,17 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 			}
 		}
     }
-    
+    public void commitData(){
+    	Editor editor = preferences.edit();
+		editor.putInt(Constant.DefaultVehicleID, chickIndex);
+		Variable.defaultCenter = Variable.carDatas.get(chickIndex).getObj_name();
+		editor.putString(Constant.defaultCenter_key, Variable.carDatas.get(chickIndex).getObj_name());
+		String str = Variable.carDatas.get(chickIndex).getObj_name();
+		String str2 = str==null?"null":str;
+		Log.e("车牌号:",str2);
+		Log.e("提交的id",chickIndex+"");
+		editor.commit();
+    }
    public void showToast(String showContent){
 	   Toast.makeText(getApplicationContext(), showContent, 0).show();
     }

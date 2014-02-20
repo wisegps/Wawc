@@ -11,17 +11,18 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class ShareActivity extends Activity{
 	private WebView shareView = null;
-	private Button shareCancle = null;
+	private ImageView shareCancle = null;
 	private TextView title = null;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.share_have_gift);
 		shareView = (WebView) findViewById(R.id.share_web);
-		shareCancle =(Button) findViewById(R.id.share_gift_back);
+		shareCancle = (ImageView) findViewById(R.id.share_gift_back);
 		title = (TextView) findViewById(R.id.web_title);
 		shareCancle.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
