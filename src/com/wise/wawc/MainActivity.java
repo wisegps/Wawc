@@ -91,18 +91,18 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         ActivityFactory.A = this;
         slidingMenuView = (SlidingMenuView) findViewById(R.id.sliding_menu_view);
         
-        refuel = (RelativeLayout) findViewById(R.id.rl_activity_main_oil);  //加油
-        maintain = (RelativeLayout) findViewById(R.id.rl_activity_main_maintain);  //维保
-        wishCar = (RelativeLayout) findViewById(R.id.rl_activity_main_wash);   //洗车
-        help = (RelativeLayout) findViewById(R.id.rl_activity_main_help);   //救援
-        insurance = (RelativeLayout) findViewById(R.id.rl_activity_main_safety);   //保险
-        park = (RelativeLayout) findViewById(R.id.rl_activity_main_park);    //停车
-        refuel.setOnClickListener(onClickListener);
-        maintain.setOnClickListener(onClickListener);
-        wishCar.setOnClickListener(onClickListener);
-        help.setOnClickListener(onClickListener);
-        insurance.setOnClickListener(onClickListener);
-        park.setOnClickListener(onClickListener);
+//        refuel = (RelativeLayout) findViewById(R.id.rl_activity_main_oil);  //加油
+//        maintain = (RelativeLayout) findViewById(R.id.rl_activity_main_maintain);  //维保
+//        wishCar = (RelativeLayout) findViewById(R.id.rl_activity_main_wash);   //洗车
+//        help = (RelativeLayout) findViewById(R.id.rl_activity_main_help);   //救援
+//        insurance = (RelativeLayout) findViewById(R.id.rl_activity_main_safety);   //保险
+//        park = (RelativeLayout) findViewById(R.id.rl_activity_main_park);    //停车
+//        refuel.setOnClickListener(onClickListener);
+//        maintain.setOnClickListener(onClickListener);
+//        wishCar.setOnClickListener(onClickListener);
+//        help.setOnClickListener(onClickListener);
+//        insurance.setOnClickListener(onClickListener);
+//        park.setOnClickListener(onClickListener);
         
         
         
