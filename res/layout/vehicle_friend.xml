@@ -21,7 +21,7 @@
             android:layout_weight="1"
             android:paddingLeft="@dimen/margins"
             android:layout_gravity="center_vertical"
-            android:background="@drawable/nav_icon_menu" />
+            android:background="@drawable/side_left" />
 
         
         <LinearLayout 

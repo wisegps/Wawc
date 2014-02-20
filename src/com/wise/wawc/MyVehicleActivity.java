@@ -76,7 +76,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	private static final int refreshCarSeries = 2;
 	private static final int getCarType = 7;
 	private static final int saveVehicleData = 9;
-	private Button menu = null;
+	private ImageView menu = null;
 	private TextView editVehicle = null;
 	private ImageView brand = null;
 	private ImageView device = null;
@@ -120,8 +120,8 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	private ImageView ivCarType = null;  //车款
 	private TextView tvCarSeries = null;
 	private TextView tvCarType = null;
-	private Button btSaveVehicleData = null;
-	private Button btDeleteVehicle = null;
+	private TextView btSaveVehicleData = null;
+	private TextView btDeleteVehicle = null;
 	
 	
 	private SpinerPopWindow mSpinerPopWindow;
@@ -157,7 +157,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.my_vehicle);
-		menu = (Button) findViewById(R.id.my_vechile_menu);
+		menu = (ImageView)findViewById(R.id.my_vechile_menu);
 		editVehicle = (TextView) findViewById(R.id.my_vechile_edit);
 		brand = (ImageView) findViewById(R.id.my_vehicle_brank);
 		device = (ImageView) findViewById(R.id.my_vehicle_device);
@@ -176,8 +176,8 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		getDateView(buyTime);
 		ivInsuranceDate = (TextView) findViewById(R.id.my_vehicle_tv_insurance);
 		getDateView(ivInsuranceDate);
-		btSaveVehicleData = (Button) findViewById(R.id.my_vehilce_save);
-		btDeleteVehicle = (Button) findViewById(R.id.my_vehilce_delete);
+		btSaveVehicleData = (TextView) findViewById(R.id.my_vehilce_save);
+		btDeleteVehicle = (TextView) findViewById(R.id.my_vehilce_delete);
 		buttomView = (LinearLayout) findViewById(R.id.my_vehicle_buttom_view);
 		
 		
@@ -202,14 +202,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		dBhalper = new DBHelper(MyVehicleActivity.this);
 		dBExcute = new DBExcute();
 		
-		Log.e("MyVehicleActivity---num:",Variable.carDatas.size() +  "");
-		
 		//车辆数据
-		if(!"newVehicle".equals(Variable.carDatas.get(Variable.carDatas.size() - 1).getCar_brand())){
-			newCarImage = new CarData();
-			newCarImage.setCar_brand("newVehicle");
-			Variable.carDatas.add(newCarImage);
-		}
 		int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, getResources().getDisplayMetrics());
 		LayoutParams params = new LayoutParams(Variable.carDatas.size() * (px + 10),LayoutParams.WRAP_CONTENT);
 		vehicleGridView = (GridView) findViewById(R.id.gv_my_vehicle);
@@ -223,10 +216,6 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		vehicleGridView.setNumColumns(Variable.carDatas.size());
 		vehicleGridView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
-				if((Variable.carDatas.size() - 1) == arg2){
-					Variable.carDatas.remove(newCarImage);
-					startActivity(new Intent(MyVehicleActivity.this,NewVehicleActivity.class));
-				}else{
 					oneCarData = Variable.carDatas.get(arg2);
 					Message msg = new Message();
 					msg.obj = Variable.carDatas.get(arg2);
@@ -238,7 +227,6 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 					Variable.carDatas.get(arg2).setCheck(true);
 					logoAdapter.notifyDataSetChanged();
 					chickIndex = arg2;
-				}
 			}
 		});
 		for(int i = 0 ; i < Variable.carDatas.size() ; i++){
@@ -348,27 +336,28 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				break;
 				
 			case R.id.my_vehilce_save:
-				myDialog = ProgressDialog.show(MyVehicleActivity.this, "提示", "正在保存...");
-				myDialog.setCancelable(true);
-				// TODO
-				List<NameValuePair> params = new ArrayList<NameValuePair>();
-		        params.add(new BasicNameValuePair("obj_name", vehicleNumber.getText().toString().trim()));
-		        params.add(new BasicNameValuePair("car_brand", myVehicleBrank.getText().toString()));
-		        params.add(new BasicNameValuePair("car_series", tvCarSeries.getText().toString()));
-		        params.add(new BasicNameValuePair("car_type", tvCarType.getText().toString()));
-		        params.add(new BasicNameValuePair("engine_no", engineNum.getText().toString().trim()));
-		        Log.e("更改服务器时：",engineNum.getText().toString().trim() + "");
-		        params.add(new BasicNameValuePair("frame_no", frameNum.getText().toString().trim()));
-		        params.add(new BasicNameValuePair("insurance_company", showInsuranceCompany.getText().toString()));
-		        params.add(new BasicNameValuePair("insurance_date", ivInsuranceDate.getText().toString()));
-		        params.add(new BasicNameValuePair("maintain_company", tvMaintain.getText().toString()));
-		        params.add(new BasicNameValuePair("maintain_last_mileage", lastMaintain.getText().toString().trim()));
-		        //  ui布局无此参数
-		        params.add(new BasicNameValuePair("maintain_last_date", "2015"));
-		        params.add(new BasicNameValuePair("annual_inspect_data", oneCarData.getAnnual_inspect_date()));
-		        params.add(new BasicNameValuePair("maintain_next_mileage", "2013"));
-		        params.add(new BasicNameValuePair("buy_time", buyTime.getText().toString().trim()));
-				new Thread(new NetThread.postDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).getObj_id() + "?auth_code=" + Variable.auth_code, params, saveVehicleData)).start();
+				//  TODO 更改为  返回键保存车辆更改信息
+				startActivity(new Intent(MyVehicleActivity.this,NewVehicleActivity.class));
+//				myDialog = ProgressDialog.show(MyVehicleActivity.this, "提示", "正在保存...");
+//				myDialog.setCancelable(true);
+//				List<NameValuePair> params = new ArrayList<NameValuePair>();
+//		        params.add(new BasicNameValuePair("obj_name", vehicleNumber.getText().toString().trim()));
+//		        params.add(new BasicNameValuePair("car_brand", myVehicleBrank.getText().toString()));
+//		        params.add(new BasicNameValuePair("car_series", tvCarSeries.getText().toString()));
+//		        params.add(new BasicNameValuePair("car_type", tvCarType.getText().toString()));
+//		        params.add(new BasicNameValuePair("engine_no", engineNum.getText().toString().trim()));
+//		        Log.e("更改服务器时：",engineNum.getText().toString().trim() + "");
+//		        params.add(new BasicNameValuePair("frame_no", frameNum.getText().toString().trim()));
+//		        params.add(new BasicNameValuePair("insurance_company", showInsuranceCompany.getText().toString()));
+//		        params.add(new BasicNameValuePair("insurance_date", ivInsuranceDate.getText().toString()));
+//		        params.add(new BasicNameValuePair("maintain_company", tvMaintain.getText().toString()));
+//		        params.add(new BasicNameValuePair("maintain_last_mileage", lastMaintain.getText().toString().trim()));
+//		        //  ui布局无此参数
+//		        params.add(new BasicNameValuePair("maintain_last_date", "2015"));
+//		        params.add(new BasicNameValuePair("annual_inspect_data", oneCarData.getAnnual_inspect_date()));
+//		        params.add(new BasicNameValuePair("maintain_next_mileage", "2013"));
+//		        params.add(new BasicNameValuePair("buy_time", buyTime.getText().toString().trim()));
+//				new Thread(new NetThread.postDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).getObj_id() + "?auth_code=" + Variable.auth_code, params, saveVehicleData)).start();
 //				Log.e("需要更改的车辆id",carDataList.get(chickIndex).getObj_id() + "");
 				break;
 			case R.id.my_vehilce_delete:
@@ -466,7 +455,6 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				break;
 			case showCarData:
 				CarData carData = (CarData) msg.obj;
-				//设置汽车数据    TODO
 				vehicleNum = carData.getObj_name();
 				myVehicleBrank.setText(carData.getCar_brand());
 				vehicleNumber.setText(carData.getObj_name());
@@ -484,7 +472,6 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				
 			case saveVehicleData:
 				myDialog.dismiss();
-				//TODO
 				try {
 					JSONObject jsonObject = new JSONObject(msg.obj.toString());
 					if(Integer.parseInt(jsonObject.getString("status_code")) == 0){
@@ -544,7 +531,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 						Variable.carDatas.remove(Variable.carDatas.get(chickIndex));
 						Log.e("删除后" + Variable.carDatas.size() ,Variable.carDatas.size() + "");
 						logoAdapter.updataDatas(Variable.carDatas);
-						if(Variable.carDatas.size() > 1){
+						if(Variable.carDatas.size() > 0){
 							vehicleNum = Variable.carDatas.get(0).getObj_name();
 							myVehicleBrank.setText(Variable.carDatas.get(0).getCar_brand());
 							vehicleNumber.setText(Variable.carDatas.get(0).getObj_name());
@@ -559,7 +546,6 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 							lastMaintain.setText(Variable.carDatas.get(0).getMaintain_last_mileage());
 							buyTime.setText(Variable.carDatas.get(0).getBuy_date());
 						}else{
-							Variable.carDatas.remove(newCarImage);
 							startActivity(new Intent(MyVehicleActivity.this,NewVehicleActivity.class));
 						}
 						showToast("删除成功");
@@ -722,9 +708,6 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	}
 	protected void onPause() {
 		super.onPause();
-		if("newVehicle".equals(Variable.carDatas.get(Variable.carDatas.size() - 1).getCar_brand())){
-			Variable.carDatas.remove(newCarImage);
-		}
 		//存储用户选中的车辆
 		Editor editor = preferences.edit();
 		editor.putInt(Constant.DefaultVehicleID, chickIndex);
