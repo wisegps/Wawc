@@ -54,9 +54,9 @@ public class WelcomeActivity extends Activity {
             // 第一次登录，选着城市
             GetCityList();
         }else{
+            new Thread(new WaitThread()).start();
             //跳转到登录界面
             //test();
-            new Thread(new WaitThread()).start();
             //String url = "http://wiwc.api.wisegps.cn/violation/city?auth_code=bba2204bcd4c1f87a19";
             //new Thread(new NetThread.GetDataThread(handler, url, 999)).start();
         }

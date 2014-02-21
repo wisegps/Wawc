@@ -208,6 +208,20 @@ public class GetSystem {
         }  
         return myDate;
     }
+    /**
+     * 计算间隔时间
+     * @param Second
+     * @return
+     */
+    public static String ProcessTime(int Second){
+        if(Second < 60){
+            return Second + "秒";
+        }else if(Second < 3600){
+            return Second/60 + "分钟";
+        }else{
+            return Second/(60*60) + "小时";
+        }
+    }
 
     /**
      * 调用百度地图导航
@@ -338,5 +352,19 @@ public class GetSystem {
     public static void displayBriefMemory(Context mContext) {
         Log.e("tag", "内存" + Runtime.getRuntime().totalMemory() / 1024 / 1024
                 + "M");
+    }
+    /**
+     * 经纬度格式转换,把服务器得到的string转成int类型
+     * @param string 116.000000
+     * @return 116000000
+     */
+    public static int StringToInt(String str) {
+        try {
+            Double point_doub = Double.parseDouble(str);
+            return (int) (point_doub * 1000000);
+        } catch (NumberFormatException e) {
+            Log.d("GetSystem", "经纬度格式转换异常：NumberFormatException");
+            return 0;
+        }
     }
 }
