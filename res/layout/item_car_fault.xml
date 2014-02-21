@@ -55,7 +55,7 @@
                 android:layout_height="@dimen/title_image"
                 android:layout_below="@id/tv_item_car_fault_info"
                 android:layout_alignParentRight="true"
-                android:src="@drawable/nav_share"/>
+                android:src="@drawable/share_black"/>
             <TextView 
                 android:id="@+id/tv_time"
                 android:layout_width="wrap_content"

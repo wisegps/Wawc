@@ -12,16 +12,21 @@ import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
+import com.wise.sql.DBExcute;
+import com.wise.sql.DBHelper;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qzone.QZone;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -70,6 +75,7 @@ public class AccountActivity extends Activity{
 		et_activity_account_phone = (EditText)findViewById(R.id.et_activity_account_phone);
 		ShareSDK.initSDK(this);
 		GetSfData();
+		GetDBData();
 	}
 	OnClickListener onClickListener = new OnClickListener() {	
 		@Override
@@ -122,28 +128,58 @@ public class AccountActivity extends Activity{
 	 */
 	private void jsonAccount(String result){
 	    Log.d(TAG, result);
-	    try {
-	        SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
-            Editor editor = preferences.edit();
+	    try {	        
             JSONObject jsonObject = new JSONObject(result);
+            DBExcute dbExcute = new DBExcute();
+            ContentValues values = new ContentValues();
             if(jsonObject.opt("contacts") != null){
                 String contacts = jsonObject.getString("contacts");
-                et_activity_account_consignee.setText(contacts);                
-                editor.putString(Constant.Consignee, contacts);
+                et_activity_account_consignee.setText(contacts);
+                values.put("Consignee", contacts);
             }
             if(jsonObject.opt("address") != null){
                 String address = jsonObject.getString("address");
                 et_activity_account_adress.setText(address);
-                editor.putString(Constant.Adress, address);
+                values.put("Adress", address);
             }
             if(jsonObject.opt("tel") != null){
                 String tel = jsonObject.getString("tel");
                 et_activity_account_phone.setText(tel);
-                editor.putString(Constant.Phone, tel);
+                values.put("Phone", tel);
             }
-            editor.commit();
+            if(jsonObject.opt("annual_inspect_date") != null){
+                String annual_inspect_date = jsonObject.getString("annual_inspect_date");
+                values.put("annual_inspect_date", annual_inspect_date.substring(0, 10));
+            }
+            if(jsonObject.opt("change_date") != null){
+                String change_date = jsonObject.getString("change_date");
+                values.put("change_date", change_date.substring(0, 10));
+            }
+            values.put("cust_id", Variable.cust_id);
+            dbExcute.InsertDB(AccountActivity.this, values, Constant.TB_Account);
         } catch (JSONException e) {
             e.printStackTrace();
+        }
+	}
+	/**
+	 * 获取本地数据
+	 */
+	private void GetDBData(){
+	    DBHelper dbHelper = new DBHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + Constant.TB_Account + " where cust_id=?", new String[]{Variable.cust_id});
+        if(cursor.getCount() == 0){
+            String url = Constant.BaseUrl + "customer/" + Variable.cust_id +"?auth_code=" + Variable.auth_code;
+            new Thread(new NetThread.GetDataThread(handler, url, Get_data)).start();
+        }else{
+            if(cursor.moveToFirst()){
+                String Consignee = cursor.getString(cursor.getColumnIndex("Consignee"));
+                String Adress = cursor.getString(cursor.getColumnIndex("Adress"));
+                String Phone = cursor.getString(cursor.getColumnIndex("Phone"));
+                et_activity_account_consignee.setText(Consignee);
+                et_activity_account_adress.setText(Adress);
+                et_activity_account_phone.setText(Phone); 
+            }                
         }
 	}
 	/**
@@ -155,9 +191,6 @@ public class AccountActivity extends Activity{
             iv_activity_account_pic.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
         }
 	    SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
-	    et_activity_account_consignee.setText(preferences.getString(Constant.Consignee, ""));
-	    et_activity_account_adress.setText(preferences.getString(Constant.Adress, ""));
-	    et_activity_account_phone.setText(preferences.getString(Constant.Phone, ""));	    
 	    tv_activity_account_name.setText(Variable.cust_name);
 	    
 	    String LocationProvince = preferences.getString(Constant.LocationProvince, "");
@@ -167,9 +200,6 @@ public class AccountActivity extends Activity{
 	    }else{
 	        tv_activity_city.setText(LocationProvince + "   " + LocationCity);
 	    }
-	    
-	    String url = Constant.BaseUrl + "customer/" + Variable.cust_id +"?auth_code=" + Variable.auth_code;
-        new Thread(new NetThread.GetDataThread(handler, url, Get_data)).start();
 	}
 	/**
 	 * 获取车辆数据
@@ -195,15 +225,22 @@ public class AccountActivity extends Activity{
 	    String consignee = et_activity_account_consignee.getText().toString().trim();
 	    String adress = et_activity_account_adress.getText().toString().trim();
 	    String phone = et_activity_account_phone.getText().toString().trim();
+	    //更新服务器信息
 	    String url = Constant.BaseUrl + "customer/" + Variable.cust_id +"?auth_code=" + Variable.auth_code;
 	    List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("cust_id", Variable.cust_id));
         params.add(new BasicNameValuePair("id_card_type", "B"));
         params.add(new BasicNameValuePair("contacts", consignee));
         params.add(new BasicNameValuePair("address", adress));
-        params.add(new BasicNameValuePair("tel", phone));
-        
+        params.add(new BasicNameValuePair("tel", phone));        
         new Thread(new NetThread.putDataThread(handler, url, params, Update_data)).start();
+        //更新DB
+        DBExcute dbExcute = new DBExcute();
+        ContentValues values = new ContentValues();
+        values.put("Consignee", consignee);
+        values.put("adress", adress);
+        values.put("phone", phone);
+        dbExcute.UpdateDB(this, values, "cust_id=?", new String[]{Variable.cust_id}, Constant.TB_Account);
 	}
 	/**
 	 * 删除数据

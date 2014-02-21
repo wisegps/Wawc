@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/gray_lights"
+    android:background="#80FFFFFF"
     android:orientation="vertical">
     <LinearLayout 
         android:layout_width="fill_parent"
@@ -17,7 +17,7 @@
             android:background="@drawable/bg_map"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:textColor="@color/white"
+            android:textColor="@color/common"
             android:textSize="@dimen/main"
             android:text="@string/oil_station"/>
         <TextView 
@@ -28,7 +28,7 @@
             android:background="@drawable/bg_map"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:textColor="@color/white"
+            android:textColor="@color/common"
             android:textSize="@dimen/main"
             android:text="@string/parking"/>
         <TextView 
@@ -39,7 +39,7 @@
             android:background="@drawable/bg_map"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:textColor="@color/white"
+            android:textColor="@color/common"
             android:textSize="@dimen/main"
             android:text="@string/four_s"/>
     </LinearLayout>
@@ -55,7 +55,7 @@
             android:background="@drawable/bg_map"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:textColor="@color/white"
+            android:textColor="@color/common"
             android:textSize="@dimen/main"
             android:text="@string/specialist"/>
         <TextView 
@@ -66,7 +66,7 @@
             android:background="@drawable/bg_map"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:textColor="@color/white"
+            android:textColor="@color/common"
             android:textSize="@dimen/main"
             android:text="@string/automotive_beauty"/>
         <TextView 
@@ -77,7 +77,7 @@
             android:background="@drawable/bg_map"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            android:textColor="@color/white"
+            android:textColor="@color/common"
             android:textSize="@dimen/main"
             android:text="@string/wash"/>
     </LinearLayout>  
