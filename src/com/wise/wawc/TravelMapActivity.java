@@ -2,6 +2,7 @@ package com.wise.wawc;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -130,8 +131,19 @@ public class TravelMapActivity extends Activity {
     
     private void jsonData(String result){
         try {
-            
-            Symbol palaceSymbol = new Symbol();//创建样式  
+            JSONArray jsonArray = new JSONArray(result);
+            GeoPoint[] geoPoints = new GeoPoint[jsonArray.length()];
+            for(int i = 0 ; i < jsonArray.length() ; i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String Lat = jsonObject.getString("lat");
+                String Lon = jsonObject.getString("lon");
+                
+                GeoPoint geoPoint = new GeoPoint(GetSystem.StringToInt(Lat),GetSystem.StringToInt(Lon));
+                geoPoints[i] = geoPoint;
+                mMapController.setCenter(geoPoint);                
+            }
+            //创建样式 
+            Symbol palaceSymbol = new Symbol(); 
             Symbol.Color palaceColor = palaceSymbol.new Color();
             palaceColor.red = 0;//设置颜色的红色分量  
             palaceColor.green = 0;//设置颜色的绿色分量  
@@ -139,37 +151,19 @@ public class TravelMapActivity extends Activity {
             palaceColor.alpha = 126;//设置颜色的alpha值  
             palaceSymbol.setLineSymbol(palaceColor, 7);
             
-
+            Geometry geometry = new Geometry();
+            geometry.setPolyLine(geoPoints);
+            Graphic palaceGraphic = new Graphic(geometry, palaceSymbol);
+            
+            //将自绘图形添加到地图中
             GraphicsOverlay palaceOverlay = new GraphicsOverlay(mMapView);
             overlays.add(palaceOverlay);
-
-            Geometry geometry = new Geometry();
-            Geometry[] geometries;
-            
-            JSONArray jsonArray = new JSONArray(result);
-            for(int i = 0 ; i < jsonArray.length() ; i++){
-                if(jsonArray.length() == (i + 1)){
-                    break;
-                }
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                String Lat = jsonObject.getString("lat");
-                String Lon = jsonObject.getString("lon");
-                //JSONObject jsonObject1 = jsonArray.getJSONObject(i + 1);
-                //String Lat1 = jsonObject1.getString("lat");
-                //String Lon1 = jsonObject1.getString("lon");
-                
-                GeoPoint geoPoint1 = new GeoPoint(GetSystem.StringToInt(Lat),GetSystem.StringToInt(Lon));
-                mMapController.setCenter(geoPoint1);
-                //GeoPoint geoPoint2 = new GeoPoint(GetSystem.StringToInt(Lat1),GetSystem.StringToInt(Lon1));   
-                
-                
-            }
-            //geometry.setPolyLine(new GeoPoint[]{geoPoint1,geoPoint2});
-            
-            
-            Graphic palaceGraphic = new Graphic(geometry, palaceSymbol);
             palaceOverlay.setData(palaceGraphic);
+            
             mMapView.refresh();
+            for(int i = 0 ; i < geoPoints.length ; i++){
+                System.out.println(geoPoints[i]);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
