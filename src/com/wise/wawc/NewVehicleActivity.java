@@ -55,6 +55,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 /**
@@ -65,21 +66,21 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	
 	private ImageView cancleAdd = null;   //取消新车辆的添加
 	private TextView saveAdd = null;     //保存添加
-	private ImageView choiceBrank = null;    //选择品牌
+	private TableRow choiceBrank = null;    //选择品牌
 	public static final int newVehicleBrank = 4;
 	public static final int newVehicleInsurance = 5;
 	public static final int newVehicleMaintain = 7;
 	private static final int addCar = 6;
 	
 	private TextView vehicleBrank = null;  //选择车辆品牌
-	private ImageView choiceInsurance = null;  
-	private ImageView ivMaintain = null;
+	private TableRow choiceInsurance = null;  
+	private TableRow ivMaintain = null;
 	private TextView showMaintain = null;
 	
 	private TextView TvVehicleSeries = null;
 	private TextView TvVehicleType = null;
-	private ImageView IvVehicleSeries = null;  
-	private ImageView IvVehicleType = null;
+	private TableRow IvVehicleSeries = null;  
+	private TableRow IvVehicleType = null;
 	
 	
 	private TextView maintainShop = null;
@@ -122,22 +123,22 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 		setContentView(R.layout.new_vehicle);
 		cancleAdd = (ImageView) findViewById(R.id.add_vechile_cancle);
 		saveAdd = (TextView) findViewById(R.id.add_vechile_save);
-		choiceBrank = (ImageView) findViewById(R.id.add_vehicle_choice_brank);
+		choiceBrank = (TableRow) findViewById(R.id.new_vehicle_choice_brank);
 		vehicleBrank = (TextView) findViewById(R.id.new_vehicle_brank );
-		choiceInsurance = (ImageView) findViewById(R.id.add_vehicle_choice_insurance);
-		showInsurance = (TextView) findViewById(R.id.add_vehicle_show_insurance);
-		ivMaintain = (ImageView) findViewById(R.id.add_vehicle_maintain);
-		showMaintain = (TextView) findViewById(R.id.add_vehicle_show_maintain);
+		choiceInsurance = (TableRow) findViewById(R.id.new_vehicle_choice_insurance);
+		showInsurance = (TextView) findViewById(R.id.new_vehicle_show_insurance);
+		ivMaintain = (TableRow) findViewById(R.id.add_vehicle_maintain);
+		showMaintain = (TextView) findViewById(R.id.new_vehicle_show_maintain);
 		
 		TvVehicleSeries = (TextView) findViewById(R.id.tv_new_vericher_series);
 		TvVehicleType = (TextView) findViewById(R.id.tv_new_vericher_type);
-		IvVehicleSeries = (ImageView) findViewById(R.id.iv_new_vericher_series);
-		IvVehicleType = (ImageView) findViewById(R.id.iv_new_vericher_type);
+		IvVehicleSeries = (TableRow) findViewById(R.id.new_vericher_series);
+		IvVehicleType = (TableRow) findViewById(R.id.new_vericher_type);
 		
 		carNumber = (EditText) findViewById(R.id.et_new_vercher_number);
 		engineNumber = (EditText) findViewById(R.id.et_new_vehicle_engine_number);
 		CJNumber = (EditText) findViewById(R.id.et_new_car_number);
-		insuranceTime = (TextView) findViewById(R.id.et_insurance_over_time);
+		insuranceTime = (TextView) findViewById(R.id.tv_insurance_over_time);
 		getDateView(insuranceTime);
 		lastMaintainTime = (TextView) findViewById(R.id.et_last_maintain_time);
 		getDateView(lastMaintainTime);
@@ -176,12 +177,12 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 			case R.id.add_vechile_save:
 				getVehicleData();
 				break;
-			case R.id.add_vehicle_choice_brank:   //选择车辆品牌
+			case R.id.new_vehicle_choice_brank:   //选择车辆品牌
 				Intent intent = new Intent(NewVehicleActivity.this,CarBrankListActivity.class);
 				intent.putExtra("code", newVehicleBrank);
 				startActivityForResult(intent, newVehicleBrank);
 				break;
-			case R.id.add_vehicle_choice_insurance:   //选择保险公司
+			case R.id.new_vehicle_choice_insurance:   //选择保险公司
 				Intent intent1 = new Intent(NewVehicleActivity.this,ChoiceInsuranceActivity.class);
 				intent1.putExtra("code", newVehicleInsurance);
 				startActivityForResult(intent1, newVehicleInsurance);
@@ -193,7 +194,7 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 				startActivityForResult(intent2, newVehicleMaintain);
 				break;	
 				
-			case R.id.iv_new_vericher_series: //选择车型  
+			case R.id.new_vericher_series: //选择车型  
 				myDialog = ProgressDialog.show(NewVehicleActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 				myDialog.setCancelable(true);
 				if("".equals(carBrankId)){
@@ -204,7 +205,7 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 				getCarDatas(carSeriesTitle,"base/car_series?pid=",getCarSeries,carBrankId);
 				break;
 				
-			case R.id.iv_new_vericher_type: //选择车款  
+			case R.id.new_vericher_type: //选择车款  
 				if(carSeriesNameList.size() > 0){
 					mSpinerPopWindow.setWidth(width);
 					mSpinerPopWindow.setHeight(300);

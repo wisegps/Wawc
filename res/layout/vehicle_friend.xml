@@ -7,30 +7,31 @@
 
     
     <!-- 头部 -->
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight"
-        android:orientation="horizontal" 
         android:background="@color/blue"
         >
-
         <ImageView
             android:id="@+id/menu"
-            android:layout_width="0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
+            android:layout_width="@dimen/title_image"
+            android:layout_height="@dimen/title_image"
+            android:layout_alignParentLeft="true"
             android:paddingLeft="@dimen/margins"
             android:layout_gravity="center_vertical"
+            android:layout_centerVertical="true"
             android:background="@drawable/side_left" />
 
         
         <LinearLayout 
             android:id="@+id/vehicle_friend_title"
-            android:layout_width="0dip"
+            android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="horizontal"
-            android:layout_weight="3"
             android:gravity="center"
+            android:layout_toRightOf="@id/menu"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             >
         <TextView
             android:id="@+id/tv_vehicle_friend_title"
@@ -49,9 +50,10 @@
         </LinearLayout>
 
         <LinearLayout 
-            android:layout_width="0dip"
+            android:layout_width="wrap_content"
             android:layout_height="fill_parent"
-            android:layout_weight="1"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:orientation="horizontal"
             android:gravity="center"
             >
@@ -68,7 +70,7 @@
             android:layout_marginLeft="@dimen/margins"
             android:background="@drawable/nav_icon_add" />
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
     <!-- 标题 -->
 
     <RelativeLayout
@@ -120,6 +122,8 @@
 		        android:layout_width="fill_parent"
 		        android:layout_height="wrap_content"
 		        android:cacheColorHint="#00000000"
+		        android:dividerHeight="0.5dip"
+		        android:divider="@color/gray"
 		         >
 		    </com.wise.list.XListView>
 			    <LinearLayout

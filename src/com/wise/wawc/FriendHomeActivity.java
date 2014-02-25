@@ -52,7 +52,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 	private LinearLayout saySomething;
 	private ImageView friendHead;    //点击好友头像显示资料
 	private MyHandler myHandler = null;
-	private Button cancle;
+	private ImageView cancle;
 	private TextView friendName = null;
 	private Button sendButton = null;
 	private TextView commentContent = null;
@@ -90,7 +90,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 		commentContent = (TextView) findViewById(R.id.et_sendmessage);
 		sendButton = (Button) findViewById(R.id.btn_send);
 		sendButton.setOnClickListener(new OnClickListener());
-		cancle = (Button) findViewById(R.id.friend_back);
+		cancle = (ImageView) findViewById(R.id.friend_back);
 		cancle.setOnClickListener(new OnClickListener());
 		
 		lastPageDatas = getIntent();

@@ -2,6 +2,7 @@ package com.wise.sql;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.json.JSONArray;
@@ -272,21 +273,23 @@ public class DBExcute {
 				for(int j = 0 ; j < json.length() ; j ++){
 					JSONObject jsonObj = json.getJSONObject(j);
 					imageListTemp = new HashMap<String, String>();
-					imageListTemp.put("small_pic", jsonObj.getString("small_pic"));
-					imageListTemp.put("big_pic", jsonObj.getString("big_pic"));
+					imageListTemp.put(Constant.smallImage, jsonObj.getString("small_pic"));
+					imageListTemp.put(Constant.bigImage, jsonObj.getString("big_pic"));
 					imageList.add(imageListTemp);
+					
 				}
 			}
 			if(!"[]".equals(jsonObject.getString("praises"))){
 				JSONArray json = new JSONArray(jsonObject.getString("praises"));
-				List<String> parisesList = new ArrayList<String>();
+//				List<String> parisesList = new ArrayList<String>();
+				Map<String,String> parisesList = new HashMap<String,String>();
 				for(int k = 0 ; k < json.length(); k ++){
-					parisesList.add(json.getJSONObject(k).getString("name"));
+//					parisesList.add(json.getJSONObject(k).getString("name"));
+					parisesList.put(json.getJSONObject(k).getString("cust_id"), json.getJSONObject(k).getString("name"));
 				}
 				article.setPraisesList(parisesList);
 			}
 			article.setImageList(imageList);
-//			articleData.add(article);
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

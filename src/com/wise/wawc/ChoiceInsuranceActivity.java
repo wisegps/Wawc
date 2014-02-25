@@ -13,6 +13,7 @@ import org.json.JSONObject;
 import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
 import com.wise.pubclas.NetThread;
+import com.wise.service.InsuranceAdapter;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
 
@@ -27,9 +28,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,9 +43,10 @@ import android.widget.Toast;
  */
 public class ChoiceInsuranceActivity extends Activity implements IXListViewListener{
 	private XListView insuranceList = null;
-	private ArrayAdapter<String> adapter = null;
+	private InsuranceAdapter adapter = null;
 	private List<String> dateList = null;
 	private int code = 0;
+	private ImageView choiceInsuranceCancle = null;
 	
 	private Intent intetn = null;
 	private ProgressDialog progressDialog = null;
@@ -60,6 +64,12 @@ public class ChoiceInsuranceActivity extends Activity implements IXListViewListe
 		
 		intetn = getIntent();
 		insuranceList = (XListView) findViewById(R.id.insurance_company_list);
+		choiceInsuranceCancle = (ImageView) findViewById(R.id.choice_insurance_cancle);
+		choiceInsuranceCancle.setOnClickListener(new OnClickListener() {
+			public void onClick(View v) {
+				ChoiceInsuranceActivity.this.finish();
+			}
+		});
 		dateList = new ArrayList<String>();
 		myHandler = new MyHandler();
 		insuranceList.setXListViewListener(this);
@@ -173,7 +183,7 @@ public class ChoiceInsuranceActivity extends Activity implements IXListViewListe
 				e.printStackTrace();
 			}
 		}
-		adapter = new ArrayAdapter<String>(getApplicationContext(),android.R.layout.simple_list_item_1, data);
+		adapter = new InsuranceAdapter(getApplicationContext(), data);
 		insuranceList.setAdapter(adapter);
 		insuranceList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {

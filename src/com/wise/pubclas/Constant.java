@@ -202,4 +202,7 @@ public class Constant {
 	 * 水平滑动选择logo的宽度
 	 */
 	public static int ImageWidth = 120;
+	
+	public static String smallImage = "small_pic";
+	public static String bigImage = "big_pic";
 }

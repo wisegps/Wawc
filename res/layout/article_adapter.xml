@@ -4,34 +4,26 @@
     android:layout_height="fill_parent"
     android:orientation="vertical">
     
-    <TableLayout 
+    
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/article_list_item_to_screen_top"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/margins"
         >
-        <TableRow 
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            >
-        <ImageView 
+        <ImageView
             android:id="@+id/head_article"
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1.5"
-            android:paddingLeft="@dimen/margins1"
-            android:layout_marginRight="@dimen/margins1"
-            android:layout_marginLeft="@dimen/margins1"
             />
-        <TableLayout 
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_weight="6"
-            >
             <LinearLayout 
-                android:layout_width="fill_parent"
+                android:layout_width="0dip"
                 android:layout_height="wrap_content"
+                android:layout_weight="6"
                 android:orientation="vertical"
-                android:layout_marginTop="@dimen/article_list_item_to_screen_top"
+                android:layout_marginLeft="@dimen/margins"
+                android:layout_marginTop="@dimen/margins"
                 >
                 <TextView 
                     android:id="@+id/article_user_name"
@@ -50,9 +42,8 @@
                     android:textSize="@dimen/main"
                     />
             </LinearLayout>
-        </TableLayout>
-      </TableRow>
-    </TableLayout>
+        
+    </LinearLayout>
 
     <TableLayout 
         android:layout_width="fill_parent"
@@ -78,6 +69,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_weight="6"
+                android:layout_marginLeft="@dimen/margins"
                 >
             </LinearLayout>
         </TableRow>
@@ -103,6 +95,7 @@
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
+                android:layout_marginLeft="@dimen/margins"
                 >
                 <TextView
                     android:id="@+id/publish_time"
@@ -123,16 +116,16 @@
                     >
                     <ImageView 
                         android:id="@+id/favorite"
-                        android:layout_width="wrap_content"
-                		android:layout_height="wrap_content"
-                		android:layout_marginRight="10dip"
+                        android:layout_width="@dimen/double_margins"
+                		android:layout_height="@dimen/double_margins"
+                		android:layout_marginRight="@dimen/double_margins"
                 		android:background="@drawable/body_icon_heart"
                         />
                     <ImageView 
                         android:id="@+id/list_say_somthing"
-                        android:layout_width="wrap_content"
-                		android:layout_height="wrap_content"
-                		android:background="@drawable/body_icon_comment"
+                        android:layout_width="@dimen/double_margins"
+                		android:layout_height="@dimen/double_margins"
+                		android:background="@drawable/side_article_comment"
                         />
                 </LinearLayout>
             </TableRow>
@@ -164,11 +157,15 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
                 android:background="#F7F6FB"
+                android:layout_marginLeft="@dimen/margins"
                 >
+                <!-- 赞 -->
             <TableRow 
+                android:id="@+id/article_praises_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="@dimen/article_favorite_height"
-                android:layout_marginTop="10dip"
+                android:layout_marginTop="@dimen/margins"
+                android:layout_marginBottom="@dimen/margins"
                 >
                 <ImageView
                     android:id="@+id/article_praises_star"
@@ -183,24 +180,25 @@
                 	android:maxLength="30"
                     />
             </TableRow>
-            
+            <!-- 分割线 -->
               <View 
                   	android:id="@+id/article_adapter_line"
                    	android:layout_width="fill_parent"
                 	android:layout_height="0.1dip"
-                	android:layout_marginTop="10dip"
                 	android:background="#000000"
                     />
+              <!-- 评论 -->
                   <LinearLayout 
                       android:id="@+id/article_comment_layout"
                       android:layout_width="fill_parent"
                 	  android:layout_height="wrap_content"
                 	  android:orientation="vertical"
-                	  android:layout_marginTop="10dip"
-                	  android:layout_marginBottom="10dip"
+                	  android:layout_marginTop="@dimen/margins"
+                	  android:layout_marginBottom="@dimen/margins"
                       >
                   </LinearLayout>
             </TableLayout>
+            
         </TableRow>
     </TableLayout>
 </LinearLayout>
