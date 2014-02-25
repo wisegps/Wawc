@@ -2,6 +2,9 @@ package com.wise.pubclas;
 
 import java.util.List;
 
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
+
 import com.wise.data.Article;
 import com.wise.data.CarData;
 /**
@@ -49,12 +52,8 @@ public class Variable {
     
     public static List<Article> articleList;
     
-    public static int bigImageReqWidth = 80;
-    public static int bigImageReqHeight = 80;
-    
-    
-    public static int smallImageReqHeight = 105;
-    public static int smallImageReqWidth = 105;
+    public static int smallImageReqWidth = 0;
+    public static int margins = 0;
     public static String MscKey = "5281f227";
     
     

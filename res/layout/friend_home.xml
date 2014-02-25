@@ -7,36 +7,33 @@
 
     <!-- 头部 -->
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/friend_home_top"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_height="@dimen/title_hight"
+        android:background="@color/blue"
         android:layout_alignParentTop="true"
          >
 
-        <Button
+        <ImageView
             android:id="@+id/friend_back"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:background="@drawable/ic_launcher" />
+            android:layout_width="@dimen/title_image"
+            android:layout_height="@dimen/title_image"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/side_back"  />
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1"
             android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:text="@string/friend_home"
-            android:textSize="8pt"
-            android:textColor="#000000"
+            android:textSize="@dimen/head"
+            android:textColor="@color/white"
              />
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"/>
-    </LinearLayout>
+    </RelativeLayout>
     <!-- 标题 -->
 
     <RelativeLayout

@@ -35,18 +35,18 @@
                 >
                 <ImageView 
                     android:id="@+id/friend_article_praises"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/title_image"
+                    android:layout_height="@dimen/title_image"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_launcher"
+                    android:src="@drawable/body_icon_heart"
                     />
                 <ImageView 
                     android:id="@+id/friend_article_comment"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/title_image"
+                    android:layout_height="@dimen/title_image"
                     android:layout_marginLeft="6dip"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_launcher"
+                    android:src="@drawable/side_article_comment"
                     />
             </LinearLayout>
         </TableRow>
@@ -102,7 +102,7 @@
 				    android:id="@+id/friend_article_praises_star"
 				    android:layout_width="15dip"
 				    android:layout_height="15dip"
-				    android:background="@drawable/ic_launcher"
+				    android:background="@drawable/body_icon_heart_press"
 				    android:visibility="visible"
 				    />
 				<TextView 

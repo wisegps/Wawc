@@ -80,7 +80,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	public static final int newArticleResult = 67;
 	private static final int loadMoreCode = 87;
 	private static final int refreshCode = 89;
-	private static int loadMoreAction = 21;
+	private static final int loadMoreAction = 21;
 	private static final int FriendType = 11;
 	private static final int FriendTypeLoadMore = 33;
 	private static final int selectFriendType = 22;
@@ -116,7 +116,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		setContentView(R.layout.vehicle_friend);
 		Intent intent = getIntent();
 		isJump = intent.getBooleanExtra("isJump", false);
-		System.out.println("onCreate");
 		//设置无标题
 		menuButton = (ImageView) findViewById(R.id.menu);
 		menuButton.setOnClickListener(new ClickListener());
@@ -202,7 +201,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				mSpinerPopWindow.refreshData(titleList, 0);
 				mSpinerPopWindow.setWidth(screenWidth);
 				mSpinerPopWindow.setHeight(300);
-				mSpinerPopWindow.showAsDropDown(titleLayout);
+				mSpinerPopWindow.showAsDropDown(TVTitle);
 				break;
 			default:
 				return;
@@ -391,7 +390,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 							JSONObject jsonObject = jsonArray.getJSONObject(i);
 							//判断车友圈文章表里面是否存在此blog_id   存在   操作类型表    不存在   将这条数据添加到车友圈文章表  TODO
 							int blog_id = Integer.valueOf(jsonObject.getString("blog_id"));
-//							
 							blogIdList[i] = blog_id;
 							Cursor cursor = reader.rawQuery("select * from " + Constant.TB_VehicleFriend + " where blog_id=?", new String[]{""+blog_id});
 							if(cursor.moveToNext()){ //存在   操作类型表 
@@ -427,9 +425,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 							}
 						}
 						articleTypeMinBlogId = blogIdList[0];
-//						for(int m = 0 ; m < blogIdList.length ; m ++){
-//							Log.e("排序：",blogIdList[m]+"");
-//						}
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -461,12 +456,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				if(i == (jsonArray.length()-1)){
 					minBlogId = Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id"));
 				}
-				Log.e("解析数据:minBlogId",jsonArray.getJSONObject(i).getString("blog_id"));
 		}
-		DBHelper dBHelper = new DBHelper(getApplicationContext());
-		SQLiteDatabase db = dBHelper.getReadableDatabase();
-		Cursor cursor = db.rawQuery("select * from " + Constant.TB_VehicleFriend, new String[]{});
-		Log.e("服务器获取的数据总量：",cursor.getCount() + "");
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -481,8 +471,12 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			if(Constant.totalPage - 1 >= Constant.currentPage){
 				Constant.start = Constant.currentPage*Constant.pageSize;
 				Constant.currentPage ++ ;
-				Log.e("--->",""+Constant.pageSize);
 				articleDataList = dBExcute.getArticlePageDatas(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
+//				for(int i = 0; i < articleDataList.size() ; i ++){
+//					for(String str : articleDataList.get(i).getPraisesList()){
+//						Log.e("点赞者:",str);
+//					}
+//				}
 				setArticleDataList(articleDataList);
 			}
 			if(Constant.totalPage == Constant.currentPage){

@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -158,9 +159,21 @@ public class FriendArticleAdapter extends BaseAdapter{
 				if(articleList.get(position).getPraisesList() != null){
 					if(articleList.get(position).getPraisesList().size() != 0){
 						sb = new StringBuffer();
-						for(int f = 0 ; f < articleList.get(position).getPraisesList().size(); f ++){
-							sb.append(articleList.get(position).getPraisesList().get(f) + "、");
+//						for(int f = 0 ; f < articleList.get(position).getPraisesList().size(); f ++){
+//							sb.append(articleList.get(position).getPraisesList().get(f) + "、");
+//						}
+						
+						
+						Iterator iter = articleList.get(position).getPraisesList().entrySet().iterator();
+						while (iter.hasNext()) {
+							Map.Entry entry = (Map.Entry) iter.next();
+							String val = (String) entry.getValue();
+							sb.append(val+",");
+							if(Variable.cust_name.equals(val)){
+								favoriteStart.setBackgroundResource(R.drawable.body_icon_heart_press);
+							}
 						}
+						
 						favoriteStart.setVisibility(View.VISIBLE);
 						favoriteUser.setText(sb.toString());
 					}else{

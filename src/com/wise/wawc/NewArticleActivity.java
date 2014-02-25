@@ -44,6 +44,7 @@ import android.provider.MediaStore;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
@@ -88,6 +89,7 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_article);
+		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 		TextView publish = (TextView)findViewById(R.id.publish);
 		publish.setOnClickListener(new ClickListener());
 		back = (Button) findViewById(R.id.back);
@@ -216,24 +218,25 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 	        createImage(fileName, bitmap);  //创建文件
 	        File imageFile = new File(fileName);
 	        //按照指定的大小压缩图片
-	        Bitmap smallBitmap = BitmapFactory.decodeFile(fileName);
-	        small_image = BlurImage.getSquareBitmap(smallBitmap,Variable.smallImageReqHeight,Variable.smallImageReqHeight);
-	        big_image = BlurImage.decodeSampledBitmapFromPath(fileName,Variable.bigImageReqHeight,Variable.bigImageReqHeight);
+	        Bitmap tempBitmap = BitmapFactory.decodeFile(fileName);
+	        small_image = BlurImage.getSquareBitmap(tempBitmap,Variable.smallImageReqWidth,Variable.smallImageReqWidth);
+//	        big_image = BlurImage.getSquareBitmap(smallBitmap,Variable.smallImageReqWidth,Variable.smallImageReqWidth);
+	        big_image = tempBitmap;
 	        createImage(Constant.VehiclePath + name + "small_image.jpg", small_image);
 	        createImage(Constant.VehiclePath + name + "big_image.jpg", big_image);
+	        // TODO
 	        filePathList.add(Constant.VehiclePath + name + "small_image.jpg");
 	        filePathList.add(Constant.VehiclePath + name + "big_image.jpg");
 	        bitmapList.add(filePathList);
-	        
-	        
 	        if(imageFile.exists()){
+	        	Log.e("删除图片","删除图片");
 	        	imageFile.delete();
 	        }
 		}
         
         //动态在LinearLayout中添加一张图片
         ImageView imageView = new ImageView(this);
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(Variable.smallImageReqHeight,Variable.smallImageReqHeight));
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(Variable.smallImageReqWidth,Variable.smallImageReqWidth));
         imageView.setPadding(5, 5, 5, 5);
         imageView.setImageBitmap(small_image);
         linearLayout.addView(imageView);
@@ -299,6 +302,9 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 					File smallImage = new File(bitmapList.get(imageNum).get(imageSize).toString());
 					if(smallImage.exists()){
 							String imageFileUrl = jsonObject.getString("image_file_url");
+							
+							//TODO
+							Log.e("小图上传成功返回的url:",imageFileUrl);
 							imageUrl.putOpt("small_pic", imageFileUrl);
 							String newPath = Constant.VehiclePath + imageFileUrl.substring(imageFileUrl.lastIndexOf("/") + 1);
 							File newFile = new File(newPath);
@@ -341,7 +347,6 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 		}
 	}
 	public void onUploadProcess(int uploadSize) {
-		
 	}
 	public void initUpload(int fileSize) {
 	}

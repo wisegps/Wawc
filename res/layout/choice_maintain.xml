@@ -4,39 +4,43 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:padding="4dip"
     >
-    
-      <!-- 头部 -->
-
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/choice_maintain_top"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-         >
+        android:layout_height="@dimen/title_hight"
+        android:layout_alignParentTop="true"
+        android:background="@color/blue"
+        android:gravity="center" >
 
-        <Button
-            android:id="@+id/article_detaile_menu"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:background="@drawable/ic_launcher" />
+        <ImageView
+            android:id="@+id/choice_maintain_cancle"
+            android:layout_width="@dimen/title_image"
+            android:layout_height="@dimen/title_image"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/side_back" />
 
         <TextView
+            android:id="@+id/my_vechile_edit"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_toRightOf="@id/choice_maintain_cancle"
+            android:layout_marginRight="@dimen/double_margins"
             android:gravity="center"
-            android:text="@string/choice_insurance_company"
-            android:textSize="8pt" />
-
-        <Button
-            android:id="@+id/article_detaile_home"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:background="@drawable/ic_launcher" />
-    </LinearLayout>
+            android:text="@string/location_4s_shop"
+            android:textColor="@color/white"
+            android:textSize="@dimen/head" />
+        <ImageView
+            android:id="@+id/search_maintain_shop"
+            android:layout_width="@dimen/title_image"
+            android:layout_height="@dimen/title_image"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/side_right" />
+    </RelativeLayout>
     <View 
         android:layout_width="fill_parent"
         android:layout_height="1dip"
@@ -49,6 +53,8 @@
         android:layout_height="wrap_content"
         android:cacheColorHint="#00000000"
         android:scrollingCache="false"
+        android:divider="@color/gray"
+        android:dividerHeight="0.5dip"
          >
     </ListView>
 

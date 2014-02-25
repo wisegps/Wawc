@@ -1,5 +1,6 @@
 package com.wise.data;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -7,7 +8,7 @@ import java.util.Map;
  * 说说数据
  * @author Mr.Wang
  */
-public class Article {
+public class Article implements Serializable{
 	private String create_time;
 	private String userLogo;
 	private String city;
@@ -19,7 +20,7 @@ public class Article {
 	private int cust_id;
 	private int blog_id;
 	private String _id;
-	private List<String> praisesList;
+	private Map<String,String> praisesList;
 	private List<String[]> commentList;
 	private List<Map<String,String>> imageList;
 	private int _v;
@@ -79,10 +80,10 @@ public class Article {
 	public void setBlog_id(int blog_id) {
 		this.blog_id = blog_id;
 	}
-	public List<String> getPraisesList() {
+	public Map<String,String> getPraisesList() {
 		return praisesList;
 	}
-	public void setPraisesList(List<String> praisesList) {
+	public void setPraisesList(Map<String,String> praisesList) {
 		this.praisesList = praisesList;
 	}
 	public List<String[]> getCommentList() {

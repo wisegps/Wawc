@@ -29,12 +29,17 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+/**
+ * 4s店
+ * @author Mr'wang
+ */
 public class MaintainShopActivity extends Activity {
 	private ListView maintainList = null;
 	private MaintainAdapter maintainAdapter = null;
@@ -46,12 +51,14 @@ public class MaintainShopActivity extends Activity {
 	private static final int getMaintainShopCode = 2;
 	private SharedPreferences sharedPreferences = null;
 	private List<String> MaintainList = new ArrayList<String>();
+	private ImageView choiceMaintainCancle = null;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.choice_maintain);
 		maintainList = (ListView) findViewById(R.id.maintain_list);
-
+		choiceMaintainCancle = (ImageView) findViewById(R.id.choice_maintain_cancle);
+		choiceMaintainCancle.setOnClickListener(new ClickListener());
 		intent = getIntent();
 		code = intent.getIntExtra("code", 0);
 		brank = (String) intent.getSerializableExtra("brank");
@@ -113,7 +120,17 @@ public class MaintainShopActivity extends Activity {
 			super.handleMessage(msg);
 		}
 	}
-	
+	class ClickListener implements OnClickListener{
+		public void onClick(View v) {
+			switch(v.getId()){
+			case R.id.choice_maintain_cancle:
+				MaintainShopActivity.this.finish();
+				break;
+			case R.id.search_maintain_shop:
+				break;
+			}
+		}
+	}
 	public void parseJSON(String jsonData){
 		try {
 			MaintainList.clear();
