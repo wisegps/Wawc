@@ -690,7 +690,7 @@ public class HomeActivity extends Activity{
                 carData.setMaintain_last_mileage(maintain_last_mileage);
                 carData.setMaintain_next_mileage(maintain_next_mileage);
                 carData.setBuy_date(buy_date);
-                String imagePath = Constant.VehicleLogoPath + car_brand + ".jpg";//SD卡路径
+                String imagePath = Constant.VehicleLogoPath + car_brand + ".png";//SD卡路径
                 if(new File(imagePath).isFile()){//存在
                     carData.setLogoPath(imagePath);
                 }else{

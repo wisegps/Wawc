@@ -228,15 +228,19 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                 ToSettingCenter();
                 break;
             case R.id.iv_activity_main_login_qq:
-                platformQQ.setPlatformActionListener(MainActivity.this);
-                platformQQ.showUser(null);
-                platformWhat = platformQQ;
+                if(!isLogin){
+                    platformQQ.setPlatformActionListener(MainActivity.this);
+                    platformQQ.showUser(null);
+                    platformWhat = platformQQ;
+                }                
                 break;
             case R.id.iv_activity_main_login_sina:
-                platformSina.setPlatformActionListener(MainActivity.this);
-                platformSina.SSOSetting(true);
-                platformSina.showUser(null);
-                platformWhat = platformSina;
+                if(!isLogin){
+                    platformSina.setPlatformActionListener(MainActivity.this);
+                    platformSina.SSOSetting(true);
+                    platformSina.showUser(null);
+                    platformWhat = platformSina;
+                }                
                 break;  
             case R.id.iv_activity_home:
                 RightMenu();
@@ -347,9 +351,11 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             e.printStackTrace();
         }
     }
+    boolean isLogin = false;
     private void isLogin() {
         if (platformQQ.getDb().isValid()) {
             System.out.println("qq登录");
+            isLogin = true;
             tv_activity_main_name.setText(platformQQ.getDb().getUserName());
             Variable.cust_name = platformQQ.getDb().getUserName();
             iv_activity_main_login_sina.setVisibility(View.GONE);
@@ -362,6 +368,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                     .getUserName(), LocationProvince, LocationCity, platformQQ.getDb()
                     .getUserIcon(), "remark");
         } else if (platformSina.getDb().isValid()){
+            isLogin = true;
             System.out.println("sina登录");
             tv_activity_main_name.setText(platformSina.getDb().getUserName());
             Variable.cust_name = platformSina.getDb().getUserName();
@@ -374,6 +381,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                     .getUserName(), LocationProvince, LocationCity, platformSina.getDb()
                     .getUserIcon(), "remark");
         } else {
+            isLogin = false;
             System.out.println("没有登录");
             iv_activity_main_login_sina.setVisibility(View.VISIBLE);
             iv_activity_main_login_qq.setVisibility(View.VISIBLE);
