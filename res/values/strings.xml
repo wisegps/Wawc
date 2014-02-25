@@ -70,8 +70,10 @@
     <string name="maintenance">车辆保养提醒</string>
     <string name="examined">驾照年审提醒</string>
     <string name="examined_title">驾照年审</string>
+    <string name="examined_content">需于%s前年审</string>
     <string name="replacement">驾照换证提醒</string>
     <string name="replacement_title">驾照换证</string>
+    <string name="replacement_content">需于%s前换证</string>
     <!-- 设置中心 -->
     
     <string name="search_setting">搜索设置</string>

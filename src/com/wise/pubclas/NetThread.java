@@ -109,6 +109,7 @@ public class NetThread {
 		public void run() {
 			super.run();
 			try {
+			    System.out.println(url);
 				BasicHttpParams httpParams = new BasicHttpParams();  
 			    HttpConnectionParams.setConnectionTimeout(httpParams, 10000);  
 			    HttpConnectionParams.setSoTimeout(httpParams, 10000); 

@@ -91,18 +91,18 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         ActivityFactory.A = this;
         slidingMenuView = (SlidingMenuView) findViewById(R.id.sliding_menu_view);
         
-        refuel = (RelativeLayout) findViewById(R.id.rl_activity_main_oil);  //加油
-        maintain = (RelativeLayout) findViewById(R.id.rl_activity_main_maintain);  //维保
-        wishCar = (RelativeLayout) findViewById(R.id.rl_activity_main_wash);   //洗车
-        help = (RelativeLayout) findViewById(R.id.rl_activity_main_help);   //救援
-        insurance = (RelativeLayout) findViewById(R.id.rl_activity_main_safety);   //保险
-        park = (RelativeLayout) findViewById(R.id.rl_activity_main_park);    //停车
-        refuel.setOnClickListener(onClickListener);
-        maintain.setOnClickListener(onClickListener);
-        wishCar.setOnClickListener(onClickListener);
-        help.setOnClickListener(onClickListener);
-        insurance.setOnClickListener(onClickListener);
-        park.setOnClickListener(onClickListener);
+//        refuel = (RelativeLayout) findViewById(R.id.rl_activity_main_oil);  //加油
+//        maintain = (RelativeLayout) findViewById(R.id.rl_activity_main_maintain);  //维保
+//        wishCar = (RelativeLayout) findViewById(R.id.rl_activity_main_wash);   //洗车
+//        help = (RelativeLayout) findViewById(R.id.rl_activity_main_help);   //救援
+//        insurance = (RelativeLayout) findViewById(R.id.rl_activity_main_safety);   //保险
+//        park = (RelativeLayout) findViewById(R.id.rl_activity_main_park);    //停车
+//        refuel.setOnClickListener(onClickListener);
+//        maintain.setOnClickListener(onClickListener);
+//        wishCar.setOnClickListener(onClickListener);
+//        help.setOnClickListener(onClickListener);
+//        insurance.setOnClickListener(onClickListener);
+//        park.setOnClickListener(onClickListener);
         
         
         
@@ -160,8 +160,8 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         TextView setup_center = (TextView) findViewById(R.id.setup_center);
         setup_center.setOnClickListener(onClickListener);
 
-        TextView car_remind = (TextView) findViewById(R.id.car_remind);
-        car_remind.setOnClickListener(onClickListener);
+//        TextView car_remind = (TextView) findViewById(R.id.car_remind);
+//        car_remind.setOnClickListener(onClickListener);
         TextView my_car = (TextView) findViewById(R.id.my_car);
         my_car.setOnClickListener(onClickListener);
         TextView my_terminal = (TextView) findViewById(R.id.my_terminal);
@@ -210,9 +210,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             case R.id.car_circle:
                 ToVehicleFriends();
                 break;
-            case R.id.car_remind:
-                ToCarRemind();
-                break;
             case R.id.my_car:
                 ToMyCar();
                 break;
@@ -231,15 +228,19 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                 ToSettingCenter();
                 break;
             case R.id.iv_activity_main_login_qq:
-                platformQQ.setPlatformActionListener(MainActivity.this);
-                platformQQ.showUser(null);
-                platformWhat = platformQQ;
+                if(!isLogin){
+                    platformQQ.setPlatformActionListener(MainActivity.this);
+                    platformQQ.showUser(null);
+                    platformWhat = platformQQ;
+                }                
                 break;
             case R.id.iv_activity_main_login_sina:
-                platformSina.setPlatformActionListener(MainActivity.this);
-                platformSina.SSOSetting(true);
-                platformSina.showUser(null);
-                platformWhat = platformSina;
+                if(!isLogin){
+                    platformSina.setPlatformActionListener(MainActivity.this);
+                    platformSina.SSOSetting(true);
+                    platformSina.showUser(null);
+                    platformWhat = platformSina;
+                }                
                 break;  
             case R.id.iv_activity_home:
                 RightMenu();
@@ -350,9 +351,11 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             e.printStackTrace();
         }
     }
+    boolean isLogin = false;
     private void isLogin() {
         if (platformQQ.getDb().isValid()) {
             System.out.println("qq登录");
+            isLogin = true;
             tv_activity_main_name.setText(platformQQ.getDb().getUserName());
             Variable.cust_name = platformQQ.getDb().getUserName();
             iv_activity_main_login_sina.setVisibility(View.GONE);
@@ -365,6 +368,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                     .getUserName(), LocationProvince, LocationCity, platformQQ.getDb()
                     .getUserIcon(), "remark");
         } else if (platformSina.getDb().isValid()){
+            isLogin = true;
             System.out.println("sina登录");
             tv_activity_main_name.setText(platformSina.getDb().getUserName());
             Variable.cust_name = platformSina.getDb().getUserName();
@@ -377,6 +381,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                     .getUserName(), LocationProvince, LocationCity, platformSina.getDb()
                     .getUserIcon(), "remark");
         } else {
+            isLogin = false;
             System.out.println("没有登录");
             iv_activity_main_login_sina.setVisibility(View.VISIBLE);
             iv_activity_main_login_qq.setVisibility(View.VISIBLE);

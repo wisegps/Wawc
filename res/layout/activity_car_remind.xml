@@ -257,6 +257,7 @@
 	                android:contentDescription="@string/app_name"
 	                android:layout_alignParentRight="true"/>
 	            <TextView 
+	                android:id="@+id/tv_annual_inspect_date"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:textColor="@color/common_inactive"
@@ -315,6 +316,7 @@
 	                android:contentDescription="@string/app_name"
 	                android:layout_alignParentRight="true"/>
 	            <TextView 
+	                android:id="@+id/tv_change_date"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:textColor="@color/common_inactive"

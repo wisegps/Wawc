@@ -3,7 +3,6 @@ package com.wise.extend;
 import com.wise.wawc.R;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.util.AttributeSet;
@@ -30,28 +29,28 @@ public class BorderTextView extends TextView{
 	public BorderTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		initCustomView();
-		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.custom);
-		int indexCount = a.getIndexCount();
-		System.out.println("indexCount = " + indexCount);
-		for(int i = 0 ; i < indexCount; i++){
-			int index = a.getIndex(i);
-			switch (index) {
-			case R.styleable.custom_border_left:
-				isLeft = a.getBoolean(index, false);
-				break;
-			case R.styleable.custom_border_top:
-				isTop = a.getBoolean(index, false);
-				break;
-			case R.styleable.custom_border_right:
-				isRight = a.getBoolean(index, false);
-				break;
-			case R.styleable.custom_border_bottom:
-				isBottom = a.getBoolean(index, false);
-				break;
-			case R.styleable.custom_border_color:
-				break;
-			}
-		}
+//		TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.custom);
+//		int indexCount = a.getIndexCount();
+//		System.out.println("indexCount = " + indexCount);
+//		for(int i = 0 ; i < indexCount; i++){
+//			int index = a.getIndex(i);
+//			switch (index) {
+//			case R.styleable.custom_border_left:
+//				isLeft = a.getBoolean(index, false);
+//				break;
+//			case R.styleable.custom_border_top:
+//				isTop = a.getBoolean(index, false);
+//				break;
+//			case R.styleable.custom_border_right:
+//				isRight = a.getBoolean(index, false);
+//				break;
+//			case R.styleable.custom_border_bottom:
+//				isBottom = a.getBoolean(index, false);
+//				break;
+//			case R.styleable.custom_border_color:
+//				break;
+//			}
+//		}
 	}
 	public void initCustomView(){  
         p = new Paint();  
@@ -64,19 +63,9 @@ public class BorderTextView extends TextView{
 		super.onDraw(canvas);
 		Paint paint = new Paint();  
         //  将边框设为黑色  
-        paint.setColor(android.graphics.Color.BLACK);  
+        paint.setColor(getResources().getColor(R.color.white));  
         //  画TextView的4个边  
-        if(isLeft){
-        	canvas.drawLine(0, 0, 0, this.getHeight() - sroke_width, paint);
-        }
-        if(isTop){
-        	canvas.drawLine(0, 0, this.getWidth() - sroke_width, 0, paint); 
-        }
-        if(isRight){
-        	canvas.drawLine(this.getWidth() - sroke_width, 0, this.getWidth() - sroke_width, this.getHeight() - sroke_width, paint);  
-        }
-        if(isBottom){
-        	canvas.drawLine(0, this.getHeight() - sroke_width, this.getWidth() - sroke_width, this.getHeight() - sroke_width, paint);
-        }
+        canvas.drawLine(0, this.getHeight() - sroke_width, this.getWidth() - sroke_width, this.getHeight() - sroke_width, paint);
+        
 	}
 }

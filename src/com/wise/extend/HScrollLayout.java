@@ -12,7 +12,6 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.MeasureSpec;
 import android.widget.Scroller;
 
 public class HScrollLayout extends ViewGroup {
@@ -116,13 +115,27 @@ public class HScrollLayout extends ViewGroup {
             downMotionX = x;
             break;
         case MotionEvent.ACTION_MOVE:
-            ActivityFactory.v.requestDisallowInterceptTouchEvent(true);
             int deltaX = (int) (downMotionX - x);
             downMotionX = x;
-            scrollBy(deltaX, 0);// 画面跟随指尖
-            if (velocityTracker != null) {
-                velocityTracker.addMovement(event);
-            }
+            if(deltaX < 0){//向右滑
+                System.out.println("deltaX = " + deltaX);
+                System.out.println("getScrollX() = " + getScrollX());
+                if(getScrollX() <= 0){
+                    
+                }else{
+                    ActivityFactory.v.requestDisallowInterceptTouchEvent(true);
+                    scrollBy(deltaX, 0);// 画面跟随指尖
+                    if (velocityTracker != null) {
+                        velocityTracker.addMovement(event);
+                    }
+                }
+            }else{//像左滑
+                ActivityFactory.v.requestDisallowInterceptTouchEvent(true);
+                scrollBy(deltaX, 0);// 画面跟随指尖
+                if (velocityTracker != null) {
+                    velocityTracker.addMovement(event);
+                }
+            }            
             break;
         case MotionEvent.ACTION_UP:
             int velocityX = 0;
@@ -178,7 +191,7 @@ public class HScrollLayout extends ViewGroup {
     }
 
     @Override
-    public void computeScroll() {// 不需要，不然松手后不会滑动
+    public void computeScroll() {//需要，不然松手后不会滑动
         if (scroller.computeScrollOffset()) {
             scrollTo(scroller.getCurrX(), scroller.getCurrY());
             postInvalidate();

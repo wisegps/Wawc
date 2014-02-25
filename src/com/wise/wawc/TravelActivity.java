@@ -5,6 +5,19 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.baidu.mapapi.BMapManager;
+import com.baidu.mapapi.search.MKAddrInfo;
+import com.baidu.mapapi.search.MKBusLineResult;
+import com.baidu.mapapi.search.MKDrivingRouteResult;
+import com.baidu.mapapi.search.MKPoiResult;
+import com.baidu.mapapi.search.MKSearch;
+import com.baidu.mapapi.search.MKSearchListener;
+import com.baidu.mapapi.search.MKShareUrlResult;
+import com.baidu.mapapi.search.MKSuggestionResult;
+import com.baidu.mapapi.search.MKTransitRouteResult;
+import com.baidu.mapapi.search.MKWalkingRouteResult;
+import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
@@ -42,10 +55,16 @@ public class TravelActivity extends Activity{
 	TravelAdapter travelAdapter;
 	String Date;
 	String device_id = "3";
+	MKSearch mkSearch;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		WawcApplication app = (WawcApplication)this.getApplication();
+        if (app.mBMapManager == null) {
+            app.mBMapManager = new BMapManager(this);
+            app.mBMapManager.init(WawcApplication.strKey,null);
+        }
 		setContentView(R.layout.activity_travel);
 		tv_travel_date = (TextView)findViewById(R.id.tv_travel_date);
 		tv_distance = (TextView)findViewById(R.id.tv_distance);
@@ -63,7 +82,9 @@ public class TravelActivity extends Activity{
         lv_activity_travel.setAdapter(travelAdapter);
         Intent intent = getIntent();
         Date = intent.getStringExtra("Date");
-        tv_travel_date.setText(Date);
+        tv_travel_date.setText(Date);        
+        mkSearch = new MKSearch();
+        mkSearch.init(app.mBMapManager, mkSearchListener);
         GetTripDB();
 	}
 	OnClickListener onClickListener = new OnClickListener() {		
@@ -131,11 +152,15 @@ public class TravelActivity extends Activity{
             for(int i = 0 ; i < jsonArray.length(); i++){
                 JSONObject jsonObject2 = jsonArray.getJSONObject(i);
                 TravelData travelData = new TravelData();
-                travelData.setStartTime(jsonObject2.getString("start_time").substring(11, 16));
-                travelData.setStopTime(jsonObject2.getString("end_time").substring(11, 16));
-                travelData.setSpacingTime(jsonObject2.getString("travel_duration"));
-                travelData.setStartPlace("桃源村");
-                travelData.setStopPlace("世界之窗");
+                travelData.setStartTime(jsonObject2.getString("start_time").replace("T", " ").substring(0, 19));
+                travelData.setStopTime(jsonObject2.getString("end_time").replace("T", " ").substring(0, 19));
+                travelData.setSpacingTime(GetSystem.ProcessTime(jsonObject2.getInt("travel_duration")));
+                travelData.setStart_lat(jsonObject2.getString("start_lat"));
+                travelData.setStart_lon(jsonObject2.getString("start_lon"));
+                travelData.setEnd_lat(jsonObject2.getString("end_lat"));
+                travelData.setEnd_lon(jsonObject2.getString("end_lon"));
+                travelData.setStart_place("起始位置");
+                travelData.setEnd_place("结束位置");
                 travelData.setSpacingDistance(jsonObject2.getString("distance"));
                 travelData.setAverageOil("百公里油耗：9.9L");
                 travelData.setOil("油耗："+jsonObject2.getString("act_fuel"));
@@ -144,6 +169,13 @@ public class TravelActivity extends Activity{
                 travelDatas.add(travelData);
             }  
             travelAdapter.notifyDataSetChanged();
+            if(travelDatas.size() > 0){
+                i = 0;
+                isFrist = true;
+                GeoPoint point = new GeoPoint(GetSystem.StringToInt(travelDatas.get(i).getStart_lat()),
+                        GetSystem.StringToInt(travelDatas.get(i).getStart_lon()));
+                mkSearch.reverseGeocode(point);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -186,7 +218,7 @@ public class TravelActivity extends Activity{
 			return position;
 		}
 		@Override
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView, ViewGroup parent) {
 			ViewHolder holder;
 			if (convertView == null) {
 				convertView = mInflater.inflate(R.layout.item_travel, null);
@@ -207,12 +239,11 @@ public class TravelActivity extends Activity{
 				holder = (ViewHolder) convertView.getTag();
 			}
 			TravelData travelData = travelDatas.get(position);
-			holder.tv_item_travel_startTime.setText(travelData.getStartTime());
-			holder.tv_item_travel_stopTime.setText(travelData.getStopTime());
-			holder.tv_item_travel_startPlace.setText(travelData.getStartPlace());
-			holder.tv_item_travel_stopPlace.setText(travelData.getStopPlace());
-			holder.tv_item_travel_spacingDistance.setText(travelData.getSpacingDistance());
-			
+			holder.tv_item_travel_startTime.setText(travelData.getStartTime().substring(10, 16));
+			holder.tv_item_travel_stopTime.setText(travelData.getStopTime().substring(10, 16));
+			holder.tv_item_travel_startPlace.setText(travelData.getStart_place());
+			holder.tv_item_travel_stopPlace.setText(travelData.getEnd_place());
+			holder.tv_item_travel_spacingDistance.setText("共"+travelData.getSpacingDistance() + "公里\\" + travelData.getSpacingTime());
 			holder.tv_item_travel_averageOil.setText(travelData.getAverageOil());
 			holder.tv_item_travel_oil.setText(travelData.getOil());
 			holder.tv_item_travel_speed.setText(travelData.getSpeed());
@@ -227,7 +258,10 @@ public class TravelActivity extends Activity{
 			holder.iv_item_travel_map.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View v) {
-					TravelActivity.this.startActivity(new Intent(TravelActivity.this, TravelMapActivity.class));
+				    Intent intent = new Intent(TravelActivity.this, TravelMapActivity.class);
+				    intent.putExtra("StartTime", travelDatas.get(position).getStartTime());
+				    intent.putExtra("StopTime", travelDatas.get(position).getStopTime());
+					TravelActivity.this.startActivity(intent);
 				}
 			});
 			return convertView;
@@ -244,8 +278,12 @@ public class TravelActivity extends Activity{
 		String startTime;
 		String stopTime;
 		String spacingTime;
-		String startPlace;
-		String stopPlace;
+		String start_lat;
+		String start_lon;
+		String start_place;
+		String end_lat;
+		String end_lon;
+		String end_place;
 		String spacingDistance;
 		String oil;
 		String averageOil;
@@ -268,20 +306,44 @@ public class TravelActivity extends Activity{
 		}
 		public void setSpacingTime(String spacingTime) {
 			this.spacingTime = spacingTime;
-		}
-		public String getStartPlace() {
-			return startPlace;
-		}
-		public void setStartPlace(String startPlace) {
-			this.startPlace = startPlace;
-		}
-		public String getStopPlace() {
-			return stopPlace;
-		}
-		public void setStopPlace(String stopPlace) {
-			this.stopPlace = stopPlace;
-		}
-		public String getSpacingDistance() {
+		}		
+        public String getStart_lat() {
+            return start_lat;
+        }
+        public void setStart_lat(String start_lat) {
+            this.start_lat = start_lat;
+        }
+        public String getStart_lon() {
+            return start_lon;
+        }
+        public void setStart_lon(String start_lon) {
+            this.start_lon = start_lon;
+        }
+        public String getEnd_lat() {
+            return end_lat;
+        }
+        public void setEnd_lat(String end_lat) {
+            this.end_lat = end_lat;
+        }
+        public String getEnd_lon() {
+            return end_lon;
+        }
+        public void setEnd_lon(String end_lon) {
+            this.end_lon = end_lon;
+        }        
+        public String getStart_place() {
+            return start_place;
+        }
+        public void setStart_place(String start_place) {
+            this.start_place = start_place;
+        }
+        public String getEnd_place() {
+            return end_place;
+        }
+        public void setEnd_place(String end_place) {
+            this.end_place = end_place;
+        }
+        public String getSpacingDistance() {
 			return spacingDistance;
 		}
 		public void setSpacingDistance(String spacingDistance) {
@@ -312,4 +374,49 @@ public class TravelActivity extends Activity{
 			this.cost = cost;
 		}		
 	}
+	int i = 0;
+	boolean isFrist = true;
+	MKSearchListener mkSearchListener = new MKSearchListener() {        
+        @Override
+        public void onGetWalkingRouteResult(MKWalkingRouteResult arg0, int arg1) {}        
+        @Override
+        public void onGetTransitRouteResult(MKTransitRouteResult arg0, int arg1) {}        
+        @Override
+        public void onGetSuggestionResult(MKSuggestionResult arg0, int arg1) {}        
+        @Override
+        public void onGetShareUrlResult(MKShareUrlResult arg0, int arg1, int arg2) {}        
+        @Override
+        public void onGetPoiResult(MKPoiResult arg0, int arg1, int arg2) {}        
+        @Override
+        public void onGetPoiDetailSearchResult(int arg0, int arg1) {}        
+        @Override
+        public void onGetDrivingRouteResult(MKDrivingRouteResult arg0, int arg1) {}        
+        @Override
+        public void onGetBusDetailResult(MKBusLineResult arg0, int arg1) {}        
+        @Override
+        public void onGetAddrResult(MKAddrInfo arg0, int arg1) {
+            if(arg0.type == MKAddrInfo.MK_REVERSEGEOCODE){
+                String strInfo = arg0.strAddr; 
+                if(isFrist){//起点位置取完，在取结束位置
+                    travelDatas.get(i).setStart_place(strInfo);
+                    isFrist = false;                    
+                    GeoPoint point = new GeoPoint(GetSystem.StringToInt(travelDatas.get(i).getEnd_lat()),
+                            GetSystem.StringToInt(travelDatas.get(i).getEnd_lon()));
+                    mkSearch.reverseGeocode(point);
+                    i++;
+                }else{
+                    travelDatas.get(i-1).setEnd_place(strInfo);
+                    if(travelDatas.size() == i){
+                        System.out.println("递归完毕");
+                    }else{
+                        isFrist = true;
+                        GeoPoint point = new GeoPoint(GetSystem.StringToInt(travelDatas.get(i).getStart_lat()),
+                                GetSystem.StringToInt(travelDatas.get(i).getStart_lon()));
+                        mkSearch.reverseGeocode(point);
+                    }                    
+                }
+                travelAdapter.notifyDataSetChanged();
+            }
+        }
+    };
 }

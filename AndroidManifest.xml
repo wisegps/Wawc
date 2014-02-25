@@ -86,6 +86,7 @@
         <activity android:name=".SearchMapActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".ImageActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".ActivitySearch" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".WapZfbActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity
             android:name="cn.sharesdk.framework.ShareSDKUIShell"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"

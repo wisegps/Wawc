@@ -27,6 +27,13 @@
             android:textSize="@dimen/title"
             android:textStyle="bold" />
 	</RelativeLayout>
+	<ScrollView 
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent">
+        <LinearLayout 
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
 	<LinearLayout 
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
@@ -170,7 +177,6 @@
         </LinearLayout>        
 	</LinearLayout>
 	<LinearLayout 
-	    android:visibility="gone"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:orientation="vertical"
@@ -187,44 +193,67 @@
             android:layout_width="fill_parent"
             android:layout_height="1dp"
             android:background="@color/gray_lights"/>   
-        <LinearLayout 
+        <RelativeLayout 
+            android:id="@+id/rl_client"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/margins"
-            android:orientation="vertical">
+            android:padding="@dimen/margins">
             <TextView
+                android:id="@+id/tv_client_title"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="支付宝客户端支付"
                 android:textColor="@color/common"
                 android:textSize="@dimen/content"/>
             <TextView
+                android:layout_below="@id/tv_client_title"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/common_inactive"
                 android:text="推荐安装支付宝客户端的用户使用"/>
-        </LinearLayout>
+            <TextView 
+                android:id="@+id/tv_client"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/main"
+                android:textColor="@color/blue"
+                android:text="√"/>
+        </RelativeLayout>
         <View 
             android:layout_width="fill_parent"
             android:layout_height="1dp"
             android:background="@color/gray_lights"/>   
-        <LinearLayout 
+        <RelativeLayout 
+            android:id="@+id/rl_wap"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:padding="@dimen/margins"
-            android:orientation="vertical">
+            android:padding="@dimen/margins">
             <TextView
+                android:id="@+id/tv_wap_title"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="支付宝网页支付"
                 android:textColor="@color/common"
                 android:textSize="@dimen/content"/>
             <TextView
+                android:layout_below="@id/tv_wap_title"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/common_inactive"
                 android:text="推荐安装支付宝客户端的用户使用"/>
-        </LinearLayout>
+            <TextView 
+                android:id="@+id/tv_wap"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:textSize="@dimen/main"
+                android:textColor="@color/blue"
+                android:text="√"/>
+        </RelativeLayout>
 	</LinearLayout>
 	<LinearLayout 
 	    android:layout_width="fill_parent"
@@ -309,4 +338,6 @@
         android:textColor="@color/blue"
         android:textSize="@dimen/main"
         android:text="确认支付"/>
+    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

@@ -17,7 +17,7 @@
             android:layout_centerVertical="true"
             android:contentDescription="@string/app_name"
             android:layout_marginLeft="@dimen/margins"
-            android:src="@drawable/side_left"/>
+            android:src="@drawable/nav_bg"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

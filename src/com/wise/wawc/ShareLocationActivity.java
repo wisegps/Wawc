@@ -21,16 +21,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 /**
  * 位置分享
  * @author honesty
  */
 public class ShareLocationActivity extends Activity{
+    
     EditText et_share_content;
+    TextView tv_adress;
     ImageView iv_photo;
     String[] mItem = {"救援","保险"};
     String imagePath = "";
+    double Lat;
+    double Lon;
+    String Adress;
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +50,17 @@ public class ShareLocationActivity extends Activity{
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // 设置下拉列表的风格
 		sp_reason.setAdapter(adapter);
 		sp_reason.setOnItemSelectedListener(onItemSelectedListener);
-		
+		tv_adress = (TextView)findViewById(R.id.tv_adress);
 		iv_photo = (ImageView)findViewById(R.id.iv_photo);
 		ImageView iv_camera = (ImageView)findViewById(R.id.iv_camera);
 		iv_camera.setOnClickListener(onClickListener);
 		Button bt_activity_share = (Button)findViewById(R.id.bt_activity_share);
 		bt_activity_share.setOnClickListener(onClickListener);
 		et_share_content = (EditText)findViewById(R.id.et_share_content);
+		Lat = Variable.Lat;
+		Lon = Variable.Lon;
+		Adress = Variable.Adress;
+		tv_adress.setText(Adress);
 	}
 	OnClickListener onClickListener = new OnClickListener() {		
 		@Override
@@ -128,8 +138,8 @@ public class ShareLocationActivity extends Activity{
         //oks.setSiteUrl("http://sharesdk.cn");
         //oks.setVenueName("Share SDK");
         //oks.setVenueDescription("This is a beautiful place!");
-        //oks.setLatitude(23.056081f);
-        //oks.setLongitude(113.385708f);
+        oks.setLatitude((float)Lat);
+        oks.setLongitude((float)Lon);
         oks.setSilent(silent);
         if (platform != null) {
             oks.setPlatform(platform);

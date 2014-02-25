@@ -33,6 +33,21 @@ public class DBExcute {
 		System.out.println("插入成功");
 	}
 	/**
+	 * 更新数据库
+	 * @param context
+	 * @param values
+	 * @param where
+	 * @param args
+	 * @param Table
+	 */
+	public void UpdateDB(Context context,ContentValues values,String where, String[] args,String Table){
+	    DBHelper dbHelper = new DBHelper(context);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.update(Table, values, where, args);
+        db.close();
+        dbHelper.close();
+	}
+	/**
 	 * 更新基础数据表
 	 * @param context
 	 * @param values
