@@ -21,11 +21,11 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,7 +41,6 @@ import android.widget.Toast;
 
 /**
  * 我的车况,爱车车况
- * 
  * @author honesty
  */
 public class VehicleStatusActivity extends Activity {
@@ -52,6 +51,7 @@ public class VehicleStatusActivity extends Activity {
     private DisplayMetrics dm = new DisplayMetrics();
 
     LinearLayout ll_activity_vehicle_status_oil;
+    RelativeLayout rl_status;
     TextView tv_activity_vehicle_status_oil, tv_month_hk_fuel,tv_fault,
             tv_month_distance, tv_month_fuel,tv_vehicle_status_date;
     EnergyGroup hScrollLayout;
@@ -71,14 +71,13 @@ public class VehicleStatusActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehicle_status);
+        rl_status = (RelativeLayout)findViewById(R.id.rl_status);
         ll_activity_vehicle_status_oil = (LinearLayout) findViewById(R.id.ll_activity_vehicle_status_oil);
         ll_activity_vehicle_status_oil.setOnClickListener(onClickListener);
         ImageView iv_activity_vehicle_status_data_next = (ImageView) findViewById(R.id.iv_activity_vehicle_status_data_next);
-        iv_activity_vehicle_status_data_next
-                .setOnClickListener(onClickListener);
+        iv_activity_vehicle_status_data_next.setOnClickListener(onClickListener);
         ImageView iv_activity_vehicle_status_data_previous = (ImageView) findViewById(R.id.iv_activity_vehicle_status_data_previous);
-        iv_activity_vehicle_status_data_previous
-                .setOnClickListener(onClickListener);
+        iv_activity_vehicle_status_data_previous.setOnClickListener(onClickListener);
         ImageView iv_activity_vehicle_status_back = (ImageView) findViewById(R.id.iv_activity_vehicle_status_back);
         iv_activity_vehicle_status_back.setOnClickListener(onClickListener);
         tv_vehicle_status_date = (TextView)findViewById(R.id.tv_vehicle_status_date);
@@ -95,8 +94,7 @@ public class VehicleStatusActivity extends Activity {
         hScrollLayout = (EnergyGroup) findViewById(R.id.hscrollLayout);
         hScrollLayout.setOnViewChangeListener(onViewChangeListener);
         GridView gv_activity_vehicle_status = (GridView) findViewById(R.id.gv_activity_vehicle_status);
-        carAdapter = new CarAdapter(VehicleStatusActivity.this,
-                Variable.carDatas);
+        carAdapter = new CarAdapter(VehicleStatusActivity.this,Variable.carDatas);
         gv_activity_vehicle_status.setAdapter(carAdapter);
 
         int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
@@ -343,13 +341,13 @@ public class VehicleStatusActivity extends Activity {
     EnergyCurveView View_hk_fuel,View_distance,View_ful;
     private void initView() {
         getWindowManager().getDefaultDisplay().getMetrics(dm);
-
+        
         View_hk_fuel = new EnergyCurveView(getApplicationContext(), null);
         View_hk_fuel.setWindowsWH(dm);
         View_hk_fuel.initPoints(Ehk_fuel);
         View_hk_fuel.setOnViewTouchListener(onViewTouchListener);
         hScrollLayout.addView(View_hk_fuel);
-
+        
         View_distance = new EnergyCurveView(getApplicationContext(), null);
         View_distance.setWindowsWH(dm);
         View_distance.initPoints(Edistance);

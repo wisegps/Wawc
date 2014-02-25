@@ -17,7 +17,7 @@
             android:layout_centerVertical="true"
             android:contentDescription="@string/app_name"
             android:layout_marginLeft="@dimen/margins"
-            android:src="@drawable/nav_bg"/>
+            android:src="@drawable/nav_back"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -122,6 +122,7 @@
             android:src="@drawable/body_icon_arrow2"/>
     </RelativeLayout>
 	<RelativeLayout 
+	    android:id="@+id/rl_status"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent">
         <LinearLayout 

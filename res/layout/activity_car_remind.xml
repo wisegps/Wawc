@@ -18,7 +18,7 @@
             android:clickable="true"
             android:layout_marginLeft="@dimen/margins"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/side_left"/>
+            android:src="@drawable/nav_back"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

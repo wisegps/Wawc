@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import com.wise.data.CharacterParser;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.Variable;
 import com.wise.service.ClearEditText;
 import com.wise.service.SideBar;
 import com.wise.service.SideBar.OnTouchingLetterChangedListener;
@@ -80,6 +81,7 @@ public class SelectCityActivity extends Activity {
         tv_select_city_title = (TextView) findViewById(R.id.tv_select_city_title);
         tv_activity_select_city_location = (TextView) findViewById(R.id.tv_activity_select_city_location);
         tv_activity_select_city_location.setOnClickListener(onClickListener);
+        tv_activity_select_city_location.setText(Variable.Adress);
         lv_activity_select_city = (ListView) findViewById(R.id.lv_activity_select_city);
         Intent intent = getIntent();
         isWelcome = intent.getBooleanExtra("Welcome", false);

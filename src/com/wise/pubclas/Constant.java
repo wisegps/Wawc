@@ -166,6 +166,10 @@ public class Constant {
 	 */
 	public static String TB_Account = "TB_Account";
 	/**
+	 * 我的消息
+	 */
+	public static String TB_Sms = "TB_Sms";
+	/**
 	 * 定位成功发送广播，选择城市用到
 	 */
 	public static String A_City = "com.wise.wawc.city";

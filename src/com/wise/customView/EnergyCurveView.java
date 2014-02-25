@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import com.wise.data.EnergyItem;
 import com.wise.extend.OnViewTouchListener;
 import com.wise.wawc.R;
-import com.wise.wawc.R.color;
 
+import android.R.integer;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -33,11 +33,11 @@ public class EnergyCurveView extends View implements OnTouchListener{
 	/**
 	 * 距离顶部的高度
 	 */
-	private static final float SPACING_HEIGHT = 40f;
+	private static final float SPACING_HEIGHT = 20;
 	/**
 	 * y轴最高刻度 距离 y轴绘制的 间距
 	 */
-	private static final float WEIGHT = 0;
+	private static final float WEIGHT = 40;
 	/**
 	 * 距离左边的间距
 	 */
@@ -125,8 +125,10 @@ public class EnergyCurveView extends View implements OnTouchListener{
 				x_Distance = x_abc;
 			}
 			if(isLast){
-				moveXOfFirst = points.get(points.size()-1).x;
-				index = points.size()-1;
+			    if(points.size() != 0){
+			        moveXOfFirst = points.get(points.size()-1).x;
+	                index = points.size()-1;
+			    }				
 			}
 			//TODO 计算松手后停靠那个点
 			invalidate();
@@ -164,14 +166,22 @@ public class EnergyCurveView extends View implements OnTouchListener{
 		paint.setColor(Color.GREEN);
 		paint.setAntiAlias(true);
 		//TODO 绘制
-		float dottedSpacing = (mGradientHeight - WEIGHT) / 5;//垂直大间隔,实线距离
+		float dottedSpacing = mGradientHeight/5;//垂直大间隔,实线距离
 		float smallDotted = dottedSpacing / 5;//里面虚线距离
 		float value = maxEnergy.value/5;
+		
+		canvas.drawLine(SPACING, SPACING_HEIGHT, SPACING, mGradientHeight + SPACING_HEIGHT, paint);//y轴
+		canvas.drawLine(SPACING, mGradientHeight + SPACING_HEIGHT, mGradientWidth, mGradientHeight + SPACING_HEIGHT, paint);//x轴
+		float xSpacing = (mGradientWidth - SPACING)/6;
+		for(int i = 0 ; i <= 6 ; i++){
+		    String Date = (i * 5 + 1) + "" ;
+		    canvas.drawText(Date, SPACING + i * xSpacing - 5,mGradientHeight + SPACING_HEIGHT + 15,paint);
+        }
 		/* 水平线和文字 */
 		for (int i = 0; i <= 5; i++) {
 			paint.setStrokeWidth(3);
 			paint.setColor(getResources().getColor(R.color.common));
-			canvas.drawText(""+value * i, SPACING - 25,mGradientHeight + SPACING_HEIGHT - dottedSpacing * i + 5,paint);
+			canvas.drawText(""+(int)(value * i), SPACING - 25,mGradientHeight + SPACING_HEIGHT - dottedSpacing * i,paint);
 			//canvas.drawLine(SPACING, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i, mGradientWidth, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i, paint);
 			paint.setStrokeWidth(1);
 			paint.setColor(0xff999999);
@@ -181,6 +191,7 @@ public class EnergyCurveView extends View implements OnTouchListener{
 				}
 			}			
 		}
+		
 		/* 绘制曲线 覆盖 剪切后的锯齿 */
 		for (int i = 0; i < points.size(); i++) {
 			paint.setStrokeWidth(3);
@@ -309,7 +320,7 @@ public class EnergyCurveView extends View implements OnTouchListener{
 		// 背景渐变色大图
 		int windowW = (int) (dm.widthPixels - SPACING_SCALE);
 		mGradientWidth = windowW;
-		mGradientHeight = (float) (windowW*0.75);
+		mGradientHeight = (float) (windowW*0.7);
 		Log.d(TAG, "mGradientWidth = " + mGradientWidth + ", mGradientHeight = " + mGradientHeight);
 		// 移动的黄色的线条
 		mTrendLine = BitmapFactory.decodeResource(getResources(),R.drawable.energy_trendline);

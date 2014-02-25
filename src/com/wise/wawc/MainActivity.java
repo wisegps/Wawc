@@ -159,9 +159,9 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         // 设置中心
         TextView setup_center = (TextView) findViewById(R.id.setup_center);
         setup_center.setOnClickListener(onClickListener);
+        TextView tv_sms = (TextView) findViewById(R.id.tv_sms);
+        tv_sms.setOnClickListener(onClickListener);
 
-//        TextView car_remind = (TextView) findViewById(R.id.car_remind);
-//        car_remind.setOnClickListener(onClickListener);
         TextView my_car = (TextView) findViewById(R.id.my_car);
         my_car.setOnClickListener(onClickListener);
         TextView my_terminal = (TextView) findViewById(R.id.my_terminal);
@@ -223,9 +223,12 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             case R.id.my_orders:
                 Toorders();
                 break;
-            // 设置中心
+            //TODO  设置中心
             case R.id.setup_center:
                 ToSettingCenter();
+                break;
+            case R.id.tv_sms:
+                ToSms();
                 break;
             case R.id.iv_activity_main_login_qq:
                 if(!isLogin){
@@ -545,6 +548,14 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
         View vv = getLocalActivityManager().startActivity(
                 HomeActivity.class.getName(), intent).getDecorView();
+        tabcontent.removeAllViews();
+        tabcontent.addView(vv);
+        slidingMenuView.snapToScreen(1);
+    }
+    public void ToSms() {
+        Intent intent = new Intent(MainActivity.this, SmsActivity.class);
+        View vv = getLocalActivityManager().startActivity(
+                SmsActivity.class.getName(), intent).getDecorView();
         tabcontent.removeAllViews();
         tabcontent.addView(vv);
         slidingMenuView.snapToScreen(1);

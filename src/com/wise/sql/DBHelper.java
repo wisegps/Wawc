@@ -33,6 +33,8 @@ public class DBHelper extends SQLiteOpenHelper{
 	private static final String CREATE_TB_Traffic = "create table " + Constant.TB_Traffic + "(_id integer primary key autoincrement,obj_id text,Car_name text,create_time text,action text,location text,score int,fine int)";
 	//我的账户
 	private static final String CREATE_TB_Account = "create table " + Constant.TB_Account + "(_id integer primary key autoincrement,cust_id text,Consignee text,Adress text,Phone text,annual_inspect_date text,change_date text)";
+	//我的消息
+	private static final String CREATE_TB_Sms = "create table " + Constant.TB_Sms + "(_id integer primary key autoincrement,cust_id text,noti_id int,msg_type int,content text,rcv_time text,lat text,lon text,status text)";
 	public DBHelper(Context context){
 		super(context,DB_NAME,null,VERSION);
 	}
@@ -53,6 +55,7 @@ public class DBHelper extends SQLiteOpenHelper{
 		db.execSQL(CREATE_TB_Traffic);
 		db.execSQL(CREATE_TB_VehicleFriendType);
 		db.execSQL(CREATE_TB_Account);
+		db.execSQL(CREATE_TB_Sms);
 	}
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {}

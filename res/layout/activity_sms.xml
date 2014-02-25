@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF">
+    <RelativeLayout
+        android:id="@+id/rl_topmenu"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/title_hight"
+        android:background="@drawable/nav_bg">
+		<ImageView
+            android:id="@+id/iv_sms"
+            android:layout_width="@dimen/title_image"
+            android:layout_height="@dimen/title_image"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:layout_marginLeft="@dimen/margins"
+            android:src="@drawable/side_left"/>
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="我的消息"
+            android:textColor="@color/white"
+            android:textSize="@dimen/title"
+            android:textStyle="bold" />
+	</RelativeLayout>
+	<com.wise.list.XListView
+        android:id="@+id/lv_sms"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" 
+        android:divider="#EAEAEA"
+        android:dividerHeight="1dp"
+        android:cacheColorHint="#00000000">
+    </com.wise.list.XListView>
+</LinearLayout>

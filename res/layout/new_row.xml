@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:padding="5dp">    
+    <TextView 
+        android:id="@+id/tv_new_Regnum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:singleLine="true"
+        android:textStyle="bold"
+        android:text="终端消息"/>    
+    <TextView 
+        android:id="@+id/tv_new_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:gravity="bottom"
+        android:singleLine="true"
+        android:layout_marginRight="5dp"
+        android:layout_alignParentRight="true"
+        android:text="09-05 14:06"/>    
+    <TextView 
+        android:id="@+id/tv_new_content"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="#000000"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:layout_marginTop="5dp"
+        android:text="1234234234234234234"
+        android:layout_below="@+id/tv_new_time"/>    
+</RelativeLayout>
