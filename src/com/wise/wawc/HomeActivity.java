@@ -188,10 +188,13 @@ public class HomeActivity extends Activity{
             }
         }
     }
+    private TextView[] mTextViews;
     //TODO 显示车辆
     private void showCar(){
         ScrollLayout_car.removeAllViews();
-        for(CarData carData : carDatas){
+        mTextViews = new TextView[carDatas.size()];
+        for(int i = 0 ; i < carDatas.size() ; i++){
+            CarData carData = carDatas.get(i);
             View view = LayoutInflater.from(HomeActivity.this).inflate(R.layout.item_home_car, null);
             ScrollLayout_car.addView(view);
             RelativeLayout rl_activity_home_car = (RelativeLayout)view.findViewById(R.id.rl_activity_home_car);
@@ -200,7 +203,8 @@ public class HomeActivity extends Activity{
             ImageView iv_carLogo = (ImageView)view.findViewById(R.id.iv_carLogo);
             TextView tv_activity_home_car_adress = (TextView)view.findViewById(R.id.tv_activity_home_car_adress);
             tv_activity_home_car_adress.setText(Variable.Adress);
-            
+            tv_activity_home_car_adress.setOnClickListener(onClickListener);
+            mTextViews[i] = tv_activity_home_car_adress;
             tv_car_number.setText(carData.getObj_name());
             Bitmap bimage = BitmapFactory.decodeFile(carData.getLogoPath());
             if(bimage != null){            
@@ -792,7 +796,9 @@ public class HomeActivity extends Activity{
                     GetCars();
                 }
             }else if(action.equals(Constant.A_City)){
-                //tv_activity_home_car_adress.setText(intent.getStringExtra("AddrStr"));
+                for(int i = 0 ; i < mTextViews.length ; i++){
+                    mTextViews[i].setText(intent.getStringExtra("AddrStr"));
+                }
             }
         }
     };

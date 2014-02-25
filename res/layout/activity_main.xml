@@ -85,7 +85,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/white"
-                android:drawableLeft="@drawable/home_ring"
+                android:drawableLeft="@drawable/side_home"
                 android:text="首页"
                 android:padding="@dimen/margins"
                 android:drawablePadding="@dimen/margins"
@@ -106,19 +106,7 @@
 	            android:layout_height="1dp"
 	            android:layout_marginLeft="@dimen/margins"
 	            android:layout_marginRight="@dimen/margins"
-	            android:background="@drawable/body_line"/>
-	       	<TextView 
-                android:id="@+id/car_remind"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:drawableLeft="@drawable/home_side_remind"
-                android:text="@string/car_remind"
-                android:padding="@dimen/margins"
-                android:layout_marginTop="@dimen/margins"
-                android:drawablePadding="@dimen/margins"
-                android:textSize="@dimen/title"
-                android:gravity="center_vertical"/>	
+	            android:background="@drawable/body_line"/>	
             <TextView 
                 android:id="@+id/my_car"
                 android:layout_width="fill_parent"
@@ -127,6 +115,7 @@
                 android:drawableLeft="@drawable/home_side_car"
                 android:text="@string/my_car"
                 android:padding="@dimen/margins"
+                android:layout_marginTop="@dimen/margins"
                 android:drawablePadding="@dimen/margins"
                 android:textSize="@dimen/title"
                 android:gravity="center_vertical"/>
@@ -162,8 +151,19 @@
                 android:padding="@dimen/margins"
                 android:drawablePadding="@dimen/margins"
                 android:textSize="@dimen/title"
+                android:gravity="center_vertical"/>                
+            <TextView 
+                android:id="@+id/tv_sms"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:drawableLeft="@drawable/side_sms"
+                android:text="@string/car_remind"
+                android:padding="@dimen/margins"
                 android:layout_marginBottom="@dimen/margins"
-                android:gravity="center_vertical"/>	       	
+                android:drawablePadding="@dimen/margins"
+                android:textSize="@dimen/title"
+                android:gravity="center_vertical"/>       	
             <View 
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"

@@ -160,8 +160,8 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         TextView setup_center = (TextView) findViewById(R.id.setup_center);
         setup_center.setOnClickListener(onClickListener);
 
-        TextView car_remind = (TextView) findViewById(R.id.car_remind);
-        car_remind.setOnClickListener(onClickListener);
+//        TextView car_remind = (TextView) findViewById(R.id.car_remind);
+//        car_remind.setOnClickListener(onClickListener);
         TextView my_car = (TextView) findViewById(R.id.my_car);
         my_car.setOnClickListener(onClickListener);
         TextView my_terminal = (TextView) findViewById(R.id.my_terminal);
@@ -209,9 +209,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             // 车友圈
             case R.id.car_circle:
                 ToVehicleFriends();
-                break;
-            case R.id.car_remind:
-                ToCarRemind();
                 break;
             case R.id.my_car:
                 ToMyCar();
