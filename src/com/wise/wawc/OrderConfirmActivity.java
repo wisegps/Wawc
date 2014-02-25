@@ -2,7 +2,12 @@ package com.wise.wawc;
 
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.alipay.android.app.sdk.AliPay;
@@ -32,6 +37,7 @@ public class OrderConfirmActivity extends Activity{
     private static final String TAG = "OrderConfirmActivity";
     private static final int submit_wap = 1;
     private static final int RQF_PAY = 2;
+    private static final int submit_order = 3;
     TextView tv_client,tv_wap;
     boolean isClient = true;
     double money = 0.01;
@@ -59,7 +65,7 @@ public class OrderConfirmActivity extends Activity{
 				break;
 			case R.id.bt_activity_order_confirm_submit:
 				Toast.makeText(OrderConfirmActivity.this, "提交订单",Toast.LENGTH_SHORT).show();
-				pay();
+				submitOrder();
 				break;
 			case R.id.rl_client:
 			    tv_client.setVisibility(View.VISIBLE);
@@ -84,16 +90,36 @@ public class OrderConfirmActivity extends Activity{
                 jsonWapData(msg.obj.toString());
                 break;
 
-            default:
+            case submit_order:
+                System.out.println(msg.obj.toString());
+                try {
+                    JSONObject jsonObject = new JSONObject(msg.obj.toString());
+                    String order_id = jsonObject.getString("order_id");
+                    pay(order_id);
+                } catch (Exception e) {
+                    // TODO: handle exception
+                }
                 break;
             }
         }	    
 	};
-	private void pay(){
+	private void submitOrder(){
+        String url = Constant.BaseUrl + "order?auth_code=" + Variable.auth_code;
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("cust_id", Variable.cust_id));
+        params.add(new BasicNameValuePair("order_type", "1"));
+        params.add(new BasicNameValuePair("product_name", "OBD云终端"));
+        params.add(new BasicNameValuePair("remark", "OBD云终端"));
+        params.add(new BasicNameValuePair("unit_price", "0.01"));
+        params.add(new BasicNameValuePair("quantity", "1"));
+        params.add(new BasicNameValuePair("total_price", "0.01"));
+        new Thread(new NetThread.postDataThread(handler, url, params, submit_order)).start();
+    }
+	private void pay(String order_id){
 	    if(isClient){
 	        clientPay();
 	    }else{
-	        wapPay();
+	        wapPay(order_id);
 	    }
 	}
 	private void clientPay(){
@@ -145,7 +171,8 @@ public class OrderConfirmActivity extends Activity{
         sb.append("\"&notify_url=\"");
 
         // 网址需要做URL编码
-        sb.append(URLEncoder.encode("http://notify.java.jpxx.org/index.jsp"));
+        //sb.append(URLEncoder.encode("http://notify.java.jpxx.org/index.jsp"));
+        sb.append(URLEncoder.encode("http://wiwc.api.wisegps.cn/pay/app_notify"));
         sb.append("\"&service=\"mobile.securitypay.pay");
         sb.append("\"&_input_charset=\"UTF-8");
         sb.append("\"&return_url=\"");
@@ -176,9 +203,9 @@ public class OrderConfirmActivity extends Activity{
         return "sign_type=\"RSA\"";
     }
 	
-	private void wapPay(){
+	private void wapPay(String order_id){
 	    String url = Constant.BaseUrl + "pay/get_url?auth_code=" + Variable.auth_code + "&product_name=OBD云终端"
-	            + "&order_id=3012353453045300000000002&total_price=0.01&cust_id=" + Variable.cust_id;
+	            + "&order_id=" + order_id + "&total_price=0.01&cust_id=" + Variable.cust_id;
 	    new Thread(new NetThread.GetDataThread(handler, url, submit_wap)).start();
 	}
 	private void jsonWapData(String result){

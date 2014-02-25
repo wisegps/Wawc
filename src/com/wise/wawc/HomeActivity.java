@@ -5,7 +5,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,7 +18,6 @@ import com.iflytek.cloud.speech.SpeechUser;
 import com.wise.data.CarData;
 import com.wise.extend.HScrollLayout;
 import com.wise.extend.OnViewChangeListener;
-import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
@@ -29,7 +27,6 @@ import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -55,7 +52,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,13 +66,13 @@ public class HomeActivity extends Activity{
     private static final int Get_Fuel = 3; // 获取城市油价
     private static final int Get_Cars = 4; // 获取车辆数据
     private static final int Get_CarsLogo = 5; // 获取车辆图标
-
+    
+    LinearLayout ll_image;
     TextView tv_item_weather_date, tv_item_weather_wd, tv_item_weather,
             tv_item_weather_sky, tv_item_weather_temp1,
             tv_item_weather_index_xc, tv_item_weather_city,tv_item_oil_90, tv_item_oil_93,
-            tv_item_oil_97, tv_item_oil_0,tv_car_number,tv_activity_home_car_adress;
-    ImageView iv_carLogo,iv_page;
-    
+            tv_item_oil_97, tv_item_oil_0;
+    HScrollLayout ScrollLayout_car;
     private ImageView saySomething = null; // 语音识别
   	private SpeechRecognizer iatRecognizer;   //识别对象
   	private StringBuffer sb = null;
@@ -94,6 +90,7 @@ public class HomeActivity extends Activity{
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
         setContentView(R.layout.activity_home);
+        ll_image = (LinearLayout)findViewById(R.id.ll_image);
         ImageView iv_activity_home_menu = (ImageView) findViewById(R.id.iv_activity_home_menu);
         iv_activity_home_menu.setOnClickListener(onClickListener);
         ImageView iv_activity_car_home_search = (ImageView) findViewById(R.id.iv_activity_car_home_search);
@@ -102,9 +99,16 @@ public class HomeActivity extends Activity{
         bt_activity_home_help.setOnClickListener(onClickListener);
         Button bt_activity_home_risk = (Button) findViewById(R.id.bt_activity_home_risk);
         bt_activity_home_risk.setOnClickListener(onClickListener);
-        // ScrollLayout_car
-        RelativeLayout rl_activity_home_car = (RelativeLayout) findViewById(R.id.rl_activity_home_car);
-        rl_activity_home_car.setOnClickListener(onClickListener);
+
+        ScrollLayout_car = (HScrollLayout) findViewById(R.id.ScrollLayout_car);
+        ScrollLayout_car.setOnViewChangeListener(new OnViewChangeListener() {            
+            @Override
+            public void OnViewChange(int view) {
+                changeImage(view);
+            }            
+            @Override
+            public void OnLastView() {}
+        });
         Button bt_activity_home_vehicle_status = (Button) findViewById(R.id.bt_activity_home_vehicle_status);
         bt_activity_home_vehicle_status.setOnClickListener(onClickListener);
         Button bt_activity_home_car_remind = (Button) findViewById(R.id.bt_activity_home_car_remind);
@@ -113,11 +117,6 @@ public class HomeActivity extends Activity{
         bt_activity_home_traffic.setOnClickListener(onClickListener);
         Button bt_activity_home_share = (Button) findViewById(R.id.bt_activity_home_share);
         bt_activity_home_share.setOnClickListener(onClickListener);
-        tv_activity_home_car_adress = (TextView) findViewById(R.id.tv_activity_home_car_adress);
-        tv_activity_home_car_adress.setOnClickListener(onClickListener);
-        tv_car_number = (TextView)findViewById(R.id.tv_car_number);
-        iv_carLogo = (ImageView)findViewById(R.id.iv_carLogo);
-        iv_page = (ImageView)findViewById(R.id.iv_page);
 
         saySomething = (ImageView) findViewById(R.id.iv_home_say_something);
         saySomething.setOnClickListener(onClickListener);
@@ -139,16 +138,21 @@ public class HomeActivity extends Activity{
         tv_item_oil_93 = (TextView)findViewById(R.id.tv_item_oil_93);
         tv_item_oil_97 = (TextView)findViewById(R.id.tv_item_oil_97);
         tv_item_oil_0 = (TextView)findViewById(R.id.tv_item_oil_0);
+        
+        final ImageView iv_weather = (ImageView)findViewById(R.id.iv_weather);
+        final ImageView iv_oil = (ImageView)findViewById(R.id.iv_oil);
         //tv_item_oil_update = (TextView) oilView.findViewById(R.id.tv_item_oil_update);
         ScrollLayout_other.setOnViewChangeListener(new OnViewChangeListener() {            
             @Override
             public void OnViewChange(int view) {
                 switch (view) {
                 case 0:
-                    iv_page.setImageResource(R.drawable.home_body_cutover_left);
+                    iv_weather.setImageResource(R.drawable.home_body_cutover);
+                    iv_oil.setImageResource(R.drawable.home_body_cutover_press);
                     break;
                 case 1:
-                    iv_page.setImageResource(R.drawable.home_body_cutover_right);
+                    iv_weather.setImageResource(R.drawable.home_body_cutover_press);
+                    iv_oil.setImageResource(R.drawable.home_body_cutover);
                     break;
                 }
             }            
@@ -162,11 +166,48 @@ public class HomeActivity extends Activity{
         GetFuel();
         registerBroadcastReceiver();
         GetDBCars();
+        showCar();
         if(isNeedGetLogoFromUrl){
           new Thread(new getLogoThread()).start();
         }
-        if(Variable.Adress != null){
+        for(int i = 0 ; i < carDatas.size() ; i++){
+            ImageView imageView = new ImageView(this);
+            imageView.setImageResource(R.drawable.home_body_cutover_press);
+            imageView.setPadding(5, 0, 5, 0);
+            ll_image.addView(imageView);
+        }
+        changeImage(DefaultVehicleID);
+    }
+    private void changeImage(int index){
+        for(int i = 0 ; i < carDatas.size() ; i++){
+            ImageView imageView = (ImageView)ll_image.getChildAt(i);
+            if(index == i){
+                imageView.setImageResource(R.drawable.home_body_cutover);
+            }else{
+                imageView.setImageResource(R.drawable.home_body_cutover_press);
+            }
+        }
+    }
+    //TODO 显示车辆
+    private void showCar(){
+        ScrollLayout_car.removeAllViews();
+        for(CarData carData : carDatas){
+            View view = LayoutInflater.from(HomeActivity.this).inflate(R.layout.item_home_car, null);
+            ScrollLayout_car.addView(view);
+            RelativeLayout rl_activity_home_car = (RelativeLayout)view.findViewById(R.id.rl_activity_home_car);
+            rl_activity_home_car.setOnClickListener(onClickListener);
+            TextView tv_car_number = (TextView)view.findViewById(R.id.tv_car_number);
+            ImageView iv_carLogo = (ImageView)view.findViewById(R.id.iv_carLogo);
+            TextView tv_activity_home_car_adress = (TextView)view.findViewById(R.id.tv_activity_home_car_adress);
             tv_activity_home_car_adress.setText(Variable.Adress);
+            
+            tv_car_number.setText(carData.getObj_name());
+            Bitmap bimage = BitmapFactory.decodeFile(carData.getLogoPath());
+            if(bimage != null){            
+                iv_carLogo.setImageBitmap(bimage);
+            }else{
+                iv_carLogo.setImageResource(R.drawable.ic_launcher);
+            }
         }
     }
 
@@ -218,7 +259,7 @@ public class HomeActivity extends Activity{
 				iatRecognizer.setParameter(SpeechConstant.DOMAIN, "iat");
 				iatRecognizer.setParameter(SpeechConstant.SAMPLE_RATE, "16000");
 				iatRecognizer.startListening(recognizerListener);
-				//显示语音识别Dialog  TODO
+				//显示语音识别Dialog
 				voiceDialog = new VoiceDialog(HomeActivity.this);
 				voiceDialog.show();
 				voiceDialog.setCancelable(true);
@@ -248,10 +289,10 @@ public class HomeActivity extends Activity{
                 break;
             case Get_Cars:
                 jsonCars(msg.obj.toString());
-                ShowCarInfo();
+                showCar();
                 break;
             case Get_CarsLogo:
-                ShowCarInfo();
+                showCar();
                 break;
             }
         }
@@ -751,35 +792,36 @@ public class HomeActivity extends Activity{
                     GetCars();
                 }
             }else if(action.equals(Constant.A_City)){
-                tv_activity_home_car_adress.setText(intent.getStringExtra("AddrStr"));
+                //tv_activity_home_car_adress.setText(intent.getStringExtra("AddrStr"));
             }
         }
     };
     /**
      * 显示车辆信息
      */
-    private void ShowCarInfo(){
-        if(Variable.carDatas != null || Variable.carDatas.size() > 0){
-            for(CarData carData : Variable.carDatas){
-                if(carData.isCheck()){
-                    //TODO 显示车辆信息
-                    tv_car_number.setText(carData.getObj_name());
-                    Bitmap bimage = BitmapFactory.decodeFile(carData.getLogoPath());
-                    if(bimage != null){            
-                        iv_carLogo.setImageBitmap(bimage);
-                    }else{
-                        iv_carLogo.setImageResource(R.drawable.ic_launcher);
-                    }
-                    break;
-                }
-            }
-        }
-    }
+//    private void ShowCarInfo1(){
+//        if(Variable.carDatas != null || Variable.carDatas.size() > 0){
+//            for(CarData carData : Variable.carDatas){
+//                if(carData.isCheck()){
+//                    //TODO 显示车辆信息
+//                    tv_car_number.setText(carData.getObj_name());
+//                    Bitmap bimage = BitmapFactory.decodeFile(carData.getLogoPath());
+//                    if(bimage != null){            
+//                        iv_carLogo.setImageBitmap(bimage);
+//                    }else{
+//                        iv_carLogo.setImageResource(R.drawable.ic_launcher);
+//                    }
+//                    break;
+//                }
+//            }
+//        }
+//    }
+    
     @Override
     protected void onResume() {
         super.onResume();
         System.out.println("onResume");
-        ShowCarInfo();
+        //ShowCarInfo();
     }
 
     @Override
@@ -806,15 +848,13 @@ public class HomeActivity extends Activity{
 	 */
 	private SpeechListener listener = new SpeechListener()
 	{
-		public void onData(byte[] arg0) {
-		}
+		public void onData(byte[] arg0) {}
 		public void onCompleted(SpeechError error) {
 			if(error != null) {
 				Toast.makeText(HomeActivity.this, "授权失败" + error, Toast.LENGTH_SHORT).show();
 			}			
 		}
-		public void onEvent(int arg0, Bundle arg1) {
-		}		
+		public void onEvent(int arg0, Bundle arg1) {}		
 	};
 	//TODO 更改语音识别ui布局
 	RecognizerListener recognizerListener=new RecognizerListener(){

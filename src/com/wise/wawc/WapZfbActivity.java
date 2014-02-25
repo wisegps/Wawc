@@ -1,10 +1,12 @@
 package com.wise.wawc;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
+import android.view.View;
+import android.view.View.OnTouchListener;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -22,9 +24,16 @@ public class WapZfbActivity extends Activity {
 		myWebView = (WebView) findViewById(R.id.myWebView);
 		myWebView.getSettings().setJavaScriptEnabled(true);
 		myWebView.loadUrl(redirect);
+		//myWebView.loadUrl("http://wiwc.api.wisegps.cn/pay/callback?out_trade_no=3014011100000008008406&request_token=requestToken&result=success&trade_no=2014022425693457&sign=3148bcb0476f64b003d217cef467344c&sign_type=MD5");
 		myWebView.addJavascriptInterface(new JSInvokeClass(),"android");
 		myWebView.setWebViewClient(new myWebViewClient());
-
+		myWebView.setOnTouchListener(new OnTouchListener() {            
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                myWebView.requestFocus();
+                return false;
+            }
+        });
 	}
 	
 	class JSInvokeClass {
@@ -35,11 +44,6 @@ public class WapZfbActivity extends Activity {
         }
         public void clickOnAndroid(){
             System.out.println("clickOnAndroid");
-            Toast.makeText(WapZfbActivity.this, "clickOnAndroid", Toast.LENGTH_SHORT).show();
-        } 
-        public void showToast(String toast) {
-            Toast.makeText(WapZfbActivity.this, toast, Toast.LENGTH_SHORT).show();
-            System.out.println("goActivity");
         }
     }
 
@@ -51,30 +55,6 @@ public class WapZfbActivity extends Activity {
 		}
 		return super.onKeyDown(keyCode, event);
 	}
-
-	public String getFromAssets(String fileName) {
-		try {
-			InputStreamReader inputReader = new InputStreamReader(
-					getResources().getAssets().open(fileName));
-
-			BufferedReader bufReader = new BufferedReader(inputReader);
-
-			String line = "";
-			String Result = "";
-
-			while ((line = bufReader.readLine()) != null)
-				Result += line;
-			if (bufReader != null)
-				bufReader.close();
-			if (inputReader != null)
-				inputReader.close();
-			return Result;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
 	class myWebViewClient extends WebViewClient {
 
 		@Override

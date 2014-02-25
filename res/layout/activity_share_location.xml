@@ -56,9 +56,9 @@
                 android:textColor="@color/common"
                 android:textSize="@dimen/content"/>
 	        <TextView 
+	            android:id="@+id/tv_adress"
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
-	            android:text="沙河西路1号"
 	            android:textColor="@color/common"
 	            android:textSize="@dimen/content"/>
 	    </LinearLayout>
@@ -74,12 +74,13 @@
 	            android:layout_marginRight="@dimen/double_margins"
                 android:textColor="@color/common"
                 android:textSize="@dimen/content"
-	            android:text="分享原因："/>
+	            android:text="分享原因"/>
 	        <Spinner 
 	            android:id="@+id/sp_reason"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:layout_alignParentRight="true"
+	            android:background="@drawable/bg_share_spinner"
 	            android:layout_toRightOf="@id/tv_activity_share_location"/>
 	    </RelativeLayout>
 	    <LinearLayout 
@@ -112,7 +113,6 @@
 	            android:layout_width="80dp"
 	            android:layout_height="80dp"
 	            android:contentDescription="@string/app_name"
-	            android:layout_marginRight="@dimen/margins"
 	            android:src="@drawable/bg"/>
 	        <ImageView 
 	            android:id="@+id/iv_camera"

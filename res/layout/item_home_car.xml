@@ -4,72 +4,50 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/ll_item_home_car"
-    android:background="@color/white"
-    android:padding="10dp"
     android:orientation="vertical">
-    <RelativeLayout 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-        <ImageView
-            android:id="@+id/item_home_car_icon" 
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_launcher"/>
-        <TextView 
-            android:id="@+id/item_home_car_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/item_home_car_icon"
-            android:text="粤B12345"/>
-        <ImageView
-            android:id="@+id/item_home_car_share" 
-            android:layout_alignParentRight="true"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_launcher"/>
-        <ImageView
-            android:id="@+id/item_home_car_traffic" 
-            android:layout_toLeftOf="@id/item_home_car_share"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_launcher"/>
-        <ImageView
-            android:id="@+id/item_home_car_vehicle_event" 
-            android:layout_toLeftOf="@id/item_home_car_traffic"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_launcher"/>
-        <ImageView
-            android:id="@+id/item_home_car_vehicle_status" 
-            android:layout_toLeftOf="@id/item_home_car_vehicle_event"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:src="@drawable/ic_launcher"/>
-    </RelativeLayout>
-    <LinearLayout        
+    <RelativeLayout
+        android:id="@+id/rl_activity_home_car"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
-        <ImageView 
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+        android:padding="@dimen/margins">
+        <ImageView
+            android:id="@+id/iv_carLogo" 
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/app_name"
             android:src="@drawable/ic_launcher"/>
         <TextView 
-            android:id="@+id/tv_item_home_car_adress"
+            android:id="@+id/tv_car_number"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:layout_gravity="center_vertical"
-            android:text="深圳市南山区南山大道115号，招商银行附近"/>
-    </LinearLayout>
+            android:layout_centerVertical="true"
+            android:textSize="@dimen/head"
+            android:layout_marginLeft="@dimen/margins"
+            android:layout_toRightOf="@id/iv_carLogo"
+            android:drawableRight="@drawable/car_arrow"
+            android:textColor="@color/white"/>       
+    </RelativeLayout>
+    <View 
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="@dimen/margins"
+        android:layout_marginRight="@dimen/margins"
+        android:background="@drawable/body_line"/>
+    <TextView 
+        android:id="@+id/tv_activity_home_car_adress"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_margin="@dimen/margins"
+        android:textSize="@dimen/main"
+        android:drawableLeft="@drawable/home_lbs"
+        android:gravity="center_vertical"/>
     <TextView 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/black"
+        android:textColor="@color/white_inactive"
         android:gravity="right"
-        android:text="5分钟前更新"/>
+        android:layout_marginRight="@dimen/margins"
+        android:layout_marginBottom="@dimen/margins"
+        android:text="5分钟前更新"/>    
 </LinearLayout>

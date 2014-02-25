@@ -46,122 +46,89 @@
         android:background="@color/bg_home1"
         android:layout_marginTop="@dimen/double_margins"
         android:orientation="vertical">
-        <RelativeLayout 
-            android:id="@+id/rl_activity_home_car"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:padding="@dimen/margins">
-	        <ImageView
-	            android:id="@+id/iv_carLogo" 
-	            android:layout_width="50dp"
-	            android:layout_height="50dp"
-	            android:contentDescription="@string/app_name"
-	            android:src="@drawable/ic_launcher"/>
-	        <TextView 
-	            android:id="@+id/tv_car_number"
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:layout_centerVertical="true"
-	            android:textSize="@dimen/head"
-	            android:layout_marginLeft="@dimen/margins"
-	            android:layout_toRightOf="@id/iv_carLogo"
-	            android:drawableRight="@drawable/car_arrow"
-	            android:textColor="@color/white"/>       
-	    </RelativeLayout>
-	    <View 
-	        android:layout_width="fill_parent"
-	        android:layout_height="1dp"
-	        android:layout_marginLeft="@dimen/margins"
-	        android:layout_marginRight="@dimen/margins"
-	        android:background="@drawable/body_line"/>
-	    <TextView 
-            android:id="@+id/tv_activity_home_car_adress"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:layout_margin="@dimen/margins"
-            android:textSize="@dimen/main"
-            android:drawableLeft="@drawable/home_lbs"
-            android:gravity="center_vertical"/>
-	    <TextView 
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:textColor="@color/white_inactive"
-	        android:gravity="right"
-	        android:layout_marginRight="@dimen/margins"
-	        android:layout_marginBottom="@dimen/margins"
-	        android:text="5分钟前更新"/>
-	    <LinearLayout
-	        android:orientation="horizontal" 
-	        android:padding="@dimen/margins"
+        <com.wise.extend.HScrollLayout
+              xmlns:android="http://schemas.android.com/apk/res/android"    
+              android:id="@+id/ScrollLayout_car"  
+              android:layout_width="fill_parent"   
+              android:layout_height="wrap_content">            
+        </com.wise.extend.HScrollLayout>
+        <LinearLayout
+	        android:orientation="horizontal"
 	        android:background="@color/bg_home"
+	        android:paddingTop="@dimen/margins"
+	        android:paddingBottom="@dimen/margins"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content">
 	        <LinearLayout 
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:gravity="center_horizontal"
-		        android:layout_weight="1">
+	            android:layout_weight="1">
 	            <Button 
 	                android:id="@+id/bt_activity_home_vehicle_status"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:textColor="@color/text_color_selector"
-		            android:drawableTop="@drawable/home_condition"
-		            android:background="@null"
-		            android:textSize="@dimen/main"
-		            android:text="@string/vehicle_status"/>
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textColor="@color/text_color_selector"
+	                android:drawableTop="@drawable/home_condition"
+	                android:background="@null"
+	                android:textSize="@dimen/main"
+	                android:text="@string/vehicle_status"/>
 	        </LinearLayout>
 	        <LinearLayout 
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:gravity="center_horizontal"
-		        android:layout_weight="1">
+	            android:layout_weight="1">
 	            <Button 
 	                android:id="@+id/bt_activity_home_car_remind"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:textColor="@color/text_color_selector"
-		            android:drawableTop="@drawable/home_remind"
-		            android:background="@null"
-		            android:textSize="@dimen/main"
-		            android:text="@string/car_remind"/>
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textColor="@color/text_color_selector"
+	                android:drawableTop="@drawable/home_remind"
+	                android:background="@null"
+	                android:textSize="@dimen/main"
+	                android:text="@string/car_remind"/>
 	        </LinearLayout>
 	        <LinearLayout 
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:gravity="center_horizontal"
-		        android:layout_weight="1">
+	            android:layout_weight="1">
 	            <Button 
 	                android:id="@+id/bt_activity_home_traffic"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:textColor="@color/text_color_selector"
-		            android:drawableTop="@drawable/home_violate"
-		            android:background="@null"
-		            android:textSize="@dimen/main"
-		            android:text="@string/traffic"/>
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textColor="@color/text_color_selector"
+	                android:drawableTop="@drawable/home_violate"
+	                android:background="@null"
+	                android:textSize="@dimen/main"
+	                android:text="@string/traffic"/>
 	        </LinearLayout>
 	        <LinearLayout 
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:gravity="center_horizontal"
-		        android:layout_weight="1">
+	            android:layout_weight="1">
 	            <Button 
 	                android:id="@+id/bt_activity_home_share"
-		            android:layout_width="wrap_content"
-		            android:layout_height="wrap_content"
-		            android:textColor="@color/text_color_selector"
-		            android:drawableTop="@drawable/home_share"
-		            android:background="@null"
-		            android:textSize="@dimen/main"
-		            android:text="@string/shareLocation"/>
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content"
+	                android:textColor="@color/text_color_selector"
+	                android:drawableTop="@drawable/home_share"
+	                android:background="@null"
+	                android:textSize="@dimen/main"
+	                android:text="@string/shareLocation"/>
 	        </LinearLayout>
 	    </LinearLayout>
-	    <View 
+	    <LinearLayout 
+	        android:id="@+id/ll_image"
 	        android:layout_width="fill_parent"
-	        android:layout_height="2dp"
-	        android:background="@color/blue_bg"/>
+	        android:layout_height="wrap_content"
+	        android:gravity="center_horizontal"
+	        android:paddingTop="@dimen/margins"
+	        android:paddingBottom="@dimen/margins"
+	        android:orientation="horizontal">
+	    </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_below="@id/ll_car"
@@ -295,101 +262,137 @@
 			    <LinearLayout 
 			        android:layout_width="fill_parent"
 			        android:layout_height="wrap_content"
-			        android:orientation="vertical">
-			        <LinearLayout 
-			            android:layout_width="fill_parent"
-			            android:layout_height="wrap_content"
-			            android:layout_marginBottom="@dimen/double_margins"
-			            android:orientation="horizontal">
-			            <TextView 
-			                android:layout_width="fill_parent"
-			                android:layout_height="wrap_content"
-			                android:gravity="center_horizontal"
-			                android:layout_weight="1"
-			                android:textColor="@color/white"
-			                android:textSize="@dimen/main"
-			                android:text="90#"/>
-			            <TextView 
-			                android:layout_width="fill_parent"
-			                android:layout_height="wrap_content"
-			                android:gravity="center_horizontal"
-			                android:layout_weight="1"
-			                android:textColor="@color/white"
-			                android:textSize="@dimen/main"
-			                android:text="93#"/>
-			            <TextView 
-			                android:layout_width="fill_parent"
-			                android:layout_height="wrap_content"
-			                android:gravity="center_horizontal"
-			                android:layout_weight="1"
-			                android:textColor="@color/white"
-			                android:textSize="@dimen/main"
-			                android:text="97#"/>
-			            <TextView 
-			                android:layout_width="fill_parent"
-			                android:layout_height="wrap_content"
-			                android:gravity="center_horizontal"
-			                android:layout_weight="1"
-			                android:textColor="@color/white"
-			                android:textSize="@dimen/main"
-			                android:text="0#"/>
-			        </LinearLayout>
-			        <LinearLayout 
-			            android:layout_width="fill_parent"
-			            android:layout_height="wrap_content"
-			            android:orientation="horizontal">
-			            <TextView 
-			                android:id="@+id/tv_item_oil_90"
-			                android:layout_width="fill_parent"
-			                android:layout_height="wrap_content"
-			                android:gravity="center_horizontal"
-			                android:layout_weight="1"
-			                android:textColor="@color/white"
-			                android:textSize="@dimen/main"
-			                android:text="0.00"/>
-			            <TextView 
-			                android:id="@+id/tv_item_oil_93"
-			                android:layout_width="fill_parent"
-			                android:layout_height="wrap_content"
-			                android:gravity="center_horizontal"
-			                android:layout_weight="1"
-			                android:textColor="@color/white"
-			                android:textSize="@dimen/main"
-			                android:text="0.00"/>
-			            <TextView 
-			                android:id="@+id/tv_item_oil_97"
-			                android:layout_width="fill_parent"
-			                android:layout_height="wrap_content"
-			                android:gravity="center_horizontal"
-			                android:layout_weight="1"
-			                android:textColor="@color/white"
-			                android:textSize="@dimen/main"
-			                android:text="0.00"/>
-			            <TextView 
-			                android:id="@+id/tv_item_oil_0"
-			                android:layout_width="fill_parent"
-			                android:layout_height="wrap_content"
-			                android:gravity="center_horizontal"
-			                android:layout_weight="1"
-			                android:textColor="@color/white"
-			                android:textSize="@dimen/main"
-			                android:text="0.00"/>
-			        </LinearLayout>
+			        android:orientation="horizontal">
+			        <LinearLayout
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:layout_weight="1"
+				        android:gravity="center_horizontal"
+				        android:orientation="vertical" >
+				        <TextView 
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:textColor="@color/white"
+				            android:textSize="@dimen/main"
+				            android:padding="@dimen/margins"
+				            android:text="90#"/>
+				        <TextView 
+				            android:layout_width="30dp"
+				            android:layout_height="1dp"
+				            android:background="@color/white"/>
+				        <TextView 
+				            android:id="@+id/tv_item_oil_90"
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:textColor="@color/white"
+				            android:textSize="@dimen/main"
+				            android:padding="@dimen/margins"
+				            android:text="90#"/>
+				    </LinearLayout>
+				    <LinearLayout 
+				        android:layout_weight="1"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:gravity="center_horizontal"
+				        android:orientation="vertical">
+				        <TextView 
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:textColor="@color/white"
+				            android:textSize="@dimen/main"
+				            android:padding="@dimen/margins"
+				            android:text="90#"/>
+				        <TextView 
+				            android:layout_width="30dp"
+				            android:layout_height="1dp"
+				            android:background="@color/white"/>
+				        <TextView 
+				            android:id="@+id/tv_item_oil_93"
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:textColor="@color/white"
+				            android:textSize="@dimen/main"
+				            android:padding="@dimen/margins"
+				            android:text="90#"/>
+				    </LinearLayout>
+				    <LinearLayout 
+				        android:layout_weight="1"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:gravity="center_horizontal"
+				        android:orientation="vertical">
+				        <TextView 
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:textColor="@color/white"
+				            android:textSize="@dimen/main"
+				            android:padding="@dimen/margins"
+				            android:text="90#"/>
+				        <TextView 
+				            android:layout_width="30dp"
+				            android:layout_height="1dp"
+				            android:background="@color/white"/>
+				        <TextView 
+				            android:id="@+id/tv_item_oil_97"
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:textColor="@color/white"
+				            android:textSize="@dimen/main"
+				            android:padding="@dimen/margins"
+				            android:text="90#"/>
+				    </LinearLayout>
+				    <LinearLayout 
+				        android:layout_weight="1"
+				        android:layout_width="wrap_content"
+				        android:layout_height="wrap_content"
+				        android:gravity="center_horizontal"
+				        android:orientation="vertical">
+				        <TextView 
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:textColor="@color/white"
+				            android:textSize="@dimen/main"
+				            android:padding="@dimen/margins"
+				            android:text="90#"/>
+				        <TextView 
+				            android:layout_width="30dp"
+				            android:layout_height="1dp"
+				            android:background="@color/white"/>
+				        <TextView 
+				            android:id="@+id/tv_item_oil_0"
+				            android:layout_width="wrap_content"
+				            android:layout_height="wrap_content"
+				            android:textColor="@color/white"
+				            android:textSize="@dimen/main"
+				            android:padding="@dimen/margins"
+				            android:text="90#"/>
+				    </LinearLayout>			        
 			    </LinearLayout>
 			</LinearLayout>
-	    </com.wise.extend.HScrollLayout>	      
-        <ImageView 
-            android:id="@+id/iv_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/margins"
-            android:src="@drawable/home_body_cutover_left"/>
+	    </com.wise.extend.HScrollLayout>
+	    <LinearLayout 
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:orientation="horizontal"
+	        android:gravity="center_horizontal"
+	        android:padding="@dimen/margins1">	        
+	        <ImageView 
+	            android:id="@+id/iv_weather"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:layout_marginRight="@dimen/margins"
+	            android:src="@drawable/home_body_cutover"/>
+	        <ImageView 
+	            android:id="@+id/iv_oil"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/home_body_cutover_press"/>
+	    </LinearLayout>	      
     </LinearLayout>   
 	<RelativeLayout 
 	    android:layout_width="fill_parent"
 	    android:layout_height="@dimen/title_hight"
-	    android:background="@color/bg_home1"
+	    android:background="@drawable/nav_bg"
 	    android:layout_alignParentBottom="true">
 	    <Button
 	        android:id="@+id/bt_activity_home_help" 
@@ -400,12 +403,12 @@
 	        android:layout_centerVertical="true"
 	        android:background="@null"
 	        android:textColor="@color/white"
-	        android:textSize="20sp"
+	        android:textSize="@dimen/main"
 	        android:text="救援"/>
 	    <View 
 	        android:id="@+id/view_line"
 	        android:layout_width="1dp"
-	        android:layout_height="20dp"
+	        android:layout_height="@dimen/main"
 	        android:layout_marginLeft="@dimen/margins"
 	        android:layout_centerVertical="true"
 	        android:layout_toRightOf="@+id/bt_activity_home_help"
@@ -416,11 +419,11 @@
 	        android:layout_height="wrap_content"
 	        android:layout_toRightOf="@+id/view_line"
 	        android:drawableLeft="@drawable/home_call"
-	        android:layout_marginLeft="10dp"
+	        android:layout_marginLeft="@dimen/margins"
             android:layout_centerVertical="true"
             android:background="@null"
             android:textColor="@color/white"
-            android:textSize="20sp"
+            android:textSize="@dimen/main"
 	        android:text="报险"/>
 	    <ImageView 
 	        android:id="@+id/iv_home_say_something"
