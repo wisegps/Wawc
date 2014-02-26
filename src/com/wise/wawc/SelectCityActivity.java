@@ -81,6 +81,7 @@ public class SelectCityActivity extends Activity {
         tv_select_city_title = (TextView) findViewById(R.id.tv_select_city_title);
         tv_activity_select_city_location = (TextView) findViewById(R.id.tv_activity_select_city_location);
         tv_activity_select_city_location.setOnClickListener(onClickListener);
+        LocationCity = Variable.Adress;
         tv_activity_select_city_location.setText(Variable.Adress);
         lv_activity_select_city = (ListView) findViewById(R.id.lv_activity_select_city);
         Intent intent = getIntent();
@@ -205,7 +206,7 @@ public class SelectCityActivity extends Activity {
         }
     };
     
-    private void clickLocationCity(){
+    private void clickLocationCity(){        
         if(!LocationCity.equals("")){
             for(int i = 0 ; i < cityDatas.size() ; i++){
                 CityData cityData = cityDatas.get(i);
