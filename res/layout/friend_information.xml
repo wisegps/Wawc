@@ -4,142 +4,119 @@
     android:layout_height="fill_parent"
     android:background="#FFFFFF"
     android:orientation="vertical"
-    tools:context=".VehicleStatusActivity" >
+    tools:context=".VehicleStatusActivity" 
+    >
 
     <!-- 头部 -->
-
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/friend_home_top"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
+        android:layout_height="@dimen/title_hight"
+        android:background="@color/blue"
+         >
 
-        <Button
-            android:id="@+id/setting_center_menu"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:background="@drawable/ic_launcher" />
+        <ImageView
+            android:id="@+id/friend_information_back"
+            android:layout_width="@dimen/title_image"
+            android:layout_height="@dimen/title_image"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/side_back"  />
 
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1"
             android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:text="@string/friend_information"
-            android:textSize="10pt" />
-
-        <Button
-            android:id="@+id/setting_center_home"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:background="@drawable/ic_launcher" />
-    </LinearLayout>
+            android:textSize="@dimen/head"
+            android:textColor="@color/white"
+             />
+    </RelativeLayout>
     
-    <View 
+    <!-- 用户信息 -->
+    <LinearLayout 
+        android:layout_margin="@dimen/margins"
         android:layout_width="fill_parent"
-        android:layout_height="1dip"
-        android:background="#000000"
-        />
-    <TableLayout 
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:background="#000000"
-	    >
-	<TableRow 
-            android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"
+        >
+        <ImageView 
+            android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:layout_marginRight="1dip"
-            android:layout_marginLeft="1dip"
-            android:layout_marginBottom="1dip"
+            android:layout_weight="1.5"
+            android:background="@drawable/ic_launcher"
+            />
+        <LinearLayout 
+             android:layout_width="0dip"
+	    	 android:layout_height="wrap_content"
+	    	 android:orientation="vertical"
+	    	 android:layout_weight="6"
+	    	 android:layout_marginLeft="10dip"
+	    	 android:layout_gravity="center"
             >
-            <RelativeLayout 
+            <TextView 
+                android:id="@+id/friend_article_content"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dip"
-                >
-                <ImageView 
-                    android:id="@+id/iv_friend_head"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_launcher"
-                    />
-                <TextView 
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="大众途安"
-                    android:textSize="10pt"
-                    android:layout_alignTop="@id/iv_friend_head"
-                    android:layout_toRightOf="@id/iv_friend_head"
-                    android:textColor="#000000"
-                    android:layout_marginLeft="5dip"
-                    />
-                <TextView 
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="粤B12345"
-                    android:layout_marginLeft="5dip"
-                    android:layout_alignBottom="@id/iv_friend_head"
-                    android:layout_toRightOf="@id/iv_friend_head"
-                    android:textColor="#000000"
-                    />
-            </RelativeLayout>
-        </TableRow> 
-        <TableRow 
-            android:layout_width="fill_parent"
+                android:text="什么都可以"
+                android:textColor="@color/common"
+                />
+        </LinearLayout>
+    </LinearLayout>
+    
+    <TextView 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="他的爱车"
+        android:layout_margin="@dimen/margins"
+        android:textColor="@color/common"
+        />
+    
+    
+    <LinearLayout 
+        android:layout_margin="@dimen/margins"
+        android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:orientation="horizontal"
+    	android:background="@color/gray_light"
+    	android:gravity="center"
+        >
+        <ImageView 
+            android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:layout_marginRight="1dip"
-            android:layout_marginLeft="1dip"
-            android:layout_marginBottom="1dip"
+            android:layout_weight="1.5"
+            android:background="@drawable/ic_launcher"
+            />
+        <LinearLayout 
+             android:layout_width="0dip"
+	    	 android:layout_height="wrap_content"
+	    	 android:orientation="vertical"
+	    	 android:layout_weight="6"
+	    	 android:layout_gravity="center"
             >
             <TextView 
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/friend_vehicle"
-                android:textColor="#000000"
+                android:text="宝马x86"
+                android:layout_margin="10dip"
+                android:textColor="@color/common"
                 />
-        </TableRow>
-        <TableRow 
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="#FFFFFF"
-            android:layout_marginRight="1dip"
-            android:layout_marginLeft="1dip"
-            android:layout_marginBottom="1dip"
-            >
-            <RelativeLayout 
+            <TextView 
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dip"
-                >
-                <ImageView 
-                    android:id="@+id/iv_vehicle_brand"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_launcher"
-                    />
-                <TextView 
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="宝马X3"
-                    android:textSize="10pt"
-                    android:layout_alignTop="@id/iv_vehicle_brand"
-                    android:layout_toRightOf="@id/iv_vehicle_brand"
-                    android:textColor="#000000"
-                    android:layout_marginLeft="5dip"
-                    />
-                <TextView 
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="粤B23443"
-                    android:layout_marginLeft="5dip"
-                    android:layout_alignBottom="@id/iv_vehicle_brand"
-                    android:layout_toRightOf="@id/iv_vehicle_brand"
-                    android:textColor="#000000"
-                    />
-            </RelativeLayout>
-        </TableRow> 
-        </TableLayout>
+                android:text="粤B12345"
+                android:layout_margin="10dip"
+                android:textColor="@color/common"
+                />
+        </LinearLayout>
+    </LinearLayout>
+    <TextView 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="他的车友圈"
+        android:layout_margin="@dimen/margins"
+        android:textColor="@color/common"
+        />
 </LinearLayout>

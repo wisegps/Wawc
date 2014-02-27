@@ -83,9 +83,6 @@ public class FriendArticleAdapter extends BaseAdapter{
 		myHandler = new MyHandler();
 		dbExcute = new DBExcute();
 		friendHomeActivity = new FriendHomeActivity();
-		for(int i = 0 ; i < this.articleList.size() ; i ++){
-			Log.e("iiiii",this.articleList.get(i).getBlog_id()+"");
-		}
 	}
 	public int getCount() {
 		return articleList.size();
@@ -114,7 +111,7 @@ public class FriendArticleAdapter extends BaseAdapter{
 			Map<String, String> imageMap = articleList.get(position)
 					.getImageList().get(i);
 			// 判断小图是否存在sd卡 /点击小图的时候再判断是否存在sd卡
-			String smallImage = imageMap.get("big_pic").substring(imageMap.get("big_pic").lastIndexOf("/"));
+			String smallImage = imageMap.get("small_pic").substring(imageMap.get("small_pic").lastIndexOf("/"));
 			Bitmap smallBitmap = imageIsExist(Constant.VehiclePath + smallImage,imageMap.get("small_pic"));
 			smallImageList.add(smallBitmap);
 		}
@@ -123,6 +120,7 @@ public class FriendArticleAdapter extends BaseAdapter{
 		for (int i = 0; i < smallImageList.size(); i++) {
 			ImageView t = new ImageView(context);
 			t.setClickable(true);
+			t.setPadding(0, 0, 10, 0);
 			t.setId(i);
 			t.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
@@ -134,10 +132,10 @@ public class FriendArticleAdapter extends BaseAdapter{
 			t.setImageBitmap(smallImageList.get(i));
 			row.addView(t);
 			if ((i % 3 + 1) == 3) {
-				table.addView(row, new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+				table.addView(row, new TableLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
 				row = new TableRow(context);
 			} else if (i == (smallImageList.size() - 1)) {
-				table.addView(row, new TableLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+				table.addView(row, new TableLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
 			}
 		}
 		//动态添加用户的评论
@@ -159,11 +157,6 @@ public class FriendArticleAdapter extends BaseAdapter{
 				if(articleList.get(position).getPraisesList() != null){
 					if(articleList.get(position).getPraisesList().size() != 0){
 						sb = new StringBuffer();
-//						for(int f = 0 ; f < articleList.get(position).getPraisesList().size(); f ++){
-//							sb.append(articleList.get(position).getPraisesList().get(f) + "、");
-//						}
-						
-						
 						Iterator iter = articleList.get(position).getPraisesList().entrySet().iterator();
 						while (iter.hasNext()) {
 							Map.Entry entry = (Map.Entry) iter.next();

@@ -37,7 +37,8 @@
     <string name="cloud_terminal">OBD云终端</string>
     <string name="against_rules">违章查询</string>
     <string name="traffic_department">车务提醒</string>
-    <string name="engine_number">发动机型号</string>
+    <string name="engine_number">发动机号</string>
+    <string name="vehicle_reg_num">登记证号</string>
     <string name="vehicle_number">车架号</string>
     <string name="insurance_company">保险公司</string>
     <string name="insurance_time">保险时间到期</string>
@@ -45,6 +46,7 @@
     <string name="current_mileage">当前里程</string>
     <string name="last_insurance_mileage">最后保养里程</string>
     <string name="last_insurance_time">最后保养时间</string>
+    <string name="select_city">所在城市</string>
     <string name="shopping_time">购车时间</string>
     <string name="delete_vehicle">删除当前车辆</string>
     <string name="delete">删除</string>

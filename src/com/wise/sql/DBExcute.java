@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import com.wise.data.AdressData;
 import com.wise.data.Article;
+import com.wise.data.IllegalCity;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.Variable;
 
@@ -309,5 +310,17 @@ public class DBExcute {
 			e.printStackTrace();
 		}
 		return article;
+	}
+	
+	public List<IllegalCity> selectIllegal(Context context){
+		DBHelper helper = new DBHelper(context);
+		SQLiteDatabase reader = helper.getReadableDatabase();
+		Cursor cursor = reader.rawQuery("select * from " + Constant.TB_IllegalCity, new String[]{});
+		if(cursor.moveToFirst()){
+			String json = cursor.getColumnName(cursor.getColumnIndex("json_data"));
+			
+			//解析json数据
+		}
+		return null;
 	}
 }
