@@ -1,6 +1,7 @@
 package com.wise.pubclas;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -64,14 +65,25 @@ public class NetThread {
 				if (httpsConn != null) {
 					httpsConn.setConnectTimeout(20*1000);
 					httpsConn.setReadTimeout(20*1000);
-					InputStreamReader insr = new InputStreamReader(httpsConn.getInputStream(), "UTF-8");
-					BufferedReader br = new BufferedReader(insr, 1024);
-					String data = "";
-					String line = "";
-					while ((line = br.readLine()) != null) {
-						data += line;
+					//InputStreamReader insr = new InputStreamReader(httpsConn.getInputStream(), "UTF-8");
+					
+					//BufferedReader br = new BufferedReader(insr, 1024);
+					//String data = "";
+					//String line = "";
+					//while ((line = br.readLine()) != null) {
+						//data += line;
+					//}
+					// 分段读取输入流数据  
+			        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+					InputStream inputStream = httpsConn.getInputStream();
+					byte[] buffer = new byte[1024];
+					int len = -1;
+					while((len = inputStream.read(buffer))!= -1){
+					    baos.write(buffer, 0, len);
 					}
-					insr.close();
+					String data = new String(baos.toByteArray(), "UTF-8");				
+					inputStream.close();
+					//insr.close();
 					
 					Message message = new Message();
 					message.what = what;

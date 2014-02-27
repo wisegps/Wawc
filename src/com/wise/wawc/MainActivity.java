@@ -491,6 +491,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        System.out.println("MainActivity onDestroy");
         ShareSDK.stopSDK(this);
         WawcApplication app = (WawcApplication) this.getApplication();
         if (app.mBMapManager != null) {
@@ -509,10 +510,10 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         VehicleFriendActivity.newArticleBlogId = 0;
         
         //测试  车友圈刷新
-        DBHelper dbHelper = new DBHelper(MainActivity.this);
-        SQLiteDatabase write = dbHelper.getWritableDatabase();
-        write.delete(Constant.TB_VehicleFriend, "Blog_id=?", new String[]{String.valueOf(VehicleFriendActivity.minBlogId)});
-        VehicleFriendActivity.minBlogId = 0;
+        //DBHelper dbHelper = new DBHelper(MainActivity.this);
+        //SQLiteDatabase write = dbHelper.getWritableDatabase();
+        //write.delete(Constant.TB_VehicleFriend, "Blog_id=?", new String[]{String.valueOf(VehicleFriendActivity.minBlogId)});
+        //VehicleFriendActivity.minBlogId = 0;
     }
 
     /**

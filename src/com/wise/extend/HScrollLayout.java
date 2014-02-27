@@ -38,18 +38,28 @@ public class HScrollLayout extends ViewGroup {
         scroller = new Scroller(context);
         mContext = context;
     }
-
+    int desireWidth;
+    int desireHeight;
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-         int count = getChildCount();
-         int Height = 0;
-         for(int i = 0 ; i < count; i++){
-             Height = MeasureSpec.makeMeasureSpec(getChildAt(0).getHeight(), MeasureSpec.AT_MOST);
-             getChildAt(i).measure(widthMeasureSpec,heightMeasureSpec);//设置每个view的大小
-         }
-         scrollTo(0, 0);//Scroller定位
-         setMeasuredDimension(widthMeasureSpec, Height);  
+        desireWidth = 0;
+        desireHeight = 0;
+        int count = getChildCount();
+        for (int i = 0; i < count; ++i) {
+            View v = getChildAt(i);
+            if (v.getVisibility() != View.GONE) {
+                measureChild(v, widthMeasureSpec,heightMeasureSpec);
+                desireWidth += v.getMeasuredWidth();
+                desireHeight = Math.max(desireHeight, v.getMeasuredHeight());
+            }
+        }
+        desireWidth += getPaddingLeft() + getPaddingRight();
+        desireHeight += getPaddingTop() + getPaddingBottom();
+        desireWidth = Math.max(desireWidth, getSuggestedMinimumWidth());
+        desireHeight = Math.max(desireHeight, getSuggestedMinimumHeight());
+        setMeasuredDimension(resolveSize(desireWidth, widthMeasureSpec),
+        resolveSize(desireHeight, heightMeasureSpec));
     }
 
     @Override
@@ -117,25 +127,25 @@ public class HScrollLayout extends ViewGroup {
         case MotionEvent.ACTION_MOVE:
             int deltaX = (int) (downMotionX - x);
             downMotionX = x;
-            if(deltaX < 0){//向右滑
+            if (deltaX < 0) {// 向右滑
                 System.out.println("deltaX = " + deltaX);
                 System.out.println("getScrollX() = " + getScrollX());
-                if(getScrollX() <= 0){
-                    
-                }else{
+                if (getScrollX() <= 0) {
+
+                } else {
                     ActivityFactory.v.requestDisallowInterceptTouchEvent(true);
                     scrollBy(deltaX, 0);// 画面跟随指尖
                     if (velocityTracker != null) {
                         velocityTracker.addMovement(event);
                     }
                 }
-            }else{//像左滑
+            } else {// 像左滑
                 ActivityFactory.v.requestDisallowInterceptTouchEvent(true);
                 scrollBy(deltaX, 0);// 画面跟随指尖
                 if (velocityTracker != null) {
                     velocityTracker.addMovement(event);
                 }
-            }            
+            }
             break;
         case MotionEvent.ACTION_UP:
             int velocityX = 0;
@@ -191,7 +201,7 @@ public class HScrollLayout extends ViewGroup {
     }
 
     @Override
-    public void computeScroll() {//需要，不然松手后不会滑动
+    public void computeScroll() {// 需要，不然松手后不会滑动
         if (scroller.computeScrollOffset()) {
             scrollTo(scroller.getCurrX(), scroller.getCurrY());
             postInvalidate();
