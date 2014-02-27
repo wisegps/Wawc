@@ -81,20 +81,22 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	private TableRow brand = null;
 	private TableRow device = null;
 	private TableRow insuranceCompany = null;
+	private TableRow selectCity = null;
 	private TextView showInsuranceCompany;   //显示保险公司
 	public static final int resultCodeInsurance = 2;   //选择保险公司的识别码
 	public static final int resultCodeBrank = 3;       //选择汽车品牌的识别码
 	public static final int resultCodeMaintain = 6;       //选择汽车品牌的识别码
+	public static final int resultCodeIllegal = 17;       //选择违章城市识别码
 	public static final int showCarData = 8;       //显示汽车数据
 	public static final int deleteCarData = 10;       //删除汽车数据
 	private static final int setCarLogo = 11;      // 动态设置汽车Logo
+	private static final int getCityViolateRegulationsCode = 41;      // 获取违章城市代码
 	
 	
 	private EditText etDialogMileage = null;   //输入里程
 	
 	private Button btSureMileage = null;
 	private Button btCancleMileage = null;
-	private TableRow insuranceTime;
 	private TableRow choiceMaintian = null;
 	
 	private TextView tvMileage = null;  //显示里程
@@ -104,6 +106,8 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	private EditText engineNum = null;
 	private EditText frameNum = null;
 	private EditText lastMaintain = null;
+	private EditText vehicleRegNum = null;
+	private EditText lastMaintainTime = null;
 	private TextView buyTime = null;
 	private TextView ivInsuranceDate = null;
 	private LinearLayout buttomView = null;
@@ -161,9 +165,9 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		editVehicle = (TextView) findViewById(R.id.my_vechile_edit);
 		brand = (TableRow) findViewById(R.id.iv_my_vehicle_brank);
 		device = (TableRow) findViewById(R.id.vehicle_device_layout);
+		selectCity = (TableRow) findViewById(R.id.select_city_layout);
 		insuranceCompany = (TableRow)findViewById(R.id.insurance_company_layout);
 		showInsuranceCompany = (TextView) findViewById(R.id.show_insurance_company);
-		insuranceTime = (TableRow) findViewById(R.id.my_vehicle_insurance_mileage);
 		tvMileage = (TextView) findViewById(R.id.my_vehicle_mileage);
 		myVehicleBrank = (TextView) findViewById(R.id.tv_my_vehicle_beank);
 		choiceMaintian = (TableRow) findViewById(R.id.choice_maintain_image_layout);
@@ -171,12 +175,14 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		vehicleNumber = (EditText)findViewById(R.id.my_vehicle_ed_vehicle_number);
 		engineNum = (EditText)findViewById(R.id.my_vehicle_ed_engine_num);
 		frameNum = (EditText)findViewById(R.id.my_vehilce_ed_fram_num);
+		vehicleRegNum = (EditText) findViewById(R.id.my_vehilce_reg_num);
 		lastMaintain = (EditText)findViewById(R.id.my_vehicle_ed_last_maintain);
+		lastMaintainTime = (EditText) findViewById(R.id.my_vehicle_last_maintain_time);
 		buyTime = (TextView)findViewById(R.id.my_vehicle_ed_buy_time);
 		getDateView(buyTime);
 		ivInsuranceDate = (TextView) findViewById(R.id.my_vehicle_tv_insurance);
 		getDateView(ivInsuranceDate);
-		btSaveVehicleData = (TextView) findViewById(R.id.my_vehilce_save);
+		btSaveVehicleData = (TextView) findViewById(R.id.new_vehilce_tv);
 		btDeleteVehicle = (TextView) findViewById(R.id.my_vehilce_delete);
 		buttomView = (LinearLayout) findViewById(R.id.my_vehicle_buttom_view);
 		
@@ -185,11 +191,11 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		ivCarType = (TableRow) findViewById(R.id.car_type_layout);
 		tvCarSeries = (TextView) findViewById(R.id.tv_car_series);
 		tvCarType = (TextView) findViewById(R.id.tv_car_type);
-		
 		ivCarSeries.setOnClickListener(new ClickListener());
 		ivCarType.setOnClickListener(new ClickListener());
 		mSpinerPopWindow = new SpinerPopWindow(MyVehicleActivity.this);
 		mSpinerPopWindow.setItemListener(this);
+		selectCity.setOnClickListener(new ClickListener());
 		
 		preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
 		chickIndex = preferences.getInt(Constant.DefaultVehicleID, 0);
@@ -243,7 +249,6 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		editVehicle.setOnClickListener(new ClickListener());
 		brand.setOnClickListener(new ClickListener());
 		insuranceCompany.setOnClickListener(new ClickListener());
-		insuranceTime.setOnClickListener(new ClickListener());
 		
 		Intent intent = getIntent();
 		isJump = intent.getBooleanExtra("isJump", false);
@@ -269,13 +274,6 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				}
 				commitData();
 				break;
-//			case R.id.my_vechile_home:
-//				if(isJump){
-//					finish();
-//				}else{
-//					ActivityFactory.A.ToHome();
-//				}
-//				break;
 			case R.id.iv_my_vehicle_brank:    //选择汽车品牌
 				Variable.carDatas.remove(newCarImage);
 				Intent intent = new Intent(MyVehicleActivity.this,CarBrankListActivity.class);
@@ -291,9 +289,6 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				Intent intent1 = new Intent(MyVehicleActivity.this,ChoiceInsuranceActivity.class);
 				intent1.putExtra("code", resultCodeInsurance);
 				startActivityForResult(intent1, resultCodeInsurance);
-				break;
-			case R.id.my_vehicle_insurance_mileage:  //同步里程
-				showDialog();
 				break;
 			case R.id.dialog_mileage_sure:  //确定同步里程
 				String mileageValue = etDialogMileage.getText().toString();
@@ -334,30 +329,9 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				}
 				break;
 				
-			case R.id.my_vehilce_save:
+			case R.id.new_vehilce_tv:
 				//  TODO 更改为  返回键保存车辆更改信息
 				startActivity(new Intent(MyVehicleActivity.this,NewVehicleActivity.class));
-//				myDialog = ProgressDialog.show(MyVehicleActivity.this, "提示", "正在保存...");
-//				myDialog.setCancelable(true);
-//				List<NameValuePair> params = new ArrayList<NameValuePair>();
-//		        params.add(new BasicNameValuePair("obj_name", vehicleNumber.getText().toString().trim()));
-//		        params.add(new BasicNameValuePair("car_brand", myVehicleBrank.getText().toString()));
-//		        params.add(new BasicNameValuePair("car_series", tvCarSeries.getText().toString()));
-//		        params.add(new BasicNameValuePair("car_type", tvCarType.getText().toString()));
-//		        params.add(new BasicNameValuePair("engine_no", engineNum.getText().toString().trim()));
-//		        Log.e("更改服务器时：",engineNum.getText().toString().trim() + "");
-//		        params.add(new BasicNameValuePair("frame_no", frameNum.getText().toString().trim()));
-//		        params.add(new BasicNameValuePair("insurance_company", showInsuranceCompany.getText().toString()));
-//		        params.add(new BasicNameValuePair("insurance_date", ivInsuranceDate.getText().toString()));
-//		        params.add(new BasicNameValuePair("maintain_company", tvMaintain.getText().toString()));
-//		        params.add(new BasicNameValuePair("maintain_last_mileage", lastMaintain.getText().toString().trim()));
-//		        //  ui布局无此参数
-//		        params.add(new BasicNameValuePair("maintain_last_date", "2015"));
-//		        params.add(new BasicNameValuePair("annual_inspect_data", oneCarData.getAnnual_inspect_date()));
-//		        params.add(new BasicNameValuePair("maintain_next_mileage", "2013"));
-//		        params.add(new BasicNameValuePair("buy_time", buyTime.getText().toString().trim()));
-//				new Thread(new NetThread.postDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).getObj_id() + "?auth_code=" + Variable.auth_code, params, saveVehicleData)).start();
-//				Log.e("需要更改的车辆id",carDataList.get(chickIndex).getObj_id() + "");
 				break;
 			case R.id.my_vehilce_delete:
 				myDialog = ProgressDialog.show(MyVehicleActivity.this, "提示", "正在删除...");
@@ -372,6 +346,10 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 					buttomView.setVisibility(View.GONE);
 					buttomViewIsShow = false;
 				}
+				break;
+			case R.id.select_city_layout:
+				Intent intent4 = new Intent(MyVehicleActivity.this,IllegalCitiyActivity.class);
+				startActivityForResult(intent4, resultCodeIllegal);
 				break;
 			default:
 				return;
@@ -399,19 +377,10 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 			String maintain = (String) data.getSerializableExtra("maintain");
 			tvMaintain.setText(maintain);
 		}
-	}
-	
-	
-	void showDialog(){
-		LayoutInflater layoutInflater = LayoutInflater.from(MyVehicleActivity.this);
-		View view = layoutInflater.inflate(R.layout.mileage_dialog, null);
-		etDialogMileage = (EditText) view.findViewById(R.id.mileage);
-		btSureMileage = (Button) view.findViewById(R.id.dialog_mileage_sure);
-		btCancleMileage = (Button) view.findViewById(R.id.dialog_mileage_cancle);
-		btSureMileage.setOnClickListener(new ClickListener());
-		btCancleMileage.setOnClickListener(new ClickListener());
-		dlg = new AlertDialog.Builder(MyVehicleActivity.this).setView(view).setCancelable(true).create();
-		dlg.show();
+		if(resultCode == this.resultCodeIllegal){  //选择违章城市识别码
+			
+			
+		}
 	}
 	
 	class MyHandler extends Handler{
@@ -558,6 +527,9 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				
 				case setCarLogo:
 					logoAdapter.notifyDataSetChanged();
+					break;
+				case getCityViolateRegulationsCode:
+					Log.e("result:",msg.obj.toString());
 					break;
 			default:
 				return;
@@ -814,9 +786,50 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		editor.putString(Constant.defaultCenter_key, Variable.carDatas.get(chickIndex).getObj_name());
 		String str = Variable.carDatas.get(chickIndex).getObj_name();
 		String str2 = str==null?"null":str;
-		Log.e("车牌号:",str2);
-		Log.e("提交的id",chickIndex+"");
 		editor.commit();
+		
+
+//		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "violation/city?auth_code=" + Variable.auth_code, getCityViolateRegulationsCode)).start();
+		
+//		  List<NameValuePair> params = new ArrayList<NameValuePair>();
+//        params.add(new BasicNameValuePair("obj_name", vehicleNumber.getText().toString().trim()));
+//        params.add(new BasicNameValuePair("car_brand", myVehicleBrank.getText().toString()));
+//        params.add(new BasicNameValuePair("car_series", tvCarSeries.getText().toString()));
+//        params.add(new BasicNameValuePair("car_type", tvCarType.getText().toString()));
+        //违章查询城市代码  TODO
+//        params.add(new BasicNameValuePair("engine_no", engineNum.getText().toString().trim()));
+//        params.add(new BasicNameValuePair("reg_no", vehicleRegNum.getText().toString().trim()));
+//        params.add(new BasicNameValuePair("frame_no", frameNum.getText().toString().trim()));
+        
+        
+//        params.add(new BasicNameValuePair("insurance_company", showInsuranceCompany.getText().toString()));
+//        params.add(new BasicNameValuePair("insurance_date", ivInsuranceDate.getText().toString()));
+//        params.add(new BasicNameValuePair("annual_inspect_data", "年检时间"));
+//        params.add(new BasicNameValuePair("maintain_company", tvMaintain.getText().toString()));
+//        params.add(new BasicNameValuePair("maintain_last_mileage", lastMaintain.getText().toString().trim()));
+//        params.add(new BasicNameValuePair("maintain_last_date", lastMaintainTime.getText().toString()));
+//        params.add(new BasicNameValuePair("maintain_next_mileage", "2013"));
+//        params.add(new BasicNameValuePair("buy_time", buyTime.getText().toString().trim()));
+        
+        
+//        Log.e("车牌号：",vehicleNumber.getText().toString().trim());
+//        Log.e("品牌：",myVehicleBrank.getText().toString());
+//        Log.e("型号：",tvCarSeries.getText().toString());
+//        Log.e("车款：",tvCarType.getText().toString());
+//        Log.e("城市代码：","城市代码");
+//        
+//        Log.e("发动机号：", engineNum.getText().toString().trim());
+//        Log.e("车架号：",frameNum.getText().toString().trim());
+//        Log.e("登记证号：",vehicleRegNum.getText().toString().trim());
+//        
+//        Log.e("保险公司：",showInsuranceCompany.getText().toString());
+//        Log.e("保险到期时间：",ivInsuranceDate.getText().toString());
+//        Log.e("4s店：",tvMaintain.getText().toString());
+//        Log.e("最后保养里程：",lastMaintain.getText().toString().trim());
+//        Log.e("最后保养时间：",lastMaintainTime.getText().toString());
+//        Log.e("购车时间：",buyTime.getText().toString().trim());
+//		new Thread(new NetThread.postDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).getObj_id() + "?auth_code=" + Variable.auth_code, params, saveVehicleData)).start();
+		
     }
    public void showToast(String showContent){
 	   Toast.makeText(getApplicationContext(), showContent, 0).show();

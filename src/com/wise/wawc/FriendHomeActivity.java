@@ -113,7 +113,6 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 			public void onScroll(AbsListView view, int firstVisibleItem,int visibleItemCount, int totalItemCount) {
 			}
 		});
-		Log.e("onCreate","onCreate-----------------------------------------------------------------------");
 	}
 	class OnClickListener implements android.view.View.OnClickListener{
 		public void onClick(View v) {

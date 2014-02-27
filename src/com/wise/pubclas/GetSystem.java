@@ -20,6 +20,7 @@ import com.baidu.mapapi.navi.BaiduMapNavigation;
 import com.baidu.mapapi.navi.NaviPara;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.wise.data.TimeData;
+import com.wise.wawc.R;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -35,6 +36,8 @@ import android.net.NetworkInfo;
 import android.os.Message;
 import android.text.format.Time;
 import android.util.Log;
+import android.view.Display;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 public class GetSystem {
@@ -366,5 +369,19 @@ public class GetSystem {
             Log.d("GetSystem", "经纬度格式转换异常：NumberFormatException");
             return 0;
         }
+    }
+    /**
+     * 计算车友圈图片显示尺寸
+     * @param context
+     */
+    public static void getScreenInfor(Activity activity){
+    	String tempMargins = activity.getResources().getString(R.dimen.margins);
+		int margins = Integer.valueOf(tempMargins.substring(0,tempMargins.lastIndexOf(".")));
+		Variable.margins = margins;
+		WindowManager manager = activity.getWindowManager();
+		Display display = manager.getDefaultDisplay();
+		int screenWidth = (int) ((display.getWidth() - 2*Variable.margins)*0.8);
+		int imageWidth = (screenWidth - 3*margins)/3;
+		Variable.smallImageReqWidth = imageWidth;
     }
 }

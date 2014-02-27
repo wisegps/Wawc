@@ -170,6 +170,10 @@ public class Constant {
 	 */
 	public static String TB_Sms = "TB_Sms";
 	/**
+	 * 违章城市表
+	 */
+	public static String TB_IllegalCity = "TB_IllegalCity";
+	/**
 	 * 定位成功发送广播，选择城市用到
 	 */
 	public static String A_City = "com.wise.wawc.city";

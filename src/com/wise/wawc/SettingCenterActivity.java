@@ -137,9 +137,9 @@ public class SettingCenterActivity extends Activity{
 				saveData();
 				ActivityFactory.A.LeftMenu();
 				break;
-			case R.id.setting_center_home:
-				ActivityFactory.A.ToHome();
-				break;
+//			case R.id.setting_center_home:
+//				ActivityFactory.A.ToHome();
+//				break;
 			case R.id.share_have_gift: // 分享有礼
 				startActivity(new Intent(SettingCenterActivity.this,ShareActivity.class));
 				break;

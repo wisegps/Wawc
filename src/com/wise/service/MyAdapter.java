@@ -115,14 +115,15 @@ public class MyAdapter extends BaseAdapter{
 		this.listView = listView;
 		
 		//计算需要显示多大尺寸的图片
-		String tempMargins = activity.getResources().getString(R.dimen.margins);
-		int margins = Integer.valueOf(tempMargins.substring(0,tempMargins.lastIndexOf(".")));
-		Variable.margins = margins;
-		WindowManager manager = activity.getWindowManager();
-		Display display = manager.getDefaultDisplay();
-		screenWidth = (int) (display.getWidth()*0.8);
-		imageWidth = (screenWidth - 3*margins)/3;
-		Variable.smallImageReqWidth = imageWidth;
+		GetSystem.getScreenInfor(activity);
+//		String tempMargins = activity.getResources().getString(R.dimen.margins);
+//		int margins = Integer.valueOf(tempMargins.substring(0,tempMargins.lastIndexOf(".")));
+//		Variable.margins = margins;
+//		WindowManager manager = activity.getWindowManager();
+//		Display display = manager.getDefaultDisplay();
+//		screenWidth = (int) (display.getWidth()*0.8);
+//		imageWidth = (screenWidth - 3*margins)/3;
+//		Variable.smallImageReqWidth = imageWidth;
 	}
 	public int getCount() {
 		return articleList.size();

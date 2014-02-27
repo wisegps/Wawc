@@ -72,7 +72,7 @@
         android:layout_below="@+id/horizontalscrollview" 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        >
+        ></ScrollView>
 	<TableLayout 
 	    android:layout_height="wrap_content"
 	    android:layout_width="fill_parent"
@@ -252,6 +252,7 @@
 	    		android:drawableRight="@drawable/body_icon_arrow2"
 	            />
 	    </TableRow>
+	    
 	    <View
 	        android:layout_width="fill_parent"
 	        android:layout_height="0.5dip"
@@ -314,6 +315,43 @@
 	    		android:padding="@dimen/margins"
 	    		android:textColor="#000000"
 	    		android:layout_weight="1"
+	            />
+	    </TableRow>
+	    <View
+	        android:layout_width="fill_parent"
+	        android:layout_height="0.5dip"
+	        android:background="@color/gray"
+	        />
+	    <!-- 终端 -->
+	    <TableRow 
+	        android:id="@+id/select_city_layout"
+	        android:layout_height="fill_parent"
+	    	android:layout_width="fill_parent"
+	    	android:background="@drawable/side_seting_item"
+	    	android:layout_marginTop="1dip"
+	    	android:layout_marginLeft="1dip"
+	    	android:layout_marginRight="1dip"
+	        >
+	        <TextView 
+	            android:layout_height="fill_parent"
+	    		android:layout_width="0dip"
+	    		android:text="@string/select_city"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
+	    		android:gravity="center_vertical"
+	    		android:textColor="@color/adress_gray"
+	            />
+	        <TextView 
+	            android:id="@+id/my_vehicle_select_city"
+	            android:layout_height="fill_parent"
+	    		android:layout_width="0dip"
+	    		android:layout_weight="5"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
+	    		android:gravity="center_vertical"
+	    		android:textColor="#000000"
+	    		android:drawableRight="@drawable/body_icon_arrow2"
 	            />
 	    </TableRow>
 	    <View
@@ -390,12 +428,49 @@
 	    		android:textColor="#000000"
 	            />
 	    </TableRow>
-	    <!-- 车务提醒   -->
+	    <View
+	        android:layout_width="fill_parent"
+	        android:layout_height="0.5dip"
+	        android:background="@color/gray"
+	        />
+	    <!-- 登记证号 -->
+	    <TableRow 
+	        android:layout_height="fill_parent"
+	    	android:layout_width="fill_parent"
+	    	android:background="#FFFFFF"
+	    	android:layout_marginTop="1dip"
+	    	android:layout_marginLeft="1dip"
+	    	android:layout_marginRight="1dip"
+	        >
+	        <TextView 
+	            android:layout_height="fill_parent"
+	    		android:layout_width="0dip"
+	    		android:text="@string/vehicle_reg_num"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
+	    		android:gravity="center_vertical"
+	    		android:textColor="@color/adress_gray"
+	            />
+	        <EditText 
+	            android:id="@+id/my_vehilce_reg_num"
+	            android:layout_height="fill_parent"
+	    		android:layout_width="0dip"
+	    		android:hint="144556"
+	    		android:layout_weight="5"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
+	    		android:inputType="number"
+	    		android:background="@null"
+	    		android:textColor="#000000"
+	            />
+	    </TableRow>
 	    <View
 	        android:layout_width="fill_parent"
 	        android:layout_height="@dimen/double_margins"
 	        android:background="@color/gray"
 	        />
+	     <!-- 车务提醒   -->
 	    <TableRow 
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
@@ -529,46 +604,6 @@
 	        android:layout_height="0.5dip"
 	        android:background="@color/gray"
 	        />
-	    <!-- 当前里程 -->
-	    <TableRow 
-	        android:id="@+id/my_vehicle_insurance_mileage"
-	        android:layout_height="fill_parent"
-	    	android:layout_width="fill_parent"
-	    	android:background="@drawable/side_seting_item"
-	    	android:layout_marginTop="1dip"
-	    	android:layout_marginLeft="1dip"
-	    	android:layout_marginRight="1dip"
-	        >
-	        <TextView 
-	            android:layout_height="fill_parent"
-	    		android:layout_width="0dip"
-	    		android:text="@string/current_mileage"
-	    		android:layout_weight="4"
-	    		android:textSize="@dimen/content"
-	    		android:padding="@dimen/margins"
-	    		android:gravity="center_vertical"
-	    		android:textColor="@color/adress_gray"
-	            />
-	        <EditText 
-	            android:id="@+id/my_vehicle_mileage"
-	            android:layout_height="fill_parent"
-	    		android:layout_width="0dip"
-	    		android:hint="56000Km"
-	    		android:layout_weight="5"
-	    		android:textSize="@dimen/content"
-	    		android:padding="@dimen/margins"
-	    		android:gravity="center_vertical"
-	    		android:inputType="number"
-	    		android:textColor="#000000"
-	    		android:background="@null"
-	    		android:drawableRight="@drawable/body_icon_arrow2"
-	            />
-	    </TableRow>
-	    <View
-	        android:layout_width="fill_parent"
-	        android:layout_height="0.5dip"
-	        android:background="@color/gray"
-	        />
 	    <!-- 最后保养里程 -->
 	    <TableRow 
 	        android:layout_height="fill_parent"
@@ -593,6 +628,43 @@
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:hint="56000Km"
+	    		android:layout_weight="5"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
+	    		android:gravity="center_vertical"
+	    		android:inputType="number"
+	    		android:textColor="#000000"
+	    		android:background="@null"
+	            />
+	    </TableRow>
+	    <View
+	        android:layout_width="fill_parent"
+	        android:layout_height="0.5dip"
+	        android:background="@color/gray"
+	        />
+	    <!-- 最后保养时间 -->
+	    <TableRow 
+	        android:layout_height="fill_parent"
+	    	android:layout_width="fill_parent"
+	    	android:background="#FFFFFF"
+	    	android:layout_marginTop="1dip"
+	    	android:layout_marginLeft="1dip"
+	    	android:layout_marginRight="1dip"
+	        >
+	        <TextView 
+	            android:layout_height="fill_parent"
+	    		android:layout_width="0dip"
+	    		android:text="@string/last_insurance_time"
+	    		android:layout_weight="4"
+	    		android:textSize="@dimen/content"
+	    		android:padding="@dimen/margins"
+	    		android:gravity="center_vertical"
+	    		android:textColor="@color/adress_gray"
+	            />
+	        <EditText 
+	            android:id="@+id/my_vehicle_last_maintain_time"
+	            android:layout_height="fill_parent"
+	    		android:layout_width="0dip"
 	    		android:layout_weight="5"
 	    		android:textSize="@dimen/content"
 	    		android:padding="@dimen/margins"
@@ -639,7 +711,6 @@
 	            />
 	    </TableRow>
 	</TableLayout>
-	</ScrollView>
 	
     <LinearLayout 
 	    android:id="@+id/my_vehicle_buttom_view"
@@ -651,7 +722,7 @@
 	    android:layout_margin="@dimen/margins"
 	    >
 	       <TextView 
-	            android:id="@+id/my_vehilce_save"
+	            android:id="@+id/new_vehilce_tv"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="wrap_content"
 	    		android:layout_weight="1"
