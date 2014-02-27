@@ -19,15 +19,11 @@ import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.service.SaveSettingData;
-import com.wise.sql.DBExcute;
-import com.wise.sql.DBHelper;
-
 import android.app.ActivityGroup;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -58,6 +54,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     private static final int Login = 1; //登录
     private static final int Get_Pic = 2;//获取登录头像
     private static final int Bind_ID = 3; //绑定ID
+    private static final int get_noti_count = 4; //获取消息提醒
     
     SlidingMenuView slidingMenuView;
     ViewGroup tabcontent;
@@ -73,7 +70,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     private SaveSettingData saveSettingData;
     double Multiple = 0.5;
     PicHorizontalScrollView hsv_pic;
-    ImageView iv_pic;
+    ImageView iv_pic,iv_noti;
     Bitmap bimage;
 
     String LocationProvince;
@@ -132,6 +129,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                 });
         // 设置图片的宽高
         iv_pic = (ImageView) findViewById(R.id.iv_pic);
+        iv_noti = (ImageView) findViewById(R.id.iv_noti);
         ShowBgImage();
         //iv_pic.setImageDrawable(getResources().getDrawable(R.drawable.bg));
         //Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.bg);
@@ -297,8 +295,11 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                 jsonLoginOk();
                 break;
             case Bind_ID:
-                Log.d(TAG, "绑定返回=" + msg.obj.toString());
                 jsonLogin(msg.obj.toString());
+                GetNotiCount();
+                break;
+            case get_noti_count:
+                jsonNoti(msg.obj.toString());
                 break;
             }
         }
@@ -730,5 +731,28 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     	Intent intent = new Intent(MainActivity.this, SearchMapActivity.class);
 		intent.putExtra("keyWord", order);
 		startActivity(intent);
+    }
+    /**
+     * 获取未读消息
+     */
+    private void GetNotiCount(){
+        String url = Constant.BaseUrl + "customer/" + Variable.cust_id +"?auth_code=" + Variable.auth_code;
+        new Thread(new NetThread.GetDataThread(handler, url, get_noti_count)).start();
+    }
+    private void jsonNoti(String result){
+        try {           
+            JSONObject jsonObject = new JSONObject(result);
+            if(jsonObject.opt("noti_count") != null){
+                int count = jsonObject.getInt("noti_count");
+                if(count > 0){
+                    //TODO 判断
+                    iv_noti.setVisibility(View.VISIBLE);
+                }else{
+                    iv_noti.setVisibility(View.GONE);
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

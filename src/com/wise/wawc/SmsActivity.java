@@ -71,7 +71,7 @@ public class SmsActivity extends Activity implements IXListViewListener{
 		ImageView iv_sms = (ImageView)findViewById(R.id.iv_sms);
 		iv_sms.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
-				finish();
+			    ActivityFactory.A.LeftMenu();
 			}
 		});
 		if(isGetDataUrl()){
@@ -193,7 +193,7 @@ public class SmsActivity extends Activity implements IXListViewListener{
 	
 	private List<SmsData> getSmsDatas(int start,int pageSize) {
         System.out.println("start = " + start);
-        List<SmsData> datas = getPageDatas(SmsActivity.this, "select * from " + Constant.TB_Sms + " where cust_id=? order by obj_id desc limit ?,?", new String[]{Variable.cust_id,String.valueOf(start),String.valueOf(pageSize)});
+        List<SmsData> datas = getPageDatas(SmsActivity.this, "select * from " + Constant.TB_Sms + " where cust_id=? order by noti_id desc limit ?,?", new String[]{Variable.cust_id,String.valueOf(start),String.valueOf(pageSize)});
         Toal += datas.size();//记录位置
         if(datas.size() == pageSize){
             //继续读取数据库
@@ -213,11 +213,11 @@ public class SmsActivity extends Activity implements IXListViewListener{
             SmsData smsData = new SmsData();
             smsData.setNoti_id(cursor.getInt(cursor.getColumnIndex("noti_id")));
             smsData.setMsg_type(cursor.getString(cursor.getColumnIndex("msg_type")));
-            smsData.setMsg_type(cursor.getString(cursor.getColumnIndex("content")));
-            smsData.setMsg_type(cursor.getString(cursor.getColumnIndex("rcv_time")));
-            smsData.setMsg_type(cursor.getString(cursor.getColumnIndex("lat")));
-            smsData.setMsg_type(cursor.getString(cursor.getColumnIndex("lon")));
-            smsData.setMsg_type(cursor.getString(cursor.getColumnIndex("status")));
+            smsData.setContent(cursor.getString(cursor.getColumnIndex("content")));
+            smsData.setRcv_time(cursor.getString(cursor.getColumnIndex("rcv_time")));
+            smsData.setLat(cursor.getString(cursor.getColumnIndex("lat")));
+            smsData.setLon(cursor.getString(cursor.getColumnIndex("lon")));
+            smsData.setStatus(cursor.getString(cursor.getColumnIndex("status")));
             Datas.add(smsData);
         }
         cursor.close();

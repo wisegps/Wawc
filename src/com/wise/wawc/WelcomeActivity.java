@@ -153,19 +153,22 @@ public class WelcomeActivity extends Activity {
                 break;
             case 999:
                 try {
+                    int j = 0; 
                     JSONObject jsonObject = new JSONObject(msg.obj.toString()).getJSONObject("result");
                     Iterator it = jsonObject.keys();
                     while(it.hasNext()){
+                        j ++ ;
                         String key = (String) it.next();
                         System.out.println("key = " + key);
                         JSONObject jsonObject2 = jsonObject.getJSONObject(key);
-                        System.out.println(jsonObject2.getString("province"));
+                        //System.out.println(jsonObject2.getString("province"));
                         JSONArray jsonArray = jsonObject2.getJSONArray("citys");
                         for(int i = 0 ; i < jsonArray.length(); i++){
                             JSONObject jsonObject3 = jsonArray.getJSONObject(i);
-                            System.out.println(jsonObject3.getString("city_name"));
+                            //System.out.println(jsonObject3.getString("city_name"));
                         }
                     }
+                    System.out.println("j = " + j);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

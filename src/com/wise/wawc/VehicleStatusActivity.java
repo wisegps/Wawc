@@ -48,6 +48,7 @@ public class VehicleStatusActivity extends Activity {
     private static final int Hide_rl = 1;
     private static final int get_data = 2;
     private static final int get_day = 3;
+    private static final int get_DeviceStatus = 4;
     private DisplayMetrics dm = new DisplayMetrics();
 
     LinearLayout ll_activity_vehicle_status_oil;
@@ -114,6 +115,7 @@ public class VehicleStatusActivity extends Activity {
         initView();  
         GetTotalDB();
         GetTripListDB();
+        getDeviceStatus();
     }
 
     OnClickListener onClickListener = new OnClickListener() {
@@ -181,6 +183,9 @@ public class VehicleStatusActivity extends Activity {
                 value.put("Content", msg.obj.toString());
                 dbExcute.InsertDB(VehicleStatusActivity.this, value, Constant.TB_TripList);
                 jsonDays(msg.obj.toString());
+                break;
+            case get_DeviceStatus:
+                Log.d(TAG, msg.obj.toString());
                 break;
             }
         }
@@ -338,6 +343,14 @@ public class VehicleStatusActivity extends Activity {
             e.printStackTrace();
         }
     }
+    
+    private void getDeviceStatus(){
+        String url = Constant.BaseUrl + "device/3/fault?auth_code=" + Variable.auth_code;
+        new Thread(new NetThread.GetDataThread(handler, url, get_DeviceStatus)).start();
+        String url1 = Constant.BaseUrl + "device/3/alert?auth_code=" + Variable.auth_code;
+        new Thread(new NetThread.GetDataThread(handler, url1, get_DeviceStatus)).start();
+    }
+    
     EnergyCurveView View_hk_fuel,View_distance,View_ful;
     private void initView() {
         getWindowManager().getDefaultDisplay().getMetrics(dm);
