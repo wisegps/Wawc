@@ -44,6 +44,7 @@ public class OrderConfirmActivity extends Activity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		WawcApplication.getActivityInstance().addActivity(this);
 		setContentView(R.layout.activity_order_confirm);
 		ImageView iv_activity_order_confirm_back = (ImageView)findViewById(R.id.iv_activity_order_confirm_back);
 		iv_activity_order_confirm_back.setOnClickListener(onClickListener);

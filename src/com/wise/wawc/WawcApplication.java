@@ -1,19 +1,22 @@
 package com.wise.wawc;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.widget.Toast;
-import cn.jpush.android.api.JPushInterface;
-
 import com.baidu.mapapi.BMapManager;
-import com.baidu.mapapi.MKGeneralListener;
-import com.baidu.mapapi.map.MKEvent;
 
 /**
  * 初始化地图
  * @author honesty
  */
 public class WawcApplication extends Application {
+    
+    private List<Activity> activityList = new LinkedList<Activity>();
+    private static WawcApplication instance;
 	
     private static WawcApplication mInstance = null;
     public boolean m_bKeyRight = true;
@@ -42,4 +45,24 @@ public class WawcApplication extends Application {
 	public static WawcApplication getInstance() {
 		return mInstance;
 	}
+	
+	/**
+	 * 关闭activity
+	 * @return
+	 */
+	public static WawcApplication getActivityInstance(){
+        if(null == instance){
+            instance = new WawcApplication();
+        }
+        return instance;
+    }
+    public void addActivity(Activity activity){
+        activityList.add(activity);
+    }
+    public void exit(){
+        for(Activity activity : activityList){
+            activity.finish();
+        }
+    }
+	
 }

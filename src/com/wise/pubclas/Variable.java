@@ -29,6 +29,10 @@ public class Variable {
      */
     public static String Adress = "";
     /**
+     * 当前定位城市
+     */
+    public static String City = "";
+    /**
      * 当前经度
      */
     public static double Lat = 0;

@@ -19,6 +19,7 @@ public class WapZfbActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		WawcApplication.getActivityInstance().addActivity(this);
 		setContentView(R.layout.activity_wap);
 		String redirect = getIntent().getStringExtra("redirect");
 		myWebView = (WebView) findViewById(R.id.myWebView);
@@ -40,10 +41,12 @@ public class WapZfbActivity extends Activity {
         @JavascriptInterface
         public void goActivity(){
             Toast.makeText(WapZfbActivity.this, "goActivity", Toast.LENGTH_SHORT).show();
-            System.out.println("goActivity");
+            System.out.println("goActivity");            
         }
         public void clickOnAndroid(){
             System.out.println("clickOnAndroid");
+            WawcApplication.getActivityInstance().exit();
+            ActivityFactory.A.Toorders();
         }
     }
 

@@ -81,8 +81,8 @@ public class SelectCityActivity extends Activity {
         tv_select_city_title = (TextView) findViewById(R.id.tv_select_city_title);
         tv_activity_select_city_location = (TextView) findViewById(R.id.tv_activity_select_city_location);
         tv_activity_select_city_location.setOnClickListener(onClickListener);
-        LocationCity = Variable.Adress;
-        tv_activity_select_city_location.setText(Variable.Adress);
+        LocationCity = Variable.City;
+        tv_activity_select_city_location.setText(LocationCity);
         lv_activity_select_city = (ListView) findViewById(R.id.lv_activity_select_city);
         Intent intent = getIntent();
         isWelcome = intent.getBooleanExtra("Welcome", false);
@@ -435,8 +435,7 @@ public class SelectCityActivity extends Activity {
                 case VALUE_HOT:
                     hotholder = new ViewHot();
                     convertView = mInflater.inflate(R.layout.hot_city, null);
-                    hotholder.gv = (GridView) convertView
-                            .findViewById(R.id.gv_hot_city);
+                    hotholder.gv = (GridView) convertView.findViewById(R.id.gv_hot_city);
                     int px = (int) TypedValue.applyDimension(
                             TypedValue.COMPLEX_UNIT_DIP, 30, getResources()
                                     .getDisplayMetrics());
@@ -483,7 +482,7 @@ public class SelectCityActivity extends Activity {
                             TypedValue.COMPLEX_UNIT_DIP, 30, getResources()
                                     .getDisplayMetrics());
                     LayoutParams params = new LayoutParams(
-                            LayoutParams.FILL_PARENT, (hotDatas.size() / 5 + 1)
+                            LayoutParams.FILL_PARENT, (hotDatas.size() / 4 + 1)
                                     * px);
                     hotholder.gv.setLayoutParams(params);
                     hotholder.gv.setAdapter(new hotAdapter());

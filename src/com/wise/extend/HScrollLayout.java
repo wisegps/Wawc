@@ -4,7 +4,6 @@ package com.wise.extend;
  * 自定义首页滑动控件
  */
 import com.wise.extend.OnViewChangeListener;
-import com.wise.wawc.ActivityFactory;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -82,17 +81,26 @@ public class HScrollLayout extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        //final int action = ev.getAction();
+        Log.d(TAG, "onInterceptTouchEvent = " + ev.getAction());
         boolean xMoved = false; 
         final float x = ev.getX();
         switch (ev.getAction()) {
         case MotionEvent.ACTION_DOWN:
             mLastMotionX = x;
             downMotionX = ev.getX();
+
             break;
-        case MotionEvent.ACTION_MOVE:
+        case MotionEvent.ACTION_MOVE:            
             final int xDiff = (int) Math.abs(x - mLastMotionX);
             xMoved = xDiff > mTouchSlop;
+            System.out.println("x = " + x + " , mLastMotionX = " + mLastMotionX);
+            System.out.println("xMoved = " + xMoved);
+            if ((mLastMotionX - x) < 0 && getScrollX() <= 0){
+                
+            }else{
+                Log.d(TAG, "父控件停止感应");
+                getParent().requestDisallowInterceptTouchEvent(true);
+            }
             break;
         case MotionEvent.ACTION_UP:
             
@@ -112,8 +120,8 @@ public class HScrollLayout extends ViewGroup {
         case MotionEvent.ACTION_DOWN:
             if (velocityTracker == null) {
                 velocityTracker = VelocityTracker.obtain();
-                velocityTracker.addMovement(event);
             }
+            velocityTracker.addMovement(event);
             if (!scroller.isFinished()) { // 解决在松开手滚动时，按下无效
                 scroller.abortAnimation();
             }
@@ -123,31 +131,38 @@ public class HScrollLayout extends ViewGroup {
             int deltaX = (int) (downMotionX - x);
             downMotionX = x;
             if (deltaX < 0) {// 向右滑
-                System.out.println("deltaX = " + deltaX);
-                System.out.println("getScrollX() = " + getScrollX());
+                //System.out.println("deltaX = " + deltaX);
+                //System.out.println("getScrollX() = " + getScrollX());
                 if (getScrollX() <= 0) {
-
+                    Log.d(TAG, "划不动");
                 } else {
-                    ActivityFactory.v.requestDisallowInterceptTouchEvent(true);
+                    Log.d(TAG, "父控件停止感应");
+                    getParent().requestDisallowInterceptTouchEvent(true);
                     scrollBy(deltaX, 0);// 画面跟随指尖
-                    if (velocityTracker != null) {
-                        velocityTracker.addMovement(event);
+                    if (velocityTracker == null) {
+                        velocityTracker = VelocityTracker.obtain();
                     }
-                }
-            } else {// 像左滑
-                ActivityFactory.v.requestDisallowInterceptTouchEvent(true);
-                scrollBy(deltaX, 0);// 画面跟随指尖
-                if (velocityTracker != null) {
                     velocityTracker.addMovement(event);
                 }
+            } else {// 像左滑
+                Log.d(TAG, "父控件停止感应");
+                getParent().requestDisallowInterceptTouchEvent(true);
+                scrollBy(deltaX, 0);// 画面跟随指尖
+                if (velocityTracker == null) {
+                    velocityTracker = VelocityTracker.obtain();
+                }
+                velocityTracker.addMovement(event);
             }
             break;
         case MotionEvent.ACTION_UP:
+            getParent().requestDisallowInterceptTouchEvent(false);
             int velocityX = 0;
             if (velocityTracker != null) {
                 velocityTracker.addMovement(event);
                 velocityTracker.computeCurrentVelocity(1000);
                 velocityX = (int) velocityTracker.getXVelocity();// 计算x方向速度
+                velocityTracker.recycle();  
+                velocityTracker = null; 
             }
             if (velocityX > SNAP_VELOCITY && mCurScreen > 0) { // 速度快且不是第一屏
                 snapToScreen(mCurScreen - 1);
@@ -159,7 +174,8 @@ public class HScrollLayout extends ViewGroup {
             }
             break;
         case MotionEvent.ACTION_CANCEL:
-            ActivityFactory.v.requestDisallowInterceptTouchEvent(false);
+            getParent().requestDisallowInterceptTouchEvent(false);
+            snapToDestination(); // 判断是否翻转
             break;
         }
         return true;
