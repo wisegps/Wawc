@@ -38,7 +38,7 @@ public class OrderConfirmActivity extends Activity{
     private static final int submit_wap = 1;
     private static final int RQF_PAY = 2;
     private static final int submit_order = 3;
-    TextView tv_client,tv_wap;
+    ImageView iv_client,iv_wap;
     boolean isClient = true;
     double money = 0.01;
 	@Override
@@ -53,8 +53,8 @@ public class OrderConfirmActivity extends Activity{
 		rl_client.setOnClickListener(onClickListener);
 		RelativeLayout rl_wap = (RelativeLayout)findViewById(R.id.rl_wap);
 		rl_wap.setOnClickListener(onClickListener);
-		tv_client = (TextView)findViewById(R.id.tv_client);
-		tv_wap = (TextView)findViewById(R.id.tv_wap);
+		iv_client = (ImageView)findViewById(R.id.iv_client);
+		iv_wap = (ImageView)findViewById(R.id.iv_wap);
 	}
 	OnClickListener onClickListener = new OnClickListener() {		
 		@Override
@@ -68,13 +68,13 @@ public class OrderConfirmActivity extends Activity{
 				submitOrder();
 				break;
 			case R.id.rl_client:
-			    tv_client.setVisibility(View.VISIBLE);
-			    tv_wap.setVisibility(View.GONE);
+			    iv_client.setVisibility(View.VISIBLE);
+			    iv_wap.setVisibility(View.GONE);
 			    isClient = true;
 			    break;
 			case R.id.rl_wap:
-			    tv_client.setVisibility(View.GONE);
-			    tv_wap.setVisibility(View.VISIBLE);
+			    iv_client.setVisibility(View.GONE);
+			    iv_wap.setVisibility(View.VISIBLE);
 			    isClient = false;
                 break;
 			}

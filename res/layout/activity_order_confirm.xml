@@ -211,15 +211,13 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/common_inactive"
                 android:text="推荐安装支付宝客户端的用户使用"/>
-            <TextView 
-                android:id="@+id/tv_client"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <ImageView 
+                android:id="@+id/iv_client"
+                android:layout_width="@dimen/margins"
+                android:layout_height="@dimen/margins"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:textSize="@dimen/main"
-                android:textColor="@color/blue"
-                android:text="√"/>
+                android:src="@drawable/body_icon_check"/>
         </RelativeLayout>
         <View 
             android:layout_width="fill_parent"
@@ -243,16 +241,14 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/common_inactive"
                 android:text="推荐安装支付宝客户端的用户使用"/>
-            <TextView 
-                android:id="@+id/tv_wap"
+            <ImageView 
+                android:id="@+id/iv_wap"
                 android:visibility="gone"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/margins"
+                android:layout_height="@dimen/margins"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:textSize="@dimen/main"
-                android:textColor="@color/blue"
-                android:text="√"/>
+                android:src="@drawable/body_icon_check"/>
         </RelativeLayout>
 	</LinearLayout>
 	<LinearLayout 
