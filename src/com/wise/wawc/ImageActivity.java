@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.wise.data.Article;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.Variable;
@@ -39,7 +40,7 @@ public class ImageActivity extends Activity {
 	public static int screenHeight = 0;
 	public static int screenWidth = 0;
 	private Intent intent = null;
-	private int listIndex = 0;
+	private Article article = null;
 	private MyHandler myHandler = null;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -60,10 +61,10 @@ public class ImageActivity extends Activity {
 		});
 		myHandler = new MyHandler();
 		intent = getIntent();
-		listIndex = intent.getIntExtra("position", 0);
+		article = (Article) intent.getSerializableExtra("article");
 		
 		//启动线程下载图片
-	final List<Map<String,String>> imageList = Variable.articleList.get(listIndex).getImageList();
+	final List<Map<String,String>> imageList = article.getImageList();
 		new Thread(new Runnable() {
 			public void run() {
 					for(int j = 0 ; j < imageList.size() ; j ++){

@@ -118,6 +118,7 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	
 	private TextView showInsurance = null;
 	private String brank = "";
+	private Bitmap vehicleLogoBitmap = null;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_vehicle);
@@ -222,11 +223,10 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == newVehicleBrank){  //设置品牌
-			brank = (String)data.getSerializableExtra("brank");
+			brank = data.getStringExtra("brank");
 			vehicleBrank.setText(brank); 
-			carBrankId = (String) data.getSerializableExtra("carId");
-			Bitmap logo = logoImageIsExist(Constant.VehicleLogoPath,(String) data.getSerializableExtra("carLogo"));
-			Log.e("logo == null",(String) data.getSerializableExtra("carLogo"));
+			carBrankId = data.getStringExtra("carId");
+			Bitmap logo = logoImageIsExist(Constant.VehicleLogoPath,data.getStringExtra("carLogo"));
 		}else if(resultCode == newVehicleInsurance){   //设置保险公司
 			String insurance = (String)data.getSerializableExtra("ClickItem");
 			showInsurance.setText(insurance);
@@ -551,7 +551,7 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	 * @return  图片对象
 	 */
 	public Bitmap logoImageIsExist(String imagePath,String name){
-		Bitmap imageBitmap = null;
+		Log.e("imagePath：" + imagePath,"name:" + name);
 		File filePath = new File(imagePath);
 		File imageFile = new File(imagePath + name);
 		if(!filePath.exists()){
@@ -559,19 +559,22 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 		}
 		if(imageFile.exists()){
 			//将图片读取出来 
-			imageBitmap = BitmapFactory.decodeFile(imagePath + name);
+			vehicleLogoBitmap = BitmapFactory.decodeFile(imagePath + name);
 			Log.e("本地存在图片","本地存在图片");
 		}else{
 			//服务器获取logo图片
-			  String imageUrl = Constant.ImageUrl + name;
-			  imageBitmap = GetSystem.getBitmapFromURL(imageUrl);
-              //存储到SD卡
-              if(imageBitmap != null){
-            	  createImage(imagePath + brank + ".jpg",imageBitmap);
+			final String imageUrl = Constant.ImageUrl + name;
+			new Thread(new Runnable() {
+				public void run() {
+					vehicleLogoBitmap = GetSystem.getBitmapFromURL(imageUrl);
+				}
+			}).start();
+              if(vehicleLogoBitmap != null){
+            	  createImage(imagePath + brank + ".jpg",vehicleLogoBitmap);
               }
-              Log.e("服务器的图片","服务器的图片");
+              Log.e("服务器的图片",imageUrl);
 		}
-		return imageBitmap;
+		return vehicleLogoBitmap;
 	}
 	
 	//向SD卡中添加图片

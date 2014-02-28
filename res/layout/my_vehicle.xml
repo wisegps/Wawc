@@ -72,7 +72,7 @@
         android:layout_below="@+id/horizontalscrollview" 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        ></ScrollView>
+        >
 	<TableLayout 
 	    android:layout_height="wrap_content"
 	    android:layout_width="fill_parent"
@@ -361,6 +361,7 @@
 	        />
 	    <!-- 发动机型号 -->
 	    <TableRow 
+	        android:id="@+id/my_vehicle_engine_num_layout"
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
 	    	android:background="#FFFFFF"
@@ -398,6 +399,7 @@
 	        />
 	    <!-- 车架号 -->
 	    <TableRow 
+	        android:id="@+id/my_vehicle_num_layout"
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
 	    	android:background="#FFFFFF"
@@ -435,6 +437,7 @@
 	        />
 	    <!-- 登记证号 -->
 	    <TableRow 
+	        android:id="@+id/my_vehicle_register_num_layout"
 	        android:layout_height="fill_parent"
 	    	android:layout_width="fill_parent"
 	    	android:background="#FFFFFF"
@@ -711,7 +714,7 @@
 	            />
 	    </TableRow>
 	</TableLayout>
-	
+	</ScrollView>
     <LinearLayout 
 	    android:id="@+id/my_vehicle_buttom_view"
 	    android:layout_width="fill_parent"

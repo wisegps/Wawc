@@ -1,6 +1,7 @@
 package com.wise.data;
 
-public class IllegalCity {
+import java.io.Serializable;
+public class IllegalCity implements Serializable{
 	private String cityName;  //违章城市
 	private String cityCode;   //违章城市代码
 	private String abbr;     //城市简称

@@ -116,14 +116,6 @@ public class MyAdapter extends BaseAdapter{
 		
 		//计算需要显示多大尺寸的图片
 		GetSystem.getScreenInfor(activity);
-//		String tempMargins = activity.getResources().getString(R.dimen.margins);
-//		int margins = Integer.valueOf(tempMargins.substring(0,tempMargins.lastIndexOf(".")));
-//		Variable.margins = margins;
-//		WindowManager manager = activity.getWindowManager();
-//		Display display = manager.getDefaultDisplay();
-//		screenWidth = (int) (display.getWidth()*0.8);
-//		imageWidth = (screenWidth - 3*margins)/3;
-//		Variable.smallImageReqWidth = imageWidth;
 	}
 	public int getCount() {
 		return articleList.size();
@@ -173,9 +165,6 @@ public class MyAdapter extends BaseAdapter{
 		if (articleList.get(position).getPraisesList() != null) {
 			if (articleList.get(position).getPraisesList().size() != 0) {
 				sb = new StringBuffer();
-//				for (int f = 0; f < articleList.get(position).getPraisesList().size(); f++) {
-//					sb.append(articleList.get(position).getPraisesList().get(f) + ",");
-//				}
 				Iterator iter = articleList.get(position).getPraisesList().entrySet().iterator();
 				while (iter.hasNext()) {
 					Map.Entry entry = (Map.Entry) iter.next();
@@ -236,6 +225,14 @@ public class MyAdapter extends BaseAdapter{
 					imageView.setImageBitmap(smallImageList.get(i));
 					imageView.setPadding(0, 0,Variable.margins, 0);
 					linearLayout.addView(imageView,i,new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
+					imageView.setOnClickListener(new OnClickListener() {
+						public void onClick(View v) {
+							//查看大图
+							Intent intent = new Intent(activity,ImageActivity.class);
+							intent.putExtra("article", articleList.get(position));
+							activity.startActivity(intent);
+						}
+					});
 				}
 			}
 		}

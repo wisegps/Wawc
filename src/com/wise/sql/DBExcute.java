@@ -319,7 +319,7 @@ public class DBExcute {
 		SQLiteDatabase reader = helper.getReadableDatabase();
 		Cursor cursor = reader.rawQuery("select * from " + Constant.TB_IllegalCity, new String[]{});
 		if(cursor.moveToFirst()){
-			String json = cursor.getColumnName(cursor.getColumnIndex("json_data"));
+			String json = cursor.getString(cursor.getColumnIndex("json_data"));
 			//解析json数据
 			illegaList = IllegalCitiyActivity.parseJson(json);
 		}

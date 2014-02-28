@@ -17,10 +17,15 @@ import com.wise.sql.DBExcute;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
 /**
@@ -33,16 +38,30 @@ public class IllegalCitiyActivity extends Activity {
 	MyHandler myHandler;
 	ProgressDialog myDialog;
 	DBExcute dbExcute;
+	List<IllegalCity> illegalList = new ArrayList<IllegalCity>();
+	int code = 0;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.illegal_city);
 		listView = (ListView) findViewById(R.id.illegal_list);
 		myHandler = new MyHandler();
 		dbExcute = new DBExcute();
-		
+		code = getIntent().getIntExtra("code", 0);
+		adapter = new IllegalAdapter(illegalList,this);
 		//初始化数据 
 		initData();
-		adapter = new IllegalAdapter();
+		listView.setAdapter(adapter);
+		listView.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				Log.e("chick:",illegalList.get(arg2).getCityName());
+				Intent intent = new Intent();
+				intent.putExtra("illegalCity", illegalList.get(arg2));
+				if(code == MyVehicleActivity.resultCodeIllegal){
+					IllegalCitiyActivity.this.setResult(MyVehicleActivity.resultCodeIllegal, intent);
+				}
+				IllegalCitiyActivity.this.finish();
+			}
+		});
 	}
 	
 	
@@ -54,7 +73,9 @@ public class IllegalCitiyActivity extends Activity {
 		if(illegalCity == null){
 			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl+"/violation/city?cuth_code=" + Variable.auth_code, 0)).start();
 		}else{
-			
+			illegalList = dbExcute.selectIllegal(IllegalCitiyActivity.this);
+			adapter.refresh(illegalList);
+			myDialog.dismiss();
 		}
 	}
 	
@@ -63,8 +84,11 @@ public class IllegalCitiyActivity extends Activity {
 			super.handleMessage(msg);
 			myDialog.dismiss();
 			//存储到数据库
-			List<IllegalCity> illegalList = parseJson(msg.obj.toString());
-			
+			illegalList = parseJson(msg.obj.toString());
+			adapter.refresh(illegalList);
+			ContentValues values = new ContentValues();
+			values.put("json_data",msg.obj.toString());
+			dbExcute.InsertDB(IllegalCitiyActivity.this, values, Constant.TB_IllegalCity);
 		}
 	}
 	

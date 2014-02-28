@@ -15,6 +15,7 @@
     <string name="new_article_title">发车友圈</string>
     <string name="car_remind">车务提醒</string>
     <string name="my_car">我的爱车</string>
+    <string name="illegal_city">违章城市</string>
     <string name="my_terminal">我的终端</string>
     <string name="my_orders">我的订单</string>
     <string name="my_collect">我的收藏</string>

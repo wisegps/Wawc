@@ -113,6 +113,7 @@ public class ArticleDetailActivity extends Activity{
 		Message msg = new Message();
 		msg.what = initDatas;
 		myHandler.sendMessage(msg);
+		GetSystem.getScreenInfor(ArticleDetailActivity.this);
 	}
 	
 	
@@ -202,6 +203,7 @@ public class ArticleDetailActivity extends Activity{
 				tableLayout.removeAllViews();
 				TableRow row = new TableRow(ArticleDetailActivity.this);
 				TableLayout.LayoutParams params = new TableLayout.LayoutParams(Variable.smallImageReqWidth,Variable.smallImageReqWidth);
+				
 				for(int i = 0; i < bitMapList.size() ; i ++){
 					ImageView t = new ImageView(ArticleDetailActivity.this);
 					t.setPadding(0, 0, Variable.margins, 0);
@@ -211,7 +213,7 @@ public class ArticleDetailActivity extends Activity{
 						public void onClick(View v) {
 							//查看大图
 							Intent intent = new Intent(ArticleDetailActivity.this,ImageActivity.class);
-//							intent.putExtra("position", position);
+							intent.putExtra("article", article);
 							ArticleDetailActivity.this.startActivity(intent);
 						}
 					});

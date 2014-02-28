@@ -350,16 +350,15 @@ public class MyDevicesActivity extends Activity{
         }	    
 	}
 		
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if(isJump){
-				finish();
-			}
-			return false;
-		}
-		return super.onKeyDown(keyCode, event);
-	}
+//	public boolean onKeyDown(int keyCode, KeyEvent event) {
+//		if (keyCode == KeyEvent.KEYCODE_BACK) {
+//			if(isJump){
+//				finish();
+//			}
+//			return false;
+//		}
+//		return super.onKeyDown(keyCode, event);
+//	}
 	
 	
 }

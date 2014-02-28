@@ -225,7 +225,8 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 			file = new File(Constant.VehiclePath);
 			file.mkdirs();// 创建文件夹  
 	        fileName = Constant.VehiclePath + name + ".jpg"; 
-	        createImage(fileName, bitmap);  //创建文件
+	        
+	        createImage(fileName, bitmap);  //创建文件(临时)
 	        File imageFile = new File(fileName);
 	        //将图片压缩至屏幕大小(大图)
 	        Bitmap myBitmap = BlurImage.zoomImg(fileName,screenWidth,screenHeight);
@@ -237,10 +238,9 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 	        small_image = BlurImage.decodeSampledBitmapFromPath(Constant.VehiclePath + name + "square_image.jpg",Variable.smallImageReqWidth,Variable.smallImageReqWidth);
 	        File squareImage = new File(Constant.VehiclePath + name + "square_image.jpg");
 	        
-	        
 	        createImage(Constant.VehiclePath + name + "small_image.jpg", small_image);
-	        createImage(Constant.VehiclePath + name + "big_image.jpg", myBitmap);
-	        // TODO
+	        createImage(Constant.VehiclePath + name + "big_image.jpg", squareBitmap);
+	        
 	        filePathList.add(Constant.VehiclePath + name + "small_image.jpg");
 	        filePathList.add(Constant.VehiclePath + name + "big_image.jpg");
 	        bitmapList.add(filePathList);

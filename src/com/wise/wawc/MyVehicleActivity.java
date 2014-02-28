@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.wise.data.CarData;
+import com.wise.data.IllegalCity;
 import com.wise.extend.AbstractSpinerAdapter;
 import com.wise.extend.SpinerPopWindow;
 import com.wise.pubclas.Constant;
@@ -82,11 +83,14 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	private TableRow device = null;
 	private TableRow insuranceCompany = null;
 	private TableRow selectCity = null;
+	private TableRow engineNumLayout = null;
+	private TableRow vehicleNumLayout = null;
+	private TableRow registerNumLayout = null;
 	private TextView showInsuranceCompany;   //显示保险公司
 	public static final int resultCodeInsurance = 2;   //选择保险公司的识别码
 	public static final int resultCodeBrank = 3;       //选择汽车品牌的识别码
 	public static final int resultCodeMaintain = 6;       //选择汽车品牌的识别码
-	public static final int resultCodeIllegal = 17;       //选择违章城市识别码
+	public static final int resultCodeIllegal = 45;       //选择违章城市识别码
 	public static final int showCarData = 8;       //显示汽车数据
 	public static final int deleteCarData = 10;       //删除汽车数据
 	private static final int setCarLogo = 11;      // 动态设置汽车Logo
@@ -126,6 +130,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	private TextView tvCarType = null;
 	private TextView btSaveVehicleData = null;
 	private TextView btDeleteVehicle = null;
+	private TextView selectCityTv = null;
 	
 	
 	private SpinerPopWindow mSpinerPopWindow;
@@ -157,6 +162,15 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	private Bitmap imageBitmap = null;
 	
 	private SharedPreferences preferences = null;
+	private String city_code = null;
+	
+	private int engine = 0;
+	private int car = 0;
+	private int register = 0; 
+	
+	private int engineNo = 0;
+	private int carNo = 0;
+	private int registerNo = 0;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -179,6 +193,10 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		lastMaintain = (EditText)findViewById(R.id.my_vehicle_ed_last_maintain);
 		lastMaintainTime = (EditText) findViewById(R.id.my_vehicle_last_maintain_time);
 		buyTime = (TextView)findViewById(R.id.my_vehicle_ed_buy_time);
+		selectCityTv = (TextView) findViewById(R.id.my_vehicle_select_city);
+		engineNumLayout = (TableRow) findViewById(R.id.my_vehicle_engine_num_layout);
+		vehicleNumLayout = (TableRow) findViewById(R.id.my_vehicle_num_layout);
+		registerNumLayout = (TableRow) findViewById(R.id.my_vehicle_register_num_layout);
 		getDateView(buyTime);
 		ivInsuranceDate = (TextView) findViewById(R.id.my_vehicle_tv_insurance);
 		getDateView(ivInsuranceDate);
@@ -267,12 +285,12 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		public void onClick(View v) {
 			switch(v.getId()){
 			case R.id.my_vechile_menu:
+				commitData();
 				if(isJump){
 					finish();
 				}else{
 					ActivityFactory.A.LeftMenu();
 				}
-				commitData();
 				break;
 			case R.id.iv_my_vehicle_brank:    //选择汽车品牌
 				Variable.carDatas.remove(newCarImage);
@@ -349,6 +367,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				break;
 			case R.id.select_city_layout:
 				Intent intent4 = new Intent(MyVehicleActivity.this,IllegalCitiyActivity.class);
+				intent4.putExtra("code", resultCodeIllegal);
 				startActivityForResult(intent4, resultCodeIllegal);
 				break;
 			default:
@@ -378,9 +397,38 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 			tvMaintain.setText(maintain);
 		}
 		if(resultCode == this.resultCodeIllegal){  //选择违章城市识别码
-			
-			
+			engineNumLayout.setVisibility(View.VISIBLE);
+			vehicleNumLayout.setVisibility(View.VISIBLE);
+			registerNumLayout.setVisibility(View.VISIBLE);
+			IllegalCity illegalCity = (IllegalCity) data.getSerializableExtra("illegalCity");
+			city_code = illegalCity.getCityCode();
+			selectCityTv.setText(illegalCity.getCityName());
+			if(Integer.valueOf(illegalCity.getEngine()) == 0){  //隐藏发动机
+				engineNumLayout.setVisibility(View.GONE);
+				engine = 0;
+			}else if(Integer.valueOf(illegalCity.getEngine()) == 1){
+				engine = 1;
+				engineNo = Integer.valueOf(illegalCity.getEngineno());
+			}
+			if(Integer.valueOf(illegalCity.getVehiclenum()) == 0){   //隐藏车架号
+				vehicleNumLayout.setVisibility(View.GONE);
+				car = 0;
+			}else if(Integer.valueOf(illegalCity.getVehiclenum()) == 1){
+				car = 1;
+				carNo = Integer.valueOf(illegalCity.getVehiclenumno());
+				
+			} 
+			if(Integer.valueOf(illegalCity.getRegist()) == 0 ){    // 隐藏车辆登记证号
+				registerNumLayout.setVisibility(View.GONE);
+				register = 0;
+			}else if(Integer.valueOf(illegalCity.getRegist()) == 1){
+				register = 1;
+				registerNo = Integer.valueOf(illegalCity.getRegistno());
+			}
+			Log.e("illegalCity.getRegist:",illegalCity.getRegist());
+			Log.e("illegalCity.getRegistno:",illegalCity.getRegistno());
 		}
+		Log.e("000000:",resultCode+"");
 	}
 	
 	class MyHandler extends Handler{
@@ -787,29 +835,59 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		String str = Variable.carDatas.get(chickIndex).getObj_name();
 		String str2 = str==null?"null":str;
 		editor.commit();
-		
-
-//		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "violation/city?auth_code=" + Variable.auth_code, getCityViolateRegulationsCode)).start();
-		
-//		  List<NameValuePair> params = new ArrayList<NameValuePair>();
-//        params.add(new BasicNameValuePair("obj_name", vehicleNumber.getText().toString().trim()));
-//        params.add(new BasicNameValuePair("car_brand", myVehicleBrank.getText().toString()));
-//        params.add(new BasicNameValuePair("car_series", tvCarSeries.getText().toString()));
-//        params.add(new BasicNameValuePair("car_type", tvCarType.getText().toString()));
+		if(city_code == null || "".equals(city_code)){
+			Toast.makeText(MyVehicleActivity.this, "违章数据不完整", 0).show();
+			return;
+		}
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("obj_name", vehicleNumber.getText().toString().trim()));
+        params.add(new BasicNameValuePair("car_brand", myVehicleBrank.getText().toString()));
+        params.add(new BasicNameValuePair("car_series", tvCarSeries.getText().toString()));
+        params.add(new BasicNameValuePair("car_type", tvCarType.getText().toString()));
+        params.add(new BasicNameValuePair("vio_location", city_code));
         //违章查询城市代码  TODO
-//        params.add(new BasicNameValuePair("engine_no", engineNum.getText().toString().trim()));
-//        params.add(new BasicNameValuePair("reg_no", vehicleRegNum.getText().toString().trim()));
-//        params.add(new BasicNameValuePair("frame_no", frameNum.getText().toString().trim()));
+        if(engine == 0){
+        	params.add(new BasicNameValuePair("engine_no", ""));
+        }else if(engine == 1){
+        	if(engineNo == 0){
+        		params.add(new BasicNameValuePair("engine_no", engineNum.getText().toString().trim()));
+        	}else{
+        		String engineStr = engineNum.getText().toString().trim();
+        		String tempEngine = engineStr.substring(engineStr.length() - engineNo);
+        		params.add(new BasicNameValuePair("engine_no", tempEngine));
+        	}
+        }
+        if(car == 0){
+        	params.add(new BasicNameValuePair("frame_no", ""));
+        }else if(car == 1){
+        	if(carNo == 0){
+        		params.add(new BasicNameValuePair("frame_no", frameNum.getText().toString().trim()));
+        	}else{
+        		String frameNo = frameNum.getText().toString().trim();
+        		String tempFrameNo = frameNo.substring(frameNo.length() - carNo);
+        		params.add(new BasicNameValuePair("frame_no", tempFrameNo));
+        	}
+        }
+        if(register == 0){
+        	 params.add(new BasicNameValuePair("reg_no", ""));
+        }else if(register == 1){
+        	if(registerNo == 0){
+        		params.add(new BasicNameValuePair("reg_no", vehicleRegNum.getText().toString().trim()));
+        	}else{
+        		String registerNoStr = vehicleRegNum.getText().toString().trim();
+        		String tempRegisterNo = registerNoStr.substring(registerNoStr.length() - registerNo);
+        		params.add(new BasicNameValuePair("reg_no", tempRegisterNo));
+        	}
+        }
         
-        
-//        params.add(new BasicNameValuePair("insurance_company", showInsuranceCompany.getText().toString()));
-//        params.add(new BasicNameValuePair("insurance_date", ivInsuranceDate.getText().toString()));
-//        params.add(new BasicNameValuePair("annual_inspect_data", "年检时间"));
-//        params.add(new BasicNameValuePair("maintain_company", tvMaintain.getText().toString()));
-//        params.add(new BasicNameValuePair("maintain_last_mileage", lastMaintain.getText().toString().trim()));
-//        params.add(new BasicNameValuePair("maintain_last_date", lastMaintainTime.getText().toString()));
-//        params.add(new BasicNameValuePair("maintain_next_mileage", "2013"));
-//        params.add(new BasicNameValuePair("buy_time", buyTime.getText().toString().trim()));
+        params.add(new BasicNameValuePair("insurance_company", showInsuranceCompany.getText().toString()));
+        params.add(new BasicNameValuePair("insurance_date", ivInsuranceDate.getText().toString()));
+        params.add(new BasicNameValuePair("annual_inspect_data", "年检时间"));
+        params.add(new BasicNameValuePair("maintain_company", tvMaintain.getText().toString()));
+        params.add(new BasicNameValuePair("maintain_last_mileage", lastMaintain.getText().toString().trim()));
+        params.add(new BasicNameValuePair("maintain_last_date", lastMaintainTime.getText().toString()));
+        params.add(new BasicNameValuePair("maintain_next_mileage", "2013"));
+        params.add(new BasicNameValuePair("buy_time", buyTime.getText().toString().trim()));
         
         
 //        Log.e("车牌号：",vehicleNumber.getText().toString().trim());
