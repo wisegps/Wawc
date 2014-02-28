@@ -51,15 +51,14 @@ public class BlurImage {
         int imageHeight = bitmap.getHeight();
         Log.e("imageWidth",imageWidth+"");
         Log.e("imageHeight",imageHeight+"");
-        Log.e("imageHeight",width+"");
         int y = 0;
         Bitmap image = null;
         if(imageHeight > imageWidth){
         	y = (imageHeight - imageWidth)/2;
-        	image = Bitmap.createBitmap(bitmap, 0, y, width, height);
+        	image = Bitmap.createBitmap(bitmap, 0, y, 80, 80);
         }else{
         	y = (imageWidth - imageHeight)/2;
-        	image = Bitmap.createBitmap(bitmap, y, 0, width, height);
+        	image = Bitmap.createBitmap(bitmap, y, 0, 80, 80);
         }
         return image;
     }
