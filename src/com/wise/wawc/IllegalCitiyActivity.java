@@ -1,5 +1,6 @@
 package com.wise.wawc;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -61,22 +62,42 @@ public class IllegalCitiyActivity extends Activity {
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			myDialog.dismiss();
-			parseJson(msg.obj.toString());
+			//存储到数据库
+			List<IllegalCity> illegalList = parseJson(msg.obj.toString());
+			
 		}
 	}
 	
 	public static List<IllegalCity> parseJson(String jsonData){
+		List<IllegalCity> cityList = new ArrayList<IllegalCity>();
 		try {
 			JSONObject jsonObj = new JSONObject(jsonData);
 			JSONObject result = jsonObj.getJSONObject("result");
 			Iterator it = result.keys();
 			while(it.hasNext()){
 				String key = it.next().toString();
-				Log.e("key:",key);
+				JSONObject jsonObject = result.getJSONObject(key);
+				JSONArray jsonArray = jsonObject.getJSONArray("citys");
+				IllegalCity illegalCity = new IllegalCity();
+				for(int i = 0 ; i < jsonArray.length() ; i ++){
+					JSONObject jsonObject3 = jsonArray.getJSONObject(i);
+					illegalCity.setAbbr(jsonObject3.getString("abbr"));
+					illegalCity.setCityCode(jsonObject3.getString("city_code"));
+					illegalCity.setCityName(jsonObject3.getString("city_name"));
+					illegalCity.setClassa(jsonObject3.getString("classa"));
+					illegalCity.setEngine(jsonObject3.getString("engine"));
+					illegalCity.setEngineno(jsonObject3.getString("engineno"));
+					illegalCity.setRegist(jsonObject3.getString("regist"));
+					illegalCity.setRegistno(jsonObject3.getString("registno"));
+					illegalCity.setVehiclenum(jsonObject3.getString("class"));
+					illegalCity.setVehiclenumno(jsonObject3.getString("classno"));
+					Log.e("city_code:",jsonObject3.getString("city_code"));
+				}
+				cityList.add(illegalCity);
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		return null;
+		return cityList;
 	}
 }

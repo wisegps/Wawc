@@ -243,7 +243,7 @@ public class BlurImage {
             inIndex += width;
         }
     }
-
+    
     public static int clamp(int x, int a, int b) {
         return (x < a) ? a : (x > b) ? b : x;
     }

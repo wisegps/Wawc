@@ -43,6 +43,7 @@ import android.os.Message;
 import android.provider.MediaStore;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
@@ -105,7 +106,6 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 		if(!"".equals(Variable.Adress)){
 			location.setText(Variable.Adress);
 		}
-		
 	}
 	class ClickListener implements OnClickListener{
 		public void onClick(View v) {
@@ -217,8 +217,10 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 	        fileName = Constant.VehiclePath + name + ".jpg"; 
 	        createImage(fileName, bitmap);  //创建文件
 	        File imageFile = new File(fileName);
-	        //按照指定的大小压缩图片
 	        Bitmap tempBitmap = BitmapFactory.decodeFile(fileName);
+	        //处理得到大图
+	        big_image = BlurImage.getSquareBitmap(tempBitmap,Variable.smallImageReqWidth,Variable.smallImageReqWidth);
+	        //按照指定的大小压缩图片
 	        small_image = BlurImage.getSquareBitmap(tempBitmap,Variable.smallImageReqWidth,Variable.smallImageReqWidth);
 //	        big_image = BlurImage.getSquareBitmap(smallBitmap,Variable.smallImageReqWidth,Variable.smallImageReqWidth);
 	        big_image = tempBitmap;
