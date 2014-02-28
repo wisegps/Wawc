@@ -85,6 +85,7 @@ public class CarLocationActivity extends Activity {
 		Button bt_activity_car_location_findCar = (Button) findViewById(R.id.bt_activity_car_location_findCar);
 		bt_activity_car_location_findCar.setOnClickListener(onClickListener);
 		ll_activity_car_location_bottom = (LinearLayout) findViewById(R.id.ll_activity_car_location_bottom);
+		
 	}
 
 	OnClickListener onClickListener = new OnClickListener() {

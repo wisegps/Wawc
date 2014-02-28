@@ -14,16 +14,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
 import com.baidu.mapapi.navi.BaiduMapAppNotSupportNaviException;
 import com.baidu.mapapi.navi.BaiduMapNavigation;
 import com.baidu.mapapi.navi.NaviPara;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.wise.data.TimeData;
 import com.wise.wawc.R;
-
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -33,7 +30,6 @@ import android.graphics.BitmapFactory;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Message;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.Display;
@@ -371,6 +367,37 @@ public class GetSystem {
         }
     }
     /**
+     * 判断是否提醒
+     * @param time
+     * @return
+     */
+    public static boolean isTimeOut(String time){
+        if(time == null){
+            return false;
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            java.util.Date begin = sdf.parse(time);
+            java.util.Date end = sdf.parse(GetNowTime());
+            return end.getTime() >= begin.getTime();
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    public static String GetNowTime() {
+        Time time = new Time();
+        time.setToNow();
+        String year = ChangeTime(time.year);
+        String month = ChangeTime(time.month + 1);
+        String day = ChangeTime(time.monthDay);
+        String minute = ChangeTime(time.minute);
+        String hour = ChangeTime(time.hour);
+        String sec = ChangeTime(time.second);
+        String str = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + sec;
+        return str;
+    }
+     /*
      * 计算车友圈图片显示尺寸
      * @param context
      */

@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.Scroller;
 
@@ -37,6 +38,7 @@ public class HScrollLayout extends ViewGroup {
     private void init(Context context) {
         scroller = new Scroller(context);
         mContext = context;
+        mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
     }
     int desireWidth;
     int desireHeight;
@@ -75,43 +77,36 @@ public class HScrollLayout extends ViewGroup {
         }
     }
 
-    private float mLastMotionY;
-    private final static int TOUCH_STATE_REST = 0;
-    private final static int TOUCH_STATE_SCROLLING = 1;
-    private int mTouchState = TOUCH_STATE_REST;
+    private float mLastMotionX;
     private int mTouchSlop = 10;
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        final int action = ev.getAction();
-
-        final float y = ev.getY();
+        //final int action = ev.getAction();
+        boolean xMoved = false; 
+        final float x = ev.getX();
         switch (ev.getAction()) {
         case MotionEvent.ACTION_DOWN:
-            mLastMotionY = y;
-            downMotionX = ev.getY();
-            mTouchState = scroller.isFinished() ? TOUCH_STATE_REST
-                    : TOUCH_STATE_SCROLLING;
+            mLastMotionX = x;
+            downMotionX = ev.getX();
             break;
         case MotionEvent.ACTION_MOVE:
-            final int yDiff = (int) Math.abs(y - mLastMotionY);
-            boolean yMoved = yDiff > mTouchSlop;
-            // 判断是否是移动
-            if (yMoved) {
-                mTouchState = TOUCH_STATE_SCROLLING;
-            }
+            final int xDiff = (int) Math.abs(x - mLastMotionX);
+            xMoved = xDiff > mTouchSlop;
             break;
         case MotionEvent.ACTION_UP:
-            mTouchState = TOUCH_STATE_REST;
+            
             break;
         }
         // true滑动容器里感应不到点击事件，false，滑动容器里控件感应到点击事件
-        Log.d(TAG, "" + (mTouchState != TOUCH_STATE_REST));
-        return mTouchState != TOUCH_STATE_REST;
+        //return mTouchState != TOUCH_STATE_REST;
+        Log.d(TAG, "xMoved = " + xMoved);
+        return xMoved;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        Log.d(TAG, "onTouchEvent = " + event.getAction());
         float x = event.getX();
         switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
@@ -175,7 +170,7 @@ public class HScrollLayout extends ViewGroup {
      * 
      * @param whichScreen
      */
-    private void snapToScreen(int whichScreen) {
+    public void snapToScreen(int whichScreen) {
         if (whichScreen > (getChildCount() - 1)) {
             addView();
         }

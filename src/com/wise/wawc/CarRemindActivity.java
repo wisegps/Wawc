@@ -2,12 +2,10 @@ package com.wise.wawc;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.wise.data.CarData;
 import com.wise.extend.CarAdapter;
 import com.wise.extend.OpenDateDialog;
@@ -17,7 +15,6 @@ import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;

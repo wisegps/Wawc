@@ -66,6 +66,7 @@ public class HomeActivity extends Activity{
     private static final int Get_Fuel = 3; // 获取城市油价
     private static final int Get_Cars = 4; // 获取车辆数据
     private static final int Get_CarsLogo = 5; // 获取车辆图标
+    private static final int Get_persion = 7;//获取个人信息
     
     LinearLayout ll_image;
     TextView tv_item_weather_date, tv_item_weather_wd, tv_item_weather,
@@ -76,7 +77,7 @@ public class HomeActivity extends Activity{
     private ImageView saySomething = null; // 语音识别
   	private SpeechRecognizer iatRecognizer;   //识别对象
   	private StringBuffer sb = null;
-  	ImageView voiceImage = null;
+  	ImageView voiceImage ,iv_car_remind;
   	VoiceDialog voiceDialog = null;
 
     String LocationCityCode = "";// 城市编码
@@ -99,12 +100,14 @@ public class HomeActivity extends Activity{
         bt_activity_home_help.setOnClickListener(onClickListener);
         Button bt_activity_home_risk = (Button) findViewById(R.id.bt_activity_home_risk);
         bt_activity_home_risk.setOnClickListener(onClickListener);
-
+        iv_car_remind = (ImageView)findViewById(R.id.iv_car_remind);
         ScrollLayout_car = (HScrollLayout) findViewById(R.id.ScrollLayout_car);
         ScrollLayout_car.setOnViewChangeListener(new OnViewChangeListener() {            
             @Override
             public void OnViewChange(int view) {
                 changeImage(view);
+                saveVehicleID(view);
+                notiRemind(view);
             }            
             @Override
             public void OnLastView() {}
@@ -166,27 +169,27 @@ public class HomeActivity extends Activity{
         GetFuel();
         registerBroadcastReceiver();
         GetDBCars();
-        showCar();
         if(isNeedGetLogoFromUrl){
           new Thread(new getLogoThread()).start();
         }
-        for(int i = 0 ; i < carDatas.size() ; i++){
-            ImageView imageView = new ImageView(this);
-            imageView.setImageResource(R.drawable.home_body_cutover_press);
-            imageView.setPadding(5, 0, 5, 0);
-            ll_image.addView(imageView);
-        }
-        changeImage(DefaultVehicleID);
+        showCar();
+        GetDBCarRemindData();
     }
     private void changeImage(int index){
         for(int i = 0 ; i < carDatas.size() ; i++){
             ImageView imageView = (ImageView)ll_image.getChildAt(i);
             if(index == i){
-                imageView.setImageResource(R.drawable.home_body_cutover);
-            }else{
                 imageView.setImageResource(R.drawable.home_body_cutover_press);
+            }else{
+                imageView.setImageResource(R.drawable.home_body_cutover);
             }
         }
+    }
+    private void saveVehicleID(int index){
+        SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+        Editor editor = preferences.edit();
+        editor.putInt(Constant.DefaultVehicleID, index);
+        editor.commit();
     }
     private TextView[] mTextViews;
     //TODO 显示车辆
@@ -213,6 +216,14 @@ public class HomeActivity extends Activity{
                 iv_carLogo.setImageResource(R.drawable.ic_launcher);
             }
         }
+
+        for(int i = 0 ; i < carDatas.size() ; i++){
+            ImageView imageView = new ImageView(this);
+            imageView.setImageResource(R.drawable.home_body_cutover_press);
+            imageView.setPadding(5, 0, 5, 0);
+            ll_image.addView(imageView);
+        }
+        changeImage(DefaultVehicleID);
     }
 
     OnClickListener onClickListener = new OnClickListener() {
@@ -249,8 +260,7 @@ public class HomeActivity extends Activity{
                         VehicleStatusActivity.class));
                 break;
             case R.id.tv_activity_home_car_adress: // 车辆位置
-                HomeActivity.this.startActivity(new Intent(HomeActivity.this,
-                        CarLocationActivity.class));
+                HomeActivity.this.startActivity(new Intent(HomeActivity.this, CarLocationActivity.class));
                 break;
             case R.id.rl_activity_home_car: // 我的爱车
                 Intent intent = new Intent(HomeActivity.this,MyVehicleActivity.class);
@@ -297,6 +307,9 @@ public class HomeActivity extends Activity{
                 break;
             case Get_CarsLogo:
                 showCar();
+                break;
+            case Get_persion:
+                jsonCarRemind(msg.obj.toString());
                 break;
             }
         }
@@ -401,9 +414,7 @@ public class HomeActivity extends Activity{
             db.close();
             if(carDatas.size() > 0){
                 carDatas.get(DefaultVehicleID).setCheck(true);
-            }
-            for(CarData carData : carDatas){
-                System.out.println(carData.toString());
+                ScrollLayout_car.snapToScreen(DefaultVehicleID);
             }
         }
         Log.e("查询数据库完毕",carDatas.size()+"");
@@ -795,6 +806,7 @@ public class HomeActivity extends Activity{
                     Log.d(TAG, "获取车辆数据");
                     GetCars();
                 }
+                GetDBCarRemindData();
             }else if(action.equals(Constant.A_City)){
                 for(int i = 0 ; i < mTextViews.length ; i++){
                     mTextViews[i].setText(intent.getStringExtra("AddrStr"));
@@ -809,7 +821,7 @@ public class HomeActivity extends Activity{
 //        if(Variable.carDatas != null || Variable.carDatas.size() > 0){
 //            for(CarData carData : Variable.carDatas){
 //                if(carData.isCheck()){
-//                    //TODO 显示车辆信息
+//                    //显示车辆信息
 //                    tv_car_number.setText(carData.getObj_name());
 //                    Bitmap bimage = BitmapFactory.decodeFile(carData.getLogoPath());
 //                    if(bimage != null){            
@@ -909,5 +921,70 @@ public class HomeActivity extends Activity{
 			setContentView(R.layout.voice_dialog);
 			voiceImage = (ImageView) findViewById(R.id.do_something_voice_image);
 		}
+	}
+	/**
+	 * 车辆提醒
+	 * @param index
+	 */
+	private void notiRemind(int index){
+	    CarData carData = carDatas.get(index);
+	    System.out.println(carData.getAnnual_inspect_date());
+	    System.out.println(carData.getInsurance_date());
+	    if(GetSystem.isTimeOut(carData.getAnnual_inspect_date()) ||
+	            GetSystem.isTimeOut(carData.getInsurance_date())||
+	            GetSystem.isTimeOut(annual_inspect_date)||
+	            GetSystem.isTimeOut(change_date)){
+	        //TODO 提醒
+	        iv_car_remind.setVisibility(View.VISIBLE);
+	    }else{
+	        iv_car_remind.setVisibility(View.GONE);
+	    }
+	}
+	String annual_inspect_date;
+	String change_date;
+	private void GetDBCarRemindData(){
+        DBHelper dbHelper = new DBHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + Constant.TB_Account + " where cust_id=?", new String[]{Variable.cust_id});
+        if(cursor.getCount() == 0){
+            String url = Constant.BaseUrl + "customer/" + Variable.cust_id +"?auth_code=" + Variable.auth_code;
+            new Thread(new NetThread.GetDataThread(handler, url, Get_persion)).start();
+        }else{
+            if(cursor.moveToFirst()){
+                annual_inspect_date = cursor.getString(cursor.getColumnIndex("annual_inspect_date"));
+                change_date = cursor.getString(cursor.getColumnIndex("change_date"));
+            }                
+        }
+    }
+	private void jsonCarRemind(String result){
+	    try {           
+	        JSONObject jsonObject = new JSONObject(result);
+            DBExcute dbExcute = new DBExcute();
+            ContentValues values = new ContentValues();
+            if(jsonObject.opt("contacts") != null){
+                String contacts = jsonObject.getString("contacts");
+                values.put("Consignee", contacts);
+            }
+            if(jsonObject.opt("address") != null){
+                String address = jsonObject.getString("address");
+                values.put("Adress", address);
+            }
+            if(jsonObject.opt("tel") != null){
+                String tel = jsonObject.getString("tel");
+                values.put("Phone", tel);
+            }
+            if(jsonObject.opt("annual_inspect_date") != null){
+                annual_inspect_date = jsonObject.getString("annual_inspect_date").substring(0, 10);                
+                values.put("annual_inspect_date", annual_inspect_date);
+            }
+            if(jsonObject.opt("change_date") != null){
+                change_date = jsonObject.getString("change_date").substring(0, 10);
+                values.put("change_date", change_date);
+            }
+            values.put("cust_id", Variable.cust_id);
+            dbExcute.InsertDB(HomeActivity.this, values, Constant.TB_Account);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 	}
 }

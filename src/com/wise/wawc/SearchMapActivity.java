@@ -172,12 +172,38 @@ public class SearchMapActivity extends Activity {
                 adressAdapter.notifyDataSetChanged();
                 break;
             case get4s:
-                System.out.println(msg.obj.toString());
+                jsonDealAdress(msg.obj.toString());
+                adressAdapter.notifyDataSetChanged();
                 break;
             }
         }
 	    
 	};
+	
+	private void jsonDealAdress(String result){
+        try {
+            JSONArray jsonArray = new JSONArray(result);
+            for(int i = 0 ; i < jsonArray.length(); i++){
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                AdressData adressData = new AdressData();
+                adressData.setAdress(jsonObject.getString("address"));
+                adressData.setName(jsonObject.getString("name"));
+                adressData.setPhone(jsonObject.getString("tel"));
+                adressData.setLat(jsonObject.getDouble("lat"));
+                adressData.setLon(jsonObject.getDouble("lon"));
+                if(jsonObject.getString("is_collect").equals("1")){
+                    //收藏
+                    adressData.setIs_collect(true);
+                }else{
+                    //未收藏
+                    adressData.setIs_collect(false);
+                }
+                adressDatas.add(adressData);   
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 	
 	OnItemClickListener onItemClickListener = new OnItemClickListener() {
 		@Override
