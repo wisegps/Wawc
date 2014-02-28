@@ -13,6 +13,7 @@ import com.wise.data.Article;
 import com.wise.data.IllegalCity;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.Variable;
+import com.wise.wawc.IllegalCitiyActivity;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -313,14 +314,15 @@ public class DBExcute {
 	}
 	
 	public List<IllegalCity> selectIllegal(Context context){
+		List<IllegalCity> illegaList = null;
 		DBHelper helper = new DBHelper(context);
 		SQLiteDatabase reader = helper.getReadableDatabase();
 		Cursor cursor = reader.rawQuery("select * from " + Constant.TB_IllegalCity, new String[]{});
 		if(cursor.moveToFirst()){
 			String json = cursor.getColumnName(cursor.getColumnIndex("json_data"));
-			
 			//解析json数据
+			illegaList = IllegalCitiyActivity.parseJson(json);
 		}
-		return null;
+		return illegaList;
 	}
 }
