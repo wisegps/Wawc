@@ -19,6 +19,7 @@ import org.json.JSONObject;
 
 import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.UploadUtil;
 import com.wise.pubclas.UploadUtil.OnUploadProcessListener;
@@ -36,6 +37,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -86,6 +88,9 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 	private JSONArray jsonDatas = new JSONArray();
 	private JSONObject imageUrl = null;
 	
+	private int screenWidth = 0;
+	private int screenHeight = 0;
+	
 	private SharedPreferences preferences = null;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -106,6 +111,11 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 		if(!"".equals(Variable.Adress)){
 			location.setText(Variable.Adress);
 		}
+		
+		WindowManager manager = getWindowManager();
+		Display display = manager.getDefaultDisplay();
+		screenWidth = display.getWidth();
+		screenHeight = display.getHeight();
 	}
 	class ClickListener implements OnClickListener{
 		public void onClick(View v) {
@@ -217,22 +227,28 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 	        fileName = Constant.VehiclePath + name + ".jpg"; 
 	        createImage(fileName, bitmap);  //创建文件
 	        File imageFile = new File(fileName);
-	        Bitmap tempBitmap = BitmapFactory.decodeFile(fileName);
-	        //处理得到大图
-	        big_image = BlurImage.getSquareBitmap(tempBitmap,Variable.smallImageReqWidth,Variable.smallImageReqWidth);
-	        //按照指定的大小压缩图片
-	        small_image = BlurImage.getSquareBitmap(tempBitmap,Variable.smallImageReqWidth,Variable.smallImageReqWidth);
-//	        big_image = BlurImage.getSquareBitmap(smallBitmap,Variable.smallImageReqWidth,Variable.smallImageReqWidth);
-	        big_image = tempBitmap;
+	        //将图片压缩至屏幕大小(大图)
+	        Bitmap myBitmap = BlurImage.zoomImg(fileName,screenWidth,screenHeight);
+	        //获取正方形图片
+	        Bitmap squareBitmap = BlurImage.getSquareBitmap(myBitmap,screenWidth,screenHeight); 
+	        //按照需要的尺寸压缩图片(小图)
+	        createImage(Constant.VehiclePath + name + "square_image.jpg", squareBitmap);
+	        GetSystem.getScreenInfor(NewArticleActivity.this);
+	        small_image = BlurImage.decodeSampledBitmapFromPath(Constant.VehiclePath + name + "square_image.jpg",Variable.smallImageReqWidth,Variable.smallImageReqWidth);
+	        File squareImage = new File(Constant.VehiclePath + name + "square_image.jpg");
+	        
+	        
 	        createImage(Constant.VehiclePath + name + "small_image.jpg", small_image);
-	        createImage(Constant.VehiclePath + name + "big_image.jpg", big_image);
+	        createImage(Constant.VehiclePath + name + "big_image.jpg", myBitmap);
 	        // TODO
 	        filePathList.add(Constant.VehiclePath + name + "small_image.jpg");
 	        filePathList.add(Constant.VehiclePath + name + "big_image.jpg");
 	        bitmapList.add(filePathList);
 	        if(imageFile.exists()){
-	        	Log.e("删除图片","删除图片");
 	        	imageFile.delete();
+	        }
+	        if(squareImage.exists()){
+	        	squareImage.delete();
 	        }
 		}
         
