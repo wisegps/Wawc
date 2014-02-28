@@ -96,17 +96,9 @@ public class MyDevicesActivity extends Activity{
             super.handleMessage(msg);
             switch (msg.what) {
             case Get_data:
-                String result = msg.obj.toString();
-                try {
-                    JSONObject jsonObject = new JSONObject(result);
-                    if(jsonObject.getString("status_code").equals("0")){
-                        jsonDevice(msg.obj.toString());
-                        showGridView();
-                        JudgeDevice(msg.obj.toString());
-                    }                    
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                jsonDevice(msg.obj.toString());
+                showGridView();
+                JudgeDevice(msg.obj.toString());
                 break;
 
             default:
@@ -181,8 +173,7 @@ public class MyDevicesActivity extends Activity{
     }
 	public void GetDevicesData(){
 		//TODO 我的终端
-		//String url = Constant.BaseUrl + "customer/" + Variable.cust_id + "/device?auth_code=" + Variable.auth_code;
-		String url = "http://wiwc.api.wisegps.cn/customer/70/device?auth_code=07787e44bf2d75de15e2e4845b90af84";
+		String url = Constant.BaseUrl + "customer/" + Variable.cust_id + "/device?auth_code=" + Variable.auth_code;
 		new Thread(new NetThread.GetDataThread(handler, url, Get_data)).start();
 	}
 	/**

@@ -200,9 +200,10 @@ public class HomeActivity extends Activity{
             CarData carData = carDatas.get(i);
             View view = LayoutInflater.from(HomeActivity.this).inflate(R.layout.item_home_car, null);
             ScrollLayout_car.addView(view);
-            RelativeLayout rl_activity_home_car = (RelativeLayout)view.findViewById(R.id.rl_activity_home_car);
-            rl_activity_home_car.setOnClickListener(onClickListener);
+            //RelativeLayout rl_activity_home_car = (RelativeLayout)view.findViewById(R.id.rl_activity_home_car);
+            //rl_activity_home_car.setOnClickListener(onClickListener);
             TextView tv_car_number = (TextView)view.findViewById(R.id.tv_car_number);
+            tv_car_number.setOnClickListener(onClickListener);
             ImageView iv_carLogo = (ImageView)view.findViewById(R.id.iv_carLogo);
             TextView tv_activity_home_car_adress = (TextView)view.findViewById(R.id.tv_activity_home_car_adress);
             tv_activity_home_car_adress.setText(Variable.Adress);
@@ -262,7 +263,7 @@ public class HomeActivity extends Activity{
             case R.id.tv_activity_home_car_adress: // 车辆位置
                 HomeActivity.this.startActivity(new Intent(HomeActivity.this, CarLocationActivity.class));
                 break;
-            case R.id.rl_activity_home_car: // 我的爱车
+            case R.id.tv_car_number: // 我的爱车
                 Intent intent = new Intent(HomeActivity.this,MyVehicleActivity.class);
                 intent.putExtra("isJump", true);
                 HomeActivity.this.startActivity(intent);
@@ -310,6 +311,9 @@ public class HomeActivity extends Activity{
                 break;
             case Get_persion:
                 jsonCarRemind(msg.obj.toString());
+                break;
+            case 999:
+                Log.d(TAG, msg.obj.toString());
                 break;
             }
         }
@@ -413,8 +417,13 @@ public class HomeActivity extends Activity{
             cursor.close();
             db.close();
             if(carDatas.size() > 0){
-                carDatas.get(DefaultVehicleID).setCheck(true);
-                ScrollLayout_car.snapToScreen(DefaultVehicleID);
+                if(DefaultVehicleID >= carDatas.size()){//删除车辆后默认旋转第一个车
+                    carDatas.get(0).setCheck(true);
+                    ScrollLayout_car.snapToScreen(0);
+                }else{
+                    carDatas.get(DefaultVehicleID).setCheck(true);
+                    ScrollLayout_car.snapToScreen(DefaultVehicleID);
+                }
             }
         }
         Log.e("查询数据库完毕",carDatas.size()+"");
@@ -939,6 +948,8 @@ public class HomeActivity extends Activity{
 	    }else{
 	        iv_car_remind.setVisibility(View.GONE);
 	    }
+	    //String url = Constant.BaseUrl + "vehicle/72" + "?auth_code=" + Variable.auth_code;
+	    //new Thread(new NetThread.GetDataThread(handler, url, 999)).start();
 	}
 	String annual_inspect_date;
 	String change_date;

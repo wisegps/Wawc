@@ -28,6 +28,7 @@ public class OrderDeviceActivity extends Activity{
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		WawcApplication.getActivityInstance().addActivity(this);
 		setContentView(R.layout.activity_order_device);
 		Button bt_activity_order_device_submit = (Button)findViewById(R.id.bt_activity_order_device_submit);
 		bt_activity_order_device_submit.setOnClickListener(onClickListener);

@@ -5,11 +5,9 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.map.ItemizedOverlay;
 import com.baidu.mapapi.map.MKEvent;
@@ -41,8 +39,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -140,7 +136,7 @@ public class SearchMapActivity extends Activity {
 	        mkSearch.poiSearchNearBy(keyWord, point, 5000);
 		}		
 		//显示自己位置
-		Drawable mark= getResources().getDrawable(R.drawable.ic_launcher);
+		Drawable mark= getResources().getDrawable(R.drawable.body_icon_location2);
 		overlayCar = new OverlayCar(mark, mMapView);
 		overlays.add(overlayCar);
 		OverlayItem item = new OverlayItem(point, "item2", "item2");
