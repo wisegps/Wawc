@@ -4,6 +4,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
@@ -51,29 +52,14 @@ public class BlurImage {
         int imageHeight = bitmap.getHeight();
         Log.e("imageWidth",imageWidth+"");
         Log.e("imageHeight",imageHeight+"");
-        Log.e("imageHeight",width+"");
         int y = 0;
         Bitmap image = null;
         if(imageHeight > imageWidth){
         	y = (imageHeight - imageWidth)/2;
-        	image = Bitmap.createBitmap(bitmap, 0, y, width, height);
+        	image = Bitmap.createBitmap(bitmap, 0, y, width, width);
         }else{
         	y = (imageWidth - imageHeight)/2;
-        	image = Bitmap.createBitmap(bitmap, y, 0, width, height);
-        }
-        return image;
-    }
-    public static Bitmap getSquareBitmap(Bitmap bitmap){
-        int imageWidth = bitmap.getWidth();
-        int imageHeight = bitmap.getHeight();
-        int y = 0;
-        Bitmap image = null;
-        if(imageHeight > imageWidth){
-            y = (imageHeight - imageWidth)/2;
-            image = Bitmap.createBitmap(bitmap, 0, y, imageWidth, imageWidth);
-        }else{
-            y = (imageWidth - imageHeight)/2;
-            image = Bitmap.createBitmap(bitmap, y, 0, imageHeight, imageHeight);
+        	image = Bitmap.createBitmap(bitmap, y, 0, height, height);
         }
         return image;
     }
@@ -259,6 +245,26 @@ public class BlurImage {
         }
     }
     
+    /**
+     * 图片缩放
+     */
+    
+    public static Bitmap zoomImg(String pathName, int newWidth ,int newHeight){
+    		Bitmap bm = BitmapFactory.decodeFile(pathName);
+    	   // 获得图片的宽高
+    	   int width = bm.getWidth();
+    	   int height = bm.getHeight();
+    	   // 计算缩放比例
+    	   float scaleWidth = ((float) newWidth) / width;
+    	   float scaleHeight = ((float) newHeight) / height;
+    	   // 取得想要缩放的matrix参数
+    	   Matrix matrix = new Matrix();
+    	   matrix.postScale(scaleWidth, scaleHeight);
+    	   // 得到新的图片
+    	   Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
+    	    return newbm;
+    	}
+
     public static int clamp(int x, int a, int b) {
         return (x < a) ? a : (x > b) ? b : x;
     }
