@@ -227,7 +227,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		dBExcute = new DBExcute();
 		
 		//车辆数据
-		int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 80, getResources().getDisplayMetrics());
+		int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Constant.ImageWidth, getResources().getDisplayMetrics());
 		LayoutParams params = new LayoutParams(Variable.carDatas.size() * (px + 10),LayoutParams.WRAP_CONTENT);
 		vehicleGridView = (GridView) findViewById(R.id.gv_my_vehicle);
 		//汽车品牌Logo
