@@ -6,8 +6,7 @@ import android.R.string;
  * 车辆信息(车牌，车标)
  * @author keven.cheng
  */
-public class CarData {
-	
+public class CarData {	
     public int obj_id;
     /**
      * 品牌
