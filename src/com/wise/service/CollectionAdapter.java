@@ -84,6 +84,7 @@ public class CollectionAdapter extends BaseAdapter {
         final AdressData adressData = adressDatas.get(position);
         holder.tv_name.setText(adressData.getName());
         holder.tv_address.setText("地址：" + adressData.getAdress());
+        holder.tv_distance.setVisibility(View.GONE);
         //holder.tv_distance.setText(adressData.getDistance());
         if(adressData.getPhone() == null || adressData.getPhone().equals("")){
             holder.rl_tel.setVisibility(View.GONE);

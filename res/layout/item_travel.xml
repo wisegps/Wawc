@@ -119,7 +119,7 @@
 	    <ImageView
              android:id="@+id/iv_item_travel_share" 
              android:contentDescription="@string/app_name"
-             android:src="@drawable/nav_share"
+             android:src="@drawable/share_black"
              android:layout_toLeftOf="@id/iv_item_travel_map"
              android:layout_marginRight="@dimen/margins"
              android:layout_width="@dimen/double_margins"

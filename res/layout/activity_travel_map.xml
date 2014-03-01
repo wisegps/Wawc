@@ -23,7 +23,7 @@
             android:gravity="center"
             android:text="车辆行程地图"
             android:textColor="@color/white"
-            android:textSize="@dimen/title"
+            android:textSize="@dimen/head"
             android:textStyle="bold" />
 	</RelativeLayout>
 	<LinearLayout

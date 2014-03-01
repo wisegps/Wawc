@@ -106,8 +106,8 @@ public class HomeActivity extends Activity{
             @Override
             public void OnViewChange(int view) {
                 changeImage(view);
-                saveVehicleID(view);
-                notiRemind(view);
+                //saveVehicleID(view);
+                //notiRemind(view);
             }            
             @Override
             public void OnLastView() {}

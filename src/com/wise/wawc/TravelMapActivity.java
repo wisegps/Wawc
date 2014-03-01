@@ -2,33 +2,34 @@ package com.wise.wawc;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.map.Geometry;
 import com.baidu.mapapi.map.Graphic;
 import com.baidu.mapapi.map.GraphicsOverlay;
+import com.baidu.mapapi.map.ItemizedOverlay;
 import com.baidu.mapapi.map.MKMapViewListener;
 import com.baidu.mapapi.map.MapController;
 import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapView;
 import com.baidu.mapapi.map.Overlay;
+import com.baidu.mapapi.map.OverlayItem;
 import com.baidu.mapapi.map.Symbol;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
+import com.wise.wawc.SearchMapActivity.OverlayCar;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -36,6 +37,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * 车辆行程
@@ -75,12 +77,29 @@ public class TravelMapActivity extends Activity {
         mMapController.setZoom(12);// 设置地图zoom级别
         overlays = mMapView.getOverlays();
 
-        // ImageView iv_activity_car_home_search =
-        // (ImageView)findViewById(R.id.iv_activity_car_home_search);
-        // iv_activity_car_home_search.setOnClickListener(onClickListener);
+        TextView tv_travel_startPlace = (TextView)findViewById(R.id.tv_travel_startPlace);
+        TextView tv_travel_stopPlace = (TextView)findViewById(R.id.tv_travel_stopPlace);
+        TextView tv_travel_startTime = (TextView)findViewById(R.id.tv_travel_startTime);
+        TextView tv_travel_stopTime = (TextView)findViewById(R.id.tv_travel_stopTime);
+        TextView tv_travel_spacingDistance = (TextView)findViewById(R.id.tv_travel_spacingDistance);
+        TextView tv_travel_averageOil = (TextView)findViewById(R.id.tv_travel_averageOil);
+        TextView tv_travel_oil = (TextView)findViewById(R.id.tv_travel_oil);
+        TextView tv_travel_speed = (TextView)findViewById(R.id.tv_travel_speed);
+        TextView tv_travel_cost = (TextView)findViewById(R.id.tv_travel_cost);
+        
         ImageView iv_activity_travel_back = (ImageView) findViewById(R.id.iv_activity_travel_back);
         iv_activity_travel_back.setOnClickListener(onClickListener);
         Intent intent = getIntent();
+        tv_travel_startPlace.setText(intent.getStringExtra("Start_place"));
+        tv_travel_stopPlace.setText(intent.getStringExtra("End_place"));
+        tv_travel_startTime.setText(intent.getStringExtra("StartTime").substring(10, 16));
+        tv_travel_stopTime.setText(intent.getStringExtra("StopTime").substring(10, 16));
+        tv_travel_spacingDistance.setText(intent.getStringExtra("SpacingDistance"));
+        tv_travel_averageOil.setText(intent.getStringExtra("AverageOil"));
+        tv_travel_oil.setText(intent.getStringExtra("Oil"));
+        tv_travel_speed.setText(intent.getStringExtra("Speed"));
+        tv_travel_cost.setText(intent.getStringExtra("Cost"));
+        
         String StartTime = intent.getStringExtra("StartTime");
         String StopTime = intent.getStringExtra("StopTime");
 
@@ -131,6 +150,8 @@ public class TravelMapActivity extends Activity {
     
     private void jsonData(String result){
         try {
+            GeoPoint startGeoPoint = null;
+            GeoPoint stopGeoPoint = null;
             JSONArray jsonArray = new JSONArray(result);
             GeoPoint[] geoPoints = new GeoPoint[jsonArray.length()];
             for(int i = 0 ; i < jsonArray.length() ; i++){
@@ -140,7 +161,12 @@ public class TravelMapActivity extends Activity {
                 
                 GeoPoint geoPoint = new GeoPoint(GetSystem.StringToInt(Lat),GetSystem.StringToInt(Lon));
                 geoPoints[i] = geoPoint;
-                mMapController.setCenter(geoPoint);                
+                mMapController.setCenter(geoPoint);  
+                if(i == 0){
+                    startGeoPoint = geoPoint;
+                }else{
+                    stopGeoPoint = geoPoint;
+                }
             }
             //创建样式 
             Symbol palaceSymbol = new Symbol(); 
@@ -160,10 +186,26 @@ public class TravelMapActivity extends Activity {
             overlays.add(palaceOverlay);
             palaceOverlay.setData(palaceGraphic);
             
-            mMapView.refresh();
-            for(int i = 0 ; i < geoPoints.length ; i++){
-                System.out.println(geoPoints[i]);
+            
+            
+            if(startGeoPoint != null){
+                Drawable start= getResources().getDrawable(R.drawable.body_icon_outset);
+                ItemizedOverlay startItemizedOverlay = new ItemizedOverlay<OverlayItem>(start, mMapView);
+                overlays.add(startItemizedOverlay);
+                OverlayItem overlayItem = new OverlayItem(startGeoPoint, "", "");
+                overlayItem.setAnchor(OverlayItem.ALING_CENTER);
+                startItemizedOverlay.addItem(overlayItem);
+                if(stopGeoPoint != null){
+                    Drawable stop= getResources().getDrawable(R.drawable.body_icon_end);
+                    ItemizedOverlay stopItemizedOverlay = new ItemizedOverlay<OverlayItem>(stop, mMapView);
+                    overlays.add(stopItemizedOverlay);
+                    OverlayItem overlayItem1 = new OverlayItem(stopGeoPoint, "", "");
+                    overlayItem1.setAnchor(OverlayItem.ALING_CENTER);
+                    stopItemizedOverlay.addItem(overlayItem1);
+                }
             }
+            
+            mMapView.refresh();
         } catch (JSONException e) {
             e.printStackTrace();
         }
