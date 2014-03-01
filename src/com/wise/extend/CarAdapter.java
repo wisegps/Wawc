@@ -23,6 +23,8 @@ import android.widget.TextView;
  * @author honesty
  */
 public class CarAdapter extends BaseAdapter{
+    private static final int VALUE_CAR = 0;
+    private static final int VALUE_ADD = 1;
 	private static final String TAG = "CarAdapter";
 	Context context;
 	List<CarData> carDatas;
@@ -47,40 +49,68 @@ public class CarAdapter extends BaseAdapter{
 	}
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+	    int type = getItemViewType(position);
 		ViewHolder holder;
+		ViewAdd viewAdd;
 		if (convertView == null) {
-			convertView = mInflater.inflate(R.layout.item_cars, null);
-			holder = new ViewHolder();
-			holder.tv_item_carnumber = (TextView) convertView.findViewById(R.id.tv_item_carnumber);
-			holder.iv_item_cars = (ImageView)convertView.findViewById(R.id.iv_item_cars);
-			holder.ll_item_cars = (LinearLayout)convertView.findViewById(R.id.ll_item_cars);
-			convertView.setTag(holder);
+		    switch (type) {
+                case VALUE_CAR:
+        			convertView = mInflater.inflate(R.layout.item_cars, null);
+        			holder = new ViewHolder();
+        			holder.tv_item_carnumber = (TextView) convertView.findViewById(R.id.tv_item_carnumber);
+        			holder.iv_item_cars = (ImageView)convertView.findViewById(R.id.iv_item_cars);
+        			holder.ll_item_cars = (LinearLayout)convertView.findViewById(R.id.ll_item_cars);
+        			convertView.setTag(holder);
+        			break;
+                case VALUE_ADD:
+                    convertView = mInflater.inflate(R.layout.item_add, null);
+                    viewAdd = new ViewAdd();
+                    viewAdd.rl_add = (RelativeLayout)convertView.findViewById(R.id.rl_add);
+                    convertView.setTag(viewAdd);
+                    break;
+    		    }
 		} else {
-			holder = (ViewHolder) convertView.getTag();
-		}
-		CarData carData = carDatas.get(position);
-		holder.tv_item_carnumber.setText(carData.getObj_name());
-		if(carData.getLogoPath() == null || carData.getLogoPath().equals("")){
-		    holder.iv_item_cars.setImageResource(R.drawable.ic_launcher);
-		}else{
-		    Bitmap bitmap = BitmapFactory.decodeFile(carData.getLogoPath());
-		    //Bitmap bitmap = BlurImage.decodeSampledBitmapFromPath(carData.getLogoPath(), 80, 80);            
-            if(bitmap != null){
-                holder.iv_item_cars.setImageBitmap(bitmap);
-            }else{
-                holder.iv_item_cars.setImageResource(R.drawable.ic_launcher);
-            }
-		}
-		if(carData.isCheck()){
-			holder.ll_item_cars.setBackgroundResource(R.drawable.bg_car_logo);
-		}else{
-			holder.ll_item_cars.setBackgroundDrawable(null);
+		    switch (type) {
+                case VALUE_CAR:
+                    holder = (ViewHolder) convertView.getTag();
+                    CarData carData = carDatas.get(position);
+                    holder.tv_item_carnumber.setText(carData.getObj_name());
+                    if(carData.getLogoPath() == null || carData.getLogoPath().equals("")){
+                        holder.iv_item_cars.setImageResource(R.drawable.ic_launcher);
+                    }else{
+                        Bitmap bitmap = BitmapFactory.decodeFile(carData.getLogoPath());
+                        //Bitmap bitmap = BlurImage.decodeSampledBitmapFromPath(carData.getLogoPath(), 80, 80);            
+                        if(bitmap != null){
+                            holder.iv_item_cars.setImageBitmap(bitmap);
+                        }else{
+                            holder.iv_item_cars.setImageResource(R.drawable.ic_launcher);
+                        }
+                    }
+                    if(carData.isCheck()){
+                        holder.ll_item_cars.setBackgroundResource(R.drawable.bg_car_logo);
+                    }else{
+                        holder.ll_item_cars.setBackgroundDrawable(null);
+                    }
+                    break;
+                case VALUE_ADD:
+                    viewAdd = (ViewAdd) convertView.getTag();
+                    break;
+		    }
 		}
 		return convertView;
 	}
-	private class ViewHolder {
+	
+	@Override
+    public int getItemViewType(int position) {
+	    return carDatas.get(position).getType();
+    }
+
+    private class ViewHolder {
 		TextView tv_item_carnumber;
 		ImageView iv_item_cars;
 		LinearLayout ll_item_cars;
+	}
+	private class ViewAdd{
+	    RelativeLayout rl_add;
 	}
 }
