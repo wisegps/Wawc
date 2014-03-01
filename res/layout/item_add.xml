@@ -1,0 +1,19 @@
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:id="@+id/ll_item_cars">
+    <RelativeLayout 
+        android:id="@+id/rl_add"
+        android:background="@color/gray_light"
+        android:layout_width="120dp"
+        android:layout_height="120dp">
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/body_icon_add"/>
+    </RelativeLayout>
+</LinearLayout>
