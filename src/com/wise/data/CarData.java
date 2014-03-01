@@ -44,8 +44,15 @@ public class CarData {
 	private String maintain_last_date;
 	private String logoPath;
 	public boolean isCheck;
-		
-	public String getLogoPath() {
+	public int Type;		
+	
+	public int getType() {
+        return Type;
+    }
+    public void setType(int type) {
+        Type = type;
+    }
+    public String getLogoPath() {
 		return logoPath;
 	}
 	public void setLogoPath(String logoPath) {

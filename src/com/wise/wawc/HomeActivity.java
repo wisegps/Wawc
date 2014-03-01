@@ -392,6 +392,7 @@ public class HomeActivity extends Activity{
                 CarData carData = new CarData();
                 carData.setCheck(false);   
                 carData.setObj_id(obj_id);
+                carData.setType(0);
                 carData.setObj_name(obj_name);
                 carData.setCar_brand(car_brand);
                 carData.setCar_series(car_series);
@@ -697,6 +698,7 @@ public class HomeActivity extends Activity{
                 
                 carData.setCheck(false);
                 carData.setObj_id(obj_id);
+                carData.setType(0);
                 carData.setObj_name(obj_name);
                 carData.setCar_brand(car_brand);
                 carData.setCar_series(car_series);
