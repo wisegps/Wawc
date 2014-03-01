@@ -49,8 +49,9 @@ public class CarAdapter extends BaseAdapter{
 	}
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+	    System.out.println("position = " + position);
 	    int type = getItemViewType(position);
-		ViewHolder holder;
+		ViewHolder holder = null;
 		ViewAdd viewAdd;
 		if (convertView == null) {
 		    switch (type) {
@@ -72,31 +73,35 @@ public class CarAdapter extends BaseAdapter{
 		} else {
 		    switch (type) {
                 case VALUE_CAR:
-                    holder = (ViewHolder) convertView.getTag();
-                    CarData carData = carDatas.get(position);
-                    holder.tv_item_carnumber.setText(carData.getObj_name());
-                    if(carData.getLogoPath() == null || carData.getLogoPath().equals("")){
-                        holder.iv_item_cars.setImageResource(R.drawable.ic_launcher);
-                    }else{
-                        Bitmap bitmap = BitmapFactory.decodeFile(carData.getLogoPath());
-                        //Bitmap bitmap = BlurImage.decodeSampledBitmapFromPath(carData.getLogoPath(), 80, 80);            
-                        if(bitmap != null){
-                            holder.iv_item_cars.setImageBitmap(bitmap);
-                        }else{
-                            holder.iv_item_cars.setImageResource(R.drawable.ic_launcher);
-                        }
-                    }
-                    if(carData.isCheck()){
-                        holder.ll_item_cars.setBackgroundResource(R.drawable.bg_car_logo);
-                    }else{
-                        holder.ll_item_cars.setBackgroundDrawable(null);
-                    }
+                    holder = (ViewHolder) convertView.getTag();                    
                     break;
                 case VALUE_ADD:
                     viewAdd = (ViewAdd) convertView.getTag();
                     break;
 		    }
 		}
+		switch (type) {
+            case VALUE_CAR:
+                CarData carData = carDatas.get(position);
+                holder.tv_item_carnumber.setText(carData.getObj_name());
+                if(carData.getLogoPath() == null || carData.getLogoPath().equals("")){
+                    holder.iv_item_cars.setImageResource(R.drawable.ic_launcher);
+                }else{
+                    Bitmap bitmap = BitmapFactory.decodeFile(carData.getLogoPath());
+                    //Bitmap bitmap = BlurImage.decodeSampledBitmapFromPath(carData.getLogoPath(), 80, 80);            
+                    if(bitmap != null){
+                        holder.iv_item_cars.setImageBitmap(bitmap);
+                    }else{
+                        holder.iv_item_cars.setImageResource(R.drawable.ic_launcher);
+                    }
+                }
+                if(carData.isCheck()){
+                    holder.ll_item_cars.setBackgroundResource(R.drawable.bg_car_logo);
+                }else{
+                    holder.ll_item_cars.setBackgroundDrawable(null);
+                }
+            break;
+        }
 		return convertView;
 	}
 	

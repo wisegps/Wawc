@@ -2,8 +2,14 @@ package com.wise.wawc;
 
 import java.net.URLEncoder;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import cn.jpush.android.api.JPushInterface;
+import cn.jpush.android.api.TagAliasCallback;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
@@ -45,10 +51,9 @@ import android.widget.Toast;
 
 /**
  * 菜单界面
- * 
  * @author honesty
  */
-public class MainActivity extends ActivityGroup implements PlatformActionListener {
+public class MainActivity extends ActivityGroup implements PlatformActionListener,TagAliasCallback {
     private static final String TAG = "MainActivity";
 
     private static final int Login = 1; //登录
@@ -80,7 +85,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        JPushInterface.init(getApplicationContext());
         thread = new ParseFaceThread();
         thread.start();
 
@@ -194,7 +199,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                 slidingMenuView.snapToScreen(1);
                 break;
             case R.id.rl_activity_main_home:
-                ToFriendHome();
+                ToAccountHome();
                 break;
             case R.id.home:
                 slidingMenuView.snapToScreen(1);
@@ -328,6 +333,10 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         //获取图片
         new Thread(new GetBitMapFromUrlThread(platformWhat.getDb()
                 .getUserIcon())).start();
+        Set<String> tagSet = new LinkedHashSet<String>();
+        tagSet.add(platformWhat.getDb().getUserId());
+        //调用JPush API设置Tag
+        JPushInterface.setAliasAndTags(getApplicationContext(), null, tagSet, this);
     }
     /**
      * 解析绑定返回数据
@@ -580,17 +589,11 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         handler.sendMessage(message);
     }
     /**
-     * 好友主页
+     * 个人信息
      */
-    public void ToFriendHome() {
+    public void ToAccountHome() {
         if (platformQQ.getDb().isValid() || platformSina.getDb().isValid()) {
-            startActivity(new Intent(MainActivity.this, FriendHomeActivity.class));
-//            Intent i = new Intent(MainActivity.this, FriendHomeActivity.class);
-//            View v = getLocalActivityManager().startActivity(
-//                    FriendHomeActivity.class.getName(), i).getDecorView();
-//            tabcontent.removeAllViews();
-//            tabcontent.addView(v);
-//            slidingMenuView.snapToScreen(1);
+            startActivity(new Intent(MainActivity.this, AccountActivity.class));
         } else {
             Toast.makeText(getApplicationContext(), "请登录", Toast.LENGTH_SHORT)
                     .show();
@@ -611,18 +614,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     	        tabcontent.addView(vv);
     	        slidingMenuView.snapToScreen(1);
     	}
-    }
-
-    /**
-     * 车务提醒
-     */
-    public void ToCarRemind() {
-        slidingMenuView.snapToScreen(1);
-        Intent i = new Intent(MainActivity.this, CarRemindActivity.class);
-        View view = getLocalActivityManager().startActivity(
-                CarRemindActivity.class.getName(), i).getDecorView();
-        tabcontent.removeAllViews();
-        tabcontent.addView(view);
     }
 
     /**
@@ -754,5 +745,10 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+    @Override
+    public void gotResult(int arg0, String arg1, Set<String> arg2) {
+        // TODO Auto-generated method stub
+        
     }
 }

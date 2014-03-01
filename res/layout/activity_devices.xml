@@ -24,7 +24,7 @@
             android:gravity="center"
             android:text="我的终端"
             android:textColor="@color/white"
-            android:textSize="@dimen/title"
+            android:textSize="@dimen/head"
             android:textStyle="bold" />
 		<ImageView
             android:id="@+id/iv_activity_devices_home"

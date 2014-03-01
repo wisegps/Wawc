@@ -14,7 +14,7 @@
     <!-- 圆角 -->
     <dimen name="corners">5dp</dimen>
     <!-- 头部字体 -->
-    <dimen name="head">25sp</dimen>
+    <dimen name="head">22sp</dimen>
 	<!-- 标题文字 -->
     <dimen name="title">20sp</dimen>
     <!-- 辅助字体，按钮 -->

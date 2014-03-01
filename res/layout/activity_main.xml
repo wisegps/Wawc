@@ -161,7 +161,7 @@
 		                android:layout_height="wrap_content"
 		                android:textColor="@color/white"
 		                android:drawableLeft="@drawable/side_sms"
-		                android:text="@string/car_remind"
+		                android:text="消息提醒"
 		                android:padding="@dimen/margins"
 		                android:layout_marginBottom="@dimen/margins"
 		                android:drawablePadding="@dimen/margins"

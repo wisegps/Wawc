@@ -35,18 +35,18 @@
             android:layout_centerVertical="true"
             android:contentDescription="@string/app_name"
             android:src="@drawable/ic_launcher"/>
-	</RelativeLayout>
-	
+	</RelativeLayout>	
 	<com.wise.service.ClearEditText
         android:id="@+id/filter_edit"
-        android:layout_marginTop="5dip"
+        android:layout_margin="@dimen/margins"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/search_bar_edit_selector"
-        android:drawableLeft="@drawable/search_bar_icon_normal"
+        android:background="@drawable/new_article_edit_border"
+        android:drawableLeft="@drawable/toolbar_icon_search"
         android:hint="请输入关键字"
         android:singleLine="true"
-        android:textSize="15.0dip" />
+        android:textColor="@color/black"
+        android:textSize="@dimen/content" />
 	<TextView 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
@@ -63,6 +63,7 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/margins"
         android:textColor="@color/common"
+        android:background="@drawable/bg_item_selector"
         android:text="正在定位..."/>
     <FrameLayout
         android:layout_width="fill_parent"
@@ -72,6 +73,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
+            android:listSelector="@drawable/bg_item_selector"
             android:dividerHeight="1dp"
             android:divider="@color/gray_lights" />
         <LinearLayout
