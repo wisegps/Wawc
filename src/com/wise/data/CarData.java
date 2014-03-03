@@ -47,6 +47,7 @@ public class CarData {
 	public String Adress;  //车辆位置
 	public String Lat; 
 	public String Lon;
+	private String regNo;	
 	
 	public int getType() {
         return Type;
@@ -176,7 +177,12 @@ public class CarData {
     public void setLon(String lon) {
         Lon = lon;
     }
-    @Override
+    public String getRegNo() {
+		return regNo;
+	}
+	public void setRegNo(String regNo) {
+		this.regNo = regNo;
+	}
     public String toString() {
         return "CarData [obj_id=" + obj_id + ", car_brand=" + car_brand
                 + ", car_series=" + car_series + ", car_type=" + car_type

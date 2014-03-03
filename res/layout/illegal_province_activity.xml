@@ -1,4 +1,4 @@
-<LinearLayout 
+<RelativeLayout 
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -6,8 +6,9 @@
     android:orientation="vertical"
     android:background="@color/white"
     >
+    <!-- 选择省份 -->
      <RelativeLayout
-        android:id="@+id/my_vehicle_top"
+        android:id="@+id/illegal_city_top"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight"
         android:layout_alignParentTop="true"
@@ -15,7 +16,7 @@
         android:gravity="center" >
 
         <ImageView
-            android:id="@+id/illegal_city_back"
+            android:id="@+id/illegal_province_back"
             android:layout_width="@dimen/title_image"
             android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
@@ -36,10 +37,11 @@
             android:textSize="@dimen/head" />
     </RelativeLayout>
     <ListView 
-        android:id="@+id/illegal_list"
+        android:id="@+id/illegal_provnice_list"
         android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
+    	android:layout_below="@id/illegal_city_top"
     	android:divider="@color/gray"
     	android:dividerHeight="0.5dip"
         ></ListView>
-</LinearLayout>
+</RelativeLayout>
