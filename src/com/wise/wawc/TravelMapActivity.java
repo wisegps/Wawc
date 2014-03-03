@@ -23,8 +23,6 @@ import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
-import com.wise.wawc.SearchMapActivity.OverlayCar;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -38,6 +36,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * 车辆行程
@@ -54,6 +53,7 @@ public class TravelMapActivity extends Activity {
     List<Overlay> overlays;
     ProgressDialog Dialog = null; // progress
     int device = 3;
+    Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +67,8 @@ public class TravelMapActivity extends Activity {
             app.mBMapManager.init(WawcApplication.strKey, null);
         }
         setContentView(R.layout.activity_travel_map);
+        ImageView iv_activity_travel_share = (ImageView)findViewById(R.id.iv_activity_travel_share);
+        iv_activity_travel_share.setOnClickListener(onClickListener);
         mMapView = (MapView) findViewById(R.id.mv_travel_map);
         mMapView.setBuiltInZoomControls(true);
         mMapView.regMapViewListener(app.mBMapManager, mkMapViewListener);
@@ -89,12 +91,13 @@ public class TravelMapActivity extends Activity {
         
         ImageView iv_activity_travel_back = (ImageView) findViewById(R.id.iv_activity_travel_back);
         iv_activity_travel_back.setOnClickListener(onClickListener);
-        Intent intent = getIntent();
+        intent = getIntent();
         tv_travel_startPlace.setText(intent.getStringExtra("Start_place"));
         tv_travel_stopPlace.setText(intent.getStringExtra("End_place"));
         tv_travel_startTime.setText(intent.getStringExtra("StartTime").substring(10, 16));
         tv_travel_stopTime.setText(intent.getStringExtra("StopTime").substring(10, 16));
-        tv_travel_spacingDistance.setText(intent.getStringExtra("SpacingDistance"));
+        String str = "共"+ intent.getStringExtra("SpacingDistance") + "公里\\" + intent.getStringExtra("SpacingTime");
+        tv_travel_spacingDistance.setText(str);
         tv_travel_averageOil.setText(intent.getStringExtra("AverageOil"));
         tv_travel_oil.setText(intent.getStringExtra("Oil"));
         tv_travel_speed.setText(intent.getStringExtra("Speed"));
@@ -121,14 +124,13 @@ public class TravelMapActivity extends Activity {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-            case R.id.iv_activity_car_home_search:
-                Dialog = ProgressDialog.show(TravelMapActivity.this,
-                        getString(R.string.note),
-                        getString(R.string.travel_map_urrent), true);
-                mMapView.getCurrentMap();
-                break;
             case R.id.iv_activity_travel_back:
                 finish();
+                break;
+            case R.id.iv_activity_travel_share:
+                Toast.makeText(TravelMapActivity.this, R.string.travel_map_urrent, Toast.LENGTH_LONG).show();
+                boolean isCurrent = mMapView.getCurrentMap();
+                System.out.println("isCurrent = " + isCurrent);
                 break;
             }
         }
@@ -221,21 +223,22 @@ public class TravelMapActivity extends Activity {
 
         @Override
         public void onGetCurrentMap(Bitmap arg0) {
-            if (Dialog != null) {
-                Dialog.dismiss();
-            }
-            Log.d(TAG, "截图完毕");
-            Intent intent = new Intent(TravelMapActivity.this,
-                    NewArticleActivity.class);
-            intent.putExtra("bitmap", arg0);
-            startActivity(intent);
-            // 分享界面接受
-            // Intent intent=getIntent();
-            // if(intent!=null)
-            // {
-            // bitmap=intent.getParcelableExtra("bitmap");
-            // imageview.setImageBitmap(bitmap);
-            // }
+            System.out.println("截取成功");
+            GetSystem.saveImageSD(arg0,Constant.picPath, Constant.ShareImage);
+            String imagePath = Constant.picPath + Constant.ShareImage;
+            StringBuffer sb = new StringBuffer();
+            sb.append("【行程】");
+            sb.append(intent.getStringExtra("StartTime").substring(5, 16));
+            sb.append(" 从" + intent.getStringExtra("Start_place"));
+            sb.append("到" + intent.getStringExtra("End_place"));
+            sb.append("，共行驶" + intent.getStringExtra("SpacingDistance"));
+            sb.append("公里，耗时" + intent.getStringExtra("SpacingTime"));
+            sb.append("，" + intent.getStringExtra("Oil"));
+            sb.append("，" + intent.getStringExtra("Cost"));
+            sb.append("，" + intent.getStringExtra("AverageOil"));
+            sb.append("，" + intent.getStringExtra("Speed"));
+            System.out.println(sb.toString());
+            GetSystem.share(TravelMapActivity.this, sb.toString(), imagePath,0,0);
         }
         @Override
         public void onClickMapPoi(MapPoi arg0) {}

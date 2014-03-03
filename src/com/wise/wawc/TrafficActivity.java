@@ -10,6 +10,7 @@ import com.wise.extend.CarAdapter;
 import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
@@ -63,8 +64,6 @@ public class TrafficActivity extends Activity implements IXListViewListener{
 		setContentView(R.layout.activity_traffic);
 		ImageView iv_activity_traffic_back = (ImageView)findViewById(R.id.iv_activity_traffic_back);
 		iv_activity_traffic_back.setOnClickListener(onClickListener);
-		ImageView iv_activity_traffic_help = (ImageView)findViewById(R.id.iv_activity_traffic_help);
-		iv_activity_traffic_help.setOnClickListener(onClickListener);
         lv_activity_traffic = (XListView)findViewById(R.id.lv_activity_traffic);
         lv_activity_traffic.setXListViewListener(this);
 		
@@ -113,9 +112,9 @@ public class TrafficActivity extends Activity implements IXListViewListener{
 			case R.id.iv_activity_traffic_back:
 				finish();
 				break;
-			case R.id.iv_activity_traffic_help:
-				TrafficActivity.this.startActivity(new Intent(TrafficActivity.this, DealAddressActivity.class));
-				break;
+			//case R.id.iv_activity_traffic_help:
+				//TrafficActivity.this.startActivity(new Intent(TrafficActivity.this, DealAddressActivity.class));
+				//break;
 			}
 		}
 	};
@@ -176,11 +175,12 @@ public class TrafficActivity extends Activity implements IXListViewListener{
 	        JSONArray jsonArray = jsonObject1.getJSONArray("data");
             for(int i = 0 ; i < jsonArray.length() ; i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
+                String Time = jsonObject.getString("create_time").replace("T", " ").substring(0, 16);
                 TrafficData trafficData = new TrafficData();
                 trafficData.setObj_id(jsonObject.getString("vio_id"));
                 trafficData.setAction(jsonObject.getString("action"));
                 trafficData.setLocation(jsonObject.getString("location"));
-                trafficData.setDate(jsonObject.getString("create_time"));
+                trafficData.setDate(Time);
                 trafficData.setScore(jsonObject.getInt("score"));
                 trafficData.setFine(jsonObject.getInt("fine"));
                 Datas.add(trafficData);
@@ -188,7 +188,7 @@ public class TrafficActivity extends Activity implements IXListViewListener{
                 ContentValues values = new ContentValues();
                 values.put("obj_id", Variable.cust_id);
                 values.put("Car_name", jsonObject.getString("obj_name"));
-                values.put("create_time", trafficData.getDate());
+                values.put("create_time", Time);
                 values.put("action", trafficData.getAction());
                 values.put("location", trafficData.getLocation());
                 values.put("score", trafficData.getScore());
@@ -259,21 +259,36 @@ public class TrafficActivity extends Activity implements IXListViewListener{
 				holder.tv_item_traffic_content = (TextView)convertView.findViewById(R.id.tv_item_traffic_content);
 				holder.tv_item_traffic_fraction = (TextView)convertView.findViewById(R.id.tv_item_traffic_fraction);
 				holder.tv_item_traffic_money = (TextView)convertView.findViewById(R.id.tv_item_traffic_money);
+				holder.iv_traffic_share = (ImageView)convertView.findViewById(R.id.iv_traffic_share);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			TrafficData trafficData = trafficDatas.get(position);
+			final TrafficData trafficData = trafficDatas.get(position);
 			holder.tv_item_traffic_data.setText("违章时间："+trafficData.getDate());
 			holder.tv_item_traffic_adress.setText("违章地点："+trafficData.getLocation());
 			holder.tv_item_traffic_content.setText("违章内容："+trafficData.getAction());
 			holder.tv_item_traffic_fraction.setText("违章扣分："+trafficData.getScore());
 			holder.tv_item_traffic_money.setText("违章罚款："+trafficData.getFine());
+			holder.iv_traffic_share.setOnClickListener(new OnClickListener() {                
+                @Override
+                public void onClick(View v) {
+                    StringBuffer sb = new StringBuffer();
+                    sb.append("【违章】");
+                    sb.append(trafficData.getDate());
+                    sb.append("," + trafficData.getLocation());
+                    sb.append("," + trafficData.getAction());
+                    sb.append("," + trafficData.getScore());
+                    sb.append("," + trafficData.getFine());
+                    GetSystem.share(TrafficActivity.this, sb.toString(), "",0,0);
+                }
+            });
 			return convertView;
 		}	
 		private class ViewHolder {
 			TextView tv_item_traffic_data,tv_item_traffic_adress,tv_item_traffic_content,
 						tv_item_traffic_fraction,tv_item_traffic_money;
+			ImageView iv_traffic_share;
 		}
 	}
 	

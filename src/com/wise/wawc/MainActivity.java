@@ -226,7 +226,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             case R.id.my_orders:
                 Toorders();
                 break;
-            //TODO  设置中心
+            //设置中心
             case R.id.setup_center:
                 ToSettingCenter();
                 break;
@@ -333,6 +333,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         //获取图片
         new Thread(new GetBitMapFromUrlThread(platformWhat.getDb()
                 .getUserIcon())).start();
+        System.out.println("设置推送");
         Set<String> tagSet = new LinkedHashSet<String>();
         tagSet.add(platformWhat.getDb().getUserId());
         //调用JPush API设置Tag
@@ -419,6 +420,13 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                 Constant.sharedPreferencesName, Context.MODE_PRIVATE);
         Variable.cust_id  = preferences.getString(Constant.sp_cust_id, "");
         Variable.auth_code = preferences.getString(Constant.sp_auth_code, "");
+        
+
+        System.out.println("设置推送 = " +platform.getDb().getUserId());
+        Set<String> tagSet = new LinkedHashSet<String>();
+        tagSet.add(platform.getDb().getUserId());
+        //调用JPush API设置Tag
+        JPushInterface.setAliasAndTags(getApplicationContext(), null, tagSet, this);
     }
 
     /**
@@ -748,7 +756,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     }
     @Override
     public void gotResult(int arg0, String arg1, Set<String> arg2) {
-        // TODO Auto-generated method stub
-        
+        System.out.println("arg0 = " + arg0 + " , arg1 = " + arg1);
     }
 }

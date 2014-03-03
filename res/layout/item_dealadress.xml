@@ -10,29 +10,37 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/margins"
         android:background="@color/gray_light" >
-        <TextView
-            android:id="@+id/tv_item_dealadress_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="深圳红岭北路3002号梅园仓库区9号楼南面"
-            android:textColor="@color/common" />
-
-        <TextView
-            android:id="@+id/tv_item_dealadress_distance"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margins"
-            android:layout_toRightOf="@+id/tv_item_dealadress_name"/>
-
         <ImageView
-            android:id="@+id/iv_Collect"
+            android:id="@+id/iv_share"
             android:layout_width="@dimen/double_margins"
             android:layout_height="@dimen/double_margins"
             android:layout_alignParentRight="true"
             android:contentDescription="@string/app_name"
+            android:src="@drawable/share_black" />
+        <ImageView
+            android:id="@+id/iv_Collect"
+            android:layout_width="@dimen/double_margins"
+            android:layout_height="@dimen/double_margins"
+            android:layout_toLeftOf="@+id/iv_share"
+            android:layout_marginRight="@dimen/margins"
+            android:contentDescription="@string/app_name"
             android:src="@drawable/collect" />
+        <TextView
+           android:id="@+id/tv_item_dealadress_name"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_toLeftOf="@id/iv_Collect"
+           android:layout_marginRight="@dimen/margins"
+           android:text="深圳红岭北路3002号梅园仓库区9号楼南面"
+           android:textColor="@color/common" />
+       <TextView
+           android:id="@+id/tv_item_dealadress_distance"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_marginLeft="@dimen/margins"
+           android:visibility="gone"
+           android:text="99M"
+           android:layout_toRightOf="@+id/tv_item_dealadress_name"/>
     </RelativeLayout>
 
     <RelativeLayout

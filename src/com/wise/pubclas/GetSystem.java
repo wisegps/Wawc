@@ -19,7 +19,10 @@ import com.baidu.mapapi.navi.BaiduMapNavigation;
 import com.baidu.mapapi.navi.NaviPara;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.wise.data.TimeData;
+import com.wise.sharesdk.OnekeyShare;
 import com.wise.wawc.R;
+import com.wise.wawc.ShareLocationActivity;
+
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -410,5 +413,35 @@ public class GetSystem {
 		int screenWidth = (int) ((display.getWidth() - 2*Variable.margins)*0.8);
 		int imageWidth = (screenWidth - 3*margins)/3;
 		Variable.smallImageReqWidth = imageWidth;
+    }
+    /**
+     * 分享
+     * @param mContext
+     * @param Content
+     * @param imagePath
+     * @param Lat
+     * @param Lon
+     */
+    public static void share(Context mContext,String Content,String imagePath,
+            float Lat,float Lon) {
+        final OnekeyShare oks = new OnekeyShare();
+        oks.setNotification(R.drawable.ic_launcher, "app_name");
+        //oks.setAddress("12345678901");
+        oks.setTitle("share");
+        //oks.setTitleUrl("http://sharesdk.cn");
+        oks.setText(Content);
+        oks.setImagePath(imagePath);
+        //oks.setImageUrl("http://img.appgo.cn/imgs/sharesdk/content/2013/07/25/1374723172663.jpg");
+        //oks.setUrl("http://www.sharesdk.cn");
+        //oks.setFilePath(imagePath);
+        //oks.setComment("share");
+        //oks.setSite("wise");
+        //oks.setSiteUrl("http://sharesdk.cn");
+        //oks.setVenueName("Share SDK");
+        //oks.setVenueDescription("This is a beautiful place!");
+        oks.setLatitude(Lat);
+        oks.setLongitude(Lon);
+        oks.setSilent(true);
+        oks.show(mContext);
     }
 }

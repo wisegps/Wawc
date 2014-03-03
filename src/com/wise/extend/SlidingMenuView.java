@@ -86,7 +86,6 @@ public class SlidingMenuView extends ViewGroup{
 
     @Override
     public void computeScroll() {
-        Log.d(TAG, "computeScroll");
     	if (mScroller.computeScrollOffset()) {
         	scrollTo(mScroller.getCurrX(), mScroller.getCurrY()); 
         } else if (mNextScreen != INVALID_SCREEN) {

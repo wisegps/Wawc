@@ -51,7 +51,6 @@ import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -106,7 +105,7 @@ public class HomeActivity extends Activity{
             @Override
             public void OnViewChange(int view) {
                 changeImage(view);
-                //saveVehicleID(view);
+                saveVehicleID(view);
                 //notiRemind(view);
             }            
             @Override
@@ -200,8 +199,6 @@ public class HomeActivity extends Activity{
             CarData carData = carDatas.get(i);
             View view = LayoutInflater.from(HomeActivity.this).inflate(R.layout.item_home_car, null);
             ScrollLayout_car.addView(view);
-            //RelativeLayout rl_activity_home_car = (RelativeLayout)view.findViewById(R.id.rl_activity_home_car);
-            //rl_activity_home_car.setOnClickListener(onClickListener);
             TextView tv_car_number = (TextView)view.findViewById(R.id.tv_car_number);
             tv_car_number.setOnClickListener(onClickListener);
             ImageView iv_carLogo = (ImageView)view.findViewById(R.id.iv_carLogo);
@@ -237,11 +234,17 @@ public class HomeActivity extends Activity{
             case R.id.iv_activity_car_home_search:
                 ActivityFactory.A.RightMenu();
                 break;
-            case R.id.bt_activity_home_help:// 救援
-                ToShare();
+            case R.id.bt_activity_home_help:// 救援                
+                Intent intent_help = new Intent(HomeActivity.this, ShareLocationActivity.class);
+                intent_help.putExtra("reason", "救援 ");
+                intent_help.putExtra("index", DefaultVehicleID);
+                HomeActivity.this.startActivity(intent_help);
                 break;
             case R.id.bt_activity_home_risk:// 报险
-                ToShare();
+                Intent intent_risk = new Intent(HomeActivity.this, ShareLocationActivity.class);
+                intent_risk.putExtra("reason", "报险");
+                intent_risk.putExtra("index", DefaultVehicleID);
+                HomeActivity.this.startActivity(intent_risk);
                 break;
             case R.id.bt_activity_home_share:// 位置分享
                 ToShare();
@@ -261,7 +264,9 @@ public class HomeActivity extends Activity{
                         VehicleStatusActivity.class));
                 break;
             case R.id.tv_activity_home_car_adress: // 车辆位置
-                HomeActivity.this.startActivity(new Intent(HomeActivity.this, CarLocationActivity.class));
+                Intent intent_adress = new Intent(HomeActivity.this,CarLocationActivity.class);
+                intent_adress.putExtra("index", DefaultVehicleID);
+                HomeActivity.this.startActivity(intent_adress);
                 break;
             case R.id.tv_car_number: // 我的爱车
                 Intent intent = new Intent(HomeActivity.this,MyVehicleActivity.class);
@@ -410,6 +415,9 @@ public class HomeActivity extends Activity{
                 carData.setBuy_date(buy_date);
                 carData.setRegNo(reg_no);
                 carData.setVio_location(vio_location);
+                carData.setAdress(Variable.Adress);
+                carData.setLat(String.valueOf(Variable.Lat));
+                carData.setLon(String.valueOf(Variable.Lon));
                 String imagePath = Constant.VehicleLogoPath + car_brand + ".png";//SD卡路径
                 if(new File(imagePath).isFile()){//存在
                     carData.setLogoPath(imagePath);
@@ -687,8 +695,11 @@ public class HomeActivity extends Activity{
                 String frame_no = jsonObject.getString("frame_no");
                 String insurance_company = jsonObject.getString("insurance_company");
                 String insurance_date = jsonObject.getString("insurance_date");
-                String reg_no = jsonObject.getString("reg_no");
+                String reg_no = null;
                 String vio_location = jsonObject.getString("vio_location");
+                if(jsonObject.opt("reg_no") != null){
+                    reg_no = jsonObject.getString("reg_no");
+                }
                 insurance_date = insurance_date.substring(0, 10);
 //                String annual_inspect_date = jsonObject.getString("annual_inspect_date");
 //                annual_inspect_date = annual_inspect_date.substring(0, 10);
@@ -807,8 +818,17 @@ public class HomeActivity extends Activity{
     }
 
     private void ToShare() {
-        Intent intent = new Intent(HomeActivity.this, ShareLocationActivity.class);
-        HomeActivity.this.startActivity(intent);
+        CarData carData = Variable.carDatas.get(DefaultVehicleID);
+        String url = "http://api.map.baidu.com/geocoder?location="
+                + carData.getLat() + "," + carData.getLon()
+                + "&coord_type=bd09ll&output=html";
+        StringBuffer sb = new StringBuffer();
+        sb.append("【位置】");
+        sb.append(carData.getAdress());
+        sb.append("," + url);
+        GetSystem.share(HomeActivity.this, sb.toString(),
+                "", Float.valueOf(carData.getLat()),
+                Float.valueOf(carData.getLon()));
     }
 
     private void registerBroadcastReceiver() {

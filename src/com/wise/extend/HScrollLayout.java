@@ -95,7 +95,7 @@ public class HScrollLayout extends ViewGroup {
             xMoved = xDiff > mTouchSlop;
             System.out.println("x = " + x + " , mLastMotionX = " + mLastMotionX);
             System.out.println("xMoved = " + xMoved);
-            if ((mLastMotionX - x) < 0 && getScrollX() <= 0){
+            if ((mLastMotionX - x) <= 0 && getScrollX() <= 0){
                 
             }else{
                 Log.d(TAG, "父控件停止感应");
@@ -130,13 +130,13 @@ public class HScrollLayout extends ViewGroup {
         case MotionEvent.ACTION_MOVE:
             int deltaX = (int) (downMotionX - x);
             downMotionX = x;
-            if (deltaX < 0) {// 向右滑
+            if (deltaX <= 0) {// 向右滑
                 //System.out.println("deltaX = " + deltaX);
-                //System.out.println("getScrollX() = " + getScrollX());
+                System.out.println("getScrollX() = " + getScrollX());
                 if (getScrollX() <= 0) {
                     Log.d(TAG, "划不动");
                 } else {
-                    Log.d(TAG, "父控件停止感应");
+                    Log.d(TAG, "不应该啊");
                     getParent().requestDisallowInterceptTouchEvent(true);
                     scrollBy(deltaX, 0);// 画面跟随指尖
                     if (velocityTracker == null) {

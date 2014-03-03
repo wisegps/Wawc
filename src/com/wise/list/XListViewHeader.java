@@ -7,16 +7,17 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 public class XListViewHeader extends LinearLayout {
 	private LinearLayout mContainer;
 	private ImageView mArrowImageView;
-	private ProgressBar mProgressBar;
+	//private ProgressBar mProgressBar;
 	private TextView mHintTextView;
 	private int mState = STATE_NORMAL;
 
@@ -28,9 +29,10 @@ public class XListViewHeader extends LinearLayout {
 	public final static int STATE_NORMAL = 0;
 	public final static int STATE_READY = 1;
 	public final static int STATE_REFRESHING = 2;
-
+	Context mContext;
 	public XListViewHeader(Context context) {
 		super(context);
+		mContext = context;
 		initView(context);
 	}
 
@@ -54,7 +56,7 @@ public class XListViewHeader extends LinearLayout {
 
 		mArrowImageView = (ImageView)findViewById(R.id.xlistview_header_arrow);
 		mHintTextView = (TextView)findViewById(R.id.xlistview_header_hint_textview);
-		mProgressBar = (ProgressBar)findViewById(R.id.xlistview_header_progressbar);
+		//mProgressBar = (ProgressBar)findViewById(R.id.xlistview_header_progressbar);
 		
 		mRotateUpAnim = new RotateAnimation(0.0f, -180.0f,
 				Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
@@ -74,10 +76,17 @@ public class XListViewHeader extends LinearLayout {
 		if (state == STATE_REFRESHING) {	// 显示进度
 			mArrowImageView.clearAnimation();
 			mArrowImageView.setVisibility(View.INVISIBLE);
-			mProgressBar.setVisibility(View.VISIBLE);
+			//mProgressBar.setVisibility(View.VISIBLE);
+			Animation operatingAnim = AnimationUtils.loadAnimation(mContext, R.anim.tip_fast);  
+            LinearInterpolator lin = new LinearInterpolator();  
+            operatingAnim.setInterpolator(lin); 
+            if (operatingAnim != null) {  
+                mArrowImageView.startAnimation(operatingAnim);  
+            }
 		} else {	// 显示箭头图片
-			mArrowImageView.setVisibility(View.VISIBLE);
-			mProgressBar.setVisibility(View.INVISIBLE);
+		    mArrowImageView.clearAnimation();
+			//mArrowImageView.setVisibility(View.VISIBLE);
+			//mProgressBar.setVisibility(View.INVISIBLE);
 		}
 		
 		switch(state){
