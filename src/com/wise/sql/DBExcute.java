@@ -313,16 +313,14 @@ public class DBExcute {
 		return article;
 	}
 	
-	public List<IllegalCity> selectIllegal(Context context){
-		List<IllegalCity> illegaList = null;
+	public String selectIllegal(Context context){
+		String jsonData = null;
 		DBHelper helper = new DBHelper(context);
 		SQLiteDatabase reader = helper.getReadableDatabase();
 		Cursor cursor = reader.rawQuery("select * from " + Constant.TB_IllegalCity, new String[]{});
 		if(cursor.moveToFirst()){
-			String json = cursor.getString(cursor.getColumnIndex("json_data"));
-			//解析json数据
-			illegaList = IllegalCitiyActivity.parseJson(json);
+			jsonData = cursor.getString(cursor.getColumnIndex("json_data"));
 		}
-		return illegaList;
+		return jsonData;
 	}
 }

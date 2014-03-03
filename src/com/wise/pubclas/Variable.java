@@ -7,6 +7,8 @@ import android.view.WindowManager;
 
 import com.wise.data.Article;
 import com.wise.data.CarData;
+import com.wise.data.IllegalCity;
+import com.wise.data.ProvinceModel;
 /**
  * 变量
  * @author honesty
@@ -66,4 +68,6 @@ public class Variable {
     
     public static  int articleAdapterImageWidth = 150;
     public static  int articleAdapterImageHeight = 150;
+    
+    public static List<IllegalCity> illegalList;
 }

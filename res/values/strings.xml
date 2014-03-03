@@ -144,4 +144,23 @@
     <string name="add">添加我的爱车</string>
     <string name="want_to_do">请说出你想做什么</string>
     <string name="location_4s_shop">本地4s店</string>
+    <string name="engine_num_hint">请输入发动机后</string>
+    <string name="all_engine_num_hint">请输入全部发动机号</string>
+    <string name="vehicle_num_hint">请输入车架号后</string>
+    <string name="all_vehicle_num_hint">请输入全部车架号</string>
+    <string name="register_num_hint">请输入登记证号后</string>
+    <string name="all_register_num_hint">请输入全部登记证号</string>
+    <string name="hint_wei">位</string>
+    <string name="please_input_vehilce_num">请输入车牌号</string>
+    <string name="please_choice_vehilce_brank">请选择品牌</string>
+    <string name="please_choice_vehilce_models">请选择车型</string>
+    <string name="please_input_vehilce_type">请选择车款</string>
+    <string name="please_input_illegal_city">请选择违章城市</string>
+    <string name="please_input_insurance_company">请选择保险公司</string>
+    
+    <string name="please_input_insurance_over_time">请选择保险到期时间</string>
+    <string name="please_input_4s">请选择4s保养店</string>
+    <string name="please_input_last_maintenance_milegal">请输入最后保养里程(Km)</string>
+    <string name="please_input_last_maintenance_time">请选择最后保养时间</string>
+    <string name="please_choice_by_time">请选择购车时间</string>
 </resources>

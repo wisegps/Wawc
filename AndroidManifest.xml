@@ -89,6 +89,7 @@
         <activity android:name=".WapZfbActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".SmsActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".IllegalCitiyActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".ChoiceIllegalCityActivity" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity
             android:name="cn.sharesdk.framework.ShareSDKUIShell"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"

@@ -42,6 +42,7 @@ public class CarData {
 	public String obj_name;
 	private String maintain_last_date;
 	private String logoPath;
+	private String regNo;
 	public boolean isCheck;
 	public int Type;		
 	
@@ -155,7 +156,13 @@ public class CarData {
 	public void setMaintain_last_date(String maintain_last_date) {
 		this.maintain_last_date = maintain_last_date;
 	}
-    @Override
+    public String getRegNo() {
+		return regNo;
+	}
+	public void setRegNo(String regNo) {
+		this.regNo = regNo;
+	}
+	@Override
     public String toString() {
         return "CarData [obj_id=" + obj_id + ", car_brand=" + car_brand
                 + ", car_series=" + car_series + ", car_type=" + car_type

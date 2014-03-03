@@ -124,7 +124,6 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 							NewVehicleActivity.newVehicleBrank, intent);
 				}
 				CarBrankListActivity.this.finish();
-				
 			}
 		});
 	}
@@ -371,7 +370,7 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
+		//  TODO
 		if(brankTemp != null && brankTemp.length >0){
 			brankModelList = filledData(brankTemp);
 		}
