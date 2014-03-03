@@ -77,7 +77,7 @@ public class XListViewHeader extends LinearLayout {
 			mArrowImageView.clearAnimation();
 			mArrowImageView.setVisibility(View.INVISIBLE);
 			//mProgressBar.setVisibility(View.VISIBLE);
-			Animation operatingAnim = AnimationUtils.loadAnimation(mContext, R.anim.tip);  
+			Animation operatingAnim = AnimationUtils.loadAnimation(mContext, R.anim.tip_fast);  
             LinearInterpolator lin = new LinearInterpolator();  
             operatingAnim.setInterpolator(lin); 
             if (operatingAnim != null) {  
