@@ -46,15 +46,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="-35dp"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/xlistview_arrow" />
-        <ProgressBar
-            android:id="@+id/xlistview_header_progressbar"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_alignLeft="@id/xlistview_header_text"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="-40dp"
-            android:visibility="invisible" />
+            android:src="@drawable/icon_loading_gray" />
     </RelativeLayout>
 
 </LinearLayout>
