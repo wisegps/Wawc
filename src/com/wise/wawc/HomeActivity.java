@@ -695,10 +695,13 @@ public class HomeActivity extends Activity{
                 String frame_no = jsonObject.getString("frame_no");
                 String insurance_company = jsonObject.getString("insurance_company");
                 String insurance_date = jsonObject.getString("insurance_date");
-                String reg_no = null;
-                String vio_location = jsonObject.getString("vio_location");
+                String reg_no = "";
+                String vio_location = "";
                 if(jsonObject.opt("reg_no") != null){
                     reg_no = jsonObject.getString("reg_no");
+                }
+                if(jsonObject.opt("vio_location") != null){
+                    vio_location = jsonObject.getString("vio_location");
                 }
                 insurance_date = insurance_date.substring(0, 10);
 //                String annual_inspect_date = jsonObject.getString("annual_inspect_date");
