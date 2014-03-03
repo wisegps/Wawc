@@ -29,7 +29,7 @@
             android:layout_height="fill_parent"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:layout_toRightOf="@id/illegal_city_back"
+            android:layout_toRightOf="@id/illegal_province_back"
             android:layout_marginRight="@dimen/double_margins"
             android:gravity="center"
             android:text="@string/illegal_city"
@@ -41,7 +41,20 @@
         android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
     	android:layout_below="@id/illegal_city_top"
+    	android:layout_centerHorizontal="true"
+    	android:layout_centerVertical="true"
     	android:divider="@color/gray"
     	android:dividerHeight="0.5dip"
+        ></ListView>
+    <ListView 
+        android:id="@+id/illegal_city_list"
+        android:layout_width="fill_parent"
+    	android:layout_height="wrap_content"
+    	android:layout_below="@id/illegal_city_top"
+    	android:layout_centerHorizontal="true"
+    	android:layout_centerVertical="true"
+    	android:divider="@color/gray"
+    	android:dividerHeight="0.5dip"
+    	android:visibility="gone"
         ></ListView>
 </RelativeLayout>

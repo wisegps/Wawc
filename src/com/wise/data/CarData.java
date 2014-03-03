@@ -41,13 +41,14 @@ public class CarData {
     
 	public String obj_name;
 	private String maintain_last_date;
+	private String regNo;
+	private String vio_location;
 	private String logoPath;
 	public boolean isCheck;  //是否选中
 	public int Type;		//布局控制
 	public String Adress;  //车辆位置
 	public String Lat; 
 	public String Lon;
-	private String regNo;	
 	
 	public int getType() {
         return Type;
@@ -182,6 +183,12 @@ public class CarData {
 	}
 	public void setRegNo(String regNo) {
 		this.regNo = regNo;
+	}
+	public String getVio_location() {
+		return vio_location;
+	}
+	public void setVio_location(String vio_location) {
+		this.vio_location = vio_location;
 	}
     public String toString() {
         return "CarData [obj_id=" + obj_id + ", car_brand=" + car_brand

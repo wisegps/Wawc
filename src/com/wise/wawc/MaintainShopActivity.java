@@ -62,7 +62,6 @@ public class MaintainShopActivity extends Activity {
 		intent = getIntent();
 		code = intent.getIntExtra("code", 0);
 		brank = (String) intent.getSerializableExtra("brank");
-		
 		myHandler = new MyHandler();
 		progressDialog = ProgressDialog.show(MaintainShopActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 		progressDialog.setCancelable(true);

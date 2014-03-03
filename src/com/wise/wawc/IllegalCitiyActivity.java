@@ -22,8 +22,11 @@ import com.wise.sql.DBExcute;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -40,44 +43,60 @@ import android.widget.ListView;
  * @author Mr'Wang
  */
 public class IllegalCitiyActivity extends Activity {
-	ListView listView;
+	ListView provinceListView;
+	ListView cityListView;
 	IllegalProvinceAdapter adapter;
 	MyHandler myHandler;
 	ProgressDialog myDialog;
 	DBExcute dbExcute;
 	static List<ProvinceModel> illegalList;
 	ImageView back;
-	int code = 0;
 	static CharacterParser characterParser;    //将汉字转为拼音
 	static PinyinComparator comparator;         //排序
+	private int requestCode = 0;
+	public static final String showProvinceAction = "province";
+	public static final String showCityAction = "city";
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.illegal_province_activity);
-		listView = (ListView) findViewById(R.id.illegal_provnice_list);
+		provinceListView = (ListView) findViewById(R.id.illegal_provnice_list);
+		cityListView = (ListView) findViewById(R.id.illegal_city_list);
 		back = (ImageView) findViewById(R.id.illegal_province_back);
 		myHandler = new MyHandler();
 		dbExcute = new DBExcute();
-		code = getIntent().getIntExtra("code", 0);
 		characterParser = new CharacterParser().getInstance();
 		comparator = new PinyinComparator();
+		requestCode = getIntent().getIntExtra("requestCode", 0);
 		//初始化数据 
 		initData();
-		listView.setOnItemClickListener(new OnItemClickListener() {
+		//省份点击监听
+		provinceListView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				//选择省份之后选择
-				Intent intent = new Intent(IllegalCitiyActivity.this,ChoiceIllegalCityActivity.class);
+				//选择省份之后选择城市
 				Variable.illegalList = IllegalCitiyActivity.this.illegalList.get(arg2).getIllegalCityList();
-				intent.putExtra("index", arg2);
-				IllegalCitiyActivity.this.startActivity(intent);
-//				if(code == MyVehicleActivity.resultCodeIllegal){
-//					IllegalCitiyActivity.this.setResult(MyVehicleActivity.resultCodeIllegal, intent);
-//				}
-//				IllegalCitiyActivity.this.finish();
+				provinceListView.setVisibility(View.GONE);
+				adapter = new IllegalProvinceAdapter(null, IllegalCitiyActivity.this,showCityAction,Variable.illegalList);
+				cityListView.setAdapter(adapter);
+				cityListView.setVisibility(View.VISIBLE);
+			}
+		});
+		//城市点击监听
+		cityListView.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+				Intent intent = new Intent(IllegalCitiyActivity.this,MyVehicleActivity.class);
+				intent.putExtra("IllegalCity", Variable.illegalList.get(arg2));
+				IllegalCitiyActivity.this.setResult(requestCode, intent);
+				IllegalCitiyActivity.this.finish();
 			}
 		});
 		back.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				IllegalCitiyActivity.this.finish();
+				if(cityListView.getVisibility() == View.VISIBLE){
+					cityListView.setVisibility(View.GONE);
+					provinceListView.setVisibility(View.VISIBLE);
+				}else{
+					IllegalCitiyActivity.this.finish();
+				}
 			}
 		});
 	}
@@ -92,8 +111,8 @@ public class IllegalCitiyActivity extends Activity {
 			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl+"/violation/city?cuth_code=" + Variable.auth_code, 0)).start();
 		}else{
 			//解析数据  并且更新
-			adapter = new IllegalProvinceAdapter(parseJson(jsonData), IllegalCitiyActivity.this);
-			listView.setAdapter(adapter);
+			adapter = new IllegalProvinceAdapter(parseJson(jsonData), IllegalCitiyActivity.this,showProvinceAction,null);
+			provinceListView.setAdapter(adapter);
 			myDialog.dismiss();
 		}
 	}
@@ -169,16 +188,16 @@ public class IllegalCitiyActivity extends Activity {
 	
 	//根据拼音首字母排序
 	class PinyinComparator implements Comparator<ProvinceModel> {
-	public int compare(ProvinceModel o1, ProvinceModel o2) {
-		if (o1.getProvinceLetter().equals("@")
-				|| o2.getProvinceLetter().equals("#")) {
-			return -1;
-		} else if (o1.getProvinceLetter().equals("#")
-				|| o2.getProvinceLetter().equals("@")) {
-			return 1;
-		} else {
-			return o1.getProvinceLetter().compareTo(o2.getProvinceLetter());
+		public int compare(ProvinceModel o1, ProvinceModel o2) {
+			if (o1.getProvinceLetter().equals("@")
+					|| o2.getProvinceLetter().equals("#")) {
+				return -1;
+			} else if (o1.getProvinceLetter().equals("#")
+					|| o2.getProvinceLetter().equals("@")) {
+				return 1;
+			} else {
+				return o1.getProvinceLetter().compareTo(o2.getProvinceLetter());
+			}
 		}
 	}
-}
 }
