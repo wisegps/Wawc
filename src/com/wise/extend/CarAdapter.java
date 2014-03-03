@@ -2,14 +2,10 @@ package com.wise.extend;
 
 import java.util.List;
 import com.wise.data.CarData;
-import com.wise.pubclas.BlurImage;
-import com.wise.pubclas.Constant;
 import com.wise.wawc.R;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

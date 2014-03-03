@@ -2,17 +2,14 @@ package com.wise.wawc;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
-
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -50,11 +47,12 @@ public class MyDevicesActivity extends Activity{
 	    tv_activity_devices_software_version;
 	List<DevicesData> devicesDatas = new ArrayList<DevicesData>();
 	DevicesAdapter devicesAdapter;
-	boolean isJump = false;//false 加载，true 跳转
+	boolean isJump = true;//false绑定终端，true加载
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_devices);
+		LinearLayout ll_content = (LinearLayout)findViewById(R.id.ll_content);
 		ImageView iv_activity_devices_menu = (ImageView)findViewById(R.id.iv_activity_devices_menu);
 		iv_activity_devices_menu.setOnClickListener(onClickListener);
 		ImageView iv_activity_devices_home = (ImageView)findViewById(R.id.iv_activity_devices_home);
@@ -68,11 +66,19 @@ public class MyDevicesActivity extends Activity{
 		tv_activity_devices_service_end_date = (TextView)findViewById(R.id.tv_activity_devices_service_end_date);
 		tv_activity_devices_hardware_version = (TextView)findViewById(R.id.tv_activity_devices_hardware_version);
 		tv_activity_devices_software_version = (TextView)findViewById(R.id.tv_activity_devices_software_version);
-		GetDevicesDB();
-		GetDevicesData();	
+		
 		
 		Intent intent = getIntent();
-		isJump = intent.getBooleanExtra("isJump", false);
+		isJump = intent.getBooleanExtra("isJump", true);
+		System.out.println("isJump = " + isJump);
+		if(!isJump){//绑定终端
+		    System.out.println("隐藏");
+		    ll_content.setVisibility(View.GONE);
+		}else{
+		    ll_content.setVisibility(View.VISIBLE);
+		}
+		GetDevicesDB();
+        //GetDevicesData();
 	}
 	OnClickListener onClickListener = new OnClickListener() {		
 		@Override
@@ -110,10 +116,14 @@ public class MyDevicesActivity extends Activity{
 	    if(devicesDatas.size() > 0){
 	        showDevice(devicesDatas.get(0));
 	    }
-	    DevicesData devicesData = new DevicesData();
-	    devicesData.setSerial("");
-	    devicesData.setCheck(false);
-	    devicesDatas.add(devicesData);
+	    if(isJump){
+	        System.out.println("加载后面文件");
+	        DevicesData devicesData = new DevicesData();
+	        devicesData.setSerial("");
+	        devicesData.setCheck(false);
+	        devicesData.setType(1);
+	        devicesDatas.add(devicesData);
+	    }	    
 	    
 	    devicesAdapter = new DevicesAdapter();
 	    gv_activity_devices.setAdapter(devicesAdapter);
@@ -131,16 +141,20 @@ public class MyDevicesActivity extends Activity{
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
-			if(arg2 == (devicesDatas.size() - 1)){
-				MyDevicesActivity.this.startActivity(new Intent(MyDevicesActivity.this, OrderDeviceActivity.class));
-			}else{
-				for(int i = 0 ; i < devicesDatas.size() ; i++){
-				    devicesDatas.get(i).setCheck(false);
-				}
-				showDevice(devicesDatas.get(arg2));
-				devicesDatas.get(arg2).setCheck(true);
-				devicesAdapter.notifyDataSetChanged();
-			}			
+		    if(!isJump){//绑定终端
+		        backRequest(devicesDatas.get(arg2).getDevice_id());
+		    }else{
+		        if(arg2 == (devicesDatas.size() - 1)){
+	                MyDevicesActivity.this.startActivity(new Intent(MyDevicesActivity.this, OrderDeviceActivity.class));
+	            }else{
+	                for(int i = 0 ; i < devicesDatas.size() ; i++){
+	                    devicesDatas.get(i).setCheck(false);
+	                }
+	                showDevice(devicesDatas.get(arg2));
+	                devicesDatas.get(arg2).setCheck(true);
+	                devicesAdapter.notifyDataSetChanged();
+	            }
+		    }						
 		}
 	};
 	
@@ -220,6 +234,7 @@ public class MyDevicesActivity extends Activity{
                 devicesData.setSim(jsonObject.getString("sim"));
                 devicesData.setSoftware_version(jsonObject.getString("software_version"));
                 devicesData.setStatus(jsonObject.getString("status"));
+                devicesData.setType(0);
                 devicesDatas.add(devicesData);
             }
         } catch (JSONException e) {
@@ -228,6 +243,8 @@ public class MyDevicesActivity extends Activity{
 	}
 	
 	private class DevicesAdapter extends BaseAdapter{
+	    private static final int VALUE_CAR = 0;
+	    private static final int VALUE_ADD = 1;
 	    LayoutInflater mInflater = LayoutInflater.from(MyDevicesActivity.this);
         @Override
         public int getCount() {
@@ -246,31 +263,64 @@ public class MyDevicesActivity extends Activity{
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
+            int type = getItemViewType(position);
+            ViewHolder holder = null;
+            ViewAdd viewAdd = null;
             if (convertView == null) {
-                convertView = mInflater.inflate(R.layout.item_cars, null);
-                holder = new ViewHolder();
-                holder.tv_item_carnumber = (TextView) convertView.findViewById(R.id.tv_item_carnumber);
-                holder.iv_item_cars = (ImageView)convertView.findViewById(R.id.iv_item_cars);
-                holder.ll_item_cars = (LinearLayout)convertView.findViewById(R.id.ll_item_cars);
-                convertView.setTag(holder);
+                switch (type) {
+                    case VALUE_CAR:
+                        convertView = mInflater.inflate(R.layout.item_cars, null);
+                        holder = new ViewHolder();
+                        holder.tv_item_carnumber = (TextView) convertView.findViewById(R.id.tv_item_carnumber);
+                        holder.iv_item_cars = (ImageView)convertView.findViewById(R.id.iv_item_cars);
+                        holder.ll_item_cars = (LinearLayout)convertView.findViewById(R.id.ll_item_cars);
+                        convertView.setTag(holder);
+                        break;
+                    case VALUE_ADD:
+                        convertView = mInflater.inflate(R.layout.item_add, null);
+                        viewAdd = new ViewAdd();
+                        convertView.setTag(viewAdd);
+                        break;
+                }                
             } else {
-                holder = (ViewHolder) convertView.getTag();
+                switch (type) {
+                    case VALUE_CAR:
+                        holder = (ViewHolder) convertView.getTag();
+                        break;
+                    case VALUE_ADD:
+                        viewAdd = (ViewAdd) convertView.getTag();
+                        break;
+                }
             }
-            DevicesData devicesData = devicesDatas.get(position);
-            holder.tv_item_carnumber.setText(devicesData.getSerial());
-            holder.iv_item_cars.setImageResource(R.drawable.body_icon_add);
-            if(devicesData.isCheck()){
-                holder.ll_item_cars.setBackgroundResource(R.color.gray);
-            }else{
-                holder.ll_item_cars.setBackgroundDrawable(null);
-            }
+            switch (type) {
+                case VALUE_CAR:
+                    DevicesData devicesData = devicesDatas.get(position);
+                    holder.tv_item_carnumber.setText(devicesData.getSerial());
+                    holder.iv_item_cars.setImageResource(R.drawable.icon_terminal);
+                    if(devicesData.isCheck()){
+                        holder.ll_item_cars.setBackgroundResource(R.drawable.bg_car_logo);
+                    }else{
+                        holder.ll_item_cars.setBackgroundResource(R.color.white);
+                    }
+                    break;
+                case VALUE_ADD:
+                    
+                    break;
+            }            
             return convertView;
-        }	
+        }
+        
+        @Override
+        public int getItemViewType(int position) {
+            return devicesDatas.get(position).getType();
+        }
+
         private class ViewHolder {
             TextView tv_item_carnumber;
             ImageView iv_item_cars;
             LinearLayout ll_item_cars;
+        }
+        private class ViewAdd {
         }
 	}
 	
@@ -283,6 +333,14 @@ public class MyDevicesActivity extends Activity{
 	    String Software_version;
 	    String Status;
 	    boolean isCheck;
+	    int Type;
+	    
+        public int getType() {
+            return Type;
+        }
+        public void setType(int type) {
+            Type = type;
+        }
         public String getDevice_id() {
             return Device_id;
         }
@@ -341,15 +399,19 @@ public class MyDevicesActivity extends Activity{
         }	    
 	}
 		
-//	public boolean onKeyDown(int keyCode, KeyEvent event) {
-//		if (keyCode == KeyEvent.KEYCODE_BACK) {
-//			if(isJump){
-//				finish();
-//			}
-//			return false;
-//		}
-//		return super.onKeyDown(keyCode, event);
-//	}
-	
-	
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+	    System.out.println("isJump = " + isJump);
+		if (keyCode == KeyEvent.KEYCODE_BACK) {
+			if(!isJump){
+			    backRequest("");
+			}
+		}
+		return super.onKeyDown(keyCode, event);
+	}	
+	private void backRequest(String DeviceId){
+	    Intent intent = new Intent(MyDevicesActivity.this, MyVehicleActivity.class);
+	    intent.putExtra("DeviceId", DeviceId);
+	    setResult(MyVehicleActivity.resultCodeDevice, intent);
+	    finish();
+	}
 }
