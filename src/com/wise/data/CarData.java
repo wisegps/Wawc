@@ -43,6 +43,7 @@ public class CarData {
 	private String maintain_last_date;
 	private String logoPath;
 	private String regNo;
+	private String vio_location;
 	public boolean isCheck;
 	public int Type;		
 	
@@ -161,6 +162,12 @@ public class CarData {
 	}
 	public void setRegNo(String regNo) {
 		this.regNo = regNo;
+	}
+	public String getVio_location() {
+		return vio_location;
+	}
+	public void setVio_location(String vio_location) {
+		this.vio_location = vio_location;
 	}
 	@Override
     public String toString() {

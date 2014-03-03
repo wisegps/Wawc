@@ -389,6 +389,7 @@ public class HomeActivity extends Activity{
                 String maintain_next_mileage =  cursor.getString(cursor.getColumnIndex("maintain_next_mileage"));
                 String buy_date =  cursor.getString(cursor.getColumnIndex("buy_date"));
                 String reg_no = cursor.getString(cursor.getColumnIndex("reg_no"));
+                String vio_location = cursor.getString(cursor.getColumnIndex("vio_location"));
                 
                 CarData carData = new CarData();
                 carData.setCheck(false);   
@@ -408,6 +409,7 @@ public class HomeActivity extends Activity{
                 carData.setMaintain_next_mileage(maintain_next_mileage);
                 carData.setBuy_date(buy_date);
                 carData.setRegNo(reg_no);
+                carData.setVio_location(vio_location);
                 String imagePath = Constant.VehicleLogoPath + car_brand + ".png";//SD卡路径
                 if(new File(imagePath).isFile()){//存在
                     carData.setLogoPath(imagePath);
@@ -686,6 +688,7 @@ public class HomeActivity extends Activity{
                 String insurance_company = jsonObject.getString("insurance_company");
                 String insurance_date = jsonObject.getString("insurance_date");
                 String reg_no = jsonObject.getString("reg_no");
+                String vio_location = jsonObject.getString("vio_location");
                 insurance_date = insurance_date.substring(0, 10);
 //                String annual_inspect_date = jsonObject.getString("annual_inspect_date");
 //                annual_inspect_date = annual_inspect_date.substring(0, 10);
@@ -716,6 +719,7 @@ public class HomeActivity extends Activity{
                 carData.setMaintain_next_mileage(maintain_next_mileage);
                 carData.setBuy_date(buy_date);
                 carData.setRegNo(reg_no);
+                carData.setVio_location(vio_location);
                 String imagePath = Constant.VehicleLogoPath + car_brand + ".png";//SD卡路径
                 if(new File(imagePath).isFile()){//存在
                     carData.setLogoPath(imagePath);
@@ -743,6 +747,7 @@ public class HomeActivity extends Activity{
                 values.put("maintain_next_mileage", maintain_next_mileage);
                 values.put("buy_date", buy_date);
                 values.put("reg_no", reg_no);
+                values.put("vio_location", vio_location);
                 dbExcute.InsertDB(HomeActivity.this, values, Constant.TB_Vehicle);
             }
             Variable.carDatas = carDatas;
