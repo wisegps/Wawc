@@ -125,10 +125,10 @@
     <string name="month_distance">月行驶里程\n%sKM</string>
     <!-- 车辆行程 -->
     <string name="travels">车辆行程</string>
-    <string name="distance">行驶总里程%sKM</string>
-    <string name="fuel">油耗%sL</string>
-    <string name="hk_fuel">百公里油耗%sL</string>
-    <string name="money">花费:%s元</string>
+    <string name="distance">行驶总里程：%sKM</string>
+    <string name="fuel">油耗：%sL</string>
+    <string name="hk_fuel">百公里油耗：%sL</string>
+    <string name="money">花费：%s元</string>
     <!-- 我的账户 -->
     <string name="contact_note">联系方式(用于购物发货)</string>
     <string name="login_out">注销</string>

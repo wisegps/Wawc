@@ -25,12 +25,12 @@ import org.json.JSONObject;
 import com.wise.data.CarData;
 import com.wise.data.IllegalCity;
 import com.wise.extend.AbstractSpinerAdapter;
+import com.wise.extend.CarAdapter;
 import com.wise.extend.SpinerPopWindow;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
-import com.wise.service.LogoAdapter;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
 
@@ -125,7 +125,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	private LinearLayout buttomView = null;
 	
 	private GridView vehicleGridView = null;
-	private LogoAdapter logoAdapter = null;
+	private CarAdapter carAdapter = null;
 	AlertDialog dlg = null;
 	boolean isJump = false; //false从菜单页跳转过来返回打开菜单，true从首页跳转返回关闭页面
 	private boolean buttomViewIsShow = false;
@@ -243,8 +243,8 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		LayoutParams params = new LayoutParams(Variable.carDatas.size() * (px + 10),LayoutParams.WRAP_CONTENT);
 		vehicleGridView = (GridView) findViewById(R.id.gv_my_vehicle);
 		//汽车品牌Logo
-		logoAdapter = new LogoAdapter(MyVehicleActivity.this,Variable.carDatas);
-		vehicleGridView.setAdapter(logoAdapter);
+		carAdapter = new CarAdapter(MyVehicleActivity.this,Variable.carDatas);
+		vehicleGridView.setAdapter(carAdapter);
 		vehicleGridView.setLayoutParams(params);
 		vehicleGridView.setColumnWidth(px);
 		vehicleGridView.setHorizontalSpacing(6);
@@ -261,7 +261,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 						Variable.carDatas.get(i).setCheck(false);
 					}
 					Variable.carDatas.get(arg2).setCheck(true);
-					logoAdapter.notifyDataSetChanged();
+					carAdapter.notifyDataSetChanged();
 					chickIndex = arg2;
 			}
 		});
@@ -270,7 +270,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 			Variable.carDatas.get(i).setCheck(false);
 		}
 		Variable.carDatas.get(chickIndex).setCheck(true);
-		logoAdapter.notifyDataSetChanged();
+		carAdapter.notifyDataSetChanged();
 		
 		btSaveVehicleData.setOnClickListener(new ClickListener());
 		btDeleteVehicle.setOnClickListener(new ClickListener());
@@ -562,7 +562,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 						carDatas.put("maintain_next_mileage", "2014");
 						carDatas.put("buy_date", buyTime.getText().toString().trim());
 						dBExcute.updataVehilce(getApplicationContext(), Constant.TB_Vehicle, carDatas, "obj_id = ?", new String[]{String.valueOf(Variable.carDatas.get(chickIndex).getObj_id())});
-						logoAdapter.notifyDataSetChanged();
+						carAdapter.notifyDataSetChanged();
 						showToast("保存成功");
 					}
 				} catch (NumberFormatException e) {
@@ -581,7 +581,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 						Log.e("删除前" + Variable.carDatas.size() ,Variable.carDatas.size() + "");
 						Variable.carDatas.remove(Variable.carDatas.get(chickIndex));
 						Log.e("删除后" + Variable.carDatas.size() ,Variable.carDatas.size() + "");
-						logoAdapter.updataDatas(Variable.carDatas);
+						carAdapter.notifyDataSetChanged();
 						if(Variable.carDatas.size() > 0){
 							vehicleNum = Variable.carDatas.get(0).getObj_name();
 							myVehicleBrank.setText(Variable.carDatas.get(0).getCar_brand());
@@ -609,7 +609,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				break;
 				
 				case setCarLogo:
-					logoAdapter.notifyDataSetChanged();
+					carAdapter.notifyDataSetChanged();
 					break;
 				case getCityViolateRegulationsCode:
 					Log.e("result:",msg.obj.toString());

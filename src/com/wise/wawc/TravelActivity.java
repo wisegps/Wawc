@@ -163,9 +163,9 @@ public class TravelActivity extends Activity{
                 travelData.setEnd_place("结束位置");
                 travelData.setSpacingDistance(jsonObject2.getString("distance"));
                 travelData.setAverageOil("百公里油耗：9.9L");
-                travelData.setOil("油耗："+jsonObject2.getString("act_fuel"));
+                travelData.setOil("油耗："+jsonObject2.getString("act_fuel") +"L");
                 travelData.setSpeed("平均速度："+jsonObject2.getString("avg_speed") +"km/h");
-                travelData.setCost("话费：11.34元");
+                travelData.setCost("花费：11.34元");
                 travelDatas.add(travelData);
             }  
             travelAdapter.notifyDataSetChanged();
@@ -261,6 +261,13 @@ public class TravelActivity extends Activity{
 				    Intent intent = new Intent(TravelActivity.this, TravelMapActivity.class);
 				    intent.putExtra("StartTime", travelDatas.get(position).getStartTime());
 				    intent.putExtra("StopTime", travelDatas.get(position).getStopTime());
+				    intent.putExtra("Start_place", travelDatas.get(position).getStart_place());
+				    intent.putExtra("End_place", travelDatas.get(position).getEnd_place());
+				    intent.putExtra("SpacingDistance", "共"+travelDatas.get(position).getSpacingDistance() + "公里\\" + travelDatas.get(position).getSpacingTime());
+				    intent.putExtra("AverageOil", travelDatas.get(position).getAverageOil());
+				    intent.putExtra("Oil", travelDatas.get(position).getOil());
+				    intent.putExtra("Speed", travelDatas.get(position).getSpeed());
+				    intent.putExtra("Cost", travelDatas.get(position).getCost());
 					TravelActivity.this.startActivity(intent);
 				}
 			});

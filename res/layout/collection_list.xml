@@ -26,7 +26,9 @@
 	            android:id="@+id/tv_name"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
-	            android:layout_centerVertical="true"
+	            android:layout_centerVertical="true"	            
+	            android:textSize="@dimen/main"
+	            android:textStyle="bold"
 	            android:textColor="@color/common"
 	            android:layout_toLeftOf="@id/tv_distance"
                 android:layout_marginRight="@dimen/margins"
@@ -43,7 +45,7 @@
                  android:layout_height="50dp"
                  android:text="删除"
                  android:textColor="@color/white"
-                 android:background="@color/yellow"
+                 android:background="@color/red"
                  android:gravity="center">                        
             </TextView>
         </LinearLayout>
@@ -71,7 +73,7 @@
         <View 
 	        android:layout_width="fill_parent"
 	        android:layout_height="1dp"
-	        android:background="@drawable/body_line"/>
+	        android:background="@color/gray_lights"/>
         <RelativeLayout
             android:id="@+id/rl_tel"
             android:layout_width="fill_parent"

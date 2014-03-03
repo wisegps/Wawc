@@ -71,7 +71,7 @@
 	                android:textColor="@color/text_color_selector"
 	                android:drawableTop="@drawable/home_condition"
 	                android:background="@null"
-	                android:textSize="@dimen/main"
+	                android:textSize="@dimen/content"
 	                android:text="@string/vehicle_status"/>
 	        </LinearLayout>
 	        <RelativeLayout 
@@ -84,8 +84,9 @@
 	                android:layout_height="wrap_content"
 	                android:textColor="@color/text_color_selector"
 	                android:drawableTop="@drawable/home_remind"
+	                android:layout_centerInParent="true"
 	                android:background="@null"
-	                android:textSize="@dimen/main"
+	                android:textSize="@dimen/content"
 	                android:text="@string/car_remind"/>
 	            <ImageView 
                     android:id="@+id/iv_car_remind"
@@ -108,7 +109,7 @@
 	                android:textColor="@color/text_color_selector"
 	                android:drawableTop="@drawable/home_violate"
 	                android:background="@null"
-	                android:textSize="@dimen/main"
+	                android:textSize="@dimen/content"
 	                android:text="@string/traffic"/>
 	        </LinearLayout>
 	        <LinearLayout 
@@ -123,7 +124,7 @@
 	                android:textColor="@color/text_color_selector"
 	                android:drawableTop="@drawable/home_share"
 	                android:background="@null"
-	                android:textSize="@dimen/main"
+	                android:textSize="@dimen/content"
 	                android:text="@string/shareLocation"/>
 	        </LinearLayout>
 	    </LinearLayout>
@@ -179,7 +180,7 @@
 		                android:layout_width="wrap_content"
 		                android:layout_height="wrap_content"
 		                android:textStyle="normal"
-		                android:textSize="40sp"
+		                android:textSize="60sp"
 		                android:textColor="@color/white"
 		                android:text="12°"/>
 		            <TextView 
@@ -237,6 +238,7 @@
 		                android:textColor="@color/white"
 		                android:textSize="@dimen/content"
 		                android:background="@drawable/home_xc"
+		                android:layout_marginRight="@dimen/margins"
 		                android:text="适宜"/>
 		            <TextView 
 		                android:layout_width="wrap_content"
@@ -293,8 +295,7 @@
 				            android:layout_height="wrap_content"
 				            android:textColor="@color/white"
 				            android:textSize="@dimen/main"
-				            android:padding="@dimen/margins"
-				            android:text="90#"/>
+				            android:padding="@dimen/margins"/>
 				    </LinearLayout>
 				    <LinearLayout 
 				        android:layout_weight="1"
@@ -308,7 +309,7 @@
 				            android:textColor="@color/white"
 				            android:textSize="@dimen/main"
 				            android:padding="@dimen/margins"
-				            android:text="90#"/>
+				            android:text="93#"/>
 				        <TextView 
 				            android:layout_width="30dp"
 				            android:layout_height="1dp"
@@ -319,8 +320,7 @@
 				            android:layout_height="wrap_content"
 				            android:textColor="@color/white"
 				            android:textSize="@dimen/main"
-				            android:padding="@dimen/margins"
-				            android:text="90#"/>
+				            android:padding="@dimen/margins"/>
 				    </LinearLayout>
 				    <LinearLayout 
 				        android:layout_weight="1"
@@ -334,7 +334,7 @@
 				            android:textColor="@color/white"
 				            android:textSize="@dimen/main"
 				            android:padding="@dimen/margins"
-				            android:text="90#"/>
+				            android:text="97#"/>
 				        <TextView 
 				            android:layout_width="30dp"
 				            android:layout_height="1dp"
@@ -345,8 +345,7 @@
 				            android:layout_height="wrap_content"
 				            android:textColor="@color/white"
 				            android:textSize="@dimen/main"
-				            android:padding="@dimen/margins"
-				            android:text="90#"/>
+				            android:padding="@dimen/margins"/>
 				    </LinearLayout>
 				    <LinearLayout 
 				        android:layout_weight="1"
@@ -360,7 +359,7 @@
 				            android:textColor="@color/white"
 				            android:textSize="@dimen/main"
 				            android:padding="@dimen/margins"
-				            android:text="90#"/>
+				            android:text="0#"/>
 				        <TextView 
 				            android:layout_width="30dp"
 				            android:layout_height="1dp"
@@ -371,8 +370,7 @@
 				            android:layout_height="wrap_content"
 				            android:textColor="@color/white"
 				            android:textSize="@dimen/main"
-				            android:padding="@dimen/margins"
-				            android:text="90#"/>
+				            android:padding="@dimen/margins"/>
 				    </LinearLayout>			        
 			    </LinearLayout>
 			</LinearLayout>

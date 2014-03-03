@@ -175,6 +175,6 @@ public class CarData {
                 + ", maintain_next_mileage=" + maintain_next_mileage
                 + ", buy_date=" + buy_date + ", obj_name=" + obj_name
                 + ", maintain_last_date=" + maintain_last_date + ", logoPath="
-                + logoPath + ", isCheck=" + isCheck + "]";
-    }	
+                + logoPath + ", isCheck=" + isCheck + ", Type=" + Type + "]";
+    }    	
 }
