@@ -42,8 +42,11 @@ public class CarData {
 	public String obj_name;
 	private String maintain_last_date;
 	private String logoPath;
-	public boolean isCheck;
-	public int Type;		
+	public boolean isCheck;  //是否选中
+	public int Type;		//布局控制
+	public String Adress;  //车辆位置
+	public String Lat; 
+	public String Lon;
 	
 	public int getType() {
         return Type;
@@ -154,7 +157,25 @@ public class CarData {
 	}
 	public void setMaintain_last_date(String maintain_last_date) {
 		this.maintain_last_date = maintain_last_date;
-	}
+	}	
+    public String getAdress() {
+        return Adress;
+    }
+    public void setAdress(String adress) {
+        Adress = adress;
+    }    
+    public String getLat() {
+        return Lat;
+    }
+    public void setLat(String lat) {
+        Lat = lat;
+    }
+    public String getLon() {
+        return Lon;
+    }
+    public void setLon(String lon) {
+        Lon = lon;
+    }
     @Override
     public String toString() {
         return "CarData [obj_id=" + obj_id + ", car_brand=" + car_brand

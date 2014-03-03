@@ -86,6 +86,7 @@ public class AdressAdapter extends BaseAdapter{
 			holder.iv_Collect = (ImageView)convertView.findViewById(R.id.iv_Collect);
 			holder.iv_location = (ImageView)convertView.findViewById(R.id.iv_location);
 			holder.iv_tel = (ImageView)convertView.findViewById(R.id.iv_tel);
+			holder.iv_share = (ImageView)convertView.findViewById(R.id.iv_share);
 			holder.ll_adress_tel = (RelativeLayout)convertView.findViewById(R.id.ll_adress_tel);
 			convertView.setTag(holder);
 		} else {
@@ -108,6 +109,14 @@ public class AdressAdapter extends BaseAdapter{
 		}else{
 		    holder.iv_Collect.setImageResource(R.drawable.collect);
 		}
+		holder.iv_share.setOnClickListener(new OnClickListener() {            
+            @Override
+            public void onClick(View v) {
+                if(onCollectListener != null){
+                    onCollectListener.OnShare(index);
+                }
+            }
+        });
 		//收藏
 		holder.iv_Collect.setOnClickListener(new OnClickListener() {				
 			@Override
@@ -156,7 +165,7 @@ public class AdressAdapter extends BaseAdapter{
 	}
 	private class ViewHolder {
 		TextView tv_item_dealadress_name,tv_item_dealadress_adress,tv_item_dealadress_phone,tv_item_dealadress_distance;
-		ImageView iv_Collect,iv_location,iv_tel;
+		ImageView iv_Collect,iv_location,iv_tel,iv_share;
 		RelativeLayout ll_adress_tel;
 	}
 	
@@ -201,5 +210,6 @@ public class AdressAdapter extends BaseAdapter{
     }
 	public interface OnCollectListener {
 	    public abstract void OnCollect(int index);
+        public abstract void OnShare(int index);
 	}
 }

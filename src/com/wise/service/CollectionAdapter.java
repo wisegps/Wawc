@@ -65,7 +65,7 @@ public class CollectionAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder = null;
         if(convertView == null){
-            convertView = layoutInflater.inflate(R.layout.collection_list, null);
+            convertView = layoutInflater.inflate(R.layout.item_collection, null);
             holder = new ViewHolder();
             holder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
             holder.tv_del = (TextView) convertView.findViewById(R.id.tv_del);
@@ -74,6 +74,7 @@ public class CollectionAdapter extends BaseAdapter {
             holder.tv_distance = (TextView) convertView.findViewById(R.id.tv_distance);
             holder.iv_location = (ImageView) convertView.findViewById(R.id.iv_location);
             holder.iv_tel = (ImageView) convertView.findViewById(R.id.iv_tel);
+            holder.iv_share = (ImageView) convertView.findViewById(R.id.iv_share);
             holder.rl_tel = (RelativeLayout) convertView.findViewById(R.id.rl_tel);
             holder.slidingView = (SlidingView)convertView.findViewById(R.id.sv);
             convertView.setTag(holder);
@@ -108,10 +109,16 @@ public class CollectionAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 System.out.println(position);
-                //adressDatas.remove(position);
-                //adressDatas.notifyDataSetChanged();
                 if(collectionItemListener != null){
                     collectionItemListener.Delete(position);
+                }
+            }
+        });
+        holder.iv_share.setOnClickListener(new OnClickListener() {            
+            @Override
+            public void onClick(View v) {
+                if(collectionItemListener != null){
+                    collectionItemListener.share(position);
                 }
             }
         });
@@ -119,7 +126,7 @@ public class CollectionAdapter extends BaseAdapter {
     }
     private class ViewHolder {
         TextView tv_name,tv_address,tv_tel,tv_distance,tv_del;
-        ImageView iv_location,iv_tel;
+        ImageView iv_location,iv_tel,iv_share;
         RelativeLayout rl_tel;
         SlidingView slidingView;
     }
@@ -133,6 +140,7 @@ public class CollectionAdapter extends BaseAdapter {
          * @param position
          */
         public void Delete(int position);
+        public void share(int position);
     }
 
     public void startNavi() {

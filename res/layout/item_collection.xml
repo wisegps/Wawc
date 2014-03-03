@@ -14,12 +14,21 @@
 	        android:layout_height="wrap_content" 
 	        android:padding="@dimen/margins"
             android:background="@color/gray_light" >
+            <ImageView
+	            android:id="@+id/iv_share"
+	            android:layout_width="@dimen/double_margins"
+	            android:layout_height="@dimen/double_margins"
+	            android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+	            android:contentDescription="@string/app_name"
+	            android:src="@drawable/share_black" />
             <TextView
                 android:id="@+id/tv_distance"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
+                android:visibility="gone"
                 android:text="20M"
                 android:textColor="@color/common_inactive" />
 	        <TextView
@@ -30,7 +39,7 @@
 	            android:textSize="@dimen/main"
 	            android:textStyle="bold"
 	            android:textColor="@color/common"
-	            android:layout_toLeftOf="@id/tv_distance"
+	            android:layout_toLeftOf="@id/iv_share"
                 android:layout_marginRight="@dimen/margins"
 	            android:text="沙河西路加油站" />
 	    </RelativeLayout>        

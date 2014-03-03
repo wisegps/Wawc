@@ -238,7 +238,7 @@ public class TravelActivity extends Activity{
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			TravelData travelData = travelDatas.get(position);
+			final TravelData travelData = travelDatas.get(position);
 			holder.tv_item_travel_startTime.setText(travelData.getStartTime().substring(10, 16));
 			holder.tv_item_travel_stopTime.setText(travelData.getStopTime().substring(10, 16));
 			holder.tv_item_travel_startPlace.setText(travelData.getStart_place());
@@ -251,8 +251,19 @@ public class TravelActivity extends Activity{
 			holder.iv_item_travel_share.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(TravelActivity.this, ShareLocationActivity.class);
-					TravelActivity.this.startActivity(intent);
+				    StringBuffer sb = new StringBuffer();
+				    sb.append("【行程】");
+		            sb.append(travelData.getStartTime().substring(5, 16));
+		            sb.append(" 从" + travelData.getStart_place());
+		            sb.append("到" + travelData.getEnd_place());
+		            sb.append("，共行驶" + travelData.getSpacingDistance());
+		            sb.append("公里，耗时" + travelData.getSpacingTime());
+		            sb.append("，" + travelData.getOil());
+		            sb.append("，" + travelData.getCost());
+		            sb.append("，" + travelData.getAverageOil());
+		            sb.append("，" + travelData.getSpeed());
+		            System.out.println(sb.toString());
+		            GetSystem.share(TravelActivity.this, sb.toString(), "",0,0);
 				}
 			});
 			holder.iv_item_travel_map.setOnClickListener(new OnClickListener() {				
@@ -263,7 +274,8 @@ public class TravelActivity extends Activity{
 				    intent.putExtra("StopTime", travelDatas.get(position).getStopTime());
 				    intent.putExtra("Start_place", travelDatas.get(position).getStart_place());
 				    intent.putExtra("End_place", travelDatas.get(position).getEnd_place());
-				    intent.putExtra("SpacingDistance", "共"+travelDatas.get(position).getSpacingDistance() + "公里\\" + travelDatas.get(position).getSpacingTime());
+				    intent.putExtra("SpacingDistance", travelDatas.get(position).getSpacingDistance());
+				    intent.putExtra("SpacingTime", travelDatas.get(position).getSpacingTime());
 				    intent.putExtra("AverageOil", travelDatas.get(position).getAverageOil());
 				    intent.putExtra("Oil", travelDatas.get(position).getOil());
 				    intent.putExtra("Speed", travelDatas.get(position).getSpeed());
@@ -404,6 +416,7 @@ public class TravelActivity extends Activity{
         public void onGetAddrResult(MKAddrInfo arg0, int arg1) {
             if(arg0.type == MKAddrInfo.MK_REVERSEGEOCODE){
                 String strInfo = arg0.strAddr; 
+                strInfo = strInfo.substring((strInfo.indexOf("市") + 1), strInfo.length());
                 if(isFrist){//起点位置取完，在取结束位置
                     travelDatas.get(i).setStart_place(strInfo);
                     isFrist = false;                    

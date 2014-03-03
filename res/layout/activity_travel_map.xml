@@ -9,14 +9,6 @@
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight"
         android:background="@drawable/nav_bg">
-		<ImageView
-            android:id="@+id/iv_activity_travel_back"
-            android:layout_width="@dimen/title_image"
-	        android:layout_height="@dimen/title_image"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/nav_back"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -24,7 +16,25 @@
             android:text="车辆行程地图"
             android:textColor="@color/white"
             android:textSize="@dimen/head"
-            android:textStyle="bold" />
+            android:textStyle="bold" />        
+        <ImageView
+            android:id="@+id/iv_activity_travel_back"
+            android:layout_width="@dimen/title_image"
+            android:layout_height="@dimen/title_image"
+            android:layout_marginLeft="@dimen/margins"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/nav_back"/>
+        <ImageView
+            android:id="@+id/iv_activity_travel_share"
+            android:layout_width="@dimen/title_image"
+            android:layout_height="@dimen/title_image"
+            android:layout_marginRight="@dimen/margins"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/home_share"/>
 	</RelativeLayout>
 	<LinearLayout
         android:orientation="vertical" 

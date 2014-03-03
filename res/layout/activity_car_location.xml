@@ -22,12 +22,12 @@
             android:src="@drawable/nav_back" />
 
         <TextView
+            android:id="@+id/tv_car_name"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_toLeftOf="@+id/iv_activity_car_location_share"
             android:layout_toRightOf="@+id/iv_activity_car_location_back"
             android:gravity="center"
-            android:text="粤B12345"
             android:textColor="@color/white"
             android:textSize="@dimen/title"
             android:textStyle="bold" />

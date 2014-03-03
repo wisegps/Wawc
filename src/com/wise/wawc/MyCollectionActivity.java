@@ -8,6 +8,7 @@ import com.wise.data.AdressData;
 import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.service.CollectionAdapter;
@@ -45,7 +46,7 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.my_collection);
+		setContentView(R.layout.activity_collection);
 		collectionList = (XListView) findViewById(R.id.my_collection_list);
 		ImageView menuBt = (ImageView) findViewById(R.id.my_vechile_menu);
 		menuBt.setOnClickListener(onClickListener);
@@ -119,6 +120,23 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
             
             adressDatas.remove(position);
             collectionAdapter.notifyDataSetChanged();
+        }
+
+        @Override
+        public void share(int position) {
+            AdressData adressData = adressDatas.get(position);
+            String url = "http://api.map.baidu.com/geocoder?location="
+                    + adressData.getLat() + "," + adressData.getLon()
+                    + "&coord_type=bd09ll&output=html";
+            StringBuffer sb = new StringBuffer();
+            sb.append("【地点】");
+            sb.append(adressData.getName());
+            sb.append("," + adressData.getAdress());
+            sb.append("," + adressData.getPhone());
+            sb.append("," + url);
+            GetSystem.share(MyCollectionActivity.this, sb.toString(), "",
+                    (float) adressData.getLat(),
+                    (float) adressData.getLon());
         }
     };
     

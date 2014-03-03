@@ -253,7 +253,7 @@ public class CarFaultActivity extends Activity implements IXListViewListener{
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
-			FaultData faultData = faultDatas.get(position);
+			final FaultData faultData = faultDatas.get(position);
 			holder.tv_item_car_fault_data.setText(faultData.getData());
 			holder.tv_item_car_fault_code.setText(faultData.getFaultCode());
 			holder.tv_item_car_fault_info.setText(faultData.getFaultInfo());
@@ -261,8 +261,12 @@ public class CarFaultActivity extends Activity implements IXListViewListener{
 			holder.iv_item_car_fault_share.setOnClickListener(new OnClickListener() {				
 				@Override
 				public void onClick(View v) {
-					Intent intent = new Intent(CarFaultActivity.this, ShareLocationActivity.class);
-					CarFaultActivity.this.startActivity(intent);
+				    StringBuffer sb = new StringBuffer();
+				    sb.append("【故障】");
+	                sb.append(faultData.getTime());
+	                sb.append("," + faultData.getFaultCode());
+	                sb.append("," + faultData.getFaultInfo());
+	                GetSystem.share(CarFaultActivity.this, sb.toString(), "",0,0);
 				}
 			});
 			if(faultData.isDataFrist){
