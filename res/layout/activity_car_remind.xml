@@ -25,17 +25,8 @@
             android:gravity="center"
             android:text="@string/car_remind"
             android:textColor="@color/white"
-            android:textSize="@dimen/title"
+            android:textSize="@dimen/head"
             android:textStyle="bold" />
-		<ImageView
-            android:id="@+id/iv_activity_car_remind_home"
-            android:layout_width="@dimen/title_image"
-	        android:layout_height="@dimen/title_image"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:visibility="gone"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_launcher"/>
 	</RelativeLayout>	
 	<HorizontalScrollView
         android:layout_width="fill_parent"

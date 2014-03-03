@@ -300,6 +300,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                 jsonLoginOk();
                 break;
             case Bind_ID:
+                System.out.println(msg.obj.toString());
                 jsonLogin(msg.obj.toString());
                 GetNotiCount();
                 break;
@@ -416,8 +417,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             new Thread(new GetBitMapFromUrlThread(platform.getDb()
                     .getUserIcon())).start();
         }
-        SharedPreferences preferences = getSharedPreferences(
-                Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
         Variable.cust_id  = preferences.getString(Constant.sp_cust_id, "");
         Variable.auth_code = preferences.getString(Constant.sp_auth_code, "");
         

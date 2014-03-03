@@ -969,6 +969,7 @@ public class HomeActivity extends Activity{
 	    System.out.println(carData.getInsurance_date());
 	    if(GetSystem.isTimeOut(carData.getAnnual_inspect_date()) ||
 	            GetSystem.isTimeOut(carData.getInsurance_date())||
+	            GetSystem.isTimeOut(carData.getMaintain_last_date())||
 	            GetSystem.isTimeOut(annual_inspect_date)||
 	            GetSystem.isTimeOut(change_date)){
 	        //TODO 提醒
