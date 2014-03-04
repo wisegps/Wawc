@@ -137,12 +137,16 @@ public class MyDevicesActivity extends Activity{
         gv_activity_devices.setNumColumns(devicesDatas.size());
         gv_activity_devices.setOnItemClickListener(onItemClickListener);
 	}
+
+    int index = 0;
+	
 	OnItemClickListener onItemClickListener = new OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
 				long arg3) {
 		    if(!isJump){//绑定终端
-		        backRequest(devicesDatas.get(arg2).getDevice_id());
+		        index = arg2;
+		        backRequest(arg2);
 		    }else{
 		        if(arg2 == (devicesDatas.size() - 1)){
 	                MyDevicesActivity.this.startActivity(new Intent(MyDevicesActivity.this, OrderDeviceActivity.class));
@@ -398,19 +402,19 @@ public class MyDevicesActivity extends Activity{
                     + ", Status=" + Status + "]";
         }	    
 	}
-		
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 	    System.out.println("isJump = " + isJump);
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			if(!isJump){
-			    backRequest("");
+			    backRequest(index);
 			}
 		}
 		return super.onKeyDown(keyCode, event);
 	}	
-	private void backRequest(String DeviceId){
+	private void backRequest(int index){
 	    Intent intent = new Intent(MyDevicesActivity.this, MyVehicleActivity.class);
-	    intent.putExtra("DeviceId", DeviceId);
+	    intent.putExtra("DeviceId", devicesDatas.get(index).getDevice_id());
+	    intent.putExtra("Serial", devicesDatas.get(index).getSerial());
 	    setResult(MyVehicleActivity.resultCodeDevice, intent);
 	    finish();
 	}

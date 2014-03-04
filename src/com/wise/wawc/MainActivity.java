@@ -85,6 +85,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.d(TAG, "Variable.cust_id = " + Variable.cust_id);
         JPushInterface.init(getApplicationContext());
         thread = new ParseFaceThread();
         thread.start();

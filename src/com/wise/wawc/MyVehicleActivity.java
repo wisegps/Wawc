@@ -458,6 +458,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		}
 		if(resultCode == resultCodeDevice){
 		    String DeviceId = data.getStringExtra("DeviceId");
+		    String Serial = data.getStringExtra("Serial");
 		    System.out.println("DeviceId = " + DeviceId);
 		}
 	}

@@ -88,8 +88,8 @@ public class HomeActivity extends Activity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(TAG, "onCreate");
         setContentView(R.layout.activity_home);
+        Log.d(TAG, "Variable.cust_id = " + Variable.cust_id);
         ll_image = (LinearLayout)findViewById(R.id.ll_image);
         ImageView iv_activity_home_menu = (ImageView) findViewById(R.id.iv_activity_home_menu);
         iv_activity_home_menu.setOnClickListener(onClickListener);

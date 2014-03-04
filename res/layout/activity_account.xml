@@ -24,17 +24,8 @@
             android:gravity="center"
             android:text="@string/my_account"
             android:textColor="@color/white"
-            android:textSize="@dimen/title"
+            android:textSize="@dimen/head"
             android:textStyle="bold" />
-		<ImageView
-            android:id="@+id/iv_activity_account_home"
-            android:layout_width="60dp"
-	        android:layout_height="36dp"
-	        android:visibility="gone"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_launcher"/>
 	</RelativeLayout>
 	<RelativeLayout 
 	    android:layout_width="fill_parent"
