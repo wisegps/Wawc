@@ -324,9 +324,13 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				startActivityForResult(intent, resultCodeBrank);
 				break;
 			case R.id.vehicle_device_layout:    //我的终端
-				Intent intent2 = new Intent(MyVehicleActivity.this,MyDevicesActivity.class);
-                intent2.putExtra("isJump", false);
-                startActivityForResult(intent2, 0);
+				List<NameValuePair> parms = new ArrayList<NameValuePair>();
+//				parms.add(new BasicNameValuePair("device_id", "12345"));
+//				new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).obj_id + "/device?auth_code=" + Variable.auth_code , parms, bindDeviceId)).start();
+				new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).obj_id + "/device?auth_code=" + Variable.auth_code +"&device_id=" + "12345", null, bindDeviceId)).start();
+//				Intent intent2 = new Intent(MyVehicleActivity.this,MyDevicesActivity.class);
+//                intent2.putExtra("isJump", false);
+//                startActivityForResult(intent2, 0);
 				break;
 			case R.id.insurance_company_layout:  //选择保险公司
 				Intent intent1 = new Intent(MyVehicleActivity.this,ChoiceInsuranceActivity.class);
@@ -485,7 +489,9 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		if(resultCode == resultCodeDevice){
 		    String DeviceId = data.getStringExtra("DeviceId");
 		    String Serial = data.getStringExtra("Serial");
-		    new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).obj_id + "/device?auth_code=" + Variable.auth_code +"?device_id=" + DeviceId , null, bindDeviceId)).start();
+		    List<NameValuePair> parms = new ArrayList<NameValuePair>();
+		    parms.add(new BasicNameValuePair("device_id", DeviceId));
+		    new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).obj_id + "/device?auth_code=" + Variable.auth_code , null, bindDeviceId)).start();
 		}
 	}
 	
