@@ -168,8 +168,8 @@ public class HomeActivity extends Activity{
         GetRealTimeWeather();
         GetFuel();
         registerBroadcastReceiver();
-        GetDevicesDB();
         GetDBCars();
+        GetDevicesDB();
         if(isNeedGetLogoFromUrl){
           new Thread(new getLogoThread()).start();
         }
