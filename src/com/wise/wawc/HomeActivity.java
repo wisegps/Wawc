@@ -937,7 +937,6 @@ public class HomeActivity extends Activity{
 		public void onEndOfSpeech() {
 		}
 		public void onEvent(int eventType, int arg1, int arg2, String msg) {
-
 		}
 		public void onResult(RecognizerResult results, boolean isLast) {
 			voiceDialog.dismiss();

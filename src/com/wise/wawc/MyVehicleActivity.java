@@ -682,7 +682,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 					//绑定终端成功  更新数据库
 					ContentValues values1 = new ContentValues();
 					values1.put("device_id", deviceId);
-					values1.put("device_name", deviceName);
+					values1.put("serial", deviceName);
 					dBExcute.updataVehilce(MyVehicleActivity.this, Constant.TB_Vehicle, values1, "obj_id=?", new String[]{String.valueOf(Variable.carDatas.get(chickIndex).getObj_id())});
 					break;
 			default:
