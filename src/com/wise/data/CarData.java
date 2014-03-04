@@ -44,6 +44,8 @@ public class CarData {
 	private String regNo;
 	private String vio_location;
 	private String logoPath;
+	private String device_id;
+	private String serial;
 	public boolean isCheck;  //是否选中
 	public int Type;		//布局控制
 	public String Adress;  //车辆位置
@@ -189,7 +191,19 @@ public class CarData {
 	}
 	public void setVio_location(String vio_location) {
 		this.vio_location = vio_location;
-	}
+	}	
+	public String getDevice_id() {
+        return device_id;
+    }
+    public void setDevice_id(String device_id) {
+        this.device_id = device_id;
+    }
+    public String getSerial() {
+        return serial;
+    }
+    public void setSerial(String serial) {
+        this.serial = serial;
+    }
     public String toString() {
         return "CarData [obj_id=" + obj_id + ", car_brand=" + car_brand
                 + ", car_series=" + car_series + ", car_type=" + car_type

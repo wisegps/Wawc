@@ -279,6 +279,7 @@
 	    		android:textColor="@color/adress_gray"
 	            />
 	        <TextView 
+	            android:id="@+id/my_vehicle_device"
 	            android:layout_height="fill_parent"
 	    		android:layout_width="0dip"
 	    		android:text="未绑定终端"

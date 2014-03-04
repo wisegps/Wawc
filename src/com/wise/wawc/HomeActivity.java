@@ -66,6 +66,7 @@ public class HomeActivity extends Activity{
     private static final int Get_Fuel = 3; // 获取城市油价
     private static final int Get_Cars = 4; // 获取车辆数据
     private static final int Get_CarsLogo = 5; // 获取车辆图标
+    private static final int Get_Devicesdata = 6; // 获取终端信息
     private static final int Get_persion = 7;//获取个人信息
     
     LinearLayout ll_image;
@@ -311,6 +312,7 @@ public class HomeActivity extends Activity{
             case Get_Cars:
                 jsonCars(msg.obj.toString());
                 showCar();
+                GetDevicesData();
                 break;
             case Get_CarsLogo:
                 showCar();
@@ -320,6 +322,10 @@ public class HomeActivity extends Activity{
                 break;
             case 999:
                 Log.d(TAG, msg.obj.toString());
+                break;
+            case Get_Devicesdata:
+                jsonDevice(msg.obj.toString());
+                JudgeDevice(msg.obj.toString());
                 break;
             }
         }
@@ -396,6 +402,8 @@ public class HomeActivity extends Activity{
                 String buy_date =  cursor.getString(cursor.getColumnIndex("buy_date"));
                 String reg_no = cursor.getString(cursor.getColumnIndex("reg_no"));
                 String vio_location = cursor.getString(cursor.getColumnIndex("vio_location"));
+                String device_id = cursor.getString(cursor.getColumnIndex("device_id"));
+                String serial = cursor.getString(cursor.getColumnIndex("serial"));
                 
                 CarData carData = new CarData();
                 carData.setCheck(false);   
@@ -419,6 +427,8 @@ public class HomeActivity extends Activity{
                 carData.setAdress(Variable.Adress);
                 carData.setLat(String.valueOf(Variable.Lat));
                 carData.setLon(String.valueOf(Variable.Lon));
+                carData.setDevice_id(device_id);
+                carData.setSerial(serial);
                 String imagePath = Constant.VehicleLogoPath + car_brand + ".png";//SD卡路径
                 if(new File(imagePath).isFile()){//存在
                     carData.setLogoPath(imagePath);
@@ -704,6 +714,10 @@ public class HomeActivity extends Activity{
                 if(jsonObject.opt("vio_location") != null){
                     vio_location = jsonObject.getString("vio_location");
                 }
+                String device_id = "";
+                if(jsonObject.opt("device_id") != null){
+                    device_id = jsonObject.getString("device_id");
+                }
                 insurance_date = insurance_date.substring(0, 10);
 //                String annual_inspect_date = jsonObject.getString("annual_inspect_date");
 //                annual_inspect_date = annual_inspect_date.substring(0, 10);
@@ -735,6 +749,7 @@ public class HomeActivity extends Activity{
                 carData.setBuy_date(buy_date);
                 carData.setRegNo(reg_no);
                 carData.setVio_location(vio_location);
+                carData.setDevice_id(device_id);
                 String imagePath = Constant.VehicleLogoPath + car_brand + ".png";//SD卡路径
                 if(new File(imagePath).isFile()){//存在
                     carData.setLogoPath(imagePath);
@@ -763,6 +778,7 @@ public class HomeActivity extends Activity{
                 values.put("buy_date", buy_date);
                 values.put("reg_no", reg_no);
                 values.put("vio_location", vio_location);
+                values.put("device_id", device_id);
                 dbExcute.InsertDB(HomeActivity.this, values, Constant.TB_Vehicle);
             }
             Variable.carDatas = carDatas;
@@ -849,6 +865,7 @@ public class HomeActivity extends Activity{
             String action = intent.getAction();
             if (action.equals(Constant.A_Login)) {
                 GetDBCars();
+                GetDevicesDB();
                 if((Variable.carDatas == null) || (Variable.carDatas.size() == 0)){
                     Log.d(TAG, "获取车辆数据");
                     GetCars();
@@ -865,26 +882,6 @@ public class HomeActivity extends Activity{
             }
         }
     };
-    /**
-     * 显示车辆信息
-     */
-//    private void ShowCarInfo1(){
-//        if(Variable.carDatas != null || Variable.carDatas.size() > 0){
-//            for(CarData carData : Variable.carDatas){
-//                if(carData.isCheck()){
-//                    //显示车辆信息
-//                    tv_car_number.setText(carData.getObj_name());
-//                    Bitmap bimage = BitmapFactory.decodeFile(carData.getLogoPath());
-//                    if(bimage != null){            
-//                        iv_carLogo.setImageBitmap(bimage);
-//                    }else{
-//                        iv_carLogo.setImageResource(R.drawable.ic_launcher);
-//                    }
-//                    break;
-//                }
-//            }
-//        }
-//    }
     
     @Override
     protected void onResume() {
@@ -1054,6 +1051,7 @@ public class HomeActivity extends Activity{
             String Content = cursor.getString(cursor.getColumnIndex("Content"));
             // 解析数据
             jsonDevice(Content);
+            isHaveDevices = true;
         }
         cursor.close();
         db.close();
@@ -1079,10 +1077,54 @@ public class HomeActivity extends Activity{
                 devicesData.setStatus(jsonObject.getString("status"));
                 devicesData.setType(0);
                 devicesDatas.add(devicesData);
+                for(int j = 0 ; j < Variable.carDatas.size() ; j++){
+                    CarData carData = Variable.carDatas.get(j);
+                    if(carData.getDevice_id().equals(jsonObject.getString("device_id"))){
+                        carData.setSerial(jsonObject.getString("serial"));
+                        DBExcute dbExcute = new DBExcute();
+                        ContentValues values = new ContentValues();
+                        values.put("serial", jsonObject.getString("serial"));
+                        dbExcute.UpdateDB(this, values, "obj_id=?", new String[]{String.valueOf(carData.getObj_id())}, Constant.TB_Vehicle);
+                        break;
+                    }
+                }
             }
             Variable.devicesDatas = devicesDatas;
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+    /**
+     * 从服务器读取我的终端
+     */
+    public void GetDevicesData(){
+        String url = Constant.BaseUrl + "customer/" + Variable.cust_id + "/device?auth_code=" + Variable.auth_code;
+        new Thread(new NetThread.GetDataThread(handler, url, Get_Devicesdata)).start();
+    }
+    boolean isHaveDevices = false;
+    /**
+     * 判断更新还是插入
+     * @param result
+     */
+    private void JudgeDevice(String result) {
+        if (isHaveDevices) {// 更新
+            UpdateDevice(result, "Devices");
+        } else {// 插入
+            InsertDevice(result, "Devices");
+        }
+    }
+    private void UpdateDevice(String result, String Title) {
+        DBExcute dbExcute = new DBExcute();
+        ContentValues values = new ContentValues();
+        values.put("Content", result);
+        dbExcute.UpdateDB(HomeActivity.this, values, Title);
+    }
+    private void InsertDevice(String result, String Title) {
+        DBExcute dbExcute = new DBExcute();
+        ContentValues values = new ContentValues();
+        values.put("Cust_id", Variable.cust_id);
+        values.put("Title", Title);
+        values.put("Content", result);
+        dbExcute.InsertDB(HomeActivity.this, values, Constant.TB_Base);
     }
 }

@@ -34,7 +34,6 @@ import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
-import com.wise.service.IllegalProvinceAdapter;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
 import android.app.Activity;
@@ -179,6 +178,8 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	static CharacterParser characterParser;    //将汉字转为拼音
 	static PinyinComparator comparator;         //排序
 	static List<ProvinceModel> illegalList;
+	private String DeviceId = null;
+	private TextView myVehicleDevice = null;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -205,6 +206,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		engineNumLayout = (TableRow) findViewById(R.id.my_vehicle_engine_num_layout);
 		vehicleNumLayout = (TableRow) findViewById(R.id.my_vehicle_num_layout);
 		registerNumLayout = (TableRow) findViewById(R.id.my_vehicle_register_num_layout);
+		myVehicleDevice = (TextView) findViewById(R.id.my_vehicle_device);
 		getDateView(buyTime);
 		ivInsuranceDate = (TextView) findViewById(R.id.my_vehicle_tv_insurance);
 		getDateView(ivInsuranceDate);
@@ -331,6 +333,9 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 //				Intent intent2 = new Intent(MyVehicleActivity.this,MyDevicesActivity.class);
 //                intent2.putExtra("isJump", false);
 //                startActivityForResult(intent2, 0);
+				Intent intent2 = new Intent(MyVehicleActivity.this,MyDevicesActivity.class);
+				intent2.putExtra("isJump", false);
+				startActivityForResult(intent2, 0);
 				break;
 			case R.id.insurance_company_layout:  //选择保险公司
 				Intent intent1 = new Intent(MyVehicleActivity.this,ChoiceInsuranceActivity.class);
@@ -489,9 +494,11 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		if(resultCode == resultCodeDevice){
 		    String DeviceId = data.getStringExtra("DeviceId");
 		    String Serial = data.getStringExtra("Serial");
+		    myVehicleDevice.setText(Serial);
 		    List<NameValuePair> parms = new ArrayList<NameValuePair>();
-		    parms.add(new BasicNameValuePair("device_id", DeviceId));
-		    new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).obj_id + "/device?auth_code=" + Variable.auth_code , null, bindDeviceId)).start();
+//			parms.add(new BasicNameValuePair("device_id", "12345"));
+//			new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).obj_id + "/device?auth_code=" + Variable.auth_code , parms, bindDeviceId)).start();
+			new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).obj_id + "/device?auth_code=" + Variable.auth_code +"&device_id=" + "12345", null, bindDeviceId)).start();
 		}
 	}
 	
@@ -619,6 +626,10 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 					break;
 				case bindDeviceId:
 					Log.e("绑定终端结果:",msg.obj.toString());
+					//绑定终端成功  更新数据库
+					
+					
+					
 					break;
 			default:
 				return;
