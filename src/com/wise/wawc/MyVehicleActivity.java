@@ -282,6 +282,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 					Variable.carDatas.get(arg2).setCheck(true);
 					carAdapter.notifyDataSetChanged();
 					chickIndex = arg2;
+					hasSelectIllegalCity = false;
 			}
 		});
 		//设置默认选择第一辆汽车
@@ -317,7 +318,6 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 						e.printStackTrace();
 					}
 				}
-				Log.e("初始化：","初始化");
 				myHandler.sendMessage(msg);
 			}
 		}).start();
@@ -448,6 +448,19 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 			String maintain = (String) data.getSerializableExtra("maintain");
 			tvMaintain.setText(maintain);
 		}
+		
+		
+		/**
+		 * 
+		 * 
+		 *                         选择违章城市返回
+		 * 
+		 * 
+		 * 
+		 */
+		
+		
+		
 		if(resultCode == this.getCityViolateRegulationsCode){
 			illegalCity = (IllegalCity) data.getSerializableExtra("IllegalCity");
 			if(illegalCity != null){
@@ -460,8 +473,8 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				engineNumLayout.setVisibility(View.VISIBLE);
 				vehicleNumLayout.setVisibility(View.VISIBLE);
 				registerNumLayout.setVisibility(View.VISIBLE);
-				city_code = illegalCity.getCityCode();
-				illegalCityStr = illegalCity.getCityName();
+				city_code = illegalCity.getCityCode();  //城市代码
+				illegalCityStr = illegalCity.getCityName();   //显示需要的城市名字
 				selectCityTv.setText(illegalCity.getCityName());
 				if(Integer.valueOf(illegalCity.getEngine()) == 0){  //隐藏发动机
 					engineNumLayout.setVisibility(View.GONE);
@@ -505,7 +518,6 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				illegalCity = null;
 			}
 		}
-		//  TODO
 		if(resultCode == resultCodeDevice){
 		    deviceId = data.getStringExtra("DeviceId");
 		    deviceName = data.getStringExtra("Serial");
@@ -558,6 +570,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				CarData carData = (CarData) msg.obj;
 				IllegalCity illegalCitys = null;
 				String location = null;
+				//哪些要显示  哪些不用
 				if(carData.getVio_location() != null){
 					if(!"".equals(carData.getVio_location())){
 						for(int i = 0; i < illegalList.size() ; i++ ){
@@ -570,17 +583,18 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 						}
 					}
 				}
+				if(illegalCitys != null){
+					engine = Integer.valueOf(illegalCitys.getEngine());
+					engineNo = Integer.valueOf(illegalCitys.getEngineno());
+					
+					car = Integer.valueOf(illegalCitys.getVehiclenum());
+					carNo = Integer.valueOf(illegalCitys.getVehiclenumno());
+					
+					register = Integer.valueOf(illegalCitys.getRegist());
+					registerNo = Integer.valueOf(illegalCitys.getRegistno());
+				}
 				
-				engine = Integer.valueOf(illegalCitys.getEngine());
-				engineNo = Integer.valueOf(illegalCitys.getEngineno());
-				
-				car = Integer.valueOf(illegalCitys.getVehiclenum());
-				carNo = Integer.valueOf(illegalCitys.getVehiclenumno());
-				
-				register = Integer.valueOf(illegalCitys.getRegist());
-				registerNo = Integer.valueOf(illegalCitys.getRegistno());
-				
-				
+				//判断终端是否绑定
 				if(carData.getSerial() == null){
 					myVehicleDevice.setText("未绑定终端");
 				}else if("" == carData.getSerial()){
@@ -604,26 +618,31 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				vehicleRegNum.setText(carData.getRegNo());
 				
 				
-				//违章查询  选择城市后清空相关数据
+				
+				//点击了选择违章城市
 				if(hasSelectIllegalCity){
 					engineNum.setText("");
 					frameNum.setText("");
 					vehicleRegNum.setText("");
 					selectCityTv.setText(illegalCityStr);
 				}else{
+					//没有点击 按照用户之前的数据要求来显示
 					selectCityTv.setText(location);
-					if(illegalCity != null){
+					if(illegalCitys != null){
 						engineNumLayout.setVisibility(View.VISIBLE);
 						vehicleNumLayout.setVisibility(View.VISIBLE);
 						registerNumLayout.setVisibility(View.VISIBLE);
-						if(Integer.valueOf(illegalCity.getEngine()) == 0){  //隐藏发动机
+						Log.e("illegalCitys.getEngine()",illegalCitys.getEngine());
+						Log.e("illegalCitys.getVehiclenum()",illegalCitys.getVehiclenum());
+						Log.e("illegalCitys.getRegist()",illegalCitys.getRegist());
+						if(Integer.valueOf(illegalCitys.getEngine()) == 0){  //隐藏发动机
 							engineNumLayout.setVisibility(View.GONE);
 						}
-						if(Integer.valueOf(illegalCity.getVehiclenum()) == 0){   //隐藏车架号
+						if(Integer.valueOf(illegalCitys.getVehiclenum()) == 0){   //隐藏车架号
 							vehicleNumLayout.setVisibility(View.GONE);
 							car = 0;
 						}
-						if(Integer.valueOf(illegalCity.getRegist()) == 0 ){    // 隐藏车辆登记证号
+						if(Integer.valueOf(illegalCitys.getRegist()) == 0 ){    // 隐藏车辆登记证号
 							registerNumLayout.setVisibility(View.GONE);
 							register = 0;
 						}
@@ -682,7 +701,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 					//绑定终端成功  更新数据库
 					ContentValues values1 = new ContentValues();
 					values1.put("device_id", deviceId);
-					values1.put("device_name", deviceName);
+					values1.put("serial", deviceName);
 					dBExcute.updataVehilce(MyVehicleActivity.this, Constant.TB_Vehicle, values1, "obj_id=?", new String[]{String.valueOf(Variable.carDatas.get(chickIndex).getObj_id())});
 					break;
 			default:
