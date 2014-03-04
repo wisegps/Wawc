@@ -99,6 +99,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	private static final int setCarLogo = 11;      // 动态设置汽车Logo
 	private static final int getCityViolateRegulationsCode = 41;      // 获取违章城市代码
 	private static final int getIllegalforUrlCode = 42;      // 获取违章城市代码
+	private static final int bindDeviceId = 13;
 	
 	
 	private EditText etDialogMileage = null;   //输入里程
@@ -480,10 +481,11 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				illegalCity = null;
 			}
 		}
+		//  TODO
 		if(resultCode == resultCodeDevice){
 		    String DeviceId = data.getStringExtra("DeviceId");
 		    String Serial = data.getStringExtra("Serial");
-		    System.out.println("DeviceId = " + DeviceId);
+		    new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).obj_id + "/device?auth_code=" + Variable.auth_code +"?device_id=" + DeviceId , null, bindDeviceId)).start();
 		}
 	}
 	
@@ -608,6 +610,9 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 					illegalList = parseJson(msg.obj.toString());
 					Variable.illegalProvinceList = illegalList;
 					myDialog.dismiss();
+					break;
+				case bindDeviceId:
+					Log.e("绑定终端结果:",msg.obj.toString());
 					break;
 			default:
 				return;
