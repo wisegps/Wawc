@@ -181,6 +181,10 @@ public class Constant {
 	 * 登录广播，首页获取车辆用到
 	 */
 	public static String A_Login = "com.wise.wawc.login";
+	/**
+	 * 注销广播
+	 */
+    public static String A_LoginOut = "com.wise.wawc.login_out";
 	
 	public static boolean isHideFooter = false;
 	/**

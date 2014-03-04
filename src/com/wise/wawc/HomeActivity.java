@@ -16,6 +16,7 @@ import com.iflytek.cloud.speech.SpeechListener;
 import com.iflytek.cloud.speech.SpeechRecognizer;
 import com.iflytek.cloud.speech.SpeechUser;
 import com.wise.data.CarData;
+import com.wise.data.DevicesData;
 import com.wise.extend.HScrollLayout;
 import com.wise.extend.OnViewChangeListener;
 import com.wise.pubclas.Constant;
@@ -89,7 +90,6 @@ public class HomeActivity extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Log.d(TAG, "Variable.cust_id = " + Variable.cust_id);
         ll_image = (LinearLayout)findViewById(R.id.ll_image);
         ImageView iv_activity_home_menu = (ImageView) findViewById(R.id.iv_activity_home_menu);
         iv_activity_home_menu.setOnClickListener(onClickListener);
@@ -167,6 +167,7 @@ public class HomeActivity extends Activity{
         GetRealTimeWeather();
         GetFuel();
         registerBroadcastReceiver();
+        GetDevicesDB();
         GetDBCars();
         if(isNeedGetLogoFromUrl){
           new Thread(new getLogoThread()).start();
@@ -838,6 +839,7 @@ public class HomeActivity extends Activity{
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Constant.A_Login);
         intentFilter.addAction(Constant.A_City);
+        intentFilter.addAction(Constant.A_LoginOut);
         registerReceiver(broadcastReceiver, intentFilter);
     }
 
@@ -846,6 +848,7 @@ public class HomeActivity extends Activity{
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
             if (action.equals(Constant.A_Login)) {
+                GetDBCars();
                 if((Variable.carDatas == null) || (Variable.carDatas.size() == 0)){
                     Log.d(TAG, "获取车辆数据");
                     GetCars();
@@ -855,6 +858,10 @@ public class HomeActivity extends Activity{
                 for(int i = 0 ; i < mTextViews.length ; i++){
                     mTextViews[i].setText(intent.getStringExtra("AddrStr"));
                 }
+            }else if(action.equals(Constant.A_LoginOut)){
+                //TODO 注销
+                Variable.carDatas.clear();
+                showCar();
             }
         }
     };
@@ -994,8 +1001,12 @@ public class HomeActivity extends Activity{
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from " + Constant.TB_Account + " where cust_id=?", new String[]{Variable.cust_id});
         if(cursor.getCount() == 0){
-            String url = Constant.BaseUrl + "customer/" + Variable.cust_id +"?auth_code=" + Variable.auth_code;
-            new Thread(new NetThread.GetDataThread(handler, url, Get_persion)).start();
+            if(Variable.cust_id == null || Variable.cust_id.equals("")){
+                
+            }else{
+                String url = Constant.BaseUrl + "customer/" + Variable.cust_id +"?auth_code=" + Variable.auth_code;
+                new Thread(new NetThread.GetDataThread(handler, url, Get_persion)).start();
+            }            
         }else{
             if(cursor.moveToFirst()){
                 annual_inspect_date = cursor.getString(cursor.getColumnIndex("annual_inspect_date"));
@@ -1034,4 +1045,44 @@ public class HomeActivity extends Activity{
             e.printStackTrace();
         }
 	}
+	private void GetDevicesDB(){
+        DBHelper dbHelper = new DBHelper(HomeActivity.this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base
+                + " where Title=? and Cust_id=?", new String[] { "Devices",Variable.cust_id });
+        if (cursor.moveToFirst()) {
+            String Content = cursor.getString(cursor.getColumnIndex("Content"));
+            // 解析数据
+            jsonDevice(Content);
+        }
+        cursor.close();
+        db.close();
+        Log.d(TAG, "GetDevicesDB");
+    }
+	/**
+     * 解析终端数据
+     * @param result
+     */
+    private void jsonDevice(String result){
+        try {
+            List<DevicesData> devicesDatas = new ArrayList<DevicesData>();
+            JSONArray jsonArray = new JSONArray(result);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                DevicesData devicesData = new DevicesData();
+                devicesData.setDevice_id(jsonObject.getString("device_id"));
+                devicesData.setHardware_version(jsonObject.getString("hardware_version"));
+                devicesData.setSerial(jsonObject.getString("serial"));
+                devicesData.setService_end_date(jsonObject.getString("service_end_date"));
+                devicesData.setSim(jsonObject.getString("sim"));
+                devicesData.setSoftware_version(jsonObject.getString("software_version"));
+                devicesData.setStatus(jsonObject.getString("status"));
+                devicesData.setType(0);
+                devicesDatas.add(devicesData);
+            }
+            Variable.devicesDatas = devicesDatas;
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

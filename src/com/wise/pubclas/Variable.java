@@ -8,6 +8,7 @@ import android.view.WindowManager;
 
 import com.wise.data.Article;
 import com.wise.data.CarData;
+import com.wise.data.DevicesData;
 import com.wise.data.IllegalCity;
 import com.wise.data.ProvinceModel;
 /**
@@ -56,6 +57,7 @@ public class Variable{
     public static String defaultCenter = "车辆位置";
     
     public static List<CarData> carDatas;
+    public static List<DevicesData> devicesDatas;
     
     public static List<Article> articleList;
     

@@ -4,10 +4,8 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 import cn.sharesdk.framework.Platform;
@@ -26,8 +24,10 @@ import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.service.SaveSettingData;
 import android.app.ActivityGroup;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
@@ -85,11 +85,10 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Log.d(TAG, "Variable.cust_id = " + Variable.cust_id);
         JPushInterface.init(getApplicationContext());
         thread = new ParseFaceThread();
         thread.start();
-
+        registerBroadcastReceiver();
         hsv_pic = (PicHorizontalScrollView) findViewById(R.id.hsv_pic);
         ActivityFactory.A = this;
         slidingMenuView = (SlidingMenuView) findViewById(R.id.sliding_menu_view);
@@ -303,7 +302,8 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             case Bind_ID:
                 System.out.println(msg.obj.toString());
                 jsonLogin(msg.obj.toString());
-                GetNotiCount();
+                
+                //GetNotiCount();
                 break;
             case get_noti_count:
                 jsonNoti(msg.obj.toString());
@@ -324,10 +324,15 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
      * 登录成功
      */
     private void jsonLoginOk(){//登录成功        
+        if(platformQQ == platformWhat){
+            iv_activity_main_login_sina.setVisibility(View.GONE);
+            iv_activity_main_login_qq.setImageResource(R.drawable.side_icon_qq_press);
+        }else{
+            iv_activity_main_login_qq.setVisibility(View.GONE);
+            iv_activity_main_login_sina.setImageResource(R.drawable.side_icon_qq_press);
+        }
         Variable.cust_name = platformWhat.getDb().getUserName();
         tv_activity_main_name.setText(platformWhat.getDb().getUserName());
-        iv_activity_main_login_sina.setVisibility(View.GONE);
-        iv_activity_main_login_qq.setVisibility(View.GONE);
         //绑定
         Login(platformWhat.getDb().getUserId(), platformWhat.getDb()
                 .getUserName(), LocationProvince, LocationCity, platformWhat.getDb()
@@ -517,6 +522,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             app.mBMapManager.destroy();
             app.mBMapManager = null;
         }
+        unregisterReceiver(broadcastReceiver);
         stopService(new Intent(MainActivity.this, LocationService.class));
         Constant.start = 0;  // 开始页
         Constant.pageSize = 10;   //每页数量
@@ -735,7 +741,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     /**
      * 获取未读消息
      */
-    private void GetNotiCount(){
+    private void GetNotiCount1(){
         String url = Constant.BaseUrl + "customer/" + Variable.cust_id +"?auth_code=" + Variable.auth_code;
         new Thread(new NetThread.GetDataThread(handler, url, get_noti_count)).start();
     }
@@ -745,7 +751,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             if(jsonObject.opt("noti_count") != null){
                 int count = jsonObject.getInt("noti_count");
                 if(count > 0){
-                    //TODO 判断
                     iv_noti.setVisibility(View.VISIBLE);
                 }else{
                     iv_noti.setVisibility(View.GONE);
@@ -759,4 +764,28 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     public void gotResult(int arg0, String arg1, Set<String> arg2) {
         System.out.println("arg0 = " + arg0 + " , arg1 = " + arg1);
     }
+    private void registerBroadcastReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constant.A_LoginOut);
+        registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if(action.equals(Constant.A_LoginOut)){
+                //TODO 注销
+                isLogin = false;
+                System.out.println("没有登录");
+                iv_activity_main_logo.setImageResource(R.drawable.side_icon_avatar);
+                iv_activity_main_login_sina.setVisibility(View.VISIBLE);
+                iv_activity_main_login_sina.setImageResource(R.drawable.side_icon_sina_press);
+                iv_activity_main_login_qq.setVisibility(View.VISIBLE);
+                iv_activity_main_login_qq.setImageResource(R.drawable.side_icon_qq_press);
+                iv_activity_main_arrow.setVisibility(View.GONE);
+                tv_activity_main_name.setText("未登录");
+            }
+        }
+    };
 }
