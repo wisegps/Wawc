@@ -11,6 +11,7 @@ import com.wise.extend.CarAdapter;
 import com.wise.extend.OpenDateDialog;
 import com.wise.extend.OpenDateDialogListener;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
@@ -26,7 +27,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -74,15 +74,12 @@ public class CarRemindActivity extends Activity{
     String annual_inspect_date = "";//驾照年审
     String change_date = "";//驾照换证
     
-	boolean isJump = false;//false从菜单页跳转过来返回打开菜单，true从首页跳转返回关闭页面
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_car_remind);
 		ImageView iv_activity_car_remind_menu = (ImageView)findViewById(R.id.iv_activity_car_remind_menu);
 		iv_activity_car_remind_menu.setOnClickListener(onClickListener);
-		ImageView iv_activity_car_remind_home = (ImageView)findViewById(R.id.iv_activity_car_remind_home);
-		iv_activity_car_remind_home.setOnClickListener(onClickListener);
 		
 		//年检
 		ll_inspection = (LinearLayout)findViewById(R.id.ll_inspection);
@@ -139,10 +136,7 @@ public class CarRemindActivity extends Activity{
 		
 		tv_activity_car_remind_inspection = (TextView)findViewById(R.id.tv_activity_car_remind_inspection);
 		tv_activity_car_remind_remind_renewal = (TextView)findViewById(R.id.tv_activity_car_remind_remind_renewal);
-		
-		Intent intent = getIntent();
-		isJump = intent.getBooleanExtra("isJump", false);
-		
+				
 		GridView gv_activity_car_remind = (GridView)findViewById(R.id.gv_activity_car_remind);
         carAdapter = new CarAdapter(CarRemindActivity.this,Variable.carDatas);
         gv_activity_car_remind.setAdapter(carAdapter);
@@ -215,18 +209,7 @@ public class CarRemindActivity extends Activity{
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.iv_activity_car_remind_menu:
-				if(isJump){
-					finish();
-				}else{
-					ActivityFactory.A.LeftMenu();
-				}
-				break;
-			case R.id.iv_activity_car_remind_home:
-				if(isJump){
-					finish();
-				}else{
-					ActivityFactory.A.ToHome();
-				}
+				finish();
 				break;
 			case R.id.rl_inspection:
 			    hideLinearlayout();
@@ -319,14 +302,29 @@ public class CarRemindActivity extends Activity{
 	 * 清空文本数据
 	 */
 	private void ShowText(CarData carData){
-	    if(carData.getAnnual_inspect_date() != null){
+	    System.out.println("carData.getAnnual_inspect_date() = " + carData.getAnnual_inspect_date());
+	    System.out.println("carData.getInsurance_date() = " + carData.getInsurance_date());
+	    if(GetSystem.isTimeOut(carData.getAnnual_inspect_date())){
             String Annual_inspect_date = String.format(getResources().getString(R.string.inspection_content), carData.getAnnual_inspect_date());
             tv_activity_car_remind_inspection.setText(Annual_inspect_date);
+            tv_activity_car_remind_inspection.setTextColor(getResources().getColor(R.color.red));
+        }else{
+            tv_activity_car_remind_inspection.setText(carData.getAnnual_inspect_date());
         }
-        if(carData.getInsurance_date() != null){
+        if(GetSystem.isTimeOut(carData.getInsurance_date())){
             String Insurance_date = String.format(getResources().getString(R.string.renewal_content), carData.getInsurance_date());
             tv_activity_car_remind_remind_renewal.setText(Insurance_date);
+            tv_activity_car_remind_remind_renewal.setTextColor(getResources().getColor(R.color.red));
+        }else{
+            tv_activity_car_remind_remind_renewal.setText(carData.getAnnual_inspect_date());
         }
+//        if(GetSystem.isTimeOut(carData.getMaintain_last_date())){
+//            String Maintain_last_date = String.format(getResources().getString(R.string.renewal_content), carData.getInsurance_date());
+//            tv_activity_car_remind_remind_renewal.setText(Maintain_last_date);
+//            tv_activity_car_remind_remind_renewal.setTextColor(getResources().getColor(R.color.red));
+//        }else{
+//            tv_activity_car_remind_remind_renewal.setText(carData.getAnnual_inspect_date());
+//        }
 	}
 	
 	private void GetDBData(){
@@ -397,18 +395,7 @@ public class CarRemindActivity extends Activity{
         }
 	}
 	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			if(isJump){
-				finish();
-			}
-			return false;//拦截load页面的返回事件
-		}
-		return super.onKeyDown(keyCode, event);
-	}
-	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		System.out.print("CarRemindActivity onDestroy");
 	}
 }

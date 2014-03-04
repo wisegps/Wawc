@@ -93,6 +93,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	public static final int resultCodeInsurance = 2;   //选择保险公司的识别码
 	public static final int resultCodeBrank = 3;       //选择汽车品牌的识别码
 	public static final int resultCodeMaintain = 6;       //选择汽车品牌的识别码
+	public static final int resultCodeDevice = 7;       //选择汽车品牌的识别码
 	public static final int showCarData = 8;       //显示汽车数据
 	public static final int deleteCarData = 10;       //删除汽车数据
 	private static final int setCarLogo = 11;      // 动态设置汽车Logo
@@ -322,7 +323,9 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				startActivityForResult(intent, resultCodeBrank);
 				break;
 			case R.id.vehicle_device_layout:    //我的终端
-				startActivity(new Intent(MyVehicleActivity.this,MyDevicesActivity.class));
+				Intent intent2 = new Intent(MyVehicleActivity.this,MyDevicesActivity.class);
+                intent2.putExtra("isJump", false);
+                startActivityForResult(intent2, 0);
 				break;
 			case R.id.insurance_company_layout:  //选择保险公司
 				Intent intent1 = new Intent(MyVehicleActivity.this,ChoiceInsuranceActivity.class);
@@ -476,6 +479,10 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				}
 				illegalCity = null;
 			}
+		}
+		if(resultCode == resultCodeDevice){
+		    String DeviceId = data.getStringExtra("DeviceId");
+		    System.out.println("DeviceId = " + DeviceId);
 		}
 	}
 	

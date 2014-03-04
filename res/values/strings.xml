@@ -71,6 +71,7 @@
     <string name="renewal">车辆续保提醒</string>
     <string name="renewal_content">需于%s前续保</string>
     <string name="maintenance">车辆保养提醒</string>
+    <string name="maintenance_content">车辆保养提醒</string>
     <string name="examined">驾照年审提醒</string>
     <string name="examined_title">驾照年审</string>
     <string name="examined_content">需于%s前年审</string>
