@@ -179,6 +179,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	static PinyinComparator comparator;         //排序
 	static List<ProvinceModel> illegalList;
 	private String DeviceId = null;
+	private TextView myVehicleDevice = null;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -205,6 +206,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		engineNumLayout = (TableRow) findViewById(R.id.my_vehicle_engine_num_layout);
 		vehicleNumLayout = (TableRow) findViewById(R.id.my_vehicle_num_layout);
 		registerNumLayout = (TableRow) findViewById(R.id.my_vehicle_register_num_layout);
+		myVehicleDevice = (TextView) findViewById(R.id.my_vehicle_device);
 		getDateView(buyTime);
 		ivInsuranceDate = (TextView) findViewById(R.id.my_vehicle_tv_insurance);
 		getDateView(ivInsuranceDate);
@@ -485,7 +487,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		if(resultCode == resultCodeDevice){
 		    String DeviceId = data.getStringExtra("DeviceId");
 		    String Serial = data.getStringExtra("Serial");
-		    
+		    myVehicleDevice.setText(Serial);
 		    List<NameValuePair> parms = new ArrayList<NameValuePair>();
 //			parms.add(new BasicNameValuePair("device_id", "12345"));
 //			new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).obj_id + "/device?auth_code=" + Variable.auth_code , parms, bindDeviceId)).start();
