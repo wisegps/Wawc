@@ -347,17 +347,10 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 			        startActivity(new Intent(MyVehicleActivity.this, OrderDeviceActivity.class));
 			    }else{
 			      //跳转到绑定终端界面
-			    }
-				List<NameValuePair> parms = new ArrayList<NameValuePair>();
-				parms.add(new BasicNameValuePair("device_id", "3"));
-//				new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).obj_id + "/device?auth_code=" + Variable.auth_code , parms, bindDeviceId)).start();
-				new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).obj_id + "/device?auth_code=" + Variable.auth_code, parms, bindDeviceId)).start();
-//				Intent intent2 = new Intent(MyVehicleActivity.this,MyDevicesActivity.class);
-//                intent2.putExtra("isJump", false);
-//                startActivityForResult(intent2, 0);
 				Intent intent2 = new Intent(MyVehicleActivity.this,MyDevicesActivity.class);
-				intent2.putExtra("isJump", false);
-				startActivityForResult(intent2, 0);
+                intent2.putExtra("isJump", false);
+                startActivityForResult(intent2, resultCodeDevice);
+			    }
 				break;
 			case R.id.insurance_company_layout:  //选择保险公司
 				Intent intent1 = new Intent(MyVehicleActivity.this,ChoiceInsuranceActivity.class);
@@ -518,9 +511,8 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		    deviceName = data.getStringExtra("Serial");
 		    myVehicleDevice.setText(deviceName);
 		    List<NameValuePair> parms = new ArrayList<NameValuePair>();
-//			parms.add(new BasicNameValuePair("device_id", "12345"));
-//			new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).obj_id + "/device?auth_code=" + Variable.auth_code , parms, bindDeviceId)).start();
-			new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).obj_id + "/device?auth_code=" + Variable.auth_code +"&device_id=" + "12345", null, bindDeviceId)).start();
+			parms.add(new BasicNameValuePair("device_id", deviceId));
+			new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).obj_id + "/device?auth_code=" + Variable.auth_code, parms, bindDeviceId)).start();
 		}
 	}
 	
