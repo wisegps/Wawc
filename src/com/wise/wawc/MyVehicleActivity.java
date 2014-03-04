@@ -589,12 +589,12 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				registerNo = Integer.valueOf(illegalCitys.getRegistno());
 				
 				
-				if(carData.getDeviceName() == null){
+				if(carData.getSerial() == null){
 					myVehicleDevice.setText("未绑定终端");
-				}else if("" == carData.getDeviceName()){
+				}else if("" == carData.getSerial()){
 					myVehicleDevice.setText("未绑定终端");
 				}else{
-					myVehicleDevice.setText(carData.getDeviceName());
+					myVehicleDevice.setText(carData.getSerial());
 				}
 				vehicleNum = carData.getObj_name();
 				myVehicleBrank.setText(carData.getCar_brand());
