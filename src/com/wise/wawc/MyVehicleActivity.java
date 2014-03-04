@@ -178,8 +178,11 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	static CharacterParser characterParser;    //将汉字转为拼音
 	static PinyinComparator comparator;         //排序
 	static List<ProvinceModel> illegalList;
-	private String DeviceId = null;
 	private TextView myVehicleDevice = null;
+	private String deviceId = null;
+	private String deviceName = null;
+	private String illegalCityStr = null;
+	private boolean hasSelectIllegalCity = false;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -213,6 +216,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		btSaveVehicleData = (TextView) findViewById(R.id.new_vehilce_tv);
 		btDeleteVehicle = (TextView) findViewById(R.id.my_vehilce_delete);
 		buttomView = (LinearLayout) findViewById(R.id.my_vehicle_buttom_view);
+		vehicleGridView = (GridView) findViewById(R.id.gv_my_vehicle);
 		
 		
 		ivCarSeries = (TableRow) findViewById(R.id.car_series_layout);
@@ -249,11 +253,14 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		super.onResume();
 		dBhalper = new DBHelper(MyVehicleActivity.this);
 		dBExcute = new DBExcute();
-		
+		if(Variable.carDatas.size() == 1){
+			vehicleGridView.setVisibility(View.GONE);
+		}else{
+			vehicleGridView.setVisibility(View.VISIBLE);
+		}
 		//车辆数据
 		int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Constant.ImageWidth, getResources().getDisplayMetrics());
 		LayoutParams params = new LayoutParams(Variable.carDatas.size() * (px + 10),LayoutParams.WRAP_CONTENT);
-		vehicleGridView = (GridView) findViewById(R.id.gv_my_vehicle);
 		//汽车品牌Logo
 		carAdapter = new CarAdapter(MyVehicleActivity.this,Variable.carDatas);
 		vehicleGridView.setAdapter(carAdapter);
@@ -297,15 +304,24 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		isJump = intent.getBooleanExtra("isJump", false);
 
 		width = getWindowManager().getDefaultDisplay().getWidth();
-		Message msg = new Message();
+		final Message msg = new Message();
 		msg.obj = Variable.carDatas.get(chickIndex);
 		oneCarData = Variable.carDatas.get(chickIndex);
 		msg.what = showCarData;
-		myHandler.sendMessage(msg);
+		new Thread(new Runnable() {
+			public void run() {
+				while(illegalList == null){
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+				Log.e("初始化：","初始化");
+				myHandler.sendMessage(msg);
+			}
+		}).start();
 	}
-
-
-	
 	//点击监听
 	class ClickListener implements OnClickListener{
 		public void onClick(View v) {
@@ -396,6 +412,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 					ProvinceModel provinceModel = illegalList.get(i);
 					Log.e("省份:",provinceModel.getProvinceName());
 				}
+				hasSelectIllegalCity = true;
 				Intent intent6 = new Intent(MyVehicleActivity.this,IllegalCitiyActivity.class);
 				intent6.putExtra("requestCode", getCityViolateRegulationsCode);
 				startActivityForResult(intent6, getCityViolateRegulationsCode);
@@ -426,26 +443,27 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 			tvMaintain.setText(maintain);
 		}
 		if(resultCode == this.getCityViolateRegulationsCode){
-			//  TODO
 			illegalCity = (IllegalCity) data.getSerializableExtra("IllegalCity");
 			if(illegalCity != null){
 				Log.e("illegalCity.getEngine()",illegalCity.getEngine());
+				Log.e("illegalCity.getEngineno()",illegalCity.getEngineno());
 				Log.e("illegalCity.getVehiclenum()",illegalCity.getVehiclenum());
-				Log.e("illegalCity.getRegist()",illegalCity.getRegist());
-				
+				Log.e("illegalCity.getVehiclenumno()",illegalCity.getVehiclenumno());
+				Log.e("illegalCity.getRegisternum()",illegalCity.getRegist());
+				Log.e("illegalCity.getVehiclenumno()",illegalCity.getRegistno());
 				engineNumLayout.setVisibility(View.VISIBLE);
 				vehicleNumLayout.setVisibility(View.VISIBLE);
 				registerNumLayout.setVisibility(View.VISIBLE);
 				city_code = illegalCity.getCityCode();
+				illegalCityStr = illegalCity.getCityName();
 				selectCityTv.setText(illegalCity.getCityName());
 				if(Integer.valueOf(illegalCity.getEngine()) == 0){  //隐藏发动机
 					engineNumLayout.setVisibility(View.GONE);
-					Log.e("隐藏发动机号","隐藏发动机号");
 					engine = 0;
 				}else if(Integer.valueOf(illegalCity.getEngine()) == 1){
 					engine = 1;
 					engineNo = Integer.valueOf(illegalCity.getEngineno());
-					if(engine == 0){
+					if(engineNo == 0){
 						engineNum.setHint(this.getResources().getString(R.string.all_engine_num_hint));
 					}else{
 						engineNum.setHint(this.getResources().getString(R.string.engine_num_hint) + engineNo + this.getResources().getString(R.string.hint_wei));
@@ -453,7 +471,6 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 					}
 				}
 				if(Integer.valueOf(illegalCity.getVehiclenum()) == 0){   //隐藏车架号
-					Log.e("隐藏车架号","隐藏发车架号");
 					vehicleNumLayout.setVisibility(View.GONE);
 					car = 0;
 				}else if(Integer.valueOf(illegalCity.getVehiclenum()) == 1){
@@ -468,7 +485,6 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				} 
 				if(Integer.valueOf(illegalCity.getRegist()) == 0 ){    // 隐藏车辆登记证号
 					registerNumLayout.setVisibility(View.GONE);
-					Log.e("隐藏登记证号","隐藏登记证号");
 					register = 0;
 				}else if(Integer.valueOf(illegalCity.getRegist()) == 1){
 					register = 1;
@@ -485,9 +501,9 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		}
 		//  TODO
 		if(resultCode == resultCodeDevice){
-		    String DeviceId = data.getStringExtra("DeviceId");
-		    String Serial = data.getStringExtra("Serial");
-		    myVehicleDevice.setText(Serial);
+		    deviceId = data.getStringExtra("DeviceId");
+		    deviceName = data.getStringExtra("Serial");
+		    myVehicleDevice.setText(deviceName);
 		    List<NameValuePair> parms = new ArrayList<NameValuePair>();
 //			parms.add(new BasicNameValuePair("device_id", "12345"));
 //			new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).obj_id + "/device?auth_code=" + Variable.auth_code , parms, bindDeviceId)).start();
@@ -534,25 +550,39 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				parseJSONToList(typeJsonArray,msg.what);
 				break;
 			case showCarData:
-				Log.e("carData里面的数据","carData里面的数据");
-				//  显示车辆数据  TODO
 				CarData carData = (CarData) msg.obj;
-//				if(carData.getFrame_no() == null || "".equals(carData.getFrame_no())){
-//					vehicleNumLayout.setVisibility(View.GONE);
-//				}else{
-//					vehicleNumLayout.setVisibility(View.VISIBLE);
-//				}
-//				if(carData.getEngine_no() == null || "".equals(carData.getEngine_no())){
-//					engineNumLayout.setVisibility(View.GONE);
-//				}else{
-//					engineNumLayout.setVisibility(View.VISIBLE);
-//				}
-//				
-//				if(carData.getRegNo() == null || "".equals(carData.getRegNo())){
-//					registerNumLayout.setVisibility(View.GONE);
-//				}else{
-//					registerNumLayout.setVisibility(View.VISIBLE);
-//				}
+				IllegalCity illegalCitys = null;
+				String location = null;
+				if(carData.getVio_location() != null){
+					if(!"".equals(carData.getVio_location())){
+						for(int i = 0; i < illegalList.size() ; i++ ){
+							for(int j = 0 ; j < illegalList.get(i).getIllegalCityList().size() ; j ++){
+								if(carData.getVio_location().equals(illegalList.get(i).getIllegalCityList().get(j).getCityCode())){
+									location = illegalList.get(i).getIllegalCityList().get(j).getCityName();
+									illegalCitys = illegalList.get(i).getIllegalCityList().get(j);
+								}
+							}
+						}
+					}
+				}
+				
+				engine = Integer.valueOf(illegalCitys.getEngine());
+				engineNo = Integer.valueOf(illegalCitys.getEngineno());
+				
+				car = Integer.valueOf(illegalCitys.getVehiclenum());
+				carNo = Integer.valueOf(illegalCitys.getVehiclenumno());
+				
+				register = Integer.valueOf(illegalCitys.getRegist());
+				registerNo = Integer.valueOf(illegalCitys.getRegistno());
+				
+				
+				if(carData.getDeviceName() == null){
+					myVehicleDevice.setText("未绑定终端");
+				}else if("" == carData.getDeviceName()){
+					myVehicleDevice.setText("未绑定终端");
+				}else{
+					myVehicleDevice.setText(carData.getDeviceName());
+				}
 				vehicleNum = carData.getObj_name();
 				myVehicleBrank.setText(carData.getCar_brand());
 				vehicleNumber.setText(carData.getObj_name());
@@ -569,8 +599,33 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				vehicleRegNum.setText(carData.getRegNo());
 				
 				
-				//获取违章城市数据   TODO  在这里获取  这里需要使用
-				
+				//违章查询  选择城市后清空相关数据
+				if(hasSelectIllegalCity){
+					engineNum.setText("");
+					frameNum.setText("");
+					vehicleRegNum.setText("");
+					selectCityTv.setText(illegalCityStr);
+				}else{
+					selectCityTv.setText(location);
+					if(illegalCity != null){
+						engineNumLayout.setVisibility(View.VISIBLE);
+						vehicleNumLayout.setVisibility(View.VISIBLE);
+						registerNumLayout.setVisibility(View.VISIBLE);
+						if(Integer.valueOf(illegalCity.getEngine()) == 0){  //隐藏发动机
+							engineNumLayout.setVisibility(View.GONE);
+						}
+						if(Integer.valueOf(illegalCity.getVehiclenum()) == 0){   //隐藏车架号
+							vehicleNumLayout.setVisibility(View.GONE);
+							car = 0;
+						}
+						if(Integer.valueOf(illegalCity.getRegist()) == 0 ){    // 隐藏车辆登记证号
+							registerNumLayout.setVisibility(View.GONE);
+							register = 0;
+						}
+					}
+				}
+				hasSelectIllegalCity = false;
+				city_code = carData.getVio_location();
 				break;
 			case deleteCarData:
 				JSONObject jsonObject = null;
@@ -579,9 +634,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 					jsonObject = new JSONObject(msg.obj.toString());
 					if(Integer.parseInt(jsonObject.getString("status_code")) == 0){
 						dBExcute.DeleteDB(getApplicationContext(), Constant.TB_Vehicle, "obj_id = ?", new String[]{String.valueOf(Variable.carDatas.get(chickIndex).getObj_id())});
-						Log.e("删除前" + Variable.carDatas.size() ,Variable.carDatas.size() + "");
 						Variable.carDatas.remove(Variable.carDatas.get(chickIndex));
-						Log.e("删除后" + Variable.carDatas.size() ,Variable.carDatas.size() + "");
 						carAdapter.notifyDataSetChanged();
 						if(Variable.carDatas.size() > 0){
 							vehicleNum = Variable.carDatas.get(0).getObj_name();
@@ -590,7 +643,6 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 							tvCarSeries.setText(Variable.carDatas.get(0).getCar_series());
 							tvCarType.setText(Variable.carDatas.get(0).getCar_type());
 							engineNum.setText(Variable.carDatas.get(0).getEngine_no());
-							Log.e("显示数据时",Variable.carDatas.get(0).getObj_id()+"");
 							frameNum.setText(Variable.carDatas.get(0).getFrame_no());
 							showInsuranceCompany.setText(Variable.carDatas.get(0).getInsurance_company());
 							ivInsuranceDate.setText(Variable.carDatas.get(0).getInsurance_date());
@@ -600,13 +652,17 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 						}else{
 							startActivity(new Intent(MyVehicleActivity.this,NewVehicleActivity.class));
 						}
+						if(Variable.carDatas.size() == 1){
+							vehicleGridView.setVisibility(View.GONE);
+						}else{
+							vehicleGridView.setVisibility(View.VISIBLE);
+						}
 						showToast("删除成功");
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 				
-				Log.e("删除车辆执行结果--->",msg.obj.toString());
 				break;
 				
 				case setCarLogo:
@@ -618,11 +674,11 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 					myDialog.dismiss();
 					break;
 				case bindDeviceId:
-					Log.e("绑定终端结果:",msg.obj.toString());
 					//绑定终端成功  更新数据库
-					
-					
-					
+					ContentValues values1 = new ContentValues();
+					values1.put("device_id", deviceId);
+					values1.put("device_name", deviceName);
+					dBExcute.updataVehilce(MyVehicleActivity.this, Constant.TB_Vehicle, values1, "obj_id=?", new String[]{String.valueOf(Variable.carDatas.get(chickIndex).getObj_id())});
 					break;
 			default:
 				return;
@@ -632,7 +688,6 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 
 	private void parseJSONToList(JSONArray jsonArray,int codeType) {
 		if(codeType == getCarSeries){
-			Log.e("获取车型----","获取车型");
 			int jsonLength = jsonArray.length();
 			if(carSeriesNameList.size() > 0){
 				carSeriesNameList.clear();
@@ -654,7 +709,6 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 			mSpinerPopWindow.showAsDropDown(tvCarSeries);
 			mSpinerPopWindow.setType(codeType);
 		}else if(codeType == getCarType){
-			Log.e("获取车款----","获取车款");
 			int jsonLength = jsonArray.length();
 			//解析车款数据
 			if(carSeriesNameList.size() > 0){
@@ -676,15 +730,12 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		
 	}
 	public void getCarDatas(String title,String url,int code,String id){
-		Log.e("访问地址--->",Constant.BaseUrl + url + id);
 		SQLiteDatabase read = dBhalper.getReadableDatabase();
 		//查询数据库
 		Cursor cursor = read.rawQuery("select * from " + Constant.TB_Base + " where Title = ?", new String[]{title + id});
 		JSONArray jsonArray = null;
-//		String carSeries = "";
 		if(cursor.moveToFirst()){
 			try {
-//				carSeries = cursor.getString(cursor.getColumnIndex("Content"));
 				jsonArray = new JSONArray(cursor.getString(cursor.getColumnIndex("Content")));
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -693,7 +744,6 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 			parseJSONToList(jsonArray,code);
 		}else{
 			//请求服务器
-			Log.e("请求服务器","请求服务器");
 			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + url + id, code)).start();
 		}
 	}
@@ -713,9 +763,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 			myDialog = ProgressDialog.show(MyVehicleActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 			myDialog.setCancelable(true);
 			getCarDatas(carTypeTitle,"base/car_type?pid=",getCarType,carSeriesId);
-			Log.e("点击车型所得","点击车型所得");
 		}else if(type == getCarType){
-			Log.e("点击车款所得","点击车款所得");
 			String value = "";
 			if (pos >= 0 && pos <= carSeriesNameList.size()){
 				value = carSeriesNameList.get(pos);
@@ -732,7 +780,6 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		if(imageFile.exists()){
 			//将图片读取出来 
 			imageBitmap = BitmapFactory.decodeFile(imagePath + name);
-			Log.e("本地存在图片","本地存在图片");
 		}else{
 			  new Thread(new Runnable() {
 				public void run() {
@@ -748,7 +795,6 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		              }
 				}
 			}).start();
-              Log.e("服务器的图片","服务器的图片");
 		}
 		return imageBitmap;
 	}
@@ -900,11 +946,11 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
         
         params.add(new BasicNameValuePair("insurance_company", showInsuranceCompany.getText().toString()));
         params.add(new BasicNameValuePair("insurance_date", ivInsuranceDate.getText().toString()));
-        params.add(new BasicNameValuePair("annual_inspect_data", "年检时间"));
+        params.add(new BasicNameValuePair("annual_inspect_data", "年检时间"));    //暂时去掉
         params.add(new BasicNameValuePair("maintain_company", tvMaintain.getText().toString()));
         params.add(new BasicNameValuePair("maintain_last_mileage", lastMaintain.getText().toString().trim()));
         params.add(new BasicNameValuePair("maintain_last_date", lastMaintainTime.getText().toString()));
-        params.add(new BasicNameValuePair("maintain_next_mileage", "2013"));
+        params.add(new BasicNameValuePair("maintain_next_mileage", "2013"));   //暂时去掉
         params.add(new BasicNameValuePair("buy_time", buyTime.getText().toString().trim()));
         
         
@@ -912,7 +958,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 //        Log.e("品牌：",myVehicleBrank.getText().toString());
 //        Log.e("型号：",tvCarSeries.getText().toString());
 //        Log.e("车款：",tvCarType.getText().toString());
-//        Log.e("城市代码：","城市代码");
+//        Log.e("城市代码：",city_code);
 //        
 //        Log.e("发动机号：", engineNum.getText().toString().trim());
 //        Log.e("车架号：",frameNum.getText().toString().trim());
@@ -925,26 +971,26 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 //        Log.e("最后保养时间：",lastMaintainTime.getText().toString());
 //        Log.e("购车时间：",buyTime.getText().toString().trim());
 //		new Thread(new NetThread.postDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).getObj_id() + "?auth_code=" + Variable.auth_code, params, saveVehicleData)).start();
+        //校验  TODO
+        
         new Thread(new Runnable() {
 			public void run() {
 				HttpPost httpPost = new HttpPost(Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).getObj_id() + "?auth_code=" + Variable.auth_code);
-    			try {
-    				 httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-    				 HttpClient client = new DefaultHttpClient();
-    				 client.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 20000);
-    				 client.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 20000);
-    				 HttpResponse httpResponse = client.execute(httpPost);
-    				 //正常请求返回数据
-    				 if(httpResponse.getStatusLine().getStatusCode() == 200){
-    					 String strResult = EntityUtils.toString(httpResponse.getEntity());
-    					 Log.e("保存成功",strResult);
-    				 }else{
-    					 Log.e("失败","失败");
-    				 }
-    			} catch (Exception e) {
-    				Log.e("失败","失败");
-    				e.printStackTrace();
-    			}
+				try {
+					 httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+					 HttpClient client = new DefaultHttpClient();
+					 client.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 20000);
+					 client.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 20000);
+					 HttpResponse httpResponse = client.execute(httpPost);
+					 if(httpResponse.getStatusLine().getStatusCode() == 200){
+						 String strResult = EntityUtils.toString(httpResponse.getEntity());
+						 Log.e("更改爱车数据结果:",strResult);
+					 }else{
+						 Log.e("更改爱车   失败:","失败");
+					 }
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}).start();
 		
@@ -1022,5 +1068,73 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
  				return o1.getProvinceLetter().compareTo(o2.getProvinceLetter());
  			}
  		}
+ 	}
+ 	
+ 	
+ 	
+ 	//校验输入内容的合法性
+ 	public boolean CheckDatas(){
+ 		
+// 		engine = Integer.valueOf(illegalCitys.getEngine());
+//		engineNo = Integer.valueOf(illegalCitys.getEngineno());
+//		
+//		car = Integer.valueOf(illegalCitys.getVehiclenum());
+//		carNo = Integer.valueOf(illegalCitys.getVehiclenumno());
+//		
+//		register = Integer.valueOf(illegalCitys.getRegist());
+//		registerNo = Integer.valueOf(illegalCitys.getRegistno());
+ 		if(engine == 1){
+ 			if(engineNo == 0){
+ 				if(engineNum.getText().toString().trim().length() == engineNo){
+ 					engineNum.setError("引擎号不合法");
+ 					return false;
+ 				}
+ 			}else if(engineNum.getText().toString().trim().length() != engineNo){
+					engineNum.setError("引擎号不合法");
+					return false;
+				}
+ 		}
+ 		if(car == 1){
+ 			if(carNo == 0){
+ 				if(frameNum.getText().toString().trim().length() == carNo){
+ 	 				frameNum.setError("车架号不合法");
+ 	 				return false;
+ 	 			}
+ 			}else if(frameNum.getText().toString().trim().length() != carNo){
+ 				frameNum.setError("车架号不合法");
+ 				return false;
+ 			}
+ 		}
+ 		if(register == 1){
+ 			if(register == 0){
+ 				if(frameNum.getText().toString().trim().length() == carNo){
+ 	 				frameNum.setError("登记证号不合法");
+ 	 				return false;
+ 	 			}
+ 			}else if(frameNum.getText().toString().trim().length() != carNo){
+ 				frameNum.setError("登记证号不合法");
+ 				return false;
+ 			}
+ 		}
+ 		
+ 		
+ 		
+ 		 Log.e("车牌号：",vehicleNumber.getText().toString().trim());
+//       Log.e("品牌：",myVehicleBrank.getText().toString());
+//       Log.e("型号：",tvCarSeries.getText().toString());
+//       Log.e("车款：",tvCarType.getText().toString());
+//       Log.e("城市代码：",city_code);
+//       
+//       Log.e("发动机号：", engineNum.getText().toString().trim());
+//       Log.e("车架号：",frameNum.getText().toString().trim());
+//       Log.e("登记证号：",vehicleRegNum.getText().toString().trim());
+//       
+//       Log.e("保险公司：",showInsuranceCompany.getText().toString());
+//       Log.e("保险到期时间：",ivInsuranceDate.getText().toString());
+//       Log.e("4s店：",tvMaintain.getText().toString());
+//       Log.e("最后保养里程：",lastMaintain.getText().toString().trim());
+//       Log.e("最后保养时间：",lastMaintainTime.getText().toString());
+//       Log.e("购车时间：",buyTime.getText().toString().trim());
+ 		return false;
  	}
 }
