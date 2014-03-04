@@ -66,8 +66,6 @@ public class AccountActivity extends Activity{
 		tv_carNumber = (TextView)findViewById(R.id.tv_carNumber);
 		ImageView iv_activity_account_menu = (ImageView)findViewById(R.id.iv_activity_account_menu);
 		iv_activity_account_menu.setOnClickListener(onClickListener);
-		ImageView iv_activity_account_home = (ImageView)findViewById(R.id.iv_activity_account_home);
-		iv_activity_account_home.setOnClickListener(onClickListener);
 		Button bt_activity_account_logout = (Button)findViewById(R.id.bt_activity_account_logout);
 		bt_activity_account_logout.setOnClickListener(onClickListener);
 		et_activity_account_consignee = (EditText)findViewById(R.id.et_activity_account_consignee);
@@ -86,11 +84,6 @@ public class AccountActivity extends Activity{
 				ActivityFactory.A.LeftMenu();
 				finish();
 				break;
-			case R.id.iv_activity_account_home:
-			    saveData();
-				ActivityFactory.A.ToHome();
-				finish();
-				break;
 			case R.id.account_to_my_vehicle:
 			    Intent intent = new Intent(AccountActivity.this,MyVehicleActivity.class);
 			    intent.putExtra("isJump", true);
@@ -102,6 +95,7 @@ public class AccountActivity extends Activity{
 				platformQQ.removeAccount();
 				platformSina.removeAccount();
 				removeData();
+				sendBroadcast(new Intent(Constant.A_LoginOut));
 				finish();
 				break;
 			}
@@ -251,6 +245,7 @@ public class AccountActivity extends Activity{
         editor.putString(Constant.Consignee, "");
         editor.putString(Constant.Adress, "");
         editor.putString(Constant.Phone, "");
+        editor.putString(Constant.sp_cust_id, "");
         editor.commit();
 	}
 	@Override

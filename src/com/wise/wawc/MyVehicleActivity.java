@@ -342,6 +342,19 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				startActivityForResult(intent, resultCodeBrank);
 				break;
 			case R.id.vehicle_device_layout:    //我的终端
+			    if(Variable.devicesDatas.size() == 0){
+			        //跳转到购买终端界面
+			        startActivity(new Intent(MyVehicleActivity.this, OrderDeviceActivity.class));
+			    }else{
+			      //跳转到绑定终端界面
+			    }
+				List<NameValuePair> parms = new ArrayList<NameValuePair>();
+				parms.add(new BasicNameValuePair("device_id", "3"));
+//				new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).obj_id + "/device?auth_code=" + Variable.auth_code , parms, bindDeviceId)).start();
+				new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).obj_id + "/device?auth_code=" + Variable.auth_code, parms, bindDeviceId)).start();
+//				Intent intent2 = new Intent(MyVehicleActivity.this,MyDevicesActivity.class);
+//                intent2.putExtra("isJump", false);
+//                startActivityForResult(intent2, 0);
 				Intent intent2 = new Intent(MyVehicleActivity.this,MyDevicesActivity.class);
 				intent2.putExtra("isJump", false);
 				startActivityForResult(intent2, 0);
