@@ -721,6 +721,7 @@
 	    android:layout_alignParentBottom="true"
 	    android:visibility="gone"
 	    android:layout_margin="@dimen/margins"
+	    android:background="@color/white"
 	    >
 	       <TextView 
 	            android:id="@+id/new_vehilce_tv"

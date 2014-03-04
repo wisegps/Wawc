@@ -1,5 +1,6 @@
 package com.wise.pubclas;
 
+import java.io.Serializable;
 import java.util.List;
 
 import android.util.DisplayMetrics;
@@ -13,7 +14,7 @@ import com.wise.data.ProvinceModel;
  * 变量
  * @author honesty
  */
-public class Variable {
+public class Variable{
     /**
      * auth_code
      */
@@ -70,4 +71,6 @@ public class Variable {
     public static  int articleAdapterImageHeight = 150;
     
     public static List<IllegalCity> illegalList;
+    
+    public static List<ProvinceModel> illegalProvinceList;
 }

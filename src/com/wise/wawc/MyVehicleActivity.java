@@ -6,6 +6,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -21,7 +24,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import com.wise.data.CarData;
+import com.wise.data.CharacterParser;
 import com.wise.data.IllegalCity;
+import com.wise.data.ProvinceModel;
 import com.wise.extend.AbstractSpinerAdapter;
 import com.wise.extend.CarAdapter;
 import com.wise.extend.SpinerPopWindow;
@@ -29,6 +34,7 @@ import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
+import com.wise.service.IllegalProvinceAdapter;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
 import android.app.Activity;
@@ -48,7 +54,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.CalendarContract.Instances;
 import android.text.InputFilter;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -57,7 +62,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -93,6 +97,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	public static final int deleteCarData = 10;       //删除汽车数据
 	private static final int setCarLogo = 11;      // 动态设置汽车Logo
 	private static final int getCityViolateRegulationsCode = 41;      // 获取违章城市代码
+	private static final int getIllegalforUrlCode = 42;      // 获取违章城市代码
 	
 	
 	private EditText etDialogMileage = null;   //输入里程
@@ -167,8 +172,11 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 	private int engineNo = 0;
 	private int carNo = 0;
 	private int registerNo = 0;
-	private Intent illegalCityIntent;
 	private IllegalCity illegalCity;
+	
+	static CharacterParser characterParser;    //将汉字转为拼音
+	static PinyinComparator comparator;         //排序
+	static List<ProvinceModel> illegalList;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -212,17 +220,29 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		mSpinerPopWindow = new SpinerPopWindow(MyVehicleActivity.this);
 		mSpinerPopWindow.setItemListener(this);
 		selectCity.setOnClickListener(new ClickListener());
+		dBExcute = new DBExcute();
 		
 		preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
 		chickIndex = preferences.getInt(Constant.DefaultVehicleID, 0);
 		Log.e("默认的车辆id",chickIndex + "");
-		illegalCityIntent = getIntent();
-		illegalCity = (IllegalCity) illegalCityIntent.getSerializableExtra("IllegalCity");
+		characterParser = new CharacterParser().getInstance();
+		comparator = new PinyinComparator();
+		myHandler = new MyHandler();
+		
+		myDialog = ProgressDialog.show(MyVehicleActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
+		myDialog.setCancelable(true);
+		String jsonData = dBExcute.selectIllegal(MyVehicleActivity.this);
+		if(jsonData == null){
+			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl+"/violation/city?cuth_code=" + Variable.auth_code, getIllegalforUrlCode)).start();
+		}else{
+			//解析数据  并且更新
+			illegalList = parseJson(jsonData);
+			Variable.illegalProvinceList = illegalList;
+			myDialog.dismiss();
+		}
 	}
 	protected void onResume() {
 		super.onResume();
-		
-		myHandler = new MyHandler();
 		dBhalper = new DBHelper(MyVehicleActivity.this);
 		dBExcute = new DBExcute();
 		
@@ -366,6 +386,10 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				}
 				break;
 			case R.id.select_city_layout:
+				for(int i = 0 ; i < illegalList.size() ; i  ++){
+					ProvinceModel provinceModel = illegalList.get(i);
+					Log.e("省份:",provinceModel.getProvinceName());
+				}
 				Intent intent6 = new Intent(MyVehicleActivity.this,IllegalCitiyActivity.class);
 				intent6.putExtra("requestCode", getCityViolateRegulationsCode);
 				startActivityForResult(intent6, getCityViolateRegulationsCode);
@@ -529,8 +553,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				vehicleRegNum.setText(carData.getRegNo());
 				
 				
-				//获取违章城市数据
-				
+				//获取违章城市数据   TODO  在这里获取  这里需要使用
 				
 				break;
 			case deleteCarData:
@@ -573,8 +596,10 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 				case setCarLogo:
 					carAdapter.notifyDataSetChanged();
 					break;
-				case getCityViolateRegulationsCode:
-					Log.e("result:",msg.obj.toString());
+				case getIllegalforUrlCode:
+					illegalList = parseJson(msg.obj.toString());
+					Variable.illegalProvinceList = illegalList;
+					myDialog.dismiss();
 					break;
 			default:
 				return;
@@ -904,4 +929,75 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
    public void showToast(String showContent){
 	   Toast.makeText(getApplicationContext(), showContent, 0).show();
     }
+   
+ //获取省份   TODO
+ 	public static List<ProvinceModel> parseJson(String jsonData){
+ 		illegalList = new ArrayList<ProvinceModel>();
+ 		try {
+ 			JSONObject jsonObj = new JSONObject(jsonData);
+ 			JSONObject result = jsonObj.getJSONObject("result");
+ 			Iterator it = result.keys();
+ 			while(it.hasNext()){
+ 				List<IllegalCity> illegalCityList = new ArrayList<IllegalCity>();
+ 				ProvinceModel provinceModel = new ProvinceModel();
+ 				
+ 				String key = it.next().toString();
+ 				JSONObject jsonObject = result.getJSONObject(key);
+ 				String province = jsonObject.getString("province");  //省份
+ 				
+ 				JSONArray jsonArray = jsonObject.getJSONArray("citys");  //城市
+ 				for(int i = 0 ; i < jsonArray.length() ; i ++){
+ 					IllegalCity illegalCity = new IllegalCity();
+ 					JSONObject jsonObject3 = jsonArray.getJSONObject(i);
+ 					illegalCity.setAbbr(jsonObject3.getString("abbr"));
+ 					illegalCity.setCityCode(jsonObject3.getString("city_code"));
+ 					illegalCity.setCityName(jsonObject3.getString("city_name"));
+ 					illegalCity.setClassa(jsonObject3.getString("classa"));
+ 					illegalCity.setEngine(jsonObject3.getString("engine"));
+ 					illegalCity.setEngineno(jsonObject3.getString("engineno"));
+ 					illegalCity.setRegist(jsonObject3.getString("regist"));
+ 					illegalCity.setRegistno(jsonObject3.getString("registno"));
+ 					illegalCity.setVehiclenum(jsonObject3.getString("class"));
+ 					illegalCity.setVehiclenumno(jsonObject3.getString("classno"));
+ 					illegalCityList.add(illegalCity);
+ 				}
+ 				provinceModel.setIllegalCityList(illegalCityList);
+ 				provinceModel.setProvinceName(province);
+ 				illegalList.add(provinceModel);
+ 			}
+ 		} catch (JSONException e) {
+ 			e.printStackTrace();
+ 		}
+ 		//排序后返回
+ 		return filledData(illegalList);
+ 	}
+ 	
+ 	//将省份汉字转为拼音
+ 	private static List<ProvinceModel> filledData(List<ProvinceModel> provinceModelList){
+ 		for(int i=0; i<provinceModelList.size(); i++){
+ 			ProvinceModel sortModel = provinceModelList.get(i);
+ 			//汉字转换成拼音
+ 			String pinyin = characterParser.getSelling(provinceModelList.get(i).getProvinceName());
+ 			String sortString = pinyin.substring(0, 1).toUpperCase();
+ 			sortModel.setProvinceLetter(sortString.toUpperCase());   //设置拼音
+ 		}
+ 		Collections.sort(provinceModelList, comparator);
+ 		return provinceModelList;
+ 	}
+ 	
+ 	
+ 	//根据拼音首字母排序
+ 	class PinyinComparator implements Comparator<ProvinceModel> {
+ 		public int compare(ProvinceModel o1, ProvinceModel o2) {
+ 			if (o1.getProvinceLetter().equals("@")
+ 					|| o2.getProvinceLetter().equals("#")) {
+ 				return -1;
+ 			} else if (o1.getProvinceLetter().equals("#")
+ 					|| o2.getProvinceLetter().equals("@")) {
+ 				return 1;
+ 			} else {
+ 				return o1.getProvinceLetter().compareTo(o2.getProvinceLetter());
+ 			}
+ 		}
+ 	}
 }
