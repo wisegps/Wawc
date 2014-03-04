@@ -45,7 +45,6 @@ public class CarAdapter extends BaseAdapter{
 	}
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-	    System.out.println("position = " + position);
 	    int type = getItemViewType(position);
 		ViewHolder holder = null;
 		ViewAdd viewAdd;
