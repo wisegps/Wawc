@@ -67,17 +67,17 @@
     <string name="go_my_car">去我的爱车设置</string>
     <string name="inspection">车辆年检提醒</string>
     <string name="inspection_title">车辆年检</string>
-    <string name="inspection_content">需于%s前年检</string>
+    <string name="inspection_content">(需于%s前年检)</string>
     <string name="renewal">车辆续保提醒</string>
-    <string name="renewal_content">需于%s前续保</string>
+    <string name="renewal_content">(需于%s前续保)</string>
     <string name="maintenance">车辆保养提醒</string>
-    <string name="maintenance_content">车辆保养提醒</string>
+    <string name="maintenance_content">(距离下次保养里程还有%skm)</string>
     <string name="examined">驾照年审提醒</string>
     <string name="examined_title">驾照年审</string>
-    <string name="examined_content">需于%s前年审</string>
+    <string name="examined_content">(需于%s前年审)</string>
     <string name="replacement">驾照换证提醒</string>
     <string name="replacement_title">驾照换证</string>
-    <string name="replacement_content">需于%s前换证</string>
+    <string name="replacement_content">(需于%s前换证)</string>
     <!-- 设置中心 -->
     
     <string name="search_setting">搜索设置</string>

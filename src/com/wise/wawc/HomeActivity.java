@@ -68,6 +68,8 @@ public class HomeActivity extends Activity{
     private static final int Get_CarsLogo = 5; // 获取车辆图标
     private static final int Get_Devicesdata = 6; // 获取终端信息
     private static final int Get_persion = 7;//获取个人信息
+    private static final int Get_car_mileage = 8; //获取车辆里程信息
+    private static final int Get_car_info = 9 ; //获取单个车辆信息
     
     LinearLayout ll_image;
     TextView tv_item_weather_date, tv_item_weather_wd, tv_item_weather,
@@ -78,7 +80,7 @@ public class HomeActivity extends Activity{
     private ImageView saySomething = null; // 语音识别
   	private SpeechRecognizer iatRecognizer;   //识别对象
   	private StringBuffer sb = null;
-  	ImageView voiceImage ,iv_car_remind;
+  	ImageView voiceImage ,iv_car_remind,iv_car_status,iv_car_traffic;
   	VoiceDialog voiceDialog = null;
 
     String LocationCityCode = "";// 城市编码
@@ -101,13 +103,18 @@ public class HomeActivity extends Activity{
         Button bt_activity_home_risk = (Button) findViewById(R.id.bt_activity_home_risk);
         bt_activity_home_risk.setOnClickListener(onClickListener);
         iv_car_remind = (ImageView)findViewById(R.id.iv_car_remind);
+        iv_car_status = (ImageView)findViewById(R.id.iv_car_status);
+        iv_car_traffic = (ImageView)findViewById(R.id.iv_car_traffic);
         ScrollLayout_car = (HScrollLayout) findViewById(R.id.ScrollLayout_car);
         ScrollLayout_car.setOnViewChangeListener(new OnViewChangeListener() {            
             @Override
             public void OnViewChange(int view) {
+                DefaultVehicleID = view;
+                iv_car_traffic.setVisibility(View.GONE);
+                iv_car_status.setVisibility(View.GONE);
                 changeImage(view);
                 saveVehicleID(view);
-                //notiRemind(view);
+                notiRemind(view);
             }            
             @Override
             public void OnLastView() {}
@@ -150,12 +157,12 @@ public class HomeActivity extends Activity{
             public void OnViewChange(int view) {
                 switch (view) {
                 case 0:
-                    iv_weather.setImageResource(R.drawable.home_body_cutover);
-                    iv_oil.setImageResource(R.drawable.home_body_cutover_press);
-                    break;
-                case 1:
                     iv_weather.setImageResource(R.drawable.home_body_cutover_press);
                     iv_oil.setImageResource(R.drawable.home_body_cutover);
+                    break;
+                case 1:
+                    iv_weather.setImageResource(R.drawable.home_body_cutover);
+                    iv_oil.setImageResource(R.drawable.home_body_cutover_press);
                     break;
                 }
             }            
@@ -225,6 +232,12 @@ public class HomeActivity extends Activity{
             ll_image.addView(imageView);
         }
         changeImage(DefaultVehicleID);
+
+        iv_car_traffic.setVisibility(View.GONE);
+        iv_car_status.setVisibility(View.GONE);
+        changeImage(DefaultVehicleID);
+        saveVehicleID(DefaultVehicleID);
+        notiRemind(DefaultVehicleID);
     }
 
     OnClickListener onClickListener = new OnClickListener() {
@@ -327,6 +340,12 @@ public class HomeActivity extends Activity{
             case Get_Devicesdata:
                 jsonDevice(msg.obj.toString());
                 JudgeDevice(msg.obj.toString());
+                break;
+            case Get_car_mileage:
+                jsonCarMileage(msg.obj.toString());
+                break;
+            case Get_car_info:
+                jsonCarInfo(msg.obj.toString());
                 break;
             }
         }
@@ -443,6 +462,7 @@ public class HomeActivity extends Activity{
             db.close();
             if(carDatas.size() > 0){
                 if(DefaultVehicleID >= carDatas.size()){//删除车辆后默认旋转第一个车
+                    DefaultVehicleID = 0;
                     carDatas.get(0).setCheck(true);
                     ScrollLayout_car.snapToScreen(0);
                 }else{
@@ -887,7 +907,6 @@ public class HomeActivity extends Activity{
     protected void onResume() {
         super.onResume();
         System.out.println("onResume");
-        //ShowCarInfo();
     }
 
     @Override
@@ -969,17 +988,43 @@ public class HomeActivity extends Activity{
 			voiceImage = (ImageView) findViewById(R.id.do_something_voice_image);
 		}
 	}
+	private void getCarInfo(int index){
+	    //http://wiwc.api.wisegps.cn/vehicle/72?auth_code=e130a25360e502b498f7b9609a4912d7
+	    String url = Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(index).getObj_id() + 
+	            "?auth_code=" + Variable.auth_code;
+	    new Thread(new NetThread.GetDataThread(handler, url, Get_car_info)).start();
+	}
+	private void jsonCarInfo(String result) {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            if (jsonObject.getString("obj_id")
+                    .equals(Variable.carDatas.get(DefaultVehicleID).getObj_id())) {
+                if(jsonObject.opt("vio_count") != null){
+                    Log.d(TAG, jsonObject.getString("vio_count"));
+                    iv_car_traffic.setVisibility(View.VISIBLE);
+                }
+                if(jsonObject.opt("fault_count") != null){
+                    Log.d(TAG, jsonObject.getString("fault_count"));
+                    iv_car_status.setVisibility(View.VISIBLE);
+                }
+                if(jsonObject.opt("alert_count") != null){
+                    Log.d(TAG, jsonObject.getString("alert_count"));
+                    iv_car_status.setVisibility(View.VISIBLE);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+	
 	/**
 	 * 车辆提醒
 	 * @param index
 	 */
 	private void notiRemind(int index){
 	    CarData carData = carDatas.get(index);
-	    System.out.println(carData.getAnnual_inspect_date());
-	    System.out.println(carData.getInsurance_date());
 	    if(GetSystem.isTimeOut(carData.getAnnual_inspect_date()) ||
 	            GetSystem.isTimeOut(carData.getInsurance_date())||
-	            GetSystem.isTimeOut(carData.getMaintain_last_date())||
 	            GetSystem.isTimeOut(annual_inspect_date)||
 	            GetSystem.isTimeOut(change_date)){
 	        //TODO 提醒
@@ -987,9 +1032,30 @@ public class HomeActivity extends Activity{
 	    }else{
 	        iv_car_remind.setVisibility(View.GONE);
 	    }
-	    //String url = Constant.BaseUrl + "vehicle/72" + "?auth_code=" + Variable.auth_code;
-	    //new Thread(new NetThread.GetDataThread(handler, url, 999)).start();
+	    String url = Constant.BaseUrl + "device/" + carData.getDevice_id()
+                + "/active_gps_data?auth_code=" + Variable.auth_code;
+        new Thread(new NetThread.GetDataThread(handler, url, Get_car_mileage))
+                .start();
 	}
+	/**
+     * 解析车辆里程
+     * @param result
+     */
+    private void jsonCarMileage(String result) {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            if (jsonObject.getString("device_id")
+                    .equals(Variable.carDatas.get(DefaultVehicleID).getDevice_id())) {
+                int mileage = jsonObject.getJSONObject("active_gps_data").getInt("mileage");
+                int next_mileage = Integer.valueOf(Variable.carDatas.get(DefaultVehicleID).getMaintain_next_mileage());
+                if(next_mileage <= mileage){
+                    iv_car_remind.setVisibility(View.VISIBLE);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 	String annual_inspect_date;
 	String change_date;
 	private void GetDBCarRemindData(){

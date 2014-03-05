@@ -18,7 +18,9 @@ import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -118,6 +120,9 @@ public class VehicleStatusActivity extends Activity {
         timeData = GetSystem.GetNowMonth();
         tv_vehicle_status_date.setText(timeData.getDate());      
         initView();
+        
+        SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);        
+        index_car = preferences.getInt(Constant.DefaultVehicleID, 0);
         device_id = Variable.carDatas.get(index_car).getDevice_id();
         Variable.carDatas.get(index_car).setCheck(true);
         carAdapter.notifyDataSetChanged();

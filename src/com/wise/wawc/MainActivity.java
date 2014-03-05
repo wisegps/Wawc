@@ -305,8 +305,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             case Bind_ID:
                 System.out.println(msg.obj.toString());
                 jsonLogin(msg.obj.toString());
-                
-                //GetNotiCount();
+                GetNotiCount();
                 break;
             case get_noti_count:
                 jsonNoti(msg.obj.toString());
@@ -427,8 +426,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         }
         SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
         Variable.cust_id  = preferences.getString(Constant.sp_cust_id, "");
-        Variable.auth_code = preferences.getString(Constant.sp_auth_code, "");
-        
+        Variable.auth_code = preferences.getString(Constant.sp_auth_code, "");        
 
         System.out.println("设置推送 = " +platform.getDb().getUserId());
         Set<String> tagSet = new LinkedHashSet<String>();
@@ -739,7 +737,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     /**
      * 获取未读消息
      */
-    private void GetNotiCount1(){
+    private void GetNotiCount(){
         String url = Constant.BaseUrl + "customer/" + Variable.cust_id +"?auth_code=" + Variable.auth_code;
         new Thread(new NetThread.GetDataThread(handler, url, get_noti_count)).start();
     }

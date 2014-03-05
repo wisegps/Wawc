@@ -1,0 +1,287 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#FFFFFF"
+    android:orientation="vertical" >
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/title_hight"
+        android:background="@drawable/nav_bg" >
+
+        <Button
+            android:id="@+id/bt_setting_menu"
+            android:layout_width="@dimen/title_image"
+            android:layout_height="@dimen/title_image"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margins"
+            android:background="@drawable/side_left" />
+
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="@string/setup_center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/head" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/gray_light"
+                android:padding="@dimen/margins"
+                android:text="@string/search_setting"
+                android:textColor="@color/common"
+                android:textSize="@dimen/title" />
+
+            <RelativeLayout
+                android:id="@+id/rl_center"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margins" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/default_center"
+                    android:textColor="@color/common"
+                    android:textSize="@dimen/content" />
+
+                <TextView
+                    android:id="@+id/tv_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:text="车辆粤B12345的位置"
+                    android:drawableRight="@drawable/body_icon_arrow2"
+                    android:textColor="@color/common_inactive"
+                    android:textSize="@dimen/content" >
+                </TextView>
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/double_margins"
+                android:background="@color/gray" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/gray_light"
+                android:padding="@dimen/margins"
+                android:text="@string/push_setting"
+                android:textColor="@color/common"
+                android:textSize="@dimen/title" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_lights" />
+
+            <RelativeLayout
+                android:id="@+id/rl_traffic"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margins" >
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/against_push"
+                    android:textColor="@color/common"
+                    android:textSize="@dimen/content" />
+                <ImageView
+                    android:id="@+id/iv_traffic"
+                    android:layout_width="@dimen/double_margins"
+                    android:layout_height="@dimen/double_margins"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"
+                    android:src="@drawable/body_icon_check" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_lights" />
+
+            <RelativeLayout
+                android:id="@+id/rl_status"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margins" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/bug_push"
+                    android:textColor="@color/common"
+                    android:textSize="@dimen/content" />
+
+                <ImageView
+                    android:id="@+id/iv_status"
+                    android:layout_width="@dimen/double_margins"
+                    android:layout_height="@dimen/double_margins"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"
+                    android:src="@drawable/body_icon_check" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_lights" />
+            <RelativeLayout
+                android:id="@+id/rl_alert"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margins" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="报警推送"
+                    android:textColor="@color/common"
+                    android:textSize="@dimen/content" />
+
+                <ImageView
+                    android:id="@+id/iv_alert"
+                    android:layout_width="@dimen/double_margins"
+                    android:layout_height="@dimen/double_margins"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"
+                    android:src="@drawable/body_icon_check" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_lights" />
+
+            <RelativeLayout
+                android:id="@+id/rl_remind"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/margins" >
+
+                <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="@string/traffic_department"
+                    android:textColor="@color/common"
+                    android:textSize="@dimen/content" />
+
+                <ImageView
+                    android:id="@+id/iv_remind"
+                    android:layout_width="@dimen/double_margins"
+                    android:layout_height="@dimen/double_margins"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:visibility="gone"
+                    android:src="@drawable/body_icon_check" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="@dimen/double_margins"
+                android:background="@color/gray" />
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/gray_light"
+                android:padding="@dimen/margins"
+                android:text="@string/system_setting"
+                android:textColor="@color/common"
+                android:textSize="@dimen/title" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_lights" />
+
+            <TextView
+                android:id="@+id/tv_share_gift"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/body_icon_arrow2"
+                android:padding="@dimen/margins"
+                android:text="@string/share_gift"
+                android:textColor="@color/common"
+                android:textSize="@dimen/content" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_lights" />
+
+            <TextView
+                android:id="@+id/tv_feedback"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/body_icon_arrow2"
+                android:padding="@dimen/margins"
+                android:text="@string/feedbaack"
+                android:textColor="@color/common"
+                android:textSize="@dimen/content" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_lights" />
+
+            <TextView
+                android:id="@+id/tv_score"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/body_icon_arrow2"
+                android:padding="@dimen/margins"
+                android:text="@string/give_us_score"
+                android:textColor="@color/common"
+                android:textSize="@dimen/content" />
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_lights" />
+
+            <TextView
+                android:id="@+id/tv_about"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:drawableRight="@drawable/body_icon_arrow2"
+                android:padding="@dimen/margins"
+                android:text="@string/about_appliaction"
+                android:textColor="@color/common"
+                android:textSize="@dimen/content" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>
