@@ -53,13 +53,14 @@ public class VehicleStatusActivity extends Activity {
 
     LinearLayout ll_activity_vehicle_status_oil;
     RelativeLayout rl_status;
-    TextView tv_activity_vehicle_status_oil, tv_month_hk_fuel,tv_fault,
+    TextView tv_activity_vehicle_status_oil, tv_month_hk_fuel,tv_fault,tv_alarm,
             tv_month_distance, tv_month_fuel,tv_vehicle_status_date;
     EnergyGroup hScrollLayout;
     CarAdapter carAdapter;
     // List<CarData> carDatas;
     boolean isWait = true;
     String device_id = "3";
+    int index_car = 0;
     int index ; //选择哪一天
     TimeData timeData;
 
@@ -91,6 +92,10 @@ public class VehicleStatusActivity extends Activity {
         tv_month_fuel.setOnClickListener(onClickListener);
         tv_fault = (TextView) findViewById(R.id.tv_fault);
         tv_fault.setOnClickListener(onClickListener);
+        TextView tv_fault_title = (TextView) findViewById(R.id.tv_fault_title);
+        tv_fault_title.setOnClickListener(onClickListener);
+        tv_alarm = (TextView) findViewById(R.id.tv_alarm);
+        tv_alarm.setOnClickListener(onClickListener);
 
         hScrollLayout = (EnergyGroup) findViewById(R.id.hscrollLayout);
         hScrollLayout.setOnViewChangeListener(onViewChangeListener);
@@ -112,9 +117,11 @@ public class VehicleStatusActivity extends Activity {
         new Thread(new waitThread()).start();
         timeData = GetSystem.GetNowMonth();
         tv_vehicle_status_date.setText(timeData.getDate());      
-        initView();  
-        GetTotalDB();
-        GetTripListDB();
+        initView();
+        device_id = Variable.carDatas.get(index_car).getDevice_id();
+        Variable.carDatas.get(index_car).setCheck(true);
+        carAdapter.notifyDataSetChanged();
+        getCarLocationDB();
         getDeviceStatus();
     }
 
@@ -134,9 +141,12 @@ public class VehicleStatusActivity extends Activity {
             case R.id.tv_month_fuel:
                 hScrollLayout.snapToScreen(2);
                 break;
-            case R.id.tv_fault:
+            case R.id.tv_fault_title:
                 startActivity(new Intent(VehicleStatusActivity.this,CarFaultActivity.class));
              break;
+            case R.id.tv_fault:
+                startActivity(new Intent(VehicleStatusActivity.this,CarFaultActivity.class));
+                break;
             case R.id.ll_activity_vehicle_status_oil:
                 Intent intent = new Intent(VehicleStatusActivity.this, TravelActivity.class);
                 intent.putExtra("Date", timeData.getDate() +"-" + Edistance.get(index).date);
@@ -194,13 +204,22 @@ public class VehicleStatusActivity extends Activity {
         @Override
         public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                 long arg3) {
-            for (int i = 0; i < Variable.carDatas.size(); i++) {
-                Variable.carDatas.get(i).setCheck(false);
-            }
+            Variable.carDatas.get(index_car).setCheck(false);
             Variable.carDatas.get(arg2).setCheck(true);
             carAdapter.notifyDataSetChanged();
+            index_car = arg2;
+            device_id = Variable.carDatas.get(arg2).getDevice_id();
+            getCarLocationDB();
         }
     };
+    private void getCarLocationDB(){
+        if(device_id == null || device_id.equals("")){
+            Toast.makeText(VehicleStatusActivity.this, "该车辆没有绑定终端，无法获取数据", Toast.LENGTH_SHORT).show();
+        }else{
+            GetTotalDB();
+            GetTripListDB();
+        }
+    }
     /**
      * 显示提示框
      * @param value
@@ -235,7 +254,7 @@ public class VehicleStatusActivity extends Activity {
         }
     }
     /**
-     * 获取本地统计信息并判断
+     * 获取本地统计月统计数目信息并判断
      */
     private void GetTotalDB() {
         DBHelper dbHelper = new DBHelper(getApplicationContext());
@@ -251,7 +270,7 @@ public class VehicleStatusActivity extends Activity {
         db.close();
     }
     /**
-     * 获取每天的数据
+     * 获取每天的数据,画图
      */
     private void GetTripListDB(){
         DBHelper dbHelper = new DBHelper(getApplicationContext());

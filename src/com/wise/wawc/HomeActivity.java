@@ -195,6 +195,7 @@ public class HomeActivity extends Activity{
     private TextView[] mTextViews;
     //TODO 显示车辆
     private void showCar(){
+        System.out.println("showCar");
         ScrollLayout_car.removeAllViews();
         mTextViews = new TextView[carDatas.size()];
         for(int i = 0 ; i < carDatas.size() ; i++){
@@ -213,10 +214,10 @@ public class HomeActivity extends Activity{
             if(bimage != null){            
                 iv_carLogo.setImageBitmap(bimage);
             }else{
-                iv_carLogo.setImageResource(R.drawable.ic_launcher);
+                iv_carLogo.setImageResource(R.drawable.body_nothing_icon);
             }
         }
-
+        ll_image.removeAllViews();
         for(int i = 0 ; i < carDatas.size() ; i++){
             ImageView imageView = new ImageView(this);
             imageView.setImageResource(R.drawable.home_body_cutover_press);
@@ -708,7 +709,6 @@ public class HomeActivity extends Activity{
                 String engine_no = jsonObject.getString("engine_no");
                 String frame_no = jsonObject.getString("frame_no");
                 String insurance_company = jsonObject.getString("insurance_company");
-                String insurance_date = jsonObject.getString("insurance_date");
                 String reg_no = "";
                 String vio_location = "";
                 if(jsonObject.opt("reg_no") != null){
@@ -721,19 +721,15 @@ public class HomeActivity extends Activity{
                 if(jsonObject.opt("device_id") != null){
                     device_id = jsonObject.getString("device_id");
                 }
-                insurance_date = insurance_date.substring(0, 10);
-//                String annual_inspect_date = jsonObject.getString("annual_inspect_date");
-//                annual_inspect_date = annual_inspect_date.substring(0, 10);
-                String annual_inspect_date = "已取消";
+                String annual_inspect_date = jsonObject.getString("insurance_date").replace("T", " ").substring(0, 19);
+                String insurance_date = jsonObject.getString("insurance_date").replace("T", " ").substring(0, 19);
                 String maintain_company = jsonObject.getString("maintain_company");
                 String maintain_last_mileage = jsonObject.getString("maintain_last_mileage");
-//                String maintain_next_mileage = jsonObject.getString("maintain_next_mileage");
-                String maintain_next_mileage = "已取消";
+                String maintain_next_mileage = jsonObject.getString("maintain_next_mileage");
                 String buy_date = jsonObject.getString("buy_date");
                 buy_date = buy_date.substring(0, 10);
                 
-                CarData carData = new CarData();
-                
+                CarData carData = new CarData();                
                 carData.setCheck(false);
                 carData.setObj_id(obj_id);
                 carData.setType(0);
@@ -787,6 +783,9 @@ public class HomeActivity extends Activity{
             Variable.carDatas = carDatas;
             if(Variable.carDatas.size() > 0){
                 Variable.carDatas.get(0).setCheck(true);
+            }
+            if(isNeedGetLogoFromUrl){
+                new Thread(new getLogoThread()).start();
             }
             Log.d(TAG, "Variable.carDatas = " + Variable.carDatas.size());
         } catch (JSONException e) {
@@ -868,6 +867,7 @@ public class HomeActivity extends Activity{
             String action = intent.getAction();
             if (action.equals(Constant.A_Login)) {
                 GetDBCars();
+                showCar();
                 GetDevicesDB();
                 if((Variable.carDatas == null) || (Variable.carDatas.size() == 0)){
                     Log.d(TAG, "获取车辆数据");
@@ -1031,11 +1031,11 @@ public class HomeActivity extends Activity{
                 values.put("Phone", tel);
             }
             if(jsonObject.opt("annual_inspect_date") != null){
-                annual_inspect_date = jsonObject.getString("annual_inspect_date").substring(0, 10);                
+                annual_inspect_date = jsonObject.getString("annual_inspect_date").replace("T", " ").substring(0, 19);                
                 values.put("annual_inspect_date", annual_inspect_date);
             }
             if(jsonObject.opt("change_date") != null){
-                change_date = jsonObject.getString("change_date").substring(0, 10);
+                change_date = jsonObject.getString("change_date").replace("T", " ").substring(0, 19);
                 values.put("change_date", change_date);
             }
             values.put("cust_id", Variable.cust_id);

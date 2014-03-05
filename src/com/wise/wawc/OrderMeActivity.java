@@ -14,7 +14,11 @@ import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -52,6 +56,7 @@ public class OrderMeActivity extends Activity{
 		//iv_activity_order_me_home.setOnClickListener(onClickListener);
 		GetOrderDB();
         GetOrder();
+        registerBroadcastReceiver();
 	}
 	OnClickListener onClickListener = new OnClickListener() {		
 		@Override
@@ -98,7 +103,6 @@ public class OrderMeActivity extends Activity{
         }
         cursor.close();
         db.close();
-        Log.d(TAG, "GetOrderDB");
 	}
 	
 	private void GetOrder(){
@@ -106,7 +110,6 @@ public class OrderMeActivity extends Activity{
 	    new Thread(new NetThread.GetDataThread(handler, url, Get_order)).start();
 	}
 	private void jsonOrder(String result){
-	    Log.d(TAG, result);
 	    try {
             JSONArray jsonArray = new JSONArray(result);
             for(int i = 0 ; i < jsonArray.length() ; i++){
@@ -255,4 +258,23 @@ public class OrderMeActivity extends Activity{
 		}
 		return super.onKeyDown(keyCode, event);
 	}	
+	@Override
+	protected void onResume() {
+	    super.onResume();
+	    Log.d(TAG, "onResume");
+	}
+	private void registerBroadcastReceiver(){
+	    IntentFilter intentFilter = new IntentFilter();
+	    intentFilter.addAction(Constant.A_Order);
+	    registerReceiver(broadcastReceiver, intentFilter);
+	}
+	BroadcastReceiver broadcastReceiver = new BroadcastReceiver(){
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if(intent.getAction().equals(Constant.A_Order)){
+                Log.d(TAG, "刷新订单");
+                GetOrder();
+            }
+        }	    
+	};
 }

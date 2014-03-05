@@ -25,8 +25,7 @@
             android:layout_centerInParent="true"
             android:text="处理地点"
             android:textColor="@color/white"
-            android:textSize="@dimen/title"
-            android:textStyle="bold"/>
+            android:textSize="@dimen/head"/>
 	</RelativeLayout>
 	<ListView 
 	    android:id="@+id/lv_activity_dealadress"

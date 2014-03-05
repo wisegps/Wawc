@@ -24,8 +24,7 @@
             android:gravity="center"
             android:text="我的收藏"
             android:textColor="@color/white"
-            android:textSize="@dimen/title"
-            android:textStyle="bold" />
+            android:textSize="@dimen/head"/>
     </RelativeLayout>
     <com.wise.list.XListView 
         android:id="@+id/my_collection_list"

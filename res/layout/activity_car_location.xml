@@ -29,8 +29,7 @@
             android:layout_toRightOf="@+id/iv_activity_car_location_back"
             android:gravity="center"
             android:textColor="@color/white"
-            android:textSize="@dimen/title"
-            android:textStyle="bold" />
+            android:textSize="@dimen/head"/>
 
         <ImageView
             android:id="@+id/iv_activity_car_location_share"

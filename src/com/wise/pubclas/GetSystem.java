@@ -21,8 +21,6 @@ import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.wise.data.TimeData;
 import com.wise.sharesdk.OnekeyShare;
 import com.wise.wawc.R;
-import com.wise.wawc.ShareLocationActivity;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;

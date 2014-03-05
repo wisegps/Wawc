@@ -18,7 +18,7 @@ import android.widget.Scroller;
  * @author honesty
  */
 public class SlidingMenuView extends ViewGroup{
-    private static final String TAG = "SlidingMenuView";
+    //private static final String TAG = "SlidingMenuView";
     private static final int INVALID_SCREEN = -1;
     private static final int SNAP_VELOCITY = 600;
     private int mDefaultScreen = 1;
@@ -158,9 +158,9 @@ public class SlidingMenuView extends ViewGroup{
     public boolean onInterceptTouchEvent(MotionEvent ev) {
     	
         final int action = ev.getAction();
-        Log.d(TAG, "onInterceptTouchEvent = " + action);
+        //Log.d(TAG, "onInterceptTouchEvent = " + action);
         if ((action == MotionEvent.ACTION_MOVE) && (mTouchState != TOUCH_STATE_REST)) {
-            Log.d(TAG, "onInterceptTouchEvent return true");
+            //Log.d(TAG, "onInterceptTouchEvent return true");
             return true;
         }
 
@@ -224,7 +224,7 @@ public class SlidingMenuView extends ViewGroup{
     }
 
     void enableChildrenCache() {
-        Log.d(TAG, "enableChildrenCache");
+        //Log.d(TAG, "enableChildrenCache");
         final int count = getChildCount();
         for (int i = 0; i < count; i++) {
             final View layout = (View) getChildAt(i);
@@ -233,7 +233,7 @@ public class SlidingMenuView extends ViewGroup{
     }
 
     void clearChildrenCache() {
-        Log.d(TAG, "clearChildrenCache");
+        //Log.d(TAG, "clearChildrenCache");
     	 final int count = getChildCount();
          for (int i = 0; i < count; i++) {
              final View layout = (View) getChildAt(i);
@@ -249,7 +249,7 @@ public class SlidingMenuView extends ViewGroup{
         mVelocityTracker.addMovement(ev);
 
         final int action = ev.getAction();
-        Log.d(TAG, "onTouchEvent = " + action);
+        //Log.d(TAG, "onTouchEvent = " + action);
         final float x = ev.getX();
 	        switch (action) {
 	        case MotionEvent.ACTION_DOWN:
@@ -348,7 +348,7 @@ public class SlidingMenuView extends ViewGroup{
     }
 
     protected void snapToDestination() {
-        Log.d(TAG, "snapToDestination");
+        //Log.d(TAG, "snapToDestination");
     	int whichScreen = 0;
     	int count = getChildCount();
     	int start = 0;
@@ -375,7 +375,7 @@ public class SlidingMenuView extends ViewGroup{
     }
 
     public void snapToScreen(int whichScreen) {
-        Log.d(TAG, "snapToScreen");
+        //Log.d(TAG, "snapToScreen");
         enableChildrenCache();
 
         whichScreen = Math.max(0, Math.min(whichScreen, getChildCount() - 1));
@@ -416,7 +416,7 @@ public class SlidingMenuView extends ViewGroup{
 			child.setFocusable(true);
 			child.setClickable(true);
 		}
-		Log.d(TAG, "onFinishInflate");
+		//Log.d(TAG, "onFinishInflate");
 	}
 	public void setOnViewTouchMoveListener(OnViewTouchMoveListener onViewTouchMoveListener){
         this.onViewTouchMoveListener = onViewTouchMoveListener;

@@ -142,7 +142,7 @@ public class CarRemindActivity extends Activity{
         gv_activity_car_remind.setAdapter(carAdapter);
         
         int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Constant.ImageWidth, getResources().getDisplayMetrics());
-		LayoutParams params = new LayoutParams(Variable.carDatas.size() * (px + 10),LayoutParams.WRAP_CONTENT);
+		LayoutParams params = new LayoutParams((Variable.carDatas.size() * (px + 10) + 10),LayoutParams.WRAP_CONTENT);
 		gv_activity_car_remind.setLayoutParams(params);
 		gv_activity_car_remind.setColumnWidth(px);
 		gv_activity_car_remind.setHorizontalSpacing(10);
@@ -198,8 +198,7 @@ public class CarRemindActivity extends Activity{
                 break;
 
             case get_user_date:
-                jsonUserInfo(msg.obj.toString());
-                
+                jsonUserInfo(msg.obj.toString());                
                 break;
             }
         }	    
@@ -302,21 +301,19 @@ public class CarRemindActivity extends Activity{
 	 * 清空文本数据
 	 */
 	private void ShowText(CarData carData){
-	    System.out.println("carData.getAnnual_inspect_date() = " + carData.getAnnual_inspect_date());
-	    System.out.println("carData.getInsurance_date() = " + carData.getInsurance_date());
+        String Annual_inspect_date = String.format(getResources().getString(R.string.inspection_content), carData.getAnnual_inspect_date().substring(0, 10));
+        tv_activity_car_remind_inspection.setText(Annual_inspect_date);
 	    if(GetSystem.isTimeOut(carData.getAnnual_inspect_date())){
-            String Annual_inspect_date = String.format(getResources().getString(R.string.inspection_content), carData.getAnnual_inspect_date());
-            tv_activity_car_remind_inspection.setText(Annual_inspect_date);
             tv_activity_car_remind_inspection.setTextColor(getResources().getColor(R.color.red));
         }else{
-            tv_activity_car_remind_inspection.setText(carData.getAnnual_inspect_date());
+            tv_activity_car_remind_inspection.setTextColor(getResources().getColor(R.color.common_inactive));
         }
+	    String Insurance_date = String.format(getResources().getString(R.string.renewal_content), carData.getInsurance_date().substring(0, 10));
+	    tv_activity_car_remind_remind_renewal.setText(Insurance_date);
         if(GetSystem.isTimeOut(carData.getInsurance_date())){
-            String Insurance_date = String.format(getResources().getString(R.string.renewal_content), carData.getInsurance_date());
-            tv_activity_car_remind_remind_renewal.setText(Insurance_date);
             tv_activity_car_remind_remind_renewal.setTextColor(getResources().getColor(R.color.red));
         }else{
-            tv_activity_car_remind_remind_renewal.setText(carData.getAnnual_inspect_date());
+            tv_activity_car_remind_remind_renewal.setTextColor(getResources().getColor(R.color.common_inactive));
         }
 //        if(GetSystem.isTimeOut(carData.getMaintain_last_date())){
 //            String Maintain_last_date = String.format(getResources().getString(R.string.renewal_content), carData.getInsurance_date());
@@ -338,14 +335,28 @@ public class CarRemindActivity extends Activity{
             if(cursor.moveToFirst()){
                 annual_inspect_date = cursor.getString(cursor.getColumnIndex("annual_inspect_date"));
                 change_date = cursor.getString(cursor.getColumnIndex("change_date"));
-                tv_annual_inspect_date.setText(String.format(getResources().getString(R.string.examined_content),annual_inspect_date));
-                tv_change_date.setText(String.format(getResources().getString(R.string.replacement_content),change_date));
+                userInspectDate(annual_inspect_date);
+                userChangeDate(change_date);
             }                
         }
     }
-	
+	private void userInspectDate(String annual_inspect_date){
+	    tv_annual_inspect_date.setText(String.format(getResources().getString(R.string.examined_content),annual_inspect_date.substring(0, 10)));
+        if(GetSystem.isTimeOut(annual_inspect_date)){
+            tv_annual_inspect_date.setTextColor(getResources().getColor(R.color.red));
+        }else{
+            tv_annual_inspect_date.setTextColor(getResources().getColor(R.color.common_inactive));
+        }
+	}
+	private void userChangeDate(String change_date){
+        tv_change_date.setText(String.format(getResources().getString(R.string.replacement_content),change_date.substring(0, 10)));
+        if(GetSystem.isTimeOut(change_date)){
+            tv_change_date.setTextColor(getResources().getColor(R.color.red));
+        }else{
+            tv_change_date.setTextColor(getResources().getColor(R.color.common_inactive));
+        }
+    }
 	private void jsonUserInfo(String result){
-	    Log.d(TAG, result);
         try {           
             JSONObject jsonObject = new JSONObject(result);
             DBExcute dbExcute = new DBExcute();
@@ -363,13 +374,13 @@ public class CarRemindActivity extends Activity{
                 values.put("Phone", tel);
             }
             if(jsonObject.opt("annual_inspect_date") != null){
-                annual_inspect_date = jsonObject.getString("annual_inspect_date").substring(0, 10);                
-                tv_annual_inspect_date.setText(String.format(getResources().getString(R.string.examined_content),annual_inspect_date));
+                annual_inspect_date = jsonObject.getString("annual_inspect_date").replace("T", " ").substring(0, 19);                
+                userInspectDate(annual_inspect_date);
                 values.put("annual_inspect_date", annual_inspect_date);
             }
             if(jsonObject.opt("change_date") != null){
-                change_date = jsonObject.getString("change_date").substring(0, 10);
-                tv_change_date.setText(String.format(getResources().getString(R.string.replacement_content),change_date));
+                change_date = jsonObject.getString("change_date").replace("T", " ").substring(0, 19);
+                userChangeDate(change_date);
                 values.put("change_date", change_date);
             }
             values.put("cust_id", Variable.cust_id);

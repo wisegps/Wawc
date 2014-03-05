@@ -23,9 +23,8 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:textColor="@color/white"
-            android:textSize="@dimen/title"
-            android:text="位置分享"
-            android:textStyle="bold" />
+            android:textSize="@dimen/head"
+            android:text="位置分享"/>
         <Button 
             android:id="@+id/bt_activity_share"
             android:layout_width="wrap_content"

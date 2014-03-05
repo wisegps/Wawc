@@ -113,10 +113,6 @@ public class Constant {
 	 */
 	public static final String DefaultVehicleID = "DefaultVehicleID";
 	/**
-	 * QQ用户登录之后的头像
-	 */
-	public static Bitmap UserIcon = null;
-	/**
 	 * 基础表
 	 */
 	public static String TB_Base = "TB_Base";
@@ -185,6 +181,10 @@ public class Constant {
 	 * 注销广播
 	 */
     public static String A_LoginOut = "com.wise.wawc.login_out";
+    /**
+     * 提交订单广播
+     */
+    public static String A_Order = "com.wise.wawc.order";
 	
 	public static boolean isHideFooter = false;
 	/**
