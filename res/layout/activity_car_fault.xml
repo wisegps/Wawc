@@ -24,8 +24,7 @@
             android:gravity="center"
             android:text="爱车故障"
             android:textColor="@color/white"
-            android:textSize="@dimen/title"
-            android:textStyle="bold" />
+            android:textSize="@dimen/head"/>
 		<ImageView
             android:id="@+id/iv_activity_car_fault_home"
             android:layout_width="60dp"

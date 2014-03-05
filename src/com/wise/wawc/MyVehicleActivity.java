@@ -524,6 +524,7 @@ public class MyVehicleActivity extends Activity implements  AbstractSpinerAdapte
 		    myVehicleDevice.setText(deviceName);
 		    List<NameValuePair> parms = new ArrayList<NameValuePair>();
 			parms.add(new BasicNameValuePair("device_id", deviceId));
+			System.out.println("deviceId = " + deviceId);
 			new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).obj_id + "/device?auth_code=" + Variable.auth_code, parms, bindDeviceId)).start();
 		}
 	}

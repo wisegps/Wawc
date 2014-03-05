@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Scroller;
 
 public class HScrollLayout extends ViewGroup {
-    private static final String TAG = "HScrollLayout";
+    //private static final String TAG = "HScrollLayout";
     private VelocityTracker velocityTracker;// 判断手势
     private static final int SNAP_VELOCITY = 600; // 滑动速度
     private int mCurScreen = 0; // 当前所在屏幕
@@ -81,7 +81,7 @@ public class HScrollLayout extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
-        Log.d(TAG, "onInterceptTouchEvent = " + ev.getAction());
+        //Log.d(TAG, "onInterceptTouchEvent = " + ev.getAction());
         boolean xMoved = false; 
         final float x = ev.getX();
         switch (ev.getAction()) {
@@ -98,7 +98,7 @@ public class HScrollLayout extends ViewGroup {
             if ((mLastMotionX - x) <= 0 && getScrollX() <= 0){
                 
             }else{
-                Log.d(TAG, "父控件停止感应");
+                //Log.d(TAG, "父控件停止感应");
                 getParent().requestDisallowInterceptTouchEvent(true);
             }
             break;
@@ -108,13 +108,13 @@ public class HScrollLayout extends ViewGroup {
         }
         // true滑动容器里感应不到点击事件，false，滑动容器里控件感应到点击事件
         //return mTouchState != TOUCH_STATE_REST;
-        Log.d(TAG, "xMoved = " + xMoved);
+        //Log.d(TAG, "xMoved = " + xMoved);
         return xMoved;
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        Log.d(TAG, "onTouchEvent = " + event.getAction());
+        //Log.d(TAG, "onTouchEvent = " + event.getAction());
         float x = event.getX();
         switch (event.getAction()) {
         case MotionEvent.ACTION_DOWN:
@@ -134,9 +134,9 @@ public class HScrollLayout extends ViewGroup {
                 //System.out.println("deltaX = " + deltaX);
                 System.out.println("getScrollX() = " + getScrollX());
                 if (getScrollX() <= 0) {
-                    Log.d(TAG, "划不动");
+                    //Log.d(TAG, "划不动");
                 } else {
-                    Log.d(TAG, "不应该啊");
+                    //Log.d(TAG, "不应该啊");
                     getParent().requestDisallowInterceptTouchEvent(true);
                     scrollBy(deltaX, 0);// 画面跟随指尖
                     if (velocityTracker == null) {
@@ -145,7 +145,7 @@ public class HScrollLayout extends ViewGroup {
                     velocityTracker.addMovement(event);
                 }
             } else {// 像左滑
-                Log.d(TAG, "父控件停止感应");
+                //Log.d(TAG, "父控件停止感应");
                 getParent().requestDisallowInterceptTouchEvent(true);
                 scrollBy(deltaX, 0);// 画面跟随指尖
                 if (velocityTracker == null) {

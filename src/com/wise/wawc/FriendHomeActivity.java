@@ -97,9 +97,10 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 		dBExcute = new DBExcute();
 		cust_id = lastPageDatas.getStringExtra("cust_id");
 		myHandler = new MyHandler();
-		Message msg = new Message();
-		msg.what = initDatas;
-		myHandler.sendMessage(msg);
+		friendHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(Constant.UserIcon));
+        friendName.setText(Variable.cust_name);
+        //显示用户数据    查询本地数据库时候存在数据
+        getArticleDatas(0);
 		
 		
 		friendArticleList.setXListViewListener(this);
@@ -153,10 +154,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 			super.handleMessage(msg);
 			switch(msg.what){
 			case initDatas:   // 设置用户信息
-				friendHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(Constant.UserIcon));
-				friendName.setText(Variable.cust_name);
-				//显示用户数据    查询本地数据库时候存在数据
-				getArticleDatas(0);
+				
 				break;
 			case commentArticle:
 				String commentResult = msg.obj.toString();

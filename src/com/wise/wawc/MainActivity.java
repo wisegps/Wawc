@@ -265,25 +265,25 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                     }
                 }
                 break;
-            case R.id.rl_activity_main_oil:   //加油
-            	voiceSerachResult("加油站");
-            	Log.e("加油站","加油站");
-            	break;
-            case R.id.rl_activity_main_maintain:   //维保
-            	voiceSerachResult("车辆维修");
-            	break;
-            case R.id.rl_activity_main_wash:    //洗车
-            	voiceSerachResult("洗车店");
-            	break;
-            case R.id.rl_activity_main_help:   //救援
-            	voiceSerachResult("车辆救援");
-            	break;
-            case R.id.rl_activity_main_safety:   //保险
-            	voiceSerachResult("车辆保险");
-            	break;
-            case R.id.rl_activity_main_park:    //停车
-            	voiceSerachResult("停车场");
-            	break;
+//            case R.id.rl_activity_main_oil:   //加油
+//            	voiceSerachResult("加油站");
+//            	Log.e("加油站","加油站");
+//            	break;
+//            case R.id.rl_activity_main_maintain:   //维保
+//            	voiceSerachResult("车辆维修");
+//            	break;
+//            case R.id.rl_activity_main_wash:    //洗车
+//            	voiceSerachResult("洗车店");
+//            	break;
+//            case R.id.rl_activity_main_help:   //救援
+//            	voiceSerachResult("车辆救援");
+//            	break;
+//            case R.id.rl_activity_main_safety:   //保险
+//            	voiceSerachResult("车辆保险");
+//            	break;
+//            case R.id.rl_activity_main_park:    //停车
+//            	voiceSerachResult("停车场");
+//            	break;
             }
         }
     };
@@ -293,7 +293,11 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-            case Get_Pic:
+            case Get_Pic:                
+                Constant.UserIcon = bimage;
+                if(bimage != null){
+                    GetSystem.saveImageSD(bimage, Constant.userIconPath, Constant.UserImage);
+                }
                 iv_activity_main_logo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
                 break;
             case Login:
@@ -331,6 +335,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             iv_activity_main_login_qq.setVisibility(View.GONE);
             iv_activity_main_login_sina.setImageResource(R.drawable.side_icon_qq_press);
         }
+        iv_activity_main_arrow.setVisibility(View.VISIBLE);
         Variable.cust_name = platformWhat.getDb().getUserName();
         tv_activity_main_name.setText(platformWhat.getDb().getUserName());
         //绑定
@@ -351,7 +356,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
      * @param result
      */
     private void jsonLogin(String result){
-    	Log.e("用户登录返回数据",result);
         try {
             JSONObject jsonObject = new JSONObject(result);
             String status_code = jsonObject.getString("status_code");
@@ -475,11 +479,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         @Override
         public void run() {
             super.run();
-            bimage = GetSystem.getBitmapFromURL(url);  
-            Constant.UserIcon = bimage;
-            if(bimage != null){
-                GetSystem.saveImageSD(bimage, Constant.userIconPath, Constant.UserImage);
-            }
+            bimage = GetSystem.getBitmapFromURL(url);
             Message message = new Message();
             message.what = Get_Pic;
             handler.sendMessage(message);
@@ -778,12 +778,12 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                 //TODO 注销
                 isLogin = false;
                 System.out.println("没有登录");
+                iv_activity_main_arrow.setVisibility(View.INVISIBLE);
                 iv_activity_main_logo.setImageResource(R.drawable.side_icon_avatar);
                 iv_activity_main_login_sina.setVisibility(View.VISIBLE);
                 iv_activity_main_login_sina.setImageResource(R.drawable.side_icon_sina_press);
                 iv_activity_main_login_qq.setVisibility(View.VISIBLE);
                 iv_activity_main_login_qq.setImageResource(R.drawable.side_icon_qq_press);
-                iv_activity_main_arrow.setVisibility(View.GONE);
                 tv_activity_main_name.setText("未登录");
             }
         }

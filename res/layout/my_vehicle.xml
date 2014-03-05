@@ -63,6 +63,7 @@
 	                   android:layout_width="fill_parent"
 	                   android:layout_height="wrap_content"
 	                   android:horizontalSpacing="10dp"
+	                   android:listSelector="@drawable/bg_item_selector"
 	                   android:numColumns="auto_fit"
 	                   android:stretchMode="columnWidth" />
 	           </LinearLayout>

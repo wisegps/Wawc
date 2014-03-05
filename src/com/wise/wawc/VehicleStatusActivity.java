@@ -92,6 +92,8 @@ public class VehicleStatusActivity extends Activity {
         tv_month_fuel.setOnClickListener(onClickListener);
         tv_fault = (TextView) findViewById(R.id.tv_fault);
         tv_fault.setOnClickListener(onClickListener);
+        TextView tv_fault_title = (TextView) findViewById(R.id.tv_fault_title);
+        tv_fault_title.setOnClickListener(onClickListener);
         tv_alarm = (TextView) findViewById(R.id.tv_alarm);
         tv_alarm.setOnClickListener(onClickListener);
 
@@ -120,7 +122,7 @@ public class VehicleStatusActivity extends Activity {
         Variable.carDatas.get(index_car).setCheck(true);
         carAdapter.notifyDataSetChanged();
         getCarLocationDB();
-        //getDeviceStatus();
+        getDeviceStatus();
     }
 
     OnClickListener onClickListener = new OnClickListener() {
@@ -139,9 +141,12 @@ public class VehicleStatusActivity extends Activity {
             case R.id.tv_month_fuel:
                 hScrollLayout.snapToScreen(2);
                 break;
-            case R.id.tv_fault:
+            case R.id.tv_fault_title:
                 startActivity(new Intent(VehicleStatusActivity.this,CarFaultActivity.class));
              break;
+            case R.id.tv_fault:
+                startActivity(new Intent(VehicleStatusActivity.this,CarFaultActivity.class));
+                break;
             case R.id.ll_activity_vehicle_status_oil:
                 Intent intent = new Intent(VehicleStatusActivity.this, TravelActivity.class);
                 intent.putExtra("Date", timeData.getDate() +"-" + Edistance.get(index).date);

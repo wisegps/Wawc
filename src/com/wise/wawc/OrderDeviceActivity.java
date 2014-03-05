@@ -41,7 +41,6 @@ public class OrderDeviceActivity extends Activity{
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.bt_activity_order_device_submit:
-			    //submitOrder();
 				OrderDeviceActivity.this.startActivity(new Intent(OrderDeviceActivity.this, OrderConfirmActivity.class));
 				break;
 			case R.id.iv_activity_order_device_back:

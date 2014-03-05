@@ -26,15 +26,6 @@
             android:textColor="@color/white"
             android:textSize="@dimen/head"
             android:textStyle="bold" />
-		<ImageView
-            android:id="@+id/iv_activity_devices_home"
-            android:layout_width="60dp"
-	        android:layout_height="36dp"
-	        android:visibility="gone"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_launcher"/>
 	</RelativeLayout>
 	<HorizontalScrollView
 	    android:layout_marginBottom="@dimen/double_margins"
@@ -49,6 +40,7 @@
 			    android:id="@+id/gv_activity_devices"
 			    android:layout_width="fill_parent"
 			    android:layout_height="wrap_content"
+			    android:listSelector="@drawable/bg_item_selector"
 			    android:numColumns="auto_fit"
 			    android:stretchMode="columnWidth"
 			    android:horizontalSpacing="10dp"/>

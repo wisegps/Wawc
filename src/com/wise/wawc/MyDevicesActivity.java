@@ -57,8 +57,6 @@ public class MyDevicesActivity extends Activity{
 		LinearLayout ll_content = (LinearLayout)findViewById(R.id.ll_content);
 		ImageView iv_activity_devices_menu = (ImageView)findViewById(R.id.iv_activity_devices_menu);
 		iv_activity_devices_menu.setOnClickListener(onClickListener);
-		ImageView iv_activity_devices_home = (ImageView)findViewById(R.id.iv_activity_devices_home);
-		iv_activity_devices_home.setOnClickListener(onClickListener);
 		TextView tv_activity_devices_renewals = (TextView)findViewById(R.id.tv_activity_devices_renewals);
 		tv_activity_devices_renewals.setOnClickListener(onClickListener);
 		gv_activity_devices = (GridView)findViewById(R.id.gv_activity_devices);
@@ -76,8 +74,10 @@ public class MyDevicesActivity extends Activity{
 		if(!isJump){//绑定终端
 		    System.out.println("隐藏");
 		    ll_content.setVisibility(View.GONE);
+		    iv_activity_devices_menu.setImageResource(R.drawable.nav_back);
 		}else{
 		    ll_content.setVisibility(View.VISIBLE);
+		    iv_activity_devices_menu.setImageResource(R.drawable.side_left);
 		}
 		GetDevicesDB();
         GetDevicesData();
@@ -87,10 +87,11 @@ public class MyDevicesActivity extends Activity{
 		public void onClick(View v) {
 			switch (v.getId()) {
 			case R.id.iv_activity_devices_menu:
-				ActivityFactory.A.LeftMenu();
-				break;
-			case R.id.iv_activity_devices_home:
-				ActivityFactory.A.ToHome();
+			    if(!isJump){
+			        finish();
+			    }else{
+	                ActivityFactory.A.LeftMenu();
+			    }
 				break;
 			case R.id.tv_activity_devices_renewals:
 				MyDevicesActivity.this.startActivity(new Intent(MyDevicesActivity.this, OrderServiceActivity.class));
@@ -130,7 +131,7 @@ public class MyDevicesActivity extends Activity{
 	    devicesAdapter = new DevicesAdapter();
 	    gv_activity_devices.setAdapter(devicesAdapter);
         int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 120, getResources().getDisplayMetrics());
-        LayoutParams params = new LayoutParams(devicesDatas.size() * (px + 10),LayoutParams.WRAP_CONTENT);
+        LayoutParams params = new LayoutParams((devicesDatas.size() * (px + 10) + 10),LayoutParams.WRAP_CONTENT);
         
         gv_activity_devices.setLayoutParams(params);
         gv_activity_devices.setColumnWidth(px);
@@ -189,7 +190,6 @@ public class MyDevicesActivity extends Activity{
         cursor.close();
         db.close();
         showGridView();
-        Log.d(TAG, "GetDevicesDB");
     }
 	public void GetDevicesData(){
 		//TODO 我的终端
@@ -226,7 +226,6 @@ public class MyDevicesActivity extends Activity{
 	 * @param result
 	 */
 	private void jsonDevice(String result){
-	    Log.d(TAG, result);
 	    try {
 	        devicesDatas.clear();
             JSONArray jsonArray = new JSONArray(result);
@@ -334,7 +333,7 @@ public class MyDevicesActivity extends Activity{
 	    System.out.println("isJump = " + isJump);
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
 			if(!isJump){
-			    backRequest(index);
+		        finish();
 			}
 		}
 		return super.onKeyDown(keyCode, event);
