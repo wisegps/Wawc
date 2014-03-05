@@ -29,6 +29,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -275,10 +277,11 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		public void handleMessage(Message msg) {
 			switch(msg.what){
 			case setUserIcon:
-				if(Constant.UserIcon != null){
-					qqUserHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(Constant.UserIcon));
+			    Bitmap bimage = BitmapFactory.decodeFile(Constant.userIconPath + Constant.UserImage);
+				if(bimage != null){
+					qqUserHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
 				}else{
-					qqUserHead.setBackgroundResource(R.drawable.ic_launcher);
+					qqUserHead.setBackgroundResource(R.drawable.body_nothing_icon);
 				}
 				if(!"".equals(Variable.cust_name)){
 					qqUserName.setText(Variable.cust_name);

@@ -293,8 +293,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-            case Get_Pic:                
-                Constant.UserIcon = bimage;
+            case Get_Pic:
                 if(bimage != null){
                     GetSystem.saveImageSD(bimage, Constant.userIconPath, Constant.UserImage);
                 }
@@ -418,7 +417,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     private void platfromIsLogin(Platform platform){
         System.out.println(Constant.userIconPath + Constant.UserImage);
         bimage = BitmapFactory.decodeFile(Constant.userIconPath + Constant.UserImage);
-        Constant.UserIcon = bimage;
         Constant.UserIconUrl = platform.getDb().getUserIcon();
         if(bimage != null){            
             iv_activity_main_logo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));

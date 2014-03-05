@@ -97,7 +97,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 		dBExcute = new DBExcute();
 		cust_id = lastPageDatas.getStringExtra("cust_id");
 		myHandler = new MyHandler();
-		friendHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(Constant.UserIcon));
+		//friendHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(Constant.UserIcon));
         friendName.setText(Variable.cust_name);
         //显示用户数据    查询本地数据库时候存在数据
         getArticleDatas(0);
