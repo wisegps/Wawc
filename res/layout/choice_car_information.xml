@@ -7,7 +7,7 @@
 
     <!-- 头部 -->
      <RelativeLayout
-         android:id="@+id/new_car_choice_information_top"
+        android:id="@+id/new_car_choice_information_top"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight"
         android:background="@color/blue"
@@ -15,7 +15,7 @@
         >
 
         <ImageView
-            android:id="@+id/choice_vechile_back"
+            android:id="@+id/choice_vechile_information_back"
             android:layout_width="@dimen/title_image"
             android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
@@ -23,6 +23,7 @@
             android:background="@drawable/side_back" />
 
         <TextView
+            android:id="@+id/choice_vechile_information_title"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
@@ -40,7 +41,9 @@
             android:layout_alignParentRight="true"
             />
     </RelativeLayout>
+    <!-- 车牌 -->
     <RelativeLayout 
+        android:id="@+id/choice_car_brank"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/new_car_choice_information_top"
@@ -96,4 +99,31 @@
             />
     </RelativeLayout>
     </RelativeLayout>
+    
+    
+    <!-- 车型 -->
+    <ListView 
+        android:id="@+id/choice_car_modles"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:dividerHeight="0.5dip"
+        android:divider="@color/gray"
+        android:layout_below="@id/new_car_choice_information_top"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        ></ListView>
+    
+    <!-- 车款 -->
+    <ListView 
+        android:id="@+id/choice_car_type"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:dividerHeight="0.5dip"
+        android:divider="@color/gray"
+        android:layout_below="@id/new_car_choice_information_top"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        ></ListView>
 </RelativeLayout>

@@ -424,6 +424,8 @@ public class HomeActivity extends Activity{
                 String vio_location = cursor.getString(cursor.getColumnIndex("vio_location"));
                 String device_id = cursor.getString(cursor.getColumnIndex("device_id"));
                 String serial = cursor.getString(cursor.getColumnIndex("serial"));
+                String maintain_last_date = cursor.getString(cursor.getColumnIndex("maintain_last_date"));
+                String city_code = cursor.getString(cursor.getColumnIndex("vio_location"));
                 
                 CarData carData = new CarData();
                 carData.setCheck(false);   
@@ -441,6 +443,7 @@ public class HomeActivity extends Activity{
                 carData.setMaintain_company(maintain_company);
                 carData.setMaintain_last_mileage(maintain_last_mileage);
                 carData.setMaintain_next_mileage(maintain_next_mileage);
+                carData.setMaintain_last_date(maintain_last_date);
                 carData.setBuy_date(buy_date);
                 carData.setRegNo(reg_no);
                 carData.setVio_location(vio_location);
@@ -448,7 +451,7 @@ public class HomeActivity extends Activity{
                 carData.setLat(String.valueOf(Variable.Lat));
                 carData.setLon(String.valueOf(Variable.Lon));
                 carData.setDevice_id(device_id);
-                carData.setSerial(serial);
+                carData.setCity_code(city_code);
                 String imagePath = Constant.VehicleLogoPath + car_brand + ".png";//SD卡路径
                 if(new File(imagePath).isFile()){//存在
                     carData.setLogoPath(imagePath);

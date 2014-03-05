@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#FFFFFF"
+    android:background="@drawable/side_seting_item"
     android:orientation="vertical"
     >
     <!-- 显示拼音索引 -->
@@ -34,7 +34,7 @@
         android:id="@+id/list_brank"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#FFFFFF"
+        android:background="@drawable/side_seting_item"
         android:textColor="#000000"
         android:layout_margin="@dimen/margins"
         android:text="A"/>

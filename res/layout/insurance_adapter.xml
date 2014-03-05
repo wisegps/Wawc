@@ -10,5 +10,6 @@
     android:padding="@dimen/margins"
     android:textSize="@dimen/content"
     android:textColor="@color/black"
+    android:background="@drawable/side_seting_item"
     />  
 </LinearLayout>

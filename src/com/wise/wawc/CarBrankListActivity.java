@@ -56,6 +56,8 @@ import com.wise.wawc.R;
  * @author 王庆文
  */
 public class CarBrankListActivity extends Activity implements IXListViewListener{
+	
+	
 	private ClearEditText mClearEditText;   //自定义搜索栏
 	private XListView vehicleBrankList = null;   //显示车的品牌
 	private TextView letterIndex = null;    //字母索引选中提示框
