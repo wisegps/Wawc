@@ -89,6 +89,8 @@
         <activity android:name=".WapZfbActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".SmsActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".IllegalCitiyActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".ChoiceCarInformationActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        
         <activity
             android:name="cn.sharesdk.framework.ShareSDKUIShell"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"

@@ -46,6 +46,7 @@ public class CarData {
 	private String logoPath;
 	private String device_id;
 	private String serial;
+	private String city_code;
 	public boolean isCheck;  //是否选中
 	public int Type;		//布局控制
 	public String Adress;  //车辆位置
@@ -204,7 +205,13 @@ public class CarData {
     public void setSerial(String serial) {
         this.serial = serial;
     }
-    public String toString() {
+    public String getCity_code() {
+		return city_code;
+	}
+	public void setCity_code(String city_code) {
+		this.city_code = city_code;
+	}
+	public String toString() {
         return "CarData [obj_id=" + obj_id + ", car_brand=" + car_brand
                 + ", car_series=" + car_series + ", car_type=" + car_type
                 + ", engine_no=" + engine_no + ", frame_no=" + frame_no
