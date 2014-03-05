@@ -232,12 +232,13 @@ public class HomeActivity extends Activity{
             ll_image.addView(imageView);
         }
         changeImage(DefaultVehicleID);
-
-        iv_car_traffic.setVisibility(View.GONE);
-        iv_car_status.setVisibility(View.GONE);
-        changeImage(DefaultVehicleID);
-        saveVehicleID(DefaultVehicleID);
-        notiRemind(DefaultVehicleID);
+        if(carDatas.size() != 0){
+            iv_car_traffic.setVisibility(View.GONE);
+            iv_car_status.setVisibility(View.GONE);
+            changeImage(DefaultVehicleID);
+            saveVehicleID(DefaultVehicleID);
+            notiRemind(DefaultVehicleID);
+        }        
     }
 
     OnClickListener onClickListener = new OnClickListener() {
