@@ -158,6 +158,9 @@
     <string name="please_input_vehilce_type">请选择车款</string>
     <string name="please_input_illegal_city">请选择违章城市</string>
     <string name="please_input_insurance_company">请选择保险公司</string>
+    <string name="please_choice_city">请选择城市</string>
+    <string name="please_choice_vehicle_brank">请选择车辆品牌</string>
+    <string name="please_input_insurance_time">请选择保险时间</string>
     
     <string name="please_input_insurance_over_time">请选择保险到期时间</string>
     <string name="please_input_4s">请选择4s保养店</string>

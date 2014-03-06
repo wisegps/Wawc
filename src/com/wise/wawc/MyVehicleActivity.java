@@ -105,7 +105,6 @@ public class MyVehicleActivity extends Activity{
 	private EditText etDialogMileage = null;   //输入里程
 	private TableRow choiceMaintian = null;
 	
-	private TextView tvMileage = null;  //显示里程
 	private TextView myVehicleBrank = null;
 	private TextView tvMaintain = null;
 	private EditText vehicleNumber = null;
@@ -151,7 +150,6 @@ public class MyVehicleActivity extends Activity{
 	private String carSeriesId = "";
 	private static String carSeriesTitle = "carSeries";
 	private static String carTypeTitle = "carType";
-	private String brank = "";
 	private String carBrank = "";
 	private String carSeries = "";
 	private String carType = "";
@@ -195,7 +193,6 @@ public class MyVehicleActivity extends Activity{
 		selectCity = (TableRow) findViewById(R.id.select_city_layout);
 		insuranceCompany = (TableRow)findViewById(R.id.insurance_company_layout);
 		showInsuranceCompany = (TextView) findViewById(R.id.show_insurance_company);
-		tvMileage = (TextView) findViewById(R.id.my_vehicle_mileage);
 		myVehicleBrank = (TextView) findViewById(R.id.tv_my_vehicle_beank);
 		choiceMaintian = (TableRow) findViewById(R.id.choice_maintain_image_layout);
 		tvMaintain = (TextView) findViewById(R.id.show_maintain);
@@ -344,10 +341,8 @@ public class MyVehicleActivity extends Activity{
 				}
 				break;
 			case R.id.iv_my_vehicle_brank:    //选择汽车品牌
-				Variable.carDatas.remove(newCarImage);
 				Intent intent = new Intent(MyVehicleActivity.this,ChoiceCarInformationActivity.class);
 				intent.putExtra("code", resultCodeBrank);
-				intent.putExtra("carDataIndex", chickIndex);
 				startActivityForResult(intent, resultCodeBrank);
 				break;
 			case R.id.vehicle_device_layout:    //我的终端
@@ -366,24 +361,23 @@ public class MyVehicleActivity extends Activity{
 				intent1.putExtra("code", resultCodeInsurance);
 				startActivityForResult(intent1, resultCodeInsurance);
 				break;
-			case R.id.dialog_mileage_sure:  //确定同步里程
-				String mileageValue = etDialogMileage.getText().toString();
-				if("".equals(mileageValue.trim())){
-					showToast("请输入正确的里程");
-				}else{
-					tvMileage.setText(mileageValue.trim() + "Km");
-					dlg.cancel();
-				}
-				break;
 			case R.id.dialog_mileage_cancle:  //取消同步里程
 				dlg.cancel();
 				break;
 				
 			case R.id.choice_maintain_image_layout:  //选择保养店
-				Intent intent3 = new Intent(MyVehicleActivity.this,MaintainShopActivity.class);
-				intent3.putExtra("code", resultCodeMaintain);
-				intent3.putExtra("brank", brank);
-				startActivityForResult(intent3, resultCodeMaintain);
+				SharedPreferences shareFile = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+				if("".equals(shareFile.getString(Constant.LocationCity, ""))){
+					Toast.makeText(getApplicationContext(), getResources().getString(R.string.please_choice_city), 0).show();
+				}else if("".equals(carBrank)){
+					Toast.makeText(getApplicationContext(), getResources().getString(R.string.please_choice_vehicle_brank), 0).show();
+				}else{
+					Intent intent3 = new Intent(MyVehicleActivity.this,MaintainShopActivity.class);
+					intent3.putExtra("code", resultCodeMaintain);
+					intent3.putExtra("brank", carBrank);
+					intent3.putExtra("city", shareFile.getString(Constant.LocationCity, ""));
+					startActivityForResult(intent3, resultCodeMaintain);
+				}
 				break;
 			case R.id.new_vehilce_tv:
 				startActivity(new Intent(MyVehicleActivity.this,NewVehicleActivity.class));
@@ -416,8 +410,11 @@ public class MyVehicleActivity extends Activity{
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == this.resultCodeInsurance){
 			//设置选择的保险公司
-			String insurance = (String) data.getSerializableExtra("ClickItem");
+			String insurance = (String) data.getSerializableExtra("insurance_name");
+			String insurance_phone = (String) data.getSerializableExtra("insurance_phone");
 			showInsuranceCompany.setText(insurance);
+			//更改静态类
+			Variable.carDatas.get(chickIndex).setInsurance_company(insurance);
 		}
 		//选择品牌   
 		if(resultCode == this.resultCodeBrank){
@@ -437,10 +434,14 @@ public class MyVehicleActivity extends Activity{
 		}
 		//选择保养店
 		if(resultCode == this.resultCodeMaintain){
-			String maintain = (String) data.getSerializableExtra("maintain");
-			tvMaintain.setText(maintain);
+			String maintainName = (String) data.getSerializableExtra("maintain_name");
+			String maintainTel = (String) data.getSerializableExtra("maintain_phone");
+			tvMaintain.setText(maintainName);
+			//更改静态类
+			Variable.carDatas.get(chickIndex).setMaintain_company(maintainName);
 		}
 		if(resultCode == this.getCityViolateRegulationsCode){
+			
 			illegalCity = (IllegalCity) data.getSerializableExtra("IllegalCity");
 			if(illegalCity != null){
 				Log.e("illegalCity.getEngine()",illegalCity.getEngine());
@@ -553,6 +554,7 @@ public class MyVehicleActivity extends Activity{
 				tvCarSeries.setText(carData.getCar_series());
 				tvCarType.setText(carData.getCar_type());
 				myVehicleBrank.setText(carData.getCar_brand());
+				carBrank = carData.getCar_brand();  //保存默认品牌  用户获取4s店数据
 				engineNum.setText(carData.getEngine_no());
 				Log.e("显示数据时",carData.getObj_id()+"");
 				frameNum.setText(carData.getFrame_no());
@@ -687,7 +689,7 @@ public class MyVehicleActivity extends Activity{
 			}
 		}
 	}
-	public Bitmap logoImageIsExist(final String imagePath,final String name){
+	public Bitmap logoImageIsExist1(final String imagePath,final String name){
 		File filePath = new File(imagePath);
 		File imageFile = new File(imagePath + name);
 		if(!filePath.exists()){
@@ -704,7 +706,7 @@ public class MyVehicleActivity extends Activity{
 					imageBitmap = GetSystem.getBitmapFromURL(imageUrl);
 		              //存储到SD卡
 		              if(imageBitmap != null){
-		            	  createImage(imagePath + brank + ".jpg",imageBitmap);
+		            	  createImage(imagePath + carBrank + ".jpg",imageBitmap);
 		            	  Message msg = new Message();
 		            	  msg.what = setCarLogo;
 		            	  myHandler.sendMessage(msg);
