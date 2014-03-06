@@ -693,4 +693,9 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
             }  
         }
 	}
+
+	//校验输入的内容
+	public boolean checkCommitData(){
+		return false;
+	}
 }
