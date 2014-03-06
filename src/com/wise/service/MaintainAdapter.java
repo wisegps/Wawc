@@ -33,9 +33,12 @@ public class MaintainAdapter extends BaseAdapter{
 		return position;
 	}
 	public View getView(int position, View convertView, ViewGroup parent) {
-		convertView = inflater.inflate(R.layout.maintain_item, null);
-		TextView maintainName = (TextView) convertView.findViewById(R.id.vehicle_maintain_name);
+		convertView = inflater.inflate(R.layout.item_insurance, null);
+		TextView maintainName = (TextView) convertView.findViewById(R.id.tv_name);
+		TextView maintainTel = (TextView) convertView.findViewById(R.id.tv_phone);
+		ImageView callPhone = (ImageView) convertView.findViewById(R.id.iv_phone);
 		maintainName.setText(maintainList.get(position)[0]);
+		maintainTel.setText(maintainList.get(position)[1]);
 		return convertView;
 	}
 }

@@ -563,7 +563,7 @@ public class MyVehicleActivity extends Activity{
 				Log.e("显示数据时",carData.getObj_id()+"");
 				frameNum.setText(carData.getFrame_no());
 				showInsuranceCompany.setText(carData.getInsurance_company());
-				ivInsuranceDate.setText(carData.getInsurance_date());
+				ivInsuranceDate.setText(carData.getInsurance_date().substring(0, 11));
 				tvMaintain.setText(carData.getMaintain_company());
 				lastMaintain.setText(carData.getMaintain_last_mileage());
 				buyTime.setText(carData.getBuy_date());
