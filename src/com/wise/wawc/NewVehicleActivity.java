@@ -205,7 +205,10 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 				NewVehicleActivity.this.finish();
 				break;
 			case R.id.new_vechile_commit_tv:
-				getVehicleData();
+				//  TODO
+				if(getVehicleData()){
+					addCar();
+				}
 				break;
 			case R.id.new_vehicle_brank_tr:   //选择车辆品牌
 				Intent intent = new Intent(NewVehicleActivity.this,ChoiceCarInformationActivity.class);
@@ -560,49 +563,87 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	}
 	
 	//获取用户输入的数据
-	private void getVehicleData() {
+	private boolean getVehicleData() {
 		if("".equals(carNumber.getText().toString().trim())){
 			carNumber.setError("车牌号不能为空");
-			return;
+			return false;
 		}
-		if("".equals(engineNumber.getText().toString().trim())){
-			engineNumber.setError("引擎号不能为空");
-			return;
+		if("".equals(vehicleBrank.getText().toString().trim())){
+			vehicleBrank.setHintTextColor(Color.RED);
+			return false;
 		}
-		if("".equals(CJNumber.getText().toString().trim())){
-			CJNumber.setError("车架号不能为空");
-			return;
+		if(engine == 1){
+ 			if(engineNo == 0){
+ 				if(engineNumber.getText().toString().trim().length() == engineNo){
+ 					engineNumber.setError("引擎号不合法");
+ 					return false;
+ 				}
+ 			}else if(engineNumber.getText().toString().trim().length() != engineNo){
+ 				engineNumber.setError("引擎号不合法");
+					return false;
+				}
+ 		}
+ 		if(car == 1){
+ 			if(carNo == 0){
+ 				if(CJNumber.getText().toString().trim().length() == carNo){
+ 					CJNumber.setError("车架号不合法");
+ 	 				return false;
+ 	 			}
+ 			}else if(CJNumber.getText().toString().trim().length() != carNo){
+ 				CJNumber.setError("车架号不合法");
+ 				return false;
+ 			}
+ 		}
+ 		if(register == 1){
+ 			if(register == 0){
+ 				if(carRegNumber.getText().toString().trim().length() == carNo){
+ 					carRegNumber.setError("登记证号不合法");
+ 	 				return false;
+ 	 			}
+ 			}else if(carRegNumber.getText().toString().trim().length() != carNo){
+ 				carRegNumber.setError("登记证号不合法");
+ 				return false;
+ 			}
+ 		}
+		
+		if("".equals(showInsurance.getText().toString().trim())){
+			showInsurance.setHintTextColor(Color.RED);
+			return false;
+		}
+		if("".equals(insuranceTime.getText().toString().trim())){
+			insuranceTime.setHintTextColor(Color.RED);
+			return false;
+		}
+		if("".equals(showMaintain.getText().toString().trim())){
+			showMaintain.setHintTextColor(Color.RED);
+			return false;
+		}
+		if("".equals(lastMileage.getText().toString().trim())){
+			lastMileage.setHintTextColor(Color.RED);
+			return false;
+		}
+		if("".equals(lastMaintainTime.getText().toString().trim())){
+			lastMaintainTime.setHintTextColor(Color.RED);
+			return false;
+		}
+		if("".equals(buyTime.getText().toString().trim())){
+			buyTime.setHintTextColor(Color.RED);
+			return false;
 		}
 		if("".equals(lastMileage.getText().toString().trim())){
 			lastMileage.setError("最后保养里程不能为空");
-			return;
+			return false;
 		}
 		if("".equals(buyTime.getText().toString().trim())){
 			buyTime.setError("购车时间不能为空");
-			return;
+			return false;
 		}
 		
 		if("".equals(lastMaintainTime.getText().toString().trim())){
 			lastMaintainTime.setError("最后保养时间不能为空");
-			return;
+			return false;
 		}
-//		if("".equals(nextMaintainMileage.getText().toString().trim())){
-//			nextMaintainMileage.setError("下次保养不能为空");
-//			return;
-//		}
-//		if("".equals(annualSurveyTime.getText().toString().trim())){
-//			annualSurveyTime.setError("年检时间不能为空");
-//			return;
-//		}
-//		if("".equals(annualSurveyTime.getText().toString().trim())){
-//			annualSurveyTime.setError("年检时间不能为空");
-//			return;
-//		}
-		if("".equals(insuranceTime.getText().toString().trim())){
-			insuranceTime.setError("保险到期时间不能为空");
-			return;
-		}
-		addCar();
+		return true;
 	}
 	
 	
@@ -692,10 +733,5 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
                 e.printStackTrace();  
             }  
         }
-	}
-
-	//校验输入的内容
-	public boolean checkCommitData(){
-		return false;
 	}
 }
