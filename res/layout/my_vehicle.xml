@@ -20,7 +20,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margins"
-            android:background="@drawable/side_left" />
+            android:src="@drawable/side_left" />
 
         <TextView
             android:layout_width="fill_parent"

@@ -2,14 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
-<TextView 
-    android:id="@+id/insurance_item_name"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/margins"
-    android:textSize="@dimen/content"
-    android:textColor="@color/common"
-    android:background="@drawable/side_seting_item"
-    />  
+    android:orientation="vertical" >
+    <TextView
+        android:id="@+id/insurance_item_name"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/side_seting_item"
+        android:padding="@dimen/margins"
+        android:textColor="@color/common"
+        android:textSize="@dimen/content" />
 </LinearLayout>
