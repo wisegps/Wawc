@@ -3,16 +3,18 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/side_seting_item"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    >
     <!-- 显示拼音索引 -->
-    <TextView
+   <TextView
         android:id="@+id/list_letter"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_gravity="center_vertical"
-        android:layout_weight="1.0"
-        android:background="@color/gray_light"
         android:gravity="center_vertical"
+        android:layout_weight="1.0"
+        android:background="#D9D9E1"
+        android:textColor="@color/blue"
         android:padding="@dimen/margins"
         android:clickable="false"
         android:text="hhhh"/>
@@ -43,22 +45,4 @@
         android:background="@color/gray"
         />
 </LinearLayout>
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal" >
-            <!-- 显示品牌 -->
-            <TextView
-                android:id="@+id/list_brank"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_margin="@dimen/margins"
-                android:background="@drawable/side_seting_item"
-                android:text="A"
-                android:textColor="@color/common" />
-        </LinearLayout>
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="0.5dip"
-            android:background="@color/gray" />
 </LinearLayout>
