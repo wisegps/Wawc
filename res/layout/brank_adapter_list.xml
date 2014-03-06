@@ -14,7 +14,7 @@
         android:gravity="center_vertical"
         android:layout_weight="1.0"
         android:background="#D9D9E1"
-        android:textColor="@color/blue"
+        android:textColor="@color/gray"
         android:padding="@dimen/margins"
         android:clickable="false"
         android:text="hhhh"/>
