@@ -3,14 +3,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#FFFFFF"
-    android:orientation="vertical">
+    android:orientation="vertical" >
 
     <!-- 头部 -->
+
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight"
-        android:background="@color/blue"
-         >
+        android:background="@drawable/nav_bg">
 
         <ImageView
             android:id="@+id/feed_back_cancle"
@@ -18,50 +18,48 @@
             android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-           	android:background="@drawable/side_back" 
-           	android:clickable="true"
-           	 />
+            android:background="@drawable/nav_back"
+            android:clickable="true" />
 
         <TextView
-            android:layout_toRightOf="@id/feed_back_cancle"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/feed_back_cancle"
             android:gravity="center"
             android:text="@string/feedbaack"
             android:textColor="@color/white"
             android:textSize="@dimen/head" />
 
         <TextView
-            android:layout_alignParentRight="true"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            />
+            android:layout_alignParentRight="true" />
     </RelativeLayout>
-    
-	    <EditText 
-	        android:layout_margin="@dimen/margins"
-	        android:layout_width="fill_parent"
-	        android:layout_height="150dip"
-	        android:hint="说点什么...."
-	        android:gravity="top"
-	        android:maxLines="8"
-	        android:scrollbars="vertical"
-	        android:background="@drawable/new_article_edit_border"
-	        />
-	    <EditText 
-	        android:layout_margin="@dimen/margins"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:hint="qq或邮箱地址（选填）"
-	        android:background="@drawable/new_article_edit_border"
-	        android:scrollbars="vertical"
-	        />
-	    <Button 
-	        android:layout_margin="@dimen/margins"
-	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:text="@string/send_suggest"
-	        />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="150dip"
+        android:layout_margin="@dimen/margins"
+        android:background="@drawable/new_article_edit_border"
+        android:gravity="top"
+        android:hint="说点什么...."
+        android:maxLines="8"
+        android:scrollbars="vertical" />
+
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margins"
+        android:background="@drawable/new_article_edit_border"
+        android:hint="qq或邮箱地址（选填）"
+        android:scrollbars="vertical" />
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margins"
+        android:text="@string/send_suggest" />
+
 </LinearLayout>

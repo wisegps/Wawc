@@ -4,13 +4,15 @@
     android:layout_height="fill_parent"
     android:background="#FFFFFF"
     android:orientation="vertical" >
+
     <!-- 头部 -->
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight"
-        android:orientation="horizontal"
-        android:background="@color/blue"
-         >
+        android:background="@drawable/nav_bg"
+        android:orientation="horizontal" >
+
         <Button
             android:id="@+id/back"
             android:layout_width="0dip"
@@ -18,92 +20,91 @@
             android:layout_gravity="left|center_vertical"
             android:layout_weight="1"
             android:background="@drawable/nav_icon_back" />
-        <TextView 
+
+        <TextView
             android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="8"
             android:gravity="center"
-            android:layout_gravity="center_vertical"
-            android:layout_height="wrap_content"
-            android:text="@string/new_article_title"
             android:paddingLeft="20dip"
-            android:textSize="@dimen/head"
+            android:text="@string/new_article_title"
             android:textColor="@color/white"
-            />
-        <TextView 
+            android:textSize="@dimen/head" />
+
+        <TextView
             android:id="@+id/publish"
             android:layout_width="0dip"
-            android:layout_weight="2"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:layout_gravity="center_vertical"
             android:layout_marginRight="@dimen/margins"
-            android:text="@string/publish_new_article"
-            android:textSize="@dimen/main"
+            android:layout_weight="2"
             android:background="@drawable/bt_bg"
+            android:gravity="center"
+            android:text="@string/publish_new_article"
             android:textColor="@color/white"
-            />
+            android:textSize="@dimen/main" />
     </LinearLayout>
-    
-    <LinearLayout 
-        android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:orientation="vertical"
-    	android:layout_margin="@dimen/body_padding"
-    	android:background="@drawable/new_article_edit_border"
-        >
-    <EditText 
-        android:id="@+id/et_publish_article"
-        android:layout_width="fill_parent"
-        android:layout_marginTop="@dimen/margins"
-        android:layout_marginLeft="@dimen/margins"
-        android:layout_height="wrap_content"
-        android:lines = "8"
-        android:gravity = "top"
-        android:scrollbars="vertical"
-        android:background="@null"
-        />
-    <LinearLayout 
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-        
-        <ImageView 
-            android:layout_width="0dip"
+        android:layout_margin="@dimen/body_padding"
+        android:background="@drawable/new_article_edit_border"
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/et_publish_article"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/body_icon_lbs_2"
-            android:layout_gravity="center_vertical"
-            android:layout_weight="1"
-            />
-        <TextView 
-            android:id="@+id/localtion"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:text="广东省深圳市南山区南山大道115号"
             android:layout_marginLeft="@dimen/margins"
-            android:layout_weight="18"
-            android:textColor="@color/adress_gray"
-            />
+            android:layout_marginTop="@dimen/margins"
+            android:background="@null"
+            android:gravity="top"
+            android:lines="8"
+            android:scrollbars="vertical" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@drawable/body_icon_lbs_2" />
+
+            <TextView
+                android:id="@+id/localtion"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margins"
+                android:layout_weight="18"
+                android:text="广东省深圳市南山区南山大道115号"
+                android:textColor="@color/common_inactive" />
+        </LinearLayout>
     </LinearLayout>
-    </LinearLayout>
-    
+
     <HorizontalScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margins"
-        android:scrollbarAlwaysDrawHorizontalTrack="false">
-    <LinearLayout 
-        android:id="@+id/my_linearLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        >
-        <ImageView 
-            android:id="@+id/take_photo"
+        android:scrollbarAlwaysDrawHorizontalTrack="false" >
+
+        <LinearLayout
+            android:id="@+id/my_linearLayout"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            android:background="@drawable/body_icon_photo"
-            />
+            android:orientation="horizontal" >
+
+            <ImageView
+                android:id="@+id/take_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/body_icon_photo" />
         </LinearLayout>
     </HorizontalScrollView>
+
 </LinearLayout>

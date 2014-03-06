@@ -9,7 +9,7 @@
     android:layout_height="wrap_content"
     android:padding="@dimen/margins"
     android:textSize="@dimen/content"
-    android:textColor="@color/black"
+    android:textColor="@color/common"
     android:background="@drawable/side_seting_item"
     />  
 </LinearLayout>

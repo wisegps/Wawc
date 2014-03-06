@@ -1,25 +1,25 @@
-<RelativeLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF" >
+
     <!-- 头部 -->
+
     <RelativeLayout
         android:id="@+id/article_detail_top"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight"
-        android:background="@color/blue"
         android:layout_alignParentTop="true"
-         >
+        android:background="@drawable/nav_bg" >
 
         <ImageView
             android:id="@+id/article_detaile_menu"
             android:layout_width="@dimen/title_image"
             android:layout_height="@dimen/title_image"
-            android:layout_centerVertical="true"
             android:layout_alignParentLeft="true"
-            android:background="@drawable/side_back" />
+            android:layout_centerVertical="true"
+            android:background="@drawable/nav_back" />
 
         <TextView
             android:layout_width="fill_parent"
@@ -28,243 +28,245 @@
             android:layout_centerVertical="true"
             android:gravity="center"
             android:text="@string/article_detaile"
-            android:layout_toRightOf="@id/article_detaile_menu"
             android:textColor="@color/white"
             android:textSize="@dimen/head" />
     </RelativeLayout>
 
-    <ScrollView 
+    <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-       	android:scrollbars="vertical"
-       	 android:layout_below="@id/article_detail_top"
-        >
-        <RelativeLayout 
+        android:layout_below="@id/article_detail_top"
+        android:scrollbars="vertical" >
+
+        <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            >
-    <!-- 用户信息 -->
-     <LinearLayout
-        android:id="@+id/article_detail_user_message"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="@dimen/margins"
-        >
-        <ImageView
-            android:id="@+id/article_detail_user_head"
-            android:layout_width="0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight="1.5"
-            />
-            <LinearLayout 
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="6"
-                android:orientation="vertical"
-                android:layout_marginLeft="@dimen/margins"
-                android:layout_marginTop="@dimen/margins"
-                >
-                <TextView 
-                    android:id="@+id/article_detail_user_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/article_user_name"
-                    android:textSize="@dimen/title"
-                    android:text="用户名"
-                    />
-                <TextView 
-                    android:id="@+id/tv_article_detaile_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="内容"
-                    android:textColor="@color/common"
-                    android:textSize="@dimen/main"
-                    />
-            </LinearLayout>
-        
-    </LinearLayout>
-    
-     <!-- 用户图片 -->
-    <TableLayout
-        android:id="@+id/article_detail_user_image" 
-        android:layout_width="fill_parent"
-        android:layout_below="@id/article_detail_user_message"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dip"
-        >
-        <TableRow 
-            android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-            >
-            <View 
-                android:layout_width="0dip"
-                android:layout_height="0dip"
-                android:layout_weight="1.5"
-                android:layout_marginRight="@dimen/margins1"
-            	android:layout_marginLeft="@dimen/margins1"
-                />
-            <!-- 动态添加图片控件 -->
-            <TableLayout 
-                android:id="@+id/article_detailes_user_image"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="6"
-                android:paddingLeft="@dimen/margins"
-                ></TableLayout>
-        </TableRow>
-    </TableLayout>
-    
-    
-    <!-- 文章相关 -->
-    <TableLayout
-        android:id="@+id/article_detail_about_article"
-        android:layout_below="@id/article_detail_user_image" 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dip"
-        >
-        <TableRow 
-            android:layout_width="fill_parent"
-            android:layout_height="10dip"
-            >
-            <View
-                android:layout_width="0dip"
-                android:layout_height="0dip"
-                android:layout_weight="1.5"
-                android:layout_marginRight="@dimen/margins1"
-            	android:layout_marginLeft="@dimen/margins1"
-                />
-            <TableRow 
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="6"
-                android:layout_marginLeft="@dimen/margins"
-                >
-                <TextView
-                    android:id="@+id/detail_article_publish_time"
-                    android:layout_width="0dip"
-                	android:layout_height="wrap_content"
-                	android:text="10:30"
-                	android:layout_weight="1"
-                	android:layout_gravity="left|center_vertical"
-                	android:textColor="@color/gray"
-                	android:textSize="@dimen/content"
-                     />
-                <LinearLayout 
-                    android:layout_width="0dip"
-                	android:layout_height="wrap_content"
-                	android:orientation="horizontal"
-                	android:gravity="right"
-                	android:layout_weight="1"
-                    >
-                    <ImageView 
-                        android:id="@+id/article_detaile_favorite"
-                        android:layout_width="@dimen/double_margins"
-                		android:layout_height="@dimen/double_margins"
-                		android:layout_marginRight="@dimen/double_margins"
-                		android:background="@drawable/body_icon_heart"
-                        />
-                    <ImageView 
-                        android:id="@+id/article_detailes_say_somthing"
-                        android:layout_width="@dimen/double_margins"
-                		android:layout_height="@dimen/double_margins"
-                		android:background="@drawable/body_icon_comment"
-                        />
-                </LinearLayout>
-            </TableRow>
-        </TableRow>
-    </TableLayout>
-    <!-- 文章评论相关 -->
-    <TableLayout
-        android:id="@+id/tablelayout"
-        android:layout_below="@id/article_detail_about_article"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="10dip"
-        android:layout_marginTop="5dip"
-        android:layout_marginBottom="5dip"
-        >
-        <TableRow 
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            >
-            <View
-                android:layout_width="0dip"
-                android:layout_height="0dip"
-                android:layout_weight="1.5"
-                android:layout_marginRight="@dimen/margins1"
-            	android:layout_marginLeft="@dimen/margins1"
-                />
-            <TableLayout 
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="6"
-                android:background="#F7F6FB"
-                android:layout_marginLeft="@dimen/margins"
-                >
-                <!-- 点赞 -->
-            <TableRow 
-                android:id="@+id/article_details_favorite_layout"
+            android:layout_height="wrap_content" >
+
+            <!-- 用户信息 -->
+
+            <LinearLayout
+                android:id="@+id/article_detail_user_message"
                 android:layout_width="fill_parent"
-                android:layout_height="@dimen/article_favorite_height"
-                android:layout_marginTop="@dimen/margins"
-                android:layout_marginBottom="@dimen/margins"
-                >
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margins"
+                android:orientation="horizontal" >
+
                 <ImageView
-                    android:id="@+id/article_details_praises_star"
-                    android:layout_width="@dimen/double_margins"
-                	android:layout_height="@dimen/double_margins"
-                	android:background="@drawable/body_icon_heart_press"
-                     />
-                <TextView 
-                    android:id="@+id/article_details_praises_user"
-                    android:layout_width="wrap_content"
-                	android:layout_height="wrap_content"
-                	android:maxLength="30"
-                    />
-            </TableRow>
-            
-            <!-- 分割线 -->
-              <View 
-                  	android:id="@+id/article_details_line"
-                   	android:layout_width="fill_parent"
-                	android:layout_height="0.1dip"
-                	android:layout_marginTop="10dip"
-                	android:background="#000000"
-                    />
-              <!-- 评论 -->
-                  <LinearLayout 
-                      android:id="@+id/article_details_comment_layout"
-                      android:layout_width="fill_parent"
-                	  android:layout_height="wrap_content"
-                	  android:orientation="vertical"
-                	  android:layout_marginTop="10dip"
-                	  android:layout_marginBottom="10dip"
-                      >
-                  </LinearLayout>
+                    android:id="@+id/article_detail_user_head"
+                    android:layout_width="0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1.5" />
+
+                <LinearLayout
+                    android:layout_width="0dip"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/margins"
+                    android:layout_marginTop="@dimen/margins"
+                    android:layout_weight="6"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/article_detail_user_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="用户名"
+                        android:textColor="@color/article_user_name"
+                        android:textSize="@dimen/title" />
+
+                    <TextView
+                        android:id="@+id/tv_article_detaile_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="内容"
+                        android:textColor="@color/common"
+                        android:textSize="@dimen/main" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- 用户图片 -->
+
+            <TableLayout
+                android:id="@+id/article_detail_user_image"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/article_detail_user_message"
+                android:layout_marginRight="10dip" >
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+
+                    <View
+                        android:layout_width="0dip"
+                        android:layout_height="0dip"
+                        android:layout_marginLeft="@dimen/margins1"
+                        android:layout_marginRight="@dimen/margins1"
+                        android:layout_weight="1.5" />
+                    <!-- 动态添加图片控件 -->
+
+                    <TableLayout
+                        android:id="@+id/article_detailes_user_image"
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:paddingLeft="@dimen/margins" >
+                    </TableLayout>
+                </TableRow>
             </TableLayout>
-        </TableRow>
-    </TableLayout>
-    </RelativeLayout>
+
+            <!-- 文章相关 -->
+
+            <TableLayout
+                android:id="@+id/article_detail_about_article"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/article_detail_user_image"
+                android:layout_marginRight="10dip" >
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="10dip" >
+
+                    <View
+                        android:layout_width="0dip"
+                        android:layout_height="0dip"
+                        android:layout_marginLeft="@dimen/margins1"
+                        android:layout_marginRight="@dimen/margins1"
+                        android:layout_weight="1.5" />
+
+                    <TableRow
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margins"
+                        android:layout_weight="6" >
+
+                        <TextView
+                            android:id="@+id/detail_article_publish_time"
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center_vertical"
+                            android:layout_weight="1"
+                            android:text="10:30"
+                            android:textColor="@color/gray"
+                            android:textSize="@dimen/content" />
+
+                        <LinearLayout
+                            android:layout_width="0dip"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="right"
+                            android:orientation="horizontal" >
+
+                            <ImageView
+                                android:id="@+id/article_detaile_favorite"
+                                android:layout_width="@dimen/double_margins"
+                                android:layout_height="@dimen/double_margins"
+                                android:layout_marginRight="@dimen/double_margins"
+                                android:background="@drawable/body_icon_heart" />
+
+                            <ImageView
+                                android:id="@+id/article_detailes_say_somthing"
+                                android:layout_width="@dimen/double_margins"
+                                android:layout_height="@dimen/double_margins"
+                                android:background="@drawable/body_icon_comment" />
+                        </LinearLayout>
+                    </TableRow>
+                </TableRow>
+            </TableLayout>
+            <!-- 文章评论相关 -->
+
+            <TableLayout
+                android:id="@+id/tablelayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/article_detail_about_article"
+                android:layout_marginBottom="5dip"
+                android:layout_marginRight="10dip"
+                android:layout_marginTop="5dip" >
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content" >
+
+                    <View
+                        android:layout_width="0dip"
+                        android:layout_height="0dip"
+                        android:layout_marginLeft="@dimen/margins1"
+                        android:layout_marginRight="@dimen/margins1"
+                        android:layout_weight="1.5" />
+
+                    <TableLayout
+                        android:layout_width="0dip"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/margins"
+                        android:layout_weight="6"
+                        android:background="#F7F6FB" >
+
+                        <!-- 点赞 -->
+
+                        <TableRow
+                            android:id="@+id/article_details_favorite_layout"
+                            android:layout_width="fill_parent"
+                            android:layout_height="@dimen/article_favorite_height"
+                            android:layout_marginBottom="@dimen/margins"
+                            android:layout_marginTop="@dimen/margins" >
+
+                            <ImageView
+                                android:id="@+id/article_details_praises_star"
+                                android:layout_width="@dimen/double_margins"
+                                android:layout_height="@dimen/double_margins"
+                                android:background="@drawable/body_icon_heart_press" />
+
+                            <TextView
+                                android:id="@+id/article_details_praises_user"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLength="30" />
+                        </TableRow>
+
+                        <!-- 分割线 -->
+
+                        <View
+                            android:id="@+id/article_details_line"
+                            android:layout_width="fill_parent"
+                            android:layout_height="0.1dip"
+                            android:layout_marginTop="10dip"
+                            android:background="#000000" />
+                        <!-- 评论 -->
+
+                        <LinearLayout
+                            android:id="@+id/article_details_comment_layout"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="10dip"
+                            android:layout_marginTop="10dip"
+                            android:orientation="vertical" >
+                        </LinearLayout>
+                    </TableLayout>
+                </TableRow>
+            </TableLayout>
+        </RelativeLayout>
     </ScrollView>
-    <RelativeLayout 
+
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        >
-    <LinearLayout 
-        android:id="@+id/article_detailes_comment"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-	    android:visibility="gone"
-        >
-        <!-- 聊天输入框 -->
-        <include
+        android:layout_alignParentBottom="true" >
+
+        <LinearLayout
+            android:id="@+id/article_detailes_comment"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            layout="@layout/custom_facerelativelayout" />
-    </LinearLayout>
+            android:orientation="vertical"
+            android:visibility="gone" >
+
+            <!-- 聊天输入框 -->
+
+            <include
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                layout="@layout/custom_facerelativelayout" />
+        </LinearLayout>
     </RelativeLayout>
+
 </RelativeLayout>

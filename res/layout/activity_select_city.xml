@@ -44,7 +44,7 @@
         android:drawableLeft="@drawable/toolbar_icon_search"
         android:hint="请输入关键字"
         android:singleLine="true"
-        android:textColor="@color/black"
+        android:textColor="@color/common"
         android:textSize="@dimen/content" />
 	<TextView 
         android:layout_width="fill_parent"

@@ -18,7 +18,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="@dimen/margins"
             android:textSize="@dimen/main"
-            android:textColor="@color/black"/>
+            android:textColor="@color/common"/>
         <ImageView 
             android:id="@+id/iv_item_cars"
             android:layout_above="@id/tv_item_carnumber"

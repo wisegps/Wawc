@@ -22,11 +22,10 @@
             android:clickable="true"
             android:layout_marginLeft="@dimen/margins"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/side_back"/>
+            android:src="@drawable/nav_back"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_toRightOf="@+id/choice_insurance_cancle"
             android:gravity="center"
             android:text="@string/insurance_company"
             android:textColor="@color/white"

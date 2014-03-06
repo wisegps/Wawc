@@ -1,16 +1,14 @@
-<LinearLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical" >
+
     <RelativeLayout
         android:id="@+id/choice_maintain_top"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight"
-        android:layout_alignParentTop="true"
-        android:background="@color/blue"
+        android:background="@drawable/nav_bg"
         android:gravity="center" >
 
         <ImageView
@@ -19,20 +17,20 @@
             android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/side_back" />
+            android:layout_marginLeft="@dimen/margins"
+            android:background="@drawable/nav_back" />
 
         <TextView
             android:id="@+id/my_vechile_edit"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:layout_toRightOf="@id/choice_maintain_cancle"
-            android:layout_marginRight="@dimen/double_margins"
+            android:layout_centerVertical="true"
             android:gravity="center"
             android:text="@string/location_4s_shop"
             android:textColor="@color/white"
             android:textSize="@dimen/head" />
+
         <ImageView
             android:id="@+id/search_maintain_shop"
             android:layout_width="@dimen/title_image"
@@ -41,21 +39,20 @@
             android:layout_centerVertical="true"
             android:background="@drawable/side_right" />
     </RelativeLayout>
-    <View 
+
+    <View
         android:layout_width="fill_parent"
         android:layout_height="1dip"
-        android:background="#000000"
-        />
+        android:background="#000000" />
 
     <ListView
         android:id="@+id/maintain_list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:cacheColorHint="#00000000"
-        android:scrollingCache="false"
         android:divider="@color/gray"
         android:dividerHeight="0.5dip"
-         >
+        android:scrollingCache="false" >
     </ListView>
 
 </LinearLayout>

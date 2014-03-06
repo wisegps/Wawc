@@ -7,9 +7,8 @@
     android:background="@drawable/border_bg">
     <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="44dp"
-        android:background="@drawable/border_bg"
-        android:padding="2dp">
+        android:layout_height="@dimen/title_hight"
+        android:background="@drawable/nav_bg">
 		<ImageView
             android:id="@+id/iv_activity_order_device_back"
             android:layout_width="60dp"
@@ -25,7 +24,7 @@
             android:layout_toRightOf="@+id/iv_activity_order_device_back"
             android:gravity="center"
             android:text="订购服务"
-            android:textColor="@color/black"
+            android:textColor="@color/common"
             android:textSize="@dimen/head"/>
 		<ImageView
             android:id="@+id/iv_activity_order_device"
@@ -42,7 +41,7 @@
         android:layout_height="wrap_content"
         android:text="续费终端：43420432"
         android:padding="10dp"
-        android:textColor="@color/black"
+        android:textColor="@color/common"
         android:textSize="@dimen/title"/>
 	<LinearLayout 
 	    android:layout_width="fill_parent"
@@ -58,7 +57,7 @@
 	            android:layout_height="wrap_content"
 	            android:text="服务费一个月"
 	            android:padding="5dp"
-	            android:textColor="@color/black"
+	            android:textColor="@color/common"
 	            android:textSize="@dimen/title"/>
 		     <TextView
 		         android:id="@+id/tv_item_travel_startPlace"  
@@ -78,7 +77,7 @@
 		    <TextView
 		        android:layout_width="fill_parent"
 	        	android:layout_height="wrap_content"
-		        android:textColor="@color/black"
+		        android:textColor="@color/common"
 	            android:textSize="@dimen/title"
 	            android:text="功能费及sim卡流量费"/>
 	    </LinearLayout>
@@ -91,14 +90,14 @@
 	            android:layout_height="wrap_content"
 	            android:text="单价"
 	            android:padding="10dp"
-	            android:textColor="@color/black"
+	            android:textColor="@color/common"
 	            android:textSize="@dimen/title"/>
 		     <TextView
 		         android:id="@+id/tv_item_travel_startPlace"  
 		         android:layout_width="wrap_content"
 		         android:layout_height="wrap_content"
 		         android:layout_alignParentRight="true"
-		         android:textColor="@color/black"
+		         android:textColor="@color/common"
 		      	 android:textSize="@dimen/title"
 		      	 android:padding="10dp"
 		         android:text="10"/>
@@ -112,7 +111,7 @@
 	            android:layout_height="wrap_content"
 	            android:text="数量"
 	            android:padding="10dp"
-	            android:textColor="@color/black"
+	            android:textColor="@color/common"
 	            android:textSize="@dimen/title"/>
 	        <RelativeLayout 
 	            android:layout_width="wrap_content"
@@ -129,7 +128,7 @@
 			         android:layout_width="wrap_content"
 			         android:layout_height="wrap_content"
 			         android:layout_toLeftOf="@id/iv_activity_order_device_add"
-			         android:textColor="@color/black"
+			         android:textColor="@color/common"
 			      	 android:textSize="@dimen/title"
 			      	 android:padding="10dp"
 			         android:text="12"/>
@@ -151,14 +150,14 @@
 	            android:layout_height="wrap_content"
 	            android:text="总价"
 	            android:padding="10dp"
-	            android:textColor="@color/black"
+	            android:textColor="@color/common"
 	            android:textSize="@dimen/title"/>
 		     <TextView
 		         android:id="@+id/tv_item_travel_startPlace"  
 		         android:layout_width="wrap_content"
 		         android:layout_height="wrap_content"
 		         android:layout_alignParentRight="true"
-		         android:textColor="@color/black"
+		         android:textColor="@color/common"
 		      	 android:textSize="@dimen/title"
 		      	 android:padding="10dp"
 		         android:text="120.00"/>
