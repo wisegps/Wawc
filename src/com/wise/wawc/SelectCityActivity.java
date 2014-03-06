@@ -49,7 +49,6 @@ import android.widget.Toast;
 
 /**
  * 选择城市
- * 
  * @author honesty
  */
 public class SelectCityActivity extends Activity {

@@ -17,8 +17,8 @@ import android.widget.TextView;
 public class MaintainAdapter extends BaseAdapter{
 	private LayoutInflater inflater;
 	private Context context;
-	private List<String> maintainList = null;
-	public MaintainAdapter(Context context,List<String> maintainList){
+	private List<String[]> maintainList = null;
+	public MaintainAdapter(Context context,List<String[]> maintainList){
 		inflater=LayoutInflater.from(context);
 		this.maintainList = maintainList;
 		this.context = context;
@@ -35,7 +35,7 @@ public class MaintainAdapter extends BaseAdapter{
 	public View getView(int position, View convertView, ViewGroup parent) {
 		convertView = inflater.inflate(R.layout.maintain_item, null);
 		TextView maintainName = (TextView) convertView.findViewById(R.id.vehicle_maintain_name);
-		maintainName.setText(maintainList.get(position));
+		maintainName.setText(maintainList.get(position)[0]);
 		return convertView;
 	}
 }

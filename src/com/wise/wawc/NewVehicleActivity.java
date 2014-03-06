@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.http.NameValuePair;
@@ -20,6 +22,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.wise.data.CarData;
+import com.wise.data.IllegalCity;
 import com.wise.extend.AbstractSpinerAdapter;
 import com.wise.extend.SpinerPopWindow;
 import com.wise.pubclas.Constant;
@@ -35,15 +38,19 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
+import android.text.InputFilter;
 import android.text.method.KeyListener;
 import android.text.method.NumberKeyListener;
 import android.util.Log;
@@ -81,9 +88,15 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	private TextView TvVehicleType = null;
 	private TableRow IvVehicleSeries = null;  
 	private TableRow IvVehicleType = null;
+	private TableRow illegalCityRow = null;
+	private TableRow engineNumRow = null;
+	private TableRow vehicleFrameNumRow = null;
+	private TableRow vehicleRegNumRow = null;
 	
 	
 	private TextView maintainShop = null;
+	private TextView illegalCityTv = null;
+	private EditText carRegNumber = null;
 	private EditText carNumber = null;
 	private EditText engineNumber = null;
 	private EditText CJNumber = null;
@@ -97,8 +110,6 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	private DatePickerDialog mDateDialog = null;
 	private TextView mBeginDateTv,mEndDateTv;
 	private int mThisDatePicker;
-	
-	
 	private String carBrankId = "";
 	private String carSeriesId = "";
 	private static String carSeriesTitle = "carSeries";
@@ -106,6 +117,7 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	private static final int getCarSeries = 1;
 	private static final int refreshCarSeries = 2;
 	private static final int getCarType = 7;
+	private static final int getCityViolateRegulationsCode = 9;
 	private List<String> carSeriesNameList = new ArrayList<String>();
 	private List<String> carSeriesIdList = new ArrayList<String>();
 	private SpinerPopWindow mSpinerPopWindow;
@@ -117,34 +129,50 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	private DBExcute dBExcute = null;
 	
 	private TextView showInsurance = null;
-	private String brank = "";
+	private String carBrank = "";
+	private String carSeries = "";
+	private String carType = "";
 	private Bitmap vehicleLogoBitmap = null;
+	private IllegalCity illegalCity;
+	private String city_code = "";
+	private String illegalCityStr = "";
+	private int register = 0;
+	private int registerNo = 0;
+	private int engine = 0;
+	private int engineNo = 0;
+	private int car = 0;
+	private int carNo = 0;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_vehicle);
-		cancleAdd = (ImageView) findViewById(R.id.add_vechile_cancle);
-		saveAdd = (TextView) findViewById(R.id.add_vechile_save);
-		choiceBrank = (TableRow) findViewById(R.id.new_vehicle_choice_brank);
-		vehicleBrank = (TextView) findViewById(R.id.new_vehicle_brank );
-		choiceInsurance = (TableRow) findViewById(R.id.new_vehicle_choice_insurance);
-		showInsurance = (TextView) findViewById(R.id.new_vehicle_show_insurance);
-		ivMaintain = (TableRow) findViewById(R.id.add_vehicle_maintain);
-		showMaintain = (TextView) findViewById(R.id.new_vehicle_show_maintain);
+		cancleAdd = (ImageView) findViewById(R.id.new_vechile_cancle_iv);
+		saveAdd = (TextView) findViewById(R.id.new_vechile_commit_tv);
+		choiceBrank = (TableRow) findViewById(R.id.new_vehicle_brank_tr);
+		vehicleBrank = (TextView) findViewById(R.id.new_vehicle_brank_tv );
+		choiceInsurance = (TableRow) findViewById(R.id.new_vehicle_insurance_tr);
+		showInsurance = (TextView) findViewById(R.id.new_vehicle_insurance_tv);
+		ivMaintain = (TableRow) findViewById(R.id.new_vehicle_maintain_tr);
+		showMaintain = (TextView) findViewById(R.id.new_vehicle_maintain_tv);
+		illegalCityRow = (TableRow) findViewById(R.id.new_vehicle_illegal_city_tr);
+		engineNumRow = (TableRow) findViewById(R.id.new_vehicle_engine_num_tr);
+		vehicleFrameNumRow = (TableRow) findViewById(R.id.new_vehicle_frame_tr);
+		vehicleRegNumRow = (TableRow) findViewById(R.id.new_vehicle_register_num_tr);
 		
-		TvVehicleSeries = (TextView) findViewById(R.id.tv_new_vericher_series);
-		TvVehicleType = (TextView) findViewById(R.id.tv_new_vericher_type);
-		IvVehicleSeries = (TableRow) findViewById(R.id.new_vericher_series);
-		IvVehicleType = (TableRow) findViewById(R.id.new_vericher_type);
-		
-		carNumber = (EditText) findViewById(R.id.et_new_vercher_number);
-		engineNumber = (EditText) findViewById(R.id.et_new_vehicle_engine_number);
-		CJNumber = (EditText) findViewById(R.id.et_new_car_number);
-		insuranceTime = (TextView) findViewById(R.id.tv_insurance_over_time);
+		TvVehicleSeries = (TextView) findViewById(R.id.new_vehicle_series_tv);
+		illegalCityTv = (TextView) findViewById(R.id.new_vehicle_illegal_city_tv);
+		TvVehicleType = (TextView) findViewById(R.id.new_vehicle_type_tv);
+		IvVehicleSeries = (TableRow) findViewById(R.id.new_vehicle_series_tr);
+		IvVehicleType = (TableRow) findViewById(R.id.new_vehicle_type_tr);
+		carNumber = (EditText) findViewById(R.id.new_vehicle_number_et);
+		carRegNumber = (EditText) findViewById(R.id.new_vehilce_reg_num_et);
+		engineNumber = (EditText) findViewById(R.id.new_vehicle_engine_num_et);
+		CJNumber = (EditText) findViewById(R.id.new_vehilce_frame_et);
+		insuranceTime = (TextView) findViewById(R.id.new_vehicle_insurance_time_tv);
 		getDateView(insuranceTime);
-		lastMaintainTime = (TextView) findViewById(R.id.et_last_maintain_time);
+		lastMaintainTime = (TextView) findViewById(R.id.new_vehicle_last_maintain_tv);
 		getDateView(lastMaintainTime);
-		lastMileage = (EditText) findViewById(R.id.et_last_insurance_mileage);
-		buyTime = (TextView) findViewById(R.id.et_new_vehicle_buy_car_time);
+		lastMileage = (EditText) findViewById(R.id.new_vehicle_last_maintain_et);
+		buyTime = (TextView) findViewById(R.id.new_vehicle_buy_time_tv);
 		getDateView(buyTime);
 //		nextMaintainMileage = (EditText) findViewById(R.id.et_next_maintain_mileage);
 //		annualSurveyTime = (EditText) findViewById(R.id.annual_survey_time);
@@ -159,6 +187,7 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 		mSpinerPopWindow.setItemListener(this);
 		width = getWindowManager().getDefaultDisplay().getWidth();
 		
+		illegalCityRow.setOnClickListener(new CilckListener());
 		ivMaintain.setOnClickListener(new CilckListener());
 		saveAdd.setOnClickListener(new CilckListener());
 		choiceBrank.setOnClickListener(new CilckListener());
@@ -172,49 +201,41 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	class CilckListener implements OnClickListener{
 		public void onClick(View v) {
 			switch(v.getId()){
-			case R.id.add_vechile_cancle:
+			case R.id.new_vechile_cancle_iv:
 				NewVehicleActivity.this.finish();
 				break;
-			case R.id.add_vechile_save:
+			case R.id.new_vechile_commit_tv:
 				getVehicleData();
 				break;
-			case R.id.new_vehicle_choice_brank:   //选择车辆品牌
-				Intent intent = new Intent(NewVehicleActivity.this,CarBrankListActivity.class);
+			case R.id.new_vehicle_brank_tr:   //选择车辆品牌
+				Intent intent = new Intent(NewVehicleActivity.this,ChoiceCarInformationActivity.class);
 				intent.putExtra("code", newVehicleBrank);
 				startActivityForResult(intent, newVehicleBrank);
 				break;
-			case R.id.new_vehicle_choice_insurance:   //选择保险公司
+			case R.id.new_vehicle_illegal_city_tr:  //选择违章城市
+				Intent intent6 = new Intent(NewVehicleActivity.this,IllegalCitiyActivity.class);
+				intent6.putExtra("requestCode", getCityViolateRegulationsCode);
+				startActivityForResult(intent6, getCityViolateRegulationsCode);
+				break;
+			case R.id.new_vehicle_insurance_tr:   //选择保险公司
 				Intent intent1 = new Intent(NewVehicleActivity.this,ChoiceInsuranceActivity.class);
 				intent1.putExtra("code", newVehicleInsurance);
 				startActivityForResult(intent1, newVehicleInsurance);
 				break;
-			case R.id.add_vehicle_maintain:   //选择保养公司
-				Intent intent2 = new Intent(NewVehicleActivity.this,MaintainShopActivity.class);
-				intent2.putExtra("code", newVehicleMaintain);
-				intent2.putExtra("brank", brank);
-				startActivityForResult(intent2, newVehicleMaintain);
-				break;	
-				
-			case R.id.new_vericher_series: //选择车型  
-				myDialog = ProgressDialog.show(NewVehicleActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
-				myDialog.setCancelable(true);
-				if("".equals(carBrankId)){
-					Toast.makeText(getApplicationContext(), "请选择品牌", 0).show();
-					myDialog.dismiss();
-					return;
-				}
-				getCarDatas(carSeriesTitle,"base/car_series?pid=",getCarSeries,carBrankId);
-				break;
-				
-			case R.id.new_vericher_type: //选择车款  
-				if(carSeriesNameList.size() > 0){
-					mSpinerPopWindow.setWidth(width);
-					mSpinerPopWindow.setHeight(300);
-					mSpinerPopWindow.showAsDropDown(TvVehicleType);
+			case R.id.new_vehicle_maintain_tr:   //选择保养公司（4s店）
+				SharedPreferences shareFile = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+				if("".equals(shareFile.getString(Constant.LocationCity, ""))){
+					Toast.makeText(getApplicationContext(), getResources().getString(R.string.please_choice_city), 0).show();
+				}else if("".equals(carBrank)){
+					Toast.makeText(getApplicationContext(), getResources().getString(R.string.please_choice_vehicle_brank), 0).show();
 				}else{
-					Toast.makeText(getApplicationContext(), "请选择车型", 0).show();
+					Intent intent2 = new Intent(NewVehicleActivity.this,MaintainShopActivity.class);
+					intent2.putExtra("code", newVehicleMaintain);
+					intent2.putExtra("brank", carBrank);
+					intent2.putExtra("city", shareFile.getString(Constant.LocationCity, ""));
+					startActivityForResult(intent2, newVehicleMaintain);
 				}
-				break;
+				break;	
 			default:
 				return;
 			}
@@ -223,16 +244,82 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == newVehicleBrank){  //设置品牌
-			brank = data.getStringExtra("brank");
-			vehicleBrank.setText(brank); 
-			carBrankId = data.getStringExtra("carId");
-			Bitmap logo = logoImageIsExist(Constant.VehicleLogoPath,data.getStringExtra("carLogo"));
+			carBrank = data.getStringExtra("brank");
+			carSeries = data.getStringExtra("series");
+			carType = data.getStringExtra("type");
+			
+			vehicleBrank.setText(carBrank);
+			TvVehicleSeries.setText(carSeries);
+			TvVehicleType.setText(carType);
+			
+//			carBrankId = data.getStringExtra("carId");
+//			Bitmap logo = logoImageIsExist(Constant.VehicleLogoPath,data.getStringExtra("carLogo"));
+			
+			
 		}else if(resultCode == newVehicleInsurance){   //设置保险公司
-			String insurance = (String)data.getSerializableExtra("ClickItem");
+			String insurance = (String)data.getSerializableExtra("insurance_name");
+			String insurance_phone = (String)data.getSerializableExtra("insurance_phone");
 			showInsurance.setText(insurance);
 		}else if(resultCode == newVehicleMaintain){
-			String maintain = (String)data.getSerializableExtra("maintain");
-			showMaintain.setText(maintain);
+			String maintainName = (String)data.getSerializableExtra("maintain_name");
+			String maintainTel = (String)data.getSerializableExtra("maintain_name");
+			showMaintain.setText(maintainName);
+		}else if(resultCode == getCityViolateRegulationsCode){    //设置为违章城市
+			illegalCity = (IllegalCity) data.getSerializableExtra("IllegalCity");
+			if(illegalCity != null){
+				Log.e("illegalCity.getEngine()",illegalCity.getEngine());
+				Log.e("illegalCity.getEngineno()",illegalCity.getEngineno());
+				Log.e("illegalCity.getVehiclenum()",illegalCity.getVehiclenum());
+				Log.e("illegalCity.getVehiclenumno()",illegalCity.getVehiclenumno());
+				Log.e("illegalCity.getRegisternum()",illegalCity.getRegist());
+				Log.e("illegalCity.getVehiclenumno()",illegalCity.getRegistno());
+				engineNumRow.setVisibility(View.VISIBLE);
+				vehicleFrameNumRow.setVisibility(View.VISIBLE);
+				vehicleRegNumRow.setVisibility(View.VISIBLE);
+				city_code = illegalCity.getCityCode();  //城市代码
+				illegalCityStr = illegalCity.getCityName();   //显示需要的城市名字
+				illegalCityTv.setText(illegalCity.getCityName());
+				if(Integer.valueOf(illegalCity.getEngine()) == 0){  //隐藏发动机
+					engineNumRow.setVisibility(View.GONE);
+					engine = 0;
+				}else if(Integer.valueOf(illegalCity.getEngine()) == 1){
+					engine = 1;
+					engineNo = Integer.valueOf(illegalCity.getEngineno());
+					if(engineNo == 0){
+						engineNumber.setHint(this.getResources().getString(R.string.all_engine_num_hint));
+					}else{
+						engineNumber.setHint(this.getResources().getString(R.string.engine_num_hint) + engineNo + this.getResources().getString(R.string.hint_wei));
+						engineNumber.setFilters(new InputFilter[]{new InputFilter.LengthFilter(engineNo)});
+					}
+				}
+				if(Integer.valueOf(illegalCity.getVehiclenum()) == 0){   //隐藏车架号
+					vehicleFrameNumRow.setVisibility(View.GONE);
+					car = 0;
+				}else if(Integer.valueOf(illegalCity.getVehiclenum()) == 1){
+					car = 1;
+					carNo = Integer.valueOf(illegalCity.getVehiclenumno());
+					if(carNo == 0){
+						CJNumber.setHint(this.getResources().getString(R.string.all_vehicle_num_hint));
+					}else{
+						CJNumber.setHint(this.getResources().getString(R.string.vehicle_num_hint) + carNo + this.getResources().getString(R.string.hint_wei));
+						CJNumber.setFilters(new InputFilter[]{new InputFilter.LengthFilter(carNo)});
+					}
+				} 
+				if(Integer.valueOf(illegalCity.getRegist()) == 0 ){    // 隐藏车辆登记证号
+					vehicleRegNumRow.setVisibility(View.GONE);
+					register = 0;
+				}else if(Integer.valueOf(illegalCity.getRegist()) == 1){
+					register = 1;
+					registerNo = Integer.valueOf(illegalCity.getRegistno());
+					if(registerNo == 0){
+						carRegNumber.setHint(this.getResources().getString(R.string.all_register_num_hint));
+					}else{
+						carRegNumber.setHint(this.getResources().getString(R.string.register_num_hint) + registerNo + this.getResources().getString(R.string.hint_wei));
+						carRegNumber.setFilters(new InputFilter[]{new InputFilter.LengthFilter(registerNo)});
+					}
+				}
+				illegalCity = null;
+			}
 		}
 	}
 	private void addCar(){
@@ -519,27 +606,39 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	}
 	
 	
-	public void getDateView(final TextView editText){
-			editText.setOnFocusChangeListener(new View.OnFocusChangeListener() {  
+	public void getDateView(final TextView textView){
+		textView.setOnFocusChangeListener(new View.OnFocusChangeListener() {  
 		        public void onFocusChange(View v, boolean hasFocus) {  
 		            if(hasFocus){  
 		                Calendar c = Calendar.getInstance();  
 		                new DatePickerDialog(NewVehicleActivity.this, new DatePickerDialog.OnDateSetListener() {  
 							public void onDateSet(DatePicker view, int year,int monthOfYear, int dayOfMonth) {
-								editText.setText(year+"/"+(monthOfYear+1)+"/"+dayOfMonth);
+								String tempData = year + "/"+ (monthOfYear + 1) + "/" + dayOfMonth + " 12:3:2";
+								SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+								String data = sdf.format(new Date(tempData));
+								textView.setText(data);
+								buyTime.setHintTextColor(Color.BLACK);
+								insuranceTime.setHintTextColor(Color.BLACK);
+								lastMaintainTime.setHintTextColor(Color.BLACK);
 							}  
 		                }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();  
 		             
 		            }  
 		        }  
 		    });  
-			editText.setOnClickListener(new View.OnClickListener() {  
+		textView.setOnClickListener(new View.OnClickListener() {  
 				public void onClick(View v) {
 					Calendar c = Calendar.getInstance();
 					new DatePickerDialog(NewVehicleActivity.this,
 							new DatePickerDialog.OnDateSetListener() {
 								public void onDateSet(DatePicker view, int year,int monthOfYear, int dayOfMonth) {
-									editText.setText(year + "/"+ (monthOfYear + 1) + "/" + dayOfMonth);
+									String tempData = year + "/"+ (monthOfYear + 1) + "/" + dayOfMonth + " 12:3:2";
+									SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+									String data = sdf.format(new Date(tempData));
+									textView.setText(data);
+									buyTime.setHintTextColor(Color.BLACK);
+									insuranceTime.setHintTextColor(Color.BLACK);
+									lastMaintainTime.setHintTextColor(Color.BLACK);
 								}
 							}, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
 				}
@@ -570,7 +669,7 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 				}
 			}).start();
               if(vehicleLogoBitmap != null){
-            	  createImage(imagePath + brank + ".jpg",vehicleLogoBitmap);
+            	  createImage(imagePath + carBrank + ".jpg",vehicleLogoBitmap);
               }
               Log.e("服务器的图片",imageUrl);
 		}

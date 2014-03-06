@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.Variable;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -44,7 +46,7 @@ import android.widget.Toast;
 public class ChoiceInsuranceActivity extends Activity implements IXListViewListener{
 	private XListView insuranceList = null;
 	private InsuranceAdapter adapter = null;
-	private List<String> dateList = null;
+	private List<String[]> dateList = null;
 	private int code = 0;
 	private ImageView choiceInsuranceCancle = null;
 	
@@ -56,6 +58,7 @@ public class ChoiceInsuranceActivity extends Activity implements IXListViewListe
 	
 	private DBExcute dBExcute = null;
 	private DBHelper dbHelper = null;
+	private static final String insurance_title_name = "insurance";
 	
 	
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +73,6 @@ public class ChoiceInsuranceActivity extends Activity implements IXListViewListe
 				ChoiceInsuranceActivity.this.finish();
 			}
 		});
-		dateList = new ArrayList<String>();
 		myHandler = new MyHandler();
 		insuranceList.setXListViewListener(this);
 		//不设置上拉加载无效
@@ -88,13 +90,12 @@ public class ChoiceInsuranceActivity extends Activity implements IXListViewListe
 	
 	private void getData() {
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		 Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base + " where Title = ?", new String[]{"insurance"});
+		 Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base + " where Title = ?", new String[]{insurance_title_name});
 		 JSONArray jsonArray = null;
 		if(cursor.moveToFirst()){
 			progressDialog.dismiss();
 			try {
 				jsonArray = new JSONArray(cursor.getString(cursor.getColumnIndex("Content")));
-				Log.e("数据库获取的诗数据：",jsonArray.length()+"");
 				setListData(jsonArray);
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -110,56 +111,45 @@ public class ChoiceInsuranceActivity extends Activity implements IXListViewListe
 			case getInsuranceCode :
 				progressDialog.dismiss();
 				String insurance = msg.obj.toString();
+				JSONArray jsonArray = null;
 				Log.e("服务器的保险公司：",msg.obj.toString());
-				
+				//存储到数据库
 				if(!"".equals(insurance)){
 					ContentValues contentValues = new ContentValues();
-					contentValues.put("Title", "insurance");
+					contentValues.put("Cust_id", Variable.cust_id);
+					contentValues.put("Title", insurance_title_name);
 					contentValues.put("Content", insurance);
 					dBExcute.InsertDB(ChoiceInsuranceActivity.this, contentValues, Constant.TB_Base);
 					try {
-						JSONArray jsonArray = new JSONArray(insurance);
-						int insuranceLength = jsonArray.length();
-						for(int i = 0 ; i < insuranceLength ; i ++){
-							JSONObject jsonObject = jsonArray.getJSONObject(i);
-							Log.e("保险公司：",jsonObject.getString("name"));
-							dateList.add(jsonObject.getString("name"));
-						}
+						jsonArray = new JSONArray(insurance);
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
 				}else{
 					Toast.makeText(getApplicationContext(), "获取数据失败，稍后再试", 0).show();
 				}
-				setListData(dateList);
+				setListData(jsonArray);
 				break;
 				
 			case refreshInsurance:
 				onLoad();
 				String refInsurance = msg.obj.toString();
-				Log.e("刷新得到服务器的保险公司：",msg.obj.toString());
-				
 				if(!"".equals(refInsurance)){
-					ContentValues contentValues = new ContentValues();
-					contentValues.put("Title", "insurance");
-					contentValues.put("Content", refInsurance);
-					//TODO 更新数据库
-//					dBExcute.InsertDB(ChoiceInsuranceActivity.this, contentValues, Constant.TB_Base);
 					try {
-						JSONArray jsonArray = new JSONArray(refInsurance);
-						int insuranceLength = jsonArray.length();
-						for(int i = 0 ; i < insuranceLength ; i ++){
-							JSONObject jsonObject = jsonArray.getJSONObject(i);
-							Log.e("保险公司：",jsonObject.getString("name"));
-							dateList.add(jsonObject.getString("name"));
-						}
+						JSONArray newDatas = new JSONArray(refInsurance);
+						//更新数据库
+						ContentValues values = new ContentValues();
+						values.put("Cust_id", Variable.cust_id);
+						values.put("Ttitle", insurance_title_name);
+						values.put("Content", refInsurance);
+						dBExcute.UpdateDB(ChoiceInsuranceActivity.this, values, "Title=?", new String[]{insurance_title_name}, Constant.TB_Base);
+						setListData(newDatas);
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
 				}else{
-					Toast.makeText(getApplicationContext(), "获取数据失败，稍后再试", 0).show();
+					Toast.makeText(getApplicationContext(), "刷新失败", 0).show();
 				}
-				setListData(dateList);
 				break;
 			default:
 				return;
@@ -167,30 +157,30 @@ public class ChoiceInsuranceActivity extends Activity implements IXListViewListe
 		}
 	}
 	
-	private void setListData(Object obj) {
-		List<String> data = null;
-		if(obj instanceof List){
-			data = (List<String>) obj;
-		}else if(obj instanceof JSONArray){
-			try {
-				data = new ArrayList<String>();
-				JSONArray jsonArray = (JSONArray) obj;
-				int length = jsonArray.length();
-				for(int i = 0 ; i < length ; i ++){
-					data.add(jsonArray.getJSONObject(i).getString("name"));
-				}
-			} catch (JSONException e) {
-				e.printStackTrace();
+	private void setListData(JSONArray obj) {
+		dateList = new ArrayList<String[]>();
+		try {
+			for(int i = 0 ; i < obj.length() ; i ++){
+				String[] str = new String[2];
+				str[0] = obj.getJSONObject(i).getString("name");
+				str[1] = obj.getJSONObject(i).getString("service_phone");
+				dateList.add(str);
 			}
+		} catch (JSONException e) {
+			e.printStackTrace();
 		}
-		adapter = new InsuranceAdapter(getApplicationContext(), data);
+		adapter = new InsuranceAdapter(getApplicationContext(), dateList);
 		insuranceList.setAdapter(adapter);
 		insuranceList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				
-				String text = (String) arg0.getItemAtPosition(arg2);
+				String name = dateList.get(arg2)[0];
+				Log.e("保险公司名字：",name);
+				String phone = dateList.get(arg2)[0];
+				Log.e("保险公司电话：",phone);
 				Intent intent = new Intent();
-				intent.putExtra("ClickItem", text);
+				intent.putExtra("insurance_name", name);
+				intent.putExtra("insurance_phone", phone);
 				if(code == NewVehicleActivity.newVehicleInsurance){
 					ChoiceInsuranceActivity.this.setResult(NewVehicleActivity.newVehicleInsurance, intent);
 				}else if(code == MyVehicleActivity.resultCodeInsurance){
@@ -203,12 +193,6 @@ public class ChoiceInsuranceActivity extends Activity implements IXListViewListe
 	}
 	
 	public void onRefresh() {
-//		new Handler(){
-//			public void handleMessage(Message msg) {
-//				super.handleMessage(msg);
-//				onLoad();
-//			}
-//		}.sendMessageDelayed(new Message(), 1000);
 		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "base/insurance", refreshInsurance)).start();
 	}
 	public void onLoadMore() {

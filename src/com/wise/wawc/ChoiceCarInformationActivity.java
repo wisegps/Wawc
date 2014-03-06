@@ -66,7 +66,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 	private List<BrankModel> brankModelList = new ArrayList<BrankModel>();    //车辆品牌集合
 	
 	private List<String> brankLogo = null;
-	private List<String> carIdList = new ArrayList<String>();
+	private List<String[]> brandList = new ArrayList<String[]>();
 	private List<String[]> carSeriesList = new ArrayList<String[]>();
 	private List<String> carSeriesNameList = new ArrayList<String>();
 	private String[] brankTemp;
@@ -142,8 +142,14 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		vehicleBrankList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				carBrank = ((BrankModel)brankAdapter.getItem(arg2 - 1)).getVehicleBrank();
-				carBrankId = carIdList.get(arg2 - 1);
-//				String carLogo = brankLogo.get(arg2 - 1);
+				//  TODO
+				
+				TextView textView = (TextView)vehicleBrankList.getChildAt(arg2).findViewById(R.id.list_brank);
+				Log.e("textView:",textView.getText().toString());
+				carBrank = brandList.get(arg2 - 2)[0];
+				carBrankId = brandList.get(arg2 - 2)[1];
+				Log.e("品牌id:",carBrankId);
+				Log.e("品牌:",carBrank);
 				//点击品牌列表   选择车型
 				progressDialog = ProgressDialog.show(ChoiceCarInformationActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 				progressDialog.setCancelable(true);
@@ -326,12 +332,18 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		progressDialog.dismiss();
 		switch(what){
 		case GET_BRANK:   //解析车牌数据
+			brandList.clear();
 			try {
 				int arrayLength = jsonArray.length();
 				StringBuffer sb = new StringBuffer();
 				for(int i = 0 ; i < arrayLength ; i ++){
+					String[] str = new String[2];
 					JSONObject jsonObj = jsonArray.getJSONObject(i);
-					carIdList.add(jsonObj.getString("id"));
+					Log.e("品牌：",jsonObj.getString("name"));
+					Log.e("品牌id：",jsonObj.getString("id"));
+					str[0] = jsonObj.getString("name");
+					str[1] = jsonObj.getString("id");
+					brandList.add(str);
 					if(i < arrayLength){
 						sb.append(jsonObj.get("name")+",");
 					}else{

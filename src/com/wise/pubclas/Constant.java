@@ -221,4 +221,6 @@ public class Constant {
 	
 	public static String smallImage = "small_pic";
 	public static String bigImage = "big_pic";
+	
+	public static String Maintain = "maintain";   //数据库4s店表  标题（由maintain/城市/品牌构成）
 }

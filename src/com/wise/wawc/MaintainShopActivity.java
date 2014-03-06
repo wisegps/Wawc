@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.http.client.utils.URLEncodedUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,11 +47,11 @@ public class MaintainShopActivity extends Activity {
 	private Intent intent = null;
 	private int code = 0;
 	private String brank = "";
+	private String city = "";
 	ProgressDialog progressDialog = null;
 	private MyHandler myHandler = null;
 	private static final int getMaintainShopCode = 2;
-	private SharedPreferences sharedPreferences = null;
-	private List<String> MaintainList = new ArrayList<String>();
+	private List<String[]> MaintainList = new ArrayList<String[]>();
 	private ImageView choiceMaintainCancle = null;
 	
 	protected void onCreate(Bundle savedInstanceState) {
@@ -61,37 +62,29 @@ public class MaintainShopActivity extends Activity {
 		choiceMaintainCancle.setOnClickListener(new ClickListener());
 		intent = getIntent();
 		code = intent.getIntExtra("code", 0);
-		brank = (String) intent.getSerializableExtra("brank");
+		brank = (String) intent.getStringExtra("brank");
+		city = (String) intent.getStringExtra("city");
 		myHandler = new MyHandler();
 		progressDialog = ProgressDialog.show(MaintainShopActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 		progressDialog.setCancelable(true);
-		sharedPreferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
-		if("".equals(sharedPreferences.getString(Constant.FourShopParmeter, "")) || "".equals(brank)){
-			progressDialog.dismiss();
-			Toast.makeText(getApplicationContext(), "城市或者品牌为选择", 0).show();
-			MaintainShopActivity.this.finish();
-			return;
-		}else{
-			String URLBrank = "";
-			try {
-				URLBrank = URLEncoder.encode(brank, "UTF-8");
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			//查询数据库
+//			查询数据库
 			DBHelper dBHelper = new DBHelper(MaintainShopActivity.this);
 			SQLiteDatabase reader = dBHelper.getReadableDatabase();
-			Cursor cursor = reader.rawQuery("select * from " + Constant.TB_Base + " where Title = ?", new String[]{"maintain/" + sharedPreferences.getString("Constant.FourShopParmeter", "") + "/" + brank});
+			Cursor cursor = reader.rawQuery("select * from " + Constant.TB_Base + " where Title = ?", new String[]{Constant.Maintain + "/" + city + "/" + brank});
 			if(cursor.moveToFirst()){
 				parseJSON(cursor.getString(cursor.getColumnIndex("Content")));
 				progressDialog.dismiss();
-				Log.e("查询数据库","查询数据库");
 			}else{
-				Log.e("查询服务器","查询服务器");
-				new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "base/dealer?city_spell=" + sharedPreferences.getString(Constant.FourShopParmeter, "") + "&brand=" + URLBrank, getMaintainShopCode)).start();
+				String urlCity = "";
+				String urlBrank = "";
+				try {
+					urlBrank = URLEncoder.encode(brank, "UTF-8");
+					urlCity = URLEncoder.encode(city, "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+				new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "base/dealer?city=" + urlCity + "&brand=" + urlBrank + "&cust_id=" + Variable.cust_id, getMaintainShopCode)).start();
 			}
-		}
 		
 	}
 	
@@ -100,18 +93,16 @@ public class MaintainShopActivity extends Activity {
 			switch(msg.what){
 			case getMaintainShopCode:
 				progressDialog.dismiss();
-				Log.e("4s保养店商家:",msg.obj+"");
 				//存在数据库
 				if(!"[]".equals(msg.obj.toString())){
 					DBExcute dBExcute = new DBExcute();
 					ContentValues values = new ContentValues();
 					values.put("Cust_id", Variable.cust_id);
-					values.put("Title", "maintain/" + sharedPreferences.getString("Constant.FourShopParmeter", "") + "/" + brank);
+					values.put("Title", Constant.Maintain + "/" + city + "/" + brank);
 					values.put("Content", msg.obj.toString());
 					dBExcute.InsertDB(MaintainShopActivity.this, values, Constant.TB_Base);
 					parseJSON(msg.obj.toString());
 				}
-				
 				break;
 			default:
 				return;
@@ -135,8 +126,11 @@ public class MaintainShopActivity extends Activity {
 			MaintainList.clear();
 			JSONArray jsonArray = new JSONArray(jsonData);
 			for(int i = 0 ; i < jsonArray.length() ; i ++){
+				String[] str = new String[2];
 				JSONObject jsonObject = jsonArray.getJSONObject(i);
-				MaintainList.add(jsonObject.getString("name"));
+				str[0] = jsonObject.getString("name");
+				str[1] = jsonObject.getString("tel");
+				MaintainList.add(str);
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -146,14 +140,15 @@ public class MaintainShopActivity extends Activity {
 		maintainList.setAdapter(maintainAdapter);
 		maintainList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
-//				TextView textView = (TextView)arg0.getChildAt(arg2).findViewById(R.id.vehicle_maintain_name);
-				TextView textView = (TextView)maintainList.getChildAt(arg2).findViewById(R.id.vehicle_maintain_name);
+//				TextView textView = (TextView)maintainList.getChildAt(arg2).findViewById(R.id.vehicle_maintain_name);
+				String maintainName = MaintainList.get(arg2)[0];
+				String maintainTel = MaintainList.get(arg2)[1];
 				Intent intents = new Intent();
-				intents.putExtra("maintain", textView.getText().toString());
+				intents.putExtra("maintain_name", maintainName);
+				intents.putExtra("maintain_phone", maintainTel);
 				if(code == MyVehicleActivity.resultCodeMaintain){
 					MaintainShopActivity.this.setResult(MyVehicleActivity.resultCodeMaintain, intents);
 				}else if(code == NewVehicleActivity.newVehicleMaintain){
-					Log.e("选择的item",intents.getSerializableExtra("maintain").toString());
 					MaintainShopActivity.this.setResult(NewVehicleActivity.newVehicleMaintain, intents);
 				}
 				MaintainShopActivity.this.finish();

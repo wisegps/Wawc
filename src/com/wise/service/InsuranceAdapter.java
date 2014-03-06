@@ -33,9 +33,9 @@ import android.widget.TextView;
 public class InsuranceAdapter extends BaseAdapter {
     private Context context;
     private LayoutInflater layoutInflater;
-    private List<String> DataList;
+    private List<String[]> DataList;
 
-    public InsuranceAdapter(Context context, List<String> DataList) {
+    public InsuranceAdapter(Context context, List<String[]> DataList) {
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
         this.DataList = DataList;
@@ -59,7 +59,7 @@ public class InsuranceAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(R.layout.insurance_adapter, null);
             holder = new ViewHolder();
             holder.insurance_name = (TextView) convertView.findViewById(R.id.insurance_item_name);
-            holder.insurance_name.setText(DataList.get(0));
+            holder.insurance_name.setText(DataList.get(position)[0]);
             convertView.setTag(holder);
         }else{
             holder = (ViewHolder) convertView.getTag();
