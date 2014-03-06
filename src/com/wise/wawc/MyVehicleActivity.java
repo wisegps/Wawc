@@ -250,6 +250,15 @@ public class MyVehicleActivity extends Activity{
 			Variable.illegalProvinceList = illegalList;
 			myDialog.dismiss();
 		}
+
+        
+        Intent intent = getIntent();
+        isJump = intent.getBooleanExtra("isJump", false);
+        if(isJump){
+            menu.setImageResource(R.drawable.nav_back);
+        }else{
+            menu.setImageResource(R.drawable.side_left);
+        }
 	}
 	protected void onResume() {
 		super.onResume();
@@ -302,9 +311,6 @@ public class MyVehicleActivity extends Activity{
 		editVehicle.setOnClickListener(new ClickListener());
 		brand.setOnClickListener(new ClickListener());
 		insuranceCompany.setOnClickListener(new ClickListener());
-		
-		Intent intent = getIntent();
-		isJump = intent.getBooleanExtra("isJump", false);
 
 		width = getWindowManager().getDefaultDisplay().getWidth();
 		final Message msg = new Message();
@@ -334,8 +340,8 @@ public class MyVehicleActivity extends Activity{
 				}else{
 					if(CheckDatas()){
 						commitData();
-						ActivityFactory.A.LeftMenu();
 					}
+                    ActivityFactory.A.LeftMenu();
 				}
 				break;
 			case R.id.iv_my_vehicle_brank:    //选择汽车品牌
@@ -732,21 +738,11 @@ public class MyVehicleActivity extends Activity{
 	 long touchTime = 0;
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-    	if(isJump){
-    		MyVehicleActivity.this.finish();
-    	}else{
-	        if (keyCode == KeyEvent.KEYCODE_BACK) {
-	            long currentTime = System.currentTimeMillis();
-	            if (touchTime == 0 || (currentTime - touchTime) >= waitTime) {
-	            	showToast("再按一次退出客户端");
-	                touchTime = currentTime;
-	            } else {
-	            	commitData();
-	                finish();
-	            }
-	            return true;
-	        }
-    	}
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if(!isJump){
+                finish();
+            }
+        }
         return super.onKeyDown(keyCode, event);
     }
     
