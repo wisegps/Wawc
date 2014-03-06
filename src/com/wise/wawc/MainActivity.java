@@ -69,7 +69,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     ImageView iv_activity_main_logo,iv_activity_main_login_sina,
             iv_activity_main_login_qq,iv_voice,iv_activity_main_arrow;
     TextView tv_activity_main_name;
-    RelativeLayout refuel,maintain,wishCar,help,insurance,park;
     private ParseFaceThread thread = null;
     double Multiple = 0.5;
     PicHorizontalScrollView hsv_pic;
@@ -91,20 +90,18 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         ActivityFactory.A = this;
         slidingMenuView = (SlidingMenuView) findViewById(R.id.sliding_menu_view);
         
-//        refuel = (RelativeLayout) findViewById(R.id.rl_activity_main_oil);  //加油
-//        maintain = (RelativeLayout) findViewById(R.id.rl_activity_main_maintain);  //维保
-//        wishCar = (RelativeLayout) findViewById(R.id.rl_activity_main_wash);   //洗车
-//        help = (RelativeLayout) findViewById(R.id.rl_activity_main_help);   //救援
-//        insurance = (RelativeLayout) findViewById(R.id.rl_activity_main_safety);   //保险
-//        park = (RelativeLayout) findViewById(R.id.rl_activity_main_park);    //停车
-//        refuel.setOnClickListener(onClickListener);
-//        maintain.setOnClickListener(onClickListener);
-//        wishCar.setOnClickListener(onClickListener);
-//        help.setOnClickListener(onClickListener);
-//        insurance.setOnClickListener(onClickListener);
-//        park.setOnClickListener(onClickListener);
-        
-        
+        TextView tv_oil = (TextView)findViewById(R.id.tv_oil);
+        tv_oil.setOnClickListener(onClickListener);
+        TextView tv_wb = (TextView)findViewById(R.id.tv_wb);
+        tv_wb.setOnClickListener(onClickListener);
+        TextView tv_xc = (TextView)findViewById(R.id.tv_xc);
+        tv_xc.setOnClickListener(onClickListener);
+        TextView tv_jw = (TextView)findViewById(R.id.tv_jw);
+        tv_jw.setOnClickListener(onClickListener);
+        TextView tv_bx = (TextView)findViewById(R.id.tv_bx);
+        tv_bx.setOnClickListener(onClickListener);
+        TextView tv_Parking = (TextView)findViewById(R.id.tv_Parking);
+        tv_Parking.setOnClickListener(onClickListener);
         
         tabcontent = (ViewGroup) slidingMenuView
                 .findViewById(R.id.sliding_body);
@@ -262,28 +259,40 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                     }
                 }
                 break;
-//            case R.id.rl_activity_main_oil:   //加油
-//            	voiceSerachResult("加油站");
-//            	Log.e("加油站","加油站");
-//            	break;
-//            case R.id.rl_activity_main_maintain:   //维保
-//            	voiceSerachResult("车辆维修");
-//            	break;
-//            case R.id.rl_activity_main_wash:    //洗车
-//            	voiceSerachResult("洗车店");
-//            	break;
-//            case R.id.rl_activity_main_help:   //救援
-//            	voiceSerachResult("车辆救援");
-//            	break;
-//            case R.id.rl_activity_main_safety:   //保险
-//            	voiceSerachResult("车辆保险");
-//            	break;
-//            case R.id.rl_activity_main_park:    //停车
-//            	voiceSerachResult("停车场");
-//            	break;
+            case R.id.tv_oil:
+                ToSearchMap("加油站");
+                break;
+            case R.id.tv_xc:
+                ToSearchMap("洗车");
+                break;
+            case R.id.tv_Parking:
+                ToSearchMap("停车场");
+                break;
+            case R.id.tv_wb:
+                ToSearchMap(getString(R.string.four_s));
+                break;
+            case R.id.tv_jw:
+                SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+                int DefaultVehicleID = preferences.getInt(Constant.DefaultVehicleID, 0);
+                Intent intent_help = new Intent(MainActivity.this, ShareLocationActivity.class);
+                intent_help.putExtra("reason", "救援 ");
+                intent_help.putExtra("index", DefaultVehicleID);
+                MainActivity.this.startActivity(intent_help);
+                break;
+            case R.id.tv_bx:
+                Intent intent_Insurance = new Intent(MainActivity.this, ChoiceInsuranceActivity.class);
+                startActivity(intent_Insurance);
+                break;
             }
         }
     };
+    
+    private void ToSearchMap(String keyWord) {
+        Intent intent = new Intent(MainActivity.this,
+                SearchMapActivity.class);
+        intent.putExtra("keyWord", keyWord);
+        startActivity(intent);
+    }
 
     Handler handler = new Handler() {
         @Override
@@ -599,7 +608,12 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
      */
     public void ToAccountHome() {
         if (platformQQ.getDb().isValid() || platformSina.getDb().isValid()) {
-            startActivity(new Intent(MainActivity.this, AccountActivity.class));
+            slidingMenuView.snapToScreen(1);
+            Intent i = new Intent(MainActivity.this, AccountActivity.class);
+            View view = getLocalActivityManager().startActivity(
+                    AccountActivity.class.getName(), i).getDecorView();
+            tabcontent.removeAllViews();
+            tabcontent.addView(view);
         } else {
             Toast.makeText(getApplicationContext(), "请登录", Toast.LENGTH_SHORT)
                     .show();
@@ -764,9 +778,9 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                 iv_activity_main_arrow.setVisibility(View.INVISIBLE);
                 iv_activity_main_logo.setImageResource(R.drawable.side_icon_avatar);
                 iv_activity_main_login_sina.setVisibility(View.VISIBLE);
-                iv_activity_main_login_sina.setImageResource(R.drawable.side_icon_sina_press);
+                iv_activity_main_login_sina.setImageResource(R.drawable.home_sina);
                 iv_activity_main_login_qq.setVisibility(View.VISIBLE);
-                iv_activity_main_login_qq.setImageResource(R.drawable.side_icon_qq_press);
+                iv_activity_main_login_qq.setImageResource(R.drawable.home_qq);
                 tv_activity_main_name.setText("未登录");
             }
         }

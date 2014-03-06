@@ -72,7 +72,7 @@ public class TrafficActivity extends Activity implements IXListViewListener{
         gv_activity_traffic.setAdapter(carAdapter);
         
         int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 120, getResources().getDisplayMetrics());
-		LayoutParams params = new LayoutParams(Variable.carDatas.size() * (px + 10),LayoutParams.WRAP_CONTENT);
+		LayoutParams params = new LayoutParams((Variable.carDatas.size() * (px + 10)+10),LayoutParams.WRAP_CONTENT);
 		gv_activity_traffic.setLayoutParams(params);
 		gv_activity_traffic.setColumnWidth(px);
 		gv_activity_traffic.setHorizontalSpacing(10);

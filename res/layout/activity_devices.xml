@@ -31,7 +31,11 @@
 	    android:layout_marginBottom="@dimen/double_margins"
 	    android:background="@color/white"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/margins"
+        android:paddingTop="@dimen/margins"
+        android:paddingBottom="@dimen/margins"
+        android:scrollbars="none">
 		<LinearLayout 
 		    android:layout_width="wrap_content"
 			android:layout_height="wrap_content" 
@@ -39,11 +43,10 @@
 			<GridView 
 			    android:id="@+id/gv_activity_devices"
 			    android:layout_width="fill_parent"
-			    android:layout_height="wrap_content"
-			    android:listSelector="@drawable/bg_item_selector"
-			    android:numColumns="auto_fit"
-			    android:stretchMode="columnWidth"
-			    android:horizontalSpacing="10dp"/>
+                android:layout_height="wrap_content"
+                android:listSelector="@drawable/bg_item_selector"
+                android:numColumns="auto_fit"
+                android:stretchMode="columnWidth"/>
 		</LinearLayout>
 	</HorizontalScrollView>
 	<LinearLayout 

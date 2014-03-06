@@ -37,7 +37,6 @@
 	            android:layout_height="wrap_content"
 	            android:layout_centerVertical="true"	            
 	            android:textSize="@dimen/main"
-	            android:textStyle="bold"
 	            android:textColor="@color/common"
 	            android:layout_toLeftOf="@id/iv_share"
                 android:layout_marginRight="@dimen/margins"

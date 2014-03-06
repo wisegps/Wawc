@@ -270,13 +270,13 @@ public class MyVehicleActivity extends Activity{
 		}
 		//车辆数据
 		int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Constant.ImageWidth, getResources().getDisplayMetrics());
-		LayoutParams params = new LayoutParams(Variable.carDatas.size() * (px + 10),LayoutParams.WRAP_CONTENT);
+		LayoutParams params = new LayoutParams((Variable.carDatas.size() * (px + 10) + 10),LayoutParams.WRAP_CONTENT);
 		//汽车品牌Logo
 		carAdapter = new CarAdapter(MyVehicleActivity.this,Variable.carDatas);
 		vehicleGridView.setAdapter(carAdapter);
 		vehicleGridView.setLayoutParams(params);
 		vehicleGridView.setColumnWidth(px);
-		vehicleGridView.setHorizontalSpacing(6);
+		vehicleGridView.setHorizontalSpacing(10);
 		vehicleGridView.setStretchMode(GridView.NO_STRETCH);
 		vehicleGridView.setNumColumns(Variable.carDatas.size());
 		vehicleGridView.setOnItemClickListener(new OnItemClickListener() {

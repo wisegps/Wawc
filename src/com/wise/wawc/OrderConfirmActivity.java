@@ -66,11 +66,11 @@ public class OrderConfirmActivity extends Activity{
 				break;
 			case R.id.bt_activity_order_confirm_submit:
 				Toast.makeText(OrderConfirmActivity.this, "提交订单",Toast.LENGTH_SHORT).show();
-				//submitOrder();
-				Intent intent = new Intent(Constant.A_Order);
-				sendBroadcast(intent);
-				WawcApplication.getActivityInstance().exit();
-				ActivityFactory.A.Toorders();
+				submitOrder();
+				//Intent intent = new Intent(Constant.A_Order);
+				//sendBroadcast(intent);
+				//WawcApplication.getActivityInstance().exit();
+				//ActivityFactory.A.Toorders();
 				break;
 			case R.id.rl_client:
 			    iv_client.setVisibility(View.VISIBLE);

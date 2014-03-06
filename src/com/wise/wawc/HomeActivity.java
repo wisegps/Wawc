@@ -130,14 +130,16 @@ public class HomeActivity extends Activity{
         ScrollLayout_car.setOnViewChangeListener(new OnViewChangeListener() {            
             @Override
             public void OnViewChange(int view) {
-                DefaultVehicleID = view;
-                iv_car_traffic.setVisibility(View.GONE);
-                iv_car_status.setVisibility(View.GONE);
-                changeImage(view);
-                saveVehicleID(view);
-                notiRemind(view);
-                getCarInfo(view);
-                getCarRemindFromUrl(view);
+                if(Variable.carDatas.size()!=0){
+                    DefaultVehicleID = view;
+                    iv_car_traffic.setVisibility(View.GONE);
+                    iv_car_status.setVisibility(View.GONE);
+                    changeImage(view);
+                    saveVehicleID(view);
+                    notiRemind(view);
+                    getCarInfo(view);
+                    getCarRemindFromUrl(view);
+                }
             }            
             @Override
             public void OnLastView() {}
@@ -228,27 +230,37 @@ public class HomeActivity extends Activity{
         System.out.println("showCar");
         ScrollLayout_car.removeAllViews();
         mTextViews = new TextView[carDatas.size()][2];
-        for(int i = 0 ; i < carDatas.size() ; i++){
-            CarData carData = carDatas.get(i);
+        if(carDatas.size() == 0){
             View view = LayoutInflater.from(HomeActivity.this).inflate(R.layout.item_home_car, null);
             ScrollLayout_car.addView(view);
+            ImageView iv_carLogo = (ImageView)view.findViewById(R.id.iv_carLogo);
+            iv_carLogo.setImageResource(R.drawable.body_nothing_icon);
             TextView tv_car_number = (TextView)view.findViewById(R.id.tv_car_number);
             tv_car_number.setOnClickListener(onClickListener);
-            ImageView iv_carLogo = (ImageView)view.findViewById(R.id.iv_carLogo);
-            TextView tv_activity_home_car_adress = (TextView)view.findViewById(R.id.tv_activity_home_car_adress);
-            tv_activity_home_car_adress.setText("车辆位置获取中...");
-            tv_activity_home_car_adress.setOnClickListener(onClickListener);
-            mTextViews[i][0] = tv_activity_home_car_adress;
-            TextView tv_updateTime = (TextView)view.findViewById(R.id.tv_updateTime);
-            mTextViews[i][1] = tv_updateTime;
-            tv_car_number.setText(carData.getObj_name());
-            Bitmap bimage = BitmapFactory.decodeFile(carData.getLogoPath());
-            if(bimage != null){            
-                iv_carLogo.setImageBitmap(bimage);
-            }else{
-                iv_carLogo.setImageResource(R.drawable.body_nothing_icon);
+            tv_car_number.setText("点击添加车辆");
+        }else{
+            for(int i = 0 ; i < carDatas.size() ; i++){
+                CarData carData = carDatas.get(i);
+                View view = LayoutInflater.from(HomeActivity.this).inflate(R.layout.item_home_car, null);
+                ScrollLayout_car.addView(view);
+                TextView tv_car_number = (TextView)view.findViewById(R.id.tv_car_number);
+                tv_car_number.setOnClickListener(onClickListener);
+                ImageView iv_carLogo = (ImageView)view.findViewById(R.id.iv_carLogo);
+                TextView tv_activity_home_car_adress = (TextView)view.findViewById(R.id.tv_activity_home_car_adress);
+                tv_activity_home_car_adress.setText("车辆位置获取中...");
+                tv_activity_home_car_adress.setOnClickListener(onClickListener);
+                mTextViews[i][0] = tv_activity_home_car_adress;
+                TextView tv_updateTime = (TextView)view.findViewById(R.id.tv_updateTime);
+                mTextViews[i][1] = tv_updateTime;
+                tv_car_number.setText(carData.getObj_name());
+                Bitmap bimage = BitmapFactory.decodeFile(carData.getLogoPath());
+                if(bimage != null){            
+                    iv_carLogo.setImageBitmap(bimage);
+                }else{
+                    iv_carLogo.setImageResource(R.drawable.body_nothing_icon);
+                }
             }
-        }
+        }        
         ll_image.removeAllViews();
         for(int i = 0 ; i < carDatas.size() ; i++){
             ImageView imageView = new ImageView(this);
@@ -328,9 +340,14 @@ public class HomeActivity extends Activity{
                 HomeActivity.this.startActivity(intent_adress);
                 break;
             case R.id.tv_car_number: // 我的爱车
-                Intent intent = new Intent(HomeActivity.this,MyVehicleActivity.class);
-                intent.putExtra("isJump", true);
-                HomeActivity.this.startActivity(intent);
+                if(Variable.carDatas.size() == 0){
+                    Intent intent = new Intent(HomeActivity.this,NewVehicleActivity.class);
+                    HomeActivity.this.startActivity(intent);
+                }else{
+                    Intent intent = new Intent(HomeActivity.this,MyVehicleActivity.class);
+                    intent.putExtra("isJump", true);
+                    HomeActivity.this.startActivity(intent);
+                }                
                 break;
             case R.id.iv_home_say_something:
             	iatRecognizer=SpeechRecognizer.createRecognizer(HomeActivity.this);
