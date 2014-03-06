@@ -38,6 +38,7 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
@@ -76,6 +77,8 @@ public class SelectCityActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_city);
+        ImageView iv_select_city_back = (ImageView)findViewById(R.id.iv_select_city_back);
+        iv_select_city_back.setOnClickListener(onClickListener);
         ll_activity_select_city = (LinearLayout) findViewById(R.id.ll_activity_select_city);
         tv_select_city_title = (TextView) findViewById(R.id.tv_select_city_title);
         tv_activity_select_city_location = (TextView) findViewById(R.id.tv_activity_select_city_location);
@@ -199,7 +202,8 @@ public class SelectCityActivity extends Activity {
                 clickLocationCity();
                 break;
 
-            default:
+            case R.id.iv_select_city_back:
+                finish();
                 break;
             }
         }

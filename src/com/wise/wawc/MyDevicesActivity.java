@@ -131,7 +131,7 @@ public class MyDevicesActivity extends Activity{
 	    devicesAdapter = new DevicesAdapter();
 	    gv_activity_devices.setAdapter(devicesAdapter);
         int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 120, getResources().getDisplayMetrics());
-        LayoutParams params = new LayoutParams((devicesDatas.size() * (px + 10) + 10),LayoutParams.WRAP_CONTENT);
+        LayoutParams params = new LayoutParams(((devicesDatas.size() * (px + 10) + 10) + 10 ),LayoutParams.WRAP_CONTENT);
         
         gv_activity_devices.setLayoutParams(params);
         gv_activity_devices.setColumnWidth(px);

@@ -266,13 +266,13 @@ public class MyVehicleActivity extends Activity{
 		}
 		//车辆数据
 		int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Constant.ImageWidth, getResources().getDisplayMetrics());
-		LayoutParams params = new LayoutParams(Variable.carDatas.size() * (px + 10),LayoutParams.WRAP_CONTENT);
+		LayoutParams params = new LayoutParams((Variable.carDatas.size() * (px + 10) + 10),LayoutParams.WRAP_CONTENT);
 		//汽车品牌Logo
 		carAdapter = new CarAdapter(MyVehicleActivity.this,Variable.carDatas);
 		vehicleGridView.setAdapter(carAdapter);
 		vehicleGridView.setLayoutParams(params);
 		vehicleGridView.setColumnWidth(px);
-		vehicleGridView.setHorizontalSpacing(6);
+		vehicleGridView.setHorizontalSpacing(10);
 		vehicleGridView.setStretchMode(GridView.NO_STRETCH);
 		vehicleGridView.setNumColumns(Variable.carDatas.size());
 		vehicleGridView.setOnItemClickListener(new OnItemClickListener() {
@@ -411,7 +411,7 @@ public class MyVehicleActivity extends Activity{
 			//设置选择的保险公司
 			String insurance = (String) data.getSerializableExtra("insurance_name");
 			String insurance_phone = (String) data.getSerializableExtra("insurance_phone");
-			showInsuranceCompany.setText(insurance);
+			showInsuranceCompany.setText(data.getStringExtra("insurance_name"));
 			//更改静态类
 			Variable.carDatas.get(chickIndex).setInsurance_company(insurance);
 		}

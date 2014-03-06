@@ -224,8 +224,7 @@
 	               android:gravity="center"
 	               android:text="搜索"
 	               android:textColor="@color/white"
-	               android:textSize="@dimen/title"
-	               android:textStyle="bold" />
+	               android:textSize="@dimen/head"/>
 	       </RelativeLayout>
 	       <RelativeLayout 
 	           android:layout_width="fill_parent"
@@ -252,6 +251,7 @@
 	           android:layout_height="1dp"
 	           android:background="@drawable/body_line"/>
 	       <TextView 
+	           android:id="@+id/tv_oil"
 	           android:layout_width="fill_parent"
 	           android:layout_height="wrap_content"
 	           android:padding="@dimen/margins"
@@ -264,6 +264,7 @@
 	           android:layout_height="1dp"
 	           android:background="@drawable/body_line"/>
 	       <TextView 
+	           android:id="@+id/tv_wb"
 	           android:layout_width="fill_parent"
 	           android:layout_height="wrap_content"
 	           android:padding="@dimen/margins"
@@ -276,6 +277,7 @@
 	           android:layout_height="1dp"
 	           android:background="@drawable/body_line"/>
 	       <TextView 
+	           android:id="@+id/tv_xc"
 	           android:layout_width="fill_parent"
 	           android:layout_height="wrap_content"
 	           android:padding="@dimen/margins"
@@ -288,6 +290,7 @@
 	           android:layout_height="1dp"
 	           android:background="@drawable/body_line"/>
 	       <TextView 
+	           android:id="@+id/tv_jw"
 	           android:layout_width="fill_parent"
 	           android:layout_height="wrap_content"
 	           android:padding="@dimen/margins"
@@ -300,6 +303,7 @@
 	           android:layout_height="1dp"
 	           android:background="@drawable/body_line"/>
 	       <TextView 
+	           android:id="@+id/tv_bx"
 	           android:layout_width="fill_parent"
 	           android:layout_height="wrap_content"
 	           android:padding="@dimen/margins"
@@ -312,6 +316,7 @@
 	           android:layout_height="1dp"
 	           android:background="@drawable/body_line"/>
 	       <TextView 
+	           android:id="@+id/tv_Parking"
 	           android:layout_width="fill_parent"
 	           android:layout_height="wrap_content"
 	           android:padding="@dimen/margins"

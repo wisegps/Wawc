@@ -10,7 +10,7 @@
         android:layout_height="@dimen/title_hight"
         android:background="@drawable/nav_bg">
 		<ImageView
-            android:id="@+id/iv_activity_account_menu"
+            android:id="@+id/iv_select_city_back"
             android:layout_width="@dimen/title_image"
 	        android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"

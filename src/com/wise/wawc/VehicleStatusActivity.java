@@ -5,6 +5,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import com.wise.customView.EnergyCurveView;
 import com.wise.customView.EnergyGroup;
+import com.wise.data.CarData;
 import com.wise.data.EnergyItem;
 import com.wise.data.TimeData;
 import com.wise.extend.CarAdapter;
@@ -62,7 +63,6 @@ public class VehicleStatusActivity extends Activity {
     // List<CarData> carDatas;
     boolean isWait = true;
     String device_id = "3";
-    int index_car = 0;
     int index ; //选择哪一天
     TimeData timeData;
 
@@ -107,8 +107,8 @@ public class VehicleStatusActivity extends Activity {
 
         int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
                 120, getResources().getDisplayMetrics());
-        LayoutParams params = new LayoutParams(Variable.carDatas.size()
-                * (px + 10), LayoutParams.WRAP_CONTENT);
+        LayoutParams params = new LayoutParams((Variable.carDatas.size()
+                * (px + 10) + 10), LayoutParams.WRAP_CONTENT);
         gv_activity_vehicle_status.setLayoutParams(params);
         gv_activity_vehicle_status.setColumnWidth(px);
         gv_activity_vehicle_status.setHorizontalSpacing(10);
@@ -122,9 +122,8 @@ public class VehicleStatusActivity extends Activity {
         initView();
         
         SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);        
-        index_car = preferences.getInt(Constant.DefaultVehicleID, 0);
+        int index_car = preferences.getInt(Constant.DefaultVehicleID, 0);
         device_id = Variable.carDatas.get(index_car).getDevice_id();
-        Variable.carDatas.get(index_car).setCheck(true);
         carAdapter.notifyDataSetChanged();
         getCarLocationDB();
         getDeviceStatus();
@@ -209,10 +208,11 @@ public class VehicleStatusActivity extends Activity {
         @Override
         public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
                 long arg3) {
-            Variable.carDatas.get(index_car).setCheck(false);
+            for(CarData carData : Variable.carDatas){
+                carData.setCheck(false);
+            }
             Variable.carDatas.get(arg2).setCheck(true);
             carAdapter.notifyDataSetChanged();
-            index_car = arg2;
             device_id = Variable.carDatas.get(arg2).getDevice_id();
             getCarLocationDB();
         }

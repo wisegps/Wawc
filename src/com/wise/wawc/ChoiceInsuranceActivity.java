@@ -1,239 +1,241 @@
 package com.wise.wawc;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import com.wise.pubclas.Constant;
-import com.wise.pubclas.Variable;
-
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
+import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
-import com.wise.service.InsuranceAdapter;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
-
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
- * 保险公司选择
- * @author Mr.Wang
+ * 保险公司
  */
-public class ChoiceInsuranceActivity extends Activity implements IXListViewListener{
-	private XListView insuranceList = null;
-	private InsuranceAdapter adapter = null;
-	private List<String[]> dateList = null;
-	private int code = 0;
-	private ImageView choiceInsuranceCancle = null;
-	
-	private Intent intetn = null;
-	private ProgressDialog progressDialog = null;
-	private MyHandler myHandler = null;
-	private static final int getInsuranceCode = 1;
-	private static final int refreshInsurance = 2;
-	
-	private DBExcute dBExcute = null;
-	private DBHelper dbHelper = null;
-	private static final String insurance_title_name = "insurance";
-	
-	
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.choice_insurance_company);
-		
-		intetn = getIntent();
-		insuranceList = (XListView) findViewById(R.id.insurance_company_list);
-		choiceInsuranceCancle = (ImageView) findViewById(R.id.choice_insurance_cancle);
-		choiceInsuranceCancle.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				ChoiceInsuranceActivity.this.finish();
-			}
-		});
-		myHandler = new MyHandler();
-		insuranceList.setXListViewListener(this);
-		//不设置上拉加载无效
-		insuranceList.setPullLoadEnable(true);
-		
-		dbHelper = new DBHelper(this);
-		dBExcute = new DBExcute();
-		
-		progressDialog = ProgressDialog.show(ChoiceInsuranceActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
-		code = intetn.getIntExtra("code", 0);
-		
-		getData();
-		
-	}
-	
-	private void getData() {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		 Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base + " where Title = ?", new String[]{insurance_title_name});
-		 JSONArray jsonArray = null;
-		if(cursor.moveToFirst()){
-			progressDialog.dismiss();
-			try {
-				jsonArray = new JSONArray(cursor.getString(cursor.getColumnIndex("Content")));
-				setListData(jsonArray);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}else{
-			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "base/insurance", getInsuranceCode)).start();
-		}
-	}
-	class MyHandler extends Handler{
-		public void handleMessage(Message msg) {
-			super.handleMessage(msg);
-			switch(msg.what){
-			case getInsuranceCode :
-				progressDialog.dismiss();
-				String insurance = msg.obj.toString();
-				JSONArray jsonArray = null;
-				Log.e("服务器的保险公司：",msg.obj.toString());
-				//存储到数据库
-				if(!"".equals(insurance)){
-					ContentValues contentValues = new ContentValues();
-					contentValues.put("Cust_id", Variable.cust_id);
-					contentValues.put("Title", insurance_title_name);
-					contentValues.put("Content", insurance);
-					dBExcute.InsertDB(ChoiceInsuranceActivity.this, contentValues, Constant.TB_Base);
-					try {
-						jsonArray = new JSONArray(insurance);
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
-				}else{
-					Toast.makeText(getApplicationContext(), "获取数据失败，稍后再试", 0).show();
-				}
-				setListData(jsonArray);
-				break;
-				
-			case refreshInsurance:
-				onLoad();
-				String refInsurance = msg.obj.toString();
-				if(!"".equals(refInsurance)){
-					try {
-						JSONArray newDatas = new JSONArray(refInsurance);
-						//更新数据库
-						ContentValues values = new ContentValues();
-						values.put("Cust_id", Variable.cust_id);
-						values.put("Ttitle", insurance_title_name);
-						values.put("Content", refInsurance);
-						dBExcute.UpdateDB(ChoiceInsuranceActivity.this, values, "Title=?", new String[]{insurance_title_name}, Constant.TB_Base);
-						setListData(newDatas);
-					} catch (JSONException e) {
-						e.printStackTrace();
-					}
-				}else{
-					Toast.makeText(getApplicationContext(), "刷新失败", 0).show();
-				}
-				break;
-			default:
-				return;
-			}
-		}
-	}
-	
-	private void setListData(JSONArray obj) {
-		dateList = new ArrayList<String[]>();
-		try {
-			for(int i = 0 ; i < obj.length() ; i ++){
-				String[] str = new String[2];
-				str[0] = obj.getJSONObject(i).getString("name");
-				str[1] = obj.getJSONObject(i).getString("service_phone");
-				dateList.add(str);
-			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		adapter = new InsuranceAdapter(getApplicationContext(), dateList);
-		insuranceList.setAdapter(adapter);
-		insuranceList.setOnItemClickListener(new OnItemClickListener() {
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				
-				String name = dateList.get(arg2)[0];
-				Log.e("保险公司名字：",name);
-				String phone = dateList.get(arg2)[0];
-				Log.e("保险公司电话：",phone);
-				Intent intent = new Intent();
-				intent.putExtra("insurance_name", name);
-				intent.putExtra("insurance_phone", phone);
-				if(code == NewVehicleActivity.newVehicleInsurance){
-					ChoiceInsuranceActivity.this.setResult(NewVehicleActivity.newVehicleInsurance, intent);
-				}else if(code == MyVehicleActivity.resultCodeInsurance){
-					ChoiceInsuranceActivity.this.setResult(MyVehicleActivity.resultCodeInsurance, intent);
-				}
-				ChoiceInsuranceActivity.this.finish();
-				}
-			});
-		
-	}
-	
-	public void onRefresh() {
-		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "base/insurance", refreshInsurance)).start();
-	}
-	public void onLoadMore() {
-		new Handler(){
-			public void handleMessage(Message msg) {
-				super.handleMessage(msg);
-				onLoad();
-			}
-		}.sendMessageDelayed(new Message(), 1000);
-	}
-	public void PullUp() {
-	}
-	
-	private void onLoad() {
-		//获取当前时间
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
-		String temp = sdf.format(new Date());
-		String date = temp.substring(5, 16);
-		insuranceList.stopRefresh();
-		insuranceList.stopLoadMore();
-		insuranceList.setRefreshTime(date);
-	}
-	
-	protected void onDestroy() {
-		Constant.isHideFooter = false;
-		super.onDestroy();
-	}
-	protected void onPause() {
-		Constant.isHideFooter = false;
-		super.onPause();
-	}
+public class ChoiceInsuranceActivity extends Activity implements
+        IXListViewListener {
+    private static final int getData = 1;
+    
+    XListView lv_insurance;
+    List<InsuranceData> insuranceDatas = new ArrayList<InsuranceData>();
+    InSuranceAdapter inSuranceAdapter;
+    boolean isNeedPhone = false;
+    int code;
 
-	@Override
-	protected void onRestart() {
-		Constant.isHideFooter = true;
-		super.onRestart();
-	}
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_insurance);
+        Intent intent = getIntent();
+        isNeedPhone = intent.getBooleanExtra("isNeedPhone", false);
+        code = intent.getIntExtra("code", 0);
+        lv_insurance = (XListView) findViewById(R.id.lv_insurance);
+        lv_insurance.setXListViewListener(this);
+        lv_insurance.setPullLoadEnable(false);
+        inSuranceAdapter = new InSuranceAdapter();
+        lv_insurance.setAdapter(inSuranceAdapter);
+        lv_insurance.setOnItemClickListener(onItemClickListener);
+        getDBData();
+        ImageView iv_back = (ImageView)findViewById(R.id.iv_back);
+        iv_back.setOnClickListener(new OnClickListener() {            
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
+    }
 
-	@Override
-	protected void onResume() {
-		Constant.isHideFooter = true;
-		super.onResume();
-	}
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+            case getData:
+                jsonData(msg.obj.toString());
+                //插入到服务器
+                JudgeInsurance(msg.obj.toString());
+                onLoad();
+                break;
+
+            default:
+                break;
+            }
+        }
+    };
+    OnItemClickListener onItemClickListener = new OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+                long arg3) {
+            if(!isNeedPhone){
+                Intent intent = new Intent();
+                intent.putExtra("insurance_name", insuranceDatas.get(arg2).getName());
+                intent.putExtra("insurance_phone", insuranceDatas.get(arg2).getService_phone());
+                if(code == NewVehicleActivity.newVehicleInsurance){
+                    ChoiceInsuranceActivity.this.setResult(NewVehicleActivity.newVehicleInsurance, intent);
+                }else if(code == MyVehicleActivity.resultCodeInsurance){
+                    ChoiceInsuranceActivity.this.setResult(MyVehicleActivity.resultCodeInsurance, intent);
+                }
+                ChoiceInsuranceActivity.this.finish();
+            }
+        }
+    };
+
+    boolean isHaveInsurance = false;
+    private void getDBData() {
+        DBHelper dbHelper = new DBHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base
+                + " where Title=?", new String[] { "insurance" });
+        if (cursor.getCount() == 0) {
+            String url = Constant.BaseUrl + "base/insurance";
+            new Thread(new NetThread.GetDataThread(handler, url, getData))
+                    .start();
+        } else {
+            if (cursor.moveToFirst()) {
+                isHaveInsurance = true;
+                String Content = cursor.getString(cursor.getColumnIndex("Content"));
+                jsonData(Content);
+            }
+        }
+    }
+    private void jsonData(String result){
+        try {
+            insuranceDatas.clear();
+            JSONArray jsonArray = new JSONArray(result);
+            for(int i = 0 ; i < jsonArray.length() ; i++){
+                InsuranceData insuranceData = new InsuranceData();
+                JSONObject jsonObject = jsonArray.getJSONObject(i);
+                insuranceData.setName(jsonObject.getString("name"));
+                insuranceData.setService_phone(jsonObject.getString("service_phone"));
+                insuranceDatas.add(insuranceData);
+            }
+            inSuranceAdapter.notifyDataSetChanged();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    private void JudgeInsurance(String result) {
+        if (isHaveInsurance) {// 更新
+            UpdateInsurance(result, "insurance");
+        } else {// 插入
+            InsertInsurance(result, "insurance");
+        }
+    }
+    private void UpdateInsurance(String result, String Title) {
+        DBExcute dbExcute = new DBExcute();
+        ContentValues values = new ContentValues();
+        values.put("Content", result);
+        dbExcute.UpdateDB(ChoiceInsuranceActivity.this, values, Title);
+    }
+    private void InsertInsurance(String result, String Title) {
+        DBExcute dbExcute = new DBExcute();
+        ContentValues values = new ContentValues();
+        values.put("Title", Title);
+        values.put("Content", result);
+        dbExcute.InsertDB(ChoiceInsuranceActivity.this, values, Constant.TB_Base);
+    }
+
+    @Override
+    public void onRefresh() {
+        String url = Constant.BaseUrl + "base/insurance";
+        new Thread(new NetThread.GetDataThread(handler, url, getData))
+                .start();
+    }
+    private void onLoad() {
+        lv_insurance.stopRefresh();
+        lv_insurance.stopLoadMore();
+    }
+
+    @Override
+    public void onLoadMore() {}
+
+    private class InSuranceAdapter extends BaseAdapter {
+        LayoutInflater mInflater = LayoutInflater.from(ChoiceInsuranceActivity.this);
+        @Override
+        public int getCount() {
+            return insuranceDatas.size();
+        }
+        @Override
+        public Object getItem(int position) {
+            return insuranceDatas.get(position);
+        }
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            ViewHolder holder;
+            if (convertView == null) {
+                convertView = mInflater.inflate(R.layout.item_insurance, null);
+                holder = new ViewHolder();
+                holder.tv_phone = (TextView) convertView.findViewById(R.id.tv_phone);
+                holder.tv_name = (TextView) convertView.findViewById(R.id.tv_name);
+                holder.iv_phone = (ImageView) convertView.findViewById(R.id.iv_phone);
+                convertView.setTag(holder);
+            }else{
+                holder = (ViewHolder) convertView.getTag();
+            }
+            final InsuranceData insuranceData = insuranceDatas.get(position);
+            holder.tv_phone.setText(insuranceData.getService_phone());
+            holder.tv_name.setText(insuranceData.getName());
+            if(isNeedPhone){
+                holder.iv_phone.setVisibility(View.VISIBLE);
+                holder.iv_phone.setOnClickListener(new OnClickListener() {                    
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:"+ insuranceData.getService_phone()));  
+                        startActivity(intent);
+                    }
+                });
+            }else{
+                holder.iv_phone.setVisibility(View.INVISIBLE);
+            }
+            return convertView;
+        }
+        private class ViewHolder {
+            TextView tv_phone,tv_name;
+            ImageView iv_phone;
+        }
+    }
+
+    private class InsuranceData {
+        String name;
+        String service_phone;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getService_phone() {
+            return service_phone;
+        }
+
+        public void setService_phone(String service_phone) {
+            this.service_phone = service_phone;
+        }
+    }
 }
