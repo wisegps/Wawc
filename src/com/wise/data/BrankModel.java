@@ -3,6 +3,13 @@ package com.wise.data;
 public class BrankModel {
 	private String vehicleBrank = null;
 	private String vehicleLetter = null;
+	private String brankId = null;
+	public String getBrankId() {
+		return brankId;
+	}
+	public void setBrankId(String brankId) {
+		this.brankId = brankId;
+	}
 	public String getVehicleBrank() {
 		return vehicleBrank;
 	}

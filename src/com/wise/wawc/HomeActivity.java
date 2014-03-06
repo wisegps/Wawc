@@ -776,6 +776,7 @@ public class HomeActivity extends Activity{
                 if(jsonObject.opt("device_id") != null){
                     device_id = jsonObject.getString("device_id");
                 }
+                String maintain_last_data = jsonObject.getString("maintain_last_date").replace("T", " ").substring(0, 19);
                 String annual_inspect_date = jsonObject.getString("insurance_date").replace("T", " ").substring(0, 19);
                 String insurance_date = jsonObject.getString("insurance_date").replace("T", " ").substring(0, 19);
                 String maintain_company = jsonObject.getString("maintain_company");
@@ -800,6 +801,7 @@ public class HomeActivity extends Activity{
                 carData.setMaintain_company(maintain_company);
                 carData.setMaintain_last_mileage(maintain_last_mileage);
                 carData.setMaintain_next_mileage(maintain_next_mileage);
+                carData.setMaintain_last_date(maintain_last_data);
                 carData.setBuy_date(buy_date);
                 carData.setRegNo(reg_no);
                 carData.setVio_location(vio_location);
@@ -828,6 +830,7 @@ public class HomeActivity extends Activity{
                 values.put("annual_inspect_date", annual_inspect_date);
                 values.put("maintain_company", maintain_company);
                 values.put("maintain_last_mileage", maintain_last_mileage);
+                values.put("maintain_last_data", maintain_last_data);
                 values.put("maintain_next_mileage", maintain_next_mileage);
                 values.put("buy_date", buy_date);
                 values.put("reg_no", reg_no);

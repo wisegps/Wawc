@@ -66,10 +66,8 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 	private List<BrankModel> brankModelList = new ArrayList<BrankModel>();    //车辆品牌集合
 	
 	private List<String> brankLogo = null;
-	private List<String[]> brandList = new ArrayList<String[]>();
 	private List<String[]> carSeriesList = new ArrayList<String[]>();
 	private List<String> carSeriesNameList = new ArrayList<String>();
-	private String[] brankTemp;
 	
 	private PinyinComparator comparator;      //根据拼音排序
 	
@@ -141,9 +139,10 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		//选择品牌页面
 		vehicleBrankList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+				BrankModel brankModel = (BrankModel) vehicleBrankList.getItemAtPosition(arg2);
 				//  TODO
-				carBrank = brandList.get(arg2)[0];
-				carBrankId = brandList.get(arg2)[1];
+				carBrank = brankModel.getVehicleBrank();
+				carBrankId = brankModel.getBrankId();
 				Log.e("品牌id:",carBrankId);
 				Log.e("品牌:",carBrank);
 				//点击品牌列表   选择车型
@@ -156,8 +155,8 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		carModlesLayout.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				//点击车型   选择车款
-				carSeriesId = carSeriesList.get(arg2)[0];
-				carSeries = carSeriesList.get(arg2)[1];
+				carSeriesId = carSeriesList.get(arg2 - 1)[0];
+				carSeries = carSeriesList.get(arg2 - 1)[1];
 				progressDialog = ProgressDialog.show(ChoiceCarInformationActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 				progressDialog.setCancelable(true);
 				getDate(carSeriesTitle + carSeriesId, Constant.BaseUrl + "base/car_type?pid=" + carSeriesId,GET_TYPE);
@@ -328,39 +327,22 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		progressDialog.dismiss();
 		switch(what){
 		case GET_BRANK:   //解析车牌数据
-			brandList.clear();
+			List<BrankModel> brankList = null;
 			try {
 				int arrayLength = jsonArray.length();
-				StringBuffer sb = new StringBuffer();
+				brankList = new ArrayList<BrankModel>();
 				for(int i = 0 ; i < arrayLength ; i ++){
-					String[] str = new String[2];
 					JSONObject jsonObj = jsonArray.getJSONObject(i);
-					Log.e("品牌：",jsonObj.getString("name"));
-					Log.e("品牌id：",jsonObj.getString("id"));
-					str[0] = jsonObj.getString("name");
-					str[1] = jsonObj.getString("id");
-					brandList.add(str);
-					if(i < arrayLength){
-						sb.append(jsonObj.get("name")+",");
-					}else{
-						sb.append(jsonObj.get("name"));
-					}
-					String logoImage;
-					try {
-						logoImage = jsonObj.getString("url_icon");
-					} catch (Exception e) {
-						logoImage = "";
-						continue;
-					}
-					brankLogo.add(logoImage);
+					BrankModel brankModel = new BrankModel();
+					brankModel.setVehicleBrank(jsonObj.getString("name"));
+					brankModel.setBrankId(jsonObj.getString("id"));
+					brankList.add(brankModel);
 				}
-				brankTemp = sb.toString().split(",");
-			} catch (JSONException e) {
-				e.printStackTrace();
+			} catch (JSONException e1) {
+				e1.printStackTrace();
 			}
-			if(brankTemp != null && brankTemp.length >0){
-				brankModelList = filledData(brankTemp);
-			}
+			// TODO
+			brankModelList = filledData(null,brankList);
 			//排序
 			Collections.sort(brankModelList, comparator);
 			brankAdapter = new BrankAdapter(ChoiceCarInformationActivity.this, brankModelList);
@@ -415,24 +397,20 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 	 * @param date
 	 * @return
 	 */
-	private List<BrankModel> filledData(String [] date){
-		List<BrankModel> mSortList = new ArrayList<BrankModel>();
-		for(int i=0; i<date.length; i++){
-			BrankModel sortModel = new BrankModel();
-			sortModel.setVehicleBrank(date[i]);
+	private List<BrankModel> filledData(String [] date,List<BrankModel> brankList){
+		for(int i=0; i<brankList.size(); i++){
 			//汉字转换成拼音
-			String pinyin = characterParser.getSelling(date[i]);
+			String pinyin = characterParser.getSelling(brankList.get(i).getVehicleBrank());
 			String sortString = pinyin.substring(0, 1).toUpperCase();
 			
 			// 正则表达式，判断首字母是否是英文字母
 			if(sortString.matches("[A-Z]")){
-				sortModel.setVehicleLetter(sortString.toUpperCase());
+				brankList.get(i).setVehicleLetter(sortString.toUpperCase());
 			}else{
-				sortModel.setVehicleLetter("#");
+				brankList.get(i).setVehicleLetter("#");
 			}
-			mSortList.add(sortModel);
 		}
-		return mSortList;
+		return brankList;
 		
 	}
 	

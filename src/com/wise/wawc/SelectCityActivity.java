@@ -455,18 +455,13 @@ public class SelectCityActivity extends Activity {
                     cityHolder.tv_item_select_city_title = (TextView) convertView
                             .findViewById(R.id.tv_item_select_city_title);
                     if (citys.get(position).getCity_code() == null) {
-                        cityHolder.tv_item_select_city_title
-                                .setVisibility(View.VISIBLE);
-                        cityHolder.tv_item_select_city_title.setText(citys.get(
-                                position).getFirst_letter());
+                        cityHolder.tv_item_select_city_title.setVisibility(View.VISIBLE);
+                        cityHolder.tv_item_select_city_title.setText(citys.get(position).getFirst_letter());
                         cityHolder.tv_item_select_city.setVisibility(View.GONE);
                     } else {
-                        cityHolder.tv_item_select_city
-                                .setVisibility(View.VISIBLE);
-                        cityHolder.tv_item_select_city.setText(citys.get(
-                                position).getCity());
-                        cityHolder.tv_item_select_city_title
-                                .setVisibility(View.GONE);
+                        cityHolder.tv_item_select_city.setVisibility(View.VISIBLE);
+                        cityHolder.tv_item_select_city.setText(citys.get(position).getCity());
+                        cityHolder.tv_item_select_city_title.setVisibility(View.GONE);
                     }
                     convertView.setTag(cityHolder);
                     break;
