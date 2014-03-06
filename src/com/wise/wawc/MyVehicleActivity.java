@@ -182,6 +182,7 @@ public class MyVehicleActivity extends Activity{
 	private String deviceName = null;
 	private String illegalCityStr = null;
 	private boolean hasSelectIllegalCity = false;
+	private String vehNum = "";   //临时存储车牌号
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -201,8 +202,6 @@ public class MyVehicleActivity extends Activity{
 		frameNum = (EditText)findViewById(R.id.my_vehilce_ed_fram_num);
 		vehicleRegNum = (EditText) findViewById(R.id.my_vehilce_reg_num);
 		lastMaintain = (EditText)findViewById(R.id.my_vehicle_ed_last_maintain);
-		
-		//  TODO
 		lastMaintainTime = (TextView) findViewById(R.id.my_vehicle_last_maintain_time);
 		getDateView(lastMaintainTime);
 		buyTime = (TextView)findViewById(R.id.my_vehicle_ed_buy_time);
@@ -332,12 +331,12 @@ public class MyVehicleActivity extends Activity{
 			switch(v.getId()){
 			case R.id.my_vechile_menu:
 				if(isJump){
-					finish();
+						finish();
 				}else{
 					if(CheckDatas()){
 						commitData();
 					}
-                    ActivityFactory.A.LeftMenu();
+					ActivityFactory.A.LeftMenu();
 				}
 				break;
 			case R.id.iv_my_vehicle_brank:    //选择汽车品牌
@@ -550,7 +549,12 @@ public class MyVehicleActivity extends Activity{
 					myVehicleDevice.setText(carData.getSerial());
 				}
 				vehicleNum = carData.getObj_name();
-				vehicleNumber.setText(carData.getObj_name());
+				if(!"".equals(vehNum)){
+					vehicleNumber.setText(vehNum);
+					vehNum = "";
+				}else{
+					vehicleNumber.setText(carData.getObj_name());
+				}
 				tvCarSeries.setText(carData.getCar_series());
 				tvCarType.setText(carData.getCar_type());
 				myVehicleBrank.setText(carData.getCar_brand());
@@ -564,8 +568,8 @@ public class MyVehicleActivity extends Activity{
 				lastMaintain.setText(carData.getMaintain_last_mileage());
 				buyTime.setText(carData.getBuy_date());
 				vehicleRegNum.setText(carData.getRegNo());
-				lastMaintainTime.setText(carData.getMaintain_last_date());
 				
+				lastMaintainTime.setText(carData.getMaintain_last_date().substring(0, 11));
 				
 				
 				//点击了选择违章城市
@@ -896,7 +900,6 @@ public class MyVehicleActivity extends Activity{
 						 
 						 //更新数据库
 						 ContentValues values = new ContentValues();
-						 values.put("Cust_id", Variable.cust_id);
 						 values.put("obj_name", vehicleNumber.getText().toString().trim());
 						 values.put("car_brand", myVehicleBrank.getText().toString());
 						 values.put("car_series", tvCarSeries.getText().toString());
@@ -1074,5 +1077,9 @@ public class MyVehicleActivity extends Activity{
  			return false;
  		}
  		return true;
+ 	}
+ 	protected void onPause() {
+ 		vehNum = vehicleNumber.getText().toString();
+ 		super.onPause();
  	}
 }
