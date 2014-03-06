@@ -237,18 +237,17 @@ public class MyVehicleActivity extends Activity{
 		Log.e("默认的车辆id",chickIndex + "");
 		characterParser = new CharacterParser().getInstance();
 		comparator = new PinyinComparator();
-		myHandler = new MyHandler();
+		myHandler = new MyHandler();	
 		
-		myDialog = ProgressDialog.show(MyVehicleActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
-		myDialog.setCancelable(true);
 		String jsonData = dBExcute.selectIllegal(MyVehicleActivity.this);
 		if(jsonData == null){
+		    myDialog = ProgressDialog.show(MyVehicleActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
+	        myDialog.setCancelable(true);
 			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl+"/violation/city?cuth_code=" + Variable.auth_code, getIllegalforUrlCode)).start();
 		}else{
 			//解析数据  并且更新
 			illegalList = parseJson(jsonData);
 			Variable.illegalProvinceList = illegalList;
-			myDialog.dismiss();
 		}
 
         
