@@ -87,8 +87,9 @@ public class ChoiceInsuranceActivity extends Activity implements
                 long arg3) {
             if(!isNeedPhone){
                 Intent intent = new Intent();
-                intent.putExtra("insurance_name", insuranceDatas.get(arg2).getName());
-                intent.putExtra("insurance_phone", insuranceDatas.get(arg2).getService_phone());
+                InsuranceData insuranceData = (InsuranceData) lv_insurance.getItemAtPosition(arg2);
+                intent.putExtra("insurance_name", insuranceData.getName());
+                intent.putExtra("insurance_phone", insuranceData.getService_phone());
                 if(code == NewVehicleActivity.newVehicleInsurance){
                     ChoiceInsuranceActivity.this.setResult(NewVehicleActivity.newVehicleInsurance, intent);
                 }else if(code == MyVehicleActivity.resultCodeInsurance){
