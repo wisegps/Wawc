@@ -280,7 +280,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                 MainActivity.this.startActivity(intent_help);
                 break;
             case R.id.tv_bx:
-                Intent intent_Insurance = new Intent(MainActivity.this, ChoiceInsuranceActivity.class);
+                Intent intent_Insurance = new Intent(MainActivity.this, InsuranceActivity.class);
                 startActivity(intent_Insurance);
                 break;
             }

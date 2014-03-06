@@ -80,7 +80,7 @@
             
         </activity>
         <activity android:name=".ArticleDetailActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
-        <activity android:name=".ChoiceInsuranceActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".InsuranceActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".MaintainShopActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".WapActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".SearchMapActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
