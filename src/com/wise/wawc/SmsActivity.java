@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
@@ -101,13 +102,12 @@ public class SmsActivity extends Activity implements IXListViewListener{
 			case GET_SMS:
 			    smsDataList.addAll(0,jsonData(msg.obj.toString()));
 			    newAdapter.notifyDataSetChanged();
+			    onLoad();
 				break;
 			case GET_NEXT_SMS:
 			    smsDataList.addAll(jsonData(msg.obj.toString()));
 			    newAdapter.notifyDataSetChanged();
-				break;
-			case 999:
-				onLoad();
+			    onLoad();
 				break;
 			}
 		}		
@@ -115,7 +115,7 @@ public class SmsActivity extends Activity implements IXListViewListener{
 	private void onLoad() {
 		lv_sms.stopRefresh();
 		lv_sms.stopLoadMore();
-		//lv_sms.setRefreshTime(GetSystem.GetNowTime());
+		lv_sms.setRefreshTime(GetSystem.GetNowTime());
 	}
 	public void onRefresh() {
 	    if(smsDataList.size() != 0){
@@ -224,21 +224,6 @@ public class SmsActivity extends Activity implements IXListViewListener{
         db.close();
         return Datas;
     }
-	
-	class myThread extends Thread{
-		@Override
-		public void run() {
-			super.run();
-			try {
-				Thread.sleep(1000);
-				Message message = new Message();
-				message.what = 999;
-				handler.sendMessage(message);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 	
 	class NewAdapter extends BaseAdapter{
 	    private LayoutInflater mInflater;

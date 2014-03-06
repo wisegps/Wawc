@@ -89,6 +89,8 @@ public class CarRemindActivity extends Activity {
 
         // 年检
         ll_inspection = (LinearLayout) findViewById(R.id.ll_inspection);
+        ImageView iv_inspection_help = (ImageView)findViewById(R.id.iv_inspection_help);
+        iv_inspection_help.setOnClickListener(onClickListener);
         RelativeLayout rl_inspection = (RelativeLayout) findViewById(R.id.rl_inspection);
         rl_inspection.setOnClickListener(onClickListener);
         iv_inspection = (ImageView) findViewById(R.id.iv_inspection);
@@ -99,6 +101,8 @@ public class CarRemindActivity extends Activity {
         bt_inspection_address.setOnClickListener(onClickListener);
         // 续保
         ll_renewal = (LinearLayout) findViewById(R.id.ll_renewal);
+        ImageView iv_renewal_help = (ImageView)findViewById(R.id.iv_renewal_help);
+        iv_renewal_help.setOnClickListener(onClickListener);
         RelativeLayout rl_renewal = (RelativeLayout) findViewById(R.id.rl_renewal);
         rl_renewal.setOnClickListener(onClickListener);
         iv_renewal = (ImageView) findViewById(R.id.iv_renewal);
@@ -109,6 +113,8 @@ public class CarRemindActivity extends Activity {
         bt_renewal_call.setOnClickListener(onClickListener);
         // 保养
         ll_maintenance = (LinearLayout) findViewById(R.id.ll_maintenance);
+        ImageView iv_maintenance_help = (ImageView)findViewById(R.id.iv_maintenance_help);
+        iv_maintenance_help.setOnClickListener(onClickListener);
         RelativeLayout rl_maintenance = (RelativeLayout) findViewById(R.id.rl_maintenance);
         rl_maintenance.setOnClickListener(onClickListener);
         iv_maintenance = (ImageView) findViewById(R.id.iv_maintenance);
@@ -120,6 +126,8 @@ public class CarRemindActivity extends Activity {
         tv_activity_car_maintenance_inspection = (TextView)findViewById(R.id.tv_activity_car_maintenance_inspection);
         // 年审
         ll_examined = (LinearLayout) findViewById(R.id.ll_examined);
+        ImageView iv_examined_help = (ImageView)findViewById(R.id.iv_examined_help);
+        iv_examined_help.setOnClickListener(onClickListener);
         RelativeLayout rl_examined = (RelativeLayout) findViewById(R.id.rl_examined);
         rl_examined.setOnClickListener(onClickListener);
         iv_examined = (ImageView) findViewById(R.id.iv_examined);
@@ -131,6 +139,8 @@ public class CarRemindActivity extends Activity {
         tv_annual_inspect_date = (TextView) findViewById(R.id.tv_annual_inspect_date);
         // 驾照
         ll_replacement = (LinearLayout) findViewById(R.id.ll_replacement);
+        ImageView iv_replacement_help = (ImageView)findViewById(R.id.iv_replacement_help);
+        iv_replacement_help.setOnClickListener(onClickListener);
         RelativeLayout rl_replacement = (RelativeLayout) findViewById(R.id.rl_replacement);
         rl_replacement.setOnClickListener(onClickListener);
         iv_replacement = (ImageView) findViewById(R.id.iv_replacement);
@@ -266,8 +276,14 @@ public class CarRemindActivity extends Activity {
             case R.id.bt_inspection_time:// 年检提醒
                 ShowDate(inspection);
                 break;
+            case R.id.iv_inspection_help:
+                turnActivity("车辆年检","http://wiwc.api.wisegps.cn/help/clnj");
+                break;
             case R.id.bt_renewal_time:// 车辆续保
                 ShowDate(renewal);
+                break;
+            case R.id.iv_renewal_help:
+                turnActivity("车辆续保","http://wiwc.api.wisegps.cn/help/clxb");
                 break;
             case R.id.bt_examined_time:// 驾照年审
                 ShowDate(examined);
@@ -281,8 +297,14 @@ public class CarRemindActivity extends Activity {
             case R.id.bt_examined_address:// 驾照年审
                 ToDealAdress(getString(R.string.examined_title), 2);
                 break;
+            case R.id.iv_examined_help:
+                turnActivity("驾照年审及换证","http://wiwc.api.wisegps.cn/help/clby");
+                break;
             case R.id.bt_replacement_address:// 驾照换证
                 ToDealAdress(getString(R.string.replacement_title), 2);
+                break;
+            case R.id.iv_replacement_help:
+                turnActivity("驾照年审及换证","http://wiwc.api.wisegps.cn/help/clby");
                 break;
             case R.id.bt_renewal_call:// 车辆续保
                 ToCall("phone");
@@ -290,10 +312,19 @@ public class CarRemindActivity extends Activity {
             case R.id.bt_maintenance_call:// 车辆保养
                 ToCall("phone");
                 break;
+            case R.id.iv_maintenance_help:
+                turnActivity("车辆保养","http://wiwc.api.wisegps.cn/help/clby");
+                break;
             }
         }
     };
-
+    
+    private void turnActivity(String Title , String url){
+        Intent intent = new Intent(CarRemindActivity.this, WapActivity.class);
+        intent.putExtra("Title", Title);
+        intent.putExtra("url", url);
+        startActivity(intent);
+    }
     private void ChangeUserDate() {
         String url = Constant.BaseUrl + "customer/" + Variable.cust_id
                 + "/inspect_date?auth_code=" + Variable.auth_code;

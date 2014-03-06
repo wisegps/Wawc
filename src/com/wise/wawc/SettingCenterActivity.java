@@ -117,7 +117,7 @@ public class SettingCenterActivity extends Activity{
                 startActivity(new Intent(SettingCenterActivity.this, MyVehicleActivity.class));
                 break;
             case R.id.tv_share_gift:
-                startActivity(new Intent(SettingCenterActivity.this, ShareActivity.class));
+                startActivity(new Intent(SettingCenterActivity.this, WapActivity.class));
                 break;
             case R.id.tv_feedback:
                 startActivity(new Intent(SettingCenterActivity.this, FeedBackActivity.class));

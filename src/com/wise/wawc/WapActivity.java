@@ -1,6 +1,7 @@
 package com.wise.wawc;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.net.http.SslError;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -10,39 +11,35 @@ import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class ShareActivity extends Activity{
+public class WapActivity extends Activity{
 	private WebView shareView = null;
 	private ImageView shareCancle = null;
 	private TextView title = null;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.share_have_gift);
+		setContentView(R.layout.activity_wap_note);
+		Intent intent = getIntent();
 		shareView = (WebView) findViewById(R.id.share_web);
 		shareCancle = (ImageView) findViewById(R.id.share_gift_back);
 		title = (TextView) findViewById(R.id.web_title);
+		title.setText(intent.getStringExtra("Title"));
 		shareCancle.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				ShareActivity.this.finish();
+				WapActivity.this.finish();
 			}
 		});
 		//设置网页支持javaScript
 		shareView.getSettings().setJavaScriptEnabled(true);
 		shareView.requestFocus();   //设置可获取焦点
 		shareView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);  //取消滚动条
-		shareView.loadUrl("http://www.baidu.com/");
+		shareView.loadUrl(intent.getStringExtra("url"));
 		shareView.setWebChromeClient(new WebChromeClient(){
 			public void onProgressChanged(WebView view, int newProgress) {
 				super.onProgressChanged(view, newProgress);
 				 // 这里是设置activity的标题， 也可以根据自己的需求做一些其他的操作
-				if(newProgress==100){                       
-			          title.setText("加载完成");
-			     }else{
-			    	 title.setText("加载中.......");
-			     }
 			}
 			
 		});
