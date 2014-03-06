@@ -568,7 +568,9 @@ public class MyVehicleActivity extends Activity{
 				lastMaintain.setText(carData.getMaintain_last_mileage());
 				buyTime.setText(carData.getBuy_date());
 				vehicleRegNum.setText(carData.getRegNo());
-				
+				if(carData.getMaintain_last_date() == null){
+				    System.out.println("Maintain_last_date为空");
+				}
 				lastMaintainTime.setText(carData.getMaintain_last_date().substring(0, 11));
 				
 				
