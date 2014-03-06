@@ -222,6 +222,30 @@ public class GetSystem {
             return Second/(60*60) + "小时";
         }
     }
+    /**
+     * 首页时间显示
+     * @param time
+     * @return
+     */
+    public static String sortHomeTime(String time){
+        if(time == null){
+            return "";
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            java.util.Date begin = sdf.parse(time);
+            java.util.Date end = sdf.parse(GetNowTime());
+            int l=  (int) ((end.getTime() - begin.getTime())/1000);
+            if(l > (60*60*24)){
+                return "更新于" +time.substring(0, 10);
+            }else{
+                return ProcessTime(l) + "前更新";
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();            
+            return "";
+        }
+    }
 
     /**
      * 调用百度地图导航

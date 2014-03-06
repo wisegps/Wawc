@@ -43,6 +43,7 @@
         android:drawableLeft="@drawable/home_lbs"
         android:gravity="center_vertical"/>
     <TextView 
+        android:id="@+id/tv_updateTime"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/white_inactive"

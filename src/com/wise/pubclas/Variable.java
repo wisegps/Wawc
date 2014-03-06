@@ -44,17 +44,6 @@ public class Variable{
      * 当前未读
      */
     public static double Lon = 0;
-    /**
-     * 车辆数据
-     */
-
-    public static boolean againstPush = true;
-
-    public static boolean faultPush = true;
-
-    public static boolean remaindPush = true;
-
-    public static String defaultCenter = "车辆位置";
     
     public static List<CarData> carDatas;
     public static List<DevicesData> devicesDatas;

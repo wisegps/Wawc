@@ -827,7 +827,6 @@ public class MyVehicleActivity extends Activity{
     public void commitData(){
     	Editor editor = preferences.edit();
 		editor.putInt(Constant.DefaultVehicleID, chickIndex);
-		Variable.defaultCenter = Variable.carDatas.get(chickIndex).getObj_name();
 		editor.putString(Constant.defaultCenter_key, Variable.carDatas.get(chickIndex).getObj_name());
 		String str = Variable.carDatas.get(chickIndex).getObj_name();
 		String str2 = str==null?"null":str;
