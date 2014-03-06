@@ -1,18 +1,18 @@
-<RelativeLayout 
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/white"
-    >
+    android:orientation="vertical" >
+
     <!-- 选择省份 -->
-     <RelativeLayout
+
+    <RelativeLayout
         android:id="@+id/illegal_city_top"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight"
         android:layout_alignParentTop="true"
-        android:background="@color/blue"
+        android:background="@drawable/nav_bg"
         android:gravity="center" >
 
         <ImageView
@@ -21,40 +21,41 @@
             android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/side_back" />
+            android:background="@drawable/nav_back" />
 
         <TextView
             android:id="@+id/my_vechile_edit"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:layout_toRightOf="@id/illegal_province_back"
-            android:layout_marginRight="@dimen/double_margins"
+            android:layout_centerVertical="true"
             android:gravity="center"
             android:text="@string/illegal_city"
             android:textColor="@color/white"
             android:textSize="@dimen/head" />
     </RelativeLayout>
-    <ListView 
+
+    <ListView
         android:id="@+id/illegal_provnice_list"
         android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:layout_below="@id/illegal_city_top"
-    	android:layout_centerHorizontal="true"
-    	android:layout_centerVertical="true"
-    	android:divider="@color/gray"
-    	android:dividerHeight="0.5dip"
-        ></ListView>
-    <ListView 
+        android:layout_height="wrap_content"
+        android:layout_below="@id/illegal_city_top"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:divider="@color/gray"
+        android:dividerHeight="0.5dip" >
+    </ListView>
+
+    <ListView
         android:id="@+id/illegal_city_list"
         android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:layout_below="@id/illegal_city_top"
-    	android:layout_centerHorizontal="true"
-    	android:layout_centerVertical="true"
-    	android:divider="@color/gray"
-    	android:dividerHeight="0.5dip"
-    	android:visibility="gone"
-        ></ListView>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/illegal_city_top"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:divider="@color/gray"
+        android:dividerHeight="0.5dip"
+        android:visibility="gone" >
+    </ListView>
+
 </RelativeLayout>

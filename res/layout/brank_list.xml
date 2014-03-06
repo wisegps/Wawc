@@ -10,18 +10,16 @@
          android:id="@+id/new_car_choice_information_top"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight"
-        android:background="@color/blue"
-        android:layout_alignParentTop="true"
-        >
-
+        android:background="@drawable/nav_bg"
+        android:layout_alignParentTop="true">
         <ImageView
             android:id="@+id/choice_vechile_back"
             android:layout_width="@dimen/title_image"
             android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/side_back" />
-
+            android:layout_marginLeft="@dimen/margins"
+            android:background="@drawable/nav_back" />
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -30,15 +28,7 @@
             android:text="@string/choice_brank"
             android:textSize="@dimen/head" 
             android:gravity="center"
-            android:layout_toRightOf="@id/choice_vechile_back"
-            android:textColor="@color/white"
-            />
-
-        <View
-            android:layout_width="@dimen/title_hight"
-            android:layout_height="@dimen/title_hight"
-            android:layout_alignParentRight="true"
-            />
+            android:textColor="@color/white"/>
     </RelativeLayout>
     <RelativeLayout 
         android:layout_width="fill_parent"
@@ -57,7 +47,7 @@
         android:drawableLeft="@drawable/toolbar_icon_search"
         android:hint="请输入关键字"
         android:singleLine="true"
-        android:textColor="@color/black"
+        android:textColor="@color/common"
         android:textSize="@dimen/content" />
     
     

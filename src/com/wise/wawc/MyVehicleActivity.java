@@ -234,19 +234,27 @@ public class MyVehicleActivity extends Activity{
 		Log.e("默认的车辆id",chickIndex + "");
 		characterParser = new CharacterParser().getInstance();
 		comparator = new PinyinComparator();
-		myHandler = new MyHandler();
+		myHandler = new MyHandler();	
 		
-		myDialog = ProgressDialog.show(MyVehicleActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
-		myDialog.setCancelable(true);
 		String jsonData = dBExcute.selectIllegal(MyVehicleActivity.this);
 		if(jsonData == null){
+		    myDialog = ProgressDialog.show(MyVehicleActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
+	        myDialog.setCancelable(true);
 			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl+"/violation/city?cuth_code=" + Variable.auth_code, getIllegalforUrlCode)).start();
 		}else{
 			//解析数据  并且更新
 			illegalList = parseJson(jsonData);
 			Variable.illegalProvinceList = illegalList;
-			myDialog.dismiss();
 		}
+
+        
+        Intent intent = getIntent();
+        isJump = intent.getBooleanExtra("isJump", false);
+        if(isJump){
+            menu.setImageResource(R.drawable.nav_back);
+        }else{
+            menu.setImageResource(R.drawable.side_left);
+        }
 	}
 	protected void onResume() {
 		super.onResume();
@@ -299,9 +307,6 @@ public class MyVehicleActivity extends Activity{
 		editVehicle.setOnClickListener(new ClickListener());
 		brand.setOnClickListener(new ClickListener());
 		insuranceCompany.setOnClickListener(new ClickListener());
-		
-		Intent intent = getIntent();
-		isJump = intent.getBooleanExtra("isJump", false);
 
 		width = getWindowManager().getDefaultDisplay().getWidth();
 		final Message msg = new Message();
@@ -331,8 +336,8 @@ public class MyVehicleActivity extends Activity{
 				}else{
 					if(CheckDatas()){
 						commitData();
-						ActivityFactory.A.LeftMenu();
 					}
+                    ActivityFactory.A.LeftMenu();
 				}
 				break;
 			case R.id.iv_my_vehicle_brank:    //选择汽车品牌
@@ -734,21 +739,11 @@ public class MyVehicleActivity extends Activity{
 	 long touchTime = 0;
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-    	if(isJump){
-    		MyVehicleActivity.this.finish();
-    	}else{
-	        if (keyCode == KeyEvent.KEYCODE_BACK) {
-	            long currentTime = System.currentTimeMillis();
-	            if (touchTime == 0 || (currentTime - touchTime) >= waitTime) {
-	            	showToast("再按一次退出客户端");
-	                touchTime = currentTime;
-	            } else {
-	            	commitData();
-	                finish();
-	            }
-	            return true;
-	        }
-    	}
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            if(!isJump){
+                finish();
+            }
+        }
         return super.onKeyDown(keyCode, event);
     }
     
@@ -829,7 +824,6 @@ public class MyVehicleActivity extends Activity{
     public void commitData(){
     	Editor editor = preferences.edit();
 		editor.putInt(Constant.DefaultVehicleID, chickIndex);
-		Variable.defaultCenter = Variable.carDatas.get(chickIndex).getObj_name();
 		editor.putString(Constant.defaultCenter_key, Variable.carDatas.get(chickIndex).getObj_name());
 		String str = Variable.carDatas.get(chickIndex).getObj_name();
 		String str2 = str==null?"null":str;

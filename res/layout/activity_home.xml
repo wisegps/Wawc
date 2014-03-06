@@ -58,21 +58,29 @@
 	        android:paddingBottom="@dimen/margins"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content">
-	        <LinearLayout 
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:gravity="center_horizontal"
-	            android:layout_weight="1">
-	            <Button 
-	                android:id="@+id/bt_activity_home_vehicle_status"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:textColor="@color/text_color_selector"
-	                android:drawableTop="@drawable/home_condition"
-	                android:background="@null"
-	                android:textSize="@dimen/content"
-	                android:text="@string/vehicle_status"/>
-	        </LinearLayout>
+	        <RelativeLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <Button 
+                    android:id="@+id/bt_activity_home_vehicle_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_selector"
+                    android:drawableTop="@drawable/home_condition"
+                    android:layout_centerInParent="true"
+                    android:background="@null"
+                    android:textSize="@dimen/content"
+                    android:text="@string/vehicle_status"/>
+                <ImageView 
+                    android:id="@+id/iv_car_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:visibility="gone"
+                    android:src="@drawable/body_remind"/>
+            </RelativeLayout>
 	        <RelativeLayout 
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
@@ -96,21 +104,29 @@
                     android:visibility="gone"
                     android:src="@drawable/body_remind"/>
 	        </RelativeLayout>
-	        <LinearLayout 
-	            android:layout_width="fill_parent"
-	            android:layout_height="wrap_content"
-	            android:gravity="center_horizontal"
-	            android:layout_weight="1">
-	            <Button 
-	                android:id="@+id/bt_activity_home_traffic"
-	                android:layout_width="wrap_content"
-	                android:layout_height="wrap_content"
-	                android:textColor="@color/text_color_selector"
-	                android:drawableTop="@drawable/home_violate"
-	                android:background="@null"
-	                android:textSize="@dimen/content"
-	                android:text="@string/traffic"/>
-	        </LinearLayout>
+	        <RelativeLayout 
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+                <Button 
+                    android:id="@+id/bt_activity_home_traffic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_selector"
+                    android:drawableTop="@drawable/home_violate"
+                    android:layout_centerInParent="true"
+                    android:background="@null"
+                    android:textSize="@dimen/content"
+                    android:text="@string/traffic"/>
+                <ImageView 
+                    android:id="@+id/iv_car_traffic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="20dp"
+                    android:visibility="gone"
+                    android:src="@drawable/body_remind"/>
+            </RelativeLayout>
 	        <LinearLayout 
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
@@ -385,12 +401,12 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_marginRight="@dimen/margins"
-	            android:src="@drawable/home_body_cutover"/>
+	            android:src="@drawable/home_body_cutover_press"/>
 	        <ImageView 
 	            android:id="@+id/iv_oil"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/home_body_cutover_press"/>
+                android:src="@drawable/home_body_cutover"/>
 	    </LinearLayout>	      
     </LinearLayout>   
 	<RelativeLayout 

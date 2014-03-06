@@ -22,7 +22,6 @@ import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
-import com.wise.service.SaveSettingData;
 import android.app.ActivityGroup;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -72,7 +71,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     TextView tv_activity_main_name;
     RelativeLayout refuel,maintain,wishCar,help,insurance,park;
     private ParseFaceThread thread = null;
-    private SaveSettingData saveSettingData;
     double Multiple = 0.5;
     PicHorizontalScrollView hsv_pic;
     ImageView iv_pic,iv_noti;
@@ -187,7 +185,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         platformSina = ShareSDK.getPlatform(MainActivity.this, SinaWeibo.NAME);
         isLogin();
         startService(new Intent(MainActivity.this, LocationService.class));
-        initSettingData();
     }
     boolean isMove = false;
     OnClickListener onClickListener = new OnClickListener() {
@@ -303,10 +300,8 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                 jsonLoginOk();
                 break;
             case Bind_ID:
-                System.out.println(msg.obj.toString());
                 jsonLogin(msg.obj.toString());
-                
-                //GetNotiCount();
+                GetNotiCount();
                 break;
             case get_noti_count:
                 jsonNoti(msg.obj.toString());
@@ -321,7 +316,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
         LocationProvince = preferences.getString(Constant.LocationProvince, "");
         LocationCity = preferences.getString(Constant.LocationCity, "");
-        Variable.cust_id = preferences.getString(Constant.sp_cust_id, "");
     }
     /**
      * 登录成功
@@ -427,8 +421,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         }
         SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
         Variable.cust_id  = preferences.getString(Constant.sp_cust_id, "");
-        Variable.auth_code = preferences.getString(Constant.sp_auth_code, "");
-        
+        Variable.auth_code = preferences.getString(Constant.sp_auth_code, "");        
 
         System.out.println("设置推送 = " +platform.getDb().getUserId());
         Set<String> tagSet = new LinkedHashSet<String>();
@@ -703,14 +696,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         Log.d(TAG, "登录出错");
         arg0.removeAccount();
     }
-
-    private void initSettingData() {
-        saveSettingData = new SaveSettingData(MainActivity.this);
-        Variable.againstPush = saveSettingData.getAgainstPush();
-        Variable.faultPush = saveSettingData.getBugPush();
-        Variable.remaindPush = saveSettingData.getTrafficDepartment();
-        Variable.defaultCenter = saveSettingData.getDefaultCenter();
-    }
     
     private void ShowBgImage(){
         iv_pic.setImageResource(R.drawable.bg);
@@ -739,7 +724,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     /**
      * 获取未读消息
      */
-    private void GetNotiCount1(){
+    private void GetNotiCount(){
         String url = Constant.BaseUrl + "customer/" + Variable.cust_id +"?auth_code=" + Variable.auth_code;
         new Thread(new NetThread.GetDataThread(handler, url, get_noti_count)).start();
     }
@@ -760,7 +745,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     }
     @Override
     public void gotResult(int arg0, String arg1, Set<String> arg2) {
-        System.out.println("arg0 = " + arg0 + " , arg1 = " + arg1);
+        //System.out.println("arg0 = " + arg0 + " , arg1 = " + arg1);
     }
     private void registerBroadcastReceiver() {
         IntentFilter intentFilter = new IntentFilter();

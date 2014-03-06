@@ -141,13 +141,9 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		//选择品牌页面
 		vehicleBrankList.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				carBrank = ((BrankModel)brankAdapter.getItem(arg2 - 1)).getVehicleBrank();
 				//  TODO
-				
-				TextView textView = (TextView)vehicleBrankList.getChildAt(arg2).findViewById(R.id.list_brank);
-				Log.e("textView:",textView.getText().toString());
-				carBrank = brandList.get(arg2 - 2)[0];
-				carBrankId = brandList.get(arg2 - 2)[1];
+				carBrank = brandList.get(arg2)[0];
+				carBrankId = brandList.get(arg2)[1];
 				Log.e("品牌id:",carBrankId);
 				Log.e("品牌:",carBrank);
 				//点击品牌列表   选择车型
@@ -502,5 +498,10 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 	protected void onResume() {
 		Constant.isHideFooter = true;
 		super.onResume();
+	}
+	//获取点击内容
+	public void onClick(View v) {
+		TextView textView = (TextView)v;
+		Log.e("点击内容----------------->",textView.getText().toString());
 	}
 }

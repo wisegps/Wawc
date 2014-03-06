@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Scroller;
 
 public class HScrollLayout extends ViewGroup {
-    //private static final String TAG = "HScrollLayout";
+    private static final String TAG = "HScrollLayout";
     private VelocityTracker velocityTracker;// 判断手势
     private static final int SNAP_VELOCITY = 600; // 滑动速度
     private int mCurScreen = 0; // 当前所在屏幕
@@ -93,8 +93,6 @@ public class HScrollLayout extends ViewGroup {
         case MotionEvent.ACTION_MOVE:            
             final int xDiff = (int) Math.abs(x - mLastMotionX);
             xMoved = xDiff > mTouchSlop;
-            System.out.println("x = " + x + " , mLastMotionX = " + mLastMotionX);
-            System.out.println("xMoved = " + xMoved);
             if ((mLastMotionX - x) <= 0 && getScrollX() <= 0){
                 
             }else{
@@ -131,8 +129,6 @@ public class HScrollLayout extends ViewGroup {
             int deltaX = (int) (downMotionX - x);
             downMotionX = x;
             if (deltaX <= 0) {// 向右滑
-                //System.out.println("deltaX = " + deltaX);
-                System.out.println("getScrollX() = " + getScrollX());
                 if (getScrollX() <= 0) {
                     //Log.d(TAG, "划不动");
                 } else {
@@ -194,6 +190,25 @@ public class HScrollLayout extends ViewGroup {
         if (getScrollX() != getWidth() * whichScreen) {// 时候需要移动
             int delta = whichScreen * getWidth() - getScrollX(); // 还有多少没有显示
             scroller.startScroll(getScrollX(), 0, delta, 0, Math.abs(delta) * 2);// 滚动完剩下的距离
+            mCurScreen = whichScreen;
+            invalidate();
+            if (mOnViewChangeListener != null) {
+                mOnViewChangeListener.OnViewChange(whichScreen);
+            }
+        }
+    }
+    public void snapFastToScreen(int whichScreen){
+        whichScreen = Math.max(0, Math.min(whichScreen, (getChildCount() - 1)));// 防止输入不再范围内的数字
+        Log.d(TAG, "whichScreen = " + whichScreen + " , getChildCount() = " + getChildCount());
+        Log.d(TAG, "getScrollX() = " + getScrollX() + " , getWidth() * whichScreen = " + getWidth() * whichScreen);
+        if (getScrollX() != getWidth() * whichScreen) {// 时候需要移动
+            int delta = whichScreen * getWidth() - getScrollX(); // 还有多少没有显示
+            scroller.startScroll(getScrollX(), 0, delta, 0);// 滚动完剩下的距离
+
+            Log.d(TAG, "whichScreen * getWidth() = " + whichScreen * getWidth());
+            Log.d(TAG, "getScrollX() = " + getScrollX());
+            Log.d(TAG, "delta = " + delta);
+            
             mCurScreen = whichScreen;
             invalidate();
             if (mOnViewChangeListener != null) {

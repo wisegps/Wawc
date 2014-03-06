@@ -1,6 +1,5 @@
 package com.wise.pubclas;
 
-import android.graphics.Bitmap;
 import android.os.Environment;
 /**
  * 常量

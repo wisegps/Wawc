@@ -2,6 +2,7 @@ package com.wise.extend;
 
 import java.util.Calendar;
 
+import com.wise.pubclas.GetSystem;
 import com.wise.wawc.R;
 
 import kankan.wheel.widget.WheelView;
@@ -50,7 +51,7 @@ public class OpenDateDialog {
 		addHoldBuilder.setView(v);
 		addHoldBuilder.setPositiveButton("确定",new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
-				String trueTime = (curYear +year.getCurrentItem()) + "-" + (month.getCurrentItem()+1) + "-" + (day.getCurrentItem()+1);
+				String trueTime = (curYear +year.getCurrentItem()) + "-" + GetSystem.ChangeTime(month.getCurrentItem()+1) + "-" + GetSystem.ChangeTime(day.getCurrentItem()+1);
 				if(listener != null){
 					listener.OnDateChange(trueTime,index);
 				}

@@ -2,236 +2,183 @@ package com.wise.wawc;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import com.wise.pubclas.Constant;
+import com.wise.pubclas.NetThread;
+import com.wise.pubclas.Variable;
+
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
+import android.os.Handler;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.Chronometer.OnChronometerTickListener;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
-import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TableRow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.wise.extend.AbstractSpinerAdapter;
-import com.wise.extend.SpinerPopWindow;
-import com.wise.pubclas.Constant;
-import com.wise.pubclas.Variable;
-import com.wise.service.SaveSettingData;
 
 /**
  * 设置中心
  * @author 王庆文
  */
 public class SettingCenterActivity extends Activity{
-	private Button setCenterMenu;
-	private Button setCenterHome1;
-	private TableRow shareHaveGift;   // 分享有礼
-	private TableRow feedBack;   // 意见反馈
-	private TableRow giveUsScore;   // 给我们评分
-	private TableRow aboutAppliaction;   // 关于我爱我车
 	
-	private TextView mTView;
-	private TableRow mBtnDropDown;
-	private String[] nameList = new String[Variable.carDatas.size() + 1];
-	
-	private AlertDialog dlg = null;  //显示评分对话框
-	private Button gradeCommit = null;  //提交评分
-	private Button gradeCancle = null;   //取消评分
-	//推送设置
-	private CheckBox againstPush;
-	private CheckBox faultPush;
-	private CheckBox remainPush;
-	TableRow againstPushLayout;
-	TableRow faultPushLayout;
-	TableRow remainPushLayout;
-	
-	private static int index = 0;
+	TextView tv_value;
+	ImageView iv_traffic,iv_status,iv_alert,iv_remind;
+
+    boolean isTraffic,isStatus,isAlert,isRemind;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.setting_center);
-		setCenterMenu = (Button) findViewById(R.id.setting_center_menu);
-//		setCenterHome = (Button) findViewById(R.id.setting_center_home);
-		shareHaveGift = (TableRow) findViewById(R.id.share_have_gift);
-		feedBack = (TableRow) findViewById(R.id.feedback);
-		giveUsScore = (TableRow) findViewById(R.id.give_us_score);
-		aboutAppliaction = (TableRow) findViewById(R.id.about_appliaction);
-		//推送设置
-		againstPush = (CheckBox) findViewById(R.id.against_push);
-		faultPush = (CheckBox) findViewById(R.id.fault_push);
-		remainPush = (CheckBox) findViewById(R.id.remaind_push);
-		againstPushLayout = (TableRow) findViewById(R.id.against_push_row);
-		faultPushLayout = (TableRow) findViewById(R.id.bug_push_row);
-		faultPushLayout.setOnClickListener(new ClickListener());
-		againstPushLayout.setOnClickListener(new ClickListener());
-		remainPushLayout = (TableRow) findViewById(R.id.remaind_push_row);
-		remainPushLayout.setOnClickListener(new ClickListener());
-//		remainPush.setOnCheckedChangeListener(new CleckBoxListener());
-//		faultPush.setOnCheckedChangeListener(new CleckBoxListener());
-//		againstPushLayout.setOnCheckedChangeListener(new CleckBoxListener());
+		setContentView(R.layout.activity_setting_center);
 		
-		setCenterMenu.setOnClickListener(new ClickListener());
-		feedBack.setOnClickListener(new ClickListener());
-		giveUsScore.setOnClickListener(new ClickListener());
-		aboutAppliaction.setOnClickListener(new ClickListener());
-//		setCenterHome.setOnClickListener(new ClickListener());
-		shareHaveGift.setOnClickListener(new ClickListener());
+		tv_value = (TextView)findViewById(R.id.tv_value);
+		Button bt_setting_menu = (Button)findViewById(R.id.bt_setting_menu);
+		bt_setting_menu.setOnClickListener(onClickListener);
+		RelativeLayout rl_traffic = (RelativeLayout)findViewById(R.id.rl_traffic);
+		rl_traffic.setOnClickListener(onClickListener);
+		RelativeLayout rl_status = (RelativeLayout)findViewById(R.id.rl_status);
+		rl_status.setOnClickListener(onClickListener);
+		RelativeLayout rl_alert = (RelativeLayout)findViewById(R.id.rl_alert);
+		rl_alert.setOnClickListener(onClickListener);
+		RelativeLayout rl_remind = (RelativeLayout)findViewById(R.id.rl_remind);
+		rl_remind.setOnClickListener(onClickListener);
+		RelativeLayout rl_center = (RelativeLayout)findViewById(R.id.rl_center);
+		rl_center.setOnClickListener(onClickListener);
 		
-     	mTView = (TextView) findViewById(R.id.tv_value);   //显示List点击的内容
-		mBtnDropDown = (TableRow) findViewById(R.id.default_center_layout);  //点击显示下方ListView
-		mBtnDropDown.setOnClickListener(new ClickListener());   //设置监听
+		iv_traffic = (ImageView)findViewById(R.id.iv_traffic);
+		iv_status = (ImageView)findViewById(R.id.iv_status);
+		iv_alert = (ImageView)findViewById(R.id.iv_alert);
+		iv_remind = (ImageView)findViewById(R.id.iv_remind);
 		
-		//初始化用户数据
-		againstPush.setChecked(Variable.againstPush);
-		faultPush.setChecked(Variable.faultPush);
-		remainPush.setChecked(Variable.remaindPush);
-		Log.e("默认选择的车辆:",Variable.defaultCenter);
-	}
-	@Override
-	protected void onResume() {
-		nameList[0] = "手机位置";
-		if(Variable.carDatas != null){
-			for(int i = 0 ; i < Variable.carDatas.size() ; i ++){
-				nameList[i+1] = Variable.carDatas.get(i).getObj_name();
-			}
-		}
-		mTView.setText(Variable.defaultCenter);
-		index = 0;
-		super.onResume();
-	}
-	class CleckBoxListener implements OnCheckedChangeListener{
-		public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-			switch(((Button)buttonView).getId()){
-			case R.id.against_push:  //违章推送
-			    Variable.againstPush = isChecked;
-				break;
-			case R.id.fault_push:    //故障推送
-			    Variable.faultPush = isChecked;
-				break;
-			case R.id.remaind_push:   //车务提醒
-			    Variable.remaindPush = isChecked;
-				break;
-			default :
-				return;
-			}
-		}
+		TextView tv_share_gift = (TextView)findViewById(R.id.tv_share_gift);
+		tv_share_gift.setOnClickListener(onClickListener);
+		TextView tv_feedback = (TextView)findViewById(R.id.tv_feedback);
+		tv_feedback.setOnClickListener(onClickListener);
+		TextView tv_score = (TextView)findViewById(R.id.tv_score);
+		tv_score.setOnClickListener(onClickListener);
+		TextView tv_about = (TextView)findViewById(R.id.tv_about);
+		tv_about.setOnClickListener(onClickListener);		
+		getsp();
 	}
 	
-	class ClickListener implements OnClickListener{
-		public void onClick(View v) {
-			switch(v.getId()){
-			case R.id.setting_center_menu:
-				saveData();
-				ActivityFactory.A.LeftMenu();
-				break;
-//			case R.id.setting_center_home:
-//				ActivityFactory.A.ToHome();
-//				break;
-			case R.id.share_have_gift: // 分享有礼
-				startActivity(new Intent(SettingCenterActivity.this,ShareActivity.class));
-				break;
-			case R.id.feedback: // 意见反馈
-				startActivity(new Intent(SettingCenterActivity.this,FeedBackActivity.class));
-				break;
-			case R.id.give_us_score: // 给我们评分
-				showDialog();
-				break;
-			case R.id.about_appliaction: // 关于我爱我车
-
-				break;
-			case R.id.grade_commit: // 提交评分
-				Toast.makeText(getApplicationContext(), "评分成功", 0).show();
-				dlg.dismiss();
-				break;
-			case R.id.grade_cancle: // 取消评分
-				dlg.dismiss();
-				break;
-			case R.id.default_center_layout:
-				index += 1;
-				if(index == Variable.carDatas.size() + 1){
-					index = 0;
-				}
-				mTView.setText(nameList[index]);
-//				if(index == 0){
-//					mTView.setText(nameList[1]);
-//					index = 1;
-//				}else if(index == 1){
-//					mTView.setText(nameList[0]);
-//					index = 0;
-//				}
-				Variable.defaultCenter = mTView.getText().toString();
-				break;
-			case R.id.against_push_row:
-				if(againstPush.isChecked()){
-					againstPush.setChecked(false);
-				}else if(!againstPush.isChecked()){
-					againstPush.setChecked(true);
-				}
-				Variable.againstPush = againstPush.isChecked();
-				Log.e("Variable.againstPush:" + Variable.againstPush,"againstPush.isChecked():" + againstPush.isChecked());
-				break;
-			case R.id.bug_push_row:
-				if(faultPush.isChecked()){
-					faultPush.setChecked(false);
-				}else if(!faultPush.isChecked()){
-					faultPush.setChecked(true);
-				}
-				Variable.faultPush = faultPush.isChecked();
-				break;
-			case R.id.remaind_push_row:
-				if(remainPush.isChecked()){
-					remainPush.setChecked(false);
-				}else if(!remainPush.isChecked()){
-					remainPush.setChecked(true);
-				}
-				Variable.remaindPush = remainPush.isChecked();
-				break;
-			default:
-				return;
-			}
-		}
-	}
-	
-	//点击评分弹出对话框
-	public void showDialog(){
-		LayoutInflater layoutInflater = LayoutInflater.from(SettingCenterActivity.this);
-		View view = layoutInflater.inflate(R.layout.grand_dialog, null);
-		gradeCommit = (Button) view.findViewById(R.id.grade_commit);
-		gradeCancle = (Button) view.findViewById(R.id.grade_cancle);
-		gradeCommit.setOnClickListener(new ClickListener());
-		gradeCancle.setOnClickListener(new ClickListener());
-		dlg = new AlertDialog.Builder(SettingCenterActivity.this).setView(view).setCancelable(true).create();
-		dlg.show();
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		saveData();
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-		saveData();
-	}
-	public void saveData(){
-			for(int i = 0 ; i < nameList.length ; i ++){
-				nameList[i] = null;
-			}
-		new SaveSettingData(this).saveData(Variable.defaultCenter, Variable.againstPush, Variable.faultPush,Variable.remaindPush);
-	}
+	OnClickListener onClickListener = new OnClickListener() {
+        
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+            case R.id.bt_setting_menu:
+                ActivityFactory.A.LeftMenu();
+                break;
+            case R.id.rl_traffic:
+                if(isTraffic){
+                    isTraffic = false;
+                    iv_traffic.setVisibility(View.GONE);
+                }else{
+                    isTraffic = true;
+                    iv_traffic.setVisibility(View.VISIBLE);
+                }
+                break;
+            case R.id.rl_status:
+                if(isStatus){
+                    isStatus = false;
+                    iv_status.setVisibility(View.GONE);
+                }else{
+                    isStatus = true;
+                    iv_status.setVisibility(View.VISIBLE);
+                }
+                break;
+            case R.id.rl_alert:
+                if(isAlert){
+                    isAlert = false;
+                    iv_alert.setVisibility(View.GONE);
+                }else{
+                    isAlert = true;
+                    iv_alert.setVisibility(View.VISIBLE);
+                }
+                break;
+            case R.id.rl_remind:
+                if(isRemind){
+                    isRemind = false;
+                    iv_remind.setVisibility(View.GONE);
+                }else{
+                    isRemind = true;
+                    iv_remind.setVisibility(View.VISIBLE);
+                }
+                break;
+            case R.id.rl_center:
+                startActivity(new Intent(SettingCenterActivity.this, MyVehicleActivity.class));
+                break;
+            case R.id.tv_share_gift:
+                startActivity(new Intent(SettingCenterActivity.this, ShareActivity.class));
+                break;
+            case R.id.tv_feedback:
+                startActivity(new Intent(SettingCenterActivity.this, FeedBackActivity.class));
+                break;
+            case R.id.tv_score:
+                break;
+            case R.id.tv_about:
+                startActivity(new Intent(SettingCenterActivity.this, AboutActivity.class));
+                break;
+            }
+        }
+    };
+    Handler handler = new Handler(){
+        
+    };
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+        int index = preferences.getInt(Constant.DefaultVehicleID, 0);
+        tv_value.setText("车辆" + Variable.carDatas.get(index).getObj_name() + "的位置");
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+        Editor editor = preferences.edit();
+        editor.putBoolean("isTraffic", isTraffic);
+        editor.putBoolean("isStatus", isStatus);
+        editor.putBoolean("isAlert", isAlert);
+        editor.putBoolean("isRemind", isRemind);
+        editor.commit();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();        
+        String url = Constant.BaseUrl + "customer/" + Variable.cust_id +"/push?auth_code=" + Variable.auth_code;
+        List<NameValuePair> params = new ArrayList<NameValuePair>();
+        params.add(new BasicNameValuePair("if_vio_noti", isTraffic ? "1" : "0"));   
+        params.add(new BasicNameValuePair("if_fault_noti", isStatus ? "1" : "0"));   
+        params.add(new BasicNameValuePair("if_alert_noti", isAlert ? "1" : "0"));   
+        params.add(new BasicNameValuePair("if_event_noti", isRemind ? "1" : "0"));   
+        new Thread(new NetThread.putDataThread(handler, url, params, 999)).start();
+    }
+    private void getsp(){
+        SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+        isTraffic = preferences.getBoolean("isTraffic", false);
+        isStatus = preferences.getBoolean("isStatus", false);
+        isAlert = preferences.getBoolean("isAlert", false);
+        isRemind = preferences.getBoolean("isRemind", false);
+        if(isTraffic){
+            iv_traffic.setVisibility(View.VISIBLE);
+        }
+        if(isStatus){
+            iv_status.setVisibility(View.VISIBLE);
+        }
+        if(isAlert){
+            iv_alert.setVisibility(View.VISIBLE);
+        }
+        if(isRemind){
+            iv_remind.setVisibility(View.VISIBLE);
+        }
+    }
 }

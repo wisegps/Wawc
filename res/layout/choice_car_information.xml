@@ -2,17 +2,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#FFFFFF"
-    >
+    android:background="#FFFFFF" >
 
     <!-- 头部 -->
-     <RelativeLayout
+
+    <RelativeLayout
         android:id="@+id/new_car_choice_information_top"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight"
-        android:background="@color/blue"
         android:layout_alignParentTop="true"
-        >
+        android:background="@drawable/nav_bg">
 
         <ImageView
             android:id="@+id/choice_vechile_information_back"
@@ -20,7 +19,7 @@
             android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/side_back" />
+            android:background="@drawable/nav_back" />
 
         <TextView
             android:id="@+id/choice_vechile_information_title"
@@ -28,102 +27,98 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="@string/choice_brank"
-            android:textSize="@dimen/head" 
             android:gravity="center"
-            android:layout_toRightOf="@id/choice_vechile_back"
+            android:text="@string/choice_brank"
             android:textColor="@color/white"
-            />
-
-        <View
-            android:layout_width="@dimen/title_hight"
-            android:layout_height="@dimen/title_hight"
-            android:layout_alignParentRight="true"
-            />
+            android:textSize="@dimen/head" />
     </RelativeLayout>
     <!-- 车牌 -->
-    <RelativeLayout 
+
+    <RelativeLayout
         android:id="@+id/choice_car_brank"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/new_car_choice_information_top"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        >
-    <!-- 自定义搜索 栏 -->
-    <com.wise.service.ClearEditText
-        android:id="@+id/filter_edit"
-        android:layout_margin="@dimen/margins"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/new_article_edit_border"
-        android:drawableLeft="@drawable/toolbar_icon_search"
-        android:hint="请输入关键字"
-        android:singleLine="true"
-        android:textColor="@color/black"
-        android:textSize="@dimen/content" />
-    
-    
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_below="@id/filter_edit"
-         >
-        <com.wise.list.XListView
-            android:id="@+id/vehicle_brank_list"
+        android:layout_centerVertical="true" >
+
+        <!-- 自定义搜索 栏 -->
+
+        <com.wise.service.ClearEditText
+            android:id="@+id/filter_edit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margins"
+            android:background="@drawable/new_article_edit_border"
+            android:drawableLeft="@drawable/toolbar_icon_search"
+            android:hint="请输入关键字"
+            android:singleLine="true"
+            android:textColor="@color/common"
+            android:textSize="@dimen/content" />
+
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_gravity="center"
-            android:cacheColorHint="#00000000"
-            android:divider="@null" />
-        <!-- 点击字母显示 -->
-        <TextView
-            android:id="@+id/dialog"
-            android:layout_width="80.0dip"
-            android:layout_height="80.0dip"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/voice_dialog_bg"
-            android:gravity="center"
-            android:textColor="#ffffffff"
-            android:textSize="30.0dip"
-            android:visibility="invisible" />
-        
-        <!-- 右边字母索引 -->
-        <com.wise.service.SideBar
-            android:id="@+id/sidrbar"
-            android:layout_width="30.0dip"
-            android:layout_height="fill_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            />
+            android:layout_below="@id/filter_edit" >
+
+            <com.wise.list.XListView
+                android:id="@+id/vehicle_brank_list"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:cacheColorHint="#00000000"
+                android:divider="@null" />
+            <!-- 点击字母显示 -->
+
+            <TextView
+                android:id="@+id/dialog"
+                android:layout_width="80.0dip"
+                android:layout_height="80.0dip"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@drawable/voice_dialog_bg"
+                android:gravity="center"
+                android:textColor="#ffffffff"
+                android:textSize="30.0dip"
+                android:visibility="invisible" />
+
+            <!-- 右边字母索引 -->
+
+            <com.wise.service.SideBar
+                android:id="@+id/sidrbar"
+                android:layout_width="30.0dip"
+                android:layout_height="fill_parent"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true" />
+        </RelativeLayout>
     </RelativeLayout>
-    </RelativeLayout>
-    
-    
+
     <!-- 车型 -->
-    <ListView 
+
+    <ListView
         android:id="@+id/choice_car_modles"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:dividerHeight="0.5dip"
-        android:divider="@color/gray"
         android:layout_below="@id/new_car_choice_information_top"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:visibility="gone"
-        ></ListView>
-    
+        android:divider="@color/gray"
+        android:dividerHeight="0.5dip"
+        android:visibility="gone" >
+    </ListView>
+
     <!-- 车款 -->
-    <ListView 
+
+    <ListView
         android:id="@+id/choice_car_type"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:dividerHeight="0.5dip"
-        android:divider="@color/gray"
         android:layout_below="@id/new_car_choice_information_top"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:visibility="gone"
-        ></ListView>
+        android:divider="@color/gray"
+        android:dividerHeight="0.5dip"
+        android:visibility="gone" >
+    </ListView>
+
 </RelativeLayout>

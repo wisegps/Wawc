@@ -25,12 +25,12 @@
             android:layout_marginRight="@dimen/margins"
             android:contentDescription="@string/app_name"
             android:src="@drawable/collect" />
+                
         <TextView
            android:id="@+id/tv_item_dealadress_name"
-           android:layout_width="wrap_content"
+           android:layout_width="fill_parent"
            android:layout_height="wrap_content"
            android:layout_toLeftOf="@id/iv_Collect"
-           android:layout_marginRight="@dimen/margins"
            android:text="深圳红岭北路3002号梅园仓库区9号楼南面"
            android:textColor="@color/common" />
        <TextView

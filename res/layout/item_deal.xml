@@ -14,7 +14,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:textColor="@color/black"
+            android:textColor="@color/common"
             android:text="沙河西路加油站" />
         <ImageView 
             android:id="@+id/iv_Collect"
@@ -32,7 +32,7 @@
 	            android:layout_width="wrap_content"
 	            android:layout_height="wrap_content"
 	            android:layout_centerVertical="true"
-	            android:textColor="@color/black"
+	            android:textColor="@color/common"
 	            android:text="地址沙河西路" />
 	        <ImageView 
 	            android:id="@+id/iv_location"
@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:textColor="@color/black"
+                android:textColor="@color/common"
                 android:text="电话" />
             <ImageView 
                 android:id="@+id/iv_tel"
