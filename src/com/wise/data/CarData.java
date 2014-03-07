@@ -211,7 +211,8 @@ public class CarData {
 	public void setCity_code(String city_code) {
 		this.city_code = city_code;
 	}
-	public String toString() {
+    @Override
+    public String toString() {
         return "CarData [obj_id=" + obj_id + ", car_brand=" + car_brand
                 + ", car_series=" + car_series + ", car_type=" + car_type
                 + ", engine_no=" + engine_no + ", frame_no=" + frame_no
@@ -222,7 +223,11 @@ public class CarData {
                 + ", maintain_last_mileage=" + maintain_last_mileage
                 + ", maintain_next_mileage=" + maintain_next_mileage
                 + ", buy_date=" + buy_date + ", obj_name=" + obj_name
-                + ", maintain_last_date=" + maintain_last_date + ", logoPath="
-                + logoPath + ", isCheck=" + isCheck + ", Type=" + Type + "]";
-    }    	
+                + ", maintain_last_date=" + maintain_last_date + ", regNo="
+                + regNo + ", vio_location=" + vio_location + ", logoPath="
+                + logoPath + ", device_id=" + device_id + ", serial=" + serial
+                + ", city_code=" + city_code + ", isCheck=" + isCheck
+                + ", Type=" + Type + ", Adress=" + Adress + ", Lat=" + Lat
+                + ", Lon=" + Lon + "]";
+    }	   	
 }

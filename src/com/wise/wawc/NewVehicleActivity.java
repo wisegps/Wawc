@@ -442,6 +442,8 @@ public class NewVehicleActivity extends Activity{
 //	                carData.setMaintain_next_mileage(nextMaintainMileage.getText().toString().trim());
 	                carData.setBuy_date( buyTime.getText().toString());
 	                Variable.carDatas.add(carData);
+	                Intent intent = new Intent(Constant.A_UpdateCar);
+	                sendBroadcast(intent);
 					NewVehicleActivity.this.finish();
 				}else{
 					Toast.makeText(getApplicationContext(), "添加失败，请重试", 0).show();

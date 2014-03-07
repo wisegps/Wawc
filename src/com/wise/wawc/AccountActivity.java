@@ -82,7 +82,6 @@ public class AccountActivity extends Activity{
 			case R.id.iv_activity_account_menu:	
 			    saveData();
 				ActivityFactory.A.LeftMenu();
-				finish();
 				break;
 			case R.id.account_to_my_vehicle:
 			    Intent intent = new Intent(AccountActivity.this,MyVehicleActivity.class);

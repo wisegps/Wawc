@@ -499,15 +499,17 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            long currentTime = System.currentTimeMillis();
-            if (touchTime == 0 || (currentTime - touchTime) >= waitTime) {
-                Toast.makeText(this, "再按一次退出客户端", Toast.LENGTH_SHORT).show();
-                touchTime = currentTime;
-            } else {
-//            	  int nPid = android.os.Process.myPid();
-//            	  android.os.Process.killProcess(nPid); 
-                finish();
-            }
+            if (slidingMenuView.getCurrentScreen() == 1) {
+                slidingMenuView.snapToScreen(0);
+            }else{
+                long currentTime = System.currentTimeMillis();
+                if (touchTime == 0 || (currentTime - touchTime) >= waitTime) {
+                    Toast.makeText(this, "再按一次退出客户端", Toast.LENGTH_SHORT).show();
+                    touchTime = currentTime;
+                } else {
+                    finish();
+                }
+            }            
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -663,9 +665,9 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
      */
     public void ToCarTerminal() {
         slidingMenuView.snapToScreen(1);
-        Intent i = new Intent(MainActivity.this, MyDevicesActivity.class);
+        Intent i = new Intent(MainActivity.this, DevicesActivity.class);
         View view = getLocalActivityManager().startActivity(
-                MyDevicesActivity.class.getName(), i).getDecorView();
+                DevicesActivity.class.getName(), i).getDecorView();
         tabcontent.removeAllViews();
         tabcontent.addView(view);
     }

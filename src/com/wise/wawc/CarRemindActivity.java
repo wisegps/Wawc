@@ -17,7 +17,9 @@ import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -27,16 +29,19 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.LinearLayout.LayoutParams;
 
 /**
@@ -222,7 +227,6 @@ public class CarRemindActivity extends Activity {
             case change_user_date:
                 jsonChangeUserInfo(msg.obj.toString());
                 break;
-
             case get_user_date:
                 jsonUserInfo(msg.obj.toString());
                 break;
@@ -268,10 +272,11 @@ public class CarRemindActivity extends Activity {
                 ll_replacement.setVisibility(View.VISIBLE);
                 break;
             case R.id.bt_maintenance:// 车辆保养
-                Intent RemindIntent = new Intent(CarRemindActivity.this,
-                        MyVehicleActivity.class);
-                RemindIntent.putExtra("isJump", true);
-                CarRemindActivity.this.startActivity(RemindIntent);
+//TODO                Intent RemindIntent = new Intent(CarRemindActivity.this,
+//                        MyVehicleActivity.class);
+//                RemindIntent.putExtra("isJump", true);
+//                CarRemindActivity.this.startActivity(RemindIntent);
+                setMileage();
                 break;
             case R.id.bt_inspection_time:// 年检提醒
                 ShowDate(inspection);
@@ -318,6 +323,28 @@ public class CarRemindActivity extends Activity {
             }
         }
     };
+    
+    private void setMileage(){
+        View view_mileage = LayoutInflater.from(CarRemindActivity.this).inflate(R.layout.set_mileage, null);
+        final EditText et_mileage = (EditText)view_mileage.findViewById(R.id.et_mileage);
+        AlertDialog.Builder builder = new AlertDialog.Builder(CarRemindActivity.this);
+        builder.setTitle("设置");
+        builder.setView(view_mileage);
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {                    
+            public void onClick(DialogInterface dialog, int which) {
+                String next_mileage = et_mileage.getText().toString();
+                if(next_mileage.equals("")){
+                    Toast.makeText(CarRemindActivity.this, "里程不能为空", Toast.LENGTH_SHORT).show();
+                }else{
+                    carData.setMaintain_next_mileage(next_mileage);
+                    carMaintenanceDate(mileage);
+                    changeCarInfo();
+                }
+            }
+        });
+        builder.setNegativeButton(R.string.cancle, null);
+        builder.show();
+    }
     
     private void turnActivity(String Title , String url){
         Intent intent = new Intent(CarRemindActivity.this, WapActivity.class);
@@ -544,6 +571,7 @@ public class CarRemindActivity extends Activity {
         new Thread(new NetThread.GetDataThread(handler, url, get_car_info))
                 .start();
     }
+    int mileage = 0;
     /**
      * 解析车辆里程
      * @param result
@@ -553,7 +581,7 @@ public class CarRemindActivity extends Activity {
             JSONObject jsonObject = new JSONObject(result);
             if (jsonObject.getString("device_id")
                     .equals(carData.getDevice_id())) {
-                int mileage = jsonObject.getJSONObject("active_gps_data").getInt("mileage");
+                mileage = jsonObject.getJSONObject("active_gps_data").getInt("mileage");
                 carMaintenanceDate(mileage);
             }
         } catch (Exception e) {

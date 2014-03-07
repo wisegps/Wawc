@@ -3,30 +3,34 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/default_bg">
-    <LinearLayout 
-        android:layout_width="fill_parent"
+    android:background="@drawable/default_bg">        
+    <ImageView 
+        android:id="@+id/iv_logo"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        android:contentDescription="@string/app_name"
+        android:src="@drawable/default_logo"/>
+    <LinearLayout 
+        android:id="@+id/ll_login"
+        android:layout_below="@id/iv_logo"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:orientation="vertical">        
-	    <ImageView 
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:contentDescription="@string/app_name"
-	        android:src="@drawable/default_logo"/>
-	    <Button 
-	        android:id="@+id/bt_sina"
-	        android:layout_width="200dp"
-	        android:layout_height="wrap_content"
-	        android:padding="@dimen/margins"
-	        android:drawableLeft="@drawable/home_sina"
-	        android:background="@drawable/bt_bg"
-	        android:textColor="@color/white"
-	        android:textSize="@dimen/main"
-	        android:text="新浪微博登录"/>
-	    <Button 
-	        android:id="@+id/bt_qq"
+        android:visibility="visible"
+        android:orientation="vertical">	        
+        <Button 
+            android:id="@+id/bt_sina"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margins"
+            android:drawableLeft="@drawable/home_sina"
+            android:background="@drawable/bt_bg"
+            android:textColor="@color/white"
+            android:textSize="@dimen/main"
+            android:text="新浪微博登录"/>
+        <Button 
+            android:id="@+id/bt_qq"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:padding="@dimen/margins"

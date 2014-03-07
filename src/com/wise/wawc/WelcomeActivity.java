@@ -29,7 +29,11 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 /**
@@ -44,7 +48,7 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
     private final static int Get_city = 2;
     private final static int Get_host_city = 3;
     private final static int login = 4;
-    
+    LinearLayout ll_login;
     Button bt_sina , bt_qq;
     Platform platformQQ;
     Platform platformSina;
@@ -56,6 +60,7 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         ShareSDK.initSDK(this);
+        ll_login = (LinearLayout)findViewById(R.id.ll_login);
         bt_sina = (Button)findViewById(R.id.bt_sina);
         bt_sina.setOnClickListener(onClickListener);
         bt_qq = (Button)findViewById(R.id.bt_qq);
@@ -68,8 +73,14 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
             isLogin();
             if(isLogin){
                 new Thread(new WaitThread()).start();
+            }else{
+                System.out.println("show");
+                Animation operatingAnim = AnimationUtils.loadAnimation(WelcomeActivity.this, R.anim.in_from_bottom);  
+                ll_login.setAnimation(operatingAnim);
+                ll_login.setVisibility(View.VISIBLE);
             }
             isNeedGetCityFromUrl();
+            
         }
     }
     OnClickListener onClickListener = new OnClickListener() {        
