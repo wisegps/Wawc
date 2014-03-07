@@ -1,20 +1,18 @@
 package com.wise.wawc;
 
-import java.io.File;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Iterator;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
+import java.util.HashMap;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.sina.weibo.SinaWeibo;
+import cn.sharesdk.tencent.qzone.QZone;
 
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
+import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
+import com.wise.sql.DBHelper;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -23,10 +21,15 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.widget.TextView;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.Toast;
 
 /**
@@ -34,96 +37,81 @@ import android.widget.Toast;
  * 
  * @author honesty
  */
-public class WelcomeActivity extends Activity {
+public class WelcomeActivity extends Activity implements PlatformActionListener {
     private static final String TAG = "WelcomeActivity";
     
     private final static int Wait = 1;
     private final static int Get_city = 2;
     private final static int Get_host_city = 3;
+    private final static int login = 4;
+    
+    Button bt_sina , bt_qq;
+    Platform platformQQ;
+    Platform platformSina;
+    Platform platformWhat;
+    boolean isLogin = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
-        //TextView tv_activity_welcom_version = (TextView) findViewById(R.id.tv_activity_welcom_version);
-        //tv_activity_welcom_version.setText("V" + GetSystem.GetVersion(getApplicationContext(), Constant.PackageName));
+        ShareSDK.initSDK(this);
+        bt_sina = (Button)findViewById(R.id.bt_sina);
+        bt_sina.setOnClickListener(onClickListener);
+        bt_qq = (Button)findViewById(R.id.bt_qq);
+        bt_qq.setOnClickListener(onClickListener);
         if (isOffline()) {
             // 没有网络
             setNetworkMethod();
-        } else if (isFristLoad()) {
-            // 第一次登录，选着城市
-            GetCityList();
         }else{
-            new Thread(new WaitThread()).start();
             //跳转到登录界面
-            //test();
-            //String url = "http://wiwc.api.wisegps.cn/violation/city?auth_code=bba2204bcd4c1f87a19";
-            //new Thread(new NetThread.GetDataThread(handler, url, 999)).start();
+            isLogin();
+            if(isLogin){
+                new Thread(new WaitThread()).start();
+            }
+            isNeedGetCityFromUrl();
         }
     }
-    private void test(){
-        String time1 = "2014-02-11T06:17:08.751Z";
-        time1 = time1.substring(0, time1.length() - 8).replace("T", " ");
-        System.out.println(formatDateTime(time1)[0] + "," + formatDateTime(time1)[1]);
-        
-        String time2 = "2014-02-10T06:17:08.751Z";
-        time2 = time2.substring(0, time2.length() - 8).replace("T", " ");
-        System.out.println(formatDateTime(time2)[0] + "," + formatDateTime(time2)[1]);
-        
-        String time3 = "2014-01-25T06:17:08.751Z";
-        time3 = time3.substring(0, time3.length() - 8).replace("T", " ");
-        System.out.println(formatDateTime(time3)[0] + "," + formatDateTime(time3)[1]);
-        
+    OnClickListener onClickListener = new OnClickListener() {        
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+            case R.id.bt_sina:
+                platformSina.setPlatformActionListener(WelcomeActivity.this);
+                platformSina.SSOSetting(true);
+                platformSina.showUser(null);
+                break;
+
+            case R.id.bt_qq:
+                platformQQ.setPlatformActionListener(WelcomeActivity.this);
+                platformQQ.showUser(null);
+                break;
+            }
+        }
+    };
+    
+    private void isLogin() {
+        platformQQ = ShareSDK.getPlatform(WelcomeActivity.this, QZone.NAME);
+        platformSina = ShareSDK.getPlatform(WelcomeActivity.this, SinaWeibo.NAME);
+        if (platformQQ.getDb().isValid()) {
+            System.out.println("qq登录");
+            isLogin = true;
+            bt_sina.setVisibility(View.INVISIBLE);
+            bt_qq.setVisibility(View.INVISIBLE);
+         } else if (platformSina.getDb().isValid()){
+            isLogin = true;
+            System.out.println("sina登录");
+            bt_sina.setVisibility(View.INVISIBLE);
+            bt_qq.setVisibility(View.INVISIBLE);
+       } else {
+            isLogin = false;
+            System.out.println("没有登录");
+            bt_sina.setVisibility(View.VISIBLE);
+            bt_qq.setVisibility(View.VISIBLE);
+        }
     }
     
-    private static String[] formatDateTime(String time) {  
-        SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm");   
-        if(time==null ||"".equals(time)){  
-            return null;  
-        }  
-        Date date = null;  
-        try {  
-            date = format.parse(time);  
-        } catch (ParseException e) {  
-            e.printStackTrace();  
-        }  
-          
-        Calendar current = Calendar.getInstance();  
-          
-        Calendar today = Calendar.getInstance();    //今天  
-          
-        today.set(Calendar.YEAR, current.get(Calendar.YEAR));  
-        today.set(Calendar.MONTH, current.get(Calendar.MONTH));  
-        today.set(Calendar.DAY_OF_MONTH,current.get(Calendar.DAY_OF_MONTH));  
-        //  Calendar.HOUR——12小时制的小时数 Calendar.HOUR_OF_DAY——24小时制的小时数  
-        today.set( Calendar.HOUR_OF_DAY, 0);  
-        today.set( Calendar.MINUTE, 0);  
-        today.set(Calendar.SECOND, 0);  
-          
-        Calendar yesterday = Calendar.getInstance();    //昨天  
-          
-        yesterday.set(Calendar.YEAR, current.get(Calendar.YEAR));  
-        yesterday.set(Calendar.MONTH, current.get(Calendar.MONTH));  
-        yesterday.set(Calendar.DAY_OF_MONTH,current.get(Calendar.DAY_OF_MONTH)-1);  
-        yesterday.set( Calendar.HOUR_OF_DAY, 0);  
-        yesterday.set( Calendar.MINUTE, 0);  
-        yesterday.set(Calendar.SECOND, 0);  
-          
-        current.setTime(date);  
-        String[] myDate = new String[2];
-        if(current.after(today)){  
-            myDate[0] = "今天";
-            myDate[1] = time.split(" ")[1];
-        }else if(current.before(today) && current.after(yesterday)){  
-            myDate[0] = "昨天";
-            myDate[1] = time.split(" ")[1];
-        }else{ 
-            myDate[0] = time.substring(0, 10);
-            myDate[1] = time.split(" ")[1];
-            int index = time.indexOf("-")+1;  
-        }  
-        return myDate;
-    }
+    
     
     String citys = "";
     String hot_citys = "";
@@ -151,39 +139,14 @@ public class WelcomeActivity extends Activity {
                 InsertCity(hot_citys, "hotCity");
                 TurnActivity();
                 break;
-            case 999:
-                try {
-                    int j = 0; 
-                    JSONObject jsonObject = new JSONObject(msg.obj.toString()).getJSONObject("result");
-                    Iterator it = jsonObject.keys();
-                    while(it.hasNext()){
-                        j ++ ;
-                        String key = (String) it.next();
-                        System.out.println("key = " + key);
-                        JSONObject jsonObject2 = jsonObject.getJSONObject(key);
-                        //System.out.println(jsonObject2.getString("province"));
-                        JSONArray jsonArray = jsonObject2.getJSONArray("citys");
-                        for(int i = 0 ; i < jsonArray.length(); i++){
-                            JSONObject jsonObject3 = jsonArray.getJSONObject(i);
-                            //System.out.println(jsonObject3.getString("city_name"));
-                        }
-                    }
-                    System.out.println("j = " + j);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            break;
+            case login:
+                isLogin = true;
+                TurnActivity();
+                break;
             }
         }
     };
     
-    private void InsertCity(String result, String Title) {
-        DBExcute dbExcute = new DBExcute();
-        ContentValues values = new ContentValues();
-        values.put("Title", Title);
-        values.put("Content", result);
-        dbExcute.InsertDB(WelcomeActivity.this, values, Constant.TB_Base);
-    }
 
     /**
      * 判断网络连接状况，true,没有网络
@@ -238,7 +201,6 @@ public class WelcomeActivity extends Activity {
 
     /**
      * 是否是第一次登录
-     * 
      * @return
      */
     private boolean isFristLoad() {
@@ -250,23 +212,66 @@ public class WelcomeActivity extends Activity {
         }
         return false;
     }
-    private void GetCityList(){
-        String url = Constant.BaseUrl + "base/city?is_hot=0";
-        new Thread(new NetThread.GetDataThread(handler, url, Get_city)).start();
-        String url_hot = Constant.BaseUrl + "base/city?is_hot=1";
-        new Thread(new NetThread.GetDataThread(handler, url_hot, Get_host_city)).start();
+    private void isNeedGetCityFromUrl(){
+        DBHelper dbHelper = new DBHelper(WelcomeActivity.this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base
+                + " where Title=?", new String[] { "City" });
+        if(cursor.getCount() == 0){
+            String url = Constant.BaseUrl + "base/city?is_hot=0";
+            new Thread(new NetThread.GetDataThread(handler, url, Get_city)).start();
+        }else{
+            isCity = true;
+        }
+        cursor.close();
+        Cursor c = db.rawQuery("select * from " + Constant.TB_Base
+                + " where Title=?", new String[] { "hotCity" });
+        if(c.getCount() == 0){
+            String url_hot = Constant.BaseUrl + "base/city?is_hot=1";
+            new Thread(new NetThread.GetDataThread(handler, url_hot, Get_host_city)).start();
+        }else{
+            isHotCity = true;
+        }
+        c.close();
+        db.close();
+    }
+    
+    private void InsertCity(String result, String Title) {
+        DBExcute dbExcute = new DBExcute();
+        ContentValues values = new ContentValues();
+        values.put("Title", Title);
+        values.put("Content", result);
+        dbExcute.InsertDB(WelcomeActivity.this, values, Constant.TB_Base);
     }
     private void TurnActivity(){
-        if(isCity && isHotCity){
-            if(citys.equals("")||hot_citys.equals("")){
-                Toast.makeText(WelcomeActivity.this, "读取数据失败！", Toast.LENGTH_LONG).show();
-                finish();
-            }else{
+        if(isCity && isHotCity && isLogin){
+            if(isFristLoad()){
                 Intent intent = new Intent(WelcomeActivity.this, SelectCityActivity.class);
                 intent.putExtra("Welcome", true);
                 startActivity(intent);
                 finish();
-            }            
+            }else{
+                Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }                          
         }
+    }
+
+    @Override
+    public void onCancel(Platform arg0, int arg1) {
+        // TODO Auto-generated method stub
+        
+    }
+    @Override
+    public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
+        Message message = new Message();
+        message.what = login;
+        handler.sendMessage(message);
+    }
+    @Override
+    public void onError(Platform arg0, int arg1, Throwable arg2) {
+        // TODO Auto-generated method stub
+        
     }
 }
