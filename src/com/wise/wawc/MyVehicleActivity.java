@@ -538,6 +538,10 @@ public class MyVehicleActivity extends Activity{
 					
 					register = Integer.valueOf(illegalCitys.getRegist());
 					registerNo = Integer.valueOf(illegalCitys.getRegistno());
+				}else{
+					engineNum.setVisibility(View.GONE);
+					frameNum.setVisibility(View.GONE);
+					vehicleRegNum.setVisibility(View.GONE);
 				}
 				
 				//判断终端是否绑定

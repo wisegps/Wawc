@@ -36,7 +36,13 @@ public class SeriesAdapter extends BaseAdapter {
 		return count;
 	}
 	public Object getItem(int position) {
-		return position;
+		Object obj = null;
+		if(action == 1){
+			obj = carSeriesList.get(position);
+		}else if(action == 2){
+			obj = typeList.get(position);
+		}
+		return obj;
 	}
 	public long getItemId(int position) {
 		return position;

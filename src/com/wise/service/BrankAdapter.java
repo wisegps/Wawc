@@ -6,6 +6,7 @@ import com.wise.wawc.R;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -65,7 +66,7 @@ public class BrankAdapter extends BaseAdapter{
 				//如果当前位置等于该分类首字母的Char的位置 ，则认为是第一次出现
 				if(position == getPositionForSection(section)){
 					viewHolder.tvLetter.setVisibility(View.VISIBLE);
-					viewHolder.tvLetter.setText(mContent.getVehicleLetter());
+					viewHolder.tvLetter.setText(this.brankKList.get(position).getVehicleLetter());
 				}else{
 					viewHolder.tvLetter.setVisibility(View.GONE);
 				}
@@ -93,7 +94,6 @@ public class BrankAdapter extends BaseAdapter{
 				return i;
 			}
 		}
-		
 		return -1;
 	}
 	

@@ -155,8 +155,9 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		carModlesLayout.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				//点击车型   选择车款
-				carSeriesId = carSeriesList.get(arg2 - 1)[0];
-				carSeries = carSeriesList.get(arg2 - 1)[1];
+				String[] str = (String[]) carModlesLayout.getItemAtPosition(arg2);
+				carSeriesId = str[0];
+				carSeries = str[1];
 				progressDialog = ProgressDialog.show(ChoiceCarInformationActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 				progressDialog.setCancelable(true);
 				getDate(carSeriesTitle + carSeriesId, Constant.BaseUrl + "base/car_type?pid=" + carSeriesId,GET_TYPE);
@@ -342,7 +343,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 				e1.printStackTrace();
 			}
 			// TODO
-			brankModelList = filledData(null,brankList);
+			brankModelList = filledData(brankList);
 			//排序
 			Collections.sort(brankModelList, comparator);
 			brankAdapter = new BrankAdapter(ChoiceCarInformationActivity.this, brankModelList);
@@ -397,7 +398,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 	 * @param date
 	 * @return
 	 */
-	private List<BrankModel> filledData(String [] date,List<BrankModel> brankList){
+	private List<BrankModel> filledData(List<BrankModel> brankList){
 		for(int i=0; i<brankList.size(); i++){
 			//汉字转换成拼音
 			String pinyin = characterParser.getSelling(brankList.get(i).getVehicleBrank());
