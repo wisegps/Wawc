@@ -522,8 +522,8 @@ public class MyVehicleActivity extends Activity{
 						for(int i = 0; i < illegalList.size() ; i++ ){
 							for(int j = 0 ; j < illegalList.get(i).getIllegalCityList().size() ; j ++){
 								if(carData.getVio_location().equals(illegalList.get(i).getIllegalCityList().get(j).getCityCode())){
-									location = illegalList.get(i).getIllegalCityList().get(j).getCityName();
-									illegalCitys = illegalList.get(i).getIllegalCityList().get(j);
+									location = illegalList.get(i).getIllegalCityList().get(j).getCityName();   //用户显示违章城市栏
+									illegalCitys = illegalList.get(i).getIllegalCityList().get(j);            //违章城市的相关属性
 								}
 							}
 						}
@@ -538,12 +538,7 @@ public class MyVehicleActivity extends Activity{
 					
 					register = Integer.valueOf(illegalCitys.getRegist());
 					registerNo = Integer.valueOf(illegalCitys.getRegistno());
-				}else{
-					engineNum.setVisibility(View.GONE);
-					frameNum.setVisibility(View.GONE);
-					vehicleRegNum.setVisibility(View.GONE);
 				}
-				
 				//判断终端是否绑定
 				if(carData.getSerial() == null){
 					myVehicleDevice.setText("未绑定终端");
@@ -573,12 +568,7 @@ public class MyVehicleActivity extends Activity{
 				lastMaintain.setText(carData.getMaintain_last_mileage());
 				buyTime.setText(carData.getBuy_date());
 				vehicleRegNum.setText(carData.getRegNo());
-				if(carData.getMaintain_last_date() == null){
-				    System.out.println("Maintain_last_date为空");
-				}
 				lastMaintainTime.setText(carData.getMaintain_last_date().substring(0, 10));
-				
-				
 				//点击了选择违章城市
 				if(hasSelectIllegalCity){
 					engineNum.setText("");
@@ -595,8 +585,6 @@ public class MyVehicleActivity extends Activity{
 						Log.e("illegalCitys.getEngine()",illegalCitys.getEngine());
 						Log.e("illegalCitys.getVehiclenum()",illegalCitys.getVehiclenum());
 						Log.e("illegalCitys.getRegist()",illegalCitys.getRegist());
-						
-						
 						
 						if(Integer.valueOf(illegalCitys.getEngine()) == 0){  //隐藏发动机
 							engineNumLayout.setVisibility(View.GONE);
@@ -684,8 +672,14 @@ public class MyVehicleActivity extends Activity{
 					carAdapter.notifyDataSetChanged();
 					break;
 				case getIllegalforUrlCode:
-					illegalList = parseJson(msg.obj.toString());
-					Variable.illegalProvinceList = illegalList;
+					if(!"".equals(msg.obj.toString())){
+						illegalList = parseJson(msg.obj.toString());
+						Variable.illegalProvinceList = illegalList;
+						//插入数据库
+						ContentValues values = new ContentValues();
+						values.put("json_data", msg.obj.toString());
+						dBExcute.InsertDB(MyVehicleActivity.this, values, Constant.TB_IllegalCity);
+					}
 					myDialog.dismiss();
 					break;
 				case bindDeviceId:
@@ -994,6 +988,13 @@ public class MyVehicleActivity extends Activity{
  			e.printStackTrace();
  		}
  		//排序后返回
+ 		if(illegalList == null){
+ 			Log.e("List<ProvinceModel>==null","YES");
+ 		}else{
+ 			for(int i = 0 ; i < illegalList.size() ; i ++){
+ 				Log.e("province：",illegalList.get(i).getProvinceName());
+ 			}
+ 		}
  		return filledData(illegalList);
  	}
  	
