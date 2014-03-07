@@ -269,7 +269,10 @@ public class HomeActivity extends Activity{
             ll_image.addView(imageView);
         }
         changeImage(DefaultVehicleID);
-        if(carDatas.size() != 0){
+        if(carDatas.size() != 0){            
+            if(DefaultVehicleID >= carDatas.size()){//默认第一个车
+                DefaultVehicleID = 0;
+            }            
             iv_car_traffic.setVisibility(View.GONE);
             iv_car_status.setVisibility(View.GONE);
             changeImage(DefaultVehicleID);
@@ -928,6 +931,7 @@ public class HomeActivity extends Activity{
         sb.append("【位置】");
         sb.append(carData.getAdress());
         sb.append("," + url);
+        Log.d(TAG, sb.toString());
         GetSystem.share(HomeActivity.this, sb.toString(),
                 "", Float.valueOf(carData.getLat()),
                 Float.valueOf(carData.getLon()));
