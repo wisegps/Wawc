@@ -488,7 +488,6 @@ public class HomeActivity extends Activity{
                 String device_id = cursor.getString(cursor.getColumnIndex("device_id"));
                 String serial = cursor.getString(cursor.getColumnIndex("serial"));
                 String maintain_last_date = cursor.getString(cursor.getColumnIndex("maintain_last_date"));
-                String city_code = cursor.getString(cursor.getColumnIndex("vio_location"));
                 
                 CarData carData = new CarData();
                 carData.setCheck(false);   
@@ -514,7 +513,6 @@ public class HomeActivity extends Activity{
                 carData.setLat(String.valueOf(Variable.Lat));
                 carData.setLon(String.valueOf(Variable.Lon));
                 carData.setDevice_id(device_id);
-                carData.setCity_code(city_code);
                 String imagePath = Constant.VehicleLogoPath + car_brand + ".png";//SD卡路径
                 if(new File(imagePath).isFile()){//存在
                     carData.setLogoPath(imagePath);

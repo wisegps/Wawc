@@ -45,6 +45,7 @@ import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -92,12 +93,17 @@ public class MyVehicleActivity extends Activity{
 	private TextView showInsuranceCompany;   //显示保险公司
 	public static final int resultCodeInsurance = 2;   //选择保险公司的识别码
 	public static final int resultCodeBrank = 3;       //选择汽车品牌的识别码
-	public static final int resultCodeMaintain = 6;       //选择汽车品牌的识别码
-	public static final int resultCodeDevice = 7;       //选择汽车品牌的识别码
+	public static final int resultCodeSeries = 12;       //选择汽车品牌的识别码
+	public static final int resultCodeType = 14;       //选择汽车品牌的识别码
+	
+	public static final int resultCodeMaintain = 6;       
+	public static final int resultCodeDevice = 7;       
 	public static final int showCarData = 8;       //显示汽车数据
 	public static final int deleteCarData = 10;       //删除汽车数据
 	private static final int setCarLogo = 11;      // 动态设置汽车Logo
 	private static final int getCityViolateRegulationsCode = 41;      // 获取违章城市代码
+	private static final int getBrankData = 39;
+	private static final int getSeriesData = 37;
 	private static final int getIllegalforUrlCode = 42;      // 获取违章城市代码
 	private static final int bindDeviceId = 13;
 	
@@ -184,6 +190,10 @@ public class MyVehicleActivity extends Activity{
 	private boolean hasSelectIllegalCity = false;
 	private String vehNum = "";   //临时存储车牌号
 	
+	
+	ChoiceCarInformationActivity choiceCarInformationActivity = null;
+	
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.my_vehicle);
@@ -227,6 +237,7 @@ public class MyVehicleActivity extends Activity{
 		ivCarType.setOnClickListener(new ClickListener());
 		selectCity.setOnClickListener(new ClickListener());
 		dBExcute = new DBExcute();
+		choiceCarInformationActivity = new ChoiceCarInformationActivity();
 		
 		preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
 		chickIndex = preferences.getInt(Constant.DefaultVehicleID, 0);
@@ -289,6 +300,12 @@ public class MyVehicleActivity extends Activity{
 					carAdapter.notifyDataSetChanged();
 					chickIndex = arg2;
 					hasSelectIllegalCity = false;
+					carBrankId = "";
+					carSeriesId = "";
+					carBrank = "";
+					carSeries = "";
+					carType = "";
+					
 			}
 		});
 		//设置默认选择第一辆汽车
@@ -344,6 +361,32 @@ public class MyVehicleActivity extends Activity{
 				intent.putExtra("code", resultCodeBrank);
 				startActivityForResult(intent, resultCodeBrank);
 				break;
+			case R.id.car_series_layout:    //选择车型
+				if("".equals(carBrankId)){
+					Toast.makeText(MyVehicleActivity.this, "请选择车牌", 0).show();
+					return;
+				}else{
+					Intent intent3 = new Intent(MyVehicleActivity.this,ChoiceCarInformationActivity.class);
+					intent3.putExtra("code", resultCodeSeries);
+					intent3.putExtra("brankId", carBrankId);
+					intent3.putExtra("carBrank", carBrank);
+					startActivityForResult(intent3, resultCodeSeries);
+				}
+				break;
+			case R.id.car_type_layout:    //选择车款
+				if("".equals(carSeriesId)){
+					Toast.makeText(MyVehicleActivity.this, "请选择车型", 0).show();
+					return;
+				}else{
+					Intent intent6 = new Intent(MyVehicleActivity.this,ChoiceCarInformationActivity.class);
+					intent6.putExtra("code", resultCodeType);
+					intent6.putExtra("brankId", carBrankId);
+					intent6.putExtra("carBrank", carBrank);
+					intent6.putExtra("seriesId", carSeriesId);
+					intent6.putExtra("series", carSeries);
+					startActivityForResult(intent6, resultCodeType);
+				}
+				break;
 			case R.id.vehicle_device_layout:    //我的终端
 			    if(Variable.devicesDatas.size() == 0){
 			        //跳转到购买终端界面
@@ -360,10 +403,6 @@ public class MyVehicleActivity extends Activity{
 				intent1.putExtra("code", resultCodeInsurance);
 				startActivityForResult(intent1, resultCodeInsurance);
 				break;
-			case R.id.dialog_mileage_cancle:  //取消同步里程
-				dlg.cancel();
-				break;
-				
 			case R.id.choice_maintain_image_layout:  //选择保养店
 				SharedPreferences shareFile = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
 				if("".equals(shareFile.getString(Constant.LocationCity, ""))){
@@ -382,9 +421,16 @@ public class MyVehicleActivity extends Activity{
 				startActivity(new Intent(MyVehicleActivity.this,NewVehicleActivity.class));
 				break;
 			case R.id.my_vehilce_delete:
-				myDialog = ProgressDialog.show(MyVehicleActivity.this, "提示", "正在删除...");
-				myDialog.setCancelable(true);
-				new Thread(new NetThread.DeleteThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).getObj_id() + "?auth_code=" + Variable.auth_code, deleteCarData)).start();
+				new AlertDialog.Builder(MyVehicleActivity.this).setTitle(getString(R.string.point)).setMessage(getString(R.string.sure_delete_vehicle) + vehicleNum + "?").setPositiveButton(getString(R.string.sure), new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+						myDialog = ProgressDialog.show(MyVehicleActivity.this, "提示", "正在删除...");
+						myDialog.setCancelable(true);
+						new Thread(new NetThread.DeleteThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).getObj_id() + "?auth_code=" + Variable.auth_code, deleteCarData)).start();
+					}
+				}).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				}).show();
 				break;
 			case R.id.my_vechile_edit:
 				if(!buttomViewIsShow){
@@ -420,13 +466,38 @@ public class MyVehicleActivity extends Activity{
 			carBrank = data.getStringExtra("brank");
 			carSeries = data.getStringExtra("series");
 			carType = data.getStringExtra("type");
+			carBrankId = data.getStringExtra("brankId");
 			// 更改数据库  
-			ContentValues values = new ContentValues();
-			values.put("car_brand", carBrank);
-			values.put("car_series", carSeries);
-			values.put("car_type", carType);
-			dBExcute.updataVehilce(MyVehicleActivity.this, Constant.TB_Vehicle, values, "obj_id=?", new String[]{String.valueOf(Variable.carDatas.get(chickIndex).getObj_id())});
+//			ContentValues values = new ContentValues();
+//			values.put("car_brand", carBrank);
+//			values.put("car_series", carSeries);
+//			values.put("car_type", carType);
+//			dBExcute.updataVehilce(MyVehicleActivity.this, Constant.TB_Vehicle, values, "obj_id=?", new String[]{String.valueOf(Variable.carDatas.get(chickIndex).getObj_id())});
 			//更改静态类
+			Variable.carDatas.get(chickIndex).setCar_brand(carBrank);
+			Variable.carDatas.get(chickIndex).setCar_series(carSeries);
+			Variable.carDatas.get(chickIndex).setCar_type(carType);
+		}
+		//点击车型返回
+		if(resultCode == this.resultCodeSeries){
+			carBrank = data.getStringExtra("brank");
+			carBrankId = data.getStringExtra("brankId");
+			carSeries = data.getStringExtra("series");
+			carSeriesId = data.getStringExtra("seriesId");
+			carType = data.getStringExtra("type");
+			
+			Variable.carDatas.get(chickIndex).setCar_brand(carBrank);
+			Variable.carDatas.get(chickIndex).setCar_series(carSeries);
+			Variable.carDatas.get(chickIndex).setCar_type(carType);
+		}
+		
+		if(resultCode == this.resultCodeType){
+			carBrank = data.getStringExtra("brank");
+			carBrankId = data.getStringExtra("brankId");
+			carSeries = data.getStringExtra("series");
+			carSeriesId = data.getStringExtra("seriesId");
+			carType = data.getStringExtra("type");
+			
 			Variable.carDatas.get(chickIndex).setCar_brand(carBrank);
 			Variable.carDatas.get(chickIndex).setCar_series(carSeries);
 			Variable.carDatas.get(chickIndex).setCar_type(carType);
@@ -514,6 +585,13 @@ public class MyVehicleActivity extends Activity{
 			switch(msg.what){
 			case showCarData:
 				CarData carData = (CarData) msg.obj;
+				
+				carBrank = carData.getCar_brand();
+				carSeries = carData.getCar_series();
+				//  匹配车辆品牌id、车型id、车款id   用于第一次点击二级项（车型）获取相关数据
+				getVehiclebrandData(ChoiceCarInformationActivity.carBrankTitle,Constant.TB_Base,Constant.BaseUrl + "base/car_brand",getBrankData);
+				
+				
 				IllegalCity illegalCitys = null;
 				String location = null;
 				//哪些要显示  哪些不用
@@ -640,18 +718,17 @@ public class MyVehicleActivity extends Activity{
 						Variable.carDatas.remove(Variable.carDatas.get(chickIndex));
 						carAdapter.notifyDataSetChanged();
 						if(Variable.carDatas.size() > 0){
-							vehicleNum = Variable.carDatas.get(0).getObj_name();
-							myVehicleBrank.setText(Variable.carDatas.get(0).getCar_brand());
-							vehicleNumber.setText(Variable.carDatas.get(0).getObj_name());
-							tvCarSeries.setText(Variable.carDatas.get(0).getCar_series());
-							tvCarType.setText(Variable.carDatas.get(0).getCar_type());
-							engineNum.setText(Variable.carDatas.get(0).getEngine_no());
-							frameNum.setText(Variable.carDatas.get(0).getFrame_no());
-							showInsuranceCompany.setText(Variable.carDatas.get(0).getInsurance_company());
-							ivInsuranceDate.setText(Variable.carDatas.get(0).getInsurance_date());
-							tvMaintain.setText(Variable.carDatas.get(0).getMaintain_company());
-							lastMaintain.setText(Variable.carDatas.get(0).getMaintain_last_mileage());
-							buyTime.setText(Variable.carDatas.get(0).getBuy_date());
+							chickIndex = 0;
+							for(int i = 0 ; i < Variable.carDatas.size() ; i++){
+								Variable.carDatas.get(i).setCheck(false);
+							}
+							Variable.carDatas.get(chickIndex).setCheck(true);
+							carAdapter.notifyDataSetChanged();
+							Message message = new Message();
+							message.obj = Variable.carDatas.get(chickIndex);
+							oneCarData = Variable.carDatas.get(chickIndex);
+							message.what = showCarData;
+							myHandler.sendMessage(message);
 						}else{
 							startActivity(new Intent(MyVehicleActivity.this,NewVehicleActivity.class));
 						}
@@ -660,18 +737,19 @@ public class MyVehicleActivity extends Activity{
 						}else{
 							vehicleGridView.setVisibility(View.VISIBLE);
 						}
+						buttomView.setVisibility(View.GONE);
+				 		buttomViewIsShow = false;
 						showToast("删除成功");
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-				
 				break;
 				
 				case setCarLogo:
 					carAdapter.notifyDataSetChanged();
 					break;
-				case getIllegalforUrlCode:
+				case getIllegalforUrlCode: //  获取违章城市数据
 					if(!"".equals(msg.obj.toString())){
 						illegalList = parseJson(msg.obj.toString());
 						Variable.illegalProvinceList = illegalList;
@@ -688,6 +766,18 @@ public class MyVehicleActivity extends Activity{
 					values1.put("device_id", deviceId);
 					values1.put("serial", deviceName);
 					dBExcute.updataVehilce(MyVehicleActivity.this, Constant.TB_Vehicle, values1, "obj_id=?", new String[]{String.valueOf(Variable.carDatas.get(chickIndex).getObj_id())});
+					break;
+				case getBrankData:
+					if(!"".equals(msg.obj.toString())){
+						//存到数据库
+						parseVehicleBrandData(msg.obj.toString(),msg.what);
+						ChoiceCarInformationActivity.insertDatabases(ChoiceCarInformationActivity.carBrankTitle, msg.obj.toString(), MyVehicleActivity.this);
+					}
+					break;
+				case getSeriesData:
+					if(!"".equals(msg.obj.toString())){
+						parseVehicleBrandData(msg.obj.toString(),msg.what);
+					}
 					break;
 			default:
 				return;
@@ -925,7 +1015,7 @@ public class MyVehicleActivity extends Activity{
 						 Variable.carDatas.get(chickIndex).setCar_brand(myVehicleBrank.getText().toString());
 						 Variable.carDatas.get(chickIndex).setCar_series(tvCarSeries.getText().toString());
 						 Variable.carDatas.get(chickIndex).setCar_type(tvCarType.getText().toString());
-						 Variable.carDatas.get(chickIndex).setCity_code(city_code);
+						 Variable.carDatas.get(chickIndex).setVio_location(city_code);
 						 Variable.carDatas.get(chickIndex).setEngine_no(engineNum.getText().toString().trim());
 						 Variable.carDatas.get(chickIndex).setFrame_no(frameNum.getText().toString().trim());
 						 Variable.carDatas.get(chickIndex).setRegNo(vehicleRegNum.getText().toString().trim());
@@ -1087,7 +1177,49 @@ public class MyVehicleActivity extends Activity{
  		return true;
  	}
  	protected void onPause() {
+ 		buttomView.setVisibility(View.GONE);
+ 		buttomViewIsShow = false;
  		vehNum = vehicleNumber.getText().toString();
  		super.onPause();
+ 	}
+ 	
+ 	
+ 	public void getVehiclebrandData(String whereValue,String table,String url,int what){
+ 		String result = null;
+ 		DBHelper helper  = new DBHelper(MyVehicleActivity.this);
+ 		SQLiteDatabase reader = helper.getReadableDatabase();
+ 		Cursor cursor = reader.rawQuery("select * from " + table + " where Title = ?", new String[]{whereValue});
+ 		if(cursor.moveToFirst()){
+ 			parseVehicleBrandData(cursor.getString(cursor.getColumnIndex("Content")),what);
+// 			Log.e("数据库================",cursor.getString(cursor.getColumnIndex("Content")));
+ 		}else{
+ 			new Thread(new NetThread.GetDataThread(myHandler, url, what)).start();
+ 		}
+ 	}
+ 	
+ 	public void parseVehicleBrandData(String str,int what){
+ 		JSONArray jsonary = null;
+ 		Log.e("str:",str);
+ 		try {
+			if(what == getBrankData){
+				jsonary = new JSONArray(str);
+				for(int i = 0 ; i < jsonary.length() ; i ++){
+					if(carBrank.equals(jsonary.getJSONObject(i).get("name"))){
+						getVehiclebrandData(ChoiceCarInformationActivity.carSeriesTitle,Constant.TB_Base,Constant.BaseUrl + "base/car_series?pid=" + carBrankId , getSeriesData);
+					}
+				}
+			}
+			if(getSeriesData == what){
+				jsonary = new JSONArray(str);
+				for(int i = 0 ; i < jsonary.length() ; i ++){
+					System.out.println("name===>"+jsonary.getJSONObject(i).get("go_name"));
+					if(carSeries.equals(jsonary.getJSONObject(i).get("show_name"))){
+						carSeriesId = jsonary.getJSONObject(i).get("id")+"";
+					}
+				}
+			}
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
  	}
 }

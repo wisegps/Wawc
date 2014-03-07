@@ -6,6 +6,7 @@ import com.wise.wawc.R;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,8 +80,9 @@ public class CarAdapter extends BaseAdapter{
             case VALUE_CAR:
                 CarData carData = carDatas.get(position);
                 holder.tv_item_carnumber.setText(carData.getObj_name());
+                Log.e(TAG,carData.getLogoPath());
                 if(carData.getLogoPath() == null || carData.getLogoPath().equals("")){
-                    holder.iv_item_cars.setImageResource(R.drawable.ic_launcher);
+                    holder.iv_item_cars.setImageResource(R.drawable.body_nothing_icon);
                 }else{
                     Bitmap bitmap = BitmapFactory.decodeFile(carData.getLogoPath());
                     //Bitmap bitmap = BlurImage.decodeSampledBitmapFromPath(carData.getLogoPath(), 80, 80);            
