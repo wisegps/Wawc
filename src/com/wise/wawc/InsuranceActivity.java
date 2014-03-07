@@ -32,7 +32,7 @@ import android.widget.TextView;
 /**
  * 保险公司
  */
-public class ChoiceInsuranceActivity extends Activity implements
+public class InsuranceActivity extends Activity implements
         IXListViewListener {
     private static final int getData = 1;
     
@@ -91,11 +91,11 @@ public class ChoiceInsuranceActivity extends Activity implements
                 intent.putExtra("insurance_name", insuranceData.getName());
                 intent.putExtra("insurance_phone", insuranceData.getService_phone());
                 if(code == NewVehicleActivity.newVehicleInsurance){
-                    ChoiceInsuranceActivity.this.setResult(NewVehicleActivity.newVehicleInsurance, intent);
+                    InsuranceActivity.this.setResult(NewVehicleActivity.newVehicleInsurance, intent);
                 }else if(code == MyVehicleActivity.resultCodeInsurance){
-                    ChoiceInsuranceActivity.this.setResult(MyVehicleActivity.resultCodeInsurance, intent);
+                    InsuranceActivity.this.setResult(MyVehicleActivity.resultCodeInsurance, intent);
                 }
-                ChoiceInsuranceActivity.this.finish();
+                InsuranceActivity.this.finish();
             }
         }
     };
@@ -145,14 +145,14 @@ public class ChoiceInsuranceActivity extends Activity implements
         DBExcute dbExcute = new DBExcute();
         ContentValues values = new ContentValues();
         values.put("Content", result);
-        dbExcute.UpdateDB(ChoiceInsuranceActivity.this, values, Title);
+        dbExcute.UpdateDB(InsuranceActivity.this, values, Title);
     }
     private void InsertInsurance(String result, String Title) {
         DBExcute dbExcute = new DBExcute();
         ContentValues values = new ContentValues();
         values.put("Title", Title);
         values.put("Content", result);
-        dbExcute.InsertDB(ChoiceInsuranceActivity.this, values, Constant.TB_Base);
+        dbExcute.InsertDB(InsuranceActivity.this, values, Constant.TB_Base);
     }
 
     @Override
@@ -170,7 +170,7 @@ public class ChoiceInsuranceActivity extends Activity implements
     public void onLoadMore() {}
 
     private class InSuranceAdapter extends BaseAdapter {
-        LayoutInflater mInflater = LayoutInflater.from(ChoiceInsuranceActivity.this);
+        LayoutInflater mInflater = LayoutInflater.from(InsuranceActivity.this);
         @Override
         public int getCount() {
             return insuranceDatas.size();

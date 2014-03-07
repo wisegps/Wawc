@@ -356,7 +356,7 @@ public class MyVehicleActivity extends Activity{
 			    }
 				break;
 			case R.id.insurance_company_layout:  //选择保险公司
-				Intent intent1 = new Intent(MyVehicleActivity.this,ChoiceInsuranceActivity.class);
+				Intent intent1 = new Intent(MyVehicleActivity.this,InsuranceActivity.class);
 				intent1.putExtra("code", resultCodeInsurance);
 				startActivityForResult(intent1, resultCodeInsurance);
 				break;

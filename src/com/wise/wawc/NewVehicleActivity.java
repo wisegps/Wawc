@@ -216,7 +216,7 @@ public class NewVehicleActivity extends Activity{
 				startActivityForResult(intent6, getCityViolateRegulationsCode);
 				break;
 			case R.id.new_vehicle_insurance_tr:   //选择保险公司
-				Intent intent1 = new Intent(NewVehicleActivity.this,ChoiceInsuranceActivity.class);
+				Intent intent1 = new Intent(NewVehicleActivity.this,InsuranceActivity.class);
 				intent1.putExtra("code", newVehicleInsurance);
 				startActivityForResult(intent1, newVehicleInsurance);
 				break;
