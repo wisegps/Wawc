@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
@@ -27,7 +26,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 /**
  * 订单确认
@@ -67,10 +65,6 @@ public class OrderConfirmActivity extends Activity{
 			case R.id.bt_activity_order_confirm_submit:
 				Toast.makeText(OrderConfirmActivity.this, "提交订单",Toast.LENGTH_SHORT).show();
 				submitOrder();
-				//Intent intent = new Intent(Constant.A_Order);
-				//sendBroadcast(intent);
-				//WawcApplication.getActivityInstance().exit();
-				//ActivityFactory.A.Toorders();
 				break;
 			case R.id.rl_client:
 			    iv_client.setVisibility(View.VISIBLE);
@@ -104,6 +98,12 @@ public class OrderConfirmActivity extends Activity{
                 } catch (Exception e) {
                     // TODO: handle exception
                 }
+                break;
+            case RQF_PAY:
+                Intent intent = new Intent(Constant.A_Order);
+                sendBroadcast(intent);
+                WawcApplication.getActivityInstance().exit();
+                ActivityFactory.A.Toorders();
                 break;
             }
         }	    

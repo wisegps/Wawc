@@ -4,16 +4,13 @@
     android:layout_height="fill_parent"
     android:background="#FFFFFF"
     android:orientation="vertical" >
-
-    <!-- 头部 -->
-
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight"
-        android:background="@drawable/nav_bg">
+        android:background="@drawable/nav_bg" >
 
         <ImageView
-            android:id="@+id/feed_back_cancle"
+            android:id="@+id/bt_back"
             android:layout_width="@dimen/title_image"
             android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
@@ -26,19 +23,25 @@
             android:layout_height="fill_parent"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/feed_back_cancle"
             android:gravity="center"
             android:text="@string/feedbaack"
             android:textColor="@color/white"
             android:textSize="@dimen/head" />
 
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+        <Button
+            android:id="@+id/bt_send"
+            android:background="@drawable/bt_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send_suggest"
+            android:textColor="@color/white"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/margins"
+            android:textSize="@dimen/main"
             android:layout_alignParentRight="true" />
     </RelativeLayout>
-
     <EditText
+        android:id="@+id/et_content"
         android:layout_width="fill_parent"
         android:layout_height="150dip"
         android:layout_margin="@dimen/margins"
@@ -47,19 +50,12 @@
         android:hint="说点什么...."
         android:maxLines="8"
         android:scrollbars="vertical" />
-
     <EditText
+        android:id="@+id/et_qq"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margins"
         android:background="@drawable/new_article_edit_border"
         android:hint="qq或邮箱地址（选填）"
         android:scrollbars="vertical" />
-
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margins"
-        android:text="@string/send_suggest" />
-
 </LinearLayout>

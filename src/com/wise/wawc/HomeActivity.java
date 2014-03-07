@@ -1260,12 +1260,12 @@ public class HomeActivity extends Activity{
                 if(next_mileages <= mileage){
                     iv_car_remind.setVisibility(View.VISIBLE);
                 }
-                String lon = jsonData.getString("lon");
                 String lat = jsonData.getString("lat");
+                String lon = jsonData.getString("lon");
                 String gps_time = jsonData.getString("gps_time").replace("T", " ").substring(0, 19);
                 GeoPoint point = new GeoPoint(GetSystem.StringToInt(lat),
                         GetSystem.StringToInt(lon));
-                Log.d(TAG, "gps_time = " + gps_time);
+                Log.d(TAG, "gps_time = " + gps_time + " , lat = " + lat + " , lon = " + lon);
                 mTextViews[DefaultVehicleID][1].setText(GetSystem.sortHomeTime(gps_time));
                 mkSearch.reverseGeocode(point);
             }            

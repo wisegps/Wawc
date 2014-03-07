@@ -3,13 +3,11 @@ package com.wise.customView;
 import java.util.ArrayList;
 import com.wise.data.EnergyItem;
 import com.wise.extend.OnViewTouchListener;
-import com.wise.pubclas.Constant;
 import com.wise.wawc.R;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -70,7 +68,7 @@ public class EnergyCurveView extends View implements OnTouchListener{
 	public EnergyCurveView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		this.context = context;
-		fontSize = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 16, getResources().getDisplayMetrics());
+		fontSize = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 14, getResources().getDisplayMetrics());
 		SPACING = fontSize * 2;
 		setOnTouchListener(this);
 		TOUCH_SLOP = ViewConfiguration.get(getContext()).getScaledTouchSlop();
@@ -166,7 +164,7 @@ public class EnergyCurveView extends View implements OnTouchListener{
 	 * @param paint
 	 */
 	private void initDraw(Canvas canvas, Paint paint) {
-		paint.setColor(0xff999999);
+		paint.setColor(getResources().getColor(R.color.common_inactive));
 		paint.setAntiAlias(true);
 		//TODO 绘制
 		float dottedSpacing = mGradientHeight/5;//垂直大间隔,实线距离
@@ -175,20 +173,18 @@ public class EnergyCurveView extends View implements OnTouchListener{
 		
 		canvas.drawLine(SPACING, SPACING_HEIGHT, SPACING, mGradientHeight + SPACING_HEIGHT, paint);//y轴
 		canvas.drawLine(SPACING, mGradientHeight + SPACING_HEIGHT, SPACING + mGradientWidth, mGradientHeight + SPACING_HEIGHT, paint);//x轴
-		float xSpacing = mGradientWidth/6;
-        paint.setColor(getResources().getColor(R.color.common));
+		float xSpacing = (mGradientWidth - fontSize)/6;
         paint.setTextSize(fontSize);
-		for(int i = 0 ; i <= 6 ; i++){
+		for(int i = 0 ; i <= 6 ; i++){//水平刻度
 		    String Date = (i * 5 + 1) + "" ;
-		    canvas.drawText(Date, SPACING + i * xSpacing - fontSize/2,mGradientHeight + SPACING_HEIGHT + fontSize,paint);
+		    canvas.drawText(Date, SPACING + i * xSpacing - fontSize/2,mGradientHeight + SPACING_HEIGHT + (int)(fontSize * 1.5),paint);
         }
 		/* 水平线和文字 */
 		for (int i = 0; i <= 5; i++) {
 			paint.setStrokeWidth(3);
-			canvas.drawText(""+(int)(value * i), SPACING - fontSize,mGradientHeight + SPACING_HEIGHT - dottedSpacing * i + fontSize/2,paint);
+			canvas.drawText(""+(int)(value * i), fontSize/2,mGradientHeight + SPACING_HEIGHT - dottedSpacing * i + fontSize/2,paint);
 			//canvas.drawLine(SPACING, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i, mGradientWidth, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i, paint);
 			paint.setStrokeWidth(1);
-			paint.setColor(0xff999999);
 			if(i != 0){
 				for (int j = 1; j <= 4; j++) {
 					//canvas.drawLine(SPACING, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i + smallDotted * j,mGradientWidth, mGradientHeight + SPACING_HEIGHT - dottedSpacing * i + smallDotted * j,paint);
@@ -322,7 +318,7 @@ public class EnergyCurveView extends View implements OnTouchListener{
 	 */
 	public void setImages() {
 		// 背景渐变色大图
-		int windowW = (int) (dm.widthPixels - SPACING * 2);
+		int windowW = (int) (dm.widthPixels - fontSize * 3);
 		mGradientWidth = windowW;
 		mGradientHeight = (float) (windowW*0.7);
 		Log.d(TAG, "dm.widthPixels = " + dm.widthPixels + ",mGradientWidth = " + mGradientWidth);
@@ -390,7 +386,7 @@ public class EnergyCurveView extends View implements OnTouchListener{
 	 */
 	private void getSpacingOfXY(ArrayList<EnergyItem> energys) {
 		maxEnergy = findMaxPowers(energys);
-		spacingOfX = mGradientWidth/ (energys.size() -1);
+		spacingOfX = (mGradientWidth - fontSize)/ (energys.size() -1);
 		spacingOfY = (mGradientHeight - WEIGHT) / maxEnergy.value;
 		Log.d(TAG, "spacingOfY = " + spacingOfY + " , maxEnergy.value = " + maxEnergy.value);
 	}

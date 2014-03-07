@@ -1,5 +1,7 @@
 package com.wise.wawc;
 
+import com.wise.pubclas.Constant;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,11 +42,12 @@ public class WapZfbActivity extends Activity {
 	class JSInvokeClass {
         @JavascriptInterface
         public void goActivity(){
-            Toast.makeText(WapZfbActivity.this, "goActivity", Toast.LENGTH_SHORT).show();
             System.out.println("goActivity");            
         }
         public void clickOnAndroid(){
-            System.out.println("clickOnAndroid");
+            System.out.println("clickOnAndroid");            
+            Intent intent = new Intent(Constant.A_Order);
+            sendBroadcast(intent);
             WawcApplication.getActivityInstance().exit();
             ActivityFactory.A.Toorders();
         }

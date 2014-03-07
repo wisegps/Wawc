@@ -16,7 +16,9 @@ public class SmsReceiver extends BroadcastReceiver{
         } else if (JPushInterface.ACTION_NOTIFICATION_RECEIVED.equals(intent.getAction())) {
         	//TODO 确认消息发送，上传到自己服务器        	
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
-        	   		
+            Intent intent2 = new Intent(context, MainActivity.class);
+            intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+            context.startActivity(intent2);   		
         } else {
         	System.out.println("Unhandled intent - " + intent.getAction());
         }

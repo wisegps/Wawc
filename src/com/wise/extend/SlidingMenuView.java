@@ -207,6 +207,7 @@ public class SlidingMenuView extends ViewGroup{
                 break;
 
             case MotionEvent.ACTION_CANCEL:
+                
             case MotionEvent.ACTION_UP:
                 // Release the drag
                 clearChildrenCache();
@@ -328,6 +329,7 @@ public class SlidingMenuView extends ViewGroup{
 	            mTouchState = TOUCH_STATE_REST;
 	            break;
 	        case MotionEvent.ACTION_CANCEL:
+	            snapToDestination();
 	            mTouchState = TOUCH_STATE_REST;
 	        }
         return true;
