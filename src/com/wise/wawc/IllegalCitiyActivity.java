@@ -19,6 +19,7 @@ import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.service.IllegalProvinceAdapter;
 import com.wise.sql.DBExcute;
+import com.wise.wawc.MyVehicleActivity.PinyinComparator;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -46,13 +47,17 @@ public class IllegalCitiyActivity extends Activity {
 	ListView provinceListView;
 	ListView cityListView;
 	IllegalProvinceAdapter adapter;
-	ProgressDialog myDialog;
+	ProgressDialog myDialog = null;
 	DBExcute dbExcute;
 	static List<ProvinceModel> illegalList;
 	ImageView back;
 	private int requestCode = 0;
 	public static final String showProvinceAction = "province";
 	public static final String showCityAction = "city";
+	private MyHandler myHandler = null;
+	public DBExcute dBExcute = null;
+	CharacterParser characterParser;
+	PinyinComparator comparator;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.illegal_province_activity);
@@ -61,7 +66,10 @@ public class IllegalCitiyActivity extends Activity {
 		back = (ImageView) findViewById(R.id.illegal_province_back);
 		dbExcute = new DBExcute();
 		requestCode = getIntent().getIntExtra("requestCode", 0);
-		
+		characterParser = new CharacterParser().getInstance();
+		comparator = new PinyinComparator();
+		dBExcute = new DBExcute();
+		myHandler = new MyHandler();
 		//相关监听
 		provinceListView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
@@ -91,8 +99,110 @@ public class IllegalCitiyActivity extends Activity {
 				}
 			}
 		});
-		adapter = new IllegalProvinceAdapter(Variable.illegalProvinceList, IllegalCitiyActivity.this,showProvinceAction,null);
-		provinceListView.setAdapter(adapter);
-		
+		//判断违章数据是否存在本地
+		String jsonData = dBExcute.selectIllegal(IllegalCitiyActivity.this);
+		if(Variable.illegalProvinceList == null){
+		    myDialog = ProgressDialog.show(IllegalCitiyActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
+	        myDialog.setCancelable(true);
+			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl+"violation/city?cuth_code=" + Variable.auth_code, 0)).start();
+		}else{
+			//解析数据  并且更新
+			Variable.illegalProvinceList = parseJson(jsonData);
+			adapter = new IllegalProvinceAdapter(Variable.illegalProvinceList, IllegalCitiyActivity.this,showProvinceAction,null);
+			provinceListView.setAdapter(adapter);
+		}
 	}
+	class MyHandler extends Handler{
+		public void handleMessage(Message msg) {
+			super.handleMessage(msg);
+			if(!"".equals(msg.obj.toString())){
+				ContentValues values = new ContentValues();
+				values.put("json_data", msg.obj.toString());
+				dBExcute.InsertDB(IllegalCitiyActivity.this, values, Constant.TB_IllegalCity);
+				Variable.illegalProvinceList = parseJson(msg.obj.toString());
+				adapter = new IllegalProvinceAdapter(Variable.illegalProvinceList, IllegalCitiyActivity.this,showProvinceAction,null);
+				provinceListView.setAdapter(adapter);
+				myDialog.dismiss();
+			}
+		}
+	}
+	
+	//获取省份   TODO
+	 	public List<ProvinceModel> parseJson(String jsonData){
+	 		illegalList = new ArrayList<ProvinceModel>();
+	 		try {
+	 			JSONObject jsonObj = new JSONObject(jsonData);
+	 			JSONObject result = jsonObj.getJSONObject("result");
+	 			Iterator it = result.keys();
+	 			while(it.hasNext()){
+	 				List<IllegalCity> illegalCityList = new ArrayList<IllegalCity>();
+	 				ProvinceModel provinceModel = new ProvinceModel();
+	 				
+	 				String key = it.next().toString();
+	 				JSONObject jsonObject = result.getJSONObject(key);
+	 				String province = jsonObject.getString("province");  //省份
+	 				
+	 				JSONArray jsonArray = jsonObject.getJSONArray("citys");  //城市
+	 				for(int i = 0 ; i < jsonArray.length() ; i ++){
+	 					IllegalCity illegalCity = new IllegalCity();
+	 					JSONObject jsonObject3 = jsonArray.getJSONObject(i);
+	 					illegalCity.setAbbr(jsonObject3.getString("abbr"));
+	 					illegalCity.setCityCode(jsonObject3.getString("city_code"));
+	 					illegalCity.setCityName(jsonObject3.getString("city_name"));
+	 					illegalCity.setClassa(jsonObject3.getString("classa"));
+	 					illegalCity.setEngine(jsonObject3.getString("engine"));
+	 					illegalCity.setEngineno(jsonObject3.getString("engineno"));
+	 					illegalCity.setRegist(jsonObject3.getString("regist"));
+	 					illegalCity.setRegistno(jsonObject3.getString("registno"));
+	 					illegalCity.setVehiclenum(jsonObject3.getString("class"));
+	 					illegalCity.setVehiclenumno(jsonObject3.getString("classno"));
+	 					illegalCityList.add(illegalCity);
+	 				}
+	 				provinceModel.setIllegalCityList(illegalCityList);
+	 				provinceModel.setProvinceName(province);
+	 				illegalList.add(provinceModel);
+	 			}
+	 		} catch (JSONException e) {
+	 			e.printStackTrace();
+	 		}
+	 		//排序后返回
+	 		if(illegalList == null){
+	 			Log.e("List<ProvinceModel>==null","YES");
+	 		}else{
+	 			for(int i = 0 ; i < illegalList.size() ; i ++){
+	 				Log.e("province：",illegalList.get(i).getProvinceName());
+	 			}
+	 		}
+	 		return filledData(illegalList);
+	 	}
+	 	
+	 	//将省份汉字转为拼音
+	 	private List<ProvinceModel> filledData(List<ProvinceModel> provinceModelList){
+	 		for(int i=0; i<provinceModelList.size(); i++){
+	 			ProvinceModel sortModel = provinceModelList.get(i);
+	 			//汉字转换成拼音
+	 			String pinyin = characterParser.getSelling(provinceModelList.get(i).getProvinceName());
+	 			String sortString = pinyin.substring(0, 1).toUpperCase();
+	 			sortModel.setProvinceLetter(sortString.toUpperCase());   //设置拼音
+	 		}
+	 		Collections.sort(provinceModelList, comparator);
+	 		return provinceModelList;
+	 	}
+	 	
+	 	
+	 	//根据拼音首字母排序
+	 	class PinyinComparator implements Comparator<ProvinceModel> {
+	 		public int compare(ProvinceModel o1, ProvinceModel o2) {
+	 			if (o1.getProvinceLetter().equals("@")
+	 					|| o2.getProvinceLetter().equals("#")) {
+	 				return -1;
+	 			} else if (o1.getProvinceLetter().equals("#")
+	 					|| o2.getProvinceLetter().equals("@")) {
+	 				return 1;
+	 			} else {
+	 				return o1.getProvinceLetter().compareTo(o2.getProvinceLetter());
+	 			}
+	 		}
+	 	}
 }
+
