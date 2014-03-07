@@ -69,7 +69,7 @@ import android.widget.Toast;
  * 添加新车辆
  * @author 王庆文
  */
-public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapter.IOnItemSelectListener {
+public class NewVehicleActivity extends Activity{
 	
 	private ImageView cancleAdd = null;   //取消新车辆的添加
 	private TextView saveAdd = null;     //保存添加
@@ -114,13 +114,10 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	private String carSeriesId = "";
 	private static String carSeriesTitle = "carSeries";
 	private static String carTypeTitle = "carType";
-	private static final int getCarSeries = 1;
 	private static final int refreshCarSeries = 2;
-	private static final int getCarType = 7;
 	private static final int getCityViolateRegulationsCode = 9;
 	private List<String> carSeriesNameList = new ArrayList<String>();
 	private List<String> carSeriesIdList = new ArrayList<String>();
-	private SpinerPopWindow mSpinerPopWindow;
 	private int width = 0 ;
 	
 	private ProgressDialog myDialog = null;
@@ -142,6 +139,7 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	private int engineNo = 0;
 	private int car = 0;
 	private int carNo = 0;
+	private String illegalCityCode = "";
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_vehicle);
@@ -183,9 +181,6 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 		myHandler = new MyHandler();
 		dBhalper = new DBHelper(NewVehicleActivity.this);
 		dBExcute = new DBExcute();
-		mSpinerPopWindow = new SpinerPopWindow(NewVehicleActivity.this);
-		mSpinerPopWindow.setItemListener(this);
-		width = getWindowManager().getDefaultDisplay().getWidth();
 		
 		illegalCityRow.setOnClickListener(new CilckListener());
 		ivMaintain.setOnClickListener(new CilckListener());
@@ -269,6 +264,7 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 			showMaintain.setText(maintainName);
 		}else if(resultCode == getCityViolateRegulationsCode){    //设置为违章城市
 			illegalCity = (IllegalCity) data.getSerializableExtra("IllegalCity");
+			illegalCityCode = illegalCity.getCityCode();
 			if(illegalCity != null){
 				Log.e("illegalCity.getEngine()",illegalCity.getEngine());
 				Log.e("illegalCity.getEngineno()",illegalCity.getEngineno());
@@ -333,23 +329,44 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
         params.add(new BasicNameValuePair("car_brand", vehicleBrank.getText().toString()));
         params.add(new BasicNameValuePair("car_series", TvVehicleSeries.getText().toString()));
         params.add(new BasicNameValuePair("car_type", TvVehicleType.getText().toString()));
-        params.add(new BasicNameValuePair("engine_no", engineNumber.getText().toString().trim()));
-        params.add(new BasicNameValuePair("frame_no", CJNumber.getText().toString().trim()));
+        params.add(new BasicNameValuePair("vio_location", illegalCityCode));
+        if(engine == 1){
+        	params.add(new BasicNameValuePair("engine_no", engineNumber.getText().toString().trim()));
+        }else{
+        	params.add(new BasicNameValuePair("engine_no", ""));
+        }
+        if(car == 1){
+        	params.add(new BasicNameValuePair("frame_no", CJNumber.getText().toString().trim()));
+        }else{
+        	params.add(new BasicNameValuePair("frame_no", ""));
+        }
+        if(register == 1){
+        	params.add(new BasicNameValuePair("reg_no", carRegNumber.getText().toString().trim()));
+        }else{
+        	params.add(new BasicNameValuePair("reg_no", ""));
+        }
         params.add(new BasicNameValuePair("insurance_company", showInsurance.getText().toString()));
         params.add(new BasicNameValuePair("insurance_date", insuranceTime.getText().toString()));
 //        params.add(new BasicNameValuePair("annual_inspect_date", annualSurveyTime.getText().toString()));
-        //params.add(new BasicNameValuePair("annual_inspect_date", ""));
+        params.add(new BasicNameValuePair("annual_inspect_date", ""));
         params.add(new BasicNameValuePair("maintain_company", showMaintain.getText().toString()));
         params.add(new BasicNameValuePair("maintain_last_mileage", lastMileage.getText().toString().trim()));
         params.add(new BasicNameValuePair("maintain_last_date", lastMaintainTime.getText().toString()));
 //        params.add(new BasicNameValuePair("maintain_next_mileage",nextMaintainMileage.getText().toString().trim()));
-        //params.add(new BasicNameValuePair("maintain_next_mileage",""));
+        params.add(new BasicNameValuePair("maintain_next_mileage",""));
         params.add(new BasicNameValuePair("buy_date", buyTime.getText().toString()));
         
         Log.e("车牌号",carNumber.getText().toString());
+        Log.e("车辆品牌",vehicleBrank.getText().toString());
+        Log.e("车辆型号",TvVehicleSeries.getText().toString());
+        Log.e("车款",TvVehicleType.getText().toString());
+        Log.e("城市代码",illegalCityCode);
         Log.e("发动机型号",engineNumber.getText().toString());
         Log.e("车架号",CJNumber.getText().toString());
+        Log.e("登记证号",carRegNumber.getText().toString().trim());
+        Log.e("保险到公司",showInsurance.getText().toString());
         Log.e("保险到期时间",insuranceTime.getText().toString());
+        Log.e("4s店",showMaintain.getText().toString());
 //        Log.e("年检时间",annualSurveyTime.getText().toString());
         Log.e("最后保养里程",lastMileage.getText().toString());
         Log.e("最后保养时间",lastMaintainTime.getText().toString());
@@ -362,42 +379,8 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
 			switch(msg.what){
-			
-			case getCarSeries:
-				myDialog.dismiss();
-				String carSeries = msg.obj.toString();
-				//存到数据库 
-				ContentValues values = new ContentValues();
-				values.put("Title", carSeriesTitle + carBrankId);
-				values.put("Content", carSeries);
-				dBExcute.InsertDB(NewVehicleActivity.this, values, Constant.TB_Base);
-				JSONArray jsonArray = null;
-				try {
-					jsonArray = new JSONArray(carSeries);
-					parseJSONToList(jsonArray,msg.what);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-				break;
 			case refreshCarSeries:
 				break;
-				//获取车款
-			case getCarType:
-				myDialog.dismiss();
-				String carType = msg.obj.toString();
-				ContentValues carTypeValues = new ContentValues();
-				carTypeValues.put("Title", carTypeTitle + carSeriesId);
-				carTypeValues.put("Content", carType);
-				dBExcute.InsertDB(NewVehicleActivity.this, carTypeValues, Constant.TB_Base);
-				JSONArray typeJsonArray = null;
-				try {
-					typeJsonArray = new JSONArray(carType);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-				parseJSONToList(typeJsonArray,msg.what);
-				break;
-				
 			case addCar:
 			    System.out.println(msg.obj.toString());
 				myDialog.dismiss();
@@ -411,26 +394,27 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-				System.out.println(code);
 				if("0".equals(code)){
 					//添加到数据库
 				    System.out.println("保存到数据库");
 					ContentValues value = new ContentValues();
-					value.put("obj_id", obj_id);
 					value.put("Cust_id", Variable.cust_id);
+					value.put("obj_id", obj_id);
 					value.put("obj_name", carNumber.getText().toString().trim());
 					value.put("car_brand", vehicleBrank.getText().toString());
 					value.put("car_series", TvVehicleSeries.getText().toString());
 					value.put("car_type", TvVehicleType.getText().toString());
+					value.put("vio_location", illegalCityCode);
 					value.put("engine_no", engineNumber.getText().toString().trim());
 					value.put("frame_no", CJNumber.getText().toString().trim());
+					value.put("reg_no", carRegNumber.getText().toString().trim());
 					value.put("insurance_company", showInsurance.getText().toString());
 					value.put("insurance_date", insuranceTime.getText().toString());
 //					value.put("annual_inspect_date", annualSurveyTime.getText().toString());
 					value.put("annual_inspect_date", "");
 					value.put("maintain_company", showMaintain.getText().toString());
 					value.put("maintain_last_mileage", lastMileage.getText().toString().trim());
-//					value.put("maintain_next_mileage", nextMaintainMileage.getText().toString().trim());
+					value.put("maintain_last_date", lastMaintainTime.getText().toString());
 					value.put("maintain_next_mileage", "");
 					value.put("buy_date", buyTime.getText().toString());
 					dBExcute.InsertDB(NewVehicleActivity.this, value, Constant.TB_Vehicle);
@@ -443,14 +427,17 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 	                carData.setCar_brand(vehicleBrank.getText().toString());
 	                carData.setCar_series(TvVehicleSeries.getText().toString());
 	                carData.setCar_type(TvVehicleType.getText().toString());
+	                carData.setCity_code(illegalCityCode);
 	                carData.setEngine_no(engineNumber.getText().toString().trim());
 	                carData.setFrame_no(CJNumber.getText().toString().trim());
+	                carData.setRegNo(carRegNumber.getText().toString().trim());
 	                carData.setInsurance_company(showInsurance.getText().toString());
 	                carData.setInsurance_date(insuranceTime.getText().toString());
 //	                carData.setAnnual_inspect_date(annualSurveyTime.getText().toString());
 	                carData.setAnnual_inspect_date("");
 	                carData.setMaintain_company(showMaintain.getText().toString());
 	                carData.setMaintain_last_mileage(lastMileage.getText().toString().trim());
+	                carData.setMaintain_last_date(lastMaintainTime.getText().toString());
 	                carData.setMaintain_next_mileage("");
 //	                carData.setMaintain_next_mileage(nextMaintainMileage.getText().toString().trim());
 	                carData.setBuy_date( buyTime.getText().toString());
@@ -482,83 +469,10 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 				e.printStackTrace();
 			}
 			myDialog.dismiss();
-			parseJSONToList(jsonArray,code);
 		}else{
 			//请求服务器
 			Log.e("请求服务器","请求服务器");
 			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + url + id, code)).start();
-		}
-	}
-	private void parseJSONToList(JSONArray jsonArray,int codeType) {
-		if(codeType == getCarSeries){
-			Log.e("获取车型----","获取车型");
-			int jsonLength = jsonArray.length();
-			if(carSeriesNameList.size() > 0){
-				carSeriesNameList.clear();
-			}
-			if(carSeriesIdList.size() > 0){
-				carSeriesIdList.clear();
-			}
-			for(int i = 0 ; i < jsonLength ; i ++){
-				try {
-					carSeriesNameList.add(jsonArray.getJSONObject(i).getString("show_name"));
-					carSeriesIdList.add(jsonArray.getJSONObject(i).getString("id"));
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-			mSpinerPopWindow.refreshData(carSeriesNameList, 0);
-			mSpinerPopWindow.setWidth(width);
-			mSpinerPopWindow.setHeight(300);
-			mSpinerPopWindow.showAsDropDown(TvVehicleSeries);
-			mSpinerPopWindow.setType(codeType);
-		}else if(codeType == getCarType){
-			Log.e("获取车款----","获取车款");
-			int jsonLength = jsonArray.length();
-			//解析车款数据
-			if(carSeriesNameList.size() > 0){
-				carSeriesNameList.clear();
-			}
-			for(int i = 0 ; i < jsonLength ; i ++){
-				try {
-					carSeriesNameList.add(jsonArray.getJSONObject(i).getString("name"));
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-			mSpinerPopWindow.refreshData(carSeriesNameList, 0);
-			mSpinerPopWindow.setWidth(width);
-			mSpinerPopWindow.setHeight(300);
-			mSpinerPopWindow.setType(codeType);
-			mSpinerPopWindow.showAsDropDown(TvVehicleType);
-		}
-		
-	}
-	@Override
-	public void onItemClick(int pos, int type) {
-		if(type == getCarSeries){
-			String value = "";
-			if (pos >= 0 && pos <= carSeriesNameList.size()){
-				value = carSeriesNameList.get(pos);
-				TvVehicleSeries.setText(value);
-			}
-			
-			for(int i = 0 ; i < carSeriesNameList.size() ; i ++){
-				if(carSeriesNameList.get(i).equals(value)){
-					carSeriesId = carSeriesIdList.get(i);
-				}
-			}
-			myDialog = ProgressDialog.show(NewVehicleActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
-			
-			getCarDatas(carTypeTitle,"base/car_type?pid=",getCarType,carSeriesId);
-			Log.e("点击车型所得","点击车型所得");
-		}else if(type == getCarType){
-			Log.e("点击车款所得","点击车款所得");
-			String value = "";
-			if (pos >= 0 && pos <= carSeriesNameList.size()){
-				value = carSeriesNameList.get(pos);
-				TvVehicleType.setText(value);
-			}
 		}
 	}
 	
@@ -568,8 +482,16 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 			carNumber.setError("车牌号不能为空");
 			return false;
 		}
+		if(carNumber.getText().toString().trim().length() != 7){
+			carNumber.setError("车牌号不合法");
+			return false;
+		}
 		if("".equals(vehicleBrank.getText().toString().trim())){
 			vehicleBrank.setHintTextColor(Color.RED);
+			return false;
+		}
+		if("".equals(illegalCityTv.getText().toString().trim())){
+			illegalCityTv.setHintTextColor(Color.RED);
 			return false;
 		}
 		if(engine == 1){
@@ -658,9 +580,6 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 								SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 								String data = sdf.format(new Date(tempData));
 								textView.setText(data);
-								buyTime.setHintTextColor(Color.BLACK);
-								insuranceTime.setHintTextColor(Color.BLACK);
-								lastMaintainTime.setHintTextColor(Color.BLACK);
 							}  
 		                }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();  
 		             
@@ -677,9 +596,6 @@ public class NewVehicleActivity extends Activity implements  AbstractSpinerAdapt
 									SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 									String data = sdf.format(new Date(tempData));
 									textView.setText(data);
-									buyTime.setHintTextColor(Color.BLACK);
-									insuranceTime.setHintTextColor(Color.BLACK);
-									lastMaintainTime.setHintTextColor(Color.BLACK);
 								}
 							}, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH)).show();
 				}
