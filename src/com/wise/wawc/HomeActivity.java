@@ -1199,7 +1199,7 @@ public class HomeActivity extends Activity{
                 for(int j = 0 ; j < Variable.carDatas.size() ; j++){
                     CarData carData = Variable.carDatas.get(j);
                     Log.d(TAG, carData.toString());
-                    if(carData.getDevice_id().equals(jsonObject.getString("device_id"))){
+                    if(carData.getDevice_id() != null &&carData.getDevice_id().equals(jsonObject.getString("device_id"))){
                         carData.setSerial(jsonObject.getString("serial"));
                         DBExcute dbExcute = new DBExcute();
                         ContentValues values = new ContentValues();
