@@ -567,7 +567,8 @@ public class MyVehicleActivity extends Activity{
 				Log.e("显示数据时",carData.getObj_id()+"");
 				frameNum.setText(carData.getFrame_no());
 				showInsuranceCompany.setText(carData.getInsurance_company());
-				ivInsuranceDate.setText(carData.getInsurance_date().substring(0, 11));
+				System.out.println("carData.getInsurance_date() = " + carData.getInsurance_date());
+				ivInsuranceDate.setText(carData.getInsurance_date().substring(0, 10));
 				tvMaintain.setText(carData.getMaintain_company());
 				lastMaintain.setText(carData.getMaintain_last_mileage());
 				buyTime.setText(carData.getBuy_date());
@@ -575,7 +576,7 @@ public class MyVehicleActivity extends Activity{
 				if(carData.getMaintain_last_date() == null){
 				    System.out.println("Maintain_last_date为空");
 				}
-				lastMaintainTime.setText(carData.getMaintain_last_date().substring(0, 11));
+				lastMaintainTime.setText(carData.getMaintain_last_date().substring(0, 10));
 				
 				
 				//点击了选择违章城市

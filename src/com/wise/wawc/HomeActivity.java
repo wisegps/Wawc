@@ -480,6 +480,7 @@ public class HomeActivity extends Activity{
                 String annual_inspect_date =  cursor.getString(cursor.getColumnIndex("annual_inspect_date"));
                 String maintain_company =  cursor.getString(cursor.getColumnIndex("maintain_company"));
                 String maintain_last_mileage =  cursor.getString(cursor.getColumnIndex("maintain_last_mileage"));
+                maintain_last_mileage = maintain_last_mileage == null?"1970-01-01":maintain_last_mileage;
                 String maintain_next_mileage =  cursor.getString(cursor.getColumnIndex("maintain_next_mileage"));
                 String buy_date =  cursor.getString(cursor.getColumnIndex("buy_date"));
                 String reg_no = cursor.getString(cursor.getColumnIndex("reg_no"));
@@ -794,7 +795,10 @@ public class HomeActivity extends Activity{
                 if(jsonObject.opt("device_id") != null){
                     device_id = jsonObject.getString("device_id");
                 }
-                String maintain_last_date = jsonObject.getString("maintain_last_date").replace("T", " ").substring(0, 19);
+                String maintain_last_date = "1970-01-01 00:00:00";
+                if(jsonObject.opt("maintain_last_date") != null){
+                    maintain_last_date = jsonObject.getString("maintain_last_date").replace("T", " ").substring(0, 19);
+                }
                 String annual_inspect_date = jsonObject.getString("insurance_date").replace("T", " ").substring(0, 19);
                 String insurance_date = jsonObject.getString("insurance_date").replace("T", " ").substring(0, 19);
                 String maintain_company = jsonObject.getString("maintain_company");
