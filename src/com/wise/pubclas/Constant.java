@@ -188,6 +188,10 @@ public class Constant {
      * 更新or修改车辆
      */
     public static String A_UpdateCar = "com.wise.wawc.update_car";
+    /**
+     * 添加终端
+     */
+    public static String A_UpdateDevice = "com.wise.wawc.update_device";
 	
 	public static boolean isHideFooter = false;
 	/**

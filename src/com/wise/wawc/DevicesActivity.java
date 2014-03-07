@@ -13,9 +13,12 @@ import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -85,6 +88,7 @@ public class DevicesActivity extends Activity {
         }
         GetDevicesDB();
         GetDevicesData();
+        registerBroadcastReceiver();
     }
 
     OnClickListener onClickListener = new OnClickListener() {
@@ -260,6 +264,8 @@ public class DevicesActivity extends Activity {
                 devicesData.setType(0);
                 devicesDatas.add(devicesData);
             }
+            Variable.devicesDatas.clear();
+            Variable.devicesDatas.addAll(devicesDatas);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -395,4 +401,25 @@ public class DevicesActivity extends Activity {
                             }
                         }).setNegativeButton("确定", null).show();
     }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
+    }
+    
+    private void registerBroadcastReceiver() {
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constant.A_UpdateDevice);
+        registerReceiver(broadcastReceiver, intentFilter);
+    }
+
+    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if(action.equals(Constant.A_UpdateDevice)){
+                GetDevicesData();
+            }
+        }
+    };
 }

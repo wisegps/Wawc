@@ -23,7 +23,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+/**
+ * 添加终端
+ * @author honesty
+ */
 public class DevicesAddActivity extends Activity{
     private static final String TAG = "DevicesAddActivity";
     
@@ -85,7 +88,7 @@ public class DevicesAddActivity extends Activity{
                 try {
                      String status_code = new JSONObject(msg.obj.toString()).getString("status_code");
                      if(status_code.equals("0")){
-                         String url_sim = Constant.BaseUrl + "device/" + device_id + "customer?auth_code=" + Variable.auth_code;
+                         String url_sim = Constant.BaseUrl + "device/" + device_id + "/customer?auth_code=" + Variable.auth_code;
                          List<NameValuePair> paramSim = new ArrayList<NameValuePair>();
                          paramSim.add(new BasicNameValuePair("cust_id", Variable.cust_id));
                          new Thread(new NetThread.putDataThread(handler, url_sim, paramSim, update_user)).start();
@@ -113,7 +116,8 @@ public class DevicesAddActivity extends Activity{
                             //操作完成
                         }
                         //TODO 发送广播更新
-                        //
+                        Intent intent = new Intent(Constant.A_UpdateDevice);
+                        sendBroadcast(intent);
                     }else{
                         showToast();
                     }
