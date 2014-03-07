@@ -719,7 +719,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/margins"
         android:background="@color/white"
         android:orientation="horizontal"
         android:visibility="gone" >
@@ -729,6 +728,9 @@
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_marginRight="@dimen/margins"
+            android:layout_marginTop="@dimen/margins"
+            android:layout_marginBottom="@dimen/margins"
+            android:layout_marginLeft="@dimen/margins"
             android:layout_weight="1"
             android:background="@drawable/add_bt_bg"
             android:gravity="center"
@@ -740,6 +742,9 @@
             android:id="@+id/my_vehilce_delete"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
+            android:layout_marginRight="@dimen/margins"
+            android:layout_marginTop="@dimen/margins"
+            android:layout_marginBottom="@dimen/margins"
             android:layout_marginLeft="@dimen/margins"
             android:layout_weight="1"
             android:background="@drawable/delete_bt_bg"
@@ -748,5 +753,4 @@
             android:textColor="@color/red"
             android:textSize="@dimen/main" />
     </LinearLayout>
-
 </RelativeLayout>

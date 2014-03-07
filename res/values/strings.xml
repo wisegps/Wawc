@@ -152,7 +152,7 @@
     <string name="register_num_hint">请输入登记证号后</string>
     <string name="all_register_num_hint">请输入全部登记证号</string>
     <string name="hint_wei">位</string>
-    <string name="please_input_vehilce_num">请输入车牌号</string>
+    <string name="please_input_vehilce_num">请输入7位车牌号</string>
     <string name="please_choice_vehilce_brank">请选择品牌</string>
     <string name="please_choice_vehilce_models">请选择车型</string>
     <string name="please_input_vehilce_type">请选择车款</string>
@@ -167,4 +167,6 @@
     <string name="please_input_last_maintenance_milegal">请输入最后保养里程(Km)</string>
     <string name="please_input_last_maintenance_time">请选择最后保养时间</string>
     <string name="please_choice_by_time">请选择购车时间</string>
+    <string name="point">提示</string>
+    <string name="sure_delete_vehicle">确认删除车辆</string>
 </resources>

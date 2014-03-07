@@ -16,6 +16,7 @@ import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
+import com.wise.pubclas.Variable;
 import com.wise.service.BrankAdapter;
 import com.wise.service.ClearEditText;
 import com.wise.service.PinyinComparator;
@@ -29,6 +30,7 @@ import com.wise.wawc.ChoiceCarInformationActivity.MyHandler;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -96,8 +98,8 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 	String carSeries;
 	String carBrank;
 	
-	private static final String carBrankTitle = "carBrank";  //数据库基础表车辆品牌的标题字段
-	private static final String carSeriesTitle = "carSeries";  //数据库基础表车辆款式的标题字段
+	public static final String carBrankTitle = "carBrank";  //数据库基础表车辆品牌的标题字段
+	public static final String carSeriesTitle = "carSeries";  //数据库基础表车辆款式的标题字段
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.choice_car_information);
@@ -123,14 +125,27 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		
 		back.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				if(carBrankLayout.getVisibility() == View.VISIBLE){
+				
+				if(code == MyVehicleActivity.resultCodeBrank || code == NewVehicleActivity.newVehicleBrank){
+						if(carBrankLayout.getVisibility() == View.VISIBLE){
+							ChoiceCarInformationActivity.this.finish();
+						}else if(carModlesLayout.getVisibility() == View.VISIBLE){
+							carModlesLayout.setVisibility(View.GONE);
+							carBrankLayout.setVisibility(View.VISIBLE);
+						}else if(carTypeLayout.getVisibility() == View.VISIBLE){
+							carTypeLayout.setVisibility(View.GONE);
+							carModlesLayout.setVisibility(View.VISIBLE);
+						}
+				}else if(code == MyVehicleActivity.resultCodeSeries || code == NewVehicleActivity.newVehicleSeries){
+					if(carModlesLayout.getVisibility() == View.VISIBLE){
+						ChoiceCarInformationActivity.this.finish();
+					}
+					if(carTypeLayout.getVisibility() == View.VISIBLE){
+						carTypeLayout.setVisibility(View.GONE);
+						carModlesLayout.setVisibility(View.VISIBLE);
+					}
+				}else if(code == MyVehicleActivity.resultCodeType || code == NewVehicleActivity.newVehicleType){
 					ChoiceCarInformationActivity.this.finish();
-				}else if(carModlesLayout.getVisibility() == View.VISIBLE){
-					carModlesLayout.setVisibility(View.GONE);
-					carBrankLayout.setVisibility(View.VISIBLE);
-				}else if(carTypeLayout.getVisibility() == View.VISIBLE){
-					carTypeLayout.setVisibility(View.GONE);
-					carModlesLayout.setVisibility(View.VISIBLE);
 				}
 			}
 		});
@@ -158,7 +173,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 				String[] str = (String[]) carModlesLayout.getItemAtPosition(arg2);
 				carSeriesId = str[0];
 				carSeries = str[1];
-				progressDialog = ProgressDialog.show(ChoiceCarInformationActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
+				progressDialog = ProgressDialog.show(ChoiceCarInformationActivity.this,getString(R.string.dialog_title),getString(R.string.dialog_message));
 				progressDialog.setCancelable(true);
 				getDate(carSeriesTitle + carSeriesId, Constant.BaseUrl + "base/car_type?pid=" + carSeriesId,GET_TYPE);
 			}
@@ -169,7 +184,9 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 				//点击返回我的爱车  并将相关数据显示出来
 				Intent intent = new Intent();
 				intent.putExtra("brank", carBrank);
+				intent.putExtra("brankId", carBrankId);
 				intent.putExtra("series", carSeries);
+				intent.putExtra("seriesId", carSeriesId);
 				intent.putExtra("type", carSeriesNameList.get(arg2));
 				ChoiceCarInformationActivity.this.setResult(code, intent);
 				ChoiceCarInformationActivity.this.finish();
@@ -213,9 +230,20 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		progressDialog = ProgressDialog.show(ChoiceCarInformationActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 		progressDialog.setCancelable(true);
 		myHandler = new MyHandler();
-		//获取车牌
-		getDate(carBrankTitle,Constant.BaseUrl + "base/car_brand",GET_BRANK);
-		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+		//获取车牌   TODO
+		if(code == MyVehicleActivity.resultCodeBrank || code == NewVehicleActivity.newVehicleBrank){
+			getDate(carBrankTitle,Constant.BaseUrl + "base/car_brand",GET_BRANK);
+		}else if(code == MyVehicleActivity.resultCodeSeries || code == NewVehicleActivity.newVehicleSeries){
+			carBrankId = getIntent().getStringExtra("brankId");
+			carBrank = getIntent().getStringExtra("carBrank");
+			getDate(carBrankTitle + carBrankId, Constant.BaseUrl + "base/car_series?pid=" + carBrankId,GET_SERIES);
+		}else if(code == MyVehicleActivity.resultCodeType || code == NewVehicleActivity.newVehicleType){
+			carBrankId = getIntent().getStringExtra("brankId");
+			carBrank = getIntent().getStringExtra("carBrank");
+			carSeriesId = getIntent().getStringExtra("seriesId");
+			carSeries = getIntent().getStringExtra("series");
+			getDate(carSeriesTitle + carSeriesId, Constant.BaseUrl + "base/car_type?pid=" + carSeriesId,GET_TYPE);
+		}
 	}
 	
 	//处理服务器返回的数据
@@ -226,6 +254,8 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 			switch(msg.what){
 			case GET_BRANK:
 				String brankData = msg.obj.toString();
+				//存到数据库
+				insertDatabases(carBrankTitle,brankData,ChoiceCarInformationActivity.this);
 				if(!"".equals(brankData)){
 					ContentValues contentValues = new ContentValues();
 					contentValues.put("Title", carBrankTitle);
@@ -263,18 +293,17 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 				}
 				break;
 			case GET_SERIES:   //车型
+				String seriesData = msg.obj.toString();
 				JSONArray jsonArray = null;
-				try {
-					jsonArray = new JSONArray(msg.obj.toString());
-				} catch (JSONException e) {
-					e.printStackTrace();
+				if(!"[]".equals(seriesData)){
+					try {
+						jsonArray = new JSONArray(seriesData);
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
 				}
+				insertDatabases(carBrankTitle,carBrankTitle + carBrankId,ChoiceCarInformationActivity.this);
 				//更新数据库  
-				ContentValues contentValues = new ContentValues();
-				contentValues.put("Title", carBrankTitle + carBrankId);
-				contentValues.put("Content", msg.obj.toString());
-				dBExcute.InsertDB(ChoiceCarInformationActivity.this, contentValues, Constant.TB_Base);
-				
 				
 				parseJSON(jsonArray,GET_SERIES);
 				
@@ -287,10 +316,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 					e.printStackTrace();
 				}
 				//更新数据库  
-				ContentValues content = new ContentValues();
-				content.put("Title", carSeriesTitle + carSeriesId);
-				content.put("Content", msg.obj.toString());
-				dBExcute.InsertDB(ChoiceCarInformationActivity.this, content, Constant.TB_Base);
+				insertDatabases(carBrankTitle,carSeriesTitle + carSeriesId,ChoiceCarInformationActivity.this);
 				
 				parseJSON(jsonType,GET_TYPE);
 				
@@ -312,6 +338,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		 Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base + " where Title = ?", new String[]{whereValues});
 		 JSONArray jsonArray = null;
 		if(cursor.moveToFirst()){
+			Log.e("数据库数据","数据库数据");
 			try {
 				jsonArray = new JSONArray(cursor.getString(cursor.getColumnIndex("Content")));
 				parseJSON(jsonArray,handlerWhat);
@@ -319,6 +346,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 				e.printStackTrace();
 			}
 		}else{
+			Log.e("服务器数据","服务器数据");
 			new Thread(new NetThread.GetDataThread(myHandler, url, handlerWhat)).start();
 		}
 	}
@@ -346,6 +374,8 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 			brankModelList = filledData(brankList);
 			//排序
 			Collections.sort(brankModelList, comparator);
+			carModlesLayout.setVisibility(View.GONE);
+			carTypeLayout.setVisibility(View.GONE);
 			brankAdapter = new BrankAdapter(ChoiceCarInformationActivity.this, brankModelList);
 			vehicleBrankList.setAdapter(brankAdapter);
 			break;
@@ -364,6 +394,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 			}
 			//隐藏车牌列表  显示车型列表     
 			carBrankLayout.setVisibility(View.GONE);
+			carTypeLayout.setVisibility(View.GONE);
 			seriesAdapter = new SeriesAdapter(carSeriesList, ChoiceCarInformationActivity.this,1,null);
 			carModlesLayout.setAdapter(seriesAdapter);
 			carModlesLayout.setVisibility(View.VISIBLE);
@@ -380,6 +411,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 					e.printStackTrace();
 				}
 			}
+			carBrankLayout.setVisibility(View.GONE);
 			carModlesLayout.setVisibility(View.GONE);
 			seriesAdapter = new SeriesAdapter(null,ChoiceCarInformationActivity.this,2,carSeriesNameList);
 			seriesAdapter.refresh(2, carSeriesNameList);
@@ -457,7 +489,6 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		vehicleBrankList.stopLoadMore();
 		vehicleBrankList.setRefreshTime(date);
 	}
-	
 	protected void onDestroy() {
 		Constant.isHideFooter = false;
 		super.onDestroy();
@@ -466,21 +497,22 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		Constant.isHideFooter = false;
 		super.onPause();
 	}
-
-	@Override
 	protected void onRestart() {
 		Constant.isHideFooter = true;
 		super.onRestart();
 	}
-
-	@Override
 	protected void onResume() {
 		Constant.isHideFooter = true;
 		super.onResume();
 	}
-	//获取点击内容
-	public void onClick(View v) {
-		TextView textView = (TextView)v;
-		Log.e("点击内容----------------->",textView.getText().toString());
+	
+	//将获取的数据存到数据库
+	public static void insertDatabases(String titleName,String content,Context context){
+		ContentValues values = new ContentValues();
+		values.put("Cust_id", Variable.cust_id);
+		values.put("Title", titleName);
+		values.put("Content", content);
+		DBExcute dBExcute = new DBExcute();
+		dBExcute.InsertDB(context, values, Constant.TB_Base);
 	}
 }

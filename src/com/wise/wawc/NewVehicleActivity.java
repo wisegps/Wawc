@@ -75,6 +75,8 @@ public class NewVehicleActivity extends Activity{
 	private TextView saveAdd = null;     //保存添加
 	private TableRow choiceBrank = null;    //选择品牌
 	public static final int newVehicleBrank = 4;
+	public static final int newVehicleSeries = 8;
+	public static final int newVehicleType = 9;
 	public static final int newVehicleInsurance = 5;
 	public static final int newVehicleMaintain = 7;
 	private static final int addCar = 6;
@@ -110,8 +112,7 @@ public class NewVehicleActivity extends Activity{
 	private DatePickerDialog mDateDialog = null;
 	private TextView mBeginDateTv,mEndDateTv;
 	private int mThisDatePicker;
-	private String carBrankId = "";
-	private String carSeriesId = "";
+	
 	private static String carSeriesTitle = "carSeries";
 	private static String carTypeTitle = "carType";
 	private static final int refreshCarSeries = 2;
@@ -129,6 +130,9 @@ public class NewVehicleActivity extends Activity{
 	private String carBrank = "";
 	private String carSeries = "";
 	private String carType = "";
+	private String carBrankId = "";
+	private String carSeriesId = "";
+	private String carTypeId = "";
 	private Bitmap vehicleLogoBitmap = null;
 	private IllegalCity illegalCity;
 	private String city_code = "";
@@ -190,7 +194,13 @@ public class NewVehicleActivity extends Activity{
 		choiceInsurance.setOnClickListener(new CilckListener());
 		IvVehicleSeries.setOnClickListener(new CilckListener());
 		IvVehicleType.setOnClickListener(new CilckListener());
+		IvVehicleSeries.setOnClickListener(new CilckListener());
+		IvVehicleType.setOnClickListener(new CilckListener());
 		
+		
+		engineNumRow.setVisibility(View.GONE);
+		vehicleFrameNumRow.setVisibility(View.GONE);
+		vehicleRegNumRow.setVisibility(View.GONE);
 	}
 	
 	class CilckListener implements OnClickListener{
@@ -209,6 +219,30 @@ public class NewVehicleActivity extends Activity{
 				Intent intent = new Intent(NewVehicleActivity.this,ChoiceCarInformationActivity.class);
 				intent.putExtra("code", newVehicleBrank);
 				startActivityForResult(intent, newVehicleBrank);
+				break;
+			case R.id.new_vehicle_series_tr:
+				if("".equals(carBrankId)){
+					Toast.makeText(NewVehicleActivity.this, "请选择品牌", 0).show();
+				}else{
+					Intent intent1 = new Intent(NewVehicleActivity.this,ChoiceCarInformationActivity.class);
+					intent1.putExtra("code", newVehicleSeries);
+					intent1.putExtra("brankId", carBrankId);
+					intent1.putExtra("carBrank", carBrank);
+					startActivityForResult(intent1, newVehicleSeries);
+				}
+				break;
+			case R.id.new_vehicle_type_tr:
+				if("".equals(carBrankId)){
+					Toast.makeText(NewVehicleActivity.this, "请选择品牌", 0).show();
+				}else{
+					Intent intent6 = new Intent(NewVehicleActivity.this,ChoiceCarInformationActivity.class);
+					intent6.putExtra("code", newVehicleSeries);
+					intent6.putExtra("brankId", carBrankId);
+					intent6.putExtra("carBrank", carBrank);
+					intent6.putExtra("seriesId", carSeriesId);
+					intent6.putExtra("series", carSeries);
+					startActivityForResult(intent6, newVehicleType);
+				}
 				break;
 			case R.id.new_vehicle_illegal_city_tr:  //选择违章城市
 				Intent intent6 = new Intent(NewVehicleActivity.this,IllegalCitiyActivity.class);
@@ -242,9 +276,11 @@ public class NewVehicleActivity extends Activity{
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == newVehicleBrank){  //设置品牌
+			
 			carBrank = data.getStringExtra("brank");
 			carSeries = data.getStringExtra("series");
 			carType = data.getStringExtra("type");
+			carBrankId = data.getStringExtra("brankId");
 			
 			vehicleBrank.setText(carBrank);
 			TvVehicleSeries.setText(carSeries);
@@ -254,6 +290,15 @@ public class NewVehicleActivity extends Activity{
 //			Bitmap logo = logoImageIsExist(Constant.VehicleLogoPath,data.getStringExtra("carLogo"));
 			
 			
+		}else if(resultCode == newVehicleSeries){
+			carBrank = data.getStringExtra("brank");
+			carBrankId = data.getStringExtra("brankId");
+			carSeries = data.getStringExtra("series");
+			carSeriesId = data.getStringExtra("seriesId");
+			carType = data.getStringExtra("type");
+			vehicleBrank.setText(carBrank);
+			TvVehicleSeries.setText(carSeries);
+			TvVehicleType.setText(carType);
 		}else if(resultCode == newVehicleInsurance){   //设置保险公司
 			String insurance = (String)data.getSerializableExtra("insurance_name");
 			String insurance_phone = (String)data.getSerializableExtra("insurance_phone");
@@ -427,7 +472,7 @@ public class NewVehicleActivity extends Activity{
 	                carData.setCar_brand(vehicleBrank.getText().toString());
 	                carData.setCar_series(TvVehicleSeries.getText().toString());
 	                carData.setCar_type(TvVehicleType.getText().toString());
-	                carData.setCity_code(illegalCityCode);
+	                carData.setVio_location(illegalCityCode);
 	                carData.setEngine_no(engineNumber.getText().toString().trim());
 	                carData.setFrame_no(CJNumber.getText().toString().trim());
 	                carData.setRegNo(carRegNumber.getText().toString().trim());
