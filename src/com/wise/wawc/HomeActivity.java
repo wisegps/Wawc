@@ -927,8 +927,10 @@ public class HomeActivity extends Activity{
                 + "&coord_type=bd09ll&output=html";
         StringBuffer sb = new StringBuffer();
         sb.append("【位置】");
-        sb.append(carData.getAdress());
-        sb.append("," + url);
+        sb.append(carData.getGps_time());
+        sb.append(carData.getObj_name());
+        sb.append("位于" + carData.getAdress());
+        sb.append(url);
         Log.d(TAG, sb.toString());
         GetSystem.share(HomeActivity.this, sb.toString(),
                 "", Float.valueOf(carData.getLat()),
@@ -939,7 +941,7 @@ public class HomeActivity extends Activity{
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Constant.A_Login);
         intentFilter.addAction(Constant.A_City);
-        intentFilter.addAction(Constant.A_LoginOut);
+        //intentFilter.addAction(Constant.A_LoginOut);
         intentFilter.addAction(Constant.A_UpdateCar);
         registerReceiver(broadcastReceiver, intentFilter);
     }
@@ -963,11 +965,13 @@ public class HomeActivity extends Activity{
                 //for(int i = 0 ; i < mTextViews.length ; i++){
                     //mTextViews[i].setText(intent.getStringExtra("AddrStr"));
                 //}
-            }else if(action.equals(Constant.A_LoginOut)){
-                //TODO 注销
-                Variable.carDatas.clear();
-                showCar();
-            }else if(action.equals(Constant.A_UpdateCar)){
+            }
+            //else if(action.equals(Constant.A_LoginOut)){
+//                //TODO 注销
+//                Variable.carDatas.clear();
+//                showCar();
+//            }
+                else if(action.equals(Constant.A_UpdateCar)){
                 showCar();
             }
         }
@@ -1276,7 +1280,10 @@ public class HomeActivity extends Activity{
                 }
                 String lat = jsonData.getString("lat");
                 String lon = jsonData.getString("lon");
+                Variable.carDatas.get(DefaultVehicleID).setLat(lat);
+                Variable.carDatas.get(DefaultVehicleID).setLon(lon);
                 String gps_time = jsonData.getString("gps_time").replace("T", " ").substring(0, 19);
+                Variable.carDatas.get(DefaultVehicleID).setGps_time(gps_time.substring(5, 16));
                 GeoPoint point = new GeoPoint(GetSystem.StringToInt(lat),
                         GetSystem.StringToInt(lon));
                 Log.d(TAG, "gps_time = " + gps_time + " , lat = " + lat + " , lon = " + lon);
@@ -1311,6 +1318,7 @@ public class HomeActivity extends Activity{
             if(arg0.type == MKAddrInfo.MK_REVERSEGEOCODE){
                 strInfo = strInfo.substring((strInfo.indexOf("省") + 1), strInfo.length());
                 mTextViews[DefaultVehicleID][0].setText(strInfo);
+                Variable.carDatas.get(DefaultVehicleID).setAdress(strInfo);
             }
         }
     };

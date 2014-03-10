@@ -179,7 +179,7 @@ public class Constant {
 	/**
 	 * 注销广播
 	 */
-    public static String A_LoginOut = "com.wise.wawc.login_out";
+    //public static String A_LoginOut = "com.wise.wawc.login_out";
     /**
      * 提交订单广播
      */

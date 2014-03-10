@@ -102,7 +102,6 @@ public class CarLocationActivity extends Activity {
         ll_activity_car_location_bottom = (LinearLayout) findViewById(R.id.ll_activity_car_location_bottom);
 
     }
-
     OnClickListener onClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -153,7 +152,6 @@ public class CarLocationActivity extends Activity {
             }
         }
     };
-
     private void ToSearchMap(String keyWord) {
         mPopupWindow.dismiss();
         Intent intent = new Intent(CarLocationActivity.this,
@@ -161,7 +159,6 @@ public class CarLocationActivity extends Activity {
         intent.putExtra("keyWord", keyWord);
         startActivity(intent);
     }
-
     /**
      * 弹出popupwindow
      */
@@ -203,12 +200,10 @@ public class CarLocationActivity extends Activity {
         public OverlayCar(Drawable arg0, MapView arg1) {
             super(arg0, arg1);
         }
-
         @Override
         protected boolean onTap(int arg0) {
             return true;
         }
-
         @Override
         public boolean onTap(GeoPoint arg0, MapView arg1) {
             super.onTap(arg0, arg1);
@@ -216,19 +211,16 @@ public class CarLocationActivity extends Activity {
             return false;
         }
     }
-
     @Override
     protected void onResume() {
         super.onResume();
         mMapView.onResume();
     }
-
     @Override
     protected void onPause() {
         super.onPause();
         mMapView.onPause();
     }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -237,17 +229,11 @@ public class CarLocationActivity extends Activity {
 
     MKMapViewListener mkMapViewListener = new MKMapViewListener() {
         @Override
-        public void onMapMoveFinish() {
-        }
-
+        public void onMapMoveFinish() {}
         @Override
-        public void onMapLoadFinish() {
-        }
-
+        public void onMapLoadFinish() {}
         @Override
-        public void onMapAnimationFinish() {
-        }
-
+        public void onMapAnimationFinish() {}
         @Override
         public void onGetCurrentMap(Bitmap arg0) {
             System.out.println("截取成功");
@@ -264,9 +250,7 @@ public class CarLocationActivity extends Activity {
             GetSystem.share(CarLocationActivity.this, sb.toString(), imagePath,
                     (float) Lat, (float) Lon);
         }
-
         @Override
-        public void onClickMapPoi(MapPoi arg0) {
-        }
+        public void onClickMapPoi(MapPoi arg0) {}
     };
 }
