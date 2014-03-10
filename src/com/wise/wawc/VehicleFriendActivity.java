@@ -447,7 +447,11 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 					ContentValues values = new ContentValues();
 					values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
 					values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
-					values.put("UserLogo", jsonArray.getJSONObject(i).getString("logo"));
+					if(jsonArray.getJSONObject(i).opt("logo") == null){
+						values.put("UserLogo", jsonArray.getJSONObject(i).getString("logo"));
+					}else{
+						values.put("UserLogo", "");
+					}
 					values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
 					dBExcute.InsertDB(VehicleFriendActivity.this,values,Constant.TB_VehicleFriend);
 					if(i == (jsonArray.length()-1)){
@@ -485,7 +489,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		
 		Variable.articleList = articleDataList;
 		myAdapter.refreshDates(articleDataList);
-		
 		
 		if(loadMoreAction == actionCode){
 			onLoad();
@@ -565,7 +568,8 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				Constant.start = Constant.currentPage*Constant.pageSize;
 				Constant.currentPage ++ ;
 				Log.e("分类文章数据库","分类文章数据库" + Constant.currentPage);
-				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id = ? limit ?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
+				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id = ? limit ?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, Variable.articleList);
+//				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id = ? limit ?,?", new String[]{String.valueOf(type),String.valueOf(0),String.valueOf(Constant.start)}, articleDataList);
 				setArticleDataList(articleDataList);
 			}
 			if(Constant.totalPage == Constant.currentPage){

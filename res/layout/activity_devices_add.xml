@@ -31,7 +31,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight = "true"
             android:layout_centerVertical="true"
-            android:background="@drawable/bt_bg"
+            android:background="@drawable/article_comment_bg"
             android:layout_marginRight ="@dimen/margins"
             android:textColor="@color/white"
             android:textSize="@dimen/main"

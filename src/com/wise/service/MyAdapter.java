@@ -30,6 +30,7 @@ import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
+import com.wise.service.FaceAdapter.ViewHolder;
 import com.wise.sql.DBExcute;
 import com.wise.wawc.ArticleDetailActivity;
 import com.wise.wawc.FriendHomeActivity;
@@ -37,6 +38,7 @@ import com.wise.wawc.ImageActivity;
 import com.wise.wawc.R;
 import com.wise.wawc.VehicleFriendActivity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.ActionBar.LayoutParams;
@@ -73,31 +75,16 @@ import android.widget.Toast;
  */
 public class MyAdapter extends BaseAdapter{
 	private LayoutInflater inflater;
-	private ImageView saySomething;
-	private ImageView userHead = null;
-	private View view;
 	private Activity activity;
 	public static boolean isClick = false;
-	private TextView articel_user_name;  //点击查看详细信息
-	private TextView tv_article_content;
-	private TextView publish_time;
-	private Bitmap bitmap = null;
+	
 	private int commentUserId = 0;
 	private int blogId = 0;
 	private int position = 0;
-	private ImageView favorite = null;
-	private MyHandler myHandler = null;
-	private ImageView favoriteStart = null;
-	private TextView favoriteUser = null;
-	
-	private View line = null;   //分割线
-	private TableRow articlePraisesLayout = null;   //点赞者
-	
 	private StringBuffer sb = null;
 	private static final int articleFavorite = 123;
 	private static final int refreshList = 555;
 	private ProgressDialog myDialog = null;
-	private XListView listView = null;
 	private List<Article> articleList = null;
 	private DBExcute dbExcute = null;
 	int padding = 40;
@@ -105,6 +92,10 @@ public class MyAdapter extends BaseAdapter{
 	private int screenWidth = 0;
 	private int imageWidth = 0;
 	Map<String,String> favoriteMap; //点赞集合
+	ViewHolder viewHolder;
+	MyHandler myHandler = null;
+	View view;
+	XListView listView = null;
 	public MyAdapter(Activity activity,View v,List<Article> articleList,XListView listView){
 		inflater=LayoutInflater.from(activity);
 		this.view = v;
@@ -127,20 +118,30 @@ public class MyAdapter extends BaseAdapter{
 	public long getItemId(int position) {
 		return commentUserId;
 	}
+	@SuppressLint("ResourceAsColor")
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		this.position = position;
-		convertView = inflater.inflate(R.layout.article_adapter, null);
-		favoriteStart = (ImageView) convertView.findViewById(R.id.article_praises_star);
-		favoriteUser = (TextView) convertView.findViewById(R.id.article_praises_user);
-		saySomething = (ImageView) convertView.findViewById(R.id.list_say_somthing);
-		userHead = (ImageView) convertView.findViewById(R.id.head_article);
-		articel_user_name = (TextView) convertView.findViewById(R.id.article_user_name);
-		tv_article_content = (TextView) convertView.findViewById(R.id.tv_article_content);
-		publish_time = (TextView) convertView.findViewById(R.id.publish_time);
-		favorite = (ImageView) convertView.findViewById(R.id.favorite);
+		if(convertView == null){
+			convertView = inflater.inflate(R.layout.article_adapter, null);
+			viewHolder = new ViewHolder(); 
+			viewHolder.favoriteStart = (ImageView) convertView.findViewById(R.id.article_praises_star);
+			viewHolder.favoriteUser = (TextView) convertView.findViewById(R.id.article_praises_user);
+			viewHolder.saySomething = (ImageView) convertView.findViewById(R.id.list_say_somthing);
+			viewHolder.userHead = (ImageView) convertView.findViewById(R.id.head_article);
+			viewHolder.articel_user_name = (TextView) convertView.findViewById(R.id.article_user_name);
+			viewHolder.tv_article_content = (TextView) convertView.findViewById(R.id.tv_article_content);
+			viewHolder.publish_time = (TextView) convertView.findViewById(R.id.publish_time);
+			viewHolder.favorite = (ImageView) convertView.findViewById(R.id.favorite);
+			viewHolder.line = convertView.findViewById(R.id.article_adapter_line);
+			viewHolder.articlePraisesLayout = (TableRow) convertView.findViewById(R.id.article_praises_layout);
+			viewHolder.linearLayout = (LinearLayout) convertView.findViewById(R.id.user_image);
+			viewHolder.commentLayout = (LinearLayout) convertView.findViewById(R.id.article_comment_layout);
+			convertView.setTag(viewHolder);
+		}else{
+			viewHolder = (ViewHolder) convertView.getTag();
+		}
 		
 		
-		LinearLayout commentLayout = (LinearLayout) convertView.findViewById(R.id.article_comment_layout);
 		
 		List<Bitmap> smallImageList = new ArrayList<Bitmap>();
 		for(int i = 0 ; i < articleList.get(position).getImageList().size() ; i ++){
@@ -157,9 +158,7 @@ public class MyAdapter extends BaseAdapter{
 		if(!userIconPath.exists()){
 			userIconPath.mkdir();
 		}
-		//  TODO  
-		line = convertView.findViewById(R.id.article_adapter_line);
-		articlePraisesLayout = (TableRow) convertView.findViewById(R.id.article_praises_layout);
+		
 		
 		//   赞     如果没有赞 隐藏赞布局  同时将分割线隐藏
 		if (articleList.get(position).getPraisesList() != null) {
@@ -171,19 +170,19 @@ public class MyAdapter extends BaseAdapter{
 					String val = (String) entry.getValue();
 					sb.append(val+",");
 					if(Variable.cust_name.equals(val)){
-						favorite.setBackgroundResource(R.drawable.body_icon_heart_press);
+						viewHolder.favorite.setBackgroundResource(R.drawable.body_icon_heart_press);
 					}
 				}
-				favoriteStart.setVisibility(View.VISIBLE);
-				articlePraisesLayout.setVisibility(View.VISIBLE);
-				favoriteUser.setText(sb.toString());
+				viewHolder.favoriteStart.setVisibility(View.VISIBLE);
+				viewHolder.articlePraisesLayout.setVisibility(View.VISIBLE);
+				viewHolder.favoriteUser.setText(sb.toString());
 			} else {
-				articlePraisesLayout.setVisibility(View.GONE);
-				line.setVisibility(View.GONE);
+				viewHolder.articlePraisesLayout.setVisibility(View.GONE);
+				viewHolder.line.setVisibility(View.GONE);
 			}
 		}else{
-			articlePraisesLayout.setVisibility(View.GONE);
-			line.setVisibility(View.GONE);
+			viewHolder.articlePraisesLayout.setVisibility(View.GONE);
+			viewHolder.line.setVisibility(View.GONE);
 		}
 		//   评论     如果没有评论   将 评论布局隐藏  同时将分割线隐藏
 		if(articleList.get(position).getCommentList() != null){
@@ -195,23 +194,24 @@ public class MyAdapter extends BaseAdapter{
 				    TextView commentContent = new TextView(activity);   //评论内容
 					String[] commentStr = articleList.get(position).getCommentList().get(i);
 					commentName.setText(commentStr[0] + ":");
-					
-					oneComment.addView(commentName, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 					SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(activity, commentStr[1]);
 					commentContent.setText(spannableString);
+					commentName.setTextColor(R.color.blue);
+					commentContent.setTextColor(R.color.common);
+					oneComment.addView(commentName, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 					oneComment.addView(commentContent, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-					commentLayout.addView(oneComment, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+					viewHolder.commentLayout.addView(oneComment, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 				}
 			}else{
-				commentLayout.setVisibility(View.GONE);
-				line.setVisibility(View.GONE);
+				viewHolder.commentLayout.setVisibility(View.GONE);
+				viewHolder.line.setVisibility(View.GONE);
 			}
 		}else{
-			commentLayout.setVisibility(View.GONE);
-			line.setVisibility(View.GONE);
+			viewHolder.commentLayout.setVisibility(View.GONE);
+			viewHolder.line.setVisibility(View.GONE);
 		}
 		//用户图片
-		LinearLayout linearLayout = (LinearLayout) convertView.findViewById(R.id.user_image);
+		
 		for (int i = 0; i < smallImageList.size(); i++) {
 			if(i < 3){
 				Bitmap bitmap = smallImageList.get(i);
@@ -220,12 +220,12 @@ public class MyAdapter extends BaseAdapter{
 					ImageView tempImage = new ImageView(activity);
 					tempImage.setImageResource(R.drawable.body_nothing_icon);
 					tempImage.setPadding(Variable.margins, 0,0, 0);
-					linearLayout.addView(tempImage,i,new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
+					viewHolder.linearLayout.addView(tempImage,i,new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
 				}else{
 					ImageView imageView = new ImageView(activity);
 					imageView.setImageBitmap(smallImageList.get(i));
 					imageView.setPadding(Variable.margins, 0,0, 0);
-					linearLayout.addView(imageView,i,new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
+					viewHolder.linearLayout.addView(imageView,i,new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
 					imageView.setOnClickListener(new OnClickListener() {
 						public void onClick(View v) {
 							//查看大图
@@ -241,21 +241,21 @@ public class MyAdapter extends BaseAdapter{
 		String str = articleList.get(position).getCreate_time();
 		String createTime = str.substring(0, str.indexOf(".")).replace("T"," ");
 		
-		publish_time.setText(getTime(createTime));
-		articel_user_name.setText(articleList.get(position).getName());
-		tv_article_content.setText(articleList.get(position).getContent());
+		viewHolder.publish_time.setText(getTime(createTime));
+		viewHolder.articel_user_name.setText(articleList.get(position).getName());
+		viewHolder.tv_article_content.setText(articleList.get(position).getContent());
 		
-		saySomething.setOnClickListener(new MyClickListener(position));
-		favorite.setOnClickListener(new MyClickListener(position));
-		userHead.setOnClickListener(new MyClickListener(position));
-		articel_user_name.setOnClickListener(new MyClickListener(position));
+		viewHolder.saySomething.setOnClickListener(new MyClickListener(position));
+		viewHolder.favorite.setOnClickListener(new MyClickListener(position));
+		viewHolder.userHead.setOnClickListener(new MyClickListener(position));
+		viewHolder.articel_user_name.setOnClickListener(new MyClickListener(position));
 		//设置用户头像   TODO
 		Bitmap userIcons = imageIsExist(Constant.userIconPath + articleList.get(position).getCust_id() + ".jpg",articleList.get(position).getUserLogo(),4,articleList.get(position).getCust_id());
 		if(userIcons == null){
-			userHead.setBackgroundResource(R.drawable.body_icon_help);
+			viewHolder.userHead.setBackgroundResource(R.drawable.body_icon_help);
 		}else{
 			Bitmap user = BitmapFactory.decodeFile(Constant.userIconPath + articleList.get(position).getCust_id()+".jpg");
-			userHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(user));
+			viewHolder.userHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(user));
 		}
 		return convertView;
 	}
@@ -264,25 +264,25 @@ public class MyAdapter extends BaseAdapter{
 	private Bitmap imageIsExist(String path,final String loadUrl,final int action,final int custId) {
 		File file = new File(path);
 		if(file.exists()){
-			bitmap = BitmapFactory.decodeFile(path);
-			return bitmap;
+			viewHolder.bitmap = BitmapFactory.decodeFile(path);
+			return viewHolder.bitmap;
 		}
 		else{
 			new Thread(new Runnable() {
 				public void run() {
-					bitmap = GetSystem.getBitmapFromURL(loadUrl);
-					if(bitmap != null){
+					viewHolder.bitmap = GetSystem.getBitmapFromURL(loadUrl);
+					if(viewHolder.bitmap != null){
 					    if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
 	                        File imagePath = new File(Constant.VehiclePath);
 	                        if(!imagePath.exists()){
 	                            imagePath.mkdir();
 	                        }
 	                        if(action == 3){
-	                        	createImage(Constant.VehiclePath + loadUrl.substring(loadUrl.lastIndexOf("/")),bitmap);
+	                        	createImage(Constant.VehiclePath + loadUrl.substring(loadUrl.lastIndexOf("/")),viewHolder.bitmap);
 	                        }
 	                        if(action == 4){
 	                        	//  TODO
-	                        	createImage(Constant.userIconPath + custId + ".jpg",bitmap);
+	                        	createImage(Constant.userIconPath + custId + ".jpg",viewHolder.bitmap);
 	                        }
 	                    }
 					}else{
@@ -468,4 +468,20 @@ public class MyAdapter extends BaseAdapter{
 	public boolean isEnabled(int position) {
 		return false;
 	}
+	
+	 class ViewHolder {
+		 public TextView articel_user_name;  //点击查看详细信息
+		 public TextView tv_article_content;
+		 public TextView publish_time;
+		 public Bitmap bitmap = null;
+		 public ImageView favorite = null;
+		 public ImageView saySomething;
+		 public ImageView userHead = null;
+		 public ImageView favoriteStart = null;
+		 public TextView favoriteUser = null;
+		 public View line = null;   //分割线
+		 public TableRow articlePraisesLayout = null;   //点赞者
+		 public LinearLayout linearLayout;
+		 public LinearLayout commentLayout;
+	 }
 }
