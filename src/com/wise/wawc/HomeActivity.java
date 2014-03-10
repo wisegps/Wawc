@@ -983,6 +983,7 @@ public class HomeActivity extends Activity{
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(broadcastReceiver);
+        mkSearch.destory();
         Log.d(TAG, "onDestroy");
     }
     @Override
@@ -1179,6 +1180,7 @@ public class HomeActivity extends Activity{
      * @param result
      */
     private void jsonDevice(String result){
+        System.out.println("解析终端数据");
         Log.d(TAG, result);
         try {
             List<DevicesData> devicesDatas = new ArrayList<DevicesData>();
@@ -1304,9 +1306,9 @@ public class HomeActivity extends Activity{
         public void onGetBusDetailResult(MKBusLineResult arg0, int arg1) {}        
         @Override
         public void onGetAddrResult(MKAddrInfo arg0, int arg1) {
+            String strInfo = arg0.strAddr;
+            Log.d(TAG, strInfo);
             if(arg0.type == MKAddrInfo.MK_REVERSEGEOCODE){
-                String strInfo = arg0.strAddr;
-                Log.d(TAG, strInfo);
                 strInfo = strInfo.substring((strInfo.indexOf("省") + 1), strInfo.length());
                 mTextViews[DefaultVehicleID][0].setText(strInfo);
             }
