@@ -149,7 +149,7 @@ public class BarcodeActivity extends Activity implements Callback {
 		//TODO 处理事件
 		Intent intent = new Intent();
 		intent.putExtra("result", obj.getText());
-		setResult(0, intent);
+		setResult(2, intent);
 		finish();
 	}
 

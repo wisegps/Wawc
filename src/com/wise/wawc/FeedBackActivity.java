@@ -16,6 +16,7 @@ import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 public class FeedBackActivity extends Activity {
@@ -27,8 +28,8 @@ public class FeedBackActivity extends Activity {
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 		Button bt_send = (Button)findViewById(R.id.bt_send);
 		bt_send.setOnClickListener(onClickListener);
-		Button bt_back = (Button)findViewById(R.id.bt_back);
-		bt_back.setOnClickListener(onClickListener);
+		ImageView iv_back = (ImageView)findViewById(R.id.iv_back);
+		iv_back.setOnClickListener(onClickListener);
 		et_content = (EditText)findViewById(R.id.et_content);
 		et_qq = (EditText)findViewById(R.id.et_qq);		
 	}
@@ -49,7 +50,7 @@ public class FeedBackActivity extends Activity {
                 params.add(new BasicNameValuePair("cust_id", Variable.cust_id == null ? "0":Variable.cust_id));
                 new Thread(new NetThread.putDataThread(handler, url, params, feedBack)).start();
                 break;
-            case R.id.bt_back:
+            case R.id.iv_back:
                 finish();
                 break;
             }

@@ -145,6 +145,7 @@
                 android:layout_weight="1"
                 android:textColor="@color/common"
                 android:textSize="@dimen/content"
+                android:drawableRight="@drawable/body_icon_arrow2"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"/>
         </LinearLayout>
