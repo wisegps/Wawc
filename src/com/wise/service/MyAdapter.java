@@ -217,9 +217,10 @@ public class MyAdapter extends BaseAdapter{
 				Bitmap bitmap = smallImageList.get(i);
 				if(bitmap == null){   //显示转圈圈加载
 					selection = position;
-					ProgressBar progressBar = new ProgressBar(activity);
-					progressBar.setVisibility(View.VISIBLE);
-					linearLayout.addView(progressBar,i,new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
+					ImageView tempImage = new ImageView(activity);
+					tempImage.setImageResource(R.drawable.body_nothing_icon);
+					tempImage.setPadding(0, 0,Variable.margins, 0);
+					linearLayout.addView(tempImage,i,new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
 				}else{
 					ImageView imageView = new ImageView(activity);
 					imageView.setImageBitmap(smallImageList.get(i));

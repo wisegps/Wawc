@@ -125,7 +125,6 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		
 		back.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				
 				if(code == MyVehicleActivity.resultCodeBrank || code == NewVehicleActivity.newVehicleBrank){
 						if(carBrankLayout.getVisibility() == View.VISIBLE){
 							ChoiceCarInformationActivity.this.finish();
@@ -230,7 +229,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		progressDialog = ProgressDialog.show(ChoiceCarInformationActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 		progressDialog.setCancelable(true);
 		myHandler = new MyHandler();
-		//获取车牌   TODO
+		//获取车牌   
 		if(code == MyVehicleActivity.resultCodeBrank || code == NewVehicleActivity.newVehicleBrank){
 			getDate(carBrankTitle,Constant.BaseUrl + "base/car_brand",GET_BRANK);
 		}else if(code == MyVehicleActivity.resultCodeSeries || code == NewVehicleActivity.newVehicleSeries){
@@ -302,13 +301,13 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 						e.printStackTrace();
 					}
 				}
-				insertDatabases(carBrankTitle,carBrankTitle + carBrankId,ChoiceCarInformationActivity.this);
-				//更新数据库  
+				insertDatabases(carBrankTitle + carBrankId,seriesData,ChoiceCarInformationActivity.this);
 				
 				parseJSON(jsonArray,GET_SERIES);
 				
 				break;
 			case GET_TYPE:   //车款
+				String resultType = msg.obj.toString();
 				JSONArray jsonType = null;
 				try {
 					jsonType = new JSONArray(msg.obj.toString());
@@ -316,7 +315,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 					e.printStackTrace();
 				}
 				//更新数据库  
-				insertDatabases(carBrankTitle,carSeriesTitle + carSeriesId,ChoiceCarInformationActivity.this);
+				insertDatabases(carSeriesTitle + carSeriesId,resultType,ChoiceCarInformationActivity.this);
 				
 				parseJSON(jsonType,GET_TYPE);
 				
@@ -334,6 +333,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 	 * @param handlerWhat   服务器获取handler异步处理的标识
 	 */
 	private void getDate(String whereValues,String url,int handlerWhat) {
+		Log.e("title:",whereValues);
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 		 Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base + " where Title = ?", new String[]{whereValues});
 		 JSONArray jsonArray = null;
@@ -370,7 +370,6 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 			} catch (JSONException e1) {
 				e1.printStackTrace();
 			}
-			// TODO
 			brankModelList = filledData(brankList);
 			//排序
 			Collections.sort(brankModelList, comparator);

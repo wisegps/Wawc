@@ -61,7 +61,7 @@ import android.widget.Toast;
  * @author 王庆文
  */
 public class NewArticleActivity extends Activity implements PlatformActionListener,OnUploadProcessListener{
-	private Button back = null;
+	private ImageView back = null;
 	private ImageView takePhoto;
 	private LinearLayout linearLayout = null;  //将照片动态添加到布局文件中
 	EditText et_publish_article;	
@@ -98,7 +98,7 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 		TextView publish = (TextView)findViewById(R.id.publish);
 		publish.setOnClickListener(new ClickListener());
-		back = (Button) findViewById(R.id.back);
+		back = (ImageView) findViewById(R.id.back);
 		back.setOnClickListener(new ClickListener());
 		takePhoto = (ImageView) findViewById(R.id.take_photo);
 		takePhoto.setOnClickListener(new ClickListener());
