@@ -65,22 +65,22 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
         bt_sina.setOnClickListener(onClickListener);
         bt_qq = (Button)findViewById(R.id.bt_qq);
         bt_qq.setOnClickListener(onClickListener);
-        if (isOffline()) {
-            // 没有网络
-            setNetworkMethod();
+        //跳转到登录界面
+        isLogin();       
+        
+        if(isLogin){
+            new Thread(new WaitThread()).start();
         }else{
-            //跳转到登录界面
-            isLogin();
-            if(isLogin){
-                new Thread(new WaitThread()).start();
+            if (isOffline()) {
+                // 没有网络
+                setNetworkMethod();
             }else{
+                isNeedGetCityFromUrl();
                 System.out.println("show");
                 Animation operatingAnim = AnimationUtils.loadAnimation(WelcomeActivity.this, R.anim.in_from_bottom);  
                 ll_login.setAnimation(operatingAnim);
-                ll_login.setVisibility(View.VISIBLE);
-            }
-            isNeedGetCityFromUrl();
-            
+                ll_login.setVisibility(View.VISIBLE);                
+            }            
         }
     }
     OnClickListener onClickListener = new OnClickListener() {        
