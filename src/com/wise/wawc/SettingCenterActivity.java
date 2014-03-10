@@ -70,7 +70,6 @@ public class SettingCenterActivity extends Activity{
 	}
 	
 	OnClickListener onClickListener = new OnClickListener() {
-        
         @Override
         public void onClick(View v) {
             switch (v.getId()) {

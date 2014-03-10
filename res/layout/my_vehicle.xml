@@ -258,7 +258,6 @@
                 android:layout_height="0.5dip"
                 android:background="@color/gray" />
             <!-- 终端 -->
-
             <TableRow
                 android:id="@+id/vehicle_device_layout"
                 android:layout_width="fill_parent"

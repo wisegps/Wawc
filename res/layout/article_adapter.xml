@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/gray">
     
     
     <LinearLayout
@@ -11,11 +12,13 @@
         android:orientation="horizontal"
         android:layout_margin="@dimen/margins"
         >
+        <!-- 用户头像 -->
         <ImageView
             android:id="@+id/head_article"
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1.5"
+            android:background="@drawable/add_bt_bg"
             />
             <LinearLayout 
                 android:layout_width="0dip"
@@ -45,14 +48,16 @@
         
     </LinearLayout>
 
+    <!-- 用户图片 -->
     <TableLayout 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dip"
+        android:layout_margin="@dimen/margins"
         >
         <TableRow 
             android:layout_width="fill_parent"
         	android:layout_height="wrap_content"
+        	android:background="@color/yellow"
             >
             <View 
                 android:layout_width="0dip"
@@ -62,7 +67,8 @@
             	android:layout_marginLeft="@dimen/margins1"
                 />
             
-            <!-- 动态添加图片控件 -->
+            <!-- 显示用户发表的图片 -->
+            
             <LinearLayout 
                 android:id="@+id/user_image"
                 android:layout_width="0dip"
@@ -70,19 +76,22 @@
                 android:orientation="horizontal"
                 android:layout_weight="6"
                 android:layout_marginLeft="@dimen/margins"
+                android:background="@color/blue"
                 >
             </LinearLayout>
         </TableRow>
     </TableLayout>
     
+    <!-- 评论相关控件 -->
     <TableLayout 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dip"
+        android:layout_margin="@dimen/margins"
         >
         <TableRow 
             android:layout_width="fill_parent"
             android:layout_height="10dip"
+            android:background="@color/blue"
             >
             <View
                 android:layout_width="0dip"
@@ -131,25 +140,24 @@
             </TableRow>
         </TableRow>
     </TableLayout>
-    <!-- 文章相关 -->
+    <!-- 评论内容 -->
     <TableLayout 
         android:id="@+id/tablelayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginRight="10dip"
         android:layout_marginTop="5dip"
         android:layout_marginBottom="5dip"
         >
         <TableRow 
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margins"
+            android:layout_marginRight="@dimen/margins"
             >
             <View
                 android:layout_width="0dip"
                 android:layout_height="0dip"
                 android:layout_weight="1.5"
-                android:layout_marginRight="@dimen/margins1"
-            	android:layout_marginLeft="@dimen/margins1"
                 />
             
             <TableLayout 
@@ -157,7 +165,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
                 android:background="#F7F6FB"
-                android:layout_marginLeft="@dimen/margins"
                 >
                 <!-- 赞 -->
             <TableRow 
@@ -198,7 +205,6 @@
                       >
                   </LinearLayout>
             </TableLayout>
-            
         </TableRow>
     </TableLayout>
 </LinearLayout>

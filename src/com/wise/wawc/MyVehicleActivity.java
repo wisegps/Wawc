@@ -571,6 +571,8 @@ public class MyVehicleActivity extends Activity{
 		if(resultCode == resultCodeDevice){
 		    deviceId = data.getStringExtra("DeviceId");
 		    deviceName = data.getStringExtra("Serial");
+		    //更新静态类
+		    Variable.carDatas.get(chickIndex).setSerial(deviceName);
 		    myVehicleDevice.setText(deviceName);
 		    List<NameValuePair> parms = new ArrayList<NameValuePair>();
 			parms.add(new BasicNameValuePair("device_id", deviceId));
@@ -768,14 +770,14 @@ public class MyVehicleActivity extends Activity{
 					dBExcute.updataVehilce(MyVehicleActivity.this, Constant.TB_Vehicle, values1, "obj_id=?", new String[]{String.valueOf(Variable.carDatas.get(chickIndex).getObj_id())});
 					break;
 				case getBrankData:
-					if(!"".equals(msg.obj.toString())){
+					if(!"[]".equals(msg.obj.toString())){
 						//存到数据库
 						parseVehicleBrandData(msg.obj.toString(),msg.what);
 						ChoiceCarInformationActivity.insertDatabases(ChoiceCarInformationActivity.carBrankTitle, msg.obj.toString(), MyVehicleActivity.this);
 					}
 					break;
 				case getSeriesData:
-					if(!"".equals(msg.obj.toString())){
+					if(!"[]".equals(msg.obj.toString())){
 						parseVehicleBrandData(msg.obj.toString(),msg.what);
 					}
 					break;
@@ -1191,7 +1193,6 @@ public class MyVehicleActivity extends Activity{
  		Cursor cursor = reader.rawQuery("select * from " + table + " where Title = ?", new String[]{whereValue});
  		if(cursor.moveToFirst()){
  			parseVehicleBrandData(cursor.getString(cursor.getColumnIndex("Content")),what);
-// 			Log.e("数据库================",cursor.getString(cursor.getColumnIndex("Content")));
  		}else{
  			new Thread(new NetThread.GetDataThread(myHandler, url, what)).start();
  		}
@@ -1199,20 +1200,19 @@ public class MyVehicleActivity extends Activity{
  	
  	public void parseVehicleBrandData(String str,int what){
  		JSONArray jsonary = null;
- 		Log.e("str:",str);
  		try {
 			if(what == getBrankData){
-				jsonary = new JSONArray(str);
+				jsonary = new JSONArray(str.substring(0,str.length()));
 				for(int i = 0 ; i < jsonary.length() ; i ++){
 					if(carBrank.equals(jsonary.getJSONObject(i).get("name"))){
+						carBrankId = jsonary.getJSONObject(i).get("id") + "";
 						getVehiclebrandData(ChoiceCarInformationActivity.carSeriesTitle,Constant.TB_Base,Constant.BaseUrl + "base/car_series?pid=" + carBrankId , getSeriesData);
 					}
 				}
 			}
 			if(getSeriesData == what){
-				jsonary = new JSONArray(str);
+				jsonary = new JSONArray(str.substring(0,str.length()));
 				for(int i = 0 ; i < jsonary.length() ; i ++){
-					System.out.println("name===>"+jsonary.getJSONObject(i).get("go_name"));
 					if(carSeries.equals(jsonary.getJSONObject(i).get("show_name"))){
 						carSeriesId = jsonary.getJSONObject(i).get("id")+"";
 					}
