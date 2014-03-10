@@ -10,7 +10,7 @@
         android:background="@drawable/nav_bg" >
 
         <ImageView
-            android:id="@+id/bt_back"
+            android:id="@+id/iv_back"
             android:layout_width="@dimen/title_image"
             android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"

@@ -80,7 +80,6 @@ public class CarAdapter extends BaseAdapter{
             case VALUE_CAR:
                 CarData carData = carDatas.get(position);
                 holder.tv_item_carnumber.setText(carData.getObj_name());
-                Log.e(TAG,carData.getLogoPath());
                 if(carData.getLogoPath() == null || carData.getLogoPath().equals("")){
                     holder.iv_item_cars.setImageResource(R.drawable.body_nothing_icon);
                 }else{

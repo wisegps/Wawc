@@ -31,21 +31,7 @@
             android:text="@string/location_4s_shop"
             android:textColor="@color/white"
             android:textSize="@dimen/head" />
-
-        <ImageView
-            android:id="@+id/search_maintain_shop"
-            android:layout_width="@dimen/title_image"
-            android:layout_height="@dimen/title_image"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/side_right" />
     </RelativeLayout>
-
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1dip"
-        android:background="#000000" />
-
     <ListView
         android:id="@+id/maintain_list"
         android:layout_width="fill_parent"

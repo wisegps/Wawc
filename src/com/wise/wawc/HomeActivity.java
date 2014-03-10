@@ -44,6 +44,7 @@ import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
@@ -269,7 +270,10 @@ public class HomeActivity extends Activity{
             ll_image.addView(imageView);
         }
         changeImage(DefaultVehicleID);
-        if(carDatas.size() != 0){
+        if(carDatas.size() != 0){            
+            if(DefaultVehicleID >= carDatas.size()){//默认第一个车
+                DefaultVehicleID = 0;
+            }            
             iv_car_traffic.setVisibility(View.GONE);
             iv_car_status.setVisibility(View.GONE);
             changeImage(DefaultVehicleID);
@@ -331,8 +335,7 @@ public class HomeActivity extends Activity{
                 HomeActivity.this.startActivity(eventIntent);
                 break;
             case R.id.bt_activity_home_vehicle_status:// 爱车车况
-                HomeActivity.this.startActivity(new Intent(HomeActivity.this,
-                        VehicleStatusActivity.class));
+                TurnVehicleStatus();
                 break;
             case R.id.tv_activity_home_car_adress: // 车辆位置
                 Intent intent_adress = new Intent(HomeActivity.this,CarLocationActivity.class);
@@ -926,6 +929,7 @@ public class HomeActivity extends Activity{
         sb.append("【位置】");
         sb.append(carData.getAdress());
         sb.append("," + url);
+        Log.d(TAG, sb.toString());
         GetSystem.share(HomeActivity.this, sb.toString(),
                 "", Float.valueOf(carData.getLat()),
                 Float.valueOf(carData.getLon()));
@@ -936,6 +940,7 @@ public class HomeActivity extends Activity{
         intentFilter.addAction(Constant.A_Login);
         intentFilter.addAction(Constant.A_City);
         intentFilter.addAction(Constant.A_LoginOut);
+        intentFilter.addAction(Constant.A_UpdateCar);
         registerReceiver(broadcastReceiver, intentFilter);
     }
 
@@ -961,6 +966,8 @@ public class HomeActivity extends Activity{
             }else if(action.equals(Constant.A_LoginOut)){
                 //TODO 注销
                 Variable.carDatas.clear();
+                showCar();
+            }else if(action.equals(Constant.A_UpdateCar)){
                 showCar();
             }
         }
@@ -1172,6 +1179,7 @@ public class HomeActivity extends Activity{
      * @param result
      */
     private void jsonDevice(String result){
+        Log.d(TAG, result);
         try {
             List<DevicesData> devicesDatas = new ArrayList<DevicesData>();
             JSONArray jsonArray = new JSONArray(result);
@@ -1187,9 +1195,11 @@ public class HomeActivity extends Activity{
                 devicesData.setStatus(jsonObject.getString("status"));
                 devicesData.setType(0);
                 devicesDatas.add(devicesData);
+                Log.d(TAG, "Variable.carDatas.size() = " + Variable.carDatas.size());
                 for(int j = 0 ; j < Variable.carDatas.size() ; j++){
                     CarData carData = Variable.carDatas.get(j);
-                    if(carData.getDevice_id().equals(jsonObject.getString("device_id"))){
+                    Log.d(TAG, carData.toString());
+                    if(carData.getDevice_id() != null &&carData.getDevice_id().equals(jsonObject.getString("device_id"))){
                         carData.setSerial(jsonObject.getString("serial"));
                         DBExcute dbExcute = new DBExcute();
                         ContentValues values = new ContentValues();
@@ -1302,4 +1312,20 @@ public class HomeActivity extends Activity{
             }
         }
     };
+    private void TurnVehicleStatus(){
+        CarData carData = Variable.carDatas.get(DefaultVehicleID);
+        if(carData.getDevice_id() == null || carData.getDevice_id().equals("")){
+            new AlertDialog.Builder(this).setTitle("提示").setMessage("该车辆没绑定终端，是否购买")
+            .setPositiveButton("确定", new DialogInterface.OnClickListener() {                
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    HomeActivity.this.startActivity(new Intent(HomeActivity.this,
+                            OrderDeviceActivity.class));
+                }
+            }).setNegativeButton("取消", null).show();
+        }else{
+            HomeActivity.this.startActivity(new Intent(HomeActivity.this,
+                    VehicleStatusActivity.class));
+        }
+    }
 }

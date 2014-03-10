@@ -25,8 +25,7 @@
             android:gravity="center"
             android:text="@string/car_remind"
             android:textColor="@color/white"
-            android:textSize="@dimen/head"
-            android:textStyle="bold" />
+            android:textSize="@dimen/head"/>
 	</RelativeLayout>	
 	<HorizontalScrollView
         android:layout_width="fill_parent"
@@ -250,7 +249,7 @@
                     android:layout_margin="@dimen/margins"
                     android:textColor="@color/common_blue"
                     android:background="@drawable/bg_bt_blue"
-                    android:text="@string/go_my_car"/>
+                    android:text="设置里程"/>
                 <Button
                     android:id="@+id/bt_maintenance_call"
                     android:layout_width="fill_parent"

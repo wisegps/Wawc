@@ -116,8 +116,6 @@ public class MaintainShopActivity extends Activity {
 			case R.id.choice_maintain_cancle:
 				MaintainShopActivity.this.finish();
 				break;
-			case R.id.search_maintain_shop:
-				break;
 			}
 		}
 	}

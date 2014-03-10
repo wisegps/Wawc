@@ -184,6 +184,14 @@ public class Constant {
      * 提交订单广播
      */
     public static String A_Order = "com.wise.wawc.order";
+    /**
+     * 更新or修改车辆
+     */
+    public static String A_UpdateCar = "com.wise.wawc.update_car";
+    /**
+     * 添加终端
+     */
+    public static String A_UpdateDevice = "com.wise.wawc.update_device";
 	
 	public static boolean isHideFooter = false;
 	/**

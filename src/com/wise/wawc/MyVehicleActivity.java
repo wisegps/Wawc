@@ -393,7 +393,7 @@ public class MyVehicleActivity extends Activity{
 			        startActivity(new Intent(MyVehicleActivity.this, OrderDeviceActivity.class));
 			    }else{
 			      //跳转到绑定终端界面
-				Intent intent2 = new Intent(MyVehicleActivity.this,MyDevicesActivity.class);
+				Intent intent2 = new Intent(MyVehicleActivity.this,DevicesActivity.class);
                 intent2.putExtra("isJump", false);
                 startActivityForResult(intent2, resultCodeDevice);
 			    }
