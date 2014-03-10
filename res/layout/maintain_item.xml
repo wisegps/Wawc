@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="horizontal"
-    android:background="@drawable/side_seting_item"
+    android:background="@drawable/bg_item_selector"
      >
     <TextView
         android:id="@+id/vehicle_maintain_name"

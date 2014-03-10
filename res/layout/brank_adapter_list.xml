@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/side_seting_item"
+    android:background="@drawable/bg_item_selector"
     android:orientation="vertical"
     >
     <!-- 显示拼音索引 -->
