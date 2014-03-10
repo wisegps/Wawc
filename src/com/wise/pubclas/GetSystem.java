@@ -433,7 +433,8 @@ public class GetSystem {
 		WindowManager manager = activity.getWindowManager();
 		Display display = manager.getDefaultDisplay();
 		int screenWidth = (int) ((display.getWidth() - 2*Variable.margins)*0.8);
-		int imageWidth = (screenWidth - 3*margins)/3;
+//		int imageWidth = (screenWidth - 3*margins)/3;
+		int imageWidth = screenWidth/3;
 		Variable.smallImageReqWidth = imageWidth;
     }
     /**
