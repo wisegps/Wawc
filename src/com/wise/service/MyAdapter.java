@@ -219,12 +219,12 @@ public class MyAdapter extends BaseAdapter{
 					selection = position;
 					ImageView tempImage = new ImageView(activity);
 					tempImage.setImageResource(R.drawable.body_nothing_icon);
-					tempImage.setPadding(0, 0,Variable.margins, 0);
+					tempImage.setPadding(Variable.margins, 0,0, 0);
 					linearLayout.addView(tempImage,i,new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
 				}else{
 					ImageView imageView = new ImageView(activity);
 					imageView.setImageBitmap(smallImageList.get(i));
-					imageView.setPadding(0, 0,Variable.margins, 0);
+					imageView.setPadding(Variable.margins, 0,0, 0);
 					linearLayout.addView(imageView,i,new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
 					imageView.setOnClickListener(new OnClickListener() {
 						public void onClick(View v) {

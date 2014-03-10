@@ -92,7 +92,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	private int screenWidth = 0;
 	
 	public static int newArticleBlogId = 0;
-	private List<Article> articleDataList = new ArrayList<Article>();
+	private List<Article> articleDataList = new ArrayList<Article>();//  文章列表数据源
 	private ProgressDialog myDialog = null;
 	public static int blogId = 0;
 	private  int[] blogIdArray = null;
@@ -229,15 +229,9 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		}
 		
 		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code + "&max_id=" + maxBlogId, refreshCode)).start();
-//		myHandler.postDelayed(new Runnable() {
-//			public void run() {
-//				onLoad();
-//			}
-//		}, 2000);
 	}
 	@Override
 	public void onLoadMore() {
-		// TODO
 		if(isChickTypeTile){
 			if(!isLoadMore){
 				getArticleDatas(loadMoreAction);
@@ -277,7 +271,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		public void handleMessage(Message msg) {
 			switch(msg.what){
 			case setUserIcon:
-			    Bitmap bimage = BitmapFactory.decodeFile(Constant.userIconPath + Constant.UserImage);
+			    Bitmap bimage = BitmapFactory.decodeFile(Constant.userIconPath + Variable.cust_id + ".jpg");
 				if(bimage != null){
 					qqUserHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
 				}else{
@@ -447,19 +441,19 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	public void jsonToList(String JSON){
 		try {
 		JSONArray jsonArray = new JSONArray(JSON);
-		for(int i = 0 ; i < jsonArray.length() ; i ++){
-			//存储到数据库
+			for(int i = 0 ; i < jsonArray.length() ; i ++){
+				//存储到数据库
 //				Cust_id text,FriendID int,Blog_id int,Content text)";
-				ContentValues values = new ContentValues();
-				values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
-				values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
-				values.put("UserLogo", jsonArray.getJSONObject(i).getString("logo"));
-				values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
-				dBExcute.InsertDB(VehicleFriendActivity.this,values,Constant.TB_VehicleFriend);
-				if(i == (jsonArray.length()-1)){
-					minBlogId = Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id"));
-				}
-		}
+					ContentValues values = new ContentValues();
+					values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
+					values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
+					values.put("UserLogo", jsonArray.getJSONObject(i).getString("logo"));
+					values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
+					dBExcute.InsertDB(VehicleFriendActivity.this,values,Constant.TB_VehicleFriend);
+					if(i == (jsonArray.length()-1)){
+						minBlogId = Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id"));
+					}
+			}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -475,23 +469,24 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				Constant.start = Constant.currentPage*Constant.pageSize;
 				Constant.currentPage ++ ;
 				articleDataList = dBExcute.getArticlePageDatas(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
-//				for(int i = 0; i < articleDataList.size() ; i ++){
-//					for(String str : articleDataList.get(i).getPraisesList()){
-//						Log.e("点赞者:",str);
-//					}
-//				}
 				setArticleDataList(articleDataList);
 			}
 			if(Constant.totalPage == Constant.currentPage){
 				isLoadMore = true;
 			}
+			Log.e("数据库文章","数据库文章");
 		}else{
+			Log.e("服务器   文章","服务器    文章");
 			myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 			myDialog.setCancelable(true);
 			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code, getArticleList)).start();
 		}
+		
+		
 		Variable.articleList = articleDataList;
 		myAdapter.refreshDates(articleDataList);
+		
+		
 		if(loadMoreAction == actionCode){
 			onLoad();
 		}
@@ -515,7 +510,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		this.articleDataList = articleDataList;
 	}
 	
-	//模拟加载更多
 	protected void onDestroy() {
 		super.onDestroy();
 	}
@@ -531,27 +525,28 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		if(Variable.articleList != null){
 			Variable.articleList.clear();
 		}
-		if(pos == 0){    //车友圈
-			getArticleDatas(0);
-			isChickTypeTile = true;
-		}else if(pos == 1){   //同城车友
+//		if(pos == 0){    //车友圈
+//			getArticleDatas(0);
+//			isChickTypeTile = true;
+//		}else 
+			if(pos == 1){   //同城车友
 			articleSort(1,0);
 			article = 1;
 			isChickTypeTile = false;
 		}
-		else if(pos == 2){   // 同车型的车友
-			articleSort(0,0);
-			article = 0;
-			isChickTypeTile = false;
-		}else if(pos == 3){    //附近车友
-			articleSort(2,0);
-			article = 2;
-			isChickTypeTile = false;
-		}else if(pos == 4){   //我的收藏
-			articleSort(3,0);
-			article = 3;
-			isChickTypeTile = false;
-		}
+//		else if(pos == 2){   // 同车型的车友
+//			articleSort(0,0);
+//			article = 0;
+//			isChickTypeTile = false;
+//		}else if(pos == 3){    //附近车友
+//			articleSort(2,0);
+//			article = 2;
+//			isChickTypeTile = false;
+//		}else if(pos == 4){   //我的收藏
+//			articleSort(3,0);
+//			article = 3;
+//			isChickTypeTile = false;
+//		}
 	}
 
 	
@@ -562,15 +557,14 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		}else{
 			articleType = Constant.BaseUrl + "blog?auth_code=" + Variable.auth_code + "&type=" + type + "&cust_id=" + Variable.cust_id; 
 		}
-		Log.e("url:",articleType);
-		// TODO 查询数据库
+		Log.e("url--->:",articleType);
 		totalNum = dBExcute.getTotalCount( VehicleFriendActivity.this,"select * from " + Constant.TB_VehicleFriendType + " where Type_id=?",new String[]{String.valueOf(type)});
 		if(totalNum > 0){
 			Constant.totalPage = totalNum%Constant.pageSize > 0 ? totalNum/Constant.pageSize + 1 : totalNum/Constant.pageSize;
 			if(Constant.totalPage - 1 >= Constant.currentPage){
 				Constant.start = Constant.currentPage*Constant.pageSize;
 				Constant.currentPage ++ ;
-				Log.e("查询数据库","查询数据库");
+				Log.e("分类文章数据库","分类文章数据库" + Constant.currentPage);
 				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id = ? limit ?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
 				setArticleDataList(articleDataList);
 			}
@@ -578,7 +572,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				isLoadMore = true;
 			}
 		}else{
-			Log.e("查询服务器","查询服务器");
+			Log.e("分类文章服务器","分类文章服务器");
 			myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 			myDialog.setCancelable(true);
 			new Thread(new NetThread.GetDataThread(myHandler, articleType, FriendType)).start();

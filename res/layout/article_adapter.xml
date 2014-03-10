@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:background="@color/gray">
+    >
     
     
     <LinearLayout
@@ -18,7 +18,6 @@
             android:layout_width="0dip"
             android:layout_height="fill_parent"
             android:layout_weight="1.5"
-            android:background="@drawable/add_bt_bg"
             />
             <LinearLayout 
                 android:layout_width="0dip"
@@ -57,26 +56,19 @@
         <TableRow 
             android:layout_width="fill_parent"
         	android:layout_height="wrap_content"
-        	android:background="@color/yellow"
             >
             <View 
                 android:layout_width="0dip"
                 android:layout_height="0dip"
                 android:layout_weight="1.5"
-                android:layout_marginRight="@dimen/margins1"
-            	android:layout_marginLeft="@dimen/margins1"
                 />
-            
             <!-- 显示用户发表的图片 -->
-            
             <LinearLayout 
                 android:id="@+id/user_image"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_weight="6"
-                android:layout_marginLeft="@dimen/margins"
-                android:background="@color/blue"
                 >
             </LinearLayout>
         </TableRow>
@@ -91,14 +83,11 @@
         <TableRow 
             android:layout_width="fill_parent"
             android:layout_height="10dip"
-            android:background="@color/blue"
             >
             <View
                 android:layout_width="0dip"
                 android:layout_height="0dip"
                 android:layout_weight="1.5"
-                android:layout_marginRight="@dimen/margins1"
-            	android:layout_marginLeft="@dimen/margins1"
                 />
             <TableRow 
                 android:layout_width="0dip"
@@ -165,6 +154,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
                 android:background="#F7F6FB"
+                android:layout_marginLeft="@dimen/margins"
                 >
                 <!-- 赞 -->
             <TableRow 
