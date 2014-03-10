@@ -257,6 +257,7 @@ public class MyAdapter extends BaseAdapter{
 			Bitmap user = BitmapFactory.decodeFile(Constant.userIconPath + articleList.get(position).getCust_id()+".jpg");
 			viewHolder.userHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(user));
 		}
+		GetSystem.displayBriefMemory(activity);
 		return convertView;
 	}
 	

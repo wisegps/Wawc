@@ -17,6 +17,7 @@ import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
 import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.service.MyAdapter;
@@ -166,6 +167,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		mSpinerPopWindow = new SpinerPopWindow(VehicleFriendActivity.this);
 		mSpinerPopWindow.setItemListener(this);
 		getArticleDatas(0);
+		GetSystem.displayBriefMemory(VehicleFriendActivity.this);
 	}
 
 	class ClickListener implements OnClickListener{
@@ -232,6 +234,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	}
 	@Override
 	public void onLoadMore() {
+        GetSystem.displayBriefMemory(VehicleFriendActivity.this);
 		if(isChickTypeTile){
 			if(!isLoadMore){
 				getArticleDatas(loadMoreAction);
@@ -447,7 +450,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 					ContentValues values = new ContentValues();
 					values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
 					values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
-					if(jsonArray.getJSONObject(i).opt("logo") == null){
+					if(jsonArray.getJSONObject(i).opt("logo") != null){
 						values.put("UserLogo", jsonArray.getJSONObject(i).getString("logo"));
 					}else{
 						values.put("UserLogo", "");

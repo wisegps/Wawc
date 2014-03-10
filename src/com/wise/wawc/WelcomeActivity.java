@@ -66,8 +66,7 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
         bt_qq = (Button)findViewById(R.id.bt_qq);
         bt_qq.setOnClickListener(onClickListener);
         //跳转到登录界面
-        isLogin();       
-        
+        isLogin();        
         if(isLogin){
             new Thread(new WaitThread()).start();
         }else{
@@ -75,13 +74,13 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
                 // 没有网络
                 setNetworkMethod();
             }else{
-                isNeedGetCityFromUrl();
                 System.out.println("show");
                 Animation operatingAnim = AnimationUtils.loadAnimation(WelcomeActivity.this, R.anim.in_from_bottom);  
                 ll_login.setAnimation(operatingAnim);
                 ll_login.setVisibility(View.VISIBLE);                
             }            
         }
+        isNeedGetCityFromUrl();
     }
     OnClickListener onClickListener = new OnClickListener() {        
         @Override
@@ -229,6 +228,7 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
         Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base
                 + " where Title=?", new String[] { "City" });
         if(cursor.getCount() == 0){
+            Log.d(TAG, "获取城市");
             String url = Constant.BaseUrl + "base/city?is_hot=0";
             new Thread(new NetThread.GetDataThread(handler, url, Get_city)).start();
         }else{

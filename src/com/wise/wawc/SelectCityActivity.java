@@ -89,6 +89,8 @@ public class SelectCityActivity extends Activity {
         Intent intent = getIntent();
         isWelcome = intent.getBooleanExtra("Welcome", false);
         GetCity();
+        Log.d(TAG, "Citys = " + Citys);
+        Log.d(TAG, "Hot_Citys = " + Hot_Citys);
         cityDatas = GetCityList(Citys);
         hotDatas = GetCityList(Hot_Citys);
         
@@ -440,15 +442,17 @@ public class SelectCityActivity extends Activity {
                     convertView = mInflater.inflate(R.layout.hot_city, null);
                     hotholder.gv = (GridView) convertView.findViewById(R.id.gv_hot_city);
                     int px = (int) TypedValue.applyDimension(
-                            TypedValue.COMPLEX_UNIT_DIP, 30, getResources()
+                            TypedValue.COMPLEX_UNIT_DIP, 40, getResources()
                                     .getDisplayMetrics());
                     LayoutParams params = new LayoutParams(
-                            LayoutParams.FILL_PARENT, (hotDatas.size() / 4 + 1)
+                            LayoutParams.FILL_PARENT, (hotDatas.size() / 4)
                                     * px);
                     hotholder.gv.setLayoutParams(params);
                     hotholder.gv.setAdapter(new hotAdapter());
                     hotholder.gv.setOnItemClickListener(gvOnItemClickListener);
                     convertView.setTag(hotholder);
+                    Log.d(TAG, "hotDatas.size() = " + hotDatas.size() + " , px = " + px);
+                    Log.d(TAG, "hotDatas.size() / 4 = " + hotDatas.size() / 4 + " , (hotDatas.size() / 4)* px) = " + (hotDatas.size() / 4) * px);
                     break;
                 case VALUE_CITY:
                     cityHolder = new ViewCity();
@@ -476,15 +480,6 @@ public class SelectCityActivity extends Activity {
                 switch (type) {
                 case VALUE_HOT:
                     hotholder = (ViewHot) convertView.getTag();
-                    int px = (int) TypedValue.applyDimension(
-                            TypedValue.COMPLEX_UNIT_DIP, 30, getResources()
-                                    .getDisplayMetrics());
-                    LayoutParams params = new LayoutParams(
-                            LayoutParams.FILL_PARENT, (hotDatas.size() / 4 + 1)
-                                    * px);
-                    hotholder.gv.setLayoutParams(params);
-                    hotholder.gv.setAdapter(new hotAdapter());
-                    hotholder.gv.setOnItemClickListener(gvOnItemClickListener);
                     break;
 
                 case VALUE_CITY:
