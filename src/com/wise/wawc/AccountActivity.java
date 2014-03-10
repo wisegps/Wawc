@@ -94,7 +94,7 @@ public class AccountActivity extends Activity{
 				platformQQ.removeAccount();
 				platformSina.removeAccount();
 				removeData();
-				sendBroadcast(new Intent(Constant.A_LoginOut));
+				//sendBroadcast(new Intent(Constant.A_LoginOut));
 				finish();
 				break;
 			}

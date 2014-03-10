@@ -39,10 +39,12 @@ import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -52,10 +54,9 @@ import android.widget.Toast;
  * 菜单界面
  * @author honesty
  */
-public class MainActivity extends ActivityGroup implements PlatformActionListener,TagAliasCallback {
+public class MainActivity extends ActivityGroup implements TagAliasCallback {
     private static final String TAG = "MainActivity";
 
-    private static final int Login = 1; //登录
     private static final int Get_Pic = 2;//获取登录头像
     private static final int Bind_ID = 3; //绑定ID
     private static final int get_noti_count = 4; //获取消息提醒
@@ -66,8 +67,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     Platform platformQQ;
     Platform platformSina;
     Platform platformWhat;
-    ImageView iv_activity_main_logo,iv_activity_main_login_sina,
-            iv_activity_main_login_qq,iv_voice,iv_activity_main_arrow;
+    ImageView iv_activity_main_logo,iv_activity_main_login,iv_voice,iv_activity_main_arrow;
     TextView tv_activity_main_name;
     private ParseFaceThread thread = null;
     double Multiple = 0.5;
@@ -85,7 +85,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         JPushInterface.init(getApplicationContext());
         thread = new ParseFaceThread();
         thread.start();
-        registerBroadcastReceiver();
         hsv_pic = (PicHorizontalScrollView) findViewById(R.id.hsv_pic);
         ActivityFactory.A = this;
         slidingMenuView = (SlidingMenuView) findViewById(R.id.sliding_menu_view);
@@ -102,6 +101,18 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         tv_bx.setOnClickListener(onClickListener);
         TextView tv_Parking = (TextView)findViewById(R.id.tv_Parking);
         tv_Parking.setOnClickListener(onClickListener);
+        final EditText et_search = (EditText)findViewById(R.id.et_search);
+        et_search.setOnKeyListener(new OnKeyListener() {            
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                if(KeyEvent.KEYCODE_ENTER == keyCode && event.getAction() == KeyEvent.ACTION_DOWN){
+                    String keyWord = et_search.getText().toString();
+                    ToSearchMap(keyWord);
+                    return true;
+                }
+                return false;
+            }
+        });
         
         tabcontent = (ViewGroup) slidingMenuView
                 .findViewById(R.id.sliding_body);
@@ -138,10 +149,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         iv_activity_home.setOnClickListener(onClickListener);
         RelativeLayout rl_activity_main_home = (RelativeLayout) findViewById(R.id.rl_activity_main_home);
         rl_activity_main_home.setOnClickListener(onClickListener);
-        iv_activity_main_login_sina = (ImageView) findViewById(R.id.iv_activity_main_login_sina);
-        iv_activity_main_login_sina.setOnClickListener(onClickListener);
-        iv_activity_main_login_qq = (ImageView) findViewById(R.id.iv_activity_main_login_qq);
-        iv_activity_main_login_qq.setOnClickListener(onClickListener);
+        iv_activity_main_login = (ImageView) findViewById(R.id.iv_activity_main_login);
         iv_activity_main_logo = (ImageView) findViewById(R.id.iv_activity_main_logo);
         iv_activity_main_arrow = (ImageView) findViewById(R.id.iv_activity_main_arrow);
         tv_activity_main_name = (TextView) findViewById(R.id.tv_activity_main_name);
@@ -226,22 +234,7 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                 break;
             case R.id.tv_sms:
                 ToSms();
-                break;
-            case R.id.iv_activity_main_login_qq:
-                if(!isLogin){
-                    platformQQ.setPlatformActionListener(MainActivity.this);
-                    platformQQ.showUser(null);
-                    platformWhat = platformQQ;
-                }                
-                break;
-            case R.id.iv_activity_main_login_sina:
-                if(!isLogin){
-                    platformSina.setPlatformActionListener(MainActivity.this);
-                    platformSina.SSOSetting(true);
-                    platformSina.showUser(null);
-                    platformWhat = platformSina;
-                }                
-                break;  
+                break; 
             case R.id.iv_activity_home:
                 RightMenu();
                 break;
@@ -306,9 +299,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                 }
                 iv_activity_main_logo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
                 break;
-            case Login:
-                jsonLoginOk();
-                break;
             case Bind_ID:
                 jsonLogin(msg.obj.toString());
                 GetNotiCount();
@@ -326,33 +316,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
         LocationProvince = preferences.getString(Constant.LocationProvince, "");
         LocationCity = preferences.getString(Constant.LocationCity, "");
-    }
-    /**
-     * 登录成功
-     */
-    private void jsonLoginOk(){//登录成功        
-        if(platformQQ == platformWhat){
-            iv_activity_main_login_sina.setVisibility(View.GONE);
-            iv_activity_main_login_qq.setImageResource(R.drawable.side_icon_qq_press);
-        }else{
-            iv_activity_main_login_qq.setVisibility(View.GONE);
-            iv_activity_main_login_sina.setImageResource(R.drawable.side_icon_qq_press);
-        }
-        iv_activity_main_arrow.setVisibility(View.VISIBLE);
-        Variable.cust_name = platformWhat.getDb().getUserName();
-        tv_activity_main_name.setText(platformWhat.getDb().getUserName());
-        //绑定
-        Login(platformWhat.getDb().getUserId(), platformWhat.getDb()
-                .getUserName(), LocationProvince, LocationCity, platformWhat.getDb()
-                .getUserIcon(), "remark");
-        //获取图片
-        new Thread(new GetBitMapFromUrlThread(platformWhat.getDb()
-                .getUserIcon())).start();
-        System.out.println("设置推送");
-        Set<String> tagSet = new LinkedHashSet<String>();
-        tagSet.add(platformWhat.getDb().getUserId());
-        //调用JPush API设置Tag
-        JPushInterface.setAliasAndTags(getApplicationContext(), null, tagSet, this);
     }
     /**
      * 解析绑定返回数据
@@ -379,16 +342,12 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             e.printStackTrace();
         }
     }
-    boolean isLogin = false;
     private void isLogin() {
         if (platformQQ.getDb().isValid()) {
             System.out.println("qq登录");
-            isLogin = true;
             tv_activity_main_name.setText(platformQQ.getDb().getUserName());
             Variable.cust_name = platformQQ.getDb().getUserName();
-            iv_activity_main_login_sina.setVisibility(View.GONE);
-            iv_activity_main_login_qq.setVisibility(View.VISIBLE);
-            iv_activity_main_login_qq.setImageResource(R.drawable.side_icon_qq_press);
+            iv_activity_main_login.setImageResource(R.drawable.side_icon_qq_press);
             iv_activity_main_arrow.setVisibility(View.VISIBLE);
             platfromIsLogin(platformQQ);
             //绑定
@@ -396,23 +355,17 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
                     .getUserName(), LocationProvince, LocationCity, platformQQ.getDb()
                     .getUserIcon(), "remark");
         } else if (platformSina.getDb().isValid()){
-            isLogin = true;
             System.out.println("sina登录");
             tv_activity_main_name.setText(platformSina.getDb().getUserName());
             Variable.cust_name = platformSina.getDb().getUserName();
-            iv_activity_main_login_sina.setVisibility(View.VISIBLE);
-            iv_activity_main_login_sina.setImageResource(R.drawable.side_icon_sina_press);
+            iv_activity_main_login.setImageResource(R.drawable.side_icon_sina_press);
             iv_activity_main_arrow.setVisibility(View.VISIBLE);
-            iv_activity_main_login_qq.setVisibility(View.GONE);
             platfromIsLogin(platformSina);
             Login(platformSina.getDb().getUserId(), platformSina.getDb()
                     .getUserName(), LocationProvince, LocationCity, platformSina.getDb()
                     .getUserIcon(), "remark");
         } else {
-            isLogin = false;
             System.out.println("没有登录");
-            iv_activity_main_login_sina.setVisibility(View.VISIBLE);
-            iv_activity_main_login_qq.setVisibility(View.VISIBLE);
         }
     }
     /**
@@ -426,9 +379,10 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             iv_activity_main_logo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
         }else{
             //TODO 获取图片
-            new Thread(new GetBitMapFromUrlThread(platform.getDb()
-                    .getUserIcon())).start();
+            
         }
+        new Thread(new GetBitMapFromUrlThread(platform.getDb()
+                .getUserIcon())).start();
         SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
         Variable.cust_id  = preferences.getString(Constant.sp_cust_id, "");
         Variable.auth_code = preferences.getString(Constant.sp_auth_code, "");        
@@ -525,7 +479,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             app.mBMapManager.destroy();
             app.mBMapManager = null;
         }
-        unregisterReceiver(broadcastReceiver);
         stopService(new Intent(MainActivity.this, LocationService.class));
         Constant.start = 0;  // 开始页
         Constant.pageSize = 10;   //每页数量
@@ -588,23 +541,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         tabcontent.removeAllViews();
         tabcontent.addView(vv);
         slidingMenuView.snapToScreen(1);
-    }
-
-    @Override
-    public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
-        Log.d(TAG, "登录成功" + arg0.getName());
-//        Iterator iterator = arg2.entrySet().iterator();
-//        while (iterator.hasNext()) {
-//            Entry entry = (Entry) iterator.next();
-//            System.out.println(entry.getKey() + "," + entry.getValue());
-//            if (entry.getKey().equals("nickname")) {
-//                Config.qqUserName = (String) entry.getValue();
-//                Log.e("QQ昵称", "" + entry.getValue());
-//            }
-//        }
-        Message message = new Message();
-        message.what = Login;
-        handler.sendMessage(message);
     }
     /**
      * 个人信息
@@ -683,11 +619,6 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
         tabcontent.removeAllViews();
         tabcontent.addView(view);
     }
-
-    public void HideMenu() {
-        slidingMenuView.snapToScreen(1);
-    }
-
     public void LeftMenu() {
         if (slidingMenuView.getCurrentScreen() == 0) {
             slidingMenuView.snapToScreen(1);
@@ -695,44 +626,16 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
             slidingMenuView.snapToScreen(0);
         }
     }
-
     public void RightMenu() {
         if (slidingMenuView.getCurrentScreen() == 2) {
             slidingMenuView.snapToScreen(1);
         } else if (slidingMenuView.getCurrentScreen() == 1) {
             slidingMenuView.snapToScreen(2);
         }
-    }
-    @Override
-    public void onCancel(Platform arg0, int arg1) {
-        Log.d(TAG, "登录取消");
-    }
-
-    @Override
-    public void onError(Platform arg0, int arg1, Throwable arg2) {
-        Log.d(TAG, "登录出错");
-        arg0.removeAccount();
-    }
-    
+    }    
     private void ShowBgImage(){
         iv_pic.setImageResource(R.drawable.bg);
-        //读取本地图片
-//        String Path = Constant.picPath + Constant.BgImage;
-//        Bitmap bgBitmap = BlurImage.decodeSampledBitmapFromPath(Path, 500, 500);
-//        if(bgBitmap == null){
-//            Log.e(TAG, "没有背景图片");
-//            //高斯处理
-//            bgBitmap = BlurImage.decodeSampledBitmapFromResource(getResources(), R.drawable.bg, 500, 500);
-//            bgBitmap = BlurImage.BoxBlurFilter(bgBitmap);
-//            GetSystem.saveImageSD(bgBitmap,Constant.picPath, Constant.BgImage);
-//            iv_pic.setImageBitmap(bgBitmap);
-//            GetSystem.displayBriefMemory(MainActivity.this);
-//        }else{
-//            iv_pic.setImageBitmap(BlurImage.decodeSampledBitmapFromPath(Path, 500, 500));
-//        }
     }    
-    
-    
     public void voiceSerachResult(String order){
     	Intent intent = new Intent(MainActivity.this, SearchMapActivity.class);
 		intent.putExtra("keyWord", order);
@@ -764,28 +667,4 @@ public class MainActivity extends ActivityGroup implements PlatformActionListene
     public void gotResult(int arg0, String arg1, Set<String> arg2) {
         //System.out.println("arg0 = " + arg0 + " , arg1 = " + arg1);
     }
-    private void registerBroadcastReceiver() {
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(Constant.A_LoginOut);
-        registerReceiver(broadcastReceiver, intentFilter);
-    }
-
-    private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            if(action.equals(Constant.A_LoginOut)){
-                //TODO 注销
-                isLogin = false;
-                System.out.println("没有登录");
-                iv_activity_main_arrow.setVisibility(View.INVISIBLE);
-                iv_activity_main_logo.setImageResource(R.drawable.side_icon_avatar);
-                iv_activity_main_login_sina.setVisibility(View.VISIBLE);
-                iv_activity_main_login_sina.setImageResource(R.drawable.home_sina);
-                iv_activity_main_login_qq.setVisibility(View.VISIBLE);
-                iv_activity_main_login_qq.setImageResource(R.drawable.home_qq);
-                tv_activity_main_name.setText("未登录");
-            }
-        }
-    };
 }

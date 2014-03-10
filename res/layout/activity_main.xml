@@ -62,23 +62,14 @@
                     android:visibility="invisible"
                     android:src="@drawable/body_arrow"/>
 	       	     <ImageView
-	       	        android:id="@+id/iv_activity_main_login_qq"
+	       	        android:id="@+id/iv_activity_main_login"
 	       	        android:layout_height="30dp"
 	       	        android:layout_width="30dp"
 	       	        android:layout_centerVertical="true"
 	       	        android:contentDescription="@string/app_name"	       	        
                     android:layout_toLeftOf="@id/iv_activity_main_arrow"
                     android:layout_marginRight="@dimen/margins"
-	       	        android:src="@drawable/home_qq"/>
-	       	     <ImageView
-	       	        android:id="@+id/iv_activity_main_login_sina"
-	       	        android:layout_height="30dp"
-	       	        android:layout_width="30dp"
-	       	        android:layout_toLeftOf="@id/iv_activity_main_login_qq"
-	       	        android:layout_marginRight="@dimen/margins"
-	       	        android:layout_centerVertical="true"
-	       	        android:contentDescription="@string/app_name"
-	       	        android:src="@drawable/home_sina"/> 	    
+	       	        android:src="@drawable/home_qq"/>	    
 	       	</RelativeLayout>
 	       	<TextView 
                 android:id="@+id/home"
@@ -231,6 +222,7 @@
 	           android:layout_height="wrap_content"
 	           android:padding="@dimen/margins">
 	           <EditText 
+	               android:id="@+id/et_search"
 	               android:layout_width="fill_parent"
 	               android:layout_height="wrap_content"
 	               android:paddingLeft="45dp"

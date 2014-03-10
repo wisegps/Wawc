@@ -22,7 +22,7 @@ public class MyFrameLayout extends FrameLayout{
         if(ActivityFactory.S.getCurrentScreen() == 1){
             return false;
         }
-        ActivityFactory.A.HideMenu();
+        ActivityFactory.A.LeftMenu();
         return true;
     }
 }

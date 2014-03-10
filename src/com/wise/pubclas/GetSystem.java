@@ -397,7 +397,7 @@ public class GetSystem {
      * @return
      */
     public static boolean isTimeOut(String time){
-        if(time == null){
+        if(time == null || time.equals("")){
             return false;
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

@@ -49,6 +49,7 @@ public class CarData {
 	public boolean isCheck;  //是否选中
 	public int Type;		//布局控制
 	public String Adress;  //车辆位置
+	public String gps_time; //定位时间
 	public String Lat; 
 	public String Lon;
 	
@@ -203,6 +204,12 @@ public class CarData {
     }
     public void setSerial(String serial) {
         this.serial = serial;
+    }    
+    public String getGps_time() {
+        return gps_time;
+    }
+    public void setGps_time(String gps_time) {
+        this.gps_time = gps_time;
     }
     @Override
     public String toString() {
@@ -220,7 +227,7 @@ public class CarData {
                 + regNo + ", vio_location=" + vio_location + ", logoPath="
                 + logoPath + ", device_id=" + device_id + ", serial=" + serial
                 + ", isCheck=" + isCheck + ", Type=" + Type + ", Adress="
-                + Adress + ", Lat=" + Lat + ", Lon=" + Lon + "]";
-    }  
-    
+                + Adress + ", gps_time=" + gps_time + ", Lat=" + Lat + ", Lon="
+                + Lon + "]";
+    }    
 }

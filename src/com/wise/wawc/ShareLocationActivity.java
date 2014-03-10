@@ -14,6 +14,7 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -32,7 +33,7 @@ import android.widget.Toast;
  * @author honesty
  */
 public class ShareLocationActivity extends Activity {
-
+    private static final String TAG = "ShareLocationActivity";
     EditText et_share_content;
     TextView tv_adress, tv_reason;
     ImageView iv_photo;
@@ -85,10 +86,13 @@ public class ShareLocationActivity extends Activity {
                             + "&coord_type=bd09ll&output=html";
                     StringBuffer sb = new StringBuffer();
                     sb.append("【" + reason + "】");
+                    sb.append(carData.getGps_time());
+                    sb.append(carData.getObj_name());
                     sb.append(carData.getAdress());
-                    sb.append("," + content);
+                    sb.append("(" + content + ")");
                     sb.append("," + url);
-                    GetSystem.share(ShareLocationActivity.this, content,
+                    Log.d(TAG, sb.toString());
+                    GetSystem.share(ShareLocationActivity.this, sb.toString(),
                             imagePath, Float.valueOf(carData.getLat()),
                             Float.valueOf(carData.getLon()));
                 }
@@ -111,8 +115,6 @@ public class ShareLocationActivity extends Activity {
             Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
             GetSystem
                     .saveImageSD(bitmap, Constant.picPath, Constant.ShareImage);
-            // bitmap.recycle();
-            // bitmap = null;
             // 修改图片大小
             bitmap = BlurImage.decodeSampledBitmapFromPath(Constant.picPath
                     + Constant.ShareImage, 480, 800);
@@ -122,7 +124,7 @@ public class ShareLocationActivity extends Activity {
             // 显示到控件上
             bitmap = BlurImage.decodeSampledBitmapFromPath(Constant.picPath
                     + Constant.ShareImage, 80, 80);
-            // bitmap = BlurImage.getSquareBitmap(bitmap);
+            bitmap = BlurImage.getSquareBitmap(bitmap);
             if (bitmap != null) {
                 imagePath = Constant.picPath + Constant.ShareImage;
                 iv_photo.setImageBitmap(bitmap);
