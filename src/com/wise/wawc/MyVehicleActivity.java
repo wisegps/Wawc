@@ -70,6 +70,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableRow;
@@ -107,7 +108,8 @@ public class MyVehicleActivity extends Activity{
 	private static final int getIllegalforUrlCode = 42;      // 获取违章城市代码
 	private static final int bindDeviceId = 13;
 	
-	
+	HorizontalScrollView horizontalscrollview;
+	View v_divider;
 	private EditText etDialogMileage = null;   //输入里程
 	private TableRow choiceMaintian = null;
 	
@@ -197,6 +199,8 @@ public class MyVehicleActivity extends Activity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.my_vehicle);
+		horizontalscrollview = (HorizontalScrollView)findViewById(R.id.horizontalscrollview);
+		v_divider = (View)findViewById(R.id.v_divider);
 		menu = (ImageView)findViewById(R.id.my_vechile_menu);
 		editVehicle = (TextView) findViewById(R.id.my_vechile_edit);
 		brand = (TableRow) findViewById(R.id.iv_my_vehicle_brank);
@@ -271,9 +275,11 @@ public class MyVehicleActivity extends Activity{
 		dBhalper = new DBHelper(MyVehicleActivity.this);
 		dBExcute = new DBExcute();
 		if(Variable.carDatas.size() == 1){
-			vehicleGridView.setVisibility(View.GONE);
+		    horizontalscrollview.setVisibility(View.GONE);
+		    v_divider.setVisibility(View.GONE);
 		}else{
-			vehicleGridView.setVisibility(View.VISIBLE);
+		    horizontalscrollview.setVisibility(View.VISIBLE);
+		    v_divider.setVisibility(View.VISIBLE);
 		}
 		//车辆数据
 		int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Constant.ImageWidth, getResources().getDisplayMetrics());

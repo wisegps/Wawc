@@ -2,9 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#FFFFFF"
-    >
-
+    android:background="#FFFFFF">
     <!-- 头部 -->
      <RelativeLayout
          android:id="@+id/new_car_choice_information_top"
