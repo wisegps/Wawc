@@ -152,7 +152,7 @@
                 android:layout_marginLeft="1dip"
                 android:layout_marginRight="1dip"
                 android:layout_marginTop="1dip"
-                android:background="@drawable/side_seting_item" >
+                android:background="@drawable/bg_item_selector" >
 
                 <TextView
                     android:layout_width="0dip"
@@ -190,7 +190,7 @@
                 android:layout_marginLeft="1dip"
                 android:layout_marginRight="1dip"
                 android:layout_marginTop="1dip"
-                android:background="@drawable/side_seting_item" >
+                android:background="@drawable/bg_item_selector" >
 
                 <TextView
                     android:layout_width="0dip"
@@ -227,7 +227,7 @@
                 android:layout_marginLeft="1dip"
                 android:layout_marginRight="1dip"
                 android:layout_marginTop="1dip"
-                android:background="@drawable/side_seting_item" >
+                android:background="@drawable/bg_item_selector" >
 
                 <TextView
                     android:layout_width="0dip"
@@ -265,7 +265,7 @@
                 android:layout_marginLeft="1dip"
                 android:layout_marginRight="1dip"
                 android:layout_marginTop="1dip"
-                android:background="@drawable/side_seting_item" >
+                android:background="@drawable/bg_item_selector" >
 
                 <TextView
                     android:layout_width="0dip"
@@ -330,7 +330,7 @@
                 android:layout_marginLeft="1dip"
                 android:layout_marginRight="1dip"
                 android:layout_marginTop="1dip"
-                android:background="@drawable/side_seting_item" >
+                android:background="@drawable/bg_item_selector" >
 
                 <TextView
                     android:layout_width="0dip"
@@ -501,7 +501,7 @@
                 android:layout_marginLeft="1dip"
                 android:layout_marginRight="1dip"
                 android:layout_marginTop="1dip"
-                android:background="@drawable/side_seting_item" >
+                android:background="@drawable/bg_item_selector" >
 
                 <TextView
                     android:layout_width="0dip"
@@ -575,7 +575,7 @@
                 android:layout_marginLeft="1dip"
                 android:layout_marginRight="1dip"
                 android:layout_marginTop="1dip"
-                android:background="@drawable/side_seting_item" >
+                android:background="@drawable/bg_item_selector" >
 
                 <TextView
                     android:layout_width="0dip"

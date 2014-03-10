@@ -193,6 +193,7 @@
     	<LinearLayout 
 	       android:id="@+id/ll_right"
 	       android:orientation="vertical"
+	       android:background="@color/bg_home"
 	       android:layout_width="fill_parent"
 	       android:layout_height="fill_parent">
 	       <RelativeLayout
@@ -230,6 +231,7 @@
 	               android:paddingTop="@dimen/margins"
 	               android:paddingBottom="@dimen/margins"
 	               android:hint="你想做什么?"
+	               android:textColor="@color/common"
 	               android:background="@drawable/input_bg"/>
 	           <ImageView 
 	               android:layout_width="30dp"
@@ -317,6 +319,7 @@
 	           android:textSize="@dimen/main"
 	           android:drawableRight="@drawable/car_arrow"/>
 	       <RelativeLayout 
+	           android:visibility="gone"
 	           android:layout_width="fill_parent"
 	           android:layout_height="fill_parent">
 	           <ImageView      

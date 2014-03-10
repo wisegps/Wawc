@@ -40,7 +40,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 /**
- *  选择省份
+ *  违章城市选择省份
  * @author Mr'Wang
  */
 public class IllegalCitiyActivity extends Activity {

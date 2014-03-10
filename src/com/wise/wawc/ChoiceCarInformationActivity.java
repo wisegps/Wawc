@@ -51,7 +51,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
-
+/**
+ * 选择车辆品牌
+ */
 public class ChoiceCarInformationActivity extends Activity implements IXListViewListener{
 	/**
 	 * 品牌

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/side_seting_item"
+    android:background="@drawable/bg_item_selector"
     android:orientation="vertical">
     <RelativeLayout
         android:layout_width="fill_parent"

@@ -7,7 +7,7 @@
         android:id="@+id/insurance_item_name"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/side_seting_item"
+        android:background="@drawable/bg_item_selector"
         android:padding="@dimen/margins"
         android:textColor="@color/common"
         android:textSize="@dimen/content" />

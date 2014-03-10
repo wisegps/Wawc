@@ -47,6 +47,7 @@ public class CarLocationActivity extends Activity {
     LinearLayout ll_activity_car_location_bottom;
     CarData carData;
     double Lat, Lon;
+    GeoPoint geoPoint;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,13 +65,13 @@ public class CarLocationActivity extends Activity {
         TextView tv_car_name = (TextView) findViewById(R.id.tv_car_name);
         mMapView = (MapView) findViewById(R.id.mv_car_location);
         mMapView.setBuiltInZoomControls(true);
-        mMapView.regMapViewListener(app.mBMapManager, mkMapViewListener);
         mMapController = mMapView.getController();
         GeoPoint point = new GeoPoint((int) (39.915 * 1E6),
                 (int) (116.404 * 1E6));
         mMapController.setCenter(point);// 设置地图中心点
         mMapController.setZoom(12);// 设置地图zoom级别
         overlays = mMapView.getOverlays();
+        mMapView.regMapViewListener(app.mBMapManager, mkMapViewListener);
         // TODO 修改
         Intent intent = getIntent();
         int index = intent.getIntExtra("index", 0);
@@ -78,8 +79,8 @@ public class CarLocationActivity extends Activity {
         tv_car_name.setText(carData.getObj_name());
         Lat = Double.valueOf(carData.getLat());
         Lon = Double.valueOf(carData.getLon());
-        GeoPoint p1 = new GeoPoint((int) (Lat * 1E6), (int) (Lon * 1E6));
-        OverlayItem item1 = new OverlayItem(p1, "item1", "item1");
+        geoPoint = new GeoPoint((int) (Lat * 1E6), (int) (Lon * 1E6));
+        OverlayItem item1 = new OverlayItem(geoPoint, "item1", "item1");
         Drawable mark = getResources().getDrawable(
                 R.drawable.body_icon_location);
         item1.setMarker(mark);
@@ -87,7 +88,7 @@ public class CarLocationActivity extends Activity {
         OverlayCar overlayCar = new OverlayCar(mark, mMapView);
         overlays.add(overlayCar);
         overlayCar.addItem(item1);
-        mMapController.setCenter(p1);
+        mMapController.setCenter(geoPoint);
 
         ImageView iv_activity_car_location_back = (ImageView) findViewById(R.id.iv_activity_car_location_back);
         iv_activity_car_location_back.setOnClickListener(onClickListener);
@@ -119,12 +120,9 @@ public class CarLocationActivity extends Activity {
                 ShowPop();
                 break;
             case R.id.bt_activity_car_location_findCar:
-
                 GeoPoint pt1 = new GeoPoint((int) (Variable.Lat * 1E6),
                         (int) (Variable.Lon * 1E6));
-                GeoPoint pt2 = new GeoPoint((int) ((Variable.Lat + 1) * 1E6),
-                        (int) ((Variable.Lon + 1) * 1E6));
-                GetSystem.FindCar(CarLocationActivity.this, pt1, pt2, "起始",
+                GetSystem.FindCar(CarLocationActivity.this, pt1, geoPoint, "起始",
                         "结束");
                 break;
             case R.id.bt_activity_car_location_travel:// 车辆行程
