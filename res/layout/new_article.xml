@@ -40,7 +40,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margins"
-            android:background="@drawable/bt_bg"
+            android:background="@drawable/article_comment_bg"
             android:text="@string/publish_new_article"
             android:textColor="@color/white"
             android:textSize="@dimen/main" />

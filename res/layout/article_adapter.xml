@@ -153,7 +153,7 @@
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
-                android:background="#F7F6FB"
+                android:background="@drawable/article_comment_bg"
                 android:layout_marginLeft="@dimen/margins"
                 >
                 <!-- 赞 -->
@@ -163,6 +163,7 @@
                 android:layout_height="@dimen/article_favorite_height"
                 android:layout_marginTop="@dimen/margins"
                 android:layout_marginBottom="@dimen/margins"
+                android:layout_marginLeft="@dimen/margins"
                 >
                 <ImageView
                     android:id="@+id/article_praises_star"
@@ -174,6 +175,7 @@
                     android:id="@+id/article_praises_user"
                     android:layout_width="wrap_content"
                 	android:layout_height="wrap_content"
+                	android:textColor="@color/blue"
                 	android:maxLength="30"
                     />
             </TableRow>
@@ -192,6 +194,7 @@
                 	  android:orientation="vertical"
                 	  android:layout_marginTop="@dimen/margins"
                 	  android:layout_marginBottom="@dimen/margins"
+                	  android:layout_marginLeft="@dimen/margins"
                       >
                   </LinearLayout>
             </TableLayout>
