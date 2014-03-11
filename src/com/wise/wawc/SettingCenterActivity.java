@@ -113,10 +113,13 @@ public class SettingCenterActivity extends Activity{
                 }
                 break;
             case R.id.rl_center:
-                startActivity(new Intent(SettingCenterActivity.this, MyVehicleActivity.class));
+                startActivityForResult(new Intent(SettingCenterActivity.this, CarSelectActivity.class), 0);
                 break;
             case R.id.tv_share_gift:
-                startActivity(new Intent(SettingCenterActivity.this, WapActivity.class));
+                Intent intent = new Intent(SettingCenterActivity.this, WapActivity.class);
+                intent.putExtra("Title", "推荐有礼");
+                intent.putExtra("url", "http://wiwc.api.wisegps.cn/help/clby");
+                startActivity(intent);
                 break;
             case R.id.tv_feedback:
                 startActivity(new Intent(SettingCenterActivity.this, FeedBackActivity.class));
@@ -135,9 +138,6 @@ public class SettingCenterActivity extends Activity{
     @Override
     protected void onResume() {
         super.onResume();
-        SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
-        int index = preferences.getInt(Constant.DefaultVehicleID, 0);
-        tv_value.setText("车辆" + Variable.carDatas.get(index).getObj_name() + "的位置");
     }
     @Override
     protected void onPause() {
@@ -178,6 +178,28 @@ public class SettingCenterActivity extends Activity{
         }
         if(isRemind){
             iv_remind.setVisibility(View.VISIBLE);
+        }
+        int index = preferences.getInt(Constant.DefaultVehicleID, 0);
+        tv_value.setText("车辆" + Variable.carDatas.get(index).getObj_name() + "的位置");
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == 1){
+            int car_id = data.getIntExtra("Obj_id", 0);
+            String Obj_name = data.getStringExtra("Obj_name");
+            tv_value.setText("车辆" + Obj_name + "的位置");
+            for(int i = 0 ; i < Variable.carDatas.size() ; i++){
+                if(Variable.carDatas.get(i).getObj_id() == car_id){                    
+                    SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+                    Editor editor = preferences.edit();
+                    editor.putInt(Constant.DefaultVehicleID, i);
+                    editor.commit();
+                    Variable.carDatas.get(i).setCheck(true);
+                }else{
+                    Variable.carDatas.get(i).setCheck(false);
+                }
+            }
         }
     }
 }

@@ -74,6 +74,7 @@ public class AccountActivity extends Activity{
 		ShareSDK.initSDK(this);
 		GetSfData();
 		GetDBData();
+        GetCarData();
 	}
 	OnClickListener onClickListener = new OnClickListener() {	
 		@Override
@@ -84,9 +85,7 @@ public class AccountActivity extends Activity{
 				ActivityFactory.A.LeftMenu();
 				break;
 			case R.id.account_to_my_vehicle:
-			    Intent intent = new Intent(AccountActivity.this,MyVehicleActivity.class);
-			    intent.putExtra("isJump", true);
-				startActivity(intent);
+				startActivityForResult(new Intent(AccountActivity.this, CarSelectActivity.class), 0);
 				break;
 			case R.id.bt_activity_account_logout:
 				Platform platformQQ = ShareSDK.getPlatform(AccountActivity.this,QZone.NAME);
@@ -94,8 +93,8 @@ public class AccountActivity extends Activity{
 				platformQQ.removeAccount();
 				platformSina.removeAccount();
 				removeData();
-				//sendBroadcast(new Intent(Constant.A_LoginOut));
 				finish();
+				startActivity(new Intent(AccountActivity.this, WelcomeActivity.class));
 				break;
 			}
 		}
@@ -250,7 +249,6 @@ public class AccountActivity extends Activity{
 	@Override
 	protected void onResume() {
 	    super.onResume();
-        GetCarData();
 	}
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -258,5 +256,33 @@ public class AccountActivity extends Activity{
 	        saveData();
 	    }
 	    return super.onKeyDown(keyCode, event);
+	}
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+	    super.onActivityResult(requestCode, resultCode, data);
+	    if(resultCode == 1){
+            int car_id = data.getIntExtra("Obj_id", 0);
+            String Obj_name = data.getStringExtra("Obj_name");
+            for(int i = 0 ; i < Variable.carDatas.size() ; i++){
+                if(Variable.carDatas.get(i).getObj_id() == car_id){                    
+                    SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+                    Editor editor = preferences.edit();
+                    editor.putInt(Constant.DefaultVehicleID, i);
+                    editor.commit();
+                    Variable.carDatas.get(i).setCheck(true);
+                    
+                    //显示我的爱车
+                    Bitmap bimage = BitmapFactory.decodeFile(Variable.carDatas.get(i).getLogoPath());
+                    if(bimage != null){            
+                        iv_user_car_logo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
+                    }
+                    tv_carBrand.setText(Variable.carDatas.get(i).getCar_brand() + Variable.carDatas.get(i).getCar_series());
+                    tv_carNumber.setText(Variable.carDatas.get(i).getObj_name());
+                    
+                }else{
+                    Variable.carDatas.get(i).setCheck(false);
+                }
+            }
+        }
 	}
 }

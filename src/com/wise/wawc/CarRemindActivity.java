@@ -19,8 +19,10 @@ import com.wise.sql.DBHelper;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -37,6 +39,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -72,8 +75,7 @@ public class CarRemindActivity extends Activity {
     private static final int replacement = 4;
     LinearLayout ll_inspection, ll_renewal, ll_maintenance, ll_examined,
             ll_replacement;
-    // RelativeLayout
-    // rl_inspection,rl_renewal,rl_maintenance,rl_examined,rl_replacement;
+    HorizontalScrollView hsv_cars;
     TextView tv_activity_car_remind_inspection,tv_activity_car_maintenance_inspection,
             tv_activity_car_remind_renewal, tv_change_date,
             tv_annual_inspect_date;
@@ -88,6 +90,7 @@ public class CarRemindActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_remind);
+        hsv_cars = (HorizontalScrollView)findViewById(R.id.hsv_cars);
         ImageView iv_activity_car_remind_menu = (ImageView) findViewById(R.id.iv_activity_car_remind_menu);
         iv_activity_car_remind_menu.setOnClickListener(onClickListener);
 
@@ -174,9 +177,16 @@ public class CarRemindActivity extends Activity {
         gv_activity_car_remind.setOnItemClickListener(onItemClickListener);
 
         if (Variable.carDatas != null && Variable.carDatas.size() > 0) {
-            carData = Variable.carDatas.get(0);
+            SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+            int DefaultVehicleID = preferences.getInt(Constant.DefaultVehicleID, 0);
+            carData = Variable.carDatas.get(DefaultVehicleID);
             ShowText(carData);
             getCarRemindFromUrl();
+            if(Variable.carDatas.size() == 1){
+                hsv_cars.setVisibility(View.GONE);
+            }else{
+                hsv_cars.setVisibility(View.VISIBLE);
+            }
         }
         GetDBData();
 
@@ -271,10 +281,6 @@ public class CarRemindActivity extends Activity {
                 ll_replacement.setVisibility(View.VISIBLE);
                 break;
             case R.id.bt_maintenance:// 车辆保养
-//TODO                Intent RemindIntent = new Intent(CarRemindActivity.this,
-//                        MyVehicleActivity.class);
-//                RemindIntent.putExtra("isJump", true);
-//                CarRemindActivity.this.startActivity(RemindIntent);
                 setMileage();
                 break;
             case R.id.bt_inspection_time:// 年检提醒

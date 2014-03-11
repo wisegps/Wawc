@@ -15,8 +15,12 @@ import com.wise.alipay.Rsa;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
+import com.wise.sql.DBHelper;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,6 +28,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -36,6 +41,7 @@ public class OrderConfirmActivity extends Activity{
     private static final int submit_wap = 1;
     private static final int RQF_PAY = 2;
     private static final int submit_order = 3;
+    EditText et_consignee,et_adress,et_phone;
     ImageView iv_client,iv_wap;
     boolean isClient = true;
     double money = 0.01;
@@ -44,6 +50,9 @@ public class OrderConfirmActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		WawcApplication.getActivityInstance().addActivity(this);
 		setContentView(R.layout.activity_order_confirm);
+		et_consignee = (EditText)findViewById(R.id.et_consignee);
+		et_adress = (EditText)findViewById(R.id.et_adress);
+		et_phone = (EditText)findViewById(R.id.et_phone);
 		ImageView iv_activity_order_confirm_back = (ImageView)findViewById(R.id.iv_activity_order_confirm_back);
 		iv_activity_order_confirm_back.setOnClickListener(onClickListener);
 		Button bt_activity_order_confirm_submit = (Button)findViewById(R.id.bt_activity_order_confirm_submit);
@@ -54,6 +63,7 @@ public class OrderConfirmActivity extends Activity{
 		rl_wap.setOnClickListener(onClickListener);
 		iv_client = (ImageView)findViewById(R.id.iv_client);
 		iv_wap = (ImageView)findViewById(R.id.iv_wap);
+		GetDBData();
 	}
 	OnClickListener onClickListener = new OnClickListener() {		
 		@Override
@@ -108,17 +118,41 @@ public class OrderConfirmActivity extends Activity{
             }
         }	    
 	};
+	private void GetDBData(){
+        DBHelper dbHelper = new DBHelper(this);
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery("select * from " + Constant.TB_Account + " where cust_id=?", new String[]{Variable.cust_id});
+        if(cursor.getCount() == 0){
+        }else{
+            if(cursor.moveToFirst()){
+                String Consignee = cursor.getString(cursor.getColumnIndex("Consignee"));
+                String Adress = cursor.getString(cursor.getColumnIndex("Adress"));
+                String Phone = cursor.getString(cursor.getColumnIndex("Phone"));
+                et_consignee.setText(Consignee);
+                et_adress.setText(Adress);
+                et_phone.setText(Phone); 
+            }                
+        }
+    }
 	private void submitOrder(){
-        String url = Constant.BaseUrl + "order?auth_code=" + Variable.auth_code;
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("cust_id", Variable.cust_id));
-        params.add(new BasicNameValuePair("order_type", "1"));
-        params.add(new BasicNameValuePair("product_name", "OBD云终端"));
-        params.add(new BasicNameValuePair("remark", "OBD云终端"));
-        params.add(new BasicNameValuePair("unit_price", "0.01"));
-        params.add(new BasicNameValuePair("quantity", "1"));
-        params.add(new BasicNameValuePair("total_price", "0.01"));
-        new Thread(new NetThread.postDataThread(handler, url, params, submit_order)).start();
+	    String Consignee = et_consignee.getText().toString().trim();
+	    String Adress = et_adress.getText().toString().trim();
+	    String Phone = et_phone.getText().toString().trim();
+	    if(Consignee.equals("")||Adress.equals("")||Phone.equals("")){
+	        Toast.makeText(OrderConfirmActivity.this, "地址等信息不能为空",Toast.LENGTH_SHORT).show();
+	    }else{
+	        Toast.makeText(OrderConfirmActivity.this, "提交订单",Toast.LENGTH_SHORT).show();
+	        String url = Constant.BaseUrl + "order?auth_code=" + Variable.auth_code;
+	        List<NameValuePair> params = new ArrayList<NameValuePair>();
+	        params.add(new BasicNameValuePair("cust_id", Variable.cust_id));
+	        params.add(new BasicNameValuePair("order_type", "1"));
+	        params.add(new BasicNameValuePair("product_name", "OBD云终端"));
+	        params.add(new BasicNameValuePair("remark", "OBD云终端"));
+	        params.add(new BasicNameValuePair("unit_price", "0.01"));
+	        params.add(new BasicNameValuePair("quantity", "1"));
+	        params.add(new BasicNameValuePair("total_price", "0.01"));
+	        new Thread(new NetThread.postDataThread(handler, url, params, submit_order)).start();
+	    }        
     }
 	private void pay(String order_id){
 	    if(isClient){

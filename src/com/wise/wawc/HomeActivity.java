@@ -239,6 +239,10 @@ public class HomeActivity extends Activity{
             TextView tv_car_number = (TextView)view.findViewById(R.id.tv_car_number);
             tv_car_number.setOnClickListener(onClickListener);
             tv_car_number.setText("点击添加车辆");
+            TextView tv_activity_home_car_adress = (TextView)view.findViewById(R.id.tv_activity_home_car_adress);
+            tv_activity_home_car_adress.setVisibility(view.INVISIBLE);
+            TextView tv_updateTime = (TextView)view.findViewById(R.id.tv_updateTime);
+            tv_updateTime.setVisibility(view.INVISIBLE);
         }else{
             for(int i = 0 ; i < carDatas.size() ; i++){
                 CarData carData = carDatas.get(i);
@@ -309,30 +313,44 @@ public class HomeActivity extends Activity{
             case R.id.iv_activity_car_home_search:
                 ActivityFactory.A.RightMenu();
                 break;
-            case R.id.bt_activity_home_help:// 救援                
-                Intent intent_help = new Intent(HomeActivity.this, ShareLocationActivity.class);
-                intent_help.putExtra("reason", "救援 ");
-                intent_help.putExtra("index", DefaultVehicleID);
-                HomeActivity.this.startActivity(intent_help);
+            case R.id.bt_activity_home_help:// 救援       
+                if(Variable.carDatas == null || Variable.carDatas.size() == 0){                    
+                }else{
+                    Intent intent_help = new Intent(HomeActivity.this, ShareLocationActivity.class);
+                    intent_help.putExtra("reason", "救援 ");
+                    intent_help.putExtra("index", DefaultVehicleID);
+                    HomeActivity.this.startActivity(intent_help);
+                }
                 break;
             case R.id.bt_activity_home_risk:// 报险
-                Intent intent_risk = new Intent(HomeActivity.this, ShareLocationActivity.class);
-                intent_risk.putExtra("reason", "报险");
-                intent_risk.putExtra("index", DefaultVehicleID);
-                HomeActivity.this.startActivity(intent_risk);
+                if(Variable.carDatas == null || Variable.carDatas.size() == 0){                    
+                }else{
+                    Intent intent_risk = new Intent(HomeActivity.this, ShareLocationActivity.class);
+                    intent_risk.putExtra("reason", "报险");
+                    intent_risk.putExtra("index", DefaultVehicleID);
+                    HomeActivity.this.startActivity(intent_risk);
+                }                
                 break;
             case R.id.bt_activity_home_share:// 位置分享
-                ToShare();
+                if(Variable.carDatas == null || Variable.carDatas.size() == 0){
+                    
+                }else{
+                    ToShare();
+                }
                 break;
             case R.id.bt_activity_home_traffic:// 车辆违章
                 HomeActivity.this.startActivity(new Intent(HomeActivity.this,
                         TrafficActivity.class));
                 break;
             case R.id.bt_activity_home_car_remind:// 车务提醒
-                Intent eventIntent = new Intent(HomeActivity.this,
-                        CarRemindActivity.class);
-                eventIntent.putExtra("isJump", true);
-                HomeActivity.this.startActivity(eventIntent);
+                if(Variable.carDatas == null || Variable.carDatas.size() == 0){
+                    
+                }else{
+                    Intent eventIntent = new Intent(HomeActivity.this,
+                            CarRemindActivity.class);
+                    eventIntent.putExtra("isJump", true);
+                    HomeActivity.this.startActivity(eventIntent);
+                }                
                 break;
             case R.id.bt_activity_home_vehicle_status:// 爱车车况
                 TurnVehicleStatus();
@@ -966,11 +984,6 @@ public class HomeActivity extends Activity{
                     //mTextViews[i].setText(intent.getStringExtra("AddrStr"));
                 //}
             }
-            //else if(action.equals(Constant.A_LoginOut)){
-//                //TODO 注销
-//                Variable.carDatas.clear();
-//                showCar();
-//            }
                 else if(action.equals(Constant.A_UpdateCar)){
                 showCar();
             }
@@ -1323,19 +1336,23 @@ public class HomeActivity extends Activity{
         }
     };
     private void TurnVehicleStatus(){
-        CarData carData = Variable.carDatas.get(DefaultVehicleID);
-        if(carData.getDevice_id() == null || carData.getDevice_id().equals("")){
-            new AlertDialog.Builder(this).setTitle("提示").setMessage("该车辆没绑定终端，是否购买")
-            .setPositiveButton("确定", new DialogInterface.OnClickListener() {                
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    HomeActivity.this.startActivity(new Intent(HomeActivity.this,
-                            OrderDeviceActivity.class));
-                }
-            }).setNegativeButton("取消", null).show();
+        if(Variable.carDatas == null || Variable.carDatas.size() == 0){
+            
         }else{
-            HomeActivity.this.startActivity(new Intent(HomeActivity.this,
-                    VehicleStatusActivity.class));
-        }
+            CarData carData = Variable.carDatas.get(DefaultVehicleID);
+            if(carData.getDevice_id() == null || carData.getDevice_id().equals("")){
+                new AlertDialog.Builder(this).setTitle("提示").setMessage("该车辆没绑定终端，是否购买")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {                
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        HomeActivity.this.startActivity(new Intent(HomeActivity.this,
+                                OrderDeviceActivity.class));
+                    }
+                }).setNegativeButton("取消", null).show();
+            }else{
+                HomeActivity.this.startActivity(new Intent(HomeActivity.this,
+                        VehicleStatusActivity.class));
+            }
+        }        
     }
 }
