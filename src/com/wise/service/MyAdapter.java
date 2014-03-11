@@ -54,9 +54,12 @@ import android.os.Message;
 import android.text.SpannableString;
 import android.util.Log;
 import android.view.Display;
+import android.view.GestureDetector.OnGestureListener;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
@@ -140,7 +143,6 @@ public class MyAdapter extends BaseAdapter{
 		}else{
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		
 		
 		
 		List<Bitmap> smallImageList = new ArrayList<Bitmap>();

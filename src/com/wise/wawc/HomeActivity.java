@@ -492,6 +492,15 @@ public class HomeActivity extends Activity{
                 String serial = cursor.getString(cursor.getColumnIndex("serial"));
                 String maintain_last_date = cursor.getString(cursor.getColumnIndex("maintain_last_date"));
                 
+                
+                String car_brand_id = cursor.getString(cursor.getColumnIndex("car_brand_id"));
+                String car_series_id = cursor.getString(cursor.getColumnIndex("car_series_id"));
+                String car_type_id = cursor.getString(cursor.getColumnIndex("car_type_id"));
+                String vio_city_name = cursor.getString(cursor.getColumnIndex("vio_city_name"));
+                String insurancetel = cursor.getString(cursor.getColumnIndex("insurance_tel"));
+                String maintain_tel = cursor.getString(cursor.getColumnIndex("maintain_tel"));
+                String gas_no = cursor.getString(cursor.getColumnIndex("gas_no"));
+                
                 CarData carData = new CarData();
                 carData.setCheck(false);   
                 carData.setObj_id(obj_id);
@@ -500,6 +509,14 @@ public class HomeActivity extends Activity{
                 carData.setCar_brand(car_brand);
                 carData.setCar_series(car_series);
                 carData.setCar_type(car_type);
+                
+                carData.setCar_brand_id(car_brand_id);
+                carData.setCar_series_id(car_series_id);
+                carData.setCar_type_id(car_type_id);
+                carData.setVio_city_name(vio_city_name);
+                carData.setMaintain_tel(maintain_tel);
+                carData.setInsurance_tel(insurancetel);
+                carData.setGas_no(gas_no);
                 carData.setEngine_no(engine_no);
                 carData.setFrame_no(frame_no);
                 carData.setInsurance_company(insurance_company);
@@ -806,6 +823,15 @@ public class HomeActivity extends Activity{
                 String maintain_last_mileage = jsonObject.getString("maintain_last_mileage");
                 String maintain_next_mileage = jsonObject.getString("maintain_next_mileage");
                 String buy_date = jsonObject.getString("buy_date");
+                
+                String car_brand_id = jsonObject.getString("car_brand_id");
+                String car_series_id = jsonObject.getString("car_series_id");
+                String car_type_id = jsonObject.getString("car_type_id");
+                String vio_city_name = jsonObject.getString("vio_city_name");
+                String insurancetel = jsonObject.getString("insurance_tel");
+                String maintain_tel = jsonObject.getString("maintain_tel");
+                String gas_no = jsonObject.getString("gas_no");
+                
                 buy_date = buy_date.substring(0, 10);
                 
                 CarData carData = new CarData();                
@@ -814,6 +840,13 @@ public class HomeActivity extends Activity{
                 carData.setType(0);
                 carData.setObj_name(obj_name);
                 carData.setCar_brand(car_brand);
+                carData.setCar_brand_id(car_brand_id);
+                carData.setCar_series_id(car_series_id);
+                carData.setCar_type_id(car_type_id);
+                carData.setVio_city_name(vio_city_name);
+                carData.setMaintain_tel(maintain_tel);
+                carData.setInsurance_tel(insurancetel);
+                carData.setGas_no(gas_no);
                 carData.setCar_series(car_series);
                 carData.setCar_type(car_type);
                 carData.setEngine_no(engine_no);

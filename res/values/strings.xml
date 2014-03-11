@@ -42,8 +42,10 @@
     <string name="vehicle_reg_num">登记证号</string>
     <string name="vehicle_number">车架号</string>
     <string name="insurance_company">保险公司</string>
+    <string name="insurance_company_tel">保险公司电话</string>
     <string name="insurance_time">保险时间到期</string>
     <string name="maintain_shop">4S保养店</string>
+    <string name="maintain_shop_tel">4S保养店电话</string>
     <string name="current_mileage">当前里程</string>
     <string name="last_insurance_mileage">最后保养里程</string>
     <string name="last_insurance_time">最后保养时间</string>
@@ -158,15 +160,19 @@
     <string name="please_input_vehilce_type">请选择车款</string>
     <string name="please_input_illegal_city">请选择违章城市</string>
     <string name="please_input_insurance_company">请选择保险公司</string>
+    <string name="please_input_insurance_company_tel">请输入保险公司电话</string>
     <string name="please_choice_city">请选择城市</string>
     <string name="please_choice_vehicle_brank">请选择车辆品牌</string>
     <string name="please_input_insurance_time">请选择保险时间</string>
     
     <string name="please_input_insurance_over_time">请选择保险到期时间</string>
     <string name="please_input_4s">请选择4s保养店</string>
+    <string name="please_input_4s_tel">请输入4s保养店电话</string>
     <string name="please_input_last_maintenance_milegal">请输入最后保养里程(Km)</string>
     <string name="please_input_last_maintenance_time">请选择最后保养时间</string>
     <string name="please_choice_by_time">请选择购车时间</string>
     <string name="point">提示</string>
     <string name="sure_delete_vehicle">确认删除车辆</string>
+    <string name="petrol_grade">汽油标号</string>
+    <string name="please_choice_petrol_grade">汽油标号</string>
 </resources>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/default_bg">
+     <RelativeLayout
+        android:id="@+id/choice_petrol_top"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/title_hight"
+        android:background="@drawable/nav_bg"
+        android:gravity="center" >
+
+        <ImageView
+            android:id="@+id/choice_petrol_cancle"
+            android:layout_width="@dimen/title_image"
+            android:layout_height="@dimen/title_image"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margins"
+            android:background="@drawable/nav_back" />
+
+        <TextView
+            android:id="@+id/my_vechile_edit"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:text="@string/petrol_grade"
+            android:textColor="@color/white"
+            android:textSize="@dimen/head" />
+    </RelativeLayout>
+    <ListView
+        android:id="@+id/petrol_grade_lv" 
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:dividerHeight="0.5dip"
+        android:divider="@color/gray"
+        ></ListView>
+</LinearLayout>

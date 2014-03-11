@@ -1,6 +1,7 @@
 package com.wise.list;
 
 import com.wise.pubclas.Constant;
+import com.wise.service.MyAdapter;
 import com.wise.wawc.R;
 
 import android.content.Context;
@@ -287,6 +288,8 @@ public class XListView extends ListView implements OnScrollListener {
 				// last item, already pulled up or want to pull up.
 				updateFooterHeight(-deltaY / OFFSET_RADIO);
 			}
+			break;
+		case MotionEvent.ACTION_UP:
 			break;
 		default:
 			mLastY = -1; // reset

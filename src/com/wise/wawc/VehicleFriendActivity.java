@@ -253,7 +253,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				Log.e("MinBlog_id:",articleTypeMinBlogId+"");
 				new Thread(new NetThread.GetDataThread(myHandler, articleType + "&min_id=?" + articleTypeMinBlogId, FriendType)).start();
 			}
-			
 		}
 	}
 	
@@ -349,10 +348,11 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			case loadMoreCode:
 				String result = msg.obj.toString();
 				Log.e("加载更多结果：",msg.obj.toString());
-				if(!"".equals(result)){
+				if(!"[]".equals(result)){
 					jsonToList(msg.obj.toString());
 					isLoadMore = false;
 					getArticleDatas(0);
+					Log.e("进入解析：","竟如解析");
 				}
 				onLoad();	
 				break;
@@ -441,23 +441,23 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	public void jsonToList(String JSON){
 		try {
 		JSONArray jsonArray = new JSONArray(JSON);
-			for(int i = 0 ; i < jsonArray.length() ; i ++){
-				//存储到数据库
+		for(int i = 0 ; i < jsonArray.length() ; i ++){
+			//存储到数据库
 //				Cust_id text,FriendID int,Blog_id int,Content text)";
-					ContentValues values = new ContentValues();
-					values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
-					values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
-					if(jsonArray.getJSONObject(i).opt("logo") == null){
-						values.put("UserLogo", jsonArray.getJSONObject(i).getString("logo"));
-					}else{
-						values.put("UserLogo", "");
-					}
-					values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
-					dBExcute.InsertDB(VehicleFriendActivity.this,values,Constant.TB_VehicleFriend);
-					if(i == (jsonArray.length()-1)){
-						minBlogId = Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id"));
-					}
-			}
+				ContentValues values = new ContentValues();
+				values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
+				values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
+				if(jsonArray.getJSONObject(i).opt("logo") != null){
+					values.put("UserLogo", jsonArray.getJSONObject(i).getString("logo"));
+				}else{
+					values.put("UserLogo", "");
+				}
+				values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
+				dBExcute.InsertDB(VehicleFriendActivity.this,values,Constant.TB_VehicleFriend);
+				if(i == (jsonArray.length()-1)){
+					minBlogId = Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id"));
+				}
+		}
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
@@ -473,22 +473,22 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				Constant.start = Constant.currentPage*Constant.pageSize;
 				Constant.currentPage ++ ;
 				articleDataList = dBExcute.getArticlePageDatas(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
+//				for(int i = 0; i < articleDataList.size(); i ++){
+//					
+//				}
 				setArticleDataList(articleDataList);
 			}
 			if(Constant.totalPage == Constant.currentPage){
 				isLoadMore = true;
 			}
-			Log.e("数据库文章","数据库文章");
 		}else{
-			Log.e("服务器   文章","服务器    文章");
 			myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 			myDialog.setCancelable(true);
 			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code, getArticleList)).start();
 		}
-		
-		
 		Variable.articleList = articleDataList;
 		myAdapter.refreshDates(articleDataList);
+		
 		
 		if(loadMoreAction == actionCode){
 			onLoad();
@@ -513,6 +513,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		this.articleDataList = articleDataList;
 	}
 	
+	//模拟加载更多
 	protected void onDestroy() {
 		super.onDestroy();
 	}
@@ -560,23 +561,22 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		}else{
 			articleType = Constant.BaseUrl + "blog?auth_code=" + Variable.auth_code + "&type=" + type + "&cust_id=" + Variable.cust_id; 
 		}
-		Log.e("url--->:",articleType);
+		Log.e("url:",articleType);
 		totalNum = dBExcute.getTotalCount( VehicleFriendActivity.this,"select * from " + Constant.TB_VehicleFriendType + " where Type_id=?",new String[]{String.valueOf(type)});
 		if(totalNum > 0){
 			Constant.totalPage = totalNum%Constant.pageSize > 0 ? totalNum/Constant.pageSize + 1 : totalNum/Constant.pageSize;
 			if(Constant.totalPage - 1 >= Constant.currentPage){
 				Constant.start = Constant.currentPage*Constant.pageSize;
 				Constant.currentPage ++ ;
-				Log.e("分类文章数据库","分类文章数据库" + Constant.currentPage);
-				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id = ? limit ?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, Variable.articleList);
-//				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id = ? limit ?,?", new String[]{String.valueOf(type),String.valueOf(0),String.valueOf(Constant.start)}, articleDataList);
+				Log.e("查询数据库","查询数据库");
+				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id = ? limit ?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
 				setArticleDataList(articleDataList);
 			}
 			if(Constant.totalPage == Constant.currentPage){
 				isLoadMore = true;
 			}
 		}else{
-			Log.e("分类文章服务器","分类文章服务器");
+			Log.e("查询服务器","查询服务器");
 			myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 			myDialog.setCancelable(true);
 			new Thread(new NetThread.GetDataThread(myHandler, articleType, FriendType)).start();

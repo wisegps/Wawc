@@ -77,9 +77,15 @@ public class MaintainShopActivity extends Activity {
 			}else{
 				String urlCity = "";
 				String urlBrank = "";
+				Log.e("MaintainShopActivity  city" , city);
+				Log.e("MaintainShopActivity  brank" , brank);
 				try {
 					urlBrank = URLEncoder.encode(brank, "UTF-8");
 					urlCity = URLEncoder.encode(city, "UTF-8");
+					
+					
+					Log.e("MaintainShopActivity  urlCity" , urlCity);
+					Log.e("MaintainShopActivity  urlBrank" , urlBrank);
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
@@ -142,8 +148,8 @@ public class MaintainShopActivity extends Activity {
 				String maintainName = MaintainList.get(arg2)[0];
 				String maintainTel = MaintainList.get(arg2)[1];
 				Intent intents = new Intent();
-				intents.putExtra("maintain_name", maintainName);
-				intents.putExtra("maintain_phone", maintainTel);
+				intents.putExtra("maintain_name", MaintainList.get(arg2)[0]);
+				intents.putExtra("maintain_phone", MaintainList.get(arg2)[1]);
 				if(code == MyVehicleActivity.resultCodeMaintain){
 					MaintainShopActivity.this.setResult(MyVehicleActivity.resultCodeMaintain, intents);
 				}else if(code == NewVehicleActivity.newVehicleMaintain){
