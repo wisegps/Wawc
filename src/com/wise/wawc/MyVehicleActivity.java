@@ -638,7 +638,7 @@ public class MyVehicleActivity extends Activity{
 //				getVehiclebrandData(ChoiceCarInformationActivity.carBrankTitle,Constant.TB_Base,Constant.BaseUrl + "base/car_brand",getBrankData);
 				carBrankId = carData.getCar_brand_id();
 				carSeriesId = carData.getCar_series_id();
-				
+				carTypeId = carData.getCar_type_id();
 				
 				
 				IllegalCity illegalCitys = null;
@@ -696,6 +696,8 @@ public class MyVehicleActivity extends Activity{
 				buyTime.setText(carData.getBuy_date());
 				vehicleRegNum.setText(carData.getRegNo());
 				lastMaintainTime.setText(carData.getMaintain_last_date().substring(0, 10));
+				String str = "".equals(carData.getGas_no()) ? "yes" : "no";
+				Log.e("汽油标号：",str);
 				petrolGradeTv.setText(carData.getGas_no());
 				insuranceTel.setText(carData.getInsurance_tel());
 				maintainTelEd.setText(carData.getMaintain_tel());
@@ -1050,15 +1052,8 @@ public class MyVehicleActivity extends Activity{
         
         new Thread(new Runnable() {
 			public void run() {
-				//HttpPut httpPut = new HttpPut(Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).getObj_id() + "?auth_code=" + Variable.auth_code);
 				try {
-//				    httpPut.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-//					 HttpClient client = new DefaultHttpClient();
-//					 client.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 20000);
-//					 client.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 20000);
-//					 HttpResponse httpResponse = client.execute(httpPut);
-					 
-					 BasicHttpParams httpParams = new BasicHttpParams();  
+					 	BasicHttpParams httpParams = new BasicHttpParams();  
 		                HttpConnectionParams.setConnectionTimeout(httpParams, 10000);  
 		                HttpConnectionParams.setSoTimeout(httpParams, 10000); 
 		                HttpClient client = new DefaultHttpClient(httpParams);

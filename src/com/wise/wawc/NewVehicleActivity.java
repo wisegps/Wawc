@@ -529,7 +529,7 @@ public class NewVehicleActivity extends Activity{
 					value.put("maintain_tel", maintainShopTel.getText().toString().trim());
 					value.put("gas_no", petrolGradeTv.getText().toString());
 					
-					
+					Log.e("NewVehicleActivity:","汽油标号:" + petrolGradeTv.getText().toString());
 					dBExcute.InsertDB(NewVehicleActivity.this, value, Constant.TB_Vehicle);
 					Log.e("添加到数据库","添加到数据库");
 					

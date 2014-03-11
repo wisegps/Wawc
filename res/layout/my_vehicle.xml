@@ -598,6 +598,7 @@
                     android:hint="@string/please_input_insurance_company_tel"
                     android:padding="@dimen/margins"
                     android:textColor="@color/common"
+                    android:inputType="number"
                     android:textSize="@dimen/content"
                     android:background="@null" />
             </TableRow>
@@ -708,6 +709,7 @@
                     android:hint="@string/please_input_4s_tel"
                     android:padding="@dimen/margins"
                     android:textColor="@color/common"
+                    android:inputType="number"
                     android:textSize="@dimen/content"
                     android:background="@null" />
             </TableRow>

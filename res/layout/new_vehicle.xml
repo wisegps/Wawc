@@ -520,6 +520,7 @@
                     android:gravity="center_vertical"
                     android:hint="@string/please_input_insurance_company_tel"
                     android:padding="@dimen/margins"
+                    android:inputType="number"
                     android:textColor="@color/common"
                     android:textSize="@dimen/content"
                     android:background="@null" />
@@ -630,6 +631,7 @@
                     android:gravity="center_vertical"
                     android:hint="@string/please_input_4s_tel"
                     android:padding="@dimen/margins"
+                    android:inputType="number"
                     android:textColor="@color/common"
                     android:textSize="@dimen/content"
                     android:background="@null" />
