@@ -18,7 +18,7 @@ import com.wise.sql.DBHelper;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -34,7 +34,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 /**
@@ -43,11 +46,13 @@ import android.widget.LinearLayout.LayoutParams;
  */
 public class TrafficActivity extends Activity implements IXListViewListener{
     private static final String TAG = "TrafficActivity";
-    private static final int get_traffic = 1;
     private static final int refresh_traffic = 2;
     private static final int load_traffic = 3;
 	
+    HorizontalScrollView hsv_car;
     XListView lv_activity_traffic;
+    RelativeLayout rl_Note;
+    LinearLayout ll_info;
     DBExcute dbExcute = new DBExcute();
 	CarAdapter carAdapter;
 	List<TrafficData> trafficDatas = new ArrayList<TrafficData>();
@@ -56,17 +61,22 @@ public class TrafficActivity extends Activity implements IXListViewListener{
     String Car_name = "";
 	boolean isGetDB = true; //上拉是否继续读取数据库
     int Toal = 0; //从那条记录读起
-    int pageSize = 5 ; //每次读取的记录数目
+    int pageSize = 10 ; //每次读取的记录数目
     
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_traffic);
+		rl_Note = (RelativeLayout)findViewById(R.id.rl_Note);
+		ll_info = (LinearLayout)findViewById(R.id.ll_info);
 		ImageView iv_activity_traffic_back = (ImageView)findViewById(R.id.iv_activity_traffic_back);
 		iv_activity_traffic_back.setOnClickListener(onClickListener);
         lv_activity_traffic = (XListView)findViewById(R.id.lv_activity_traffic);
         lv_activity_traffic.setXListViewListener(this);
-		
+        trafficAdapter = new TrafficAdapter();
+        lv_activity_traffic.setAdapter(trafficAdapter);
+        
+        hsv_car = (HorizontalScrollView)findViewById(R.id.hsv_car);
 		GridView gv_activity_traffic = (GridView)findViewById(R.id.gv_activity_traffic);
         carAdapter = new CarAdapter(TrafficActivity.this,Variable.carDatas);
         gv_activity_traffic.setAdapter(carAdapter);
@@ -78,7 +88,17 @@ public class TrafficActivity extends Activity implements IXListViewListener{
 		gv_activity_traffic.setHorizontalSpacing(10);
 		gv_activity_traffic.setStretchMode(GridView.NO_STRETCH);
 		gv_activity_traffic.setNumColumns(Variable.carDatas.size());
-		gv_activity_traffic.setOnItemClickListener(onItemClickListener);		
+		gv_activity_traffic.setOnItemClickListener(onItemClickListener);	
+		if (Variable.carDatas != null && Variable.carDatas.size() > 0) {
+		    SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+	        int DefaultVehicleID = preferences.getInt(Constant.DefaultVehicleID, 0);
+	        GetData(DefaultVehicleID);
+            if(Variable.carDatas.size() == 1){
+                hsv_car.setVisibility(View.GONE);
+            }else{
+                hsv_car.setVisibility(View.VISIBLE);
+            }
+        }
 	}
 	
 	Handler handler = new Handler(){
@@ -86,16 +106,13 @@ public class TrafficActivity extends Activity implements IXListViewListener{
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-            case get_traffic:
-                trafficDatas.addAll(jsonTrafficData(msg.obj.toString()));
-                trafficAdapter = new TrafficAdapter();
-                lv_activity_traffic.setAdapter(trafficAdapter);
-                break;
-
             case refresh_traffic:
                 trafficDatas.addAll(0, jsonTrafficData(msg.obj.toString()));
                 trafficAdapter.notifyDataSetChanged();
                 onLoad();
+                if(trafficDatas.size() > 0){
+                    isNothingNote(false);
+                }
                 break;
             case load_traffic:
                 trafficDatas.addAll(jsonTrafficData(msg.obj.toString()));
@@ -112,44 +129,52 @@ public class TrafficActivity extends Activity implements IXListViewListener{
 			case R.id.iv_activity_traffic_back:
 				finish();
 				break;
-			//case R.id.iv_activity_traffic_help:
-				//TrafficActivity.this.startActivity(new Intent(TrafficActivity.this, DealAddressActivity.class));
-				//break;
 			}
 		}
 	};
 	OnItemClickListener onItemClickListener = new OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
-			for(int i = 0 ; i < Variable.carDatas.size() ; i++){
-			    Variable.carDatas.get(i).setCheck(false);
-			}
-			Variable.carDatas.get(arg2).setCheck(true);
-			carAdapter.notifyDataSetChanged();
-			trafficDatas.clear();
-			Car_name = Variable.carDatas.get(arg2).getObj_name();
-			Car_name = "粤B9548T";
-			Toal = 0;
-			boolean isUrl = isGetDataUrl(Car_name);
-			if(isUrl){
-			    isGetDB = false;
-			    //从服务器读取数据
-			    Log.d(TAG, "从服务器读取数据");
-			    try {
-                    String url = Constant.BaseUrl + "vehicle/" + URLEncoder.encode(Car_name, "UTF-8") + "/violation?auth_code=" + Variable.auth_code;
-                    new Thread(new NetThread.GetDataThread(handler, url, get_traffic)).start();
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                }
-			}else{
-			    isGetDB = true;
-			    Log.d(TAG, "从本地读取数据");
-			    trafficDatas.addAll(getTrafficDatas(Toal, pageSize));
-                trafficAdapter = new TrafficAdapter();
-                lv_activity_traffic.setAdapter(trafficAdapter);
-			}
+		    GetData(arg2);
 		}
 	};
+	private void GetData(int arg2){
+	    for(int i = 0 ; i < Variable.carDatas.size() ; i++){
+            Variable.carDatas.get(i).setCheck(false);
+        }
+        Variable.carDatas.get(arg2).setCheck(true);
+        carAdapter.notifyDataSetChanged();
+        trafficDatas.clear();
+        Car_name = Variable.carDatas.get(arg2).getObj_name();
+        Toal = 0;
+        boolean isUrl = isGetDataUrl(Car_name);
+        if(isUrl){
+            isGetDB = false;
+            //从服务器读取数据
+            Log.d(TAG, "从服务器读取数据");
+            try {
+                String url = Constant.BaseUrl + "vehicle/" + URLEncoder.encode(Car_name, "UTF-8") + "/violation?auth_code=" + Variable.auth_code;
+                new Thread(new NetThread.GetDataThread(handler, url, refresh_traffic)).start();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
+        }else{
+            isNothingNote(false);
+            isGetDB = true;
+            Log.d(TAG, "从本地读取数据");
+            trafficDatas.addAll(getTrafficDatas(Toal, pageSize));
+            trafficAdapter.notifyDataSetChanged();
+        }
+	}
+	private void isNothingNote(boolean isNote){
+	    if(isNote){
+	        rl_Note.setVisibility(View.VISIBLE);
+	        ll_info.setVisibility(View.GONE);
+	    }else{
+	        rl_Note.setVisibility(View.GONE);
+	        ll_info.setVisibility(View.VISIBLE);
+	    }
+	}
 	/**
 	 * 判断本地是否有记录
 	 * @param Car_name

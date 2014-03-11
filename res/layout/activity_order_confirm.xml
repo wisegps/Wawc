@@ -212,8 +212,8 @@
                 android:text="推荐安装支付宝客户端的用户使用"/>
             <ImageView 
                 android:id="@+id/iv_client"
-                android:layout_width="@dimen/margins"
-                android:layout_height="@dimen/margins"
+                android:layout_width="@dimen/double_margins"
+                android:layout_height="@dimen/double_margins"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/body_icon_check"/>
@@ -243,8 +243,8 @@
             <ImageView 
                 android:id="@+id/iv_wap"
                 android:visibility="gone"
-                android:layout_width="@dimen/margins"
-                android:layout_height="@dimen/margins"
+                android:layout_width="@dimen/double_margins"
+                android:layout_height="@dimen/double_margins"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:src="@drawable/body_icon_check"/>
@@ -277,12 +277,14 @@
 	            android:layout_width="100dp"
 	            android:layout_height="wrap_content"
 	            android:text="收货人"
-	            android:textColor="@color/common"
+	            android:textColor="@color/common_inactive"
 	            android:textSize="@dimen/content"/>
 		     <EditText 
+		         android:id="@+id/et_consignee"
 		         android:layout_width="fill_parent"
 		         android:layout_height="wrap_content"
 		         android:background="@null"
+		         android:textColor="@color/common"
 		         android:layout_toRightOf="@id/tv_activity_order_confirm_consignee"
 		         android:layout_alignParentRight="true"/>
 	    </RelativeLayout>
@@ -291,17 +293,19 @@
 	        android:layout_width="fill_parent"        
 	        android:layout_height="wrap_content">
 	        <TextView
-	            android:id="@+id/tv_activity_order_confirm_consignee"
+	            android:id="@+id/tv_activity_order_confirm_adress"
 	            android:layout_width="100dp"
 	            android:layout_height="wrap_content"
 	            android:text="地址"
-	            android:textColor="@color/common"
+	            android:textColor="@color/common_inactive"
                 android:textSize="@dimen/content"/>
 		     <EditText 
+		         android:id="@+id/et_adress"
 		         android:layout_width="fill_parent"
 		         android:layout_height="wrap_content"
 		         android:background="@null"
-		         android:layout_toRightOf="@id/tv_activity_order_confirm_consignee"
+		         android:textColor="@color/common"
+		         android:layout_toRightOf="@id/tv_activity_order_confirm_adress"
 		         android:layout_alignParentRight="true"/>
 	    </RelativeLayout>
 	    <RelativeLayout 
@@ -309,17 +313,19 @@
 	        android:layout_width="fill_parent"        
 	        android:layout_height="wrap_content">
 	        <TextView
-	            android:id="@+id/tv_activity_order_confirm_consignee"
+	            android:id="@+id/tv_activity_order_confirm_phone"
 	            android:layout_width="100dp"
 	            android:layout_height="wrap_content"
 	            android:text="电话"
-	            android:textColor="@color/common"
+	            android:textColor="@color/common_inactive"
                 android:textSize="@dimen/content"/>
 		     <EditText 
+		         android:id="@+id/et_phone"
 		         android:layout_width="fill_parent"
 		         android:layout_height="wrap_content"
 		         android:background="@null"
-		         android:layout_toRightOf="@id/tv_activity_order_confirm_consignee"
+		         android:textColor="@color/common"
+		         android:layout_toRightOf="@id/tv_activity_order_confirm_phone"
 		         android:layout_alignParentRight="true"/>
 	    </RelativeLayout>
 	</LinearLayout>
@@ -332,6 +338,7 @@
         android:background="@color/white"
         android:textColor="@color/blue"
         android:textSize="@dimen/main"
+        android:layout_marginBottom="@dimen/double_margins"
         android:text="确认支付"/>
     </LinearLayout>
     </ScrollView>

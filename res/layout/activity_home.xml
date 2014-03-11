@@ -179,7 +179,7 @@
 		            android:layout_alignParentRight="true"
 		            android:textColor="@color/white"
 		            android:clickable="true"
-		            android:textSize="@dimen/main"
+		            android:textSize="@dimen/content"
 		            android:background="@drawable/home_btn_changecity"
 		            android:text="深圳"/>
 		        <LinearLayout 
@@ -267,7 +267,7 @@
 		                    android:layout_height="wrap_content"
 		                    android:textColor="@color/white"
 		                    android:background="@drawable/home_xx"
-		                    android:textSize="@dimen/main"
+		                    android:textSize="@dimen/content"
 		                    android:text="限行"/>
 		            </LinearLayout>
 		        </LinearLayout>

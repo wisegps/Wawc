@@ -47,7 +47,6 @@ public class TravelMapActivity extends Activity {
     private static final String TAG = "TravelMapActivity";
     private static final int get_data = 1;
 
-    WawcApplication app;
     MapView mMapView = null;
     MapController mMapController = null;
     List<Overlay> overlays;
@@ -58,7 +57,7 @@ public class TravelMapActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        app = (WawcApplication) this.getApplication();
+        WawcApplication app = (WawcApplication) this.getApplication();
         if (app.mBMapManager == null) {
             app.mBMapManager = new BMapManager(this);
             /**
@@ -71,7 +70,7 @@ public class TravelMapActivity extends Activity {
         iv_activity_travel_share.setOnClickListener(onClickListener);
         mMapView = (MapView) findViewById(R.id.mv_travel_map);
         mMapView.setBuiltInZoomControls(true);
-        mMapView.regMapViewListener(app.mBMapManager, mkMapViewListener);
+        mMapView.regMapViewListener(WawcApplication.getInstance().mBMapManager, mkMapViewListener);
         mMapController = mMapView.getController();
         GeoPoint point = new GeoPoint((int) (39.915 * 1E6),
                 (int) (116.404 * 1E6));

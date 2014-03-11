@@ -27,12 +27,14 @@
             android:textSize="@dimen/head"/>
 	</RelativeLayout>
 	<HorizontalScrollView
+	    android:id="@+id/hsv_car"
         android:layout_width="fill_parent"
         android:background="@color/white"
         android:layout_height="wrap_content"
         android:paddingLeft="@dimen/margins"
         android:paddingTop="@dimen/margins"
         android:paddingBottom="@dimen/margins"
+        android:visibility="gone"
         android:scrollbars="none">
 		<LinearLayout 
 		    android:layout_width="wrap_content"
@@ -47,24 +49,54 @@
                 android:stretchMode="columnWidth"/>
 		</LinearLayout>
 	</HorizontalScrollView>
-	<LinearLayout 
-	    android:background="@color/white"
+	<RelativeLayout 
 	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content">
-	    <TextView 
+	    android:layout_height="fill_parent">
+		<RelativeLayout 
+		    android:id="@+id/rl_Note"
+		    android:layout_width="fill_parent"
+		    android:layout_height="fill_parent">
+		    <ImageView 
+		        android:id="@+id/iv_nothing"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:layout_centerInParent="true"
+		        android:src="@drawable/body_nothing_icon"/>
+		    <TextView 
+		        android:layout_below="@id/iv_nothing"
+		        android:layout_width="wrap_content"
+		        android:layout_height="wrap_content"
+		        android:textColor="@color/white"
+		        android:textSize="@dimen/main"
+		        android:layout_centerHorizontal="true"
+		        android:text="没有违章记录"/>
+		</RelativeLayout>
+	    <LinearLayout 
+	        android:id="@+id/ll_info"
+	        android:visibility="gone"
 	        android:layout_width="fill_parent"
-	        android:layout_height="wrap_content"
-	        android:textColor="@color/common"
-	        android:padding="@dimen/margins"
-	        android:textSize="@dimen/main"
-	        android:background="@color/gray_light"
-	        android:text="累计扣分：6分          累积罚款：300元"/>
-	</LinearLayout>	
-	<com.wise.list.XListView
-	    android:layout_marginTop="@dimen/double_margins"
-	    android:id="@+id/lv_activity_traffic"
-	    android:cacheColorHint="#00000000"
-	    android:divider="@null"
-	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"/>
+	        android:layout_height="fill_parent"
+	        android:orientation="vertical">
+	        <LinearLayout 
+		        android:background="@color/white"
+		        android:layout_width="fill_parent"
+		        android:layout_height="wrap_content">
+		        <TextView 
+		            android:layout_width="fill_parent"
+		            android:layout_height="wrap_content"
+		            android:textColor="@color/common"
+		            android:padding="@dimen/margins"
+		            android:textSize="@dimen/main"
+		            android:background="@color/gray_light"
+		            android:text="累计扣分：6分          累积罚款：300元"/>
+		    </LinearLayout> 
+		    <com.wise.list.XListView
+		        android:layout_marginTop="@dimen/double_margins"
+		        android:id="@+id/lv_activity_traffic"
+		        android:cacheColorHint="#00000000"
+		        android:divider="@null"
+		        android:layout_width="fill_parent"
+		        android:layout_height="fill_parent"/>
+	    </LinearLayout>
+	</RelativeLayout>	
 </LinearLayout>

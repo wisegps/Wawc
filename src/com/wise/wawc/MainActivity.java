@@ -1,7 +1,6 @@
 package com.wise.wawc;
 
 import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import org.json.JSONException;
@@ -9,10 +8,10 @@ import org.json.JSONObject;
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.TagAliasCallback;
 import cn.sharesdk.framework.Platform;
-import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qzone.QZone;
+import com.baidu.mapapi.BMapManager;
 import com.wise.extend.FaceConversionUtil;
 import com.wise.extend.OnViewTouchMoveListener;
 import com.wise.extend.PicHorizontalScrollView;
@@ -23,10 +22,8 @@ import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import android.app.ActivityGroup;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
@@ -34,7 +31,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -81,6 +77,11 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WawcApplication app = (WawcApplication)this.getApplication();
+        if (app.mBMapManager == null) {
+            app.mBMapManager = new BMapManager(getApplicationContext());
+            app.mBMapManager.init(WawcApplication.strKey,null);
+        }
         setContentView(R.layout.activity_main);
         JPushInterface.init(getApplicationContext());
         thread = new ParseFaceThread();
@@ -265,12 +266,15 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
                 ToSearchMap(getString(R.string.four_s));
                 break;
             case R.id.tv_jw:
-                SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
-                int DefaultVehicleID = preferences.getInt(Constant.DefaultVehicleID, 0);
-                Intent intent_help = new Intent(MainActivity.this, ShareLocationActivity.class);
-                intent_help.putExtra("reason", "救援 ");
-                intent_help.putExtra("index", DefaultVehicleID);
-                MainActivity.this.startActivity(intent_help);
+                if(Variable.carDatas == null || Variable.carDatas.size() == 0){                    
+                }else{
+                    SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+                    int DefaultVehicleID = preferences.getInt(Constant.DefaultVehicleID, 0);
+                    Intent intent_help = new Intent(MainActivity.this, ShareLocationActivity.class);
+                    intent_help.putExtra("reason", "救援 ");
+                    intent_help.putExtra("index", DefaultVehicleID);
+                    MainActivity.this.startActivity(intent_help);
+                }                
                 break;
             case R.id.tv_bx:
                 Intent intent_Insurance = new Intent(MainActivity.this, InsuranceActivity.class);

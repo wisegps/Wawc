@@ -19,12 +19,16 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 /**
  * 终端购买界面
  * @author honesty
  */
 public class OrderDeviceActivity extends Activity{
+    int number = 1;
+    ImageView iv_activity_order_device_minus;
+    TextView tv_activity_order_device_number;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,7 +38,11 @@ public class OrderDeviceActivity extends Activity{
 		bt_activity_order_device_submit.setOnClickListener(onClickListener);
 		ImageView iv_activity_order_device_back = (ImageView)findViewById(R.id.iv_activity_order_device_back);
 		iv_activity_order_device_back.setOnClickListener(onClickListener);
-			
+		ImageView iv_activity_order_device_add = (ImageView)findViewById(R.id.iv_activity_order_device_add);
+		iv_activity_order_device_add.setOnClickListener(onClickListener);
+		iv_activity_order_device_minus = (ImageView)findViewById(R.id.iv_activity_order_device_minus);
+		iv_activity_order_device_minus.setOnClickListener(onClickListener);
+		tv_activity_order_device_number = (TextView)findViewById(R.id.tv_activity_order_device_number);
 	}
 	OnClickListener onClickListener = new OnClickListener() {		
 		@Override
@@ -46,6 +54,18 @@ public class OrderDeviceActivity extends Activity{
 			case R.id.iv_activity_order_device_back:
 				finish();
 				break;
+			case R.id.iv_activity_order_device_add:
+			    number ++ ;
+			    tv_activity_order_device_number.setText(""+number);
+			    iv_activity_order_device_minus.setVisibility(View.VISIBLE);
+			    break;
+			case R.id.iv_activity_order_device_minus:
+			    number -- ;
+			    tv_activity_order_device_number.setText(""+number);
+			    if(number == 1){
+			        iv_activity_order_device_minus.setVisibility(View.GONE);
+			    }
+			    break;
 			}
 		}
 	};
