@@ -1,9 +1,11 @@
 package com.wise.wawc;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,14 +14,19 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.CoreConnectionPNames;
+import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
@@ -961,7 +968,7 @@ public class MyVehicleActivity extends Activity{
 //			}
 //		}
 //    }
-    
+    private static final String TAG = "MyVehicleActivity";
     //  TODO  向服务器提交数据
     public void commitData(){
     	Editor editor = preferences.edit();
@@ -973,82 +980,103 @@ public class MyVehicleActivity extends Activity{
 		
 		final List<NameValuePair> params = new ArrayList<NameValuePair>();
         params.add(new BasicNameValuePair("obj_name", vehicleNumber.getText().toString().trim()));
+        Log.d(TAG, "obj_name = " + vehicleNumber.getText().toString().trim());
         params.add(new BasicNameValuePair("car_brand", myVehicleBrank.getText().toString()));
+        Log.d(TAG, "car_brand = " + myVehicleBrank.getText().toString().trim());
         params.add(new BasicNameValuePair("car_series", tvCarSeries.getText().toString()));
+        Log.d(TAG, "car_series = " + tvCarSeries.getText().toString().trim());
         params.add(new BasicNameValuePair("car_type", tvCarType.getText().toString()));
+        Log.d(TAG, "car_type = " + tvCarType.getText().toString().trim());
         params.add(new BasicNameValuePair("vio_location", city_code));
+        Log.d(TAG, "vio_location = " + city_code);
         
-        
-        Log.e("gas_no", petrolResult);
-        Log.e("vio_city_name", selectCityTv.getText().toString());
-        Log.e("insurance_tel", insuranceTel.getText().toString().trim());
         
         params.add(new BasicNameValuePair("gas_no", petrolResult));
+        Log.d(TAG, "gas_no = " + petrolResult);
         
         
         params.add(new BasicNameValuePair("car_brand_id", carBrankId));
+        Log.d(TAG, "car_brand_id = " + carBrankId);
         params.add(new BasicNameValuePair("car_series_id", carSeriesId));
+        Log.d(TAG, "car_series_id = " + carSeriesId);
         params.add(new BasicNameValuePair("car_type_id", carTypeId));
+        Log.d(TAG, "car_type_id = " + carTypeId);
         params.add(new BasicNameValuePair("vio_city_name", selectCityTv.getText().toString()));
+        Log.d(TAG, "vio_city_name = " + selectCityTv.getText().toString());
         params.add(new BasicNameValuePair("insurance_tel", insuranceTel.getText().toString().trim()));
+        Log.d(TAG, "insurance_tel = " + insuranceTel.getText().toString().trim());
         params.add(new BasicNameValuePair("maintain_tel", maintainTelEd.getText().toString().trim()));
+        Log.d(TAG, "maintain_tel = " + maintainTelEd.getText().toString().trim());
         //违章查询城市代码  
         if(engine == 0){
         	params.add(new BasicNameValuePair("engine_no", ""));
+        	Log.d(TAG, "engine_no = " + "");
         }else if(engine == 1){
         	params.add(new BasicNameValuePair("engine_no", engineNum.getText().toString().trim()));
+        	Log.d(TAG, "engine_no = " + engineNum.getText().toString().trim());
         }
         if(car == 0){
         	params.add(new BasicNameValuePair("frame_no", ""));
+        	Log.d(TAG, "frame_no = " + "");
         }else if(car == 1){
         	params.add(new BasicNameValuePair("frame_no", frameNum.getText().toString().trim()));
+        	Log.d(TAG, "frame_no = " + frameNum.getText().toString().trim());
         }
         if(register == 0){
         	 params.add(new BasicNameValuePair("reg_no", ""));
+        	 Log.d(TAG, "reg_no = " + "");
         }else if(register == 1){
         	params.add(new BasicNameValuePair("reg_no", vehicleRegNum.getText().toString().trim()));
+        	Log.d(TAG, "reg_no = " + vehicleRegNum.getText().toString().trim());
         }
         
         params.add(new BasicNameValuePair("insurance_company", showInsuranceCompany.getText().toString()));
+        Log.d(TAG, "insurance_company = " + showInsuranceCompany.getText().toString().trim());
         params.add(new BasicNameValuePair("insurance_date", ivInsuranceDate.getText().toString()));
-        params.add(new BasicNameValuePair("annual_inspect_data", "年检时间"));    //暂时去掉
+        Log.d(TAG, "insurance_date = " + ivInsuranceDate.getText().toString().trim());
+        params.add(new BasicNameValuePair("annual_inspect_data", ""));    //暂时去掉
         params.add(new BasicNameValuePair("maintain_company", tvMaintain.getText().toString()));
+        Log.d(TAG, "maintain_company = " + tvMaintain.getText().toString().trim());
         params.add(new BasicNameValuePair("maintain_last_mileage", lastMaintain.getText().toString().trim()));
+        Log.d(TAG, "maintain_last_mileage = " + lastMaintain.getText().toString().trim());
         params.add(new BasicNameValuePair("maintain_last_date", lastMaintainTime.getText().toString()));
+        Log.d(TAG, "maintain_last_date = " + lastMaintainTime.getText().toString().trim());
         params.add(new BasicNameValuePair("maintain_next_mileage", "2013"));   //暂时去掉
         params.add(new BasicNameValuePair("buy_time", buyTime.getText().toString().trim()));
+        Log.d(TAG, "buy_time = " + buyTime.getText().toString().trim());
         
-        
-//        Log.e("车牌号：",vehicleNumber.getText().toString().trim());
-//        Log.e("品牌：",myVehicleBrank.getText().toString());
-//        Log.e("型号：",tvCarSeries.getText().toString());
-//        Log.e("车款：",tvCarType.getText().toString());
-//        Log.e("城市代码：",city_code);
-//        
-//        Log.e("发动机号：", engineNum.getText().toString().trim());
-//        Log.e("车架号：",frameNum.getText().toString().trim());
-//        Log.e("登记证号：",vehicleRegNum.getText().toString().trim());
-//        
-//        Log.e("保险公司：",showInsuranceCompany.getText().toString());
-//        Log.e("保险到期时间：",ivInsuranceDate.getText().toString());
-//        Log.e("4s店：",tvMaintain.getText().toString());
-//        Log.e("最后保养里程：",lastMaintain.getText().toString().trim());
-//        Log.e("最后保养时间：",lastMaintainTime.getText().toString());
-//        Log.e("购车时间：",buyTime.getText().toString().trim());
-//		new Thread(new NetThread.postDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).getObj_id() + "?auth_code=" + Variable.auth_code, params, saveVehicleData)).start();
+        //		new Thread(new NetThread.postDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).getObj_id() + "?auth_code=" + Variable.auth_code, params, saveVehicleData)).start();
         //校验  TODO
         
         new Thread(new Runnable() {
 			public void run() {
-				HttpPost httpPost = new HttpPost(Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).getObj_id() + "?auth_code=" + Variable.auth_code);
+				//HttpPut httpPut = new HttpPut(Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).getObj_id() + "?auth_code=" + Variable.auth_code);
 				try {
-					 httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
-					 HttpClient client = new DefaultHttpClient();
-					 client.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 20000);
-					 client.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 20000);
-					 HttpResponse httpResponse = client.execute(httpPost);
-					 if(httpResponse.getStatusLine().getStatusCode() == 200){
-						 String strResult = EntityUtils.toString(httpResponse.getEntity());
+//				    httpPut.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));
+//					 HttpClient client = new DefaultHttpClient();
+//					 client.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 20000);
+//					 client.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 20000);
+//					 HttpResponse httpResponse = client.execute(httpPut);
+					 
+					 BasicHttpParams httpParams = new BasicHttpParams();  
+		                HttpConnectionParams.setConnectionTimeout(httpParams, 10000);  
+		                HttpConnectionParams.setSoTimeout(httpParams, 10000); 
+		                HttpClient client = new DefaultHttpClient(httpParams);
+		                HttpPut httpPut = new HttpPut(Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).getObj_id() + "?auth_code=" + Variable.auth_code); 
+		                if(params != null){
+		                    httpPut.setEntity(new UrlEncodedFormEntity(params,HTTP.UTF_8));
+		                }
+		                HttpResponse response = client.execute(httpPut); 
+					 
+					 if(response.getStatusLine().getStatusCode() == 200){
+					     HttpEntity entity = response.getEntity();
+		                    BufferedReader reader = new BufferedReader(new InputStreamReader(entity.getContent()));
+		                    StringBuilder sb = new StringBuilder();
+		                    String line = "";
+		                    while ((line = reader.readLine()) != null) {
+		                        sb.append(line);
+		                    }
+						 String strResult = sb.toString();
 						 Log.e("更改爱车数据结果:",strResult);
 						 
 						 //更新数据库
