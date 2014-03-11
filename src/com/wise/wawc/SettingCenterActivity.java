@@ -179,8 +179,12 @@ public class SettingCenterActivity extends Activity{
         if(isRemind){
             iv_remind.setVisibility(View.VISIBLE);
         }
-        int index = preferences.getInt(Constant.DefaultVehicleID, 0);
-        tv_value.setText("车辆" + Variable.carDatas.get(index).getObj_name() + "的位置");
+        if(Variable.carDatas == null || Variable.carDatas.size() == 0){
+            
+        }else{
+            int index = preferences.getInt(Constant.DefaultVehicleID, 0);
+            tv_value.setText("车辆" + Variable.carDatas.get(index).getObj_name() + "的位置");
+        }        
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

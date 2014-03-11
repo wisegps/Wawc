@@ -26,9 +26,33 @@
             android:textColor="@color/white"
             android:textSize="@dimen/head"/>
     </RelativeLayout>
-    <com.wise.list.XListView 
-        android:id="@+id/my_collection_list"
+    <RelativeLayout 
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:divider="@null"></com.wise.list.XListView>    
+        android:layout_height="fill_parent">
+        <RelativeLayout 
+            android:id="@+id/rl_Note"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <ImageView 
+                android:id="@+id/iv_nothing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/body_nothing_icon"/>
+            <TextView 
+                android:layout_below="@id/iv_nothing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:textSize="@dimen/main"
+                android:layout_centerHorizontal="true"
+                android:text="没有收藏记录"/>
+        </RelativeLayout>        
+	    <com.wise.list.XListView 
+	        android:id="@+id/lv_collection"
+	        android:visibility="gone"
+	        android:layout_width="fill_parent"
+	        android:layout_height="fill_parent"
+	        android:divider="@null"/> 
+    </RelativeLayout>   
 </LinearLayout>

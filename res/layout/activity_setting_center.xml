@@ -70,7 +70,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:text="车辆粤B12345的位置"
                     android:drawableRight="@drawable/body_icon_arrow2"
                     android:textColor="@color/common_inactive"
                     android:textSize="@dimen/content" >

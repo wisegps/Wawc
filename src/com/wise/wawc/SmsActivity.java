@@ -31,6 +31,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 /**
@@ -43,6 +44,7 @@ public class SmsActivity extends Activity implements IXListViewListener{
 	private final int GET_SMS = 1;	
 	private final int GET_NEXT_SMS = 2;	
 	
+	RelativeLayout rl_Note;
 	XListView lv_sms;
 	ProgressDialog Dialog = null;    //等待框    
 	NewAdapter newAdapter;
@@ -57,6 +59,7 @@ public class SmsActivity extends Activity implements IXListViewListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_sms);
+		rl_Note = (RelativeLayout)findViewById(R.id.rl_Note);
 		lv_sms = (XListView)findViewById(R.id.lv_sms);
 		lv_sms.setPullLoadEnable(true);
 		lv_sms.setXListViewListener(this);
@@ -81,6 +84,7 @@ public class SmsActivity extends Activity implements IXListViewListener{
 		}else{
 		    smsDataList.addAll(0,getSmsDatas(Toal, pageSize));
             newAdapter.notifyDataSetChanged();
+            isNothingNote(false);
 		}	
 	}	
 	
@@ -103,6 +107,9 @@ public class SmsActivity extends Activity implements IXListViewListener{
 			    smsDataList.addAll(0,jsonData(msg.obj.toString()));
 			    newAdapter.notifyDataSetChanged();
 			    onLoad();
+			    if(smsDataList.size() > 0){
+			        isNothingNote(false);
+			    }
 				break;
 			case GET_NEXT_SMS:
 			    smsDataList.addAll(jsonData(msg.obj.toString()));
@@ -112,6 +119,17 @@ public class SmsActivity extends Activity implements IXListViewListener{
 			}
 		}		
 	};
+	
+	private void isNothingNote(boolean isNote){
+        if(isNote){
+            rl_Note.setVisibility(View.VISIBLE);
+            lv_sms.setVisibility(View.GONE);
+        }else{
+            rl_Note.setVisibility(View.GONE);
+            lv_sms.setVisibility(View.VISIBLE);
+        }
+    }
+	
 	private void onLoad() {
 		lv_sms.stopRefresh();
 		lv_sms.stopLoadMore();

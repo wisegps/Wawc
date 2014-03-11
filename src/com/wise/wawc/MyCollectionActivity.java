@@ -25,6 +25,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 /**
  * 我的收藏
  * @author 王庆文
@@ -32,7 +33,9 @@ import android.widget.ImageView;
 public class MyCollectionActivity extends Activity implements IXListViewListener{
     private static final int frist_getdata = 1;
     private static final int load_getdata = 2;
-	private XListView collectionList;
+    
+    RelativeLayout rl_Note;
+	private XListView lv_collection;
 	private CollectionAdapter collectionAdapter;
 	
 	ProgressDialog myDialog = null;
@@ -47,21 +50,23 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_collection);
-		collectionList = (XListView) findViewById(R.id.my_collection_list);
+		rl_Note = (RelativeLayout)findViewById(R.id.rl_Note);
+		lv_collection = (XListView) findViewById(R.id.lv_collection);
 		ImageView menuBt = (ImageView) findViewById(R.id.my_vechile_menu);
 		menuBt.setOnClickListener(onClickListener);
 		
 		//不设置上拉加载无效
-		collectionList.setPullRefreshEnable(false);
-		collectionList.setPullLoadEnable(true);
-		collectionList.setXListViewListener(this);
+		lv_collection.setPullRefreshEnable(false);
+		lv_collection.setPullLoadEnable(true);
+		lv_collection.setXListViewListener(this);
 		
 		if(dBExcute.getTotalCount(Constant.TB_Collection, MyCollectionActivity.this) > 0){
 		    //本地取数据
 	        getCollectionDatas(Toal, pageSize);
 	        collectionAdapter = new CollectionAdapter(MyCollectionActivity.this,adressDatas);
             collectionAdapter.setCollectionItem(collectionItemListener);
-            collectionList.setAdapter(collectionAdapter);
+            lv_collection.setAdapter(collectionAdapter);
+            isNothingNote(false);
 		}else{
 		    //服务器取数据
 		    isGetDB = false;
@@ -79,7 +84,10 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
                 jsonCollectionData(msg.obj.toString());                
                 collectionAdapter = new CollectionAdapter(MyCollectionActivity.this,adressDatas);
                 collectionAdapter.setCollectionItem(collectionItemListener);
-                collectionList.setAdapter(collectionAdapter);
+                lv_collection.setAdapter(collectionAdapter);
+                if(adressDatas.size() > 0){
+                    isNothingNote(false);
+                }
                 break;
 
             case load_getdata:
@@ -96,14 +104,9 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
         @Override
         public void onClick(View v) {
             switch(v.getId()){
-//            case R.id.my_vechile_home:
-//                ActivityFactory.A.ToHome();
-//                break;
             case R.id.my_vechile_menu:
                 ActivityFactory.A.LeftMenu();
                 break;
-            default :
-                return;
             }
         }
     };
@@ -138,7 +141,17 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
                     (float) adressData.getLat(),
                     (float) adressData.getLon());
         }
-    };
+    };   
+
+    private void isNothingNote(boolean isNote){
+        if(isNote){
+            rl_Note.setVisibility(View.VISIBLE);
+            lv_collection.setVisibility(View.GONE);
+        }else{
+            rl_Note.setVisibility(View.GONE);
+            lv_collection.setVisibility(View.VISIBLE);
+        }
+    }
     
     private void jsonCollectionData(String result){
         try {
@@ -189,8 +202,8 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
 	}
 	
 	private void onLoad() {
-		collectionList.stopRefresh();
-		collectionList.stopLoadMore();
+		lv_collection.stopRefresh();
+		lv_collection.stopLoadMore();
 	}
 	/**
 	 * 
