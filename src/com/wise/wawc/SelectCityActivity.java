@@ -483,6 +483,7 @@ public class SelectCityActivity extends Activity {
                     break;
 
                 case VALUE_CITY:
+                    Log.d(TAG, "position = " + position);
                     cityHolder = (ViewCity) convertView.getTag();
                     if (citys.get(position).getCity_code() == null) {
                         cityHolder.tv_item_select_city_title

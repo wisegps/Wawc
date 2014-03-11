@@ -39,7 +39,7 @@ import android.widget.Toast;
  * @author honesty
  */
 public class CarLocationActivity extends Activity {
-    WawcApplication app;
+    //WawcApplication app;
     MapView mMapView = null;
     MapController mMapController = null;
     PopupWindow mPopupWindow;
@@ -52,8 +52,7 @@ public class CarLocationActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_car_location);
-        app = (WawcApplication) this.getApplication();
+        WawcApplication app = (WawcApplication) this.getApplication();
         if (app.mBMapManager == null) {
             app.mBMapManager = new BMapManager(this);
             /**
@@ -71,7 +70,7 @@ public class CarLocationActivity extends Activity {
         mMapController.setCenter(point);// 设置地图中心点
         mMapController.setZoom(12);// 设置地图zoom级别
         overlays = mMapView.getOverlays();
-        mMapView.regMapViewListener(app.mBMapManager, mkMapViewListener);
+        mMapView.regMapViewListener(WawcApplication.getInstance().mBMapManager, mkMapViewListener);
         // TODO 修改
         Intent intent = getIntent();
         int index = intent.getIntExtra("index", 0);
@@ -224,6 +223,14 @@ public class CarLocationActivity extends Activity {
         super.onDestroy();
         mMapView.destroy();
     }
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        mMapView.onSaveInstanceState(outState);
+    };
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        mMapView.onRestoreInstanceState(savedInstanceState);
+    };
 
     MKMapViewListener mkMapViewListener = new MKMapViewListener() {
         @Override

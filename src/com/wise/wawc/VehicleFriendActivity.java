@@ -222,7 +222,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	@Override  //下拉刷新
 	public void onRefresh() {
-		
+	    GetSystem.displayBriefMemory(VehicleFriendActivity.this);
 		DBHelper dBHelper = new DBHelper(VehicleFriendActivity.this);
 		SQLiteDatabase  sQLiteDatabase = dBHelper.getReadableDatabase();
 		Cursor cursor = sQLiteDatabase.rawQuery("select * from " + Constant.TB_VehicleFriend, new String[]{});

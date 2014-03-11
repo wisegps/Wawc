@@ -64,7 +64,7 @@ import android.widget.Toast;
 public class SearchMapActivity extends Activity {
     private final int getIsCollect = 1;
     private final int get4s = 2;
-    WawcApplication app;
+    
     MapView mMapView = null;
     MapController mMapController = null;
     List<Overlay> overlays;
@@ -79,7 +79,7 @@ public class SearchMapActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        app = (WawcApplication) this.getApplication();
+        WawcApplication app = (WawcApplication) this.getApplication();
         if (app.mBMapManager == null) {
             app.mBMapManager = new BMapManager(this);
             /**
@@ -165,7 +165,7 @@ public class SearchMapActivity extends Activity {
         } else {
             // 搜索关键字
             mkSearch = new MKSearch();
-            mkSearch.init(app.mBMapManager, mkSearchListener);
+            mkSearch.init(WawcApplication.getInstance().mBMapManager, mkSearchListener);
             mkSearch.poiSearchNearBy(keyWord, point, 5000);
         }
         // 显示自己位置

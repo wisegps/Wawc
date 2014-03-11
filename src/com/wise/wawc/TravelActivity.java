@@ -84,7 +84,7 @@ public class TravelActivity extends Activity{
         Date = intent.getStringExtra("Date");
         tv_travel_date.setText(Date);        
         mkSearch = new MKSearch();
-        mkSearch.init(app.mBMapManager, mkSearchListener);
+        mkSearch.init(WawcApplication.getInstance().mBMapManager, mkSearchListener);
         GetTripDB();
 	}
 	OnClickListener onClickListener = new OnClickListener() {		

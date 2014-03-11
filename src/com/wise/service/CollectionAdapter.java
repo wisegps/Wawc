@@ -31,6 +31,7 @@ import android.widget.TextView;
  * 我的收藏自定义迭代器
  */
 public class CollectionAdapter extends BaseAdapter {
+    private static final String TAG = "CollectionAdapter";
     private Context context;
     private LayoutInflater layoutInflater;
     
@@ -81,8 +82,11 @@ public class CollectionAdapter extends BaseAdapter {
         }else{
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.slidingView.ScorllRestFast();
+
         final AdressData adressData = adressDatas.get(position);
+        Log.d(TAG, "position = " + position);
+        Log.d(TAG, "position = " + "地址：" + adressData.getAdress());
+        holder.slidingView.ScorllRestFast();
         holder.tv_name.setText(adressData.getName());
         holder.tv_address.setText("地址：" + adressData.getAdress());
         holder.tv_distance.setVisibility(View.GONE);

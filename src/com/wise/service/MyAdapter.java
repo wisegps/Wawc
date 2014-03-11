@@ -74,6 +74,7 @@ import android.widget.Toast;
  * @author 王庆文
  */
 public class MyAdapter extends BaseAdapter{
+    private static final String TAG = "MyAdapter";
 	private LayoutInflater inflater;
 	private Activity activity;
 	public static boolean isClick = false;
@@ -142,7 +143,7 @@ public class MyAdapter extends BaseAdapter{
 		}
 		
 		
-		
+		Log.d(TAG, "position = " + position);
 		List<Bitmap> smallImageList = new ArrayList<Bitmap>();
 		for(int i = 0 ; i < articleList.get(position).getImageList().size() ; i ++){
 			Map<String,String> imageMap = articleList.get(position).getImageList().get(i);
