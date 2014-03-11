@@ -46,7 +46,6 @@ import android.widget.LinearLayout.LayoutParams;
 
 /**
  * 车务提醒
- * 
  * @author honesty
  */
 public class CarRemindActivity extends Activity {
