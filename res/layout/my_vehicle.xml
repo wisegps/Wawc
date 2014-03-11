@@ -722,7 +722,7 @@
         android:layout_alignParentBottom="true"
         android:background="@color/white"
         android:orientation="vertical"
-        android:visibility="visible" >
+        android:visibility="gone" >
         <View 
             android:layout_width="fill_parent"
             android:layout_height="1dp"

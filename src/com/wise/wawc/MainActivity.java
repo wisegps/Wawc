@@ -13,6 +13,8 @@ import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qzone.QZone;
+
+import com.baidu.mapapi.BMapManager;
 import com.wise.extend.FaceConversionUtil;
 import com.wise.extend.OnViewTouchMoveListener;
 import com.wise.extend.PicHorizontalScrollView;
@@ -81,6 +83,11 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WawcApplication app = (WawcApplication)this.getApplication();
+        if (app.mBMapManager == null) {
+            app.mBMapManager = new BMapManager(this);
+            app.mBMapManager.init(WawcApplication.strKey,null);
+        }
         setContentView(R.layout.activity_main);
         JPushInterface.init(getApplicationContext());
         thread = new ParseFaceThread();

@@ -109,7 +109,7 @@ public class HomeActivity extends Activity{
         super.onCreate(savedInstanceState);
         WawcApplication app = (WawcApplication)this.getApplication();
         if (app.mBMapManager == null) {
-            app.mBMapManager = new BMapManager(HomeActivity.this);
+            app.mBMapManager = new BMapManager(this);
             app.mBMapManager.init(WawcApplication.strKey,null);
         }
         setContentView(R.layout.activity_home);
