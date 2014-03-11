@@ -102,16 +102,18 @@ public class MyVehicleActivity extends Activity{
 	public static final int showCarData = 8;       //显示汽车数据
 	public static final int deleteCarData = 10;       //删除汽车数据
 	private static final int setCarLogo = 11;      // 动态设置汽车Logo
-	private static final int getCityViolateRegulationsCode = 41;      // 获取违章城市代码
+	public static final int getCityViolateRegulationsCode = 41;      // 获取违章城市代码
 	private static final int getBrankData = 39;
 	private static final int getSeriesData = 37;
 	private static final int getIllegalforUrlCode = 42;      // 获取违章城市代码
 	private static final int bindDeviceId = 13;
+	public static final int myVehiclePetrol = 15;
 	
 	HorizontalScrollView horizontalscrollview;
 	View v_divider;
 	private EditText etDialogMileage = null;   //输入里程
 	private TableRow choiceMaintian = null;
+	private TableRow petrolGradeTr = null;
 	
 	private TextView myVehicleBrank = null;
 	private TextView tvMaintain = null;
@@ -140,6 +142,9 @@ public class MyVehicleActivity extends Activity{
 	private TextView btSaveVehicleData = null;
 	private TextView btDeleteVehicle = null;
 	private TextView selectCityTv = null;
+	private TextView petrolGradeTv = null;
+	private EditText insuranceTel = null;
+	private EditText maintainTelEd = null;
 	
 	private MyHandler myHandler = null;
 	private DBHelper dBhalper = null;
@@ -156,6 +161,7 @@ public class MyVehicleActivity extends Activity{
 	String time2 = "";
 	private String carBrankId = "";
 	private String carSeriesId = "";
+	private String carTypeId = "";
 	private static String carSeriesTitle = "carSeries";
 	private static String carTypeTitle = "carType";
 	private String carBrank = "";
@@ -192,6 +198,8 @@ public class MyVehicleActivity extends Activity{
 	private boolean hasSelectIllegalCity = false;
 	private String vehNum = "";   //临时存储车牌号
 	
+	private String petrolResult = "";
+	
 	
 	ChoiceCarInformationActivity choiceCarInformationActivity = null;
 	
@@ -217,6 +225,9 @@ public class MyVehicleActivity extends Activity{
 		vehicleRegNum = (EditText) findViewById(R.id.my_vehilce_reg_num);
 		lastMaintain = (EditText)findViewById(R.id.my_vehicle_ed_last_maintain);
 		lastMaintainTime = (TextView) findViewById(R.id.my_vehicle_last_maintain_time);
+		petrolGradeTr = (TableRow) findViewById(R.id.my_vehicle_petrol_grade_tr);
+		insuranceTel = (EditText) findViewById(R.id.my_vehicle_insurance_company_tel);
+		maintainTelEd = (EditText) findViewById(R.id.my_vehicle_maintain_shop_tel);
 		getDateView(lastMaintainTime);
 		buyTime = (TextView)findViewById(R.id.my_vehicle_ed_buy_time);
 		selectCityTv = (TextView) findViewById(R.id.my_vehicle_select_city);
@@ -224,6 +235,7 @@ public class MyVehicleActivity extends Activity{
 		vehicleNumLayout = (TableRow) findViewById(R.id.my_vehicle_num_layout);
 		registerNumLayout = (TableRow) findViewById(R.id.my_vehicle_register_num_layout);
 		myVehicleDevice = (TextView) findViewById(R.id.my_vehicle_device);
+		petrolGradeTv = (TextView) findViewById(R.id.my_vehicle_petrol_grade);
 		getDateView(buyTime);
 		ivInsuranceDate = (TextView) findViewById(R.id.my_vehicle_tv_insurance);
 		getDateView(ivInsuranceDate);
@@ -239,6 +251,7 @@ public class MyVehicleActivity extends Activity{
 		tvCarType = (TextView) findViewById(R.id.tv_car_type);
 		ivCarSeries.setOnClickListener(new ClickListener());
 		ivCarType.setOnClickListener(new ClickListener());
+		petrolGradeTr.setOnClickListener(new ClickListener());
 		selectCity.setOnClickListener(new ClickListener());
 		dBExcute = new DBExcute();
 		choiceCarInformationActivity = new ChoiceCarInformationActivity();
@@ -294,6 +307,11 @@ public class MyVehicleActivity extends Activity{
 		vehicleGridView.setNumColumns(Variable.carDatas.size());
 		vehicleGridView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+					carBrankId = "";
+					carSeriesId = "";
+					carBrank = "";
+					carSeries = "";
+					carType = "";
 					oneCarData = Variable.carDatas.get(arg2);
 					Message msg = new Message();
 					msg.obj = Variable.carDatas.get(arg2);
@@ -306,11 +324,6 @@ public class MyVehicleActivity extends Activity{
 					carAdapter.notifyDataSetChanged();
 					chickIndex = arg2;
 					hasSelectIllegalCity = false;
-					carBrankId = "";
-					carSeriesId = "";
-					carBrank = "";
-					carSeries = "";
-					carType = "";
 					
 			}
 		});
@@ -353,13 +366,13 @@ public class MyVehicleActivity extends Activity{
 		public void onClick(View v) {
 			switch(v.getId()){
 			case R.id.my_vechile_menu:
-				if(isJump){
-						finish();
-				}else{
-					if(CheckDatas()){
-						commitData();
+				if(CheckDatas()){
+					commitData();
+					if(isJump){
+							finish();
+					}else{
+						ActivityFactory.A.LeftMenu();
 					}
-					ActivityFactory.A.LeftMenu();
 				}
 				break;
 			case R.id.iv_my_vehicle_brank:    //选择汽车品牌
@@ -452,6 +465,12 @@ public class MyVehicleActivity extends Activity{
 				Intent intent6 = new Intent(MyVehicleActivity.this,IllegalCitiyActivity.class);
 				intent6.putExtra("requestCode", getCityViolateRegulationsCode);
 				startActivityForResult(intent6, getCityViolateRegulationsCode);
+				break;
+			case R.id.my_vehicle_petrol_grade_tr:
+				Intent intent9 = new Intent(MyVehicleActivity.this,PetrolGradeActivity.class);
+				intent9.putExtra("code", myVehiclePetrol);
+				startActivityForResult(intent9, myVehiclePetrol);
+				break;
 			default:
 				return;
 			}
@@ -464,21 +483,26 @@ public class MyVehicleActivity extends Activity{
 			String insurance = (String) data.getSerializableExtra("insurance_name");
 			String insurance_phone = (String) data.getSerializableExtra("insurance_phone");
 			showInsuranceCompany.setText(data.getStringExtra("insurance_name"));
+			insuranceTel.setText(insurance_phone);
 			//更改静态类
+			Variable.carDatas.get(chickIndex).setInsurance_tel(insurance_phone);
 			Variable.carDatas.get(chickIndex).setInsurance_company(insurance);
 		}
 		//选择品牌   
 		if(resultCode == this.resultCodeBrank){
 			carBrank = data.getStringExtra("brank");
-			carSeries = data.getStringExtra("series");
-			carType = data.getStringExtra("type");
 			carBrankId = data.getStringExtra("brankId");
-			// 更改数据库  
-//			ContentValues values = new ContentValues();
-//			values.put("car_brand", carBrank);
-//			values.put("car_series", carSeries);
-//			values.put("car_type", carType);
-//			dBExcute.updataVehilce(MyVehicleActivity.this, Constant.TB_Vehicle, values, "obj_id=?", new String[]{String.valueOf(Variable.carDatas.get(chickIndex).getObj_id())});
+			carSeries = data.getStringExtra("series");
+			carSeriesId = data.getStringExtra("seriesId");
+			carType = data.getStringExtra("type");
+			carTypeId = data.getStringExtra("typeId");
+			
+			Log.e("车牌：",data.getStringExtra("brank"));
+			Log.e("车牌id：",data.getStringExtra("brankId"));
+			Log.e("车型：",data.getStringExtra("series"));
+			Log.e("车型id：",data.getStringExtra("seriesId"));
+			Log.e("车款：",data.getStringExtra("type"));
+			Log.e("车款Id：",data.getStringExtra("typeId"));
 			//更改静态类
 			Variable.carDatas.get(chickIndex).setCar_brand(carBrank);
 			Variable.carDatas.get(chickIndex).setCar_series(carSeries);
@@ -491,7 +515,7 @@ public class MyVehicleActivity extends Activity{
 			carSeries = data.getStringExtra("series");
 			carSeriesId = data.getStringExtra("seriesId");
 			carType = data.getStringExtra("type");
-			
+			carTypeId = data.getStringExtra("typeId");
 			Variable.carDatas.get(chickIndex).setCar_brand(carBrank);
 			Variable.carDatas.get(chickIndex).setCar_series(carSeries);
 			Variable.carDatas.get(chickIndex).setCar_type(carType);
@@ -503,7 +527,7 @@ public class MyVehicleActivity extends Activity{
 			carSeries = data.getStringExtra("series");
 			carSeriesId = data.getStringExtra("seriesId");
 			carType = data.getStringExtra("type");
-			
+			carTypeId = data.getStringExtra("typeId");
 			Variable.carDatas.get(chickIndex).setCar_brand(carBrank);
 			Variable.carDatas.get(chickIndex).setCar_series(carSeries);
 			Variable.carDatas.get(chickIndex).setCar_type(carType);
@@ -513,8 +537,10 @@ public class MyVehicleActivity extends Activity{
 			String maintainName = (String) data.getSerializableExtra("maintain_name");
 			String maintainTel = (String) data.getSerializableExtra("maintain_phone");
 			tvMaintain.setText(maintainName);
+			maintainTelEd.setText(maintainTel);
 			//更改静态类
 			Variable.carDatas.get(chickIndex).setMaintain_company(maintainName);
+			Variable.carDatas.get(chickIndex).setMaintain_tel(maintainTel);
 		}
 		if(resultCode == this.getCityViolateRegulationsCode){
 			
@@ -585,6 +611,11 @@ public class MyVehicleActivity extends Activity{
 			System.out.println("deviceId = " + deviceId);
 			new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).obj_id + "/device?auth_code=" + Variable.auth_code, parms, bindDeviceId)).start();
 		}
+		if(resultCode == myVehiclePetrol){
+			petrolResult = data.getStringExtra("result");
+			petrolGradeTv.setText(petrolResult);
+			Variable.carDatas.get(chickIndex).setGas_no(petrolResult);
+		}
 	}
 	
 	class MyHandler extends Handler{
@@ -597,7 +628,10 @@ public class MyVehicleActivity extends Activity{
 				carBrank = carData.getCar_brand();
 				carSeries = carData.getCar_series();
 				//  匹配车辆品牌id、车型id、车款id   用于第一次点击二级项（车型）获取相关数据
-				getVehiclebrandData(ChoiceCarInformationActivity.carBrankTitle,Constant.TB_Base,Constant.BaseUrl + "base/car_brand",getBrankData);
+//				getVehiclebrandData(ChoiceCarInformationActivity.carBrankTitle,Constant.TB_Base,Constant.BaseUrl + "base/car_brand",getBrankData);
+				carBrankId = carData.getCar_brand_id();
+				carSeriesId = carData.getCar_series_id();
+				
 				
 				
 				IllegalCity illegalCitys = null;
@@ -655,6 +689,9 @@ public class MyVehicleActivity extends Activity{
 				buyTime.setText(carData.getBuy_date());
 				vehicleRegNum.setText(carData.getRegNo());
 				lastMaintainTime.setText(carData.getMaintain_last_date().substring(0, 10));
+				petrolGradeTv.setText(carData.getGas_no());
+				insuranceTel.setText(carData.getInsurance_tel());
+				maintainTelEd.setText(carData.getMaintain_tel());
 				//点击了选择违章城市
 				if(hasSelectIllegalCity){
 					engineNum.setText("");
@@ -924,6 +961,8 @@ public class MyVehicleActivity extends Activity{
 //			}
 //		}
 //    }
+    
+    //  TODO  向服务器提交数据
     public void commitData(){
     	Editor editor = preferences.edit();
 		editor.putInt(Constant.DefaultVehicleID, chickIndex);
@@ -938,7 +977,22 @@ public class MyVehicleActivity extends Activity{
         params.add(new BasicNameValuePair("car_series", tvCarSeries.getText().toString()));
         params.add(new BasicNameValuePair("car_type", tvCarType.getText().toString()));
         params.add(new BasicNameValuePair("vio_location", city_code));
-        //违章查询城市代码  TODO
+        
+        
+        Log.e("gas_no", petrolResult);
+        Log.e("vio_city_name", selectCityTv.getText().toString());
+        Log.e("insurance_tel", insuranceTel.getText().toString().trim());
+        
+        params.add(new BasicNameValuePair("gas_no", petrolResult));
+        
+        
+        params.add(new BasicNameValuePair("car_brand_id", carBrankId));
+        params.add(new BasicNameValuePair("car_series_id", carSeriesId));
+        params.add(new BasicNameValuePair("car_type_id", carTypeId));
+        params.add(new BasicNameValuePair("vio_city_name", selectCityTv.getText().toString()));
+        params.add(new BasicNameValuePair("insurance_tel", insuranceTel.getText().toString().trim()));
+        params.add(new BasicNameValuePair("maintain_tel", maintainTelEd.getText().toString().trim()));
+        //违章查询城市代码  
         if(engine == 0){
         	params.add(new BasicNameValuePair("engine_no", ""));
         }else if(engine == 1){
@@ -1015,7 +1069,16 @@ public class MyVehicleActivity extends Activity{
 						 values.put("maintain_last_date", lastMaintainTime.getText().toString());
 //							value.put("maintain_next_mileage", nextMaintainMileage.getText().toString().trim());
 						 values.put("maintain_next_mileage", "");
+						 values.put("car_brand_id", carBrankId);
+						 values.put("car_series_id", carSeriesId);
+						 values.put("car_type_id", carTypeId);
+						 values.put("vio_city_name", selectCityTv.getText().toString());
+						 values.put("insurance_tel", insuranceTel.getText().toString().trim());
+						 values.put("maintain_tel", maintainTelEd.getText().toString().trim());
 						 values.put("buy_date", buyTime.getText().toString());
+						 values.put("gas_no", petrolResult);
+						 
+						 
 						 dBExcute.updataVehilce(MyVehicleActivity.this, Constant.TB_Vehicle, values, "obj_id=?", new String[]{String.valueOf(Variable.carDatas.get(chickIndex).getObj_id())});
 						 
 						 //更改静态类
@@ -1033,7 +1096,14 @@ public class MyVehicleActivity extends Activity{
 						 Variable.carDatas.get(chickIndex).setMaintain_company(tvMaintain.getText().toString());
 						 Variable.carDatas.get(chickIndex).setMaintain_last_mileage(lastMaintain.getText().toString().trim());
 						 Variable.carDatas.get(chickIndex).setMaintain_last_date(lastMaintainTime.getText().toString());
-						 Variable.carDatas.get(chickIndex).setBuy_date( buyTime.getText().toString());	
+						 Variable.carDatas.get(chickIndex).setBuy_date( buyTime.getText().toString());
+						 Variable.carDatas.get(chickIndex).setCar_brand_id(carBrankId);
+						 Variable.carDatas.get(chickIndex).setCar_series_id(carSeriesId);
+						 Variable.carDatas.get(chickIndex).setCar_type_id(carTypeId);
+						 Variable.carDatas.get(chickIndex).setVio_city_name(selectCityTv.getText().toString());
+						 Variable.carDatas.get(chickIndex).setInsurance_tel(insuranceTel.getText().toString().trim());
+						 Variable.carDatas.get(chickIndex).setMaintain_tel(maintainTelEd.getText().toString().trim());
+						 Variable.carDatas.get(chickIndex).setGas_no(petrolResult);
 					 }else{
 						 Log.e("更改爱车   失败:","失败");
 					 }

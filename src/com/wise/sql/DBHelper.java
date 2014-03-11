@@ -24,7 +24,7 @@ public class DBHelper extends SQLiteOpenHelper{
 	//行程记录
 	private static final String CREATE_TB_Trip = "create table " + Constant.TB_Trip + "(_id integer primary key autoincrement,Device_id text,tDate text,Content text)";
 	//我的爱车
-	private static final String CREATE_TB_Vehicle = "create table " + Constant.TB_Vehicle + "(_id integer primary key autoincrement,Cust_id text,obj_id int,obj_name text,car_brand text,car_series text,car_type text,engine_no text,frame_no text,insurance_company text,insurance_date text,annual_inspect_date text,maintain_company text,maintain_last_mileage text,maintain_next_mileage text,buy_date text,reg_no text,vio_location text,device_id text,serial text,maintain_last_date text)";
+	private static final String CREATE_TB_Vehicle = "create table " + Constant.TB_Vehicle + "(_id integer primary key autoincrement,Cust_id text,obj_id int,obj_name text,car_brand text,car_series text,car_type text,engine_no text,frame_no text,insurance_company text,insurance_date text,annual_inspect_date text,maintain_company text,maintain_last_mileage text,maintain_next_mileage text,buy_date text,reg_no text,vio_location text,device_id text,serial text,maintain_last_date text,car_brand_id text,car_series_id text,car_type_id text,vio_city_name text,insurance_tel text,maintain_tel text,gas_no text)";
 	//我的终端
 	private static final String CREATE_TB_Devices = "create table " + Constant.TB_Devices + "(_id integer primary key autoincrement,Cust_id text,DeviceID int,Content text)";
 	//我的收藏

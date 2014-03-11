@@ -81,10 +81,17 @@ public class IllegalCitiyActivity extends Activity {
 				cityListView.setVisibility(View.VISIBLE);
 			}
 		});
+		//点击选择城市
 		cityListView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+				Log.e("违章城市","违章城市");
 				Intent intent = new Intent(IllegalCitiyActivity.this,MyVehicleActivity.class);
 				intent.putExtra("IllegalCity", Variable.illegalList.get(arg2));
+				if(requestCode == NewVehicleActivity.getCityViolateRegulationsCode){
+					Log.e("来自新增爱车","来自新增爱车");
+				}else if(requestCode == MyVehicleActivity.getCityViolateRegulationsCode){
+					Log.e("来自我的爱车","来自我的爱车");
+				}
 				IllegalCitiyActivity.this.setResult(requestCode, intent);
 				IllegalCitiyActivity.this.finish();
 			}

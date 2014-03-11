@@ -71,7 +71,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 	
 	private List<String> brankLogo = null;
 	private List<String[]> carSeriesList = new ArrayList<String[]>();
-	private List<String> carSeriesNameList = new ArrayList<String>();
+	private List<String[]> carSeriesNameList = new ArrayList<String[]>();
 	
 	private PinyinComparator comparator;      //根据拼音排序
 	
@@ -188,7 +188,8 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 				intent.putExtra("brankId", carBrankId);
 				intent.putExtra("series", carSeries);
 				intent.putExtra("seriesId", carSeriesId);
-				intent.putExtra("type", carSeriesNameList.get(arg2));
+				intent.putExtra("typeId", carSeriesNameList.get(arg2)[0]);
+				intent.putExtra("type", carSeriesNameList.get(arg2)[1]);
 				ChoiceCarInformationActivity.this.setResult(code, intent);
 				ChoiceCarInformationActivity.this.finish();
 			}
@@ -233,16 +234,19 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		myHandler = new MyHandler();
 		//获取车牌   
 		if(code == MyVehicleActivity.resultCodeBrank || code == NewVehicleActivity.newVehicleBrank){
+			Log.e("点击选择品牌","点击选择品牌");
 			getDate(carBrankTitle,Constant.BaseUrl + "base/car_brand",GET_BRANK);
 		}else if(code == MyVehicleActivity.resultCodeSeries || code == NewVehicleActivity.newVehicleSeries){
 			carBrankId = getIntent().getStringExtra("brankId");
 			carBrank = getIntent().getStringExtra("carBrank");
 			getDate(carBrankTitle + carBrankId, Constant.BaseUrl + "base/car_series?pid=" + carBrankId,GET_SERIES);
+			Log.e("点击车型","点击车型");
 		}else if(code == MyVehicleActivity.resultCodeType || code == NewVehicleActivity.newVehicleType){
 			carBrankId = getIntent().getStringExtra("brankId");
 			carBrank = getIntent().getStringExtra("carBrank");
 			carSeriesId = getIntent().getStringExtra("seriesId");
 			carSeries = getIntent().getStringExtra("series");
+			Log.e("点击车款","点击车款");
 			getDate(carSeriesTitle + carSeriesId, Constant.BaseUrl + "base/car_type?pid=" + carSeriesId,GET_TYPE);
 		}
 	}
@@ -406,8 +410,11 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		case GET_TYPE:   //获取车款
 			int jsonTypeLength = jsonArray.length();
 			for(int i = 0 ; i < jsonTypeLength ; i ++){
+				String[] typeStr = new String[2];
 				try {
-					carSeriesNameList.add(jsonArray.getJSONObject(i).getString("name"));
+					typeStr[0] = jsonArray.getJSONObject(i).getString("id");
+					typeStr[1] = jsonArray.getJSONObject(i).getString("name");
+					carSeriesNameList.add(typeStr);
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}

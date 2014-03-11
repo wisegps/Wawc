@@ -12,13 +12,20 @@ public class CarData {
      * 品牌
      */
     public String car_brand;
+    private String car_brand_id;
     /**
      * 车型
      */
     public String car_series;
+    private String car_series_id;
     public String car_type;
+    private String car_type_id;
     public String engine_no;
     public String frame_no;
+    private String vio_city_name;
+    private String gas_no;
+    private String insurance_tel;
+    private String maintain_tel;
     /**
      * 保险公司
      */
@@ -52,7 +59,48 @@ public class CarData {
 	public String gps_time; //定位时间
 	public String Lat; 
 	public String Lon;
-	
+	public String getCar_brand_id() {
+		return car_brand_id;
+	}
+	public void setCar_brand_id(String car_brand_id) {
+		this.car_brand_id = car_brand_id;
+	}
+	public String getCar_series_id() {
+		return car_series_id;
+	}
+	public void setCar_series_id(String car_series_id) {
+		this.car_series_id = car_series_id;
+	}
+	public String getCar_type_id() {
+		return car_type_id;
+	}
+	public void setCar_type_id(String car_type_id) {
+		this.car_type_id = car_type_id;
+	}
+	public String getVio_city_name() {
+		return vio_city_name;
+	}
+	public void setVio_city_name(String vio_city_name) {
+		this.vio_city_name = vio_city_name;
+	}
+	public String getGas_no() {
+		return gas_no;
+	}
+	public void setGas_no(String gas_no) {
+		this.gas_no = gas_no;
+	}
+	public String getInsurance_tel() {
+		return insurance_tel;
+	}
+	public void setInsurance_tel(String insurance_tel) {
+		this.insurance_tel = insurance_tel;
+	}
+	public String getMaintain_tel() {
+		return maintain_tel;
+	}
+	public void setMaintain_tel(String maintain_tel) {
+		this.maintain_tel = maintain_tel;
+	}
 	public int getType() {
         return Type;
     }

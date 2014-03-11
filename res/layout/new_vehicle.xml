@@ -220,6 +220,42 @@
                     android:textColor="@color/common"
                     android:textSize="@dimen/content" />
             </TableRow>
+            <!-- 油标 -->
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dip"
+                android:background="@color/gray" />
+            <TableRow
+                android:id="@+id/new_vehicle_petrol_tr"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="1dip"
+                android:layout_marginRight="1dip"
+                android:layout_marginTop="1dip"
+                android:background="@drawable/bg_item_selector" >
+
+                <TextView
+                    android:layout_width="0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="4"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/margins"
+                    android:text="@string/petrol_grade"
+                    android:textColor="@color/common_inactive"
+                    android:textSize="@dimen/content" />
+
+                <TextView
+                    android:id="@+id/new_vehicle_petrol_grade_tv"
+                    android:layout_width="0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="5"
+                    android:drawableRight="@drawable/body_icon_arrow2"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/margins"
+                    android:hint="@string/please_choice_petrol_grade"
+                    android:textColor="@color/common"
+                    android:textSize="@dimen/content" />
+            </TableRow>
 
             <View
                 android:layout_width="fill_parent"
@@ -452,6 +488,42 @@
                     android:textColor="@color/common"
                     android:textSize="@dimen/content" />
             </TableRow>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dip"
+                android:background="@color/gray" />
+            <!-- 保险公司电话 -->
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="1dip"
+                android:layout_marginRight="1dip"
+                android:layout_marginTop="1dip"
+                >
+
+                <TextView
+                    android:layout_width="0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="4"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/margins"
+                    android:text="@string/insurance_company_tel"
+                    android:textColor="@color/common_inactive"
+                    android:textSize="@dimen/content" />
+
+                <EditText
+                    android:id="@+id/new_vehicle_insurance_company_tel_et"
+                    android:layout_width="0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="5"
+                    android:gravity="center_vertical"
+                    android:hint="@string/please_input_insurance_company_tel"
+                    android:padding="@dimen/margins"
+                    android:textColor="@color/common"
+                    android:textSize="@dimen/content"
+                    android:background="@null" />
+            </TableRow>
 
             <View
                 android:layout_width="fill_parent"
@@ -525,6 +597,42 @@
                     android:hint="@string/please_input_4s"
                     android:textColor="@color/common"
                     android:textSize="@dimen/content" />
+            </TableRow>
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="0.5dip"
+                android:background="@color/gray" />
+            <!-- 4s电话 -->
+
+            <TableRow
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="1dip"
+                android:layout_marginRight="1dip"
+                android:layout_marginTop="1dip"
+                >
+
+                <TextView
+                    android:layout_width="0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="4"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/margins"
+                    android:text="@string/maintain_shop_tel"
+                    android:textColor="@color/common_inactive"
+                    android:textSize="@dimen/content" />
+
+                <EditText
+                    android:id="@+id/new_vehicle_maintain_shop_tel_et"
+                    android:layout_width="0dip"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="5"
+                    android:gravity="center_vertical"
+                    android:hint="@string/please_input_4s_tel"
+                    android:padding="@dimen/margins"
+                    android:textColor="@color/common"
+                    android:textSize="@dimen/content"
+                    android:background="@null" />
             </TableRow>
 
             <View

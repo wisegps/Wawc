@@ -40,7 +40,7 @@ public class MaintainAdapter extends BaseAdapter{
 		maintainName.setText(maintainList.get(position)[0]);
 		maintainTel.setText(maintainList.get(position)[1]);
 		callPhone.setVisibility(View.GONE);
-		maintainTel.setVisibility(View.GONE);
+		maintainTel.setVisibility(View.VISIBLE);
 		return convertView;
 	}
 }

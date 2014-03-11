@@ -18,8 +18,8 @@ public class SeriesAdapter extends BaseAdapter {
 	LayoutInflater layoutInflater;
 	TextView seriesName;
 	int action = 0;
-	List<String> typeList;
-	public SeriesAdapter(List<String[]> carSeriesList,Context context,int action,List<String> typeList) {
+	List<String[]> typeList;
+	public SeriesAdapter(List<String[]> carSeriesList,Context context,int action,List<String[]> typeList) {
 		this.carSeriesList = carSeriesList;
 		this.context = context;
 		layoutInflater = LayoutInflater.from(context);
@@ -54,12 +54,12 @@ public class SeriesAdapter extends BaseAdapter {
 			seriesName.setText(carSeriesList.get(position)[1]);
 		}
 		if(action == 2){
-			seriesName.setText(typeList.get(position));
+			seriesName.setText(typeList.get(position)[1]);
 		}
 		return convertView;
 	}
 	
-	public void refresh(int action,List<String> typeList){
+	public void refresh(int action,List<String[]> typeList){
 		this.action = action;
 		this.typeList = typeList;
 		this.notifyDataSetChanged();

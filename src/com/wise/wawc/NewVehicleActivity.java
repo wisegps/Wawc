@@ -79,6 +79,7 @@ public class NewVehicleActivity extends Activity{
 	public static final int newVehicleType = 9;
 	public static final int newVehicleInsurance = 5;
 	public static final int newVehicleMaintain = 7;
+	public static final int newVehiclePetrol = 10;
 	private static final int addCar = 6;
 	
 	private TextView vehicleBrank = null;  //选择车辆品牌
@@ -94,9 +95,12 @@ public class NewVehicleActivity extends Activity{
 	private TableRow engineNumRow = null;
 	private TableRow vehicleFrameNumRow = null;
 	private TableRow vehicleRegNumRow = null;
+	private TableRow vehiclePetrol = null;
 	
 	
 	private TextView maintainShop = null;
+	private EditText maintainShopTel = null;
+	private TextView petrolGradeTv = null;
 	private TextView illegalCityTv = null;
 	private EditText carRegNumber = null;
 	private EditText carNumber = null;
@@ -108,6 +112,9 @@ public class NewVehicleActivity extends Activity{
 	private EditText lastMileage = null;
 	private TextView buyTime = null;
 	private EditText annualSurveyTime = null;
+	private TextView petrolGrade = null;
+	private EditText insuranceTel = null;
+	private EditText maintainTel = null;
 	
 	private DatePickerDialog mDateDialog = null;
 	private TextView mBeginDateTv,mEndDateTv;
@@ -116,7 +123,7 @@ public class NewVehicleActivity extends Activity{
 	private static String carSeriesTitle = "carSeries";
 	private static String carTypeTitle = "carType";
 	private static final int refreshCarSeries = 2;
-	private static final int getCityViolateRegulationsCode = 9;
+	public static final int getCityViolateRegulationsCode = 13;
 	private List<String> carSeriesNameList = new ArrayList<String>();
 	private List<String> carSeriesIdList = new ArrayList<String>();
 	private int width = 0 ;
@@ -133,6 +140,8 @@ public class NewVehicleActivity extends Activity{
 	private String carBrankId = "";
 	private String carSeriesId = "";
 	private String carTypeId = "";
+	private String petrolResult = "";
+	private String maintainTelStr = "";
 	private Bitmap vehicleLogoBitmap = null;
 	private IllegalCity illegalCity;
 	private String city_code = "";
@@ -159,6 +168,8 @@ public class NewVehicleActivity extends Activity{
 		engineNumRow = (TableRow) findViewById(R.id.new_vehicle_engine_num_tr);
 		vehicleFrameNumRow = (TableRow) findViewById(R.id.new_vehicle_frame_tr);
 		vehicleRegNumRow = (TableRow) findViewById(R.id.new_vehicle_register_num_tr);
+		vehiclePetrol = (TableRow) findViewById(R.id.new_vehicle_petrol_tr);
+		petrolGradeTv = (TextView) findViewById(R.id.new_vehicle_petrol_grade_tv);
 		
 		TvVehicleSeries = (TextView) findViewById(R.id.new_vehicle_series_tv);
 		illegalCityTv = (TextView) findViewById(R.id.new_vehicle_illegal_city_tv);
@@ -170,6 +181,8 @@ public class NewVehicleActivity extends Activity{
 		engineNumber = (EditText) findViewById(R.id.new_vehicle_engine_num_et);
 		CJNumber = (EditText) findViewById(R.id.new_vehilce_frame_et);
 		insuranceTime = (TextView) findViewById(R.id.new_vehicle_insurance_time_tv);
+		insuranceTel = (EditText) findViewById(R.id.new_vehicle_insurance_company_tel_et);
+		maintainShopTel  = (EditText) findViewById(R.id.new_vehicle_maintain_shop_tel_et);
 		getDateView(insuranceTime);
 		lastMaintainTime = (TextView) findViewById(R.id.new_vehicle_last_maintain_tv);
 		getDateView(lastMaintainTime);
@@ -196,6 +209,7 @@ public class NewVehicleActivity extends Activity{
 		IvVehicleType.setOnClickListener(new CilckListener());
 		IvVehicleSeries.setOnClickListener(new CilckListener());
 		IvVehicleType.setOnClickListener(new CilckListener());
+		vehiclePetrol.setOnClickListener(new CilckListener());
 		
 		
 		engineNumRow.setVisibility(View.GONE);
@@ -236,7 +250,7 @@ public class NewVehicleActivity extends Activity{
 					Toast.makeText(NewVehicleActivity.this, "请选择品牌", 0).show();
 				}else{
 					Intent intent6 = new Intent(NewVehicleActivity.this,ChoiceCarInformationActivity.class);
-					intent6.putExtra("code", newVehicleSeries);
+					intent6.putExtra("code", newVehicleType);
 					intent6.putExtra("brankId", carBrankId);
 					intent6.putExtra("carBrank", carBrank);
 					intent6.putExtra("seriesId", carSeriesId);
@@ -265,9 +279,16 @@ public class NewVehicleActivity extends Activity{
 					intent2.putExtra("code", newVehicleMaintain);
 					intent2.putExtra("brank", carBrank);
 					intent2.putExtra("city", shareFile.getString(Constant.LocationCity, ""));
+					String str = carBrank == null ? "yes":"no";
+					Log.e("carBrank == null",carBrank);
 					startActivityForResult(intent2, newVehicleMaintain);
 				}
 				break;	
+			case R.id.new_vehicle_petrol_tr:   // 选择汽油标号   TODO
+				Intent intent9 = new Intent(NewVehicleActivity.this,PetrolGradeActivity.class);
+				intent9.putExtra("code", newVehiclePetrol);
+				startActivityForResult(intent9, newVehiclePetrol);
+				break;
 			default:
 				return;
 			}
@@ -276,38 +297,57 @@ public class NewVehicleActivity extends Activity{
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		if(resultCode == newVehicleBrank){  //设置品牌
-			
-			carBrank = data.getStringExtra("brank");
-			carSeries = data.getStringExtra("series");
-			carType = data.getStringExtra("type");
-			carBrankId = data.getStringExtra("brankId");
-			
-			vehicleBrank.setText(carBrank);
-			TvVehicleSeries.setText(carSeries);
-			TvVehicleType.setText(carType);
-			
-//			carBrankId = data.getStringExtra("carId");
-//			Bitmap logo = logoImageIsExist(Constant.VehicleLogoPath,data.getStringExtra("carLogo"));
-			
-			
-		}else if(resultCode == newVehicleSeries){
 			carBrank = data.getStringExtra("brank");
 			carBrankId = data.getStringExtra("brankId");
 			carSeries = data.getStringExtra("series");
 			carSeriesId = data.getStringExtra("seriesId");
 			carType = data.getStringExtra("type");
+			carTypeId = data.getStringExtra("typeId");
 			vehicleBrank.setText(carBrank);
 			TvVehicleSeries.setText(carSeries);
 			TvVehicleType.setText(carType);
-		}else if(resultCode == newVehicleInsurance){   //设置保险公司
+			
+		}
+		if(resultCode == newVehicleSeries){
+			carBrank = data.getStringExtra("brank");
+			carBrankId = data.getStringExtra("brankId");
+			carSeries = data.getStringExtra("series");
+			carSeriesId = data.getStringExtra("seriesId");
+			carType = data.getStringExtra("type");
+			carTypeId = data.getStringExtra("typeId");
+			carType = data.getStringExtra("type");
+			vehicleBrank.setText(carBrank);
+			TvVehicleSeries.setText(carSeries);
+			TvVehicleType.setText(carType);
+		}
+		if(resultCode == newVehicleType){
+			
+			carBrank = data.getStringExtra("brank");
+			carBrankId = data.getStringExtra("brankId");
+			carSeries = data.getStringExtra("series");
+			carSeriesId = data.getStringExtra("seriesId");
+			carType = data.getStringExtra("type");
+			carTypeId = data.getStringExtra("typeId");
+			vehicleBrank.setText(carBrank);
+			TvVehicleSeries.setText(carSeries);
+			TvVehicleType.setText(carType);
+			
+		}
+		if(resultCode == newVehicleInsurance){   //设置保险公司
 			String insurance = (String)data.getSerializableExtra("insurance_name");
 			String insurance_phone = (String)data.getSerializableExtra("insurance_phone");
+			insuranceTel.setText(insurance_phone);
 			showInsurance.setText(insurance);
-		}else if(resultCode == newVehicleMaintain){
+		}
+		if(resultCode == newVehicleMaintain){
 			String maintainName = (String)data.getSerializableExtra("maintain_name");
-			String maintainTel = (String)data.getSerializableExtra("maintain_name");
+			maintainTelStr = (String)data.getSerializableExtra("maintain_phone");
+			Log.e("4s店服务电话：",maintainTelStr);
+			maintainShopTel.setText(maintainTelStr);
 			showMaintain.setText(maintainName);
-		}else if(resultCode == getCityViolateRegulationsCode){    //设置为违章城市
+		}
+		if(resultCode == getCityViolateRegulationsCode){    //设置为违章城市
+			Log.e("选择违章城市返回","选择违城市返回");
 			illegalCity = (IllegalCity) data.getSerializableExtra("IllegalCity");
 			illegalCityCode = illegalCity.getCityCode();
 			if(illegalCity != null){
@@ -317,6 +357,8 @@ public class NewVehicleActivity extends Activity{
 				Log.e("illegalCity.getVehiclenumno()",illegalCity.getVehiclenumno());
 				Log.e("illegalCity.getRegisternum()",illegalCity.getRegist());
 				Log.e("illegalCity.getVehiclenumno()",illegalCity.getRegistno());
+				
+				
 				engineNumRow.setVisibility(View.VISIBLE);
 				vehicleFrameNumRow.setVisibility(View.VISIBLE);
 				vehicleRegNumRow.setVisibility(View.VISIBLE);
@@ -365,6 +407,12 @@ public class NewVehicleActivity extends Activity{
 				illegalCity = null;
 			}
 		}
+		if(resultCode == newVehiclePetrol){
+			petrolResult = data.getStringExtra("result");
+			petrolGradeTv.setText(petrolResult);
+		}
+		Log.e("返回的code:",resultCode+"");
+		Log.e("违章城市code:",getCityViolateRegulationsCode+"");
 	}
 	private void addCar(){
 	    String url = Constant.BaseUrl + "vehicle?auth_code=" + Variable.auth_code;
@@ -399,7 +447,17 @@ public class NewVehicleActivity extends Activity{
         params.add(new BasicNameValuePair("maintain_last_date", lastMaintainTime.getText().toString()));
 //        params.add(new BasicNameValuePair("maintain_next_mileage",nextMaintainMileage.getText().toString().trim()));
         params.add(new BasicNameValuePair("maintain_next_mileage",""));
-        params.add(new BasicNameValuePair("buy_date", buyTime.getText().toString()));
+        
+        
+        params.add(new BasicNameValuePair("car_brand_id", carBrankId));
+        params.add(new BasicNameValuePair("car_series_id", carSeriesId));
+        params.add(new BasicNameValuePair("car_type_id", carTypeId));
+        params.add(new BasicNameValuePair("vio_city_name", illegalCityTv.getText().toString()));
+        params.add(new BasicNameValuePair("insurance_tel", insuranceTel.getText().toString().trim()));
+        
+        params.add(new BasicNameValuePair("maintain_tel", maintainShopTel.getText().toString().trim()));
+        params.add(new BasicNameValuePair("gas_no", petrolGradeTv.getText().toString()));
+        
         
         Log.e("车牌号",carNumber.getText().toString());
         Log.e("车辆品牌",vehicleBrank.getText().toString());
@@ -461,7 +519,17 @@ public class NewVehicleActivity extends Activity{
 					value.put("maintain_last_mileage", lastMileage.getText().toString().trim());
 					value.put("maintain_last_date", lastMaintainTime.getText().toString());
 					value.put("maintain_next_mileage", "");
-					value.put("buy_date", buyTime.getText().toString());
+					
+					
+					value.put("car_brand_id", carBrankId);
+					value.put("car_series_id", carSeriesId);
+					value.put("car_type_id", carTypeId);
+					value.put("vio_city_name", illegalCityTv.getText().toString());
+					value.put("insurance_tel", insuranceTel.getText().toString());
+					value.put("maintain_tel", maintainShopTel.getText().toString().trim());
+					value.put("gas_no", petrolGradeTv.getText().toString());
+					
+					
 					dBExcute.InsertDB(NewVehicleActivity.this, value, Constant.TB_Vehicle);
 					Log.e("添加到数据库","添加到数据库");
 					
@@ -486,6 +554,13 @@ public class NewVehicleActivity extends Activity{
 	                carData.setMaintain_next_mileage("");
 //	                carData.setMaintain_next_mileage(nextMaintainMileage.getText().toString().trim());
 	                carData.setBuy_date( buyTime.getText().toString());
+	                carData.setCar_brand_id(carBrankId);
+	                carData.setCar_series_id(carSeriesId);
+	                carData.setCar_type_id(carTypeId);
+	                carData.setVio_city_name(illegalCityTv.getText().toString());
+	                carData.setInsurance_tel(insuranceTel.getText().toString());
+	                carData.setMaintain_tel(maintainShopTel.getText().toString().trim());
+	                carData.setGas_no(petrolGradeTv.getText().toString());
 	                Variable.carDatas.add(carData);
 	                Intent intent = new Intent(Constant.A_UpdateCar);
 	                sendBroadcast(intent);
@@ -537,6 +612,10 @@ public class NewVehicleActivity extends Activity{
 			vehicleBrank.setHintTextColor(Color.RED);
 			return false;
 		}
+		if("".equals(petrolGradeTv.getText().toString().trim())){
+			petrolGradeTv.setHintTextColor(Color.RED);
+			return false;
+		}
 		if("".equals(illegalCityTv.getText().toString().trim())){
 			illegalCityTv.setHintTextColor(Color.RED);
 			return false;
@@ -579,12 +658,20 @@ public class NewVehicleActivity extends Activity{
 			showInsurance.setHintTextColor(Color.RED);
 			return false;
 		}
+		if("".equals(insuranceTel.getText().toString().trim())){
+			insuranceTel.setError("保险公司电话不能为空");
+			return false;
+		}
 		if("".equals(insuranceTime.getText().toString().trim())){
 			insuranceTime.setHintTextColor(Color.RED);
 			return false;
 		}
 		if("".equals(showMaintain.getText().toString().trim())){
 			showMaintain.setHintTextColor(Color.RED);
+			return false;
+		}
+		if("".equals(maintainShopTel.getText().toString().trim())){
+			maintainShopTel.setError("4s保养店电话不能为空");
 			return false;
 		}
 		if("".equals(lastMileage.getText().toString().trim())){
