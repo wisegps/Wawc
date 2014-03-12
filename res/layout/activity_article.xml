@@ -1,0 +1,25 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/gray"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/title_hight"
+        android:background="@drawable/nav_bg">
+        <TextView
+            android:id="@+id/tv_Memory"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="我的文章"
+            android:textColor="@color/white"
+            android:textSize="@dimen/head"/>
+    </RelativeLayout>      
+    <com.wise.list.XListView 
+        android:id="@+id/lv_article"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:divider="@null"/>
+</LinearLayout>
