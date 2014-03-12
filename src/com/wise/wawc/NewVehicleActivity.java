@@ -535,18 +535,10 @@ public class NewVehicleActivity extends Activity{
 					value.put("car_type_id", carTypeId);
 					value.put("vio_city_name", illegalCityTv.getText().toString());
 					value.put("insurance_tel", insuranceTel.getText().toString().trim());
-			        
 					value.put("maintain_tel", maintainShopTel.getText().toString().trim());
 					value.put("gas_no", petrolGradeTv.getText().toString());
+					value.put("buy_date", buyTime.getText().toString());
 					
-					
-					value.put("car_brand_id", carBrankId);
-					value.put("car_series_id", carSeriesId);
-					value.put("car_type_id", carTypeId);
-					value.put("vio_city_name", illegalCityTv.getText().toString());
-					value.put("insurance_tel", insuranceTel.getText().toString());
-					value.put("maintain_tel", maintainShopTel.getText().toString().trim());
-					value.put("gas_no", petrolGradeTv.getText().toString());
 					
 					Log.e("NewVehicleActivity:","汽油标号:" + petrolGradeTv.getText().toString());
 					dBExcute.InsertDB(NewVehicleActivity.this, value, Constant.TB_Vehicle);
