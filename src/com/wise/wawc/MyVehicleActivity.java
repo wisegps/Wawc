@@ -115,6 +115,7 @@ public class MyVehicleActivity extends Activity{
 	private static final int getIllegalforUrlCode = 42;      // 获取违章城市代码
 	private static final int bindDeviceId = 13;
 	public static final int myVehiclePetrol = 15;
+	private static final int addCarResultCode = 16;
 	
 	HorizontalScrollView horizontalscrollview;
 	View v_divider;
@@ -331,7 +332,7 @@ public class MyVehicleActivity extends Activity{
 					carAdapter.notifyDataSetChanged();
 					chickIndex = arg2;
 					hasSelectIllegalCity = false;
-					
+					Log.e("logo_url:",oneCarData.getLogoPath());
 			}
 		});
 		//设置默认选择第一辆汽车
@@ -444,7 +445,9 @@ public class MyVehicleActivity extends Activity{
 				}
 				break;
 			case R.id.new_vehilce_tv:
-				startActivity(new Intent(MyVehicleActivity.this,NewVehicleActivity.class));
+				Intent intents = new Intent(MyVehicleActivity.this,NewVehicleActivity.class);
+				intents.putExtra("code", addCarResultCode);
+				startActivityForResult(intents, addCarResultCode);
 				break;
 			case R.id.my_vehilce_delete:
 				new AlertDialog.Builder(MyVehicleActivity.this).setTitle(getString(R.string.point)).setMessage(getString(R.string.sure_delete_vehicle) + vehicleNum + "?").setPositiveButton(getString(R.string.sure), new DialogInterface.OnClickListener() {
@@ -559,6 +562,15 @@ public class MyVehicleActivity extends Activity{
 				Log.e("illegalCity.getVehiclenumno()",illegalCity.getVehiclenumno());
 				Log.e("illegalCity.getRegisternum()",illegalCity.getRegist());
 				Log.e("illegalCity.getVehiclenumno()",illegalCity.getRegistno());
+				
+				engine = Integer.valueOf(illegalCity.getEngine());
+				engineNo = Integer.valueOf(illegalCity.getEngineno());
+				car = Integer.valueOf(illegalCity.getVehiclenum());
+				carNo = Integer.valueOf(illegalCity.getVehiclenumno());
+				register = Integer.valueOf(illegalCity.getRegist());
+				registerNo = Integer.valueOf(illegalCity.getRegistno());
+				
+				
 				engineNumLayout.setVisibility(View.VISIBLE);
 				vehicleNumLayout.setVisibility(View.VISIBLE);
 				registerNumLayout.setVisibility(View.VISIBLE);
@@ -604,6 +616,8 @@ public class MyVehicleActivity extends Activity{
 						vehicleRegNum.setFilters(new InputFilter[]{new InputFilter.LengthFilter(registerNo)});
 					}
 				}
+				// TODO
+				Variable.carDatas.get(chickIndex).setVio_location(illegalCity.getCityCode());
 				illegalCity = null;
 			}
 		}
@@ -622,6 +636,10 @@ public class MyVehicleActivity extends Activity{
 			petrolResult = data.getStringExtra("result");
 			petrolGradeTv.setText(petrolResult);
 			Variable.carDatas.get(chickIndex).setGas_no(petrolResult);
+		}
+		
+		if(addCarResultCode == resultCode){
+			carAdapter.refresh(Variable.carDatas);
 		}
 	}
 	
@@ -696,9 +714,8 @@ public class MyVehicleActivity extends Activity{
 				buyTime.setText(carData.getBuy_date());
 				vehicleRegNum.setText(carData.getRegNo());
 				lastMaintainTime.setText(carData.getMaintain_last_date().substring(0, 10));
-				String str = "".equals(carData.getGas_no()) ? "yes" : "no";
-				Log.e("汽油标号：",str);
 				petrolGradeTv.setText(carData.getGas_no());
+				petrolResult = carData.getGas_no();
 				insuranceTel.setText(carData.getInsurance_tel());
 				maintainTelEd.setText(carData.getMaintain_tel());
 				//点击了选择违章城市
@@ -1047,9 +1064,6 @@ public class MyVehicleActivity extends Activity{
         params.add(new BasicNameValuePair("buy_time", buyTime.getText().toString().trim()));
         Log.d(TAG, "buy_time = " + buyTime.getText().toString().trim());
         
-        //		new Thread(new NetThread.postDataThread(myHandler, Constant.BaseUrl + "vehicle/" + Variable.carDatas.get(chickIndex).getObj_id() + "?auth_code=" + Variable.auth_code, params, saveVehicleData)).start();
-        //校验  TODO
-        
         new Thread(new Runnable() {
 			public void run() {
 				try {
@@ -1217,8 +1231,17 @@ public class MyVehicleActivity extends Activity{
  			}
  		}
  	}
- 	//校验输入内容的合法性
+ 	//校验输入内容的合法性  TODO
  	public boolean CheckDatas(){
+ 		
+ 		Log.e("engine",engine+"");
+		Log.e("engineNo",engineNo+"");
+		Log.e("car",car+"");
+		Log.e("carNo",carNo+"");
+		Log.e("register",register+"");
+		Log.e("registerNo",registerNo+"");
+		
+		
  		if(engine == 1){
  			if(engineNo == 0){
  				if(engineNum.getText().toString().trim().length() == engineNo){
@@ -1242,12 +1265,12 @@ public class MyVehicleActivity extends Activity{
  			}
  		}
  		if(register == 1){
- 			if(register == 0){
- 				if(frameNum.getText().toString().trim().length() == carNo){
+ 			if(registerNo == 0){
+ 				if(frameNum.getText().toString().trim().length() == registerNo){
  	 				frameNum.setError("登记证号不合法");
  	 				return false;
  	 			}
- 			}else if(frameNum.getText().toString().trim().length() != carNo){
+ 			}else if(frameNum.getText().toString().trim().length() != registerNo){
  				frameNum.setError("登记证号不合法");
  				return false;
  			}

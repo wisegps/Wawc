@@ -4,6 +4,14 @@ public class BrankModel {
 	private String vehicleBrank = null;
 	private String vehicleLetter = null;
 	private String brankId = null;
+	private String logoUrl = null;
+	
+	public String getLogoUrl() {
+		return logoUrl;
+	}
+	public void setLogoUrl(String logoUrl) {
+		this.logoUrl = logoUrl;
+	}
 	public String getBrankId() {
 		return brankId;
 	}

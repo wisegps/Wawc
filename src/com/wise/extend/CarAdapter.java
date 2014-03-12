@@ -88,7 +88,7 @@ public class CarAdapter extends BaseAdapter{
                     if(bitmap != null){
                         holder.iv_item_cars.setImageBitmap(bitmap);
                     }else{
-                        holder.iv_item_cars.setImageResource(R.drawable.ic_launcher);
+                        holder.iv_item_cars.setImageResource(R.drawable.body_nothing_icon);
                     }
                 }
                 if(carData.isCheck()){
@@ -113,5 +113,9 @@ public class CarAdapter extends BaseAdapter{
 	}
 	private class ViewAdd{
 	    RelativeLayout rl_add;
+	}
+	public void refresh(List<CarData> carDatas){
+		this.carDatas = carDatas;
+		this.notifyDataSetChanged();
 	}
 }

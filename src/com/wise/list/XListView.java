@@ -289,8 +289,6 @@ public class XListView extends ListView implements OnScrollListener {
 				updateFooterHeight(-deltaY / OFFSET_RADIO);
 			}
 			break;
-		case MotionEvent.ACTION_UP:
-			break;
 		default:
 			mLastY = -1; // reset
 			if (getFirstVisiblePosition() == 0) {

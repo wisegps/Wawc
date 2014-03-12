@@ -511,7 +511,6 @@
                     android:text="@string/insurance_company_tel"
                     android:textColor="@color/common_inactive"
                     android:textSize="@dimen/content" />
-
                 <EditText
                     android:id="@+id/new_vehicle_insurance_company_tel_et"
                     android:layout_width="0dip"

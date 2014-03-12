@@ -153,9 +153,12 @@ public class NewVehicleActivity extends Activity{
 	private int car = 0;
 	private int carNo = 0;
 	private String illegalCityCode = "";
+	private int code = 0;
+	private String logoUrl = "";
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.new_vehicle);
+		code = getIntent().getIntExtra("code", 0);
 		cancleAdd = (ImageView) findViewById(R.id.new_vechile_cancle_iv);
 		saveAdd = (TextView) findViewById(R.id.new_vechile_commit_tv);
 		choiceBrank = (TableRow) findViewById(R.id.new_vehicle_brank_tr);
@@ -225,8 +228,10 @@ public class NewVehicleActivity extends Activity{
 				break;
 			case R.id.new_vechile_commit_tv:
 				//  TODO
+				
 				if(getVehicleData()){
-					addCar();
+					logoImageIsExist(Constant.VehicleLogoPath, carBrank);
+//					addCar();
 				}
 				break;
 			case R.id.new_vehicle_brank_tr:   //选择车辆品牌
@@ -242,6 +247,7 @@ public class NewVehicleActivity extends Activity{
 					intent1.putExtra("code", newVehicleSeries);
 					intent1.putExtra("brankId", carBrankId);
 					intent1.putExtra("carBrank", carBrank);
+					intent1.putExtra("logo", logoUrl);
 					startActivityForResult(intent1, newVehicleSeries);
 				}
 				break;
@@ -255,6 +261,7 @@ public class NewVehicleActivity extends Activity{
 					intent6.putExtra("carBrank", carBrank);
 					intent6.putExtra("seriesId", carSeriesId);
 					intent6.putExtra("series", carSeries);
+					intent6.putExtra("logo", logoUrl);
 					startActivityForResult(intent6, newVehicleType);
 				}
 				break;
@@ -303,6 +310,7 @@ public class NewVehicleActivity extends Activity{
 			carSeriesId = data.getStringExtra("seriesId");
 			carType = data.getStringExtra("type");
 			carTypeId = data.getStringExtra("typeId");
+			logoUrl = data.getStringExtra("logo");
 			vehicleBrank.setText(carBrank);
 			TvVehicleSeries.setText(carSeries);
 			TvVehicleType.setText(carType);
@@ -316,6 +324,7 @@ public class NewVehicleActivity extends Activity{
 			carType = data.getStringExtra("type");
 			carTypeId = data.getStringExtra("typeId");
 			carType = data.getStringExtra("type");
+			logoUrl = data.getStringExtra("logo");
 			vehicleBrank.setText(carBrank);
 			TvVehicleSeries.setText(carSeries);
 			TvVehicleType.setText(carType);
@@ -328,6 +337,7 @@ public class NewVehicleActivity extends Activity{
 			carSeriesId = data.getStringExtra("seriesId");
 			carType = data.getStringExtra("type");
 			carTypeId = data.getStringExtra("typeId");
+			logoUrl = data.getStringExtra("logo");
 			vehicleBrank.setText(carBrank);
 			TvVehicleSeries.setText(carSeries);
 			TvVehicleType.setText(carType);
@@ -358,6 +368,12 @@ public class NewVehicleActivity extends Activity{
 				Log.e("illegalCity.getRegisternum()",illegalCity.getRegist());
 				Log.e("illegalCity.getVehiclenumno()",illegalCity.getRegistno());
 				
+				engine = Integer.valueOf(illegalCity.getEngine());
+				engineNo = Integer.valueOf(illegalCity.getEngineno());
+				car = Integer.valueOf(illegalCity.getVehiclenum());
+				carNo = Integer.valueOf(illegalCity.getVehiclenumno());
+				register = Integer.valueOf(illegalCity.getRegist());
+				registerNo = Integer.valueOf(illegalCity.getRegistno());
 				
 				engineNumRow.setVisibility(View.VISIBLE);
 				vehicleFrameNumRow.setVisibility(View.VISIBLE);
@@ -367,9 +383,7 @@ public class NewVehicleActivity extends Activity{
 				illegalCityTv.setText(illegalCity.getCityName());
 				if(Integer.valueOf(illegalCity.getEngine()) == 0){  //隐藏发动机
 					engineNumRow.setVisibility(View.GONE);
-					engine = 0;
 				}else if(Integer.valueOf(illegalCity.getEngine()) == 1){
-					engine = 1;
 					engineNo = Integer.valueOf(illegalCity.getEngineno());
 					if(engineNo == 0){
 						engineNumber.setHint(this.getResources().getString(R.string.all_engine_num_hint));
@@ -380,9 +394,7 @@ public class NewVehicleActivity extends Activity{
 				}
 				if(Integer.valueOf(illegalCity.getVehiclenum()) == 0){   //隐藏车架号
 					vehicleFrameNumRow.setVisibility(View.GONE);
-					car = 0;
 				}else if(Integer.valueOf(illegalCity.getVehiclenum()) == 1){
-					car = 1;
 					carNo = Integer.valueOf(illegalCity.getVehiclenumno());
 					if(carNo == 0){
 						CJNumber.setHint(this.getResources().getString(R.string.all_vehicle_num_hint));
@@ -393,9 +405,7 @@ public class NewVehicleActivity extends Activity{
 				} 
 				if(Integer.valueOf(illegalCity.getRegist()) == 0 ){    // 隐藏车辆登记证号
 					vehicleRegNumRow.setVisibility(View.GONE);
-					register = 0;
 				}else if(Integer.valueOf(illegalCity.getRegist()) == 1){
-					register = 1;
 					registerNo = Integer.valueOf(illegalCity.getRegistno());
 					if(registerNo == 0){
 						carRegNumber.setHint(this.getResources().getString(R.string.all_register_num_hint));
@@ -498,6 +508,10 @@ public class NewVehicleActivity extends Activity{
 					e.printStackTrace();
 				}
 				if("0".equals(code)){
+					
+					//  TODO  判断汽车品牌logo
+					
+					
 					//添加到数据库
 				    System.out.println("保存到数据库");
 					ContentValues value = new ContentValues();
@@ -564,6 +578,7 @@ public class NewVehicleActivity extends Activity{
 	                Variable.carDatas.add(carData);
 	                Intent intent = new Intent(Constant.A_UpdateCar);
 	                sendBroadcast(intent);
+	                NewVehicleActivity.this.setResult(NewVehicleActivity.this.code, intent);
 					NewVehicleActivity.this.finish();
 				}else{
 					Toast.makeText(getApplicationContext(), "添加失败，请重试", 0).show();
@@ -643,12 +658,12 @@ public class NewVehicleActivity extends Activity{
  			}
  		}
  		if(register == 1){
- 			if(register == 0){
- 				if(carRegNumber.getText().toString().trim().length() == carNo){
+ 			if(registerNo == 0){
+ 				if(carRegNumber.getText().toString().trim().length() == registerNo){
  					carRegNumber.setError("登记证号不合法");
  	 				return false;
  	 			}
- 			}else if(carRegNumber.getText().toString().trim().length() != carNo){
+ 			}else if(carRegNumber.getText().toString().trim().length() != registerNo){
  				carRegNumber.setError("登记证号不合法");
  				return false;
  			}
@@ -740,31 +755,30 @@ public class NewVehicleActivity extends Activity{
 	 * @param name  文件名
 	 * @return  图片对象
 	 */
-	public Bitmap logoImageIsExist(String imagePath,String name){
-		Log.e("imagePath：" + imagePath,"name:" + name);
+	public String logoImageIsExist(String imagePath,String name){
+		String path = "";
 		File filePath = new File(imagePath);
-		File imageFile = new File(imagePath + name);
+		File imageFile = new File(imagePath + name + ".png");
 		if(!filePath.exists()){
 			filePath.mkdir();
 		}
 		if(imageFile.exists()){
 			//将图片读取出来 
-			vehicleLogoBitmap = BitmapFactory.decodeFile(imagePath + name);
-			Log.e("本地存在图片","本地存在图片");
+			path = imagePath + name + ".png";
+			Log.e("logo路径：",path);
 		}else{
 			//服务器获取logo图片
-			final String imageUrl = Constant.ImageUrl + name;
 			new Thread(new Runnable() {
 				public void run() {
-					vehicleLogoBitmap = GetSystem.getBitmapFromURL(imageUrl);
+					vehicleLogoBitmap = GetSystem.getBitmapFromURL(logoUrl);
 				}
 			}).start();
               if(vehicleLogoBitmap != null){
-            	  createImage(imagePath + carBrank + ".jpg",vehicleLogoBitmap);
+            	  createImage(imagePath + carBrank + ".png",vehicleLogoBitmap);
               }
-              Log.e("服务器的图片",imageUrl);
+              Log.e("服务器的图片",logoUrl);
 		}
-		return vehicleLogoBitmap;
+		return null;
 	}
 	
 	//向SD卡中添加图片
