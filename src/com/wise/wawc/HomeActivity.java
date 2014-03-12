@@ -534,6 +534,7 @@ public class HomeActivity extends Activity{
                 carData.setVio_city_name(vio_city_name);
                 carData.setMaintain_tel(maintain_tel);
                 carData.setInsurance_tel(insurancetel);
+                Log.e(TAG,"汽油标号:" + gas_no);
                 carData.setGas_no(gas_no);
                 carData.setEngine_no(engine_no);
                 carData.setFrame_no(frame_no);

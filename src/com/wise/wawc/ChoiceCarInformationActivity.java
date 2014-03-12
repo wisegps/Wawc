@@ -1,5 +1,6 @@
 package com.wise.wawc;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -99,6 +100,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 	String carBrankId;
 	String carSeries;
 	String carBrank;
+	String logoUrl = "";
 	
 	public static final String carBrankTitle = "carBrank";  //数据库基础表车辆品牌的标题字段
 	public static final String carSeriesTitle = "carSeries";  //数据库基础表车辆款式的标题字段
@@ -159,6 +161,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 				//  TODO
 				carBrank = brankModel.getVehicleBrank();
 				carBrankId = brankModel.getBrankId();
+				logoUrl = brankModel.getLogoUrl();
 				Log.e("品牌id:",carBrankId);
 				Log.e("品牌:",carBrank);
 				//点击品牌列表   选择车型
@@ -190,6 +193,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 				intent.putExtra("seriesId", carSeriesId);
 				intent.putExtra("typeId", carSeriesNameList.get(arg2)[0]);
 				intent.putExtra("type", carSeriesNameList.get(arg2)[1]);
+				intent.putExtra("logo", logoUrl);
 				ChoiceCarInformationActivity.this.setResult(code, intent);
 				ChoiceCarInformationActivity.this.finish();
 			}
@@ -239,6 +243,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		}else if(code == MyVehicleActivity.resultCodeSeries || code == NewVehicleActivity.newVehicleSeries){
 			carBrankId = getIntent().getStringExtra("brankId");
 			carBrank = getIntent().getStringExtra("carBrank");
+			logoUrl = getIntent().getStringExtra("logo");
 			getDate(carBrankTitle + carBrankId, Constant.BaseUrl + "base/car_series?pid=" + carBrankId,GET_SERIES);
 			Log.e("点击车型","点击车型");
 		}else if(code == MyVehicleActivity.resultCodeType || code == NewVehicleActivity.newVehicleType){
@@ -246,6 +251,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 			carBrank = getIntent().getStringExtra("carBrank");
 			carSeriesId = getIntent().getStringExtra("seriesId");
 			carSeries = getIntent().getStringExtra("series");
+			logoUrl = getIntent().getStringExtra("logo");
 			Log.e("点击车款","点击车款");
 			getDate(carSeriesTitle + carSeriesId, Constant.BaseUrl + "base/car_type?pid=" + carSeriesId,GET_TYPE);
 		}
@@ -371,6 +377,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 					BrankModel brankModel = new BrankModel();
 					brankModel.setVehicleBrank(jsonObj.getString("name"));
 					brankModel.setBrankId(jsonObj.getString("id"));
+					brankModel.setLogoUrl(jsonObj.getString("url_icon"));
 					brankList.add(brankModel);
 				}
 			} catch (JSONException e1) {

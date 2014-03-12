@@ -511,7 +511,6 @@
                     android:text="@string/insurance_company_tel"
                     android:textColor="@color/common_inactive"
                     android:textSize="@dimen/content" />
-
                 <EditText
                     android:id="@+id/new_vehicle_insurance_company_tel_et"
                     android:layout_width="0dip"
@@ -520,6 +519,7 @@
                     android:gravity="center_vertical"
                     android:hint="@string/please_input_insurance_company_tel"
                     android:padding="@dimen/margins"
+                    android:inputType="number"
                     android:textColor="@color/common"
                     android:textSize="@dimen/content"
                     android:background="@null" />
@@ -630,6 +630,7 @@
                     android:gravity="center_vertical"
                     android:hint="@string/please_input_4s_tel"
                     android:padding="@dimen/margins"
+                    android:inputType="number"
                     android:textColor="@color/common"
                     android:textSize="@dimen/content"
                     android:background="@null" />
