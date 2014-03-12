@@ -188,6 +188,11 @@ public class Constant {
      * 更新or修改车辆
      */
     public static String A_UpdateCar = "com.wise.wawc.update_car";
+    
+    /**
+     * 我的爱车logo刷新
+     */
+    public static String updataMyVehicleLogoAction = "com.wise.wawc.update_logo";
     /**
      * 添加终端
      */

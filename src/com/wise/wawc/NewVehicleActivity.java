@@ -142,7 +142,6 @@ public class NewVehicleActivity extends Activity{
 	private String carTypeId = "";
 	private String petrolResult = "";
 	private String maintainTelStr = "";
-	private Bitmap vehicleLogoBitmap = null;
 	private IllegalCity illegalCity;
 	private String city_code = "";
 	private String illegalCityStr = "";
@@ -227,11 +226,8 @@ public class NewVehicleActivity extends Activity{
 				NewVehicleActivity.this.finish();
 				break;
 			case R.id.new_vechile_commit_tv:
-				//  TODO
-				
 				if(getVehicleData()){
-					logoImageIsExist(Constant.VehicleLogoPath, carBrank);
-//					addCar();
+					addCar();
 				}
 				break;
 			case R.id.new_vehicle_brank_tr:   //选择车辆品牌
@@ -510,7 +506,7 @@ public class NewVehicleActivity extends Activity{
 				if("0".equals(code)){
 					
 					//  TODO  判断汽车品牌logo
-					
+					logoImageIsExist(Constant.VehicleLogoPath, carBrank);
 					
 					//添加到数据库
 				    System.out.println("保存到数据库");
@@ -533,6 +529,15 @@ public class NewVehicleActivity extends Activity{
 					value.put("maintain_last_mileage", lastMileage.getText().toString().trim());
 					value.put("maintain_last_date", lastMaintainTime.getText().toString());
 					value.put("maintain_next_mileage", "");
+					
+					value.put("car_brand_id", carBrankId);
+					value.put("car_series_id", carSeriesId);
+					value.put("car_type_id", carTypeId);
+					value.put("vio_city_name", illegalCityTv.getText().toString());
+					value.put("insurance_tel", insuranceTel.getText().toString().trim());
+			        
+					value.put("maintain_tel", maintainShopTel.getText().toString().trim());
+					value.put("gas_no", petrolGradeTv.getText().toString());
 					
 					
 					value.put("car_brand_id", carBrankId);
@@ -575,6 +580,7 @@ public class NewVehicleActivity extends Activity{
 	                carData.setInsurance_tel(insuranceTel.getText().toString());
 	                carData.setMaintain_tel(maintainShopTel.getText().toString().trim());
 	                carData.setGas_no(petrolGradeTv.getText().toString());
+	                carData.setLogoPath(Constant.VehicleLogoPath + vehicleBrank.getText().toString() + ".png");
 	                Variable.carDatas.add(carData);
 	                Intent intent = new Intent(Constant.A_UpdateCar);
 	                sendBroadcast(intent);
@@ -755,7 +761,7 @@ public class NewVehicleActivity extends Activity{
 	 * @param name  文件名
 	 * @return  图片对象
 	 */
-	public String logoImageIsExist(String imagePath,String name){
+	public void logoImageIsExist(final String imagePath,String name){
 		String path = "";
 		File filePath = new File(imagePath);
 		File imageFile = new File(imagePath + name + ".png");
@@ -765,20 +771,17 @@ public class NewVehicleActivity extends Activity{
 		if(imageFile.exists()){
 			//将图片读取出来 
 			path = imagePath + name + ".png";
-			Log.e("logo路径：",path);
 		}else{
 			//服务器获取logo图片
 			new Thread(new Runnable() {
 				public void run() {
-					vehicleLogoBitmap = GetSystem.getBitmapFromURL(logoUrl);
+					Bitmap bitmap = GetSystem.getBitmapFromURL(Constant.ImageUrl + logoUrl);
+					if(bitmap != null){
+						createImage(imagePath + carBrank + ".png",bitmap);
+					}
 				}
 			}).start();
-              if(vehicleLogoBitmap != null){
-            	  createImage(imagePath + carBrank + ".png",vehicleLogoBitmap);
-              }
-              Log.e("服务器的图片",logoUrl);
 		}
-		return null;
 	}
 	
 	//向SD卡中添加图片
@@ -786,7 +789,12 @@ public class NewVehicleActivity extends Activity{
 		FileOutputStream b = null;
 		try {  
             b = new FileOutputStream(fileName);  
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件  
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
+            //发送广播   我的爱车页面刷新显示logo   TODO
+            Intent intent = new Intent(Constant.A_UpdateCar);
+            Intent intent1 = new Intent(Constant.updataMyVehicleLogoAction);
+            sendBroadcast(intent);
+            sendBroadcast(intent1);
         } catch (FileNotFoundException e) {  
             e.printStackTrace();  
         } finally {  

@@ -1,6 +1,9 @@
 package com.wise.wawc;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +19,7 @@ import com.wise.data.CharacterParser;
 import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.service.BrankAdapter;
@@ -35,6 +39,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -101,6 +107,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 	String carSeries;
 	String carBrank;
 	String logoUrl = "";
+	private MyThread myThread = null;
 	
 	public static final String carBrankTitle = "carBrank";  //数据库基础表车辆品牌的标题字段
 	public static final String carSeriesTitle = "carSeries";  //数据库基础表车辆款式的标题字段
@@ -328,9 +335,10 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 				}
 				//更新数据库  
 				insertDatabases(carSeriesTitle + carSeriesId,resultType,ChoiceCarInformationActivity.this);
-				
 				parseJSON(jsonType,GET_TYPE);
-				
+				break;
+			case 38:
+				brankAdapter.notifyDataSetChanged();
 				break;
 			default:
 				return;
@@ -377,7 +385,11 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 					BrankModel brankModel = new BrankModel();
 					brankModel.setVehicleBrank(jsonObj.getString("name"));
 					brankModel.setBrankId(jsonObj.getString("id"));
-					brankModel.setLogoUrl(jsonObj.getString("url_icon"));
+					if(jsonObj.opt("url_icon") != null){
+						brankModel.setLogoUrl(jsonObj.getString("url_icon"));
+					}else{
+						brankModel.setLogoUrl("");
+					}
 					brankList.add(brankModel);
 				}
 			} catch (JSONException e1) {
@@ -390,6 +402,10 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 			carTypeLayout.setVisibility(View.GONE);
 			brankAdapter = new BrankAdapter(ChoiceCarInformationActivity.this, brankModelList);
 			vehicleBrankList.setAdapter(brankAdapter);
+			
+			//刷新品牌logo
+			myThread = new MyThread();
+			myThread.start();
 			break;
 		case GET_SERIES:   //解析车型数据
 			carSeriesList.clear();
@@ -435,10 +451,6 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 			break;
 		}
 	}
-	
-	
-	
-	
 	
 	/**
 	 * 为ListView填充数据
@@ -529,5 +541,51 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		values.put("Content", content);
 		DBExcute dBExcute = new DBExcute();
 		dBExcute.InsertDB(context, values, Constant.TB_Base);
+	}
+	
+	public void logoImageIsExist(final String imagePath,final String name,final String logoUrl){
+		File filePath = new File(imagePath);
+		File imageFile = new File(imagePath + name + ".png");
+		if(!filePath.exists()){
+			filePath.mkdir();
+		}
+		if(!imageFile.exists()){
+			Bitmap bitmap = GetSystem.getBitmapFromURL(Constant.ImageUrl + logoUrl);
+			if (bitmap != null) {
+				createImage(imagePath + name + ".png", bitmap);
+			}
+		}
+	}
+	
+	class MyThread extends Thread{
+		public void run() {
+			for(int i = 0 ; i < brankModelList.size() ; i++){
+				if(!"".equals(brankModelList.get(i).getLogoUrl()) && brankModelList.get(i).getLogoUrl() != null){
+					logoImageIsExist(Constant.VehicleLogoPath, brankModelList.get(i).getVehicleBrank(), brankModelList.get(i).getLogoUrl());
+				}
+			}
+			super.run();
+		}
+	}
+	
+	//向SD卡中添加图片
+	public void createImage(String fileName,Bitmap bitmap){
+		FileOutputStream b = null;
+		try {  
+            b = new FileOutputStream(fileName);  
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
+            Message msg = new Message();
+            msg.what = 38;
+            myHandler.sendMessage(msg);
+        } catch (FileNotFoundException e) {  
+            e.printStackTrace();  
+        } finally {  
+            try {  
+                b.flush();  
+                b.close();  
+            } catch (IOException e) {  
+                e.printStackTrace();  
+            }  
+        }
 	}
 }

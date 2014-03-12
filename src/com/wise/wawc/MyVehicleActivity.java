@@ -50,10 +50,12 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
@@ -208,6 +210,8 @@ public class MyVehicleActivity extends Activity{
 	
 	private String petrolResult = "";
 	
+	private MyBroadCastReceiver myBroadCastReceiver = null;
+	private IntentFilter intentFilter = null;
 	
 	ChoiceCarInformationActivity choiceCarInformationActivity = null;
 	
@@ -290,6 +294,12 @@ public class MyVehicleActivity extends Activity{
         }else{
             menu.setImageResource(R.drawable.side_left);
         }
+        
+        //  注册广播
+        
+        myBroadCastReceiver = new MyBroadCastReceiver();
+        intentFilter = new IntentFilter(Constant.updataMyVehicleLogoAction);
+        MyVehicleActivity.this.registerReceiver(myBroadCastReceiver, intentFilter);
 	}
 	protected void onResume() {
 		super.onResume();
@@ -1304,7 +1314,14 @@ public class MyVehicleActivity extends Activity{
  		buttomView.setVisibility(View.GONE);
  		buttomViewIsShow = false;
  		vehNum = vehicleNumber.getText().toString();
+ 		//取消广播注册
  		super.onPause();
+ 	}
+ 	
+ 	@Override
+ 	protected void onDestroy() {
+ 		MyVehicleActivity.this.unregisterReceiver(myBroadCastReceiver);
+ 		super.onDestroy();
  	}
  	
  	
@@ -1342,6 +1359,13 @@ public class MyVehicleActivity extends Activity{
 			}
 		} catch (JSONException e) {
 			e.printStackTrace();
+		}
+ 	}
+ 	class MyBroadCastReceiver extends BroadcastReceiver{
+		public void onReceive(Context context, Intent intent) {
+			if(carAdapter != null){
+				carAdapter.notifyDataSetChanged();
+			}
 		}
  	}
 }
