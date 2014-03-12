@@ -59,7 +59,7 @@ public class TravelMapActivity extends Activity {
         super.onCreate(savedInstanceState);
         WawcApplication app = (WawcApplication) this.getApplication();
         if (app.mBMapManager == null) {
-            app.mBMapManager = new BMapManager(this);
+            app.mBMapManager = new BMapManager(getApplicationContext());
             /**
              * 如果BMapManager没有初始化则初始化BMapManager
              */

@@ -47,6 +47,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -62,6 +63,7 @@ import android.widget.Toast;
  * @author honesty
  */
 public class SearchMapActivity extends Activity {
+    private static final String TAG = "SearchMapActivity";
     private final int getIsCollect = 1;
     private final int get4s = 2;
     
@@ -81,7 +83,7 @@ public class SearchMapActivity extends Activity {
         super.onCreate(savedInstanceState);
         WawcApplication app = (WawcApplication) this.getApplication();
         if (app.mBMapManager == null) {
-            app.mBMapManager = new BMapManager(this);
+            app.mBMapManager = new BMapManager(getApplicationContext());
             /**
              * 如果BMapManager没有初始化则初始化BMapManager
              */
@@ -164,6 +166,7 @@ public class SearchMapActivity extends Activity {
             }
         } else {
             // 搜索关键字
+            Log.d(TAG, keyWord);
             mkSearch = new MKSearch();
             mkSearch.init(WawcApplication.getInstance().mBMapManager, mkSearchListener);
             mkSearch.poiSearchNearBy(keyWord, point, 5000);

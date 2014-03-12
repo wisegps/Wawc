@@ -154,11 +154,25 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		myHandler.sendMessage(msg);
 		myAdapter = new MyAdapter(VehicleFriendActivity.this,saySomething,articleDataList,articleList);
 		articleList.setAdapter(myAdapter);
-		
 		articleList.setOnScrollListener(new OnScrollListener() {
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 				saySomething.setVisibility(View.GONE);
 				myAdapter.isClick = false;
+				
+				switch (scrollState) {
+	            case OnScrollListener.SCROLL_STATE_FLING:
+	                Log.d(TAG, "FLING");
+	                break;
+	            case OnScrollListener.SCROLL_STATE_IDLE:
+	                Log.d(TAG, "IDLE");
+	                break;
+	            case OnScrollListener.SCROLL_STATE_TOUCH_SCROLL:
+	                Log.d(TAG, "TOUCH_SCROLL");
+	                break;
+	            default:
+	                break;
+	            }
+				
 			}
 			public void onScroll(AbsListView view, int firstVisibleItem,int visibleItemCount, int totalItemCount) {
 			}
