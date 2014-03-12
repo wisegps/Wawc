@@ -6,6 +6,8 @@ import java.util.List;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.wise.article.ArticleActivity;
+import com.wise.data.Article;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
@@ -116,10 +118,11 @@ public class SettingCenterActivity extends Activity{
                 startActivityForResult(new Intent(SettingCenterActivity.this, CarSelectActivity.class), 0);
                 break;
             case R.id.tv_share_gift:
-                Intent intent = new Intent(SettingCenterActivity.this, WapActivity.class);
-                intent.putExtra("Title", "推荐有礼");
-                intent.putExtra("url", "http://wiwc.api.wisegps.cn/help/clby");
-                startActivity(intent);
+//                Intent intent = new Intent(SettingCenterActivity.this, WapActivity.class);
+//                intent.putExtra("Title", "推荐有礼");
+//                intent.putExtra("url", "http://wiwc.api.wisegps.cn/help/clby");
+//                startActivity(intent);
+                startActivity(new Intent(SettingCenterActivity.this, ArticleActivity.class));
                 break;
             case R.id.tv_feedback:
                 startActivity(new Intent(SettingCenterActivity.this, FeedBackActivity.class));

@@ -38,6 +38,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 public class GetSystem {
+    private static final String TAG = "GetSystem";
     /**
      * 获取gps状态
      * 
@@ -299,6 +300,7 @@ public class GetSystem {
      */
     public static Bitmap getBitmapFromURL(String Path) {
         try {
+            Log.d(TAG, Path);
             URL url = new URL(Path);
             HttpURLConnection connection = (HttpURLConnection) url
                     .openConnection();
@@ -350,13 +352,12 @@ public class GetSystem {
      */
     public static void saveImageSD(Bitmap bitmap, String path, String name) {
         File file = new File(path);
-        System.out.println(path);
         if (!file.exists()) {
             System.out.println("创建文件夹");
             file.mkdirs();// 创建文件夹
         }
         String fileName = path + name;
-        System.out.println("fileName = " + fileName);
+        System.out.println(fileName + ",bitmap.getWidth()=" + bitmap.getWidth());
         FileOutputStream b = null;
         try {
             b = new FileOutputStream(fileName);
