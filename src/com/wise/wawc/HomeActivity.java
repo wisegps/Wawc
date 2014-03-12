@@ -851,6 +851,20 @@ public class HomeActivity extends Activity{
                 String maintain_tel = jsonObject.getString("maintain_tel");
                 String gas_no = jsonObject.getString("gas_no");
                 
+                
+//                String carBrankId = jsonObject.getString("car_brand_id");
+//                String carSeriesId  = jsonObject.getString("car_series_id");
+//                String carTypeId = jsonObject.getString("car_type_id");
+//                
+//                
+//                String vio_city_name = jsonObject.getString("vio_city_name");
+//                String carTypeId = jsonObject.getString("car_type_id");
+//                String carTypeId = jsonObject.getString("car_type_id");
+//                String carTypeId = jsonObject.getString("car_type_id");
+//                String carTypeId = jsonObject.getString("car_type_id");
+//                String carTypeId = jsonObject.getString("car_type_id");
+                
+                
                 buy_date = buy_date.substring(0, 10);
                 
                 CarData carData = new CarData();                
@@ -911,6 +925,14 @@ public class HomeActivity extends Activity{
                 values.put("reg_no", reg_no);
                 values.put("vio_location", vio_location);
                 values.put("device_id", device_id);
+                
+            	values.put("car_brand_id", car_brand_id);
+				values.put("car_series_id", car_series_id);
+				values.put("car_type_id", car_type_id);
+				values.put("vio_city_name", vio_city_name);
+				values.put("insurance_tel", insurancetel);
+				values.put("maintain_tel", maintain_tel);
+				values.put("gas_no", gas_no);
                 dbExcute.InsertDB(HomeActivity.this, values, Constant.TB_Vehicle);
             }
             Variable.carDatas = carDatas;

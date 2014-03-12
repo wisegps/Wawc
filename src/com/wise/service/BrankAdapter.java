@@ -1,11 +1,23 @@
 package com.wise.service;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import com.wise.data.BrankModel;
+import com.wise.pubclas.Constant;
+import com.wise.pubclas.GetSystem;
 import com.wise.wawc.R;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +32,8 @@ import android.widget.TextView;
 public class BrankAdapter extends BaseAdapter{
 	private Context context;
 	private List<BrankModel> brankKList;
+	ViewHolder viewHolder = null;
+	private static final int showLogo = 1;
 	public BrankAdapter(Context context,List<BrankModel> brankKList){
 		this.context = context;
 		this.brankKList = brankKList;
@@ -36,6 +50,7 @@ public class BrankAdapter extends BaseAdapter{
 	final static class ViewHolder {
 		TextView tvLetter;
 		TextView tvTitle;
+		ImageView logo;
 	}
 	public int getCount() {
 		return brankKList.size();
@@ -47,14 +62,13 @@ public class BrankAdapter extends BaseAdapter{
 		return position;
 	}
 	public View getView(int position, View convertView, ViewGroup parent) {
-		ViewHolder viewHolder = null;
 		final BrankModel mContent = brankKList.get(position);
 		if (convertView == null) {
 			viewHolder = new ViewHolder();
 			convertView = LayoutInflater.from(context).inflate(R.layout.brank_adapter_list, null);
 			viewHolder.tvTitle = (TextView) convertView.findViewById(R.id.list_brank);
 			viewHolder.tvLetter = (TextView) convertView.findViewById(R.id.list_letter);
-			
+			viewHolder.logo = (ImageView) convertView.findViewById(R.id.brand_logo);
 			convertView.setTag(viewHolder);
 		} else {
 			viewHolder = (ViewHolder) convertView.getTag();
@@ -71,6 +85,12 @@ public class BrankAdapter extends BaseAdapter{
 					viewHolder.tvLetter.setVisibility(View.GONE);
 				}
 				viewHolder.tvTitle.setText(this.brankKList.get(position).getVehicleBrank());
+				if(new File(Constant.VehicleLogoPath+this.brankKList.get(position).getVehicleBrank() + ".png").exists()){
+					Bitmap image = BitmapFactory.decodeFile(Constant.VehicleLogoPath+this.brankKList.get(position).getVehicleBrank() + ".png");
+					viewHolder.logo.setImageBitmap(image);
+				}else{
+					viewHolder.logo.setImageResource(R.drawable.body_nothing_icon);
+				}
 		return convertView;
 	}
 	

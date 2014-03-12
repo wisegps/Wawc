@@ -188,6 +188,11 @@ public class Constant {
      * 更新or修改车辆
      */
     public static String A_UpdateCar = "com.wise.wawc.update_car";
+    
+    /**
+     * 我的爱车logo刷新
+     */
+    public static String updataMyVehicleLogoAction = "com.wise.wawc.update_logo";
     /**
      * 添加终端
      */
@@ -210,7 +215,7 @@ public class Constant {
 	 * 车友圈分页变量
 	 */
 	public static int start = 0;  // 开始页
-	public static int pageSize = 10;   //每页数量
+	public static int pageSize =3;   //每页数量
 	public static int totalPage = 0;   //数据总量
 	public static int currentPage = 0;  //当前页
 	

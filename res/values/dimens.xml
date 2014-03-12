@@ -26,4 +26,5 @@
     <dimen name="article_list_item_to_screen_top">10dp</dimen>
     
     <dimen name="margins1">5dp</dimen>
+    <dimen name="brand_logo">30dp</dimen>
 </resources>

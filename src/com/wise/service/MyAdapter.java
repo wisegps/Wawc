@@ -141,12 +141,14 @@ public class MyAdapter extends BaseAdapter{
 			viewHolder.articlePraisesLayout = (TableRow) convertView.findViewById(R.id.article_praises_layout);
 			viewHolder.linearLayout = (LinearLayout) convertView.findViewById(R.id.user_image);
 			viewHolder.commentLayout = (LinearLayout) convertView.findViewById(R.id.article_comment_layout);
+			
+
+			Log.d(TAG, "position = " + position);
 			convertView.setTag(viewHolder);
 		}else{
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		
-		Log.d(TAG, "position = " + position);
 		List<Bitmap> smallImageList = new ArrayList<Bitmap>();
 		for(int i = 0 ; i < articleList.get(position).getImageList().size() ; i ++){
 			Map<String,String> imageMap = articleList.get(position).getImageList().get(i);
@@ -465,8 +467,11 @@ public class MyAdapter extends BaseAdapter{
 				}
 			}
 	    }
-	public void refreshDates(List<Article> articleList){ 
+	public void refreshDates(List<Article> articleList){
 		this.articleList = articleList;
+		for(int i = 0 ; i < articleList.size() ; i ++){
+			Log.e("迭代器：",this.articleList.get(i).getContent());
+		}
 		this.notifyDataSetChanged();
 	}
 	//屏蔽List  item 点击事件（避免点击变色 影响ui）
