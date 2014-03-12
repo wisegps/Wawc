@@ -215,7 +215,7 @@ public class Constant {
 	 * 车友圈分页变量
 	 */
 	public static int start = 0;  // 开始页
-	public static int pageSize = 10;   //每页数量
+	public static int pageSize =3;   //每页数量
 	public static int totalPage = 0;   //数据总量
 	public static int currentPage = 0;  //当前页
 	
