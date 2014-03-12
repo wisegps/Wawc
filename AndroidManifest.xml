@@ -73,7 +73,8 @@
         <activity android:name=".DealAddressActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".ShareLocationActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".VehicleFriendActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
-        <activity android:name=".MyVehicleActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".MyVehicleActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustPan"></activity>
         <activity android:name=".NewVehicleActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".CarBrankListActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"></activity>

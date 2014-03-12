@@ -109,7 +109,7 @@ public class HomeActivity extends Activity{
         super.onCreate(savedInstanceState);
         WawcApplication app = (WawcApplication)this.getApplication();
         if (app.mBMapManager == null) {
-            app.mBMapManager = new BMapManager(this);
+            app.mBMapManager = new BMapManager(getApplicationContext());
             app.mBMapManager.init(WawcApplication.strKey,null);
         }
         setContentView(R.layout.activity_home);
@@ -1013,9 +1013,15 @@ public class HomeActivity extends Activity{
                 }
                 GetDBCarRemindData();
             }else if(action.equals(Constant.A_City)){
-                //for(int i = 0 ; i < mTextViews.length ; i++){
-                    //mTextViews[i].setText(intent.getStringExtra("AddrStr"));
-                //}
+                if(Variable.carDatas == null || Variable.carDatas.size() == 0){
+                    
+                }else{
+                    if(Variable.carDatas.get(DefaultVehicleID).getDevice_id() == null ||
+                            Variable.carDatas.get(DefaultVehicleID).getDevice_id().equals("")|| 
+                            Variable.carDatas.get(DefaultVehicleID).getDevice_id().equals("null")){
+                        mTextViews[DefaultVehicleID][0].setText(intent.getStringExtra("AddrStr"));
+                    }
+                }
             }
                 else if(action.equals(Constant.A_UpdateCar)){
                 showCar();

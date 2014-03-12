@@ -62,7 +62,7 @@ public class TravelActivity extends Activity{
 		super.onCreate(savedInstanceState);
 		WawcApplication app = (WawcApplication)this.getApplication();
         if (app.mBMapManager == null) {
-            app.mBMapManager = new BMapManager(this);
+            app.mBMapManager = new BMapManager(getApplicationContext());
             app.mBMapManager.init(WawcApplication.strKey,null);
         }
 		setContentView(R.layout.activity_travel);
