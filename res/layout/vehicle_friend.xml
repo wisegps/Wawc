@@ -18,6 +18,7 @@
             android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margins"
             android:layout_gravity="center_vertical"
             android:background="@drawable/side_left"
             android:paddingLeft="@dimen/margins" />
