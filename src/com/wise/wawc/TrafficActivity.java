@@ -285,16 +285,17 @@ public class TrafficActivity extends Activity implements IXListViewListener{
 				holder.tv_item_traffic_fraction = (TextView)convertView.findViewById(R.id.tv_item_traffic_fraction);
 				holder.tv_item_traffic_money = (TextView)convertView.findViewById(R.id.tv_item_traffic_money);
 				holder.iv_traffic_share = (ImageView)convertView.findViewById(R.id.iv_traffic_share);
+				holder.iv_traffic_help = (ImageView)convertView.findViewById(R.id.iv_traffic_help);
 				convertView.setTag(holder);
 			} else {
 				holder = (ViewHolder) convertView.getTag();
 			}
 			final TrafficData trafficData = trafficDatas.get(position);
-			holder.tv_item_traffic_data.setText("违章时间："+trafficData.getDate());
-			holder.tv_item_traffic_adress.setText("违章地点："+trafficData.getLocation());
-			holder.tv_item_traffic_content.setText("违章内容："+trafficData.getAction());
-			holder.tv_item_traffic_fraction.setText("违章扣分："+trafficData.getScore());
-			holder.tv_item_traffic_money.setText("违章罚款："+trafficData.getFine());
+			holder.tv_item_traffic_data.setText(trafficData.getDate());
+			holder.tv_item_traffic_adress.setText(trafficData.getLocation());
+			holder.tv_item_traffic_content.setText(trafficData.getAction());
+			holder.tv_item_traffic_fraction.setText("扣分："+trafficData.getScore());
+			holder.tv_item_traffic_money.setText("罚款："+trafficData.getFine());
 			holder.iv_traffic_share.setOnClickListener(new OnClickListener() {                
                 @Override
                 public void onClick(View v) {
@@ -308,12 +309,18 @@ public class TrafficActivity extends Activity implements IXListViewListener{
                     GetSystem.share(TrafficActivity.this, sb.toString(), "",0,0);
                 }
             });
+			holder.iv_traffic_help.setOnClickListener(new OnClickListener() {                
+                @Override
+                public void onClick(View v) {
+                    
+                }
+            });
 			return convertView;
 		}	
 		private class ViewHolder {
 			TextView tv_item_traffic_data,tv_item_traffic_adress,tv_item_traffic_content,
 						tv_item_traffic_fraction,tv_item_traffic_money;
-			ImageView iv_traffic_share;
+			ImageView iv_traffic_share,iv_traffic_help;
 		}
 	}
 	

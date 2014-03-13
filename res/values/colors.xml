@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- 灰色背景 -->
-    <color name="gray">#E6d8d9e1</color>
+    <color name="gray">#d8d9e1</color>
     <color name="gray_lights">#80d8d9e1</color>
     <color name="gray_light">#4cd8d9e1</color>
     <color name="gray_light_ten">#19d8d9e1</color>

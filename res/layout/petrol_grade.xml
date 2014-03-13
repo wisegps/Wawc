@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/default_bg">
+    android:background="@color/gray">
      <RelativeLayout
         android:id="@+id/choice_petrol_top"
         android:layout_width="fill_parent"

@@ -44,7 +44,7 @@
 			<GridView 
 			    android:id="@+id/gv_activity_car_remind"
 			    android:layout_width="fill_parent"
-			    android:layout_height="wrap_content"
+			    android:layout_height="1dp"
 			    android:listSelector="@drawable/bg_item_selector"
 			    android:numColumns="auto_fit"
 			    android:stretchMode="columnWidth"/>
@@ -69,6 +69,7 @@
 	                android:layout_height="wrap_content"
 	                android:textColor="@color/common"
 	                android:layout_centerVertical="true"
+	                android:textSize="@dimen/content"
 	                android:text="@string/inspection"/>
                 <TextView 
                     android:id="@+id/tv_activity_car_remind_inspection"
@@ -136,6 +137,7 @@
 	                android:layout_height="wrap_content"
 	                android:textColor="@color/common"
 	                android:layout_centerVertical="true"
+	                android:textSize="@dimen/content"
 	                android:text="@string/renewal"/>
                 <TextView 
                     android:id="@+id/tv_activity_car_remind_renewal"
@@ -204,6 +206,7 @@
 	                android:layout_height="wrap_content"
 	                android:textColor="@color/common"
 	                android:layout_centerVertical="true"
+	                android:textSize="@dimen/content"
 	                android:text="@string/maintenance"/>
                 <TextView 
                     android:id="@+id/tv_activity_car_maintenance_inspection"
@@ -274,6 +277,7 @@
 	                android:layout_height="wrap_content"
 	                android:textColor="@color/common"
 	                android:layout_centerVertical="true"
+	                android:textSize="@dimen/content"
 	                android:text="@string/examined"/>
                 <TextView 
                     android:id="@+id/tv_annual_inspect_date"
@@ -342,6 +346,7 @@
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
 	                android:textColor="@color/common"
+	                android:textSize="@dimen/content"
 	                android:layout_centerVertical="true"
 	                android:text="@string/replacement"/>
                 <TextView 

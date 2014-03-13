@@ -443,7 +443,12 @@ public class CarRemindActivity extends Activity {
      * 显示车辆信息
      */
     private void ShowText(CarData carData) {
-        car_remind_inspection(carData.getAnnual_inspect_date().substring(0, 10));
+        Log.d(TAG, carData.toString());
+        if(carData.getAnnual_inspect_date() == null || carData.getAnnual_inspect_date().equals("")){
+            car_remind_inspection("");
+        }else{
+            car_remind_inspection(carData.getAnnual_inspect_date().substring(0, 10));
+        }
         car_renewal(carData.getInsurance_date().substring(0, 10));
         
         tv_activity_car_maintenance_inspection.setText(String.format(
