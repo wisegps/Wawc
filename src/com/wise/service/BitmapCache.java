@@ -59,7 +59,6 @@ public class BitmapCache {
 		if (mCache.containsKey(bitmapId)) {  //存在这张图的key
 			mCurrentSizeInbytes -= getSizeInbytes( mCache.get(bitmapId) );
 		}
-		Log.e("图片数量：",mCache.size()+"");
 		mCache.put(bitmapId, drawable);
 		mCurrentSizeInbytes += getSizeInbytes(drawable);  //每添加一张图片将内存大小计算出来
 		//TODO 测试后删除

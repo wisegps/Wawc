@@ -108,6 +108,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 	String carBrank;
 	String logoUrl = "";
 	private MyThread myThread = null;
+	private boolean imageDownload = false;
 	
 	public static final String carBrankTitle = "carBrank";  //数据库基础表车辆品牌的标题字段
 	public static final String carSeriesTitle = "carSeries";  //数据库基础表车辆款式的标题字段
@@ -522,6 +523,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 	}
 	protected void onPause() {
 		Constant.isHideFooter = false;
+		imageDownload = false;
 		super.onPause();
 	}
 	protected void onRestart() {
@@ -530,6 +532,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 	}
 	protected void onResume() {
 		Constant.isHideFooter = true;
+		imageDownload = true;
 		super.onResume();
 	}
 	
@@ -561,7 +564,11 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		public void run() {
 			for(int i = 0 ; i < brankModelList.size() ; i++){
 				if(!"".equals(brankModelList.get(i).getLogoUrl()) && brankModelList.get(i).getLogoUrl() != null){
-					logoImageIsExist(Constant.VehicleLogoPath, brankModelList.get(i).getVehicleBrank(), brankModelList.get(i).getLogoUrl());
+					if(imageDownload){
+						logoImageIsExist(Constant.VehicleLogoPath, brankModelList.get(i).getVehicleBrank(), brankModelList.get(i).getLogoUrl());
+					}else{
+						continue;
+					}
 				}
 			}
 			super.run();

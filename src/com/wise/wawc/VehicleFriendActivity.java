@@ -250,9 +250,12 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	@Override
 	public void onLoadMore() {
         GetSystem.displayBriefMemory(VehicleFriendActivity.this);
+        Log.d(TAG, "isChickTypeTile = " + isChickTypeTile);
 		if(isChickTypeTile){
+			Log.e("车友圈加载","车友圈加载");
+			Log.d(TAG, "isLoadMore = " + isLoadMore);
 			if(!isLoadMore){
-				getArticleDatas(loadMoreAction);
+				getArticleDatas(loadMoreAction);  //数据库车友圈文章  TODO
 			}else{
 				DBHelper dBHelper = new DBHelper(VehicleFriendActivity.this);
 				SQLiteDatabase  sQLiteDatabase = dBHelper.getReadableDatabase();
@@ -260,6 +263,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				if(cursor.moveToLast()){
 					minBlogId = cursor.getInt(cursor.getColumnIndex("Blog_id"));
 				}
+				Log.e("车友圈服务器加载更多",Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code + "&min_id=" + minBlogId);
 				new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code + "&min_id=" + minBlogId, loadMoreCode)).start();
 			}
 		}else{
@@ -267,8 +271,8 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			if(!isLoadMore){
 				articleSort(article,3);
 			}else{
-				//上次分类最小blog_id
-				new Thread(new NetThread.GetDataThread(myHandler, articleType + "&min_id=?" + articleTypeMinBlogId, FriendType)).start();
+				Log.e("main_blog_id",articleType + "&blog_id=" + articleTypeMinBlogId);
+				new Thread(new NetThread.GetDataThread(myHandler, articleType + "&min_id=" + articleTypeMinBlogId, FriendType)).start();
 			}
 		}
 	}
@@ -368,7 +372,8 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				if(!"[]".equals(result)){
 					jsonToList(msg.obj.toString());
 					isLoadMore = false;
-					getArticleDatas(0);
+					onLoad();
+					getArticleDatas(loadMoreAction);
 				}
 				onLoad();	
 				break;
@@ -390,6 +395,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			case FriendType:   // TODO
 				String results = msg.obj.toString();
 				try {
+					Log.e("分类文章结果：",results);
 					if(!"[]".equals(msg.obj.toString())){
 						DBHelper dBHelper = new DBHelper(VehicleFriendActivity.this);
 						SQLiteDatabase reader = dBHelper.getReadableDatabase();
@@ -411,7 +417,11 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 								ContentValues values = new ContentValues();
 								values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
 								values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
-								values.put("UserLogo", jsonArray.getJSONObject(i).getString("logo"));
+								if(jsonArray.getJSONObject(i).opt("logo") != null){
+									values.put("UserLogo", jsonArray.getJSONObject(i).getString("logo"));
+								}else{
+									values.put("UserLogo", "");
+								}
 								values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
 								dBExcute.InsertDB(VehicleFriendActivity.this,values,Constant.TB_VehicleFriend);
 								
@@ -438,7 +448,9 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 					e.printStackTrace();
 				}
 				articleSort(article,0);
-				myDialog.cancel();
+				if(myDialog != null){
+					myDialog.cancel();
+				}
 				onLoad();
 				break;
 			}
@@ -477,6 +489,8 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	//获取数据     //  TODO
 	public void getArticleDatas(int actionCode){
+		Log.e("actionCode:",actionCode+"");
+		Log.e("loadMoreAction:",loadMoreAction+"");
 		totalNum = dBExcute.getTotalCount(Constant.TB_VehicleFriend, VehicleFriendActivity.this);
 		if(totalNum > 0){
 			//查询数据库
@@ -487,9 +501,10 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				articleDataList = dBExcute.getArticlePageDatas(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
 				setArticleDataList(articleDataList);
 			}
-			if(Constant.totalPage == Constant.currentPage){
+			if(Constant.totalPage == Constant.currentPage){   //数据库没有更多文章 请求服务器
 				isLoadMore = true;
 			}
+//			onLoad();
 		}else{
 			Log.e("开启线程请求服务器加载更多文章","开启线程请求服务器加载更多文章");
 			myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
@@ -534,15 +549,16 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		Constant.totalPage = 0;   //数据总量
 		Constant.currentPage = 0;  //当前页
 		isLoadMore = false;
-		
+		if(this.articleList != null){
+			this.articleDataList.clear();
+		}
 		if(Variable.articleList != null){
 			Variable.articleList.clear();
 		}
-//		if(pos == 0){    //车友圈
-//			getArticleDatas(0);
-//			isChickTypeTile = true;
-//		}else 
-			if(pos == 1){   //同城车友
+		if(pos == 0){    //车友圈
+			getArticleDatas(0);
+			isChickTypeTile = true;
+		}else if(pos == 1){   //同城车友
 			articleSort(1,0);
 			article = 1;
 			isChickTypeTile = false;
@@ -570,33 +586,33 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		}else{
 			articleType = Constant.BaseUrl + "blog?auth_code=" + Variable.auth_code + "&type=" + type + "&cust_id=" + Variable.cust_id; 
 		}
+		//查询类型表
 		
-//		String sql = "select " + Constant.TB_VehicleFriendType + ".Blog_id ," + Constant.TB_VehicleFriend + ".Content where " + Constant.TB_VehicleFriendType + ".Type_id=?" 
 		totalNum = dBExcute.getTotalCount( VehicleFriendActivity.this,"select * from " + Constant.TB_VehicleFriendType + " where Type_id=?",new String[]{String.valueOf(type)});
-		
-//		totalNum = dBExcute.getTotalCount( VehicleFriendActivity.this,"select * from " + Constant.TB_VehicleFriendType + " where Type_id=?",new String[]{String.valueOf(type)});
-//		if(totalNum > 0){
-//			Constant.totalPage = totalNum%Constant.pageSize > 0 ? totalNum/Constant.pageSize + 1 : totalNum/Constant.pageSize;
-//			if(Constant.totalPage - 1 >= Constant.currentPage){
-//				Constant.start = Constant.currentPage*Constant.pageSize;
-//				Constant.currentPage ++ ;
-//				Log.e("start:",Constant.start+"");
+		if(totalNum > 0){
+			Constant.totalPage = totalNum%Constant.pageSize > 0 ? totalNum/Constant.pageSize + 1 : totalNum/Constant.pageSize;
+			if(Constant.totalPage - 1 >= Constant.currentPage){
+				Constant.start = Constant.currentPage*Constant.pageSize;
+				Constant.currentPage ++ ;
+				Log.e("start:",Constant.start+"");
 //				//  TODO
-//				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id = ? limit ?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
-//				setArticleDataList(articleDataList);
-//			}
-//			if(Constant.totalPage == Constant.currentPage){
-//				isLoadMore = true;
-//			}
-//		}else{
-//			myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
-//			myDialog.setCancelable(true);
-//			new Thread(new NetThread.GetDataThread(myHandler, articleType, FriendType)).start();
-//		}
-//		Variable.articleList = articleDataList;
-//		myAdapter.refreshDates(articleDataList);
-//		if(3 == action){
-//			onLoad();
-//		}
+				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
+				setArticleDataList(articleDataList);
+			}
+			if(Constant.totalPage == Constant.currentPage){
+				isLoadMore = true;
+			}
+		}else{
+			Log.e("!(totalNum > 0)",(!(totalNum > 0))+"");
+			myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
+			myDialog.setCancelable(true);
+			Log.e("向服务器获取更多的数据",articleType);
+			new Thread(new NetThread.GetDataThread(myHandler, articleType, FriendType)).start();
+		}
+		Variable.articleList = articleDataList;
+		myAdapter.refreshDates(articleDataList);
+		if(3 == action){
+			onLoad();
+		}
 	}
 }

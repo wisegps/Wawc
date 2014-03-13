@@ -158,9 +158,12 @@ public class DBExcute {
 				int blog_id = cursor.getInt(cursor.getColumnIndex("Blog_id"));
 				//通过文章类型中的blog_id 在文章表中查询文章详细信息
 				SQLiteDatabase reader = dbHelper.getReadableDatabase();
+				
+				Log.e("Type_id:",cursor.getInt(cursor.getColumnIndex("Type_id"))+"");
+				Log.e("blog_id:",blog_id+"");
 				Cursor cursors = reader.rawQuery("select * from " + Constant.TB_VehicleFriend + " where Blog_id=?", new String[]{String.valueOf(blog_id)});
 				
-				while(cursors.moveToNext()){
+				if(cursors.moveToNext()){
 					articleData.add(parseDBDatas(cursors));
 				}
 			}
