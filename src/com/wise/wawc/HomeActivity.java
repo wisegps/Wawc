@@ -197,7 +197,7 @@ public class HomeActivity extends Activity{
         });
         getSp();
         GetOldWeather();// 获取本地存储的数据
-        GetFutureWeather();
+        //GetFutureWeather();
         GetRealTimeWeather();
         GetFuel();
         registerBroadcastReceiver();
@@ -415,9 +415,6 @@ public class HomeActivity extends Activity{
             case Get_persion:
                 jsonCarRemind(msg.obj.toString());
                 break;
-            case 999:
-                Log.d(TAG, msg.obj.toString());
-                break;
             case Get_Devicesdata:
                 jsonDevice(msg.obj.toString());
                 JudgeDevice(msg.obj.toString());
@@ -456,17 +453,6 @@ public class HomeActivity extends Activity{
         // 查询
         DBHelper dbHelper = new DBHelper(HomeActivity.this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        // 未来天气
-        Cursor c = db.rawQuery("select * from " + Constant.TB_Base
-                + " where Title=?", new String[] { "FutureWeather" });
-        if (c.moveToFirst()) {
-            String Content = c.getString(c.getColumnIndex("Content"));
-            isHaveOldFutureWeather = true;
-            // 解析数据
-            Log.d(TAG, "解析本地未来天气");
-            jsonFutureWeather(Content);
-        }
-        c.close();
         // 实时天气
         Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base
                 + " where Title=?", new String[] { "RealTimeWeather" });
@@ -736,22 +722,44 @@ public class HomeActivity extends Activity{
      */
     private void jsonRealTimeWeather(String result) {
         try {
+            Log.d(TAG, result);
+            String Weather = "";
+            JSONObject jsonObject1 = new JSONObject(result).getJSONObject("today");
+            if (jsonObject1.opt("date_y") != null) {
+                String date_y = jsonObject1.getString("date_y");
+                Weather += date_y;
+            }
+            if (jsonObject1.opt("week") != null) {
+                String week = jsonObject1.getString("week");
+                Weather += "    " + week;
+            }//weather
+            if (jsonObject1.opt("weather") != null) {
+                tv_item_weather_sky.setText(jsonObject1.getString("weather"));
+            }
+            if (jsonObject1.opt("temperature") != null) {
+                tv_item_weather_temp1.setText(jsonObject1.getString("temperature"));
+            }
+            if (jsonObject1.opt("wash_index") != null) {
+                tv_item_weather_index_xc.setText(jsonObject1.getString("wash_index"));
+            }
+            tv_item_weather_date.setText(Weather);
+            
             String weather = "";
             JSONObject jsonObject = new JSONObject(result)
-                    .getJSONObject("weatherinfo");
+                    .getJSONObject("sk");
             if (jsonObject.opt("temp") != null) {
                 tv_item_weather_wd.setText(jsonObject.getString("temp") + "°");
             }
-            if (jsonObject.opt("WD") != null) {
-                weather += jsonObject.getString("WD");
+            if (jsonObject.opt("wind_direction") != null) {
+                weather += jsonObject.getString("wind_direction");
             }
-            if (jsonObject.opt("WS") != null) {
-                weather += jsonObject.getString("WS");
+            if (jsonObject.opt("wind_strength") != null) {
+                weather += jsonObject.getString("wind_strength");
             }
-            if (jsonObject.opt("SD") != null) {
-                weather += "   湿度" + jsonObject.getString("SD");
+            if (jsonObject.opt("humidity") != null) {
+                weather += "   湿度" + jsonObject.getString("humidity");
             }
-            tv_item_weather.setText(weather);
+            tv_item_weather.setText(weather);           
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -942,7 +950,6 @@ public class HomeActivity extends Activity{
             if(isNeedGetLogoFromUrl){
                 new Thread(new getLogoThread()).start();
             }
-            Log.d(TAG, "Variable.carDatas = " + Variable.carDatas.size());
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -963,11 +970,14 @@ public class HomeActivity extends Activity{
      * 获取实时天气
      */
     private void GetRealTimeWeather() {
-        String url = Constant.BaseUrl + "base/weather?city_code="
-                + LocationCityCode + "&is_real=1";
-        new Thread(new NetThread.GetDataThread(handler, url,
-                Get_RealTimeWeather)).start();
-
+        try {
+            String url = Constant.BaseUrl + "base/weather2?city="
+                    + URLEncoder.encode(LocationCity, "UTF-8");
+            new Thread(new NetThread.GetDataThread(handler, url,
+                    Get_RealTimeWeather)).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -1015,7 +1025,6 @@ public class HomeActivity extends Activity{
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Constant.A_Login);
         intentFilter.addAction(Constant.A_City);
-        //intentFilter.addAction(Constant.A_LoginOut);
         intentFilter.addAction(Constant.A_UpdateCar);
         registerReceiver(broadcastReceiver, intentFilter);
     }
@@ -1252,15 +1261,12 @@ public class HomeActivity extends Activity{
         }
         cursor.close();
         db.close();
-        Log.d(TAG, "GetDevicesDB");
     }
 	/**
      * 解析终端数据
      * @param result
      */
     private void jsonDevice(String result){
-        System.out.println("解析终端数据");
-        Log.d(TAG, result);
         try {
             List<DevicesData> devicesDatas = new ArrayList<DevicesData>();
             JSONArray jsonArray = new JSONArray(result);
@@ -1276,10 +1282,8 @@ public class HomeActivity extends Activity{
                 devicesData.setStatus(jsonObject.getString("status"));
                 devicesData.setType(0);
                 devicesDatas.add(devicesData);
-                Log.d(TAG, "Variable.carDatas.size() = " + Variable.carDatas.size());
                 for(int j = 0 ; j < Variable.carDatas.size() ; j++){
                     CarData carData = Variable.carDatas.get(j);
-                    Log.d(TAG, carData.toString());
                     if(carData.getDevice_id() != null &&carData.getDevice_id().equals(jsonObject.getString("device_id"))){
                         carData.setSerial(jsonObject.getString("serial"));
                         DBExcute dbExcute = new DBExcute();

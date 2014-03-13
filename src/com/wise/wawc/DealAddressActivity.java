@@ -25,7 +25,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -81,8 +80,9 @@ public class DealAddressActivity extends Activity {
         ImageView iv_activity_dealadress_back = (ImageView) findViewById(R.id.iv_activity_dealadress_back);
         iv_activity_dealadress_back.setOnClickListener(onClickListener);
         Type = getIntent().getIntExtra("Type", 1);
+        String city = getIntent().getStringExtra("city");
         Log.d(TAG, "Type = " + Type);
-        GetDealAdress();
+        GetDealAdress(city);
     }
 
     OnClickListener onClickListener = new OnClickListener() {
@@ -91,9 +91,6 @@ public class DealAddressActivity extends Activity {
             switch (v.getId()) {
             case R.id.iv_activity_dealadress_back:
                 finish();
-                break;
-
-            default:
                 break;
             }
         }
@@ -107,9 +104,6 @@ public class DealAddressActivity extends Activity {
                 jsonDealAdress(msg.obj.toString());
                 adressAdapter.notifyDataSetChanged();
                 break;
-
-            default:
-                break;
             }
         }
     };
@@ -117,11 +111,16 @@ public class DealAddressActivity extends Activity {
     /**
      * 获取处理地点
      */
-    private void GetDealAdress() {
-        SharedPreferences preferences = getSharedPreferences(
-                Constant.sharedPreferencesName, Context.MODE_PRIVATE);
-        String LocationCity = preferences
-                .getString(Constant.LocationCity, "深圳");
+    private void GetDealAdress(String city) {
+        String LocationCity;
+        if(city.equals("")){
+            SharedPreferences preferences = getSharedPreferences(
+                    Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+            LocationCity = preferences
+                    .getString(Constant.LocationCity, "深圳");
+        }else{
+            LocationCity = city;
+        }
         try {
             String url = Constant.BaseUrl + "location?auth_code="
                     + Variable.auth_code + "&city="
@@ -137,7 +136,6 @@ public class DealAddressActivity extends Activity {
 
     /**
      * 解析地点
-     * 
      * @param result
      */
     private void jsonDealAdress(String result) {
@@ -162,133 +160,6 @@ public class DealAddressActivity extends Activity {
             }
         } catch (JSONException e) {
             e.printStackTrace();
-        }
-    }
-
-    private class DealAdapter1 extends BaseAdapter {
-        LayoutInflater mInflater = LayoutInflater
-                .from(DealAddressActivity.this);
-
-        @Override
-        public int getCount() {
-            return adressDatas.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return adressDatas.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder holder;
-            if (convertView == null) {
-                convertView = mInflater.inflate(R.layout.item_deal, null);
-                holder = new ViewHolder();
-                holder.tv_name = (TextView) convertView
-                        .findViewById(R.id.tv_name);
-                holder.tv_address = (TextView) convertView
-                        .findViewById(R.id.tv_address);
-                holder.tv_tel = (TextView) convertView
-                        .findViewById(R.id.tv_tel);
-                holder.iv_Collect = (ImageView) convertView
-                        .findViewById(R.id.iv_Collect);
-                holder.iv_location = (ImageView) convertView
-                        .findViewById(R.id.iv_location);
-                holder.iv_tel = (ImageView) convertView
-                        .findViewById(R.id.iv_tel);
-                convertView.setTag(holder);
-            } else {
-                holder = (ViewHolder) convertView.getTag();
-            }
-            AdressData adressData = adressDatas.get(position);
-            holder.tv_name.setText(adressData.getName());
-            // holder.tv_address.setText(adressData.getAddress());
-            // holder.tv_tel.setText(adressData.getTel());
-            return convertView;
-        }
-
-        private class ViewHolder {
-            TextView tv_name, tv_address, tv_tel;
-            ImageView iv_Collect, iv_location, iv_tel;
-        }
-    }
-
-    private class AdressData1 {
-        private String name;
-        private String address;
-        private String tel;
-        private double Lat;
-        private double Lon;
-        private boolean isCollect;
-        private int id;
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getAddress() {
-            return address;
-        }
-
-        public void setAddress(String address) {
-            this.address = address;
-        }
-
-        public String getTel() {
-            return tel;
-        }
-
-        public void setTel(String tel) {
-            this.tel = tel;
-        }
-
-        public double getLat() {
-            return Lat;
-        }
-
-        public void setLat(double lat) {
-            Lat = lat;
-        }
-
-        public double getLon() {
-            return Lon;
-        }
-
-        public void setLon(double lon) {
-            Lon = lon;
-        }
-
-        public boolean isCollect() {
-            return isCollect;
-        }
-
-        public void setCollect(boolean isCollect) {
-            this.isCollect = isCollect;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        @Override
-        public String toString() {
-            return "AdressData [name=" + name + ", address=" + address
-                    + ", tel=" + tel + ", Lat=" + Lat + ", Lon=" + Lon
-                    + ", isCollect=" + isCollect + ", id=" + id + "]";
         }
     }
 }

@@ -30,7 +30,7 @@ public class DBHelper extends SQLiteOpenHelper{
 	//我的收藏
 	private static final String CREATE_TB_Collection = "create table " + Constant.TB_Collection + "(_id integer primary key autoincrement,Cust_id text,favorite_id text,name text,address text,tel text,lon text,lat text)";
 	//我的违章
-	private static final String CREATE_TB_Traffic = "create table " + Constant.TB_Traffic + "(_id integer primary key autoincrement,obj_id text,Car_name text,create_time text,action text,location text,score int,fine int)";
+	private static final String CREATE_TB_Traffic = "create table " + Constant.TB_Traffic + "(_id integer primary key autoincrement,obj_id text,Car_name text,create_time text,action text,location text,score int,fine int,status int,city text)";
 	//我的账户
 	private static final String CREATE_TB_Account = "create table " + Constant.TB_Account + "(_id integer primary key autoincrement,cust_id text,Consignee text,Adress text,Phone text,annual_inspect_date text,change_date text)";
 	//我的消息
