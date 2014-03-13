@@ -2,202 +2,201 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    >
-    
-    
+    android:orientation="vertical" >
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_margin="@dimen/margins"
-        >
+        android:orientation="horizontal" >
+
         <!-- 用户头像 -->
+
         <ImageView
             android:id="@+id/head_article"
             android:layout_width="0dip"
             android:layout_height="fill_parent"
-            android:layout_weight="1.5"
-            />
-            <LinearLayout 
-                android:layout_width="0dip"
+            android:layout_weight="1.5" />
+
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margins"
+            android:layout_marginTop="@dimen/margins"
+            android:layout_weight="6"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/article_user_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="6"
-                android:orientation="vertical"
-                android:layout_marginLeft="@dimen/margins"
-                android:layout_marginTop="@dimen/margins"
-                >
-                <TextView 
-                    android:id="@+id/article_user_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/article_user_name"
-                    android:textSize="@dimen/title"
-                    android:text="用户名"
-                    />
-                <TextView 
-                    android:id="@+id/tv_article_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="内容"
-                    android:textColor="@color/common"
-                    android:textSize="@dimen/main"
-                    />
-            </LinearLayout>
-        
+                android:text="用户名"
+                android:textColor="@color/article_user_name"
+                android:textSize="@dimen/title" />
+
+            <TextView
+                android:id="@+id/tv_article_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="内容"
+                android:textColor="@color/common"
+                android:textSize="@dimen/main" />
+        </LinearLayout>
     </LinearLayout>
 
     <!-- 用户图片 -->
-    <TableLayout 
+
+    <TableLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margins"
-        >
-        <TableRow 
+        android:layout_margin="@dimen/margins" >
+
+        <TableRow
             android:layout_width="fill_parent"
-        	android:layout_height="wrap_content"
-            >
-            <View 
-                android:layout_width="0dip"
-                android:layout_height="0dip"
-                android:layout_weight="1.5"
-                />
-            <!-- 显示用户发表的图片 -->
-            <LinearLayout 
-                android:id="@+id/user_image"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_weight="6"
-                >
-            </LinearLayout>
-        </TableRow>
-    </TableLayout>
-    
-    <!-- 评论相关控件 -->
-    <TableLayout 
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margins"
-        >
-        <TableRow 
-            android:layout_width="fill_parent"
-            android:layout_height="10dip"
-            >
+            android:layout_height="wrap_content" >
+
             <View
                 android:layout_width="0dip"
                 android:layout_height="0dip"
-                android:layout_weight="1.5"
-                />
-            <TableRow 
+                android:layout_weight="1.5" />
+            <!-- 显示用户发表的图片 -->
+
+            <LinearLayout
+                android:id="@+id/user_image"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
+                android:orientation="horizontal" >
+            </LinearLayout>
+        </TableRow>
+    </TableLayout>
+
+    <!-- 评论相关控件 -->
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margins" >
+
+        <TableRow
+            android:layout_width="fill_parent"
+            android:layout_height="10dip" >
+
+            <View
+                android:layout_width="0dip"
+                android:layout_height="0dip"
+                android:layout_weight="1.5" />
+
+            <TableRow
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margins"
-                >
+                android:layout_weight="6" >
+
                 <TextView
                     android:id="@+id/publish_time"
                     android:layout_width="0dip"
-                	android:layout_height="wrap_content"
-                	android:text="10:30"
-                	android:layout_weight="1"
-                	android:layout_gravity="left|center_vertical"
-                	android:textColor="@color/gray"
-                	android:textSize="@dimen/content"
-                     />
-                <LinearLayout 
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left|center_vertical"
+                    android:layout_weight="1"
+                    android:text="10:30"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/content" />
+
+                <LinearLayout
                     android:layout_width="0dip"
-                	android:layout_height="wrap_content"
-                	android:orientation="horizontal"
-                	android:gravity="right"
-                	android:layout_weight="1"
-                    >
-                    <ImageView 
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:orientation="horizontal" >
+
+                    <ImageView
                         android:id="@+id/favorite"
                         android:layout_width="@dimen/double_margins"
-                		android:layout_height="@dimen/double_margins"
-                		android:layout_marginRight="@dimen/double_margins"
-                		android:background="@drawable/body_icon_heart"
-                        />
-                    <ImageView 
+                        android:layout_height="@dimen/double_margins"
+                        android:layout_marginRight="@dimen/double_margins"
+                        android:background="@drawable/body_icon_heart" />
+
+                    <ImageView
                         android:id="@+id/list_say_somthing"
                         android:layout_width="@dimen/double_margins"
-                		android:layout_height="@dimen/double_margins"
-                		android:background="@drawable/side_article_comment"
-                        />
+                        android:layout_height="@dimen/double_margins"
+                        android:background="@drawable/side_article_comment" />
                 </LinearLayout>
             </TableRow>
         </TableRow>
     </TableLayout>
     <!-- 评论内容 -->
-    <TableLayout 
+
+    <TableLayout
         android:id="@+id/tablelayout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dip"
         android:layout_marginBottom="5dip"
-        >
-        <TableRow 
+        android:layout_marginTop="5dip"
+        android:background="@drawable/body_container" >
+
+        <TableRow
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margins"
-            android:layout_marginRight="@dimen/margins"
-            >
+            android:layout_marginRight="@dimen/margins" >
+
             <View
                 android:layout_width="0dip"
                 android:layout_height="0dip"
-                android:layout_weight="1.5"
-                />
-            
-            <TableLayout 
+                android:layout_weight="1.5" />
+
+            <TableLayout
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margins"
                 android:layout_weight="6"
-                android:background="@drawable/article_comment_bg"
-                android:layout_marginLeft="@dimen/margins"
-                >
+                android:background="@drawable/article_comment_bg" >
+
                 <!-- 赞 -->
-            <TableRow 
-                android:id="@+id/article_praises_layout"
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/article_favorite_height"
-                android:layout_marginTop="@dimen/margins"
-                android:layout_marginBottom="@dimen/margins"
-                android:layout_marginLeft="@dimen/margins"
-                >
-                <ImageView
-                    android:id="@+id/article_praises_star"
-                    android:layout_width="20dip"
-                	android:layout_height="20dip"
-                	android:background="@drawable/body_icon_heart_press"
-                     />
-                <TextView 
-                    android:id="@+id/article_praises_user"
-                    android:layout_width="wrap_content"
-                	android:layout_height="wrap_content"
-                	android:textColor="@color/blue"
-                	android:maxLength="30"
-                    />
-            </TableRow>
-            <!-- 分割线 -->
-              <View 
-                  	android:id="@+id/article_adapter_line"
-                   	android:layout_width="fill_parent"
-                	android:layout_height="0.1dip"
-                	android:background="#000000"
-                    />
-              <!-- 评论 -->
-                  <LinearLayout 
-                      android:id="@+id/article_comment_layout"
-                      android:layout_width="fill_parent"
-                	  android:layout_height="wrap_content"
-                	  android:orientation="vertical"
-                	  android:layout_marginTop="@dimen/margins"
-                	  android:layout_marginBottom="@dimen/margins"
-                	  android:layout_marginLeft="@dimen/margins"
-                      >
-                  </LinearLayout>
+
+                <TableRow
+                    android:id="@+id/article_praises_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="@dimen/article_favorite_height"
+                    android:layout_marginBottom="@dimen/margins"
+                    android:layout_marginLeft="@dimen/margins"
+                    android:layout_marginTop="@dimen/margins" >
+
+                    <ImageView
+                        android:id="@+id/article_praises_star"
+                        android:layout_width="20dip"
+                        android:layout_height="20dip"
+                        android:background="@drawable/body_icon_heart_press" />
+
+                    <TextView
+                        android:id="@+id/article_praises_user"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLength="30"
+                        android:textColor="@color/blue" />
+                </TableRow>
+                <!-- 分割线 -->
+
+                <View
+                    android:id="@+id/article_adapter_line"
+                    android:layout_width="fill_parent"
+                    android:layout_height="0.1dip"
+                    android:background="#000000" />
+                <!-- 评论 -->
+
+                <LinearLayout
+                    android:id="@+id/article_comment_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margins"
+                    android:layout_marginLeft="@dimen/margins"
+                    android:layout_marginTop="@dimen/margins"
+                    android:orientation="vertical" >
+                </LinearLayout>
             </TableLayout>
         </TableRow>
     </TableLayout>
+
 </LinearLayout>

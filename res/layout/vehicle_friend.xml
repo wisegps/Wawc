@@ -11,6 +11,7 @@
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight"
         android:background="@drawable/nav_bg" >
+
         <ImageView
             android:id="@+id/menu"
             android:layout_width="@dimen/title_image"
@@ -18,29 +19,32 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/margins"
-            android:background="@drawable/side_left"/>
+            android:background="@drawable/side_left" />
+
         <ImageView
             android:id="@+id/publish_article"
             android:layout_width="@dimen/title_image"
             android:layout_height="@dimen/title_image"
-            android:layout_marginLeft="@dimen/margins"   
-            android:layout_marginRight="@dimen/margins"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"         
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/margins"
+            android:layout_marginRight="@dimen/margins"
             android:background="@drawable/nav_icon_add" />
+
         <ImageView
             android:layout_width="@dimen/title_image"
             android:layout_height="@dimen/title_image"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/publish_article"
             android:background="@drawable/nav_icon_search" />
+
         <TextView
             android:id="@+id/tv_vehicle_friend_title"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_centerInParent="true"
+            android:drawableRight="@drawable/body_container_triangle"
             android:gravity="center_vertical"
-            android:drawableRight="@drawable/body_icon_pulldown"
             android:text="@string/car_circle"
             android:textColor="@color/white"
             android:textSize="@dimen/head" />
@@ -70,9 +74,10 @@
                 android:id="@+id/tv_qq_user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/title"
                 android:layout_gravity="center"
                 android:text="用户名"
-                android:textColor="#FF3300" />
+                android:textColor="@color/white" />
         </LinearLayout>
     </RelativeLayout>
     <!-- 搜索栏 -->
