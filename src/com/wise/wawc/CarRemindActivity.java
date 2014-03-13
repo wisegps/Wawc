@@ -480,31 +480,43 @@ public class CarRemindActivity extends Activity {
      * @param annual_inspect_date
      */
     private void userInspectDate(String annual_inspect_date) {
-        tv_annual_inspect_date.setText(String.format(
-                getResources().getString(R.string.examined_content),
-                annual_inspect_date.substring(0, 10)));
-        if (GetSystem.isTimeOut(annual_inspect_date)) {
-            tv_annual_inspect_date.setTextColor(getResources().getColor(
-                    R.color.red));
-        } else {
+        if(annual_inspect_date == null){
+            tv_annual_inspect_date.setText("未设置年检时间");
             tv_annual_inspect_date.setTextColor(getResources().getColor(
                     R.color.common_inactive));
-        }
+        }else{
+            tv_annual_inspect_date.setText(String.format(
+                    getResources().getString(R.string.examined_content),
+                    annual_inspect_date.substring(0, 10)));
+            if (GetSystem.isTimeOut(annual_inspect_date)) {
+                tv_annual_inspect_date.setTextColor(getResources().getColor(
+                        R.color.red));
+            } else {
+                tv_annual_inspect_date.setTextColor(getResources().getColor(
+                        R.color.common_inactive));
+            }
+        }        
     }
     /**
      * 判断换证时间
      * @param change_date
      */
     private void userChangeDate(String change_date) {
-        tv_change_date.setText(String.format(
-                getResources().getString(R.string.replacement_content),
-                change_date.substring(0, 10)));
-        if (GetSystem.isTimeOut(change_date)) {
-            tv_change_date.setTextColor(getResources().getColor(R.color.red));
-        } else {
+        if(change_date == null){
+            tv_change_date.setText("未设置换证时间");
             tv_change_date.setTextColor(getResources().getColor(
                     R.color.common_inactive));
-        }
+        }else{
+            tv_change_date.setText(String.format(
+                    getResources().getString(R.string.replacement_content),
+                    change_date.substring(0, 10)));
+            if (GetSystem.isTimeOut(change_date)) {
+                tv_change_date.setTextColor(getResources().getColor(R.color.red));
+            } else {
+                tv_change_date.setTextColor(getResources().getColor(
+                        R.color.common_inactive));
+            } 
+        }        
     }
     /**
      * 解析用户信息
@@ -598,13 +610,16 @@ public class CarRemindActivity extends Activity {
      * @param mileage
      */
     private void carMaintenanceDate(int mileage) {
-        tv_activity_car_maintenance_inspection.setText(String.format(
-                getResources().getString(R.string.maintenance_content),carData.getMaintain_next_mileage()));
         int next_mileage = Integer.valueOf(carData.getMaintain_next_mileage());
         if(next_mileage > mileage){
+            String l = "" + (next_mileage - mileage);
             tv_activity_car_maintenance_inspection.setTextColor(getResources().getColor(
                     R.color.common_inactive));
+            tv_activity_car_maintenance_inspection.setText(String.format(
+                    getResources().getString(R.string.maintenance_content),l));
         }else{
+            tv_activity_car_maintenance_inspection.setText(String.format(
+                    getResources().getString(R.string.maintenance_content),"0"));
             tv_activity_car_maintenance_inspection.setTextColor(getResources().getColor(
                     R.color.red));
         }
