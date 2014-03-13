@@ -51,7 +51,7 @@
         <com.wise.list.XListView 
             android:id="@+id/lv_sms"
             android:visibility="gone"
-            android:divider="@drawable/body_line"
+            android:divider="@null"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"/> 
     </RelativeLayout>

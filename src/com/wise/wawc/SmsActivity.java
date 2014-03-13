@@ -16,6 +16,7 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -33,7 +34,6 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 /**
  * 未读消息页面
  * @author honesty
@@ -67,7 +67,20 @@ public class SmsActivity extends Activity implements IXListViewListener{
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
 				if(arg2 !=0 || arg2 != (smsDataList.size()+1)){
-					Toast.makeText(getApplicationContext(), Msg_type(smsDataList.get(arg2 - 1).getMsg_type()) + smsDataList.get(arg2-1).getContent(), Toast.LENGTH_LONG).show();
+				    String Type = smsDataList.get(arg2).getMsg_type();
+		            if(Type.equals("0")){
+		                
+		            }else if(Type.equals("1")){
+		                startActivity(new Intent(SmsActivity.this, CarRemindActivity.class));
+		            }else if (Type.equals("2")) {
+		                //holder.tv_new_Regnum.setText("车辆故障");
+		                //startActivity(new Intent(SmsActivity.this, CarRemindActivity.class));
+		            }else if (Type.equals("3")){
+		                //holder.tv_new_Regnum.setText("车辆报警");
+		                //startActivity(new Intent(SmsActivity.this, CarRemindActivity.class));
+		            }else if (Type.equals("4")){
+		                startActivity(new Intent(SmsActivity.this, TrafficActivity.class));
+		            }
 				}
 			}});
 		newAdapter = new NewAdapter(this, smsDataList);
@@ -181,7 +194,7 @@ public class SmsActivity extends Activity implements IXListViewListener{
                 smsData.setLon(jsonObject.getString("lon"));
                 smsData.setMsg_type(jsonObject.getString("msg_type"));
                 smsData.setNoti_id(jsonObject.getInt("noti_id"));
-                smsData.setRcv_time((jsonObject.getString("rcv_time").replace("T", " ").substring(0, 10)));
+                smsData.setRcv_time((jsonObject.getString("rcv_time").replace("T", " ").substring(5, 16)));
                 String status = "";
                 if(jsonObject.opt("status") == null){
                     
@@ -268,7 +281,7 @@ public class SmsActivity extends Activity implements IXListViewListener{
 	    public View getView(final int position, View convertView, ViewGroup parent) {
 	        ViewHolder holder;
 	        if (convertView == null) {
-	            convertView = mInflater.inflate(R.layout.new_row, null);
+	            convertView = mInflater.inflate(R.layout.item_sms, null);
 	            holder = new ViewHolder();
 	            holder.tv_new_content = (TextView) convertView.findViewById(R.id.tv_new_content);
 	            holder.tv_new_time = (TextView)convertView.findViewById(R.id.tv_new_time);
@@ -293,13 +306,17 @@ public class SmsActivity extends Activity implements IXListViewListener{
 	        tr.setFakeBoldText(false);
 	        
 	        String Type = smsDatas.get(position).getMsg_type();
-	        if(Type.equals("1")){
-	            holder.tv_new_Regnum.setText("10010");
+	        if(Type.equals("0")){
+                holder.tv_new_Regnum.setText("系统消息");
+            }else if(Type.equals("1")){
+	            holder.tv_new_Regnum.setText("车务提醒");
 	        }else if (Type.equals("2")) {
-	            holder.tv_new_Regnum.setText("终端消息");
-	        }else{
-	            holder.tv_new_Regnum.setText("平台消息");
-	        }
+	            holder.tv_new_Regnum.setText("车辆故障");
+	        }else if (Type.equals("3")){
+	            holder.tv_new_Regnum.setText("车辆报警");
+	        }else if (Type.equals("4")){
+                holder.tv_new_Regnum.setText("违章提醒");
+            }
 	        return convertView;
 	    }
 	    private class ViewHolder {

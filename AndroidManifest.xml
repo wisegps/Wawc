@@ -101,9 +101,10 @@
         <activity android:name=".DevicesAddActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".CarSelectActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".PetrolGradeActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
-        <activity android:name=".BarcodeActivity" android:screenOrientation="landscape" android:configChanges="orientation|keyboardHidden"
-            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-            android:windowSoftInputMode="stateAlwaysHidden"></activity>
+        <activity android:name=".BarcodeActivity" android:screenOrientation="portrait" android:configChanges="orientation|keyboardHidden"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen" android:windowSoftInputMode="stateAlwaysHidden">
+            
+        </activity>
         <activity android:name="com.wise.article.ArticleActivity" android:screenOrientation="portrait" 
             android:configChanges="orientation|keyboardHidden"  android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity

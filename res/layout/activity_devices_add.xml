@@ -80,13 +80,13 @@
                 android:layout_height="wrap_content">
 	            <ImageView 
 	                android:id="@+id/iv_serial"
-	                android:src="@drawable/body_icon_packup"
+	                android:src="@drawable/ewm"
 	                android:layout_alignParentRight="true"
 	                android:layout_centerVertical="true"
 	                android:layout_marginRight="@dimen/margins"
 	                android:layout_marginLeft="@dimen/margins"
-	                android:layout_width="@dimen/double_margins"
-	                android:layout_height="@dimen/double_margins"/>
+	                android:layout_width="@dimen/title_image"
+	                android:layout_height="@dimen/title_image"/>
 	            <EditText 
 	                android:id="@+id/et_serial"
                     android:layout_toLeftOf="@id/iv_serial"

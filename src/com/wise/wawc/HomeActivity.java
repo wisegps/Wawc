@@ -75,7 +75,6 @@ import android.widget.Toast;
  */
 public class HomeActivity extends Activity{
     private static final String TAG = "HomeActivity";
-    private static final int Get_FutureWeather = 1; // 获取未来天气
     private static final int Get_RealTimeWeather = 2; // 获取实时天气
     private static final int Get_Fuel = 3; // 获取城市油价
     private static final int Get_Cars = 4; // 获取车辆数据
@@ -197,7 +196,6 @@ public class HomeActivity extends Activity{
         });
         getSp();
         GetOldWeather();// 获取本地存储的数据
-        //GetFutureWeather();
         GetRealTimeWeather();
         GetFuel();
         registerBroadcastReceiver();
@@ -393,10 +391,6 @@ public class HomeActivity extends Activity{
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-            case Get_FutureWeather:
-                JudgeFutureWeather(msg.obj.toString());
-                jsonFutureWeather(msg.obj.toString());
-                break;
             case Get_RealTimeWeather:
                 JudgeRealTimeWeather(msg.obj.toString());
                 jsonRealTimeWeather(msg.obj.toString());
@@ -626,18 +620,6 @@ public class HomeActivity extends Activity{
             this.url_icon = url_icon;
         }
     }
-    /**
-     * 判断未来天气是插入数据库or更新数据库
-     * 
-     * @param result
-     */
-    private void JudgeFutureWeather(String result) {
-        if (isHaveOldFutureWeather) {// 更新
-            UpdateWeather(result, "FutureWeather");
-        } else {// 插入
-            InsertWeather(result, "FutureWeather");
-        }
-    }
 
     /**
      * 判断实时天气是插入数据库or更新数据库
@@ -679,40 +661,6 @@ public class HomeActivity extends Activity{
         values.put("Title", Title);
         values.put("Content", result);
         dbExcute.InsertDB(HomeActivity.this, values, Constant.TB_Base);
-    }
-
-    /**
-     * 解析未来天气
-     * 
-     * @param result
-     */
-    private void jsonFutureWeather(String result) {
-        try {
-            String Weather = "";
-            JSONObject jsonObject = new JSONObject(result).getJSONObject("weatherinfo");
-            if (jsonObject.opt("date_y") != null) {
-                String date_y = jsonObject.getString("date_y");
-                //tv_item_oil_update.setText(date_y + "更新");
-                Weather += date_y;
-            }
-            if (jsonObject.opt("week") != null) {
-                String week = jsonObject.getString("week");
-                Weather += "    " + week;
-            }
-            if (jsonObject.opt("weather1") != null) {
-                tv_item_weather_sky.setText(jsonObject.getString("weather1"));
-            }
-            if (jsonObject.opt("temp1") != null) {
-                tv_item_weather_temp1.setText(jsonObject.getString("temp1"));
-            }
-            if (jsonObject.opt("index_xc") != null) {
-                tv_item_weather_index_xc.setText(jsonObject.getString("index_xc"));
-            }
-            tv_item_weather_date.setText(Weather);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        GetSystem.displayBriefMemory(HomeActivity.this);
     }
 
     /**
@@ -775,10 +723,26 @@ public class HomeActivity extends Activity{
             try {
                 JSONObject jsonObject = new JSONObject(result);
                 if (!result.equals("")) {
-                    tv_item_oil_90.setText(jsonObject.getString("fuel90"));
-                    tv_item_oil_93.setText(jsonObject.getString("fuel93"));
-                    tv_item_oil_97.setText(jsonObject.getString("fuel97"));
-                    tv_item_oil_0.setText(jsonObject.getString("fuel0"));
+                    if(jsonObject.opt("fuel90") == null){
+                        tv_item_oil_90.setText(jsonObject.getString("----"));
+                    }else{
+                        tv_item_oil_90.setText(jsonObject.getString("fuel90"));
+                    }
+                    if(jsonObject.opt("fuel93") == null){
+                        tv_item_oil_93.setText(jsonObject.getString("----"));
+                    }else{
+                        tv_item_oil_93.setText(jsonObject.getString("fuel93"));
+                    }
+                    if(jsonObject.opt("fuel97") == null){
+                        tv_item_oil_97.setText(jsonObject.getString("----"));
+                    }else{
+                        tv_item_oil_97.setText(jsonObject.getString("fuel97"));
+                    }
+                    if(jsonObject.opt("fuel0") == null){
+                        tv_item_oil_0.setText(jsonObject.getString("----"));
+                    }else{
+                        tv_item_oil_0.setText(jsonObject.getString("fuel0"));
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -956,17 +920,6 @@ public class HomeActivity extends Activity{
     }
 
     /**
-     * 获取未来天气
-     */
-    private void GetFutureWeather() {
-        String url = Constant.BaseUrl + "base/weather?city_code="
-                + LocationCityCode + "&is_real=0";
-        new Thread(new NetThread.GetDataThread(handler, url, Get_FutureWeather))
-                .start();
-
-    }
-
-    /**
      * 获取实时天气
      */
     private void GetRealTimeWeather() {
@@ -1081,7 +1034,6 @@ public class HomeActivity extends Activity{
         if(resultCode == 1){
             Log.d(TAG, "城市设置完毕");
             getSp();
-            GetFutureWeather();
             GetRealTimeWeather();
             GetFuel();
         }
