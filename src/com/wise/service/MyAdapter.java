@@ -267,6 +267,7 @@ public class MyAdapter extends BaseAdapter{
 			//  使用缓存
 			viewHolder.userHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(getBitmap(Constant.userIconPath + articleList.get(position).getCust_id()+".jpg")));   
 		}
+		System.gc();
 		GetSystem.displayBriefMemory(activity);
 		return convertView;
 	}
