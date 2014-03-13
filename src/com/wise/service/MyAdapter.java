@@ -46,6 +46,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Environment;
@@ -100,6 +101,7 @@ public class MyAdapter extends BaseAdapter{
 	MyHandler myHandler = null;
 	View view;
 	XListView listView = null;
+	ImageView imageView = null;
 	public MyAdapter(Activity activity,View v,List<Article> articleList,XListView listView){
 		inflater=LayoutInflater.from(activity);
 		this.view = v;
@@ -151,10 +153,21 @@ public class MyAdapter extends BaseAdapter{
 		List<Bitmap> smallImageList = new ArrayList<Bitmap>();
 		for(int i = 0 ; i < articleList.get(position).getImageList().size() ; i ++){
 			Map<String,String> imageMap = articleList.get(position).getImageList().get(i);
-			//判断小图是否存在sd卡 /点击小图的时候再判断大图是否存在sd卡  TODO
+			//判断小图是否存在sd卡 /点击小图的时候再判断大图是否存在sd卡  
 			String smallImage = imageMap.get("small_pic").substring(imageMap.get("small_pic").lastIndexOf("/") + 1);
 			//本地不存在图片  存null  
 			Bitmap smallBitmap = imageIsExist(Constant.VehiclePath + smallImage,imageMap.get("small_pic"),3,0);
+//			Bitmap smallBitmap = null;
+//			if(imageIsExist(Constant.VehiclePath + smallImage,imageMap.get("small_pic"),3,0) != null){
+//				if(BitmapCache.getInstance().getBitmap(Constant.VehiclePath + smallImage) == null){
+//					BitmapDrawable drawable = new BitmapDrawable(smallBitmap);
+//					Log.e("path:",Constant.VehiclePath + smallImage);
+//					BitmapCache.getInstance().putBitmap(Constant.VehiclePath + smallImage, drawable);
+//				}else{
+//					Log.e("用户缓存图片","用户的缓存图片");
+//					smallBitmap = BitmapCache.getInstance().getBitmap(Constant.VehiclePath + smallImage).getBitmap();
+//				}
+//			}
 			smallImageList.add(i, smallBitmap);
 		}
 		
@@ -222,15 +235,28 @@ public class MyAdapter extends BaseAdapter{
 				Bitmap bitmap = smallImageList.get(i);
 				if(bitmap == null){   //显示转圈圈加载
 					selection = position;
-					ImageView tempImage = new ImageView(activity);
-					tempImage.setImageResource(R.drawable.body_nothing_icon);
-					tempImage.setPadding(Variable.margins, 0,0, 0);
-					viewHolder.linearLayout.addView(tempImage,i,new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
+					//判断缓存类不存在这张图
+					if(BitmapCache.getInstance().getBitmap(R.drawable.body_nothing_icon) == null){
+						Bitmap tempImage = BitmapFactory.decodeResource(activity.getResources(), R.drawable.body_nothing_icon);
+						BitmapDrawable drawable = new BitmapDrawable(tempImage);
+						BitmapCache.getInstance().putBitmap(R.drawable.body_nothing_icon, drawable);
+					}else{
+						Log.e("使用的缓存图片","使用的缓存图片");
+						ImageView tempImage = new ImageView(activity);
+						tempImage.setImageDrawable(BitmapCache.getInstance().getBitmap(R.drawable.body_nothing_icon));
+						tempImage.setPadding(Variable.margins, 0,0, 0);
+						viewHolder.linearLayout.addView(tempImage,i,new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
+					}
+//						ImageView tempImage = new ImageView(activity);
+//						tempImage.setImageResource(R.drawable.body_nothing_icon);
+//						tempImage.setPadding(Variable.margins, 0,0, 0);
+//						viewHolder.linearLayout.addView(tempImage,i,new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
 				}else{
 					ImageView imageView = new ImageView(activity);
 					imageView.setImageBitmap(smallImageList.get(i));
 					imageView.setPadding(Variable.margins, 0,0, 0);
 					viewHolder.linearLayout.addView(imageView,i,new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
+					
 					imageView.setOnClickListener(new OnClickListener() {
 						public void onClick(View v) {
 							//查看大图
@@ -254,7 +280,7 @@ public class MyAdapter extends BaseAdapter{
 		viewHolder.favorite.setOnClickListener(new MyClickListener(position));
 		viewHolder.userHead.setOnClickListener(new MyClickListener(position));
 		viewHolder.articel_user_name.setOnClickListener(new MyClickListener(position));
-		//设置用户头像   TODO
+		//设置用户头像   
 		Bitmap userIcons = imageIsExist(Constant.userIconPath + articleList.get(position).getCust_id() + ".jpg",articleList.get(position).getUserLogo(),4,articleList.get(position).getCust_id());
 		if(userIcons == null){
 			viewHolder.userHead.setBackgroundResource(R.drawable.body_icon_help);
@@ -266,34 +292,38 @@ public class MyAdapter extends BaseAdapter{
 		return convertView;
 	}
 	
-	//判断图片是否存在SD卡   TODO
-	private Bitmap imageIsExist(String path,final String loadUrl,final int action,final int custId) {
+	//判断图片是否存在SD卡   
+	private Bitmap imageIsExist(final String path,final String loadUrl,final int action,final int custId) {
 		File file = new File(path);
 		if(file.exists()){
-			viewHolder.bitmap = BitmapFactory.decodeFile(path);
-			return viewHolder.bitmap;
-		}
-		else{
+			Log.e("path:",path);
+			Bitmap image = null;
+			if(BitmapCache.getInstance().getBitmap(path) == null){
+				 BitmapDrawable drawable = new BitmapDrawable(BitmapFactory.decodeFile(path));
+				 BitmapCache.getInstance().putBitmap(path, drawable);
+			}else{
+				image = BitmapCache.getInstance().getBitmap(path).getBitmap();
+				Log.e("缓存图片","缓存图片  用户");
+			}
+			return BitmapFactory.decodeFile(path);
+		}else{
 			new Thread(new Runnable() {
 				public void run() {
-					viewHolder.bitmap = GetSystem.getBitmapFromURL(loadUrl);
-					if(viewHolder.bitmap != null){
+					Bitmap bitmap = GetSystem.getBitmapFromURL(loadUrl);
+					if(bitmap != null){
 					    if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
 	                        File imagePath = new File(Constant.VehiclePath);
 	                        if(!imagePath.exists()){
 	                            imagePath.mkdir();
 	                        }
 	                        if(action == 3){
-	                        	createImage(Constant.VehiclePath + loadUrl.substring(loadUrl.lastIndexOf("/")),viewHolder.bitmap);
+	                        	createImage(Constant.VehiclePath + loadUrl.substring(loadUrl.lastIndexOf("/")),bitmap);
 	                        }
 	                        if(action == 4){
-	                        	//  TODO
-	                        	createImage(Constant.userIconPath + custId + ".jpg",viewHolder.bitmap);
+	                        	createImage(Constant.userIconPath + custId + ".jpg",bitmap);
 	                        }
 	                    }
-					}else{
 					}
-					
 				}
 			}).start();
 			return null;
@@ -482,7 +512,6 @@ public class MyAdapter extends BaseAdapter{
 		 public TextView articel_user_name;  //点击查看详细信息
 		 public TextView tv_article_content;
 		 public TextView publish_time;
-		 public Bitmap bitmap = null;
 		 public ImageView favorite = null;
 		 public ImageView saySomething;
 		 public ImageView userHead = null;
@@ -492,5 +521,12 @@ public class MyAdapter extends BaseAdapter{
 		 public TableRow articlePraisesLayout = null;   //点赞者
 		 public LinearLayout linearLayout;
 		 public LinearLayout commentLayout;
+	 }
+	 
+	 public ImageView getImageView(){
+		 if(imageView == null){
+			 imageView = new ImageView(activity);
+		 }
+		 return imageView;
 	 }
 }
