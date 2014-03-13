@@ -568,27 +568,33 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		}else{
 			articleType = Constant.BaseUrl + "blog?auth_code=" + Variable.auth_code + "&type=" + type + "&cust_id=" + Variable.cust_id; 
 		}
+		
+//		String sql = "select " + Constant.TB_VehicleFriendType + ".Blog_id ," + Constant.TB_VehicleFriend + ".Content where " + Constant.TB_VehicleFriendType + ".Type_id=?" 
 		totalNum = dBExcute.getTotalCount( VehicleFriendActivity.this,"select * from " + Constant.TB_VehicleFriendType + " where Type_id=?",new String[]{String.valueOf(type)});
-		if(totalNum > 0){
-			Constant.totalPage = totalNum%Constant.pageSize > 0 ? totalNum/Constant.pageSize + 1 : totalNum/Constant.pageSize;
-			if(Constant.totalPage - 1 >= Constant.currentPage){
-				Constant.start = Constant.currentPage*Constant.pageSize;
-				Constant.currentPage ++ ;
-				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id = ? limit ?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
-				setArticleDataList(articleDataList);
-			}
-			if(Constant.totalPage == Constant.currentPage){
-				isLoadMore = true;
-			}
-		}else{
-			myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
-			myDialog.setCancelable(true);
-			new Thread(new NetThread.GetDataThread(myHandler, articleType, FriendType)).start();
-		}
-		Variable.articleList = articleDataList;
-		myAdapter.refreshDates(articleDataList);
-		if(3 == action){
-			onLoad();
-		}
+		
+//		totalNum = dBExcute.getTotalCount( VehicleFriendActivity.this,"select * from " + Constant.TB_VehicleFriendType + " where Type_id=?",new String[]{String.valueOf(type)});
+//		if(totalNum > 0){
+//			Constant.totalPage = totalNum%Constant.pageSize > 0 ? totalNum/Constant.pageSize + 1 : totalNum/Constant.pageSize;
+//			if(Constant.totalPage - 1 >= Constant.currentPage){
+//				Constant.start = Constant.currentPage*Constant.pageSize;
+//				Constant.currentPage ++ ;
+//				Log.e("start:",Constant.start+"");
+//				//  TODO
+//				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id = ? limit ?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
+//				setArticleDataList(articleDataList);
+//			}
+//			if(Constant.totalPage == Constant.currentPage){
+//				isLoadMore = true;
+//			}
+//		}else{
+//			myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
+//			myDialog.setCancelable(true);
+//			new Thread(new NetThread.GetDataThread(myHandler, articleType, FriendType)).start();
+//		}
+//		Variable.articleList = articleDataList;
+//		myAdapter.refreshDates(articleDataList);
+//		if(3 == action){
+//			onLoad();
+//		}
 	}
 }

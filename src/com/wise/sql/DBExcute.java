@@ -280,6 +280,7 @@ public class DBExcute {
 			}
 			article.setCommentList(comments);
 			article.setContent(jsonObject.getString("content"));
+			Log.e("content:",jsonObject.getString("content"));
 			article.setCreate_time(jsonObject.getString("create_time"));
 			article.setCust_id(cursor.getInt(cursor.getColumnIndex("Cust_id")));
 			
