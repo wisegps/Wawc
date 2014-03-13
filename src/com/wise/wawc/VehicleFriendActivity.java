@@ -36,6 +36,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -111,7 +112,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	private int article = 6;  //文章类型
 	
-	private LinearLayout titleLayout = null;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -138,12 +138,11 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		titleList.add("车友圈");
 		titleList.add("同城车友");
 		titleList.add("同车型车友");
-		titleList.add("附近车友");
-		titleList.add("我的收藏");
+		//titleList.add("附近车友");
+		//titleList.add("我的收藏");
 		
 		TVTitle = (TextView) findViewById(R.id.tv_vehicle_friend_title);
-		titleLayout = (LinearLayout) findViewById(R.id.vehicle_friend_title);
-		titleLayout.setOnClickListener(new ClickListener());
+		TVTitle.setOnClickListener(new ClickListener());
 		//不设置上拉加载无效
 		articleList.setPullLoadEnable(true);
 		
@@ -214,11 +213,14 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 					new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "blog/" + blogId + "/comment?auth_code=" + Variable.auth_code, params, commentArticle)).start();
 				}
 				break;
-			case R.id.vehicle_friend_title:
-				mSpinerPopWindow.refreshData(titleList, 0);
+			case R.id.tv_vehicle_friend_title:
+			    int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,50, getResources().getDisplayMetrics());
+				Log.d(TAG, "px = " + px);
+			    mSpinerPopWindow.refreshData(titleList, 0);
 				mSpinerPopWindow.setWidth(screenWidth);
-				mSpinerPopWindow.setHeight(300);
-				mSpinerPopWindow.showAsDropDown(TVTitle);
+				mSpinerPopWindow.setHeight(px*3);				
+				mSpinerPopWindow.showAsDropDown(TVTitle, (TVTitle.getWidth()-screenWidth)/2, 0);
+                Log.d(TAG, "车友圈" + "screenWidth = " + screenWidth);
 				break;
 			default:
 				return;
