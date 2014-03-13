@@ -299,6 +299,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				break;
 			case getArticleList:
 				myDialog.dismiss();
+				Log.e("加载更多文章结果：",msg.obj.toString());
 				if(!"[]".equals(msg.obj.toString())){
 				String temp1 = (msg.obj.toString()).replaceAll("\\\\", "");
 				jsonToList(temp1);
@@ -472,7 +473,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		}
 	}
 	
-	//获取数据
+	//获取数据     //  TODO
 	public void getArticleDatas(int actionCode){
 		totalNum = dBExcute.getTotalCount(Constant.TB_VehicleFriend, VehicleFriendActivity.this);
 		if(totalNum > 0){
@@ -488,6 +489,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				isLoadMore = true;
 			}
 		}else{
+			Log.e("开启线程请求服务器加载更多文章","开启线程请求服务器加载更多文章");
 			myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 			myDialog.setCancelable(true);
 			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code, getArticleList)).start();

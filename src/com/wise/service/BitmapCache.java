@@ -31,9 +31,9 @@ public class BitmapCache {
 	
 	private BitmapCache(){
 		mCache = Collections.synchronizedMap(new LinkedHashMap<Object, BitmapDrawable>(10, 1.5f,true));//按使用次数排序
-//		mMaxCacheSizeInbytes = 4194304;//2<<(22-1)  1m = 2的20次方 1k = 2的10次方 1g = 2的30次方
-		int i = 20971520;
-		mMaxCacheSizeInbytes = i;
+		mMaxCacheSizeInbytes = 4194304;//2<<(22-1)  1m = 2的20次方 1k = 2的10次方 1g = 2的30次方
+//		int i = 20971520;
+//		mMaxCacheSizeInbytes = i;
 	}
 	/**
 	 * 得到一个缓存对象的实例 . 
@@ -61,6 +61,7 @@ public class BitmapCache {
 		if (mCache.containsKey(bitmapId)) {  //存在这张图的key
 			mCurrentSizeInbytes -= getSizeInbytes( mCache.get(bitmapId) );
 		}
+		Log.e("图片数量：",mCache.size()+"");
 		mCache.put(bitmapId, drawable);
 		mCurrentSizeInbytes += getSizeInbytes(drawable);  //每添加一张图片将内存大小计算出来
 		//TODO 测试后删除
@@ -87,6 +88,7 @@ public class BitmapCache {
      */
 	private void checkCache() {
 		if (mCurrentSizeInbytes > mMaxCacheSizeInbytes) {
+			Log.e("清除缓存","清除缓存");
 			// 先遍历最近最少使用的元素
 			Iterator<Entry<Object, BitmapDrawable>> iter = mCache.entrySet().iterator();
 			while (iter.hasNext()) {
@@ -113,7 +115,11 @@ public class BitmapCache {
 	public void releaseCache(){
 		mCache.clear();
 	}
-	
-	
+	public int getSize(){
+		return mCache.size();
+	}
+	public long getByteSize(){
+		return mCurrentSizeInbytes;
+	}
 }
 

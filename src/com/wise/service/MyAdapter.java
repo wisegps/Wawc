@@ -1,5 +1,4 @@
 package com.wise.service;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -102,7 +101,6 @@ public class MyAdapter extends BaseAdapter{
 	MyHandler myHandler = null;
 	View view;
 	XListView listView = null;
-	ImageView imageView = null;
 	public MyAdapter(Activity activity,View v,List<Article> articleList,XListView listView){
 		inflater=LayoutInflater.from(activity);
 		this.view = v;
@@ -158,17 +156,6 @@ public class MyAdapter extends BaseAdapter{
 			String smallImage = imageMap.get("small_pic").substring(imageMap.get("small_pic").lastIndexOf("/") + 1);
 			//本地不存在图片  存null  
 			Bitmap smallBitmap = imageIsExist(Constant.VehiclePath + smallImage,imageMap.get("small_pic"),3,0);
-//			Bitmap smallBitmap = null;
-//			if(imageIsExist(Constant.VehiclePath + smallImage,imageMap.get("small_pic"),3,0) != null){
-//				if(BitmapCache.getInstance().getBitmap(Constant.VehiclePath + smallImage) == null){
-//					BitmapDrawable drawable = new BitmapDrawable(smallBitmap);
-//					Log.e("path:",Constant.VehiclePath + smallImage);
-//					BitmapCache.getInstance().putBitmap(Constant.VehiclePath + smallImage, drawable);
-//				}else{
-//					Log.e("用户缓存图片","用户的缓存图片");
-//					smallBitmap = BitmapCache.getInstance().getBitmap(Constant.VehiclePath + smallImage).getBitmap();
-//				}
-//			}
 			smallImageList.add(i, smallBitmap);
 		}
 		
@@ -236,28 +223,16 @@ public class MyAdapter extends BaseAdapter{
 				Bitmap bitmap = smallImageList.get(i);
 				if(bitmap == null){   //显示转圈圈加载
 					selection = position;
-					//判断缓存类不存在这张图
-					if(BitmapCache.getInstance().getBitmap(R.drawable.body_nothing_icon) == null){
-						Bitmap tempImage = BitmapFactory.decodeResource(activity.getResources(), R.drawable.body_nothing_icon);
-						BitmapDrawable drawable = new BitmapDrawable(tempImage);
-						BitmapCache.getInstance().putBitmap(R.drawable.body_nothing_icon, drawable);
-					}else{
-						Log.e("使用的缓存图片","使用的缓存图片");
-						ImageView tempImage = new ImageView(activity);
-						tempImage.setImageDrawable(BitmapCache.getInstance().getBitmap(R.drawable.body_nothing_icon));
-						tempImage.setPadding(Variable.margins, 0,0, 0);
-						viewHolder.linearLayout.addView(tempImage,i,new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
-					}
-//						ImageView tempImage = new ImageView(activity);
-//						tempImage.setImageResource(R.drawable.body_nothing_icon);
-//						tempImage.setPadding(Variable.margins, 0,0, 0);
-//						viewHolder.linearLayout.addView(tempImage,i,new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
+					ImageView tempImage = new ImageView(activity);
+//					tempImage.setImageResource(R.drawable.body_nothing_icon);
+					tempImage.setImageBitmap(getBitmap(R.drawable.body_nothing_icon));  //   使用缓存
+					tempImage.setPadding(Variable.margins, 0,0, 0);
+					viewHolder.linearLayout.addView(tempImage,i,new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
 				}else{
 					ImageView imageView = new ImageView(activity);
 					imageView.setImageBitmap(smallImageList.get(i));
 					imageView.setPadding(Variable.margins, 0,0, 0);
 					viewHolder.linearLayout.addView(imageView,i,new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
-					
 					imageView.setOnClickListener(new OnClickListener() {
 						public void onClick(View v) {
 							//查看大图
@@ -284,11 +259,15 @@ public class MyAdapter extends BaseAdapter{
 		//设置用户头像   
 		Bitmap userIcons = imageIsExist(Constant.userIconPath + articleList.get(position).getCust_id() + ".jpg",articleList.get(position).getUserLogo(),4,articleList.get(position).getCust_id());
 		if(userIcons == null){
-			viewHolder.userHead.setBackgroundResource(R.drawable.body_icon_help);
+//			viewHolder.userHead.setImageResource(R.drawable.body_icon_help);
+			viewHolder.userHead.setImageBitmap(getBitmap(R.drawable.body_icon_help));   //  使用缓存
 		}else{
-			Bitmap user = BitmapFactory.decodeFile(Constant.userIconPath + articleList.get(position).getCust_id()+".jpg");
-			viewHolder.userHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(user));
+//			Bitmap user = BitmapFactory.decodeFile(Constant.userIconPath + articleList.get(position).getCust_id()+".jpg");
+//			viewHolder.userHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(user));
+			//  使用缓存
+			viewHolder.userHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(getBitmap(Constant.userIconPath + articleList.get(position).getCust_id()+".jpg")));   
 		}
+		System.gc();
 		GetSystem.displayBriefMemory(activity);
 		return convertView;
 	}
@@ -297,16 +276,8 @@ public class MyAdapter extends BaseAdapter{
 	private Bitmap imageIsExist(final String path,final String loadUrl,final int action,final int custId) {
 		File file = new File(path);
 		if(file.exists()){
-			Log.e("path:",path);
-			Bitmap image = null;
-			if(BitmapCache.getInstance().getBitmap(path) == null){
-				 BitmapDrawable drawable = new BitmapDrawable(BitmapFactory.decodeFile(path));
-				 BitmapCache.getInstance().putBitmap(path, drawable);
-			}else{
-				image = BitmapCache.getInstance().getBitmap(path).getBitmap();
-				Log.e("缓存图片","缓存图片  用户");
-			}
-			return BitmapFactory.decodeFile(path);
+			return getBitmap(path);  //  使用缓存
+//			return BitmapFactory.decodeFile(path);
 		}else{
 			new Thread(new Runnable() {
 				public void run() {
@@ -378,7 +349,6 @@ public class MyAdapter extends BaseAdapter{
 	        TimeZone localZone = nowCal.getTimeZone();
 	        //设定SDF的时区为本地
 	        simple.setTimeZone(localZone);
-
 
 	        SimpleDateFormat simple1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	        //设置 DateFormat的时间区域为GMT
@@ -524,10 +494,27 @@ public class MyAdapter extends BaseAdapter{
 		 public LinearLayout commentLayout;
 	 }
 	 
-	 public ImageView getImageView(){
-		 if(imageView == null){
-			 imageView = new ImageView(activity);
+	 
+	 //得到缓存图片
+	 public Bitmap getBitmap(Object obj){
+		 BitmapCache bitmapCache = BitmapCache.getInstance();
+		 Bitmap image = null;
+		 if(obj instanceof String){//  对象  内存卡上面的图片
+			 String path = (String) obj;
+			 if(bitmapCache.getBitmap(path) == null){
+				 BitmapDrawable drawable = new BitmapDrawable(BitmapFactory.decodeFile(path));
+				 bitmapCache.putBitmap(path, drawable);
+			 }
+			 image = bitmapCache.getBitmap(path).getBitmap();
 		 }
-		 return imageView;
+		 if(obj instanceof Integer){  // 资源文件中的图片
+			 int resId = (Integer) obj;
+			 if(bitmapCache.getBitmap(resId) == null){
+				 BitmapDrawable drawable = new BitmapDrawable(BitmapFactory.decodeResource(activity.getResources(), resId));
+				 bitmapCache.putBitmap(resId, drawable);
+			 }
+			 image = bitmapCache.getBitmap(resId).getBitmap();
+		 }
+		 return image;
 	 }
 }
