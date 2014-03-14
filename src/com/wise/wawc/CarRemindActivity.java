@@ -75,6 +75,7 @@ public class CarRemindActivity extends Activity {
     private static final int replacement = 4;
     LinearLayout ll_inspection, ll_renewal, ll_maintenance, ll_examined,
             ll_replacement;
+    RelativeLayout rl_maintenance;
     HorizontalScrollView hsv_cars;
     TextView tv_activity_car_remind_inspection,tv_activity_car_maintenance_inspection,
             tv_activity_car_remind_renewal, tv_change_date,
@@ -119,6 +120,7 @@ public class CarRemindActivity extends Activity {
         Button bt_renewal_call = (Button) findViewById(R.id.bt_renewal_call);
         bt_renewal_call.setOnClickListener(onClickListener);
         // 保养
+        rl_maintenance = (RelativeLayout)findViewById(R.id.rl_maintenance);
         ll_maintenance = (LinearLayout) findViewById(R.id.ll_maintenance);
         ImageView iv_maintenance_help = (ImageView)findViewById(R.id.iv_maintenance_help);
         iv_maintenance_help.setOnClickListener(onClickListener);
@@ -235,9 +237,11 @@ public class CarRemindActivity extends Activity {
             switch (msg.what) {
             case change_user_date:
                 jsonChangeUserInfo(msg.obj.toString());
+                GetDBData();
                 break;
             case get_user_date:
                 jsonUserInfo(msg.obj.toString());
+                GetDBData();
                 break;
             case get_car_info:
                 jsonCarInfo(msg.obj.toString());
@@ -317,10 +321,10 @@ public class CarRemindActivity extends Activity {
                 turnActivity("驾照年审及换证","http://wiwc.api.wisegps.cn/help/clby");
                 break;
             case R.id.bt_renewal_call:// 车辆续保
-                ToCall("phone");
+                ToCall(carData.getInsurance_tel());
                 break;
             case R.id.bt_maintenance_call:// 车辆保养
-                ToCall("phone");
+                ToCall(carData.getMaintain_tel());
                 break;
             case R.id.iv_maintenance_help:
                 turnActivity("车辆保养","http://wiwc.api.wisegps.cn/help/clby");
@@ -391,8 +395,9 @@ public class CarRemindActivity extends Activity {
     }
 
     private void ToCall(String phone) {
+        Log.d(TAG, "tel:" + phone);
         Intent intent = new Intent(Intent.ACTION_DIAL,
-                Uri.parse("tel:" + 10010));
+                Uri.parse("tel:" + phone));
         startActivity(intent);
     }
 
@@ -575,8 +580,8 @@ public class CarRemindActivity extends Activity {
                 // 更新DB
                 DBExcute dbExcute = new DBExcute();
                 ContentValues values = new ContentValues();
-                values.put("annual_inspect_date", annual_inspect_date);
-                values.put("change_date", change_date);
+                values.put("annual_inspect_date", annual_inspect_date + " 00:00:00");
+                values.put("change_date", change_date + " 00:00:00");
                 dbExcute.UpdateDB(this, values, "cust_id=?",
                         new String[] { Variable.cust_id }, Constant.TB_Account);
             }
@@ -588,10 +593,16 @@ public class CarRemindActivity extends Activity {
      * 从url获取车辆信息
      */
     private void getCarRemindFromUrl() {
-        String url = Constant.BaseUrl + "device/" + carData.getDevice_id()
-                + "/active_gps_data?auth_code=" + Variable.auth_code;
-        new Thread(new NetThread.GetDataThread(handler, url, get_car_info))
-                .start();
+        if(carData.getDevice_id() == null || carData.getDevice_id().equals("")){
+            //TODO TIAOSHI
+            rl_maintenance.setVisibility(View.GONE);
+        }else{
+            rl_maintenance.setVisibility(View.VISIBLE);
+            String url = Constant.BaseUrl + "device/" + carData.getDevice_id()
+                    + "/active_gps_data?auth_code=" + Variable.auth_code;
+            new Thread(new NetThread.GetDataThread(handler, url, get_car_info))
+                    .start();
+        }        
     }
     int mileage = 0;
     /**

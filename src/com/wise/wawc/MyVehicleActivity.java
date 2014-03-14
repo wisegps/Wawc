@@ -326,6 +326,7 @@ public class MyVehicleActivity extends Activity{
 		vehicleGridView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
 					carBrankId = "";
+					Log.d(TAG, "onItemClick carBrankId = " + carBrankId);
 					carSeriesId = "";
 					carBrank = "";
 					carSeries = "";
@@ -399,6 +400,7 @@ public class MyVehicleActivity extends Activity{
 				startActivityForResult(intent, resultCodeBrank);
 				break;
 			case R.id.car_series_layout:    //选择车型
+			    Log.d(TAG, "car_series_layout carBrankId = " + carBrankId);
 				if("".equals(carBrankId)){
 					Toast.makeText(MyVehicleActivity.this, "请选择车牌", 0).show();
 					return;
@@ -406,6 +408,7 @@ public class MyVehicleActivity extends Activity{
 					Intent intent3 = new Intent(MyVehicleActivity.this,ChoiceCarInformationActivity.class);
 					intent3.putExtra("code", resultCodeSeries);
 					intent3.putExtra("brankId", carBrankId);
+					Log.d(TAG, "carBrankId = " + carBrankId);
 					intent3.putExtra("carBrank", carBrank);
 					startActivityForResult(intent3, resultCodeSeries);
 				}
@@ -418,6 +421,7 @@ public class MyVehicleActivity extends Activity{
 					Intent intent6 = new Intent(MyVehicleActivity.this,ChoiceCarInformationActivity.class);
 					intent6.putExtra("code", resultCodeType);
 					intent6.putExtra("brankId", carBrankId);
+					Log.d(TAG, "carBrankId = " + carBrankId);
 					intent6.putExtra("carBrank", carBrank);
 					intent6.putExtra("seriesId", carSeriesId);
 					intent6.putExtra("series", carSeries);
@@ -516,7 +520,7 @@ public class MyVehicleActivity extends Activity{
 			carSeriesId = data.getStringExtra("seriesId");
 			carType = data.getStringExtra("type");
 			carTypeId = data.getStringExtra("typeId");
-			
+			Log.d(TAG, "resultCodeBrank carBrankId = " + carBrankId);
 			Log.e("车牌：",data.getStringExtra("brank"));
 			Log.e("车牌id：",data.getStringExtra("brankId"));
 			Log.e("车型：",data.getStringExtra("series"));
@@ -535,6 +539,7 @@ public class MyVehicleActivity extends Activity{
 		if(resultCode == this.resultCodeSeries){
 			carBrank = data.getStringExtra("brank");
 			carBrankId = data.getStringExtra("brankId");
+			Log.d(TAG, "车型返回 carBrankId = " + carBrankId);
 			carSeries = data.getStringExtra("series");
 			carSeriesId = data.getStringExtra("seriesId");
 			carType = data.getStringExtra("type");
@@ -550,6 +555,7 @@ public class MyVehicleActivity extends Activity{
 		if(resultCode == this.resultCodeType){
 			carBrank = data.getStringExtra("brank");
 			carBrankId = data.getStringExtra("brankId");
+			Log.d(TAG, "resultCodeType carBrankId = " + carBrankId);
 			carSeries = data.getStringExtra("series");
 			carSeriesId = data.getStringExtra("seriesId");
 			carType = data.getStringExtra("type");
@@ -674,6 +680,7 @@ public class MyVehicleActivity extends Activity{
 				//  匹配车辆品牌id、车型id、车款id   用于第一次点击二级项（车型）获取相关数据
 //				getVehiclebrandData(ChoiceCarInformationActivity.carBrankTitle,Constant.TB_Base,Constant.BaseUrl + "base/car_brand",getBrankData);
 				carBrankId = carData.getCar_brand_id();
+				Log.d(TAG, "MyHandler carBrankId = " + carBrankId);
 				carSeriesId = carData.getCar_series_id();
 				carTypeId = carData.getCar_type_id();
 				
@@ -1034,6 +1041,7 @@ public class MyVehicleActivity extends Activity{
         
         
         params.add(new BasicNameValuePair("car_brand_id", carBrankId));
+        Log.d(TAG, "carBrankId = " + carBrankId);
         Log.d(TAG, "car_brand_id = " + carBrankId);
         params.add(new BasicNameValuePair("car_series_id", carSeriesId));
         Log.d(TAG, "car_series_id = " + carSeriesId);
@@ -1126,6 +1134,7 @@ public class MyVehicleActivity extends Activity{
 //							value.put("maintain_next_mileage", nextMaintainMileage.getText().toString().trim());
 						 values.put("maintain_next_mileage", "");
 						 values.put("car_brand_id", carBrankId);
+						 Log.d(TAG, "carBrankId = " + carBrankId);
 						 values.put("car_series_id", carSeriesId);
 						 values.put("car_type_id", carTypeId);
 						 values.put("vio_city_name", selectCityTv.getText().toString());
@@ -1154,6 +1163,7 @@ public class MyVehicleActivity extends Activity{
 						 Variable.carDatas.get(chickIndex).setMaintain_last_date(lastMaintainTime.getText().toString());
 						 Variable.carDatas.get(chickIndex).setBuy_date( buyTime.getText().toString());
 						 Variable.carDatas.get(chickIndex).setCar_brand_id(carBrankId);
+						 Log.d(TAG, "carBrankId = " + carBrankId);
 						 Variable.carDatas.get(chickIndex).setCar_series_id(carSeriesId);
 						 Variable.carDatas.get(chickIndex).setCar_type_id(carTypeId);
 						 Variable.carDatas.get(chickIndex).setVio_city_name(selectCityTv.getText().toString());
@@ -1354,6 +1364,7 @@ public class MyVehicleActivity extends Activity{
 				for(int i = 0 ; i < jsonary.length() ; i ++){
 					if(carBrank.equals(jsonary.getJSONObject(i).get("name"))){
 						carBrankId = jsonary.getJSONObject(i).get("id") + "";
+						Log.d(TAG, "getBrankData carBrankId = " + carBrankId);
 						getVehiclebrandData(ChoiceCarInformationActivity.carSeriesTitle,Constant.TB_Base,Constant.BaseUrl + "base/car_series?pid=" + carBrankId , getSeriesData);
 					}
 				}

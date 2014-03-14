@@ -262,9 +262,13 @@ public class CarData {
     @Override
     public String toString() {
         return "CarData [obj_id=" + obj_id + ", car_brand=" + car_brand
-                + ", car_series=" + car_series + ", car_type=" + car_type
+                + ", car_brand_id=" + car_brand_id + ", car_series="
+                + car_series + ", car_series_id=" + car_series_id
+                + ", car_type=" + car_type + ", car_type_id=" + car_type_id
                 + ", engine_no=" + engine_no + ", frame_no=" + frame_no
-                + ", insurance_company=" + insurance_company
+                + ", vio_city_name=" + vio_city_name + ", gas_no=" + gas_no
+                + ", insurance_tel=" + insurance_tel + ", maintain_tel="
+                + maintain_tel + ", insurance_company=" + insurance_company
                 + ", insurance_date=" + insurance_date
                 + ", annual_inspect_date=" + annual_inspect_date
                 + ", maintain_company=" + maintain_company
@@ -277,5 +281,5 @@ public class CarData {
                 + ", isCheck=" + isCheck + ", Type=" + Type + ", Adress="
                 + Adress + ", gps_time=" + gps_time + ", Lat=" + Lat + ", Lon="
                 + Lon + "]";
-    }    
+    }        
 }

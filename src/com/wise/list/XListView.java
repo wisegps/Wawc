@@ -7,10 +7,12 @@
  * 		Implement IXListViewListener, and see stopRefresh() / stopLoadMore().
  */
 package com.wise.list;
+
 import com.wise.wawc.R;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -166,13 +168,14 @@ public class XListView extends ListView implements OnScrollListener {
 			resetHeaderHeight();
 		}
 	}
-
+	
 	/**
 	 * stop load more, reset footer view.
 	 */
-	public void stopLoadMore() {
+	public void stopLoadMore() {//TODO 状态
 		if (mPullLoading == true) {
 			mPullLoading = false;
+	        System.out.println("mPullLoading = " + mPullLoading);
 			mFooterView.setState(XListViewFooter.STATE_NORMAL);
 		}
 	}
@@ -253,15 +256,17 @@ public class XListView extends ListView implements OnScrollListener {
 			invalidate();
 		}
 	}
-
+	//TODO 开始
 	private void startLoadMore() {
+	    System.out.println("begin = startLoadMore = " + mPullLoading);
 		if (!mPullLoading) {
 			mFooterView.setState(XListViewFooter.STATE_LOADING);
 			if (mListViewListener != null) {
+		        mPullLoading = true;
 				mListViewListener.onLoadMore();
 			}
 		}
-		mPullLoading = true;
+		System.out.println("end = startLoadMore = " + mPullLoading);
 	}
 
 	@Override

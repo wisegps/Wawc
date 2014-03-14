@@ -113,7 +113,7 @@ public class DealAddressActivity extends Activity {
      */
     private void GetDealAdress(String city) {
         String LocationCity;
-        if(city.equals("")){
+        if(city == null || city.equals("")){
             SharedPreferences preferences = getSharedPreferences(
                     Constant.sharedPreferencesName, Context.MODE_PRIVATE);
             LocationCity = preferences

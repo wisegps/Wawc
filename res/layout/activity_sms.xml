@@ -52,6 +52,7 @@
             android:id="@+id/lv_sms"
             android:visibility="gone"
             android:divider="@null"
+            android:listSelector="@drawable/bg_item_selector"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"/> 
     </RelativeLayout>
