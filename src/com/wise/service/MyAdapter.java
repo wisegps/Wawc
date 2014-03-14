@@ -206,9 +206,12 @@ public class MyAdapter extends BaseAdapter{
 					commentContent.setText(spannableString);
 					commentName.setTextColor(R.color.blue);
 					commentContent.setTextColor(R.color.common);
-					oneComment.addView(commentName, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-					oneComment.addView(commentContent, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-					viewHolder.commentLayout.addView(oneComment, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+					
+					Log.e("评论者：",commentName.getText().toString());
+					Log.e("内容    ：",commentContent.getText().toString());
+					oneComment.addView(commentName, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+					oneComment.addView(commentContent, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+					viewHolder.commentLayout.addView(oneComment, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 				}
 			}else{
 				viewHolder.commentLayout.setVisibility(View.GONE);

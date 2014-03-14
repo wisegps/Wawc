@@ -142,9 +142,11 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 							ChoiceCarInformationActivity.this.finish();
 						}else if(carModlesLayout.getVisibility() == View.VISIBLE){
 							carModlesLayout.setVisibility(View.GONE);
+							title.setText(R.string.choice_brank);
 							carBrankLayout.setVisibility(View.VISIBLE);
 						}else if(carTypeLayout.getVisibility() == View.VISIBLE){
 							carTypeLayout.setVisibility(View.GONE);
+							title.setText(R.string.choice_series);
 							carModlesLayout.setVisibility(View.VISIBLE);
 						}
 				}else if(code == MyVehicleActivity.resultCodeSeries || code == NewVehicleActivity.newVehicleSeries){
@@ -153,6 +155,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 					}
 					if(carTypeLayout.getVisibility() == View.VISIBLE){
 						carTypeLayout.setVisibility(View.GONE);
+						title.setText(R.string.choice_series);
 						carModlesLayout.setVisibility(View.VISIBLE);
 					}
 				}else if(code == MyVehicleActivity.resultCodeType || code == NewVehicleActivity.newVehicleType){
@@ -401,6 +404,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 			Collections.sort(brankModelList, comparator);
 			carModlesLayout.setVisibility(View.GONE);
 			carTypeLayout.setVisibility(View.GONE);
+			title.setText(R.string.choice_brank);
 			brankAdapter = new BrankAdapter(ChoiceCarInformationActivity.this, brankModelList);
 			vehicleBrankList.setAdapter(brankAdapter);
 			
@@ -426,6 +430,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 			carTypeLayout.setVisibility(View.GONE);
 			seriesAdapter = new SeriesAdapter(carSeriesList, ChoiceCarInformationActivity.this,1,null);
 			carModlesLayout.setAdapter(seriesAdapter);
+			title.setText(R.string.choice_series);
 			carModlesLayout.setVisibility(View.VISIBLE);
 			break;
 		case REFRESH_BRANK:   //刷新车牌数据
@@ -448,6 +453,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 			seriesAdapter = new SeriesAdapter(null,ChoiceCarInformationActivity.this,2,carSeriesNameList);
 			seriesAdapter.refresh(2, carSeriesNameList);
 			carTypeLayout.setAdapter(seriesAdapter);
+			title.setText(R.string.choice_type);
 			carTypeLayout.setVisibility(View.VISIBLE);
 			break;
 		}
