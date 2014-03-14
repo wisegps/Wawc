@@ -64,6 +64,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -102,6 +103,7 @@ public class MyAdapter extends BaseAdapter{
 	View view;
 	XListView listView = null;
 	
+	
 	//图片布局类
 	public MyAdapter(Activity activity,View v,List<Article> articleList,XListView listView){
 		inflater=LayoutInflater.from(activity);
@@ -129,6 +131,9 @@ public class MyAdapter extends BaseAdapter{
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		this.position = position;
 		if(convertView == null){
+			
+			
+			//  TODO
 			convertView = inflater.inflate(R.layout.article_adapter, null);
 			viewHolder = new ViewHolder(); 
 			viewHolder.favoriteStart = (ImageView) convertView.findViewById(R.id.article_praises_star);
@@ -142,7 +147,6 @@ public class MyAdapter extends BaseAdapter{
 			viewHolder.line = convertView.findViewById(R.id.article_adapter_line);
 			viewHolder.articlePraisesLayout = (TableRow) convertView.findViewById(R.id.article_praises_layout);
 			viewHolder.linearLayout = (LinearLayout) convertView.findViewById(R.id.user_image);
-			viewHolder.commentLayout = (LinearLayout) convertView.findViewById(R.id.article_comment_layout);
 			
 
 			Log.d(TAG, "position = " + position);
@@ -193,34 +197,30 @@ public class MyAdapter extends BaseAdapter{
 			viewHolder.line.setVisibility(View.GONE);
 		}
 		//   评论     如果没有评论   将 评论布局隐藏  同时将分割线隐藏
-		if(articleList.get(position).getCommentList() != null){
-			if(articleList.get(position).getCommentList().size() != 0){
-				for(int i = 0 ; i < articleList.get(position).getCommentList().size() ; i ++){
-					LinearLayout oneComment = new LinearLayout(activity);
-					oneComment.setOrientation(LinearLayout.HORIZONTAL);
-					TextView commentName = new TextView(activity);  //评论者昵称
-					TextView commentContent = new TextView(activity);   //评论内容
-					String[] commentStr = articleList.get(position).getCommentList().get(i);
-					commentName.setText(commentStr[0] + ":");
-					SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(activity, commentStr[1]);
-					commentContent.setText(spannableString);
-					commentName.setTextColor(R.color.blue);
-					commentContent.setTextColor(R.color.common);
-					
-					Log.e("评论者：",commentName.getText().toString());
-					Log.e("内容    ：",commentContent.getText().toString());
-					oneComment.addView(commentName, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-					oneComment.addView(commentContent, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-					viewHolder.commentLayout.addView(oneComment, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-				}
-			}else{
-				viewHolder.commentLayout.setVisibility(View.GONE);
-				viewHolder.line.setVisibility(View.GONE);
-			}
-		}else{
-			viewHolder.commentLayout.setVisibility(View.GONE);
-			viewHolder.line.setVisibility(View.GONE);
-		}
+//		if(articleList.get(position).getCommentList() != null){
+//			if(articleList.get(position).getCommentList().size() != 0){
+//				for(int i = 0 ; i < articleList.get(position).getCommentList().size() ; i ++){
+//					LinearLayout oneComment = new LinearLayout(activity);
+//					oneComment.setOrientation(LinearLayout.HORIZONTAL);
+//					TextView commentName = new TextView(activity);  //评论者昵称
+//					TextView commentContent = new TextView(activity);   //评论内容
+//					String[] commentStr = articleList.get(position).getCommentList().get(i);
+//					commentName.setText(commentStr[0] + ":");
+//					SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(activity, commentStr[1]);
+//					commentContent.setText(spannableString);
+//					commentName.setTextColor(R.color.blue);
+//					commentContent.setTextColor(R.color.common);
+//					
+//					oneComment.addView(commentName);
+//					oneComment.addView(commentContent);
+//					viewHolder.commentLayout.addView(oneComment,new ViewGroup.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+//				}
+//			}
+//		}else{
+//			viewHolder.commentLayout.setVisibility(View.GONE);
+//			viewHolder.line.setVisibility(View.GONE);
+//		}
+		
 		//用户图片
 		
 		for (int i = 0; i < smallImageList.size(); i++) {
@@ -506,7 +506,6 @@ public class MyAdapter extends BaseAdapter{
 		 public View line = null;   //分割线
 		 public TableRow articlePraisesLayout = null;   //点赞者
 		 public LinearLayout linearLayout;
-		 public LinearLayout commentLayout;
 	 }
 	 
 	 

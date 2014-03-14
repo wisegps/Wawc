@@ -463,6 +463,7 @@ public class NewVehicleActivity extends Activity{
         
         params.add(new BasicNameValuePair("maintain_tel", maintainShopTel.getText().toString().trim()));
         params.add(new BasicNameValuePair("gas_no", petrolGradeTv.getText().toString()));
+        params.add(new BasicNameValuePair("buy_date", buyTime.getText().toString()));
         
         
         Log.e("车牌号",carNumber.getText().toString());
