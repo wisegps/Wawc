@@ -57,6 +57,8 @@
     
     <string name="add_car">添加爱车</string>
     <string name="choice_brank">选择品牌</string>
+    <string name="choice_series">选择车型</string>
+    <string name="choice_type">选择车款</string>
     <!-- 车辆行程地图 -->
     <string name="travel_map_urrent">地图截取中</string>
     <!-- 我的收藏 -->
