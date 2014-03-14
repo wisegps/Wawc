@@ -209,9 +209,9 @@ public class MyAdapter extends BaseAdapter{
 					
 					Log.e("评论者：",commentName.getText().toString());
 					Log.e("内容    ：",commentContent.getText().toString());
-					oneComment.addView(commentName, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-					oneComment.addView(commentContent, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-					viewHolder.commentLayout.addView(oneComment, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
+					oneComment.addView(commentName, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+					oneComment.addView(commentContent, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
+					viewHolder.commentLayout.addView(oneComment, new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
 				}
 			}else{
 				viewHolder.commentLayout.setVisibility(View.GONE);

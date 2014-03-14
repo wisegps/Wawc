@@ -134,7 +134,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dip"
         android:layout_marginTop="5dip"
-        android:background="@drawable/body_container" >
+         >
 
         <TableRow
             android:layout_width="fill_parent"
@@ -152,7 +152,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margins"
                 android:layout_weight="6"
-                android:background="@drawable/article_comment_bg" >
+                android:background="@drawable/body_container" >
 
                 <!-- 赞 -->
 

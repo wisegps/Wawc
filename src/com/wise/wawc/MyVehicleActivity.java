@@ -527,6 +527,9 @@ public class MyVehicleActivity extends Activity{
 			Variable.carDatas.get(chickIndex).setCar_brand(carBrank);
 			Variable.carDatas.get(chickIndex).setCar_series(carSeries);
 			Variable.carDatas.get(chickIndex).setCar_type(carType);
+			Variable.carDatas.get(chickIndex).setCar_brand_id(carBrankId);
+			Variable.carDatas.get(chickIndex).setCar_series_id(carSeriesId);
+			Variable.carDatas.get(chickIndex).setCar_type_id(carTypeId);
 		}
 		//点击车型返回
 		if(resultCode == this.resultCodeSeries){
@@ -539,6 +542,9 @@ public class MyVehicleActivity extends Activity{
 			Variable.carDatas.get(chickIndex).setCar_brand(carBrank);
 			Variable.carDatas.get(chickIndex).setCar_series(carSeries);
 			Variable.carDatas.get(chickIndex).setCar_type(carType);
+			Variable.carDatas.get(chickIndex).setCar_brand_id(carBrankId);
+			Variable.carDatas.get(chickIndex).setCar_series_id(carSeriesId);
+			Variable.carDatas.get(chickIndex).setCar_type_id(carTypeId);
 		}
 		
 		if(resultCode == this.resultCodeType){
@@ -551,6 +557,9 @@ public class MyVehicleActivity extends Activity{
 			Variable.carDatas.get(chickIndex).setCar_brand(carBrank);
 			Variable.carDatas.get(chickIndex).setCar_series(carSeries);
 			Variable.carDatas.get(chickIndex).setCar_type(carType);
+			Variable.carDatas.get(chickIndex).setCar_brand_id(carBrankId);
+			Variable.carDatas.get(chickIndex).setCar_series_id(carSeriesId);
+			Variable.carDatas.get(chickIndex).setCar_type_id(carTypeId);
 		}
 		//选择保养店
 		if(resultCode == this.resultCodeMaintain){
@@ -1071,7 +1080,7 @@ public class MyVehicleActivity extends Activity{
         params.add(new BasicNameValuePair("maintain_last_date", lastMaintainTime.getText().toString()));
         Log.d(TAG, "maintain_last_date = " + lastMaintainTime.getText().toString().trim());
         params.add(new BasicNameValuePair("maintain_next_mileage", "2013"));   //暂时去掉
-        params.add(new BasicNameValuePair("buy_time", buyTime.getText().toString().trim()));
+        params.add(new BasicNameValuePair("buy_date", buyTime.getText().toString().trim()));
         Log.d(TAG, "buy_time = " + buyTime.getText().toString().trim());
         
         new Thread(new Runnable() {
