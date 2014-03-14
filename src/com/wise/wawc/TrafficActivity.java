@@ -121,7 +121,9 @@ public class TrafficActivity extends Activity implements IXListViewListener{
                 tv_total_score.setText(String.format(getResources().getString(R.string.total_score),total_score));
                 tv_total_fine.setText(String.format(getResources().getString(R.string.total_fine),total_fine));
                 onLoad();
-                if(trafficDatas.size() > 0){
+                if(trafficDatas.size() == 0){
+                    isNothingNote(true);
+                }else{
                     isNothingNote(false);
                 }
                 break;
@@ -129,8 +131,16 @@ public class TrafficActivity extends Activity implements IXListViewListener{
                 trafficDatas.addAll(jsonTrafficData(msg.obj.toString()));
                 trafficAdapter.notifyDataSetChanged();
                 onLoad();
+                if(trafficDatas.size() == 0){
+                    isNothingNote(true);
+                }else{
+                    isNothingNote(false);
+                }
                 tv_total_score.setText(String.format(getResources().getString(R.string.total_score),total_score));
                 tv_total_fine.setText(String.format(getResources().getString(R.string.total_fine),total_fine));
+                if(jsonTrafficData(msg.obj.toString()).size() == 0){
+                    lv_activity_traffic.setPullLoadEnable(false);
+                }
                 break;
             }
         }	    
@@ -163,6 +173,7 @@ public class TrafficActivity extends Activity implements IXListViewListener{
         total_score = 0;
         total_fine = 0;
         boolean isUrl = isGetDataUrl(Car_name);
+        lv_activity_traffic.setPullLoadEnable(true);
         if(isUrl){
             isGetDB = false;
             //从服务器读取数据
@@ -174,13 +185,17 @@ public class TrafficActivity extends Activity implements IXListViewListener{
                 e.printStackTrace();
             }
         }else{
-            isNothingNote(false);
             isGetDB = true;
             Log.d(TAG, "从本地读取数据");
             trafficDatas.addAll(getTrafficDatas(Toal, pageSize));
             trafficAdapter.notifyDataSetChanged();
             tv_total_score.setText(String.format(getResources().getString(R.string.total_score),total_score));
             tv_total_fine.setText(String.format(getResources().getString(R.string.total_fine),total_fine));
+            if(trafficDatas.size() == 0){
+                isNothingNote(true);
+            }else{
+                isNothingNote(false);
+            }
         }
 	}
 	private void isNothingNote(boolean isNote){

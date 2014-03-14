@@ -122,10 +122,18 @@ public class DealAddressActivity extends Activity {
             LocationCity = city;
         }
         try {
-            String url = Constant.BaseUrl + "location?auth_code="
-                    + Variable.auth_code + "&city="
-                    + URLEncoder.encode(LocationCity, "UTF-8") + "&type="
-                    + Type + "&cust_id=" + Variable.cust_id;
+            String url;
+            if(Type == 3){//违章不需要经纬度
+                url = Constant.BaseUrl + "location?auth_code="
+                        + Variable.auth_code + "&city="
+                        + URLEncoder.encode(LocationCity, "UTF-8") + "&type="
+                        + Type + "&cust_id=" + Variable.cust_id;
+            }else{
+                url = Constant.BaseUrl + "location?auth_code="
+                        + Variable.auth_code + "&city="
+                        + URLEncoder.encode(LocationCity, "UTF-8") + "&type="
+                        + Type + "&cust_id=" + Variable.cust_id + "&lat=" + Variable.Lat + "&lon=" + Variable.Lon;
+            }            
             new Thread(new NetThread.GetDataThread(handler, url, get_deal))
                     .start();
         } catch (Exception e) {
@@ -155,6 +163,11 @@ public class DealAddressActivity extends Activity {
                 } else {
                     // 未收藏
                     adressData.setIs_collect(false);
+                }
+                if(jsonObject.opt("distance") == null){
+                    adressData.setDistance(-1);
+                }else{
+                    adressData.setDistance(jsonObject.getInt("distance"));
                 }
                 adressDatas.add(adressData);
             }

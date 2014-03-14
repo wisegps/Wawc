@@ -236,7 +236,7 @@ public class MyAdapter extends BaseAdapter{
 //							viewHolder.linearLayout.removeViewAt(j);
 //						}
 //					}
-					tempImage.setImageBitmap(getBitmap(R.drawable.body_nothing_icon));  //   使用缓存
+					tempImage.setImageBitmap(getBitmap(R.drawable.article));  //   使用缓存
 					tempImage.setPadding(Variable.margins, 0,0, 0);
 					viewHolder.linearLayout.addView(tempImage,i,new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
 				}else{

@@ -87,6 +87,8 @@ public class CarRemindActivity extends Activity {
     String annual_inspect_date = "";// 驾照年审
     String change_date = "";// 驾照换证
 
+    DBExcute dbExcute = new DBExcute();
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -179,16 +181,20 @@ public class CarRemindActivity extends Activity {
         gv_activity_car_remind.setOnItemClickListener(onItemClickListener);
 
         if (Variable.carDatas != null && Variable.carDatas.size() > 0) {
-            SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
-            int DefaultVehicleID = preferences.getInt(Constant.DefaultVehicleID, 0);
-            carData = Variable.carDatas.get(DefaultVehicleID);
-            ShowText(carData);
-            getCarRemindFromUrl();
-            if(Variable.carDatas.size() == 1){
-                hsv_cars.setVisibility(View.GONE);
-            }else{
-                hsv_cars.setVisibility(View.VISIBLE);
+            for(CarData carData : Variable.carDatas){
+                if(carData.isCheck()){
+                    this.carData = carData;
+                    ShowText(carData);
+                    getCarRemindFromUrl();
+                    break;
+                }
             }
+            
+        }
+        if(Variable.carDatas.size() == 1){
+            hsv_cars.setVisibility(View.GONE);
+        }else{
+            hsv_cars.setVisibility(View.VISIBLE);
         }
         GetDBData();
 
@@ -201,12 +207,20 @@ public class CarRemindActivity extends Activity {
                     System.out.println("更新车辆年检时间");
                     car_remind_inspection(Date);
                     carData.setAnnual_inspect_date(Date + " 00:00:00");
+                    ContentValues values1 = new ContentValues();
+                    values1.put("annual_inspect_date", Date + " 00:00:00");
+                    dbExcute.UpdateDB(CarRemindActivity.this, values1, "obj_id=?",
+                            new String[] {String.valueOf(carData.getObj_id())}, Constant.TB_Vehicle);
                     changeCarInfo();
                     break;
                 case renewal:
                     System.out.println("车辆续保时间");
                     car_renewal(Date);
                     carData.setInsurance_date(Date + " 00:00:00");
+                    ContentValues values = new ContentValues();
+                    values.put("insurance_date", Date + " 00:00:00");
+                    dbExcute.UpdateDB(CarRemindActivity.this, values, "obj_id=?",
+                            new String[] {String.valueOf(carData.getObj_id())}, Constant.TB_Vehicle);
                     changeCarInfo();
                     break;
                 case examined:
@@ -312,13 +326,13 @@ public class CarRemindActivity extends Activity {
                 ToDealAdress(getString(R.string.examined_title), 2);
                 break;
             case R.id.iv_examined_help:
-                turnActivity("驾照年审及换证","http://wiwc.api.wisegps.cn/help/clby");
+                turnActivity("驾照年审及换证","http://wiwc.api.wisegps.cn/help/jzns");
                 break;
             case R.id.bt_replacement_address:// 驾照换证
                 ToDealAdress(getString(R.string.replacement_title), 2);
                 break;
             case R.id.iv_replacement_help:
-                turnActivity("驾照年审及换证","http://wiwc.api.wisegps.cn/help/clby");
+                turnActivity("驾照年审及换证","http://wiwc.api.wisegps.cn/help/jzns");
                 break;
             case R.id.bt_renewal_call:// 车辆续保
                 ToCall(carData.getInsurance_tel());
@@ -642,13 +656,17 @@ public class CarRemindActivity extends Activity {
     }
     
     private void changeCarInfo(){
-        String url = Constant.BaseUrl + "vehicle/" + carData.getObj_id() +"inspect_date?auth_code=" + Variable.auth_code;
+        String Maintain_next_mileage = carData.getMaintain_next_mileage();
+        if(carData.getMaintain_next_mileage() == null || carData.getMaintain_next_mileage().equals("")){
+            Maintain_next_mileage = "0";
+        }
+        String url = Constant.BaseUrl + "vehicle/" + carData.getObj_id() +"/inspect_date?auth_code=" + Variable.auth_code;
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("insurance_date", carData.getAnnual_inspect_date()));
-        params.add(new BasicNameValuePair("annual_inspect_date", carData.getInsurance_date()));
-        params.add(new BasicNameValuePair("maintain_next_mileage", carData.getMaintain_next_mileage())); 
-        System.out.println(carData.toString());
-        new Thread(new NetThread.putDataThread(handler, url, params, Update_data)).start();
+        params.add(new BasicNameValuePair("insurance_date", carData.getInsurance_date()));
+        params.add(new BasicNameValuePair("annual_inspect_date", carData.getAnnual_inspect_date()));
+        params.add(new BasicNameValuePair("maintain_next_mileage", Maintain_next_mileage)); 
+        new Thread(new NetThread.putDataThread(handler, url, params, Update_data)).start();  
+        System.out.println(carData.getInsurance_date() + "," + carData.getAnnual_inspect_date() + "," + Maintain_next_mileage);
     }
     private void jsonChangeCarInfo(String result){
         Log.d(TAG, result);

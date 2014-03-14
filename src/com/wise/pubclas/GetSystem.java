@@ -154,6 +154,19 @@ public class GetSystem {
             return null;
         }
     }
+    public static String GetNextYear(String Date ,int year){
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Calendar nowDate = Calendar.getInstance();
+            nowDate.setTime(sdf.parse(Date));
+            nowDate.add(Calendar.YEAR, year);
+            String newDate = sdf.format(nowDate.getTime());
+            return newDate;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
     /**
      * 格式化显示时间，今天，昨天，日期
      * @param time 2014-02-10 06:17
@@ -400,6 +413,9 @@ public class GetSystem {
     public static boolean isTimeOut(String time){
         if(time == null || time.equals("")){
             return false;
+        }
+        if(time.length() == 10){
+            time = time + " 00:00:00";
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {

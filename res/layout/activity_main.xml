@@ -231,7 +231,7 @@
 	               android:paddingTop="@dimen/margins"
 	               android:paddingBottom="@dimen/margins"
 	               android:hint="你想做什么?"
-	               android:textColor="@color/common"
+	               android:textColor="@color/white"
 	               android:background="@drawable/input_bg"/>
 	           <ImageView 
 	               android:layout_width="30dp"

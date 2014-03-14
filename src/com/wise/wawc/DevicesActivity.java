@@ -49,6 +49,7 @@ public class DevicesActivity extends Activity {
     private static final String TAG = "MyDevicesActivity";
     private static final int Get_data = 1;
 
+    LinearLayout ll_content;
     GridView gv_activity_devices;
     TextView tv_activity_devices_serial, tv_activity_devices_sim,
             tv_activity_devices_status, tv_activity_devices_service_end_date,
@@ -62,7 +63,7 @@ public class DevicesActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_devices);
-        LinearLayout ll_content = (LinearLayout) findViewById(R.id.ll_content);
+        ll_content = (LinearLayout) findViewById(R.id.ll_content);
         ImageView iv_activity_devices_menu = (ImageView) findViewById(R.id.iv_activity_devices_menu);
         iv_activity_devices_menu.setOnClickListener(onClickListener);
         TextView tv_activity_devices_renewals = (TextView) findViewById(R.id.tv_activity_devices_renewals);
@@ -196,8 +197,10 @@ public class DevicesActivity extends Activity {
     private void GetDevicesDB() {
         if(Variable.devicesDatas.size() == 0){
             isHaveDevices = false;
+            ll_content.setVisibility(View.GONE);
         }else{
             isHaveDevices = true;
+            ll_content.setVisibility(View.VISIBLE);
             devicesDatas.addAll(Variable.devicesDatas);
             showGridView();
         }

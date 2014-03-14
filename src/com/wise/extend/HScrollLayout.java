@@ -199,16 +199,9 @@ public class HScrollLayout extends ViewGroup {
     }
     public void snapFastToScreen(int whichScreen){
         whichScreen = Math.max(0, Math.min(whichScreen, (getChildCount() - 1)));// 防止输入不再范围内的数字
-        Log.d(TAG, "whichScreen = " + whichScreen + " , getChildCount() = " + getChildCount());
-        Log.d(TAG, "getScrollX() = " + getScrollX() + " , getWidth() * whichScreen = " + getWidth() * whichScreen);
         if (getScrollX() != getWidth() * whichScreen) {// 时候需要移动
             int delta = whichScreen * getWidth() - getScrollX(); // 还有多少没有显示
-            scroller.startScroll(getScrollX(), 0, delta, 0);// 滚动完剩下的距离
-
-            Log.d(TAG, "whichScreen * getWidth() = " + whichScreen * getWidth());
-            Log.d(TAG, "getScrollX() = " + getScrollX());
-            Log.d(TAG, "delta = " + delta);
-            
+            scroller.startScroll(getScrollX(), 0, delta, 0);// 滚动完剩下的距离            
             mCurScreen = whichScreen;
             invalidate();
             if (mOnViewChangeListener != null) {
