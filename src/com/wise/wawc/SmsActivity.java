@@ -62,12 +62,14 @@ public class SmsActivity extends Activity implements IXListViewListener{
 		rl_Note = (RelativeLayout)findViewById(R.id.rl_Note);
 		lv_sms = (XListView)findViewById(R.id.lv_sms);
 		lv_sms.setPullLoadEnable(true);
+		lv_sms.setPullRefreshEnable(true);
 		lv_sms.setXListViewListener(this);
 		lv_sms.setOnItemClickListener(new OnItemClickListener(){
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+			    Log.d(TAG, "arg2 = " + arg2);
 				if(arg2 !=0 || arg2 != (smsDataList.size()+1)){
-				    String Type = smsDataList.get(arg2).getMsg_type();
+				    String Type = smsDataList.get(arg2 -1).getMsg_type();
 		            if(Type.equals("0")){
 		                
 		            }else if(Type.equals("1")){
@@ -99,16 +101,6 @@ public class SmsActivity extends Activity implements IXListViewListener{
             newAdapter.notifyDataSetChanged();
             isNothingNote(false);
 		}	
-	}	
-	
-	private String Msg_type(String Type){
-		if(Type.equals("1")){
-			return "10010:";
-		}else if (Type.equals("2")) {
-			return "终端消息:";
-		}else{
-			return "平台消息:";
-		}
 	}
 	
 	Handler handler = new Handler(){
@@ -144,6 +136,7 @@ public class SmsActivity extends Activity implements IXListViewListener{
     }
 	
 	private void onLoad() {
+	    Log.d(TAG, "停止");
 		lv_sms.stopRefresh();
 		lv_sms.stopLoadMore();
 		lv_sms.setRefreshTime(GetSystem.GetNowTime());
@@ -158,6 +151,7 @@ public class SmsActivity extends Activity implements IXListViewListener{
 	}
 	public void onLoadMore() {
 	    if(isGetDB){//读取数据库
+	        System.out.println("读取数据库");
 	        smsDataList.addAll(0,getSmsDatas(Toal, pageSize));
             newAdapter.notifyDataSetChanged();
             onLoad();

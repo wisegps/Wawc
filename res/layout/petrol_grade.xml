@@ -38,6 +38,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:dividerHeight="0.5dip"
+        android:listSelector="@drawable/bg_item_selector"
         android:divider="@color/gray"
         ></ListView>
 </LinearLayout>

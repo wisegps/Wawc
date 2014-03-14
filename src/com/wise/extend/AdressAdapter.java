@@ -142,23 +142,23 @@ public class AdressAdapter extends BaseAdapter{
 				}
 			}
 		});
-		//拨打电话
+        //导航
 		holder.iv_location.setOnClickListener(new OnClickListener() {				
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:"+ adressData.getPhone()));  
-				mActivity.startActivity(intent);
+				GeoPoint point = new GeoPoint((int) (Variable.Lat * 1E6),(int) (Variable.Lon * 1E6));
+                GeoPoint point1 = new GeoPoint((int) (adressData.getLat() * 1E6),(int) (adressData.getLon() * 1E6));
+                System.out.println(Variable.Lat + "/" + Variable.Lat);
+                System.out.println(adressData.getLat() + "/" + adressData.getLat());
+                GetSystem.FindCar(mActivity, point, point1, "point", "point1");
 			}
 		});
-		//导航
+        //拨打电话
 		holder.iv_tel.setOnClickListener(new OnClickListener() {				
 			@Override
 			public void onClick(View v) {
-				GeoPoint point = new GeoPoint((int) (Variable.Lat * 1E6),(int) (Variable.Lon * 1E6));
-				GeoPoint point1 = new GeoPoint((int) (adressData.getLat() * 1E6),(int) (adressData.getLon() * 1E6));
-				System.out.println(Variable.Lat + "/" + Variable.Lat);
-				System.out.println(adressData.getLat() + "/" + adressData.getLat());
-				GetSystem.FindCar(mActivity, point, point1, "point", "point1");
+                Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:"+ adressData.getPhone()));  
+                mActivity.startActivity(intent);
 			}
 		});
 		return convertView;
