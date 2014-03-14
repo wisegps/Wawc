@@ -103,9 +103,6 @@ public class MyAdapter extends BaseAdapter{
 	XListView listView = null;
 	
 	//图片布局类
-	android.widget.LinearLayout.LayoutParams imageParams = new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth);
-	//品论内容布局
-	android.widget.LinearLayout.LayoutParams commentParams = new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth);
 	public MyAdapter(Activity activity,View v,List<Article> articleList,XListView listView){
 		inflater=LayoutInflater.from(activity);
 		this.view = v;
@@ -200,42 +197,18 @@ public class MyAdapter extends BaseAdapter{
 			if(articleList.get(position).getCommentList().size() != 0){
 				for(int i = 0 ; i < articleList.get(position).getCommentList().size() ; i ++){
 					LinearLayout oneComment = new LinearLayout(activity);
-					//使用缓存
-//					LinearLayout oneComment = (LinearLayout) getView(new LinearLayout(activity).hashCode(), new LinearLayout(activity));
-//					for(int n = 0 ; n < viewHolder.commentLayout.getChildCount() ; n ++){
-//						if(oneComment.hashCode() == viewHolder.commentLayout.getChildAt(n).hashCode()){
-//							viewHolder.commentLayout.removeViewAt(n);
-//						}
-//					}
-					
-//					
 					oneComment.setOrientation(LinearLayout.HORIZONTAL);
 					TextView commentName = new TextView(activity);  //评论者昵称
 					TextView commentContent = new TextView(activity);   //评论内容
-					
-					//使用缓存
-//					TextView commentName = (TextView) getView(new TextView(activity).hashCode(), new TextView(activity));
-//					TextView commentContent = (TextView) getView(new TextView(activity).hashCode(), new TextView(activity));
-//					for(int j = 0 ; j < oneComment.getChildCount() ; j ++){
-//						if(commentContent.hashCode() == oneComment.getChildAt(j).hashCode()){
-//							oneComment.removeViewAt(j);
-//						}
-//						if(commentName.hashCode() == oneComment.getChildAt(j).hashCode()){
-//							oneComment.removeViewAt(j);
-//						}
-//					}
-					
-					
-					
 					String[] commentStr = articleList.get(position).getCommentList().get(i);
 					commentName.setText(commentStr[0] + ":");
 					SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(activity, commentStr[1]);
 					commentContent.setText(spannableString);
 					commentName.setTextColor(R.color.blue);
 					commentContent.setTextColor(R.color.common);
-					oneComment.addView(commentName, commentParams);
-					oneComment.addView(commentContent, commentParams);
-					viewHolder.commentLayout.addView(oneComment, commentParams);
+					oneComment.addView(commentName, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+					oneComment.addView(commentContent, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+					viewHolder.commentLayout.addView(oneComment, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 				}
 			}else{
 				viewHolder.commentLayout.setVisibility(View.GONE);

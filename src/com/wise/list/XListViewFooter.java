@@ -60,9 +60,12 @@ public class XListViewFooter extends LinearLayout {
 		} else if (state == STATE_LOADING) {
 			mProgressBar.setVisibility(View.VISIBLE);
 		} else {
+			Log.e("隐藏进度条","隐藏进度条");
+			mProgressBar.setVisibility(View.GONE);
 			mHintView.setVisibility(View.VISIBLE);
 			mHintView.setText(R.string.xlistview_footer_hint_normal);
 		}
+		Log.e("隐藏进度条","隐藏进度条---");
 	}
 	
 	public void setBottomMargin(int height) {

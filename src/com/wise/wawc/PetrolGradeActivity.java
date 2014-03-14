@@ -31,8 +31,8 @@ public class PetrolGradeActivity extends Activity {
 		actionCode = getIntent().getIntExtra("code", 0);
 		petrolGrade = (ListView) findViewById(R.id.petrol_grade_lv);
 		petrolGradeList.add("90#");
-		petrolGradeList.add("93#");
-		petrolGradeList.add("97#");
+		petrolGradeList.add("93#(京92#)");
+		petrolGradeList.add("97#(京95#)");
 		petrolGradeList.add("0#");
 		myAdapter = new MyAdapter();
 		petrolGrade.setAdapter(myAdapter);

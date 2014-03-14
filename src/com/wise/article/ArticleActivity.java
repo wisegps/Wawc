@@ -36,7 +36,7 @@ public class ArticleActivity extends Activity implements IXListViewListener {
     List<ArticleData> articleDatas = new ArrayList<ArticleData>();
     ArticleAdapter articleAdapter;
 
-    String url = "http://wiwc.api.wisegps.cn/blog?auth_code=0d7272824d41655d5704e7c1c300a9a8&type=1&cust_id=88";
+    String url = "http://wiwc.api.wisegps.cn/blog?auth_code=0d7272824d41655d5704e7c1c300a9a8&type=1&cust_id=72";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
