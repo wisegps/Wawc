@@ -64,6 +64,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.BaseAdapter;
+import android.widget.GridLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -98,12 +99,11 @@ public class MyAdapter extends BaseAdapter{
 	private int screenWidth = 0;
 	private int imageWidth = 0;
 	Map<String,String> favoriteMap; //点赞集合
-	ViewHolder viewHolder;
 	MyHandler myHandler = null;
 	View view;
 	XListView listView = null;
 	
-	
+	int chickIndex = 0;
 	//图片布局类
 	public MyAdapter(Activity activity,View v,List<Article> articleList,XListView listView){
 		inflater=LayoutInflater.from(activity);
@@ -113,7 +113,6 @@ public class MyAdapter extends BaseAdapter{
 		myHandler = new MyHandler();
 		dbExcute = new DBExcute();
 		this.listView = listView;
-		
 		//计算需要显示多大尺寸的图片
 		GetSystem.getScreenInfor(activity);
 	}
@@ -130,10 +129,8 @@ public class MyAdapter extends BaseAdapter{
 	@SuppressLint("ResourceAsColor")
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		this.position = position;
+		ViewHolder viewHolder;
 		if(convertView == null){
-			
-			
-			//  TODO
 			convertView = inflater.inflate(R.layout.article_adapter, null);
 			viewHolder = new ViewHolder(); 
 			viewHolder.favoriteStart = (ImageView) convertView.findViewById(R.id.article_praises_star);
@@ -146,14 +143,48 @@ public class MyAdapter extends BaseAdapter{
 			viewHolder.favorite = (ImageView) convertView.findViewById(R.id.favorite);
 			viewHolder.line = convertView.findViewById(R.id.article_adapter_line);
 			viewHolder.articlePraisesLayout = (TableRow) convertView.findViewById(R.id.article_praises_layout);
-			viewHolder.linearLayout = (LinearLayout) convertView.findViewById(R.id.user_image);
+			viewHolder.userImageLayout = (GridView) convertView.findViewById(R.id.user_image);
 			
-
-			Log.d(TAG, "position = " + position);
+			viewHolder.commentLayout = (LinearLayout) convertView.findViewById(R.id.article_comment_layout);
+			
+			viewHolder.oneCommentName = (TextView)convertView.findViewById(R.id.my_vehicle_one_comment_name_tv);
+			viewHolder.oneCommentContent = (TextView)convertView.findViewById(R.id.my_vehicle_one_comment_content_tv);
+			viewHolder.twoCommentName = (TextView)convertView.findViewById(R.id.my_vehicle_two_comment_name_tv);
+			viewHolder.twoCommentContent = (TextView)convertView.findViewById(R.id.my_vehicle_two_comment_content_tv);
+			
+			viewHolder.twoCommentLayout = (LinearLayout) convertView.findViewById(R.id.my_vehicle_two_comment_ll);
+			
+			Log.e(TAG,"position = " + position);
 			convertView.setTag(viewHolder);
 		}else{
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
+		
+		
+		//   评论
+		int size = articleList.get(position).getCommentList().size();
+		viewHolder.commentLayout.setVisibility(View.VISIBLE);
+		viewHolder.twoCommentLayout.setVisibility(View.VISIBLE);
+		if(size == 0){
+			viewHolder.commentLayout.setVisibility(View.GONE);
+		}else if(size == 1){
+			Log.e(TAG,"content = " + articleList.get(position).getContent());
+			viewHolder.twoCommentLayout.setVisibility(View.GONE);
+			viewHolder.oneCommentName.setText(articleList.get(position).getCommentList().get(0)[0]+":");
+			viewHolder.oneCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(0)[1]));
+		}else{
+			viewHolder.twoCommentLayout.setVisibility(View.VISIBLE);
+			for (int i = 0; i < size; i++) {
+				if (i == articleList.get(position).getCommentList().size() - 1) {
+					viewHolder.oneCommentName.setText(articleList.get(position).getCommentList().get(i)[0]+":");
+					viewHolder.oneCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(i)[1]));
+				} else if (i == articleList.get(position).getCommentList().size() - 2) {
+					viewHolder.twoCommentName.setText(articleList.get(position).getCommentList().get(i)[0]+":");
+					viewHolder.twoCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(i)[1]));
+				}
+			}
+		}
+		
 		
 		List<Bitmap> smallImageList = new ArrayList<Bitmap>();
 		for(int i = 0 ; i < articleList.get(position).getImageList().size() ; i ++){
@@ -171,8 +202,7 @@ public class MyAdapter extends BaseAdapter{
 			userIconPath.mkdir();
 		}
 		
-		
-		//   赞     如果没有赞 隐藏赞布局  同时将分割线隐藏
+		//   赞     如果没有赞 隐藏赞布局  同时将分割线隐藏  
 		if (articleList.get(position).getPraisesList() != null) {
 			if (articleList.get(position).getPraisesList().size() != 0) {
 				sb = new StringBuffer();
@@ -181,12 +211,15 @@ public class MyAdapter extends BaseAdapter{
 					Map.Entry entry = (Map.Entry) iter.next();
 					String val = (String) entry.getValue();
 					sb.append(val+",");
-					if(Variable.cust_name.equals(val)){
-						viewHolder.favorite.setBackgroundResource(R.drawable.body_icon_heart_press);
-					}
+//					if(Variable.cust_name.equals(val)){   TODO
+//						viewHolder.favorite.setBackgroundResource(R.drawable.body_icon_heart_press);
+//					}
 				}
 				viewHolder.favoriteStart.setVisibility(View.VISIBLE);
 				viewHolder.articlePraisesLayout.setVisibility(View.VISIBLE);
+				Log.e(TAG,"content = " + articleList.get(position).getContent());
+				Log.e(TAG,"点赞用户:" + sb.toString());
+				Log.e(TAG,"点赞标题:" + articleList.get(position).getContent());
 				viewHolder.favoriteUser.setText(sb.toString());
 			} else {
 				viewHolder.articlePraisesLayout.setVisibility(View.GONE);
@@ -196,73 +229,7 @@ public class MyAdapter extends BaseAdapter{
 			viewHolder.articlePraisesLayout.setVisibility(View.GONE);
 			viewHolder.line.setVisibility(View.GONE);
 		}
-		//   评论     如果没有评论   将 评论布局隐藏  同时将分割线隐藏
-//		if(articleList.get(position).getCommentList() != null){
-//			if(articleList.get(position).getCommentList().size() != 0){
-//				for(int i = 0 ; i < articleList.get(position).getCommentList().size() ; i ++){
-//					LinearLayout oneComment = new LinearLayout(activity);
-//					oneComment.setOrientation(LinearLayout.HORIZONTAL);
-//					TextView commentName = new TextView(activity);  //评论者昵称
-//					TextView commentContent = new TextView(activity);   //评论内容
-//					String[] commentStr = articleList.get(position).getCommentList().get(i);
-//					commentName.setText(commentStr[0] + ":");
-//					SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(activity, commentStr[1]);
-//					commentContent.setText(spannableString);
-//					commentName.setTextColor(R.color.blue);
-//					commentContent.setTextColor(R.color.common);
-//					
-//					oneComment.addView(commentName);
-//					oneComment.addView(commentContent);
-//					viewHolder.commentLayout.addView(oneComment,new ViewGroup.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
-//				}
-//			}
-//		}else{
-//			viewHolder.commentLayout.setVisibility(View.GONE);
-//			viewHolder.line.setVisibility(View.GONE);
-//		}
-		
-		//用户图片
-		
-		for (int i = 0; i < smallImageList.size(); i++) {
-			if(i < 3){
-				Bitmap bitmap = smallImageList.get(i);
-				if(bitmap == null){   //显示转圈圈加载
-					selection = position;
-					ImageView tempImage = new ImageView(activity);
-					//使用缓存
-//					ImageView tempImage = (ImageView) getView(new ImageView(activity).hashCode(), new ImageView(activity));
-//					for(int j = 0 ; j < viewHolder.linearLayout.getChildCount() ; j ++){
-//						if(tempImage.hashCode() == viewHolder.linearLayout.getChildAt(j).hashCode()){
-//							viewHolder.linearLayout.removeViewAt(j);
-//						}
-//					}
-					tempImage.setImageBitmap(getBitmap(R.drawable.body_nothing_icon));  //   使用缓存
-					tempImage.setPadding(Variable.margins, 0,0, 0);
-					viewHolder.linearLayout.addView(tempImage,i,new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
-				}else{
-					ImageView imageView = new ImageView(activity);
-					//使用缓存
-//					ImageView imageView = (ImageView) getView(new ImageView(activity).hashCode(), new ImageView(activity));
-//					for(int j = 0 ; j < viewHolder.linearLayout.getChildCount() ; j ++){
-//						if(imageView.hashCode() == viewHolder.linearLayout.getChildAt(j).hashCode()){
-//							viewHolder.linearLayout.removeViewAt(j);
-//						}
-//					}
-					imageView.setImageBitmap(smallImageList.get(i));
-					imageView.setPadding(Variable.margins, 0,0, 0);
-					viewHolder.linearLayout.addView(imageView,new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
-					imageView.setOnClickListener(new OnClickListener() {
-						public void onClick(View v) {
-							//查看大图
-							Intent intent = new Intent(activity,ImageActivity.class);
-							intent.putExtra("article", articleList.get(position));
-							activity.startActivity(intent);
-						}
-					});
-				}
-			}
-		}
-
+		viewHolder.userImageLayout.setAdapter(new UserImageAdapter(smallImageList,position));
 		String str = articleList.get(position).getCreate_time();
 		String createTime = str.substring(0, str.indexOf(".")).replace("T"," ");
 		
@@ -277,16 +244,11 @@ public class MyAdapter extends BaseAdapter{
 		//设置用户头像   
 		Bitmap userIcons = imageIsExist(Constant.userIconPath + articleList.get(position).getCust_id() + ".jpg",articleList.get(position).getUserLogo(),4,articleList.get(position).getCust_id());
 		if(userIcons == null){
-//			viewHolder.userHead.setImageResource(R.drawable.body_icon_help);
 			viewHolder.userHead.setImageBitmap(getBitmap(R.drawable.body_icon_help));   //  使用缓存
 		}else{
-//			Bitmap user = BitmapFactory.decodeFile(Constant.userIconPath + articleList.get(position).getCust_id()+".jpg");
-//			viewHolder.userHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(user));
 			//  使用缓存
 			viewHolder.userHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(getBitmap(Constant.userIconPath + articleList.get(position).getCust_id()+".jpg")));   
 		}
-//		System.gc();
-//		GetSystem.displayBriefMemory(activity);
 		return convertView;
 	}
 	
@@ -294,8 +256,8 @@ public class MyAdapter extends BaseAdapter{
 	private Bitmap imageIsExist(final String path,final String loadUrl,final int action,final int custId) {
 		File file = new File(path);
 		if(file.exists()){
-			return getBitmap(path);  //  使用缓存
-//			return BitmapFactory.decodeFile(path);
+//			return getBitmap(path);  //  使用缓存
+			return BitmapFactory.decodeFile(path);
 		}else{
 			new Thread(new Runnable() {
 				public void run() {
@@ -386,9 +348,8 @@ public class MyAdapter extends BaseAdapter{
 	    }
 	    
 	    class MyClickListener implements OnClickListener{
-	    	int chickIndex = 0;
 	    	MyClickListener(int chickIndex){
-	    		this.chickIndex = chickIndex;
+	    		MyAdapter.this.chickIndex = chickIndex;
 	    	}
 			public void onClick(View v) {
 				switch(v.getId()){
@@ -423,9 +384,15 @@ public class MyAdapter extends BaseAdapter{
 						Iterator iter = favoriteMap.entrySet().iterator();
 						while (iter.hasNext()) {
 							Map.Entry entry = (Map.Entry) iter.next();
-							String val = (String) entry.getValue();
-							//已经赞过  不许再赞
-							if(Variable.cust_name.equals(val)){
+							String userName = (String) entry.getValue();
+							String userId = (String) entry.getKey();
+							Log.e(TAG,"当前用户名:" + Variable.cust_name);
+							Log.e(TAG,"当前用户id:" + Variable.cust_id);
+							
+							Log.e(TAG,"点赞用户名:" + userName);
+							Log.e(TAG,"点赞用户id:" + userId);
+							//已经赞过  不许再赞  TODO
+							if(Variable.cust_id.equals(userId)){
 								hasFavorite = false;
 							}
 						}
@@ -462,9 +429,9 @@ public class MyAdapter extends BaseAdapter{
 							
 							VehicleFriendActivity vehicleFriendActivity = new VehicleFriendActivity();
 							//更新列表
-							List<Article> oldArticlList = vehicleFriendActivity.getArticleDataList();
-							oldArticlList.clear();
-							vehicleFriendActivity.setArticleDataList(oldArticlList);
+//							List<Article> oldArticlList = vehicleFriendActivity.getArticleDataList();
+//							oldArticlList.clear();
+//							vehicleFriendActivity.setArticleDataList(oldArticlList);
 							List<Article> newArticlList = MyAdapter.this.dbExcute.getArticlePageDatas(activity, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(0),String.valueOf(Constant.start + Constant.pageSize)}, vehicleFriendActivity.getArticleDataList());
 							Variable.articleList = newArticlList;
 							vehicleFriendActivity.setArticleDataList(newArticlList);
@@ -479,8 +446,14 @@ public class MyAdapter extends BaseAdapter{
 					}
 					break;
 				case refreshList:
+					new UserImageAdapter().notifyDataSetChanged();
 					MyAdapter.this.notifyDataSetChanged();
-					listView.setSelection(selection);
+					Log.e(TAG,"刷新");
+//					listView.setSelection(selection);
+					break;
+					
+				case 99:
+					GetSystem.displayBriefMemory(activity);
 					break;
 				}
 			}
@@ -505,7 +478,15 @@ public class MyAdapter extends BaseAdapter{
 		 public TextView favoriteUser = null;
 		 public View line = null;   //分割线
 		 public TableRow articlePraisesLayout = null;   //点赞者
-		 public LinearLayout linearLayout;
+		 public GridView userImageLayout = null;
+		 public UserImageAdapter userImageAdapter = null;
+		 //暂时显示两条评论
+		 public TextView oneCommentName = null;
+		 public TextView oneCommentContent = null;
+		 public TextView twoCommentName = null;
+		 public TextView twoCommentContent = null;
+		 public LinearLayout twoCommentLayout = null;
+		 public LinearLayout commentLayout = null; 
 	 }
 	 
 	 
@@ -540,5 +521,71 @@ public class MyAdapter extends BaseAdapter{
 			 viewCache.putView(name, view);
 		 }
 		 return viewCache.getView(name);
+	 }
+	 public SpannableString getFaceImage(String faceContent){
+		 return FaceConversionUtil.getInstace().getExpressionString(activity, faceContent);
+	 }
+	 
+	 
+	 
+	 /**
+	  * 显示图片列表
+	  * @author Mr.Wang
+	  *
+	  */
+	 class UserImageAdapter extends BaseAdapter{
+		 List<Bitmap> smallImageList;
+		 int indexId = 0;
+		 UserImageAdapter(List<Bitmap> smallImageList,int indexId){
+			 this.smallImageList = smallImageList;
+			 this.indexId = indexId;
+		 }
+		 UserImageAdapter(){
+			 
+		 }
+		public int getCount() {
+			return smallImageList.size();
+		}
+		public Object getItem(int position) {
+			return smallImageList.get(position);
+		}
+		public long getItemId(int position) {
+			return position;
+		}
+		public View getView(int position, View convertView, ViewGroup parent) {
+			UserImageHolder userImageHolder = null; 
+			if(convertView == null){
+				userImageHolder = new UserImageHolder();
+				convertView = inflater.inflate(R.layout.user_image_item, null);
+				userImageHolder.userImage = (ImageView) convertView.findViewById(R.id.one_image);
+				userImageHolder.userImage.setLayoutParams(new LinearLayout.LayoutParams(Variable.smallImageReqWidth, Variable.smallImageReqWidth));
+				convertView.setTag(userImageHolder);
+			}else{
+				userImageHolder = (UserImageHolder) convertView.getTag();
+			}
+			
+			
+			Bitmap bitmap = smallImageList.get(position);
+			if(bitmap == null){   //显示临时图片
+				Bitmap im = BitmapFactory.decodeResource(activity.getResources(), R.drawable.body_nothing_icon);
+				userImageHolder.userImage.setImageBitmap(im);
+//				userImageHolder.userImage.setBackgroundResource(R.drawable.article_comment_bg);
+			}else{
+				userImageHolder.userImage.setImageBitmap(smallImageList.get(position));
+				userImageHolder.userImage.setOnClickListener(new OnClickListener() {
+					public void onClick(View v) {
+						//查看大图
+						Intent intent = new Intent(activity,ImageActivity.class);
+						intent.putExtra("article", articleList.get(indexId));
+						activity.startActivity(intent);
+					}
+				});
+			}
+			return convertView;
+		}
+		
+		class UserImageHolder{
+			ImageView userImage = null;
+		}
 	 }
 }

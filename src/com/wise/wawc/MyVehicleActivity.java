@@ -205,7 +205,7 @@ public class MyVehicleActivity extends Activity{
 	private String deviceId = null;
 	private String deviceName = null;
 	private String illegalCityStr = null;
-	private boolean hasSelectIllegalCity = false;
+	public static boolean hasSelectIllegalCity = false;
 	private String vehNum = "";   //临时存储车牌号
 	
 	private String petrolResult = "";

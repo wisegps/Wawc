@@ -54,7 +54,7 @@
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="@dimen/vehicle_friend_logo_bg"
-        android:background="@drawable/car"
+        android:background="@drawable/wallpaper_s_01"
         android:gravity="center" >
 
         <LinearLayout

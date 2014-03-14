@@ -102,6 +102,7 @@ public class IllegalCitiyActivity extends Activity {
 					cityListView.setVisibility(View.GONE);
 					provinceListView.setVisibility(View.VISIBLE);
 				}else{
+					MyVehicleActivity.hasSelectIllegalCity = false;
 					IllegalCitiyActivity.this.finish();
 				}
 			}

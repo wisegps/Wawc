@@ -199,7 +199,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			case R.id.btn_send:
 				commentMsg = commentContent.getText().toString().trim();
 				//发布到服务器/刷新文章内容显示/评论成功后清空编辑框/隐藏编辑框
-				
 				if("".equals(commentMsg)){
 					Toast.makeText(getApplicationContext(), "评论类容不能为空", 0).show();
 					return;
@@ -210,7 +209,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 					params.add(new BasicNameValuePair("content", commentMsg));
 					myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 					myDialog.setCancelable(true);
-					Log.e("评论链接：",Constant.BaseUrl + "blog/" + blogId + "/comment?auth_code=" + Variable.auth_code);
 					new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "blog/" + blogId + "/comment?auth_code=" + Variable.auth_code, params, commentArticle)).start();
 				}
 				break;
@@ -354,24 +352,9 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 						//更新数据库
 						dBExcute.updateArticleComments(VehicleFriendActivity.this, Constant.TB_VehicleFriend, blogId, commentMsg, Variable.cust_name, Integer.valueOf(Variable.cust_id));
 						//刷新列表   TODO
-						
-//						for(int i = 0 ; i < articleDataList.size() ; i ++){
-//							for(String[] str: articleDataList.get(i).getCommentList()){
-//								Log.e("评论前：",str[0]);
-//								Log.e("评论前：",str[1]);
-//							}
-//						}
 						articleDataList.clear();
 						articleDataList = dBExcute.getArticlePageDatas(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(0),String.valueOf(Constant.start + Constant.pageSize)}, articleDataList);
 						Variable.articleList = articleDataList;
-						
-						
-//						for(int i = 0 ; i < articleDataList.size() ; i ++){
-//							for(String[] str: articleDataList.get(i).getCommentList()){
-//								Log.e("评论  后：",str[0]);
-//								Log.e("评论   后：",str[1]);
-//							}
-//						}
 						setArticleDataList(articleDataList);
 						myAdapter.refreshDates(articleDataList);
 						

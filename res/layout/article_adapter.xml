@@ -59,8 +59,18 @@
                 android:layout_width="0dip"
                 android:layout_height="0dip"
                 android:layout_weight="1.5" />
-            <!-- 显示用户发表的图片 -->
-
+            
+            <GridView 
+                android:id="@+id/user_image"
+                android:layout_width="0dip"
+                android:layout_height="wrap_content"
+                android:layout_weight="6"
+                android:scrollbars="horizontal"
+                android:numColumns="3"
+                android:horizontalSpacing="@dimen/margins"
+        		android:stretchMode="columnWidth"
+                ></GridView>
+            <!-- 显示用户发表的图片 
             <LinearLayout
                 android:id="@+id/user_image"
                 android:layout_width="0dip"
@@ -68,6 +78,8 @@
                 android:layout_weight="6"
                 android:orientation="horizontal" >
             </LinearLayout>
+            
+            -->
         </TableRow>
     </TableLayout>
 
@@ -184,6 +196,7 @@
                     android:layout_width="fill_parent"
                     android:layout_height="0.1dip"
                     android:background="#000000" />
+                <!-- 评论 -->
                 <LinearLayout
                     android:id="@+id/article_comment_layout"
                     android:layout_width="fill_parent"
@@ -199,20 +212,23 @@
                     <TextView 
                         android:id="@+id/my_vehicle_one_comment_name_tv"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dip"
                         android:maxLines="1"
-                        android:text="张三:"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/blue"
                         />
                      <TextView 
                         android:id="@+id/my_vehicle_one_comment_content_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
                         android:maxLines="1"
-                        android:text="不错"
+                        android:textColor="@color/common"
                         />
                      </LinearLayout>
                      
                     <LinearLayout 
+                        android:id="@+id/my_vehicle_two_comment_ll"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
@@ -223,14 +239,16 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
-                        android:text="李四:"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/blue"
                         />
                      <TextView 
                         android:id="@+id/my_vehicle_two_comment_content_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:maxLines="1"
-                        android:text="不错"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/common"
                         />
                      </LinearLayout>
                 </LinearLayout>
