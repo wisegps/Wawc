@@ -447,7 +447,7 @@ public class NewVehicleActivity extends Activity{
         params.add(new BasicNameValuePair("insurance_company", showInsurance.getText().toString()));
         params.add(new BasicNameValuePair("insurance_date", insuranceTime.getText().toString()));
 //        params.add(new BasicNameValuePair("annual_inspect_date", annualSurveyTime.getText().toString()));
-        params.add(new BasicNameValuePair("annual_inspect_date", ""));
+        //params.add(new BasicNameValuePair("annual_inspect_date", ""));
         params.add(new BasicNameValuePair("maintain_company", showMaintain.getText().toString()));
         params.add(new BasicNameValuePair("maintain_last_mileage", lastMileage.getText().toString().trim()));
         params.add(new BasicNameValuePair("maintain_last_date", lastMaintainTime.getText().toString()));

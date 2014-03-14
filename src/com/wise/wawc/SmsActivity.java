@@ -53,7 +53,7 @@ public class SmsActivity extends Activity implements IXListViewListener{
 	
 	boolean isGetDB = true; //上拉是否继续读取数据库
     int Toal = 0; //从那条记录读起
-    int pageSize = 5 ; //每次读取的记录数目
+    int pageSize = 20 ; //每次读取的记录数目
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
