@@ -190,7 +190,7 @@ public class AccountActivity extends Activity{
 	    if(LocationProvince.equals(LocationCity)){
 	        tv_activity_city.setText(LocationCity);
 	    }else{
-	        tv_activity_city.setText(LocationProvince + "   " + LocationCity);
+	        tv_activity_city.setText(LocationProvince + "，" + LocationCity);
 	    }
 	}
 	/**

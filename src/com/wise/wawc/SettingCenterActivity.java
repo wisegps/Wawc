@@ -28,7 +28,6 @@ import android.widget.TextView;
 
 /**
  * 设置中心
- * @author 王庆文
  */
 public class SettingCenterActivity extends Activity{
 	
@@ -64,8 +63,6 @@ public class SettingCenterActivity extends Activity{
 		tv_share_gift.setOnClickListener(onClickListener);
 		TextView tv_feedback = (TextView)findViewById(R.id.tv_feedback);
 		tv_feedback.setOnClickListener(onClickListener);
-		TextView tv_score = (TextView)findViewById(R.id.tv_score);
-		tv_score.setOnClickListener(onClickListener);
 		TextView tv_about = (TextView)findViewById(R.id.tv_about);
 		tv_about.setOnClickListener(onClickListener);		
 		getsp();
@@ -126,8 +123,6 @@ public class SettingCenterActivity extends Activity{
                 break;
             case R.id.tv_feedback:
                 startActivity(new Intent(SettingCenterActivity.this, FeedBackActivity.class));
-                break;
-            case R.id.tv_score:
                 break;
             case R.id.tv_about:
                 startActivity(new Intent(SettingCenterActivity.this, AboutActivity.class));

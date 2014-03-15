@@ -263,7 +263,7 @@ public class TravelActivity extends Activity{
 		            sb.append("，" + travelData.getAverageOil());
 		            sb.append("，" + travelData.getSpeed());
 		            System.out.println(sb.toString());
-		            GetSystem.share(TravelActivity.this, sb.toString(), "",0,0);
+		            GetSystem.share(TravelActivity.this, sb.toString(), "",0,0,"行程");
 				}
 			});
 			holder.iv_item_travel_map.setOnClickListener(new OnClickListener() {				

@@ -31,6 +31,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
@@ -239,10 +240,6 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
                 break; 
             case R.id.iv_activity_home:
                 RightMenu();
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                if(imm.isActive()){
-                    imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
-                }
                 break;
             case R.id.iv_voice:
                 if(isMove){
@@ -462,9 +459,7 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (slidingMenuView.getCurrentScreen() == 1) {
-                slidingMenuView.snapToScreen(0);
-            }else{
+            if(isHome){
                 long currentTime = System.currentTimeMillis();
                 if (touchTime == 0 || (currentTime - touchTime) >= waitTime) {
                     Toast.makeText(this, "再按一次退出客户端", Toast.LENGTH_SHORT).show();
@@ -472,7 +467,19 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
                 } else {
                     finish();
                 }
-            }            
+            }else{
+                if (slidingMenuView.getCurrentScreen() == 1) {
+                    slidingMenuView.snapToScreen(0);
+                }else{
+                    long currentTime = System.currentTimeMillis();
+                    if (touchTime == 0 || (currentTime - touchTime) >= waitTime) {
+                        Toast.makeText(this, "再按一次退出客户端", Toast.LENGTH_SHORT).show();
+                        touchTime = currentTime;
+                    } else {
+                        finish();
+                    }
+                } 
+            }                       
             return true;
         }
         return super.onKeyDown(keyCode, event);
@@ -505,11 +512,12 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
         //write.delete(Constant.TB_VehicleFriend, "Blog_id=?", new String[]{String.valueOf(VehicleFriendActivity.minBlogId)});
         //VehicleFriendActivity.minBlogId = 0;
     }
-
+    boolean isHome = true;
     /**
      * 设置中心
      */
     public void ToSettingCenter() {
+        isHome = false;
         Intent intent = new Intent(MainActivity.this,
                 SettingCenterActivity.class);
         View vv = getLocalActivityManager().startActivity(
@@ -523,10 +531,11 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
      * 我的收藏
      */
     private void ToMyCollection() {
+        isHome = false;
         Intent intent = new Intent(MainActivity.this,
-                MyCollectionActivity.class);
+                CollectionActivity.class);
         View vv = getLocalActivityManager().startActivity(
-                MyCollectionActivity.class.getName(), intent).getDecorView();
+                CollectionActivity.class.getName(), intent).getDecorView();
         tabcontent.removeAllViews();
         tabcontent.addView(vv);
         slidingMenuView.snapToScreen(1);
@@ -536,6 +545,7 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
      * 首页
      */
     public void ToHome() {
+        isHome = true;
         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
         View vv = getLocalActivityManager().startActivity(
                 HomeActivity.class.getName(), intent).getDecorView();
@@ -544,6 +554,7 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
         slidingMenuView.snapToScreen(1);
     }
     public void ToSms() {
+        isHome = false;
         Intent intent = new Intent(MainActivity.this, SmsActivity.class);
         View vv = getLocalActivityManager().startActivity(
                 SmsActivity.class.getName(), intent).getDecorView();
@@ -555,23 +566,21 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
      * 个人信息
      */
     public void ToAccountHome() {
-        if (platformQQ.getDb().isValid() || platformSina.getDb().isValid()) {
-            slidingMenuView.snapToScreen(1);
-            Intent i = new Intent(MainActivity.this, AccountActivity.class);
-            View view = getLocalActivityManager().startActivity(
-                    AccountActivity.class.getName(), i).getDecorView();
-            tabcontent.removeAllViews();
-            tabcontent.addView(view);
-        } else {
-            Toast.makeText(getApplicationContext(), "请登录", Toast.LENGTH_SHORT)
-                    .show();
-        }
+        isHome = false;
+        slidingMenuView.snapToScreen(1);
+        Intent i = new Intent(MainActivity.this, AccountActivity.class);
+        View view = getLocalActivityManager().startActivity(
+                AccountActivity.class.getName(), i).getDecorView();
+        tabcontent.removeAllViews();
+        tabcontent.addView(view);
+        
     }
 
     /**
      * 车友圈
      */
     public void ToVehicleFriends() {
+        isHome = false;
     	if("".equals(Variable.cust_id)){
     		Toast.makeText(getApplicationContext(), "请登录...", 0).show();
     	}else{
@@ -588,6 +597,7 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
      * 我的爱车
      */
     public void ToMyCar() {
+        isHome = false;
     	if("".equals(Variable.cust_id)){
     		Toast.makeText(getApplicationContext(), "请登录", 0).show();
     		return;
@@ -609,6 +619,7 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
      * 我的终端
      */
     public void ToCarTerminal() {
+        isHome = false;
         slidingMenuView.snapToScreen(1);
         Intent i = new Intent(MainActivity.this, DevicesActivity.class);
         View view = getLocalActivityManager().startActivity(
@@ -621,6 +632,7 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
      * 我的订单
      */
     public void Toorders() {
+        isHome = false;
         slidingMenuView.snapToScreen(1);
         Intent i = new Intent(MainActivity.this, OrderMeActivity.class);
         View view = getLocalActivityManager().startActivity(

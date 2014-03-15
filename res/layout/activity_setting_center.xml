@@ -53,6 +53,7 @@
                 android:id="@+id/rl_center"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_item_selector"
                 android:padding="@dimen/margins" >
 
                 <TextView
@@ -99,6 +100,7 @@
                 android:id="@+id/rl_traffic"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_item_selector"
                 android:padding="@dimen/margins" >
                 <TextView
                     android:layout_width="fill_parent"
@@ -127,6 +129,7 @@
                 android:id="@+id/rl_status"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_item_selector"
                 android:padding="@dimen/margins" >
 
                 <TextView
@@ -156,6 +159,7 @@
                 android:id="@+id/rl_alert"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_item_selector"
                 android:padding="@dimen/margins" >
 
                 <TextView
@@ -186,6 +190,7 @@
                 android:id="@+id/rl_remind"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_item_selector"
                 android:padding="@dimen/margins" >
 
                 <TextView
@@ -232,6 +237,7 @@
                 android:layout_height="wrap_content"
                 android:drawableRight="@drawable/body_icon_arrow2"
                 android:padding="@dimen/margins"
+                android:background="@drawable/bg_item_selector"
                 android:text="@string/share_gift"
                 android:textColor="@color/common"
                 android:textSize="@dimen/content" />
@@ -247,22 +253,8 @@
                 android:layout_height="wrap_content"
                 android:drawableRight="@drawable/body_icon_arrow2"
                 android:padding="@dimen/margins"
+                android:background="@drawable/bg_item_selector"
                 android:text="@string/feedbaack"
-                android:textColor="@color/common"
-                android:textSize="@dimen/content" />
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:background="@color/gray_lights" />
-
-            <TextView
-                android:id="@+id/tv_score"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:drawableRight="@drawable/body_icon_arrow2"
-                android:padding="@dimen/margins"
-                android:text="@string/give_us_score"
                 android:textColor="@color/common"
                 android:textSize="@dimen/content" />
 
@@ -277,9 +269,14 @@
                 android:layout_height="wrap_content"
                 android:drawableRight="@drawable/body_icon_arrow2"
                 android:padding="@dimen/margins"
+                android:background="@drawable/bg_item_selector"
                 android:text="@string/about_appliaction"
                 android:textColor="@color/common"
                 android:textSize="@dimen/content" />
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:background="@color/gray_lights" />
         </LinearLayout>
     </ScrollView>
 

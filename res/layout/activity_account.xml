@@ -24,48 +24,58 @@
             android:gravity="center"
             android:text="@string/my_account"
             android:textColor="@color/white"
-            android:textSize="@dimen/head"
-            android:textStyle="bold" />
+            android:textSize="@dimen/head"/>
 	</RelativeLayout>
 	<RelativeLayout 
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
 	    android:background="@color/white"
 	    android:layout_marginBottom="@dimen/double_margins"
-	    android:padding="@dimen/margins">
+	    android:padding="@dimen/double_margins">
 	    <ImageView 
-	        android:id="@+id/iv_activity_account_pic"
-	        android:src="@drawable/side_icon_avatar"
+	        android:id="@+id/iv_activity_account_pic"	        
+            android:src="@drawable/body_nothing_icon"
 	        android:contentDescription="@string/app_name"
 	        android:layout_marginRight="@dimen/margins"
 	        android:layout_centerVertical="true"
-	        android:layout_width="40dp"
-	        android:layout_height="40dp"/>
+	        android:layout_width="50dp"
+	        android:layout_height="50dp"/>
 	    <TextView
 	        android:id="@+id/tv_activity_account_name" 
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
 	        android:textColor="@color/common"
 	        android:textSize="@dimen/main"
+	        android:text="honesty"
 	        android:layout_toRightOf="@id/iv_activity_account_pic"/>
-	    <TextView 
-	        android:id="@+id/tv_activity_city"
+	    <LinearLayout 
 	        android:layout_width="wrap_content"
 	        android:layout_height="wrap_content"
-	        android:textColor="@color/common"
-            android:textSize="@dimen/main"
-	        android:layout_below="@id/tv_activity_account_name"
-	        android:layout_toRightOf="@id/iv_activity_account_pic"/>
-	    <TextView 
-	        android:id="@+id/tv_Balance"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_marginLeft="@dimen/margins"
-	        android:textColor="@color/common"
-            android:textSize="@dimen/main"
-	        android:layout_below="@id/tv_activity_account_name"
-	        android:layout_toRightOf="@id/tv_activity_city"
-	        android:text="账户余额：0元"/>
+	        android:orientation="horizontal"
+	        android:gravity="center_vertical"	        
+            android:layout_below="@id/tv_activity_account_name"
+            android:layout_toRightOf="@id/iv_activity_account_pic">
+	        <TextView 
+	            android:id="@+id/tv_activity_city"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:textColor="@color/common"
+	            android:text="深圳"
+	            android:textSize="@dimen/main"/>
+	        <View
+	            android:layout_width="1dp"
+	            android:layout_height="16dp"
+	            android:layout_marginLeft="@dimen/margins"
+	            android:layout_marginRight="@dimen/margins"
+	            android:background="@color/gray_light"/>
+	        <TextView 
+	            android:id="@+id/tv_Balance"
+	            android:layout_width="wrap_content"
+	            android:layout_height="wrap_content"
+	            android:textColor="@color/common"
+	            android:textSize="@dimen/main"
+	            android:text="账户余额：0元"/>
+	    </LinearLayout>	    
 	</RelativeLayout> 
 	<LinearLayout 
 	    android:layout_width="fill_parent"
@@ -89,8 +99,9 @@
         android:padding="@dimen/margins">
         <ImageView 
             android:id="@+id/iv_user_car_logo"
-            android:layout_width="40dp"
-            android:layout_height="40dp"/>
+            android:layout_marginRight="@dimen/margins"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
         <TextView 
             android:id="@+id/tv_carBrand"
             android:layout_width="wrap_content"
@@ -151,7 +162,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@string/consignee"
-            android:textColor="@color/common"
+            android:textColor="@color/common_inactive"
             android:textSize="@dimen/content"/>
 	     <EditText 
 	         android:id="@+id/et_activity_account_consignee"
@@ -166,7 +177,7 @@
     </RelativeLayout>
     <View 
         android:layout_width="fill_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:background="@drawable/body_line"/>
     <RelativeLayout 
         android:layout_width="fill_parent"        
@@ -178,7 +189,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@string/address"
-            android:textColor="@color/common"
+            android:textColor="@color/common_inactive"
             android:textSize="@dimen/content"/>
 	     <EditText 
 	         android:id="@+id/et_activity_account_adress"
@@ -193,7 +204,7 @@
     </RelativeLayout>
     <View 
         android:layout_width="fill_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:background="@drawable/body_line"/>
     <RelativeLayout 
         android:layout_width="fill_parent"        
@@ -206,7 +217,7 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="@string/tel"
-            android:textColor="@color/common"
+            android:textColor="@color/common_inactive"
             android:textSize="@dimen/content"/>
 	     <EditText 
 	         android:id="@+id/et_activity_account_phone"
@@ -223,7 +234,7 @@
         android:id="@+id/bt_activity_account_logout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@drawable/bg_item_selector"
         android:padding="@dimen/margins"
         android:textSize="@dimen/main"
         android:textColor="@color/red_light"

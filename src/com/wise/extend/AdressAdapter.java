@@ -16,7 +16,7 @@ import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
 import com.wise.wawc.HomeActivity;
-import com.wise.wawc.MyCollectionActivity;
+import com.wise.wawc.CollectionActivity;
 import com.wise.wawc.MyVehicleActivity;
 import com.wise.wawc.R;
 import android.app.Activity;
@@ -206,9 +206,9 @@ public class AdressAdapter extends BaseAdapter{
 	}
 	private String d(int Distance){
 	    if(Distance > 1000){
-	        return (int)Distance/1000 + "Km";
+	        return "(" +(int)Distance/1000 + "km)";
 	    }else{
-	        return Distance + "m";
+	        return "(" +Distance + "m)";
 	    }
 	}
 	OnCollectListener onCollectListener;

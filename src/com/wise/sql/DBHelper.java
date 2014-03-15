@@ -34,7 +34,7 @@ public class DBHelper extends SQLiteOpenHelper{
 	//我的账户
 	private static final String CREATE_TB_Account = "create table " + Constant.TB_Account + "(_id integer primary key autoincrement,cust_id text,Consignee text,Adress text,Phone text,annual_inspect_date text,change_date text)";
 	//我的消息
-	private static final String CREATE_TB_Sms = "create table " + Constant.TB_Sms + "(_id integer primary key autoincrement,cust_id text,noti_id int,msg_type int,content text,rcv_time text,lat text,lon text,status text)";
+	private static final String CREATE_TB_Sms = "create table " + Constant.TB_Sms + "(_id integer primary key autoincrement,cust_id text,noti_id int,msg_type int,content text,rcv_time text,lat text,lon text,status text,obj_id text)";
 	
 	private static final String CREATE_TB_IllegalCity = "create table " + Constant.TB_IllegalCity + "(_id integer primary key autoincrement,json_data text)";
 	public DBHelper(Context context){

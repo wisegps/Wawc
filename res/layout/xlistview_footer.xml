@@ -8,14 +8,25 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:padding="10dp" >
-
-        <ImageView
-            android:id="@+id/xlistview_footer_iv"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+        <LinearLayout
+            android:id="@+id/ll_xlistview_footer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/icon_loading_gray" 
-            android:visibility="invisible" />
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+            <ImageView
+                android:id="@+id/xlistview_footer_iv"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/icon_loading_gray" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="数据加载中..."
+                android:textColor="@color/common"
+                android:textSize="@dimen/content" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/xlistview_footer_hint_textview"
@@ -23,7 +34,9 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="@string/xlistview_footer_hint_normal"
-            android:textColor="#000000" />
+            android:textColor="@color/common"
+            android:textSize="@dimen/content"
+            android:visibility="invisible" />
     </RelativeLayout>
 
 </LinearLayout>

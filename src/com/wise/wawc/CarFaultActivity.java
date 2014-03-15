@@ -264,7 +264,7 @@ public class CarFaultActivity extends Activity implements IXListViewListener{
 	                sb.append(faultData.getTime());
 	                sb.append("," + faultData.getFaultCode());
 	                sb.append("," + faultData.getFaultInfo());
-	                GetSystem.share(CarFaultActivity.this, sb.toString(), "",0,0);
+	                GetSystem.share(CarFaultActivity.this, sb.toString(), "",0,0,"故障");
 				}
 			});
 			if(faultData.isDataFrist){

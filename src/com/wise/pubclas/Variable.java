@@ -1,6 +1,7 @@
 package com.wise.pubclas;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import android.util.DisplayMetrics;
@@ -45,7 +46,7 @@ public class Variable{
      */
     public static double Lon = 0;
     
-    public static List<CarData> carDatas;
+    public static List<CarData> carDatas = new ArrayList<CarData>();
     public static List<DevicesData> devicesDatas;
     
     public static List<Article> articleList;

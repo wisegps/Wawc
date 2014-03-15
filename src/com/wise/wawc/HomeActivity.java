@@ -8,7 +8,6 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.search.MKAddrInfo;
 import com.baidu.mapapi.search.MKBusLineResult;
@@ -57,6 +56,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -101,7 +101,6 @@ public class HomeActivity extends Activity {
     String LocationCityCode = "";// 城市编码
     String LocationCity = "";// 城市
     int DefaultVehicleID;// 默认选中车辆id
-    List<CarData> carDatas = new ArrayList<CarData>();
     boolean isNeedGetLogoFromUrl = false;
     MKSearch mkSearch;
     boolean isRefresh = true;
@@ -181,8 +180,7 @@ public class HomeActivity extends Activity {
 
         final ImageView iv_weather = (ImageView) findViewById(R.id.iv_weather);
         final ImageView iv_oil = (ImageView) findViewById(R.id.iv_oil);
-        // tv_item_oil_update = (TextView)
-        // oilView.findViewById(R.id.tv_item_oil_update);
+        // tv_item_oil_update = (TextView)oilView.findViewById(R.id.tv_item_oil_update);
         ScrollLayout_other.setOnViewChangeListener(new OnViewChangeListener() {
             @Override
             public void OnViewChange(int view) {
@@ -218,7 +216,7 @@ public class HomeActivity extends Activity {
     }
 
     private void changeImage(int index) {
-        for (int i = 0; i < carDatas.size(); i++) {
+        for (int i = 0; i < Variable.carDatas.size(); i++) {
             ImageView imageView = (ImageView) ll_image.getChildAt(i);
             if (index == i) {
                 imageView.setImageResource(R.drawable.home_body_cutover_press);
@@ -240,8 +238,8 @@ public class HomeActivity extends Activity {
     //显示车辆
     private void showCar() {
         ScrollLayout_car.removeAllViews();
-        mTextViews = new TextView[carDatas.size()][2];
-        if (carDatas.size() == 0) {
+        mTextViews = new TextView[Variable.carDatas.size()][2];
+        if (Variable.carDatas.size() == 0) {
             View view = LayoutInflater.from(HomeActivity.this).inflate(
                     R.layout.item_home_car, null);
             ScrollLayout_car.addView(view);
@@ -259,8 +257,8 @@ public class HomeActivity extends Activity {
                     .findViewById(R.id.tv_updateTime);
             tv_updateTime.setVisibility(view.INVISIBLE);
         } else {
-            for (int i = 0; i < carDatas.size(); i++) {
-                CarData carData = carDatas.get(i);
+            for (int i = 0; i < Variable.carDatas.size(); i++) {
+                CarData carData = Variable.carDatas.get(i);
                 View view = LayoutInflater.from(HomeActivity.this).inflate(
                         R.layout.item_home_car, null);
                 ScrollLayout_car.addView(view);
@@ -287,15 +285,15 @@ public class HomeActivity extends Activity {
             }
         }
         ll_image.removeAllViews();
-        for (int i = 0; i < carDatas.size(); i++) {
+        for (int i = 0; i < Variable.carDatas.size(); i++) {
             ImageView imageView = new ImageView(this);
             imageView.setImageResource(R.drawable.home_body_cutover_press);
             imageView.setPadding(5, 0, 5, 0);
             ll_image.addView(imageView);
         }
         changeImage(DefaultVehicleID);
-        if (carDatas.size() != 0) {
-            if (DefaultVehicleID >= carDatas.size()) {// 默认第一个车
+        if (Variable.carDatas.size() != 0) {
+            if (DefaultVehicleID >= Variable.carDatas.size()) {// 默认第一个车
                 DefaultVehicleID = 0;
             }
             iv_car_traffic.setVisibility(View.GONE);
@@ -309,12 +307,12 @@ public class HomeActivity extends Activity {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (DefaultVehicleID >= carDatas.size()) {// 默认第一个车
+                    if (DefaultVehicleID >= Variable.carDatas.size()) {// 默认第一个车
                         DefaultVehicleID = 0;
-                        carDatas.get(0).setCheck(true);
+                        Variable.carDatas.get(0).setCheck(true);
                         ScrollLayout_car.snapFastToScreen(0);
                     } else {
-                        carDatas.get(DefaultVehicleID).setCheck(true);
+                        Variable.carDatas.get(DefaultVehicleID).setCheck(true);
                         Log.d(TAG, "跳转到：" + DefaultVehicleID);
                         ScrollLayout_car.snapFastToScreen(DefaultVehicleID);
                     }
@@ -502,7 +500,7 @@ public class HomeActivity extends Activity {
      * 获取本地车辆信息
      */
     private void GetDBCars() {
-        carDatas.clear();
+        Variable.carDatas.clear();
         if (Variable.cust_id != null) {
             DBHelper dbHelper = new DBHelper(HomeActivity.this);
             SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -604,12 +602,11 @@ public class HomeActivity extends Activity {
                     isNeedGetLogoFromUrl = true;
                     carData.setLogoPath("");
                 }
-                carDatas.add(carData);
+                Variable.carDatas.add(carData);
             }
             cursor.close();
             db.close();
         }
-        Variable.carDatas = carDatas;
     }
 
     class getLogoThread extends Thread {
@@ -851,7 +848,7 @@ public class HomeActivity extends Activity {
      * @param result
      */
     private void jsonCars(String result) {
-        carDatas.clear();
+        Variable.carDatas.clear();
         try {
             JSONArray jsonArray = new JSONArray(result);
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -955,7 +952,7 @@ public class HomeActivity extends Activity {
                     isNeedGetLogoFromUrl = true;
                     carData.setLogoPath("");
                 }
-                carDatas.add(carData);
+                Variable.carDatas.add(carData);
                 // 存储在数据库
                 DBExcute dbExcute = new DBExcute();
                 ContentValues values = new ContentValues();
@@ -989,7 +986,6 @@ public class HomeActivity extends Activity {
                 dbExcute.InsertDB(HomeActivity.this, values,
                         Constant.TB_Vehicle);
             }
-            Variable.carDatas = carDatas;
             if (Variable.carDatas.size() > 0) {
                 Variable.carDatas.get(0).setCheck(true);
             }
@@ -1052,7 +1048,7 @@ public class HomeActivity extends Activity {
         Log.d(TAG, sb.toString());
         GetSystem.share(HomeActivity.this, sb.toString(), "",
                 Float.valueOf(carData.getLat()),
-                Float.valueOf(carData.getLon()));
+                Float.valueOf(carData.getLon()),"位置");
     }
 
     private void registerBroadcastReceiver() {
@@ -1096,6 +1092,7 @@ public class HomeActivity extends Activity {
                         Variable.carDatas.get(DefaultVehicleID).setLat(Lat);
                         Variable.carDatas.get(DefaultVehicleID).setLon(Lon);
                         Variable.carDatas.get(DefaultVehicleID).setGps_time(GetSystem.GetNowTime());
+                        Variable.carDatas.get(DefaultVehicleID).setAdress(AddrStr);
                         mTextViews[DefaultVehicleID][1].setText(GetSystem.sortHomeTime(GetSystem.GetNowTime()));
                     }
                 }
@@ -1188,8 +1185,7 @@ public class HomeActivity extends Activity {
             } else {
                 Animation animation = voiceImage.getAnimation();
                 if (animation == null) {
-                    animation = AnimationUtils.loadAnimation(HomeActivity.this,
-                            R.anim.tip);
+                    animation = AnimationUtils.loadAnimation(HomeActivity.this,R.anim.tip);
                     LinearInterpolator lin = new LinearInterpolator();
                     animation.setInterpolator(lin);
                     voiceImage.startAnimation(animation);
@@ -1216,31 +1212,37 @@ public class HomeActivity extends Activity {
      * @param index
      */
     private void getCarInfo(int index) {
-        String url = Constant.BaseUrl + "vehicle/"
-                + Variable.carDatas.get(index).getObj_id() + "?auth_code="
-                + Variable.auth_code;
-        new Thread(new NetThread.GetDataThread(handler, url, Get_car_info))
-                .start();
+        if(Variable.carDatas == null || Variable.carDatas.size() == 0){
+            
+        }else{
+            String url = Constant.BaseUrl + "vehicle/"
+                    + Variable.carDatas.get(index).getObj_id() + "?auth_code="
+                    + Variable.auth_code;
+            new Thread(new NetThread.GetDataThread(handler, url, Get_car_info))
+                    .start();
+        }        
     }
 
     private void jsonCarInfo(String result) {
         try {
-            JSONObject jsonObject = new JSONObject(result);
-            if (jsonObject.getString("obj_id").equals(
-                    Variable.carDatas.get(DefaultVehicleID).getObj_id())) {
-                if (jsonObject.opt("vio_count") != null) {
-                    Log.d(TAG, jsonObject.getString("vio_count"));
-                    iv_car_traffic.setVisibility(View.VISIBLE);
+            if(!result.equals("")){
+                JSONObject jsonObject = new JSONObject(result);
+                if (jsonObject.getString("obj_id").equals(
+                        Variable.carDatas.get(DefaultVehicleID).getObj_id())) {
+                    if (jsonObject.opt("vio_count") != null) {
+                        Log.d(TAG, jsonObject.getString("vio_count"));
+                        iv_car_traffic.setVisibility(View.VISIBLE);
+                    }
+                    if (jsonObject.opt("fault_count") != null) {
+                        Log.d(TAG, jsonObject.getString("fault_count"));
+                        iv_car_status.setVisibility(View.VISIBLE);
+                    }
+                    if (jsonObject.opt("alert_count") != null) {
+                        Log.d(TAG, jsonObject.getString("alert_count"));
+                        iv_car_status.setVisibility(View.VISIBLE);
+                    }
                 }
-                if (jsonObject.opt("fault_count") != null) {
-                    Log.d(TAG, jsonObject.getString("fault_count"));
-                    iv_car_status.setVisibility(View.VISIBLE);
-                }
-                if (jsonObject.opt("alert_count") != null) {
-                    Log.d(TAG, jsonObject.getString("alert_count"));
-                    iv_car_status.setVisibility(View.VISIBLE);
-                }
-            }
+            }            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1252,18 +1254,22 @@ public class HomeActivity extends Activity {
      * @param index
      */
     private void notiRemind(int index) {
-        CarData carData = carDatas.get(index);
-        Log.d(TAG, carData.getAnnual_inspect_date() + "," + carData.getInsurance_date() + "," + 
-                annual_inspect_date + "," + change_date);
-        if (GetSystem.isTimeOut(carData.getAnnual_inspect_date())
-                || GetSystem.isTimeOut(carData.getInsurance_date())
-                || GetSystem.isTimeOut(annual_inspect_date)
-                || GetSystem.isTimeOut(change_date)) {
-            iv_car_remind.setVisibility(View.VISIBLE);
-        } else {
-            iv_car_remind.setVisibility(View.GONE);
-        }
-        // 里程和位置在下一个url获取
+        if(Variable.carDatas == null || Variable.carDatas.size() == 0){
+            
+        }else{
+            CarData carData = Variable.carDatas.get(index);
+            Log.d(TAG, carData.getAnnual_inspect_date() + "," + carData.getInsurance_date() + "," + 
+                    annual_inspect_date + "," + change_date);
+            if (GetSystem.isTimeOut(carData.getAnnual_inspect_date())
+                    || GetSystem.isTimeOut(carData.getInsurance_date())
+                    || GetSystem.isTimeOut(annual_inspect_date)
+                    || GetSystem.isTimeOut(change_date)) {
+                iv_car_remind.setVisibility(View.VISIBLE);
+            } else {
+                iv_car_remind.setVisibility(View.GONE);
+            }
+            // 里程和位置在下一个url获取
+        }        
     }
 
     String annual_inspect_date;
@@ -1360,14 +1366,11 @@ public class HomeActivity extends Activity {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     DevicesData devicesData = new DevicesData();
                     devicesData.setDevice_id(jsonObject.getString("device_id"));
-                    devicesData.setHardware_version(jsonObject
-                            .getString("hardware_version"));
+                    devicesData.setHardware_version(jsonObject.getString("hardware_version"));
                     devicesData.setSerial(jsonObject.getString("serial"));
-                    devicesData.setService_end_date(jsonObject
-                            .getString("service_end_date"));
+                    devicesData.setService_end_date(jsonObject.getString("service_end_date"));
                     devicesData.setSim(jsonObject.getString("sim"));
-                    devicesData.setSoftware_version(jsonObject
-                            .getString("software_version"));
+                    devicesData.setSoftware_version(jsonObject.getString("software_version"));
                     devicesData.setStatus(jsonObject.getString("status"));
                     devicesData.setType(0);
                     devicesDatas.add(devicesData);
@@ -1442,17 +1445,33 @@ public class HomeActivity extends Activity {
      * @param index
      */
     private void getCarRemindFromUrl(int index) {
-        String device_id = Variable.carDatas.get(index).getDevice_id();
-        if(device_id == null || device_id.equals("")){
+        if(Variable.carDatas == null || Variable.carDatas.size() == 0){
             
         }else{
-            String url = Constant.BaseUrl + "device/" + device_id
-                    + "/active_gps_data?auth_code=" + Variable.auth_code;
-            new Thread(new NetThread.GetDataThread(handler, url, Get_device_info))
-                    .start();
-        }        
+            String device_id = Variable.carDatas.get(index).getDevice_id();
+            if(device_id == null || device_id.equals("")){
+                String AddrStr = Variable.Adress;
+                String Lat = String.valueOf(Variable.Lat);
+                String Lon = String.valueOf(Variable.Lon);
+                if(AddrStr == null){
+                    mTextViews[DefaultVehicleID][0].setText("未绑定终端，正在获取手机位置..."); 
+                }else{
+                    mTextViews[DefaultVehicleID][0].setText(AddrStr); 
+                }                
+                Variable.carDatas.get(DefaultVehicleID).setLat(Lat);
+                Variable.carDatas.get(DefaultVehicleID).setLon(Lon);
+                Variable.carDatas.get(DefaultVehicleID).setGps_time(GetSystem.GetNowTime());
+                Variable.carDatas.get(DefaultVehicleID).setAdress(AddrStr);
+                mTextViews[DefaultVehicleID][1].setText(GetSystem.sortHomeTime(GetSystem.GetNowTime()));
+            }else{
+                String url = Constant.BaseUrl + "device/" + device_id
+                        + "/active_gps_data?auth_code=" + Variable.auth_code;
+                new Thread(new NetThread.GetDataThread(handler, url, Get_device_info))
+                        .start();
+            }
+        }                
     }
-
+    //TODO 
     private void jsonDeviceInfo(String result) {
         try {
             JSONObject jsonObject = new JSONObject(result);
@@ -1474,16 +1493,11 @@ public class HomeActivity extends Activity {
                 String lon = jsonData.getString("lon");
                 Variable.carDatas.get(DefaultVehicleID).setLat(lat);
                 Variable.carDatas.get(DefaultVehicleID).setLon(lon);
-                String gps_time = jsonData.getString("gps_time")
-                        .replace("T", " ").substring(0, 19);
-                Variable.carDatas.get(DefaultVehicleID).setGps_time(
-                        gps_time.substring(5, 16));
-                GeoPoint point = new GeoPoint(GetSystem.StringToInt(lat),
-                        GetSystem.StringToInt(lon));
-                Log.d(TAG, "gps_time = " + gps_time + " , lat = " + lat
-                        + " , lon = " + lon);
-                mTextViews[DefaultVehicleID][1].setText(GetSystem
-                        .sortHomeTime(gps_time));
+                String gps_time = jsonData.getString("gps_time").replace("T", " ").substring(0, 19);
+                Variable.carDatas.get(DefaultVehicleID).setGps_time(gps_time.substring(5, 16));
+                GeoPoint point = new GeoPoint(GetSystem.StringToInt(lat),GetSystem.StringToInt(lon));
+                Log.d(TAG, "gps_time = " + gps_time + " , lat = " + lat + " , lon = " + lon);
+                mTextViews[DefaultVehicleID][1].setText(GetSystem.sortHomeTime(gps_time));
                 mkSearch.reverseGeocode(point);
             }
         } catch (JSONException e) {
@@ -1565,5 +1579,22 @@ public class HomeActivity extends Activity {
                 }
             }
         }
+    }
+    long waitTime = 2000;
+    long touchTime = 0;
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        Log.d(TAG, "Home onKeyDown");
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+            long currentTime = System.currentTimeMillis();
+            if (touchTime == 0 || (currentTime - touchTime) >= waitTime) {
+                Toast.makeText(this, "再按一次退出客户端", Toast.LENGTH_SHORT).show();
+                touchTime = currentTime;
+            } else {
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

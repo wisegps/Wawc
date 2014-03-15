@@ -27,8 +27,8 @@
             android:textSize="@dimen/head"/>
 	</RelativeLayout>
 	<com.wise.list.XListView 
-            android:id="@+id/lv_activity_order_me"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:divider="@null"/>
+        android:id="@+id/lv_activity_order_me"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:divider="@null"/>
 </LinearLayout>

@@ -2,7 +2,6 @@ package com.wise.sql;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import org.json.JSONArray;
@@ -10,11 +9,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import com.wise.data.AdressData;
 import com.wise.data.Article;
-import com.wise.data.IllegalCity;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.Variable;
-import com.wise.wawc.IllegalCitiyActivity;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -33,6 +29,18 @@ public class DBExcute {
 		db.close();
 		dbHelper.close();
 		System.out.println("插入成功");
+	}
+	/**
+	 * 删除表
+	 * @param context
+	 * @param sql
+	 */
+	public void DeleteDB(Context context,String sql){
+	    DBHelper dbHelper = new DBHelper(context);
+	    SQLiteDatabase db = dbHelper.getWritableDatabase();
+	    db.execSQL(sql);
+	    db.close();
+	    dbHelper.close();
 	}
 	/**
 	 * 更新数据库

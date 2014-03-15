@@ -9,7 +9,7 @@
         android:layout_height="@dimen/title_hight"
         android:background="@drawable/nav_bg">
         <ImageView
-            android:id="@+id/my_vechile_menu"
+            android:id="@+id/iv_menu"
             android:layout_width="@dimen/title_image"
             android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
@@ -43,14 +43,13 @@
                 android:layout_below="@id/iv_nothing"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="@color/common"
                 android:textSize="@dimen/main"
                 android:layout_centerHorizontal="true"
                 android:text="没有收藏记录"/>
         </RelativeLayout>        
 	    <com.wise.list.XListView 
 	        android:id="@+id/lv_collection"
-	        android:visibility="gone"
 	        android:layout_width="fill_parent"
 	        android:layout_height="fill_parent"
 	        android:divider="@null"/> 

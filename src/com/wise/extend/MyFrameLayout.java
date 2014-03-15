@@ -18,7 +18,7 @@ public class MyFrameLayout extends FrameLayout{
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         //如果当前屏幕处在第一屏，则不需要拦截事件
-        //如果屏幕处在非第一瓶，则拦截load页面里的点击事件
+        //如果屏幕处在非第一屏，则拦截load页面里的点击事件
         if(ActivityFactory.S.getCurrentScreen() == 1){
             return false;
         }
