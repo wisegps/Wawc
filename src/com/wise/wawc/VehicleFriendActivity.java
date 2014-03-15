@@ -292,6 +292,22 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 					qqUserHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
 				}else{
 					qqUserHead.setBackgroundResource(R.drawable.body_nothing_icon);
+					//获取图片
+					if(Constant.UserIconUrl != null){
+						new Thread(new Runnable() {
+							public void run() {
+								Bitmap userLogo = GetSystem.getBitmapFromURL(Constant.UserIconUrl);
+								if(userLogo != null){
+									GetSystem.saveImageSD(userLogo, Constant.userIconPath, Variable.cust_id + ".jpg");
+								}
+							}
+						}).start();
+						Message msgs = new Message();
+						msgs.what = setUserIcon;
+						myHandler.sendMessage(msgs);
+					}else{
+						qqUserName.setText("未登录");
+					}
 				}
 				if(!"".equals(Variable.cust_name)){
 					qqUserName.setText(Variable.cust_name);

@@ -408,6 +408,7 @@ public class MyAdapter extends BaseAdapter{
 				case R.id.head_article:   //点击用户头像 进入好友主页
 					Intent intent = new Intent(activity,FriendHomeActivity.class);
 					intent.putExtra("cust_id", String.valueOf(articleList.get(index).getCust_id()));
+					intent.putExtra("article", articleList.get(index));
 					activity.startActivity(intent);
 					break;
 				case R.id.article_user_name:   //点击进入文章的详细介绍

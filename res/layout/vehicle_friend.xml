@@ -75,13 +75,13 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/title"
+                android:textColor="@color/white"
                 android:layout_gravity="center"
                 android:text="用户名"
-                android:textColor="@color/white" />
+                 />
         </LinearLayout>
     </RelativeLayout>
     <!-- 搜索栏 -->
-
     <EditText
         android:id="@+id/search"
         android:layout_width="fill_parent"

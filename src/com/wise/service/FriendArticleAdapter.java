@@ -319,13 +319,15 @@ public class FriendArticleAdapter extends BaseAdapter{
 		}else{
 			new Thread(new Runnable() {
 				public void run() {
-					bitmap = GetSystem.getBitmapFromURL(loadUrl);
+					Bitmap tempBitmap = GetSystem.getBitmapFromURL(loadUrl);
 					if(Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
 						File imagePath = new File(Constant.VehiclePath);
 						if(!imagePath.exists()){
 							imagePath.mkdir();
 						}
-						createImage(Constant.VehiclePath + loadUrl.substring(loadUrl.lastIndexOf("/")),bitmap);
+						if(tempBitmap != null){
+							createImage(Constant.VehiclePath + loadUrl.substring(loadUrl.lastIndexOf("/")),bitmap);
+						}
 					}
 				}
 			}).start();
@@ -425,6 +427,7 @@ public class FriendArticleAdapter extends BaseAdapter{
 		 return FaceConversionUtil.getInstace().getExpressionString(context, faceContent);
 	 }
 	public void refreshDates(List<Article> articleList){ 
+		Log.e("好友主页迭代器：" , articleList.size()+"");
 		this.articleList = articleList;
 		this.notifyDataSetChanged();
 	}

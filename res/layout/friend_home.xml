@@ -38,7 +38,7 @@
         android:layout_width="fill_parent"
         android:layout_height="120dip"
         android:layout_below="@id/friend_home_top"
-        android:background="@drawable/car"
+        android:background="@drawable/wallpaper_s_01"
         android:gravity="center" >
 
         <LinearLayout
@@ -57,7 +57,8 @@
                 android:id="@+id/friend_home_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#FF3300" />
+                android:textSize="@dimen/title"
+                android:textColor="@color/white" />
         </LinearLayout>
     </RelativeLayout>
     <!-- 显示详细评论信息 -->

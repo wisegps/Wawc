@@ -1,4 +1,5 @@
 package com.wise.wawc;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,6 +16,7 @@ import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
 import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.service.FriendArticleAdapter;
@@ -27,6 +29,8 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -71,10 +75,11 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 	private String cust_id = "";
 	private int friendArticleTotalNum = 0;
 	private boolean isLoadMore = false;
-	private String MyTag = "FriendHomeActivity";
+	private String Tag = "FriendHomeActivity";
 	private String commentMsg = null;
 	public static int blogId = 0;
 	private int minBlogId = 0;
+	private Article article = null;
 	
 	
 	protected void onCreate(Bundle savedInstanceState) {
@@ -97,8 +102,17 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 		dBExcute = new DBExcute();
 		cust_id = lastPageDatas.getStringExtra("cust_id");
 		myHandler = new MyHandler();
-		//friendHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(Constant.UserIcon));
-        friendName.setText(Variable.cust_name);
+		
+		article = (Article) lastPageDatas.getSerializableExtra("article");
+		if(!new File(Constant.userIconPath + cust_id + ".jpg").exists()){
+			Message msg = new Message();
+			msg.what = initDatas;
+			myHandler.sendMessage(msg);
+		}else{
+			Bitmap userHead = BitmapFactory.decodeFile(Constant.userIconPath + cust_id + ".jpg"); 
+			friendHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(userHead));
+		}
+        friendName.setText(article.getName());
         //显示用户数据    查询本地数据库时候存在数据
         getArticleDatas(0);
 		
@@ -119,8 +133,11 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 		public void onClick(View v) {
 			switch(v.getId()){
 			case R.id.friend_home_user_head:
-				startActivity(new Intent(FriendHomeActivity.this,
-						FriendInformationActivity.class));
+				Intent intent = new Intent(FriendHomeActivity.this,FriendInformationActivity.class);
+				intent.putExtra("cust_id", cust_id);
+				intent.putExtra("article", article);
+				startActivity(intent);
+				FriendHomeActivity.this.finish();
 				break;
 			case R.id.friend_back:
 				FriendHomeActivity.this.finish();
@@ -154,7 +171,15 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 			super.handleMessage(msg);
 			switch(msg.what){
 			case initDatas:   // 设置用户信息
-				
+				new Thread(new Runnable() {
+					public void run() {
+						Bitmap userLogo = GetSystem.getBitmapFromURL(article.getUserLogo());
+						if(userLogo != null){
+							GetSystem.saveImageSD(userLogo, Constant.userIconPath, cust_id + ".jpg");
+						}
+						friendHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(userLogo));
+					}
+				}).start();
 				break;
 			case commentArticle:
 				String commentResult = msg.obj.toString();
@@ -199,11 +224,12 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 		}
 	}
 	
-	//获取数据
+	//获取数据  TODO
 		public void getArticleDatas(int actionCode){
 			DBHelper dBHelper = new DBHelper(FriendHomeActivity.this);
 			SQLiteDatabase reader = dBHelper.getReadableDatabase();
 			Cursor cursor = reader.rawQuery("select * from " + Constant.TB_VehicleFriend + " where Cust_id = ?", new String[]{cust_id});
+			Log.e(Tag,"查询数据库时user_id = " + cust_id);
 			friendArticleTotalNum = cursor.getCount();
 			if(friendArticleTotalNum > 0){
 				//查询数据库
@@ -211,7 +237,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 				if(Constant.totalPage1 - 1 >= Constant.currentPage1){
 					Constant.start1 = Constant.currentPage1*Constant.pageSize1;
 					Constant.currentPage1 ++ ;
-					articleDataList = dBExcute.getArticlePageDatas(FriendHomeActivity.this, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(Constant.start1),String.valueOf(Constant.pageSize1)}, articleDataList);
+					articleDataList = dBExcute.getArticlePageDatas(FriendHomeActivity.this, "select * from " + Constant.TB_VehicleFriend + " where Cust_id = ? order by Blog_id desc limit ?,?", new String[]{cust_id,String.valueOf(Constant.start1),String.valueOf(Constant.pageSize1)}, articleDataList);
 					setArticleDataList(articleDataList);
 				}
 				Log.e("currentPage:" + Constant.currentPage1 , "totalPage:" + Constant.totalPage1);
@@ -223,9 +249,8 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 				myDialog.setCancelable(true);
 				//  TODO  获取文章列表
 				new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code, getArticleList)).start();
-				Log.e("获取文章url:",Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code);
+				Log.e("获取文章url:",Constant.BaseUrl + "customer/" + cust_id + "/blog?auth_code=" + Variable.auth_code);
 			}
-			Variable.articleList = articleDataList;
 			myAdapter.refreshDates(articleDataList);
 			if(loadMoreAction == actionCode){
 				onLoad();
