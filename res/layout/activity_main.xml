@@ -250,6 +250,7 @@
 	           android:layout_height="wrap_content"
 	           android:padding="@dimen/margins"
 	           android:text="我要加油"
+	           android:background="@drawable/bg_searchview"
 	           android:textColor="@color/white"
 	           android:textSize="@dimen/main"
 	           android:drawableRight="@drawable/car_arrow"/>
@@ -263,6 +264,7 @@
 	           android:layout_height="wrap_content"
 	           android:padding="@dimen/margins"
 	           android:text="我要维保"
+	           android:background="@drawable/bg_searchview"
 	           android:textColor="@color/white"
 	           android:textSize="@dimen/main"
 	           android:drawableRight="@drawable/car_arrow"/>
@@ -276,9 +278,24 @@
 	           android:layout_height="wrap_content"
 	           android:padding="@dimen/margins"
 	           android:text="我要洗车"
+	           android:background="@drawable/bg_searchview"
 	           android:textColor="@color/white"
 	           android:textSize="@dimen/main"
-	           android:drawableRight="@drawable/car_arrow"/>
+	           android:drawableRight="@drawable/car_arrow"/>	       
+           <View 
+               android:layout_width="fill_parent"
+               android:layout_height="1dp"
+               android:background="@drawable/body_line"/>
+           <TextView 
+               android:id="@+id/tv_Parking"
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               android:padding="@dimen/margins"
+               android:text="我要停车"
+               android:background="@drawable/bg_searchview"
+               android:textColor="@color/white"
+               android:textSize="@dimen/main"
+               android:drawableRight="@drawable/car_arrow"/>
 	       <View 
 	           android:layout_width="fill_parent"
 	           android:layout_height="1dp"
@@ -289,6 +306,7 @@
 	           android:layout_height="wrap_content"
 	           android:padding="@dimen/margins"
 	           android:text="我要救援"
+	           android:background="@drawable/bg_searchview"
 	           android:textColor="@color/white"
 	           android:textSize="@dimen/main"
 	           android:drawableRight="@drawable/car_arrow"/>
@@ -301,23 +319,15 @@
 	           android:layout_width="fill_parent"
 	           android:layout_height="wrap_content"
 	           android:padding="@dimen/margins"
-	           android:text="我要保险"
+	           android:text="我要报险"
+	           android:background="@drawable/bg_searchview"
 	           android:textColor="@color/white"
 	           android:textSize="@dimen/main"
 	           android:drawableRight="@drawable/car_arrow"/>
 	       <View 
-	           android:layout_width="fill_parent"
-	           android:layout_height="1dp"
-	           android:background="@drawable/body_line"/>
-	       <TextView 
-	           android:id="@+id/tv_Parking"
-	           android:layout_width="fill_parent"
-	           android:layout_height="wrap_content"
-	           android:padding="@dimen/margins"
-	           android:text="我要停车"
-	           android:textColor="@color/white"
-	           android:textSize="@dimen/main"
-	           android:drawableRight="@drawable/car_arrow"/>
+               android:layout_width="fill_parent"
+               android:layout_height="1dp"
+               android:background="@drawable/body_line"/>
 	       <RelativeLayout 
 	           android:visibility="gone"
 	           android:layout_width="fill_parent"

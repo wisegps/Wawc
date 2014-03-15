@@ -73,7 +73,11 @@ public class SmsActivity extends Activity implements IXListViewListener{
 		            if(Type.equals("0")){
 		                
 		            }else if(Type.equals("1")){
-		                startActivity(new Intent(SmsActivity.this, CarRemindActivity.class));
+		                Intent intent = new Intent(SmsActivity.this, CarRemindActivity.class);
+		                if(smsDataList.get(arg2 -1).getObj_id() != null){
+		                    intent.putExtra("Obj_id", smsDataList.get(arg2 -1).getObj_id());
+		                }          
+                        startActivity(intent);
 		            }else if (Type.equals("2")) {
 		                //holder.tv_new_Regnum.setText("车辆故障");
 		                //startActivity(new Intent(SmsActivity.this, CarRemindActivity.class));
@@ -207,13 +211,21 @@ public class SmsActivity extends Activity implements IXListViewListener{
                 smsData.setLon(jsonObject.getString("lon"));
                 smsData.setMsg_type(jsonObject.getString("msg_type"));
                 smsData.setNoti_id(jsonObject.getInt("noti_id"));
-                smsData.setRcv_time((jsonObject.getString("rcv_time").replace("T", " ").substring(5, 16)));
+                String Rcv_time = GetSystem.ChangeTimeZone(jsonObject.getString("rcv_time").replace("T", " ").substring(0, 19));
+                smsData.setRcv_time(Rcv_time.substring(5, 16));
                 String status = "";
                 if(jsonObject.opt("status") == null){
                     
                 }else{
                     status = jsonObject.getString("status");
                 }
+                String obj_id = "";
+                if(jsonObject.opt("obj_id") == null){
+                    
+                }else{
+                    obj_id = jsonObject.getString("obj_id");
+                }
+                smsData.setObj_id(obj_id);
                 smsData.setStatus(status);
                 Datas.add(smsData);
                 
@@ -226,6 +238,7 @@ public class SmsActivity extends Activity implements IXListViewListener{
                 values.put("lat", smsData.getLat());
                 values.put("lon", smsData.getLon());
                 values.put("status", smsData.getStatus());
+                values.put("obj_id", smsData.getObj_id());
                 dbExcute.InsertDB(SmsActivity.this, values, Constant.TB_Sms); 
             }
             return Datas;
@@ -262,6 +275,7 @@ public class SmsActivity extends Activity implements IXListViewListener{
             smsData.setLat(cursor.getString(cursor.getColumnIndex("lat")));
             smsData.setLon(cursor.getString(cursor.getColumnIndex("lon")));
             smsData.setStatus(cursor.getString(cursor.getColumnIndex("status")));
+            smsData.setObj_id(cursor.getString(cursor.getColumnIndex("obj_id")));
             Datas.add(smsData);
         }
         cursor.close();
@@ -345,6 +359,7 @@ public class SmsActivity extends Activity implements IXListViewListener{
 	    public String content;
 	    public int noti_id;
 	    public String status;
+	    public String obj_id;
 	    
 	    public String getLat() {
 	        return lat;
@@ -387,6 +402,12 @@ public class SmsActivity extends Activity implements IXListViewListener{
         }
         public void setStatus(String status) {
             this.status = status;
-        }	    
+        }
+        public String getObj_id() {
+            return obj_id;
+        }
+        public void setObj_id(String obj_id) {
+            this.obj_id = obj_id;
+        }        
 	}
 }

@@ -7,7 +7,6 @@ import com.baidu.mapapi.navi.NaviPara;
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.wise.customView.SlidingView;
 import com.wise.data.AdressData;
-import com.wise.data.CarData;
 import com.wise.pubclas.Variable;
 import com.wise.wawc.R;
 import android.app.Activity;
@@ -15,9 +14,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.location.Address;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -41,9 +38,6 @@ public class CollectionAdapter extends BaseAdapter {
     // 天安门坐标
     double currentLat = Variable.Lat;
     double currentLon = Variable.Lon;
-    // 百度大厦坐标
-    double goToLat = 0d;
-    double goToLon = 0d;
 
     public CollectionAdapter(Context context, List<AdressData> adrDataList) {
         this.context = context;
@@ -84,13 +78,10 @@ public class CollectionAdapter extends BaseAdapter {
         }
 
         final AdressData adressData = adressDatas.get(position);
-        Log.d(TAG, "position = " + position);
-        Log.d(TAG, "position = " + "地址：" + adressData.getAdress());
         holder.slidingView.ScorllRestFast();
         holder.tv_name.setText(adressData.getName());
         holder.tv_address.setText("地址：" + adressData.getAdress());
         holder.tv_distance.setVisibility(View.GONE);
-        //holder.tv_distance.setText(adressData.getDistance());
         if(adressData.getPhone() == null || adressData.getPhone().equals("")){
             holder.rl_tel.setVisibility(View.GONE);
         }else{
@@ -100,7 +91,7 @@ public class CollectionAdapter extends BaseAdapter {
         holder.iv_location.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 // TODO 切换到导航页面
-                startNavi();
+                startNavi(adressData.getLat(),adressData.getLon());
             }
         });
         holder.iv_tel.setOnClickListener(new OnClickListener() {
@@ -147,12 +138,12 @@ public class CollectionAdapter extends BaseAdapter {
         public void share(int position);
     }
 
-    public void startNavi() {
+    public void startNavi(double goLat, double goLon) {
         int lat = (int) (currentLat * 1E6);
         int lon = (int) (currentLon * 1E6);
         GeoPoint pt1 = new GeoPoint(lat, lon);
-        lat = (int) (goToLat * 1E6);
-        lon = (int) (goToLon * 1E6);
+        lat = (int) (goLat * 1E6);
+        lon = (int) (goLon * 1E6);
         GeoPoint pt2 = new GeoPoint(lat, lon);
         // 构建 导航参数
         NaviPara para = new NaviPara();

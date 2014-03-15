@@ -356,7 +356,7 @@ public class TrafficActivity extends Activity implements IXListViewListener{
                     sb.append("," + trafficData.getAction());
                     sb.append("," + trafficData.getScore());
                     sb.append("," + trafficData.getFine());
-                    GetSystem.share(TrafficActivity.this, sb.toString(), "",0,0);
+                    GetSystem.share(TrafficActivity.this, sb.toString(), "",0,0,"违章");
                 }
             });
 			holder.iv_traffic_help.setOnClickListener(new OnClickListener() {                

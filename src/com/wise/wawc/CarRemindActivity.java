@@ -16,13 +16,13 @@ import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
+import com.wise.wawc.R.string;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -73,8 +73,7 @@ public class CarRemindActivity extends Activity {
      * 驾照换证
      */
     private static final int replacement = 4;
-    LinearLayout ll_inspection, ll_renewal, ll_maintenance, ll_examined,
-            ll_replacement;
+    LinearLayout ll_inspection, ll_renewal, ll_maintenance, ll_examined,ll_replacement;
     RelativeLayout rl_maintenance;
     HorizontalScrollView hsv_cars;
     TextView tv_activity_car_remind_inspection,tv_activity_car_maintenance_inspection,
@@ -181,6 +180,19 @@ public class CarRemindActivity extends Activity {
         gv_activity_car_remind.setOnItemClickListener(onItemClickListener);
 
         if (Variable.carDatas != null && Variable.carDatas.size() > 0) {
+            String Obj_id = getIntent().getStringExtra("Obj_id");
+            if(Obj_id != null && !Obj_id.equals("")){                
+                for(int i = 0 ; i < Variable.carDatas.size() ; i++){
+                    if(Variable.carDatas.get(i).getObj_id() == Integer.valueOf(Obj_id)){
+                        this.carData = Variable.carDatas.get(i);
+                        ShowText(carData);
+                        getCarRemindFromUrl();
+                        Variable.carDatas.get(i).setCheck(true);
+                    }else{
+                        Variable.carDatas.get(i).setCheck(false);
+                    }
+                }
+            }
             for(CarData carData : Variable.carDatas){
                 if(carData.isCheck()){
                     this.carData = carData;
@@ -191,6 +203,7 @@ public class CarRemindActivity extends Activity {
             }
             
         }
+        carAdapter.notifyDataSetChanged();
         if(Variable.carDatas.size() == 1){
             hsv_cars.setVisibility(View.GONE);
         }else{
@@ -206,9 +219,9 @@ public class CarRemindActivity extends Activity {
                 case inspection:
                     System.out.println("更新车辆年检时间");
                     car_remind_inspection(Date);
-                    carData.setAnnual_inspect_date(Date + " 00:00:00");
+                    carData.setAnnual_inspect_date(Date);
                     ContentValues values1 = new ContentValues();
-                    values1.put("annual_inspect_date", Date + " 00:00:00");
+                    values1.put("annual_inspect_date", Date);
                     dbExcute.UpdateDB(CarRemindActivity.this, values1, "obj_id=?",
                             new String[] {String.valueOf(carData.getObj_id())}, Constant.TB_Vehicle);
                     changeCarInfo();
@@ -216,9 +229,9 @@ public class CarRemindActivity extends Activity {
                 case renewal:
                     System.out.println("车辆续保时间");
                     car_renewal(Date);
-                    carData.setInsurance_date(Date + " 00:00:00");
+                    carData.setInsurance_date(Date);
                     ContentValues values = new ContentValues();
-                    values.put("insurance_date", Date + " 00:00:00");
+                    values.put("insurance_date", Date);
                     dbExcute.UpdateDB(CarRemindActivity.this, values, "obj_id=?",
                             new String[] {String.valueOf(carData.getObj_id())}, Constant.TB_Vehicle);
                     changeCarInfo();
@@ -226,6 +239,7 @@ public class CarRemindActivity extends Activity {
                 case examined:
                     System.out.println("驾照年审");
                     annual_inspect_date = Date;
+                    userInspectDate(annual_inspect_date);
                     tv_annual_inspect_date.setText(String.format(getResources()
                             .getString(R.string.examined_content),
                             annual_inspect_date));
@@ -234,6 +248,7 @@ public class CarRemindActivity extends Activity {
                 case replacement:
                     System.out.println("驾照换证");
                     change_date = Date;
+                    userChangeDate(change_date);
                     tv_change_date.setText(String.format(getResources()
                             .getString(R.string.replacement_content),
                             change_date));
@@ -251,7 +266,6 @@ public class CarRemindActivity extends Activity {
             switch (msg.what) {
             case change_user_date:
                 jsonChangeUserInfo(msg.obj.toString());
-                GetDBData();
                 break;
             case get_user_date:
                 jsonUserInfo(msg.obj.toString());
@@ -376,14 +390,13 @@ public class CarRemindActivity extends Activity {
         startActivity(intent);
     }
     private void ChangeUserDate() {
+        Log.d(TAG, "annual_inspect_date = " + annual_inspect_date + " , change_date = " + change_date);
         String url = Constant.BaseUrl + "customer/" + Variable.cust_id
                 + "/inspect_date?auth_code=" + Variable.auth_code;
         List<NameValuePair> params = new ArrayList<NameValuePair>();
-        params.add(new BasicNameValuePair("annual_inspect_date",
-                annual_inspect_date));
+        params.add(new BasicNameValuePair("annual_inspect_date",annual_inspect_date));
         params.add(new BasicNameValuePair("change_date", change_date));
-        new Thread(new NetThread.putDataThread(handler, url, params,
-                change_user_date)).start();
+        new Thread(new NetThread.putDataThread(handler, url, params,change_user_date)).start();
     }
 
     private void hideLinearlayout() {
@@ -437,7 +450,7 @@ public class CarRemindActivity extends Activity {
         String Annual_inspect_date = String.format(
                 getResources().getString(R.string.inspection_content), Date);
         tv_activity_car_remind_inspection.setText(Annual_inspect_date);
-        if (GetSystem.isTimeOut(Date + " 00:00:00")) {
+        if (GetSystem.isTimeOut(Date)) {
             tv_activity_car_remind_inspection.setTextColor(getResources()
                     .getColor(R.color.red));
         } else {
@@ -449,7 +462,7 @@ public class CarRemindActivity extends Activity {
         String Insurance_date = String.format(
                 getResources().getString(R.string.renewal_content), Date);
         tv_activity_car_remind_renewal.setText(Insurance_date);
-        if (GetSystem.isTimeOut(Date + " 00:00:00")) {
+        if (GetSystem.isTimeOut(Date)) {
             tv_activity_car_remind_renewal.setTextColor(getResources()
                     .getColor(R.color.red));
         } else {
@@ -490,10 +503,8 @@ public class CarRemindActivity extends Activity {
                     .start();
         } else {
             if (cursor.moveToFirst()) {
-                annual_inspect_date = cursor.getString(cursor
-                        .getColumnIndex("annual_inspect_date"));
-                change_date = cursor.getString(cursor
-                        .getColumnIndex("change_date"));
+                annual_inspect_date = cursor.getString(cursor.getColumnIndex("annual_inspect_date"));
+                change_date = cursor.getString(cursor.getColumnIndex("change_date"));
                 userInspectDate(annual_inspect_date);
                 userChangeDate(change_date);
             }
@@ -594,10 +605,9 @@ public class CarRemindActivity extends Activity {
                 // 更新DB
                 DBExcute dbExcute = new DBExcute();
                 ContentValues values = new ContentValues();
-                values.put("annual_inspect_date", annual_inspect_date + " 00:00:00");
-                values.put("change_date", change_date + " 00:00:00");
-                dbExcute.UpdateDB(this, values, "cust_id=?",
-                        new String[] { Variable.cust_id }, Constant.TB_Account);
+                values.put("annual_inspect_date", annual_inspect_date);
+                values.put("change_date", change_date);
+                dbExcute.UpdateDB(this, values, "cust_id=?",new String[] { Variable.cust_id }, Constant.TB_Account);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -608,7 +618,6 @@ public class CarRemindActivity extends Activity {
      */
     private void getCarRemindFromUrl() {
         if(carData.getDevice_id() == null || carData.getDevice_id().equals("")){
-            //TODO TIAOSHI
             rl_maintenance.setVisibility(View.GONE);
         }else{
             rl_maintenance.setVisibility(View.VISIBLE);

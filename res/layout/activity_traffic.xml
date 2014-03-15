@@ -67,7 +67,7 @@
                 android:layout_below="@id/iv_nothing"
                 android:layout_centerHorizontal="true"
                 android:text="没有违章记录"
-                android:textColor="@color/white"
+                android:textColor="@color/common"
                 android:textSize="@dimen/main" />
         </RelativeLayout>
 

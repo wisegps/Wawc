@@ -117,7 +117,7 @@ public class SearchMapActivity extends Activity {
                 sb.append("," + url);
                 GetSystem.share(SearchMapActivity.this, sb.toString(), "",
                         (float) adressData.getLat(),
-                        (float) adressData.getLon());
+                        (float) adressData.getLon(),"地点");
             }
         });
 
@@ -127,8 +127,7 @@ public class SearchMapActivity extends Activity {
         mMapView = (MapView) findViewById(R.id.mv_search_map);
         mMapView.setBuiltInZoomControls(true);
         mMapController = mMapView.getController();
-        point = new GeoPoint((int) (Variable.Lat * 1E6),
-                (int) (Variable.Lon * 1E6));
+        point = new GeoPoint((int) (Variable.Lat * 1E6),(int) (Variable.Lon * 1E6));
         mMapController.setCenter(point);// 设置地图中心点
         mMapController.setZoom(12);// 设置地图zoom级别
         overlays = mMapView.getOverlays();
@@ -150,8 +149,7 @@ public class SearchMapActivity extends Activity {
                         try {
                             String url = Constant.BaseUrl + "base/dealer?city="
                                     + URLEncoder.encode(City, "UTF-8")
-                                    + "&brand="
-                                    + URLEncoder.encode(car_brand, "UTF-8")
+                                    + "&brand=" + URLEncoder.encode(car_brand, "UTF-8")
                                     + "&lon=" + Variable.Lon + "&lat="
                                     + Variable.Lat + "&cust_id="
                                     + Variable.cust_id;
@@ -217,7 +215,7 @@ public class SearchMapActivity extends Activity {
     private void jsonDealAdress(String result) {
         try {
             JSONArray jsonArray = new JSONArray(result);
-            for (int i = 0; i < jsonArray.length(); i++) {
+            for (int i = 0; i < jsonArray.length(); i++) {//TODO 
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 AdressData adressData = new AdressData();
                 adressData.setAdress(jsonObject.getString("address"));
@@ -225,6 +223,7 @@ public class SearchMapActivity extends Activity {
                 adressData.setPhone(jsonObject.getString("tel"));
                 adressData.setLat(jsonObject.getDouble("lat"));
                 adressData.setLon(jsonObject.getDouble("lon"));
+                adressData.setDistance(jsonObject.getInt("distance"));
                 if (jsonObject.getString("is_collect").equals("1")) {
                     // 收藏
                     adressData.setIs_collect(true);
@@ -233,7 +232,12 @@ public class SearchMapActivity extends Activity {
                     adressData.setIs_collect(false);
                 }
                 adressDatas.add(adressData);
+
+                GeoPoint point = new GeoPoint((int) (adressData.getLat() * 1E6),(int) (adressData.getLon() * 1E6));
+                OverlayItem item = new OverlayItem(point, "item2", "item2");
+                overlayCar.addItem(item);
             }
+            mMapView.refresh();
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -275,22 +279,13 @@ public class SearchMapActivity extends Activity {
 
     MKSearchListener mkSearchListener = new MKSearchListener() {
         @Override
-        public void onGetWalkingRouteResult(MKWalkingRouteResult arg0, int arg1) {
-        }
-
+        public void onGetWalkingRouteResult(MKWalkingRouteResult arg0, int arg1) {}
         @Override
-        public void onGetTransitRouteResult(MKTransitRouteResult arg0, int arg1) {
-        }
-
+        public void onGetTransitRouteResult(MKTransitRouteResult arg0, int arg1) {}
         @Override
-        public void onGetSuggestionResult(MKSuggestionResult arg0, int arg1) {
-        }
-
+        public void onGetSuggestionResult(MKSuggestionResult arg0, int arg1) {}
         @Override
-        public void onGetShareUrlResult(MKShareUrlResult arg0, int arg1,
-                int arg2) {
-        }
-
+        public void onGetShareUrlResult(MKShareUrlResult arg0, int arg1,int arg2) {}
         @Override
         public void onGetPoiResult(MKPoiResult res, int type, int error) {
             if (error == MKEvent.ERROR_RESULT_NOT_FOUND) {
@@ -305,8 +300,7 @@ public class SearchMapActivity extends Activity {
             }
             String str = "";// 用户判断是否已经收藏
             for (MKPoiInfo mkPoiInfo : res.getAllPoi()) {
-                int distance = (int) DistanceUtil.getDistance(point,
-                        mkPoiInfo.pt);
+                int distance = (int) DistanceUtil.getDistance(point,mkPoiInfo.pt);
                 AdressData adressData = new AdressData();
                 adressData.setName(mkPoiInfo.name);
                 adressData.setAdress(mkPoiInfo.address);
@@ -317,6 +311,7 @@ public class SearchMapActivity extends Activity {
                 adressDatas.add(adressData);
                 str = str + mkPoiInfo.name + ",";
             }
+            Log.d(TAG, "str = " + str);
             Collections.sort(adressDatas, new Comparator());// 排序
             adressAdapter.notifyDataSetChanged();
             for (int i = 0; i < adressDatas.size(); i++) {
@@ -342,20 +337,13 @@ public class SearchMapActivity extends Activity {
         }
 
         @Override
-        public void onGetPoiDetailSearchResult(int arg0, int arg1) {
-        }
-
+        public void onGetPoiDetailSearchResult(int arg0, int arg1) {}
         @Override
-        public void onGetDrivingRouteResult(MKDrivingRouteResult arg0, int arg1) {
-        }
-
+        public void onGetDrivingRouteResult(MKDrivingRouteResult arg0, int arg1) {}
         @Override
-        public void onGetBusDetailResult(MKBusLineResult arg0, int arg1) {
-        }
-
+        public void onGetBusDetailResult(MKBusLineResult arg0, int arg1) {}
         @Override
-        public void onGetAddrResult(MKAddrInfo arg0, int arg1) {
-        }
+        public void onGetAddrResult(MKAddrInfo arg0, int arg1) {}
     };
 
     class OverlayCar extends ItemizedOverlay<OverlayItem> {

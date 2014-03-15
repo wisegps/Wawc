@@ -36,6 +36,7 @@ public class XListViewFooter extends LinearLayout {
     private Context mContext;
 
     private View mContentView;
+    private View ll_xlistview_footer;
     private View xlistview_footer_iv;
     private TextView mHintView;
     
@@ -55,14 +56,14 @@ public class XListViewFooter extends LinearLayout {
      */
     public void setState(int state) {
         mHintView.setVisibility(View.INVISIBLE);
-        xlistview_footer_iv.setVisibility(View.INVISIBLE);
+        ll_xlistview_footer.setVisibility(View.INVISIBLE);
         xlistview_footer_iv.clearAnimation();
         mHintView.setVisibility(View.INVISIBLE);
         if (state == STATE_READY) {
             mHintView.setVisibility(View.VISIBLE);
             mHintView.setText(R.string.xlistview_footer_hint_ready);
         } else if (state == STATE_LOADING) {
-            xlistview_footer_iv.setVisibility(View.VISIBLE);
+            ll_xlistview_footer.setVisibility(View.VISIBLE);
             Animation operatingAnim = AnimationUtils.loadAnimation(mContext, R.anim.tip_fast);  
             LinearInterpolator lin = new LinearInterpolator();  
             operatingAnim.setInterpolator(lin); 
@@ -93,7 +94,7 @@ public class XListViewFooter extends LinearLayout {
      */
     public void normal() {
         mHintView.setVisibility(View.VISIBLE);
-        xlistview_footer_iv.setVisibility(View.GONE);
+        ll_xlistview_footer.setVisibility(View.GONE);
         xlistview_footer_iv.clearAnimation();
     }
     
@@ -103,7 +104,7 @@ public class XListViewFooter extends LinearLayout {
      */
     public void loading() {
         mHintView.setVisibility(View.GONE);
-        xlistview_footer_iv.setVisibility(View.VISIBLE);
+        ll_xlistview_footer.setVisibility(View.VISIBLE);
         Animation operatingAnim = AnimationUtils.loadAnimation(mContext, R.anim.tip_fast);  
         LinearInterpolator lin = new LinearInterpolator();  
         operatingAnim.setInterpolator(lin); 
@@ -141,6 +142,7 @@ public class XListViewFooter extends LinearLayout {
         
         mContentView = moreView.findViewById(R.id.xlistview_footer_content);
         xlistview_footer_iv = moreView.findViewById(R.id.xlistview_footer_iv);
+        ll_xlistview_footer = moreView.findViewById(R.id.ll_xlistview_footer);
         mHintView = (TextView)moreView.findViewById(R.id.xlistview_footer_hint_textview);
     }
     

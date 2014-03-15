@@ -41,7 +41,6 @@ import android.widget.Toast;
  */
 public class CarLocationActivity extends Activity {
     private static final String TAG = "CarLocationActivity";
-    //WawcApplication app;
     MapView mMapView = null;
     MapController mMapController = null;
     PopupWindow mPopupWindow;
@@ -256,7 +255,7 @@ public class CarLocationActivity extends Activity {
             sb.append("," + carData.getAdress());
             sb.append("," + url);
             GetSystem.share(CarLocationActivity.this, sb.toString(), imagePath,
-                    (float) Lat, (float) Lon);
+                    (float) Lat, (float) Lon,"位置");
         }
         @Override
         public void onClickMapPoi(MapPoi arg0) {}

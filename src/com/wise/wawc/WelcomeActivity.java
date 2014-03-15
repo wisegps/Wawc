@@ -6,14 +6,11 @@ import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qzone.QZone;
-
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
-import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -31,10 +28,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 /**
  * 欢迎界面

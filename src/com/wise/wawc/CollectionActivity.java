@@ -15,7 +15,6 @@ import com.wise.service.CollectionAdapter;
 import com.wise.service.CollectionAdapter.CollectionItemListener;
 import com.wise.sql.DBExcute;
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Handler;
@@ -23,22 +22,20 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 /**
  * 我的收藏
  * @author 王庆文
  */
-public class MyCollectionActivity extends Activity implements IXListViewListener{
+public class CollectionActivity extends Activity implements IXListViewListener{
+    private static final String TAG = "CollectionActivity";
     private static final int frist_getdata = 1;
     private static final int load_getdata = 2;
     
     RelativeLayout rl_Note;
 	private XListView lv_collection;
 	private CollectionAdapter collectionAdapter;
-	
-	ProgressDialog myDialog = null;
 	
 	DBExcute dBExcute = new DBExcute();
 	List<AdressData> adressDatas = new ArrayList<AdressData>();
@@ -51,27 +48,31 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_collection);
 		rl_Note = (RelativeLayout)findViewById(R.id.rl_Note);
-		lv_collection = (XListView) findViewById(R.id.lv_collection);
-		ImageView menuBt = (ImageView) findViewById(R.id.my_vechile_menu);
-		menuBt.setOnClickListener(onClickListener);
 		
-		//不设置上拉加载无效
-		lv_collection.setPullRefreshEnable(false);
+		lv_collection = (XListView) findViewById(R.id.lv_collection);        
+        collectionAdapter = new CollectionAdapter(CollectionActivity.this,adressDatas);
+        collectionAdapter.setCollectionItem(collectionItemListener);
+		ImageView iv_menu = (ImageView) findViewById(R.id.iv_menu);
+		iv_menu.setOnClickListener(onClickListener);
+		
+		lv_collection.setPullRefreshEnable(true);
 		lv_collection.setPullLoadEnable(true);
 		lv_collection.setXListViewListener(this);
 		
-		if(dBExcute.getTotalCount(Constant.TB_Collection, MyCollectionActivity.this) > 0){
-		    //本地取数据
-	        getCollectionDatas(Toal, pageSize);
-	        collectionAdapter = new CollectionAdapter(MyCollectionActivity.this,adressDatas);
-            collectionAdapter.setCollectionItem(collectionItemListener);
+		if(isGetDataUrl()){
+            //服务器取数据
+            Log.d(TAG, "服务器取数据");
+            isGetDB = false;
+            lv_collection.startLoadMore();
+            String url = Constant.BaseUrl + "customer/" + Variable.cust_id + "/favorite?auth_code=" + Variable.auth_code;
+            new Thread(new NetThread.GetDataThread(handler, url, frist_getdata)).start();
+		}else{
+            Log.d(TAG, "本地取数据");
+            //本地取数据
+            getCollectionDatas(Toal, pageSize);
+            collectionAdapter.notifyDataSetChanged();
             lv_collection.setAdapter(collectionAdapter);
             isNothingNote(false);
-		}else{
-		    //服务器取数据
-		    isGetDB = false;
-		    String url = Constant.BaseUrl + "customer/" + Variable.cust_id + "/favorite?auth_code=" + Variable.auth_code;
-		    new Thread(new NetThread.GetDataThread(handler, url, frist_getdata)).start();
 		}
 	}
 	
@@ -81,13 +82,14 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
             super.handleMessage(msg);
             switch (msg.what) {
             case frist_getdata:
-                jsonCollectionData(msg.obj.toString());                
-                collectionAdapter = new CollectionAdapter(MyCollectionActivity.this,adressDatas);
-                collectionAdapter.setCollectionItem(collectionItemListener);
-                lv_collection.setAdapter(collectionAdapter);
+                dBExcute.DeleteDB(CollectionActivity.this, "delete from " + Constant.TB_Collection + " where Cust_id=" + Variable.cust_id);
+                adressDatas.clear();
+                jsonCollectionData(msg.obj.toString());
+                collectionAdapter.notifyDataSetChanged();
                 if(adressDatas.size() > 0){
                     isNothingNote(false);
                 }
+                onLoad();
                 break;
 
             case load_getdata:
@@ -104,7 +106,7 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
         @Override
         public void onClick(View v) {
             switch(v.getId()){
-            case R.id.my_vechile_menu:
+            case R.id.iv_menu:
                 ActivityFactory.A.LeftMenu();
                 break;
             }
@@ -119,7 +121,7 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
             //删除服务器记录
             new Thread(new NetThread.DeleteThread(handler, url, 999)).start();
             //删除本地数据库
-            dBExcute.DeleteDB(MyCollectionActivity.this, Constant.TB_Collection, "favorite_id = ?", new String[]{String.valueOf(adressDatas.get(position).get_id())});
+            dBExcute.DeleteDB(CollectionActivity.this, Constant.TB_Collection, "favorite_id = ?", new String[]{String.valueOf(adressDatas.get(position).get_id())});
             
             adressDatas.remove(position);
             collectionAdapter.notifyDataSetChanged();
@@ -137,9 +139,9 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
             sb.append("," + adressData.getAdress());
             sb.append("," + adressData.getPhone());
             sb.append("," + url);
-            GetSystem.share(MyCollectionActivity.this, sb.toString(), "",
+            GetSystem.share(CollectionActivity.this, sb.toString(), "",
                     (float) adressData.getLat(),
-                    (float) adressData.getLon());
+                    (float) adressData.getLon(),"地点");
         }
     };   
 
@@ -150,6 +152,17 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
         }else{
             rl_Note.setVisibility(View.GONE);
             lv_collection.setVisibility(View.VISIBLE);
+        }
+    }
+    
+    private boolean isGetDataUrl(){
+        DBExcute dbExcute = new DBExcute();
+        String sql = "select * from " + Constant.TB_Collection + " where Cust_id=?";
+        int Total = dbExcute.getTotalCount(getApplicationContext(), sql, new String[]{Variable.cust_id});
+        if(Total == 0){
+            return true;
+        }else{
+            return false;
         }
     }
     
@@ -175,7 +188,7 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
                 values.put("tel", adrDatas.getPhone());
                 values.put("lon", adrDatas.getLon());
                 values.put("lat", adrDatas.getLat());
-                dBExcute.InsertDB(MyCollectionActivity.this, values, Constant.TB_Collection);
+                dBExcute.InsertDB(CollectionActivity.this, values, Constant.TB_Collection);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -183,7 +196,10 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
     }
 	
 	@Override
-	public void onRefresh() {}
+	public void onRefresh() {
+	    String url = Constant.BaseUrl + "customer/" + Variable.cust_id + "/favorite?auth_code=" + Variable.auth_code;
+        new Thread(new NetThread.GetDataThread(handler, url, frist_getdata)).start();
+	}
 	@Override
 	public void onLoadMore() {
 		Log.e("上拉加载","上拉加载");
@@ -212,7 +228,7 @@ public class MyCollectionActivity extends Activity implements IXListViewListener
 	 */
 	private void getCollectionDatas(int start,int pageSize) {
 	    System.out.println("start = " + start);
-		List<AdressData> datas = dBExcute.getPageDatas(MyCollectionActivity.this, "select * from " + Constant.TB_Collection + " where Cust_id=? order by favorite_id desc limit ?,?", new String[]{Variable.cust_id,String.valueOf(start),String.valueOf(pageSize)});
+		List<AdressData> datas = dBExcute.getPageDatas(CollectionActivity.this, "select * from " + Constant.TB_Collection + " where Cust_id=? order by favorite_id desc limit ?,?", new String[]{Variable.cust_id,String.valueOf(start),String.valueOf(pageSize)});
 		adressDatas.addAll(datas);
 		Toal += datas.size();//记录位置
 		if(datas.size() == pageSize){

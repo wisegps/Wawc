@@ -9,6 +9,7 @@ import com.wise.pubclas.Variable;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -34,6 +35,7 @@ public class ShareLocationActivity extends Activity {
     String imagePath = "";
     String reason;
     CarData carData;
+    boolean isDelete = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class ShareLocationActivity extends Activity {
         tv_adress = (TextView) findViewById(R.id.tv_adress);
         tv_reason = (TextView) findViewById(R.id.tv_reason);
         iv_photo = (ImageView) findViewById(R.id.iv_photo);
+        iv_photo.setOnClickListener(onClickListener);
         ImageView iv_camera = (ImageView) findViewById(R.id.iv_camera);
         iv_camera.setOnClickListener(onClickListener);
         Button bt_activity_share = (Button) findViewById(R.id.bt_activity_share);
@@ -56,7 +59,9 @@ public class ShareLocationActivity extends Activity {
         int index = intent.getIntExtra("index", 0);
         carData = Variable.carDatas.get(index);
         tv_adress.setText(carData.getAdress());
+        Log.d(TAG, carData.toString());
     }
+    
 
     OnClickListener onClickListener = new OnClickListener() {
         @Override
@@ -65,31 +70,39 @@ public class ShareLocationActivity extends Activity {
             case R.id.iv_activity_share_location_back:
                 finish();
                 break;
+            case R.id.iv_photo:
+                if(isDelete){
+                    isDelete = false;
+                    iv_photo.setVisibility(View.GONE);
+                    iv_photo.setImageBitmap(null);
+                }else{
+                    isDelete = true;
+                    iv_photo.setImageResource(R.drawable.body_icon_delete);
+                }
+                break;
             case R.id.iv_camera:
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(intent, 1);
                 break;
             case R.id.bt_activity_share:
                 String content = et_share_content.getText().toString().trim();
-                if (content.equals("")) {
-                    Toast.makeText(ShareLocationActivity.this, "内容不能为空",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    String url = "http://api.map.baidu.com/geocoder?location="
-                            + carData.getLat() + "," + carData.getLon()
-                            + "&coord_type=bd09ll&output=html";
-                    StringBuffer sb = new StringBuffer();
-                    sb.append("【" + reason + "】");
-                    sb.append(carData.getGps_time());
-                    sb.append(carData.getObj_name());
-                    sb.append(carData.getAdress());
+                
+                String url = "http://api.map.baidu.com/geocoder?location="
+                        + carData.getLat() + "," + carData.getLon()
+                        + "&coord_type=bd09ll&output=html";
+                StringBuffer sb = new StringBuffer();
+                sb.append("【" + reason + "】");
+                sb.append(carData.getGps_time());
+                sb.append(carData.getObj_name());
+                sb.append(carData.getAdress());
+                if (!content.equals("")) {
                     sb.append("(" + content + ")");
-                    sb.append("," + url);
-                    Log.d(TAG, sb.toString());
-                    GetSystem.share(ShareLocationActivity.this, sb.toString(),
-                            imagePath, Float.valueOf(carData.getLat()),
-                            Float.valueOf(carData.getLon()));
                 }
+                sb.append("," + url);
+                Log.d(TAG, sb.toString());
+                GetSystem.share(ShareLocationActivity.this, sb.toString(),
+                        imagePath, Float.valueOf(carData.getLat()),
+                        Float.valueOf(carData.getLon()),reason);
                 break;
             }
         }
@@ -121,8 +134,13 @@ public class ShareLocationActivity extends Activity {
             bitmap = BlurImage.getSquareBitmap(bitmap);
             if (bitmap != null) {
                 imagePath = Constant.picPath + Constant.ShareImage;
-                iv_photo.setImageBitmap(bitmap);
+                //iv_photo.setImageBitmap(bitmap);
+                iv_photo.setBackgroundDrawable(new BitmapDrawable(bitmap));
                 iv_photo.setVisibility(View.VISIBLE);
+                
+                isDelete = false;
+                iv_photo.setVisibility(View.GONE);
+                iv_photo.setImageBitmap(null);
             }
             GetSystem.displayBriefMemory(ShareLocationActivity.this);
         }

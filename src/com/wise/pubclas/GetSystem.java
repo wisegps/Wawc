@@ -109,6 +109,26 @@ public class GetSystem {
         }
         return str;
     }
+    /**
+     * 解决时区问题
+     * @param Date
+     * @return
+     */
+    public static String ChangeTimeZone(String Date){
+        try {
+            Log.d(TAG, Date);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Calendar nowDate = Calendar.getInstance();
+            nowDate.setTime(sdf.parse(Date));
+            nowDate.add(Calendar.HOUR_OF_DAY, 8);
+            String Date1 = sdf.format(nowDate.getTime());
+            Log.d(TAG, Date1);
+            return Date1;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+    }
 
     /**
      * 获取指定月份
@@ -463,11 +483,11 @@ public class GetSystem {
      * @param Lon
      */
     public static void share(Context mContext,String Content,String imagePath,
-            float Lat,float Lon) {
+            float Lat,float Lon,String Title) {
         final OnekeyShare oks = new OnekeyShare();
         oks.setNotification(R.drawable.ic_launcher, "app_name");
         //oks.setAddress("12345678901");
-        oks.setTitle("share");
+        oks.setTitle(Title);
         //oks.setTitleUrl("http://sharesdk.cn");
         oks.setText(Content);
         oks.setImagePath(imagePath);
