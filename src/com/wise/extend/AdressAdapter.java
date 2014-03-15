@@ -95,7 +95,7 @@ public class AdressAdapter extends BaseAdapter{
 		final AdressData adressData = adressDatas.get(position);
 		holder.tv_item_dealadress_name.setText(adressData.getName());
 		if(adressData.getDistance() != -1){
-			holder.tv_item_dealadress_distance.setText(adressData.getDistance() + "m");
+			holder.tv_item_dealadress_distance.setText(d(adressData.getDistance()));
 		}		
 		holder.tv_item_dealadress_adress.setText("地址：" + adressData.getAdress());
 		holder.tv_item_dealadress_phone.setText("电话：" +adressData.getPhone());
@@ -203,6 +203,13 @@ public class AdressAdapter extends BaseAdapter{
 				break;
 			}
 		}
+	}
+	private String d(int Distance){
+	    if(Distance > 1000){
+	        return (int)Distance/1000 + "Km";
+	    }else{
+	        return Distance + "m";
+	    }
 	}
 	OnCollectListener onCollectListener;
 	public void setOnCollectListener(OnCollectListener onCollectListener){

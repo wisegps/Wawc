@@ -84,9 +84,8 @@
             </LinearLayout>
 
             <!-- 用户图片 -->
-
             <TableLayout
-                android:id="@+id/article_detail_user_image"
+                android:id="@+id/article_details_user_image_tr"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/article_detail_user_message"
@@ -120,7 +119,7 @@
                 android:id="@+id/article_detail_about_article"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/article_detail_user_image"
+                android:layout_below="@id/article_details_user_image_tr"
                 android:layout_marginRight="10dip" >
 
                 <TableRow
@@ -176,7 +175,7 @@
             <!-- 文章评论相关 -->
 
             <TableLayout
-                android:id="@+id/tablelayout"
+                android:id="@+id/article_details_comments_tl"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/article_detail_about_article"
@@ -200,7 +199,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/margins"
                         android:layout_weight="6"
-                        android:background="#F7F6FB" >
+                        android:background="@drawable/body_container" >
 
                         <!-- 点赞 -->
 
@@ -209,7 +208,10 @@
                             android:layout_width="fill_parent"
                             android:layout_height="@dimen/article_favorite_height"
                             android:layout_marginBottom="@dimen/margins"
-                            android:layout_marginTop="@dimen/margins" >
+                            android:layout_marginTop="@dimen/margins"
+                            android:layout_marginLeft="@dimen/margins" 
+                            >
+                            
 
                             <ImageView
                                 android:id="@+id/article_details_praises_star"
@@ -221,7 +223,8 @@
                                 android:id="@+id/article_details_praises_user"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:maxLength="30" />
+                                android:textColor="@color/blue"
+                                />
                         </TableRow>
 
                         <!-- 分割线 -->
@@ -232,16 +235,16 @@
                             android:layout_height="0.1dip"
                             android:layout_marginTop="10dip"
                             android:background="#000000" />
-                        <!-- 评论 -->
-
                         <LinearLayout
                             android:id="@+id/article_details_comment_layout"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="10dip"
                             android:layout_marginTop="10dip"
+                            android:layout_marginLeft="@dimen/margins"
                             android:orientation="vertical" >
                         </LinearLayout>
+                      
                     </TableLayout>
                 </TableRow>
             </TableLayout>
@@ -259,9 +262,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:visibility="gone" >
-
             <!-- 聊天输入框 -->
-
             <include
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"

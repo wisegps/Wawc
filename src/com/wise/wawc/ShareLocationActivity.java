@@ -1,13 +1,11 @@
 package com.wise.wawc;
 
 import cn.sharesdk.framework.ShareSDK;
-
 import com.wise.data.CarData;
 import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.Variable;
-import com.wise.sharesdk.OnekeyShare;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -17,13 +15,9 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -123,11 +117,12 @@ public class ShareLocationActivity extends Activity {
                     .saveImageSD(bitmap, Constant.picPath, Constant.ShareImage);
             // 显示到控件上
             bitmap = BlurImage.decodeSampledBitmapFromPath(Constant.picPath
-                    + Constant.ShareImage, 80, 80);
+                    + Constant.ShareImage, 150, 150);
             bitmap = BlurImage.getSquareBitmap(bitmap);
             if (bitmap != null) {
                 imagePath = Constant.picPath + Constant.ShareImage;
                 iv_photo.setImageBitmap(bitmap);
+                iv_photo.setVisibility(View.VISIBLE);
             }
             GetSystem.displayBriefMemory(ShareLocationActivity.this);
         }

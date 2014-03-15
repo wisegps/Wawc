@@ -204,7 +204,7 @@ public class MyVehicleActivity extends Activity{
 	private TextView myVehicleDevice = null;
 	private String deviceId = null;
 	private String deviceName = null;
-	private String illegalCityStr = null;
+	public static String illegalCityStr = "";
 	public static boolean hasSelectIllegalCity = false;
 	private String vehNum = "";   //临时存储车牌号
 	
@@ -214,7 +214,6 @@ public class MyVehicleActivity extends Activity{
 	private IntentFilter intentFilter = null;
 	
 	ChoiceCarInformationActivity choiceCarInformationActivity = null;
-	
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -486,6 +485,7 @@ public class MyVehicleActivity extends Activity{
 				break;
 			case R.id.select_city_layout:
 				hasSelectIllegalCity = true;
+				illegalCityStr = "";
 				Intent intent6 = new Intent(MyVehicleActivity.this,IllegalCitiyActivity.class);
 				intent6.putExtra("requestCode", getCityViolateRegulationsCode);
 				startActivityForResult(intent6, getCityViolateRegulationsCode);
@@ -594,7 +594,6 @@ public class MyVehicleActivity extends Activity{
 				carNo = Integer.valueOf(illegalCity.getVehiclenumno());
 				register = Integer.valueOf(illegalCity.getRegist());
 				registerNo = Integer.valueOf(illegalCity.getRegistno());
-				
 				
 				engineNumLayout.setVisibility(View.VISIBLE);
 				vehicleNumLayout.setVisibility(View.VISIBLE);
@@ -745,11 +744,65 @@ public class MyVehicleActivity extends Activity{
 				insuranceTel.setText(carData.getInsurance_tel());
 				maintainTelEd.setText(carData.getMaintain_tel());
 				//点击了选择违章城市
-				if(hasSelectIllegalCity){
-					engineNum.setText("");
-					frameNum.setText("");
-					vehicleRegNum.setText("");
-					selectCityTv.setText(illegalCityStr);
+//				if(hasSelectIllegalCity){
+				if(!"".equals(illegalCityStr)){
+					if(!illegalCityStr.equals(carData.getVio_city_name())){
+						engineNum.setText("");
+						frameNum.setText("");
+						vehicleRegNum.setText("");
+						selectCityTv.setText(illegalCityStr);
+					}else{
+						//没有点击 按照用户之前的数据要求来显示
+						selectCityTv.setText(location);
+						if(illegalCitys != null){
+							engineNumLayout.setVisibility(View.VISIBLE);
+							vehicleNumLayout.setVisibility(View.VISIBLE);
+							registerNumLayout.setVisibility(View.VISIBLE);
+							Log.e("illegalCitys.getEngine()",illegalCitys.getEngine());
+							Log.e("illegalCitys.getVehiclenum()",illegalCitys.getVehiclenum());
+							Log.e("illegalCitys.getRegist()",illegalCitys.getRegist());
+							
+							if(Integer.valueOf(illegalCitys.getEngine()) == 0){  //隐藏发动机
+								engineNumLayout.setVisibility(View.GONE);
+								engine = 0;
+							}else if(Integer.valueOf(illegalCitys.getEngine()) == 1){
+								engine = 1;
+								engineNo = Integer.valueOf(illegalCitys.getEngineno());
+								if(engineNo == 0){
+									engineNum.setHint(MyVehicleActivity.this.getResources().getString(R.string.all_engine_num_hint));
+								}else{
+									engineNum.setHint(MyVehicleActivity.this.getResources().getString(R.string.engine_num_hint) + engineNo + MyVehicleActivity.this.getResources().getString(R.string.hint_wei));
+									engineNum.setFilters(new InputFilter[]{new InputFilter.LengthFilter(engineNo)});
+								}
+							}
+							if(Integer.valueOf(illegalCitys.getVehiclenum()) == 0){   //隐藏车架号
+								vehicleNumLayout.setVisibility(View.GONE);
+								car = 0;
+							}else if(Integer.valueOf(illegalCitys.getVehiclenum()) == 1){
+								car = 1;
+								carNo = Integer.valueOf(illegalCitys.getVehiclenumno());
+								if(carNo == 0){
+									frameNum.setHint(MyVehicleActivity.this.getResources().getString(R.string.all_vehicle_num_hint));
+								}else{
+									frameNum.setHint(MyVehicleActivity.this.getResources().getString(R.string.vehicle_num_hint) + carNo + MyVehicleActivity.this.getResources().getString(R.string.hint_wei));
+									frameNum.setFilters(new InputFilter[]{new InputFilter.LengthFilter(carNo)});
+								}
+							} 
+							if(Integer.valueOf(illegalCitys.getRegist()) == 0 ){    // 隐藏车辆登记证号
+								registerNumLayout.setVisibility(View.GONE);
+								register = 0;
+							}else if(Integer.valueOf(illegalCitys.getRegist()) == 1){
+								register = 1;
+								registerNo = Integer.valueOf(illegalCitys.getRegistno());
+								if(registerNo == 0){
+									vehicleRegNum.setHint(MyVehicleActivity.this.getResources().getString(R.string.all_register_num_hint));
+								}else{
+									vehicleRegNum.setHint(MyVehicleActivity.this.getResources().getString(R.string.register_num_hint) + registerNo + MyVehicleActivity.this.getResources().getString(R.string.hint_wei));
+									vehicleRegNum.setFilters(new InputFilter[]{new InputFilter.LengthFilter(registerNo)});
+								}
+							}
+						}
+					}
 				}else{
 					//没有点击 按照用户之前的数据要求来显示
 					selectCityTv.setText(location);

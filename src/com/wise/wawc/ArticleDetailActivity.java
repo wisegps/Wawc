@@ -29,21 +29,29 @@ import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.text.SpannableString;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -67,7 +75,6 @@ public class ArticleDetailActivity extends Activity{
 	TextView publishTime;
 	TableRow favoriteLayout;
 	View articleDetailesLine;
-	LinearLayout commentLayout;
 	StringBuffer sb;
 	ImageView favoriteStart;
 	TextView praisesUser;
@@ -81,6 +88,9 @@ public class ArticleDetailActivity extends Activity{
 	Button sendMessage;
 	TextView articleDetailesCommentContent;
 	String commentContent;
+	LinearLayout commentLayout;
+	TableLayout tableLayout1;
+	TableLayout tableLayout3;
 	private static final int addFavorite = 4;
 	private static final int commentArticle = 5;
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,6 +112,8 @@ public class ArticleDetailActivity extends Activity{
 		commentView = (LinearLayout) findViewById(R.id.article_detailes_comment);
 		sendMessage  = (Button) findViewById(R.id.btn_send);
 		articleDetailesCommentContent = (TextView) findViewById(R.id.et_sendmessage);
+		tableLayout1 = (TableLayout) findViewById(R.id.article_details_user_image_tr);
+		tableLayout3 = (TableLayout) findViewById(R.id.article_details_comments_tl);
 		sendMessage.setOnClickListener(new ClickListener());
 		dbExcute = new DBExcute();
 		
@@ -173,14 +185,16 @@ public class ArticleDetailActivity extends Activity{
 					articleDetailesLine.setVisibility(View.GONE);
 				}
 				//   评论     如果没有评论   将 评论布局隐藏  同时将分割线隐藏
-//				commentLayout.removeAllViews();
 				if(article.getCommentList() != null){
 					if(article.getCommentList().size() != 0){
 						for(int i = 0 ; i < article.getCommentList().size() ; i ++){
 							LinearLayout oneComment = new LinearLayout(ArticleDetailActivity.this);
+							oneComment.setPadding(0,Variable.margins, 0, 0);
 							oneComment.setOrientation(LinearLayout.HORIZONTAL);
 							TextView commentName = new TextView(ArticleDetailActivity.this);  //评论者昵称
+							commentName.setTextColor(Color.parseColor("#3b5197"));
 						    TextView commentContent = new TextView(ArticleDetailActivity.this);   //评论内容
+						    commentContent.setTextColor(Color.parseColor("#313131"));
 							String[] commentStr = article.getCommentList().get(i);
 							commentName.setText(commentStr[0] + ":");
 							
@@ -198,6 +212,7 @@ public class ArticleDetailActivity extends Activity{
 					commentLayout.setVisibility(View.GONE);
 					articleDetailesLine.setVisibility(View.GONE);
 				}
+				
 				//动态添加用户发表的图片
 				
 				tableLayout.removeAllViews();
@@ -222,9 +237,15 @@ public class ArticleDetailActivity extends Activity{
 					if((i%3 + 1) == 3){
 						tableLayout.addView(row,params);
 						row = new TableRow(ArticleDetailActivity.this);
+						row.setPadding(0, Variable.margins, 0, 0);
 					}else if(i == (bitMapList.size() - 1)){
 						tableLayout.addView(row,params);
 					}
+				}
+				
+				if(article.getCommentList() != null && article.getPraisesList() == null){
+					tableLayout1.setVisibility(View.GONE);
+					tableLayout3.setVisibility(View.GONE);
 				}
 				break;
 			case addFavorite:
@@ -436,33 +457,32 @@ public class ArticleDetailActivity extends Activity{
 		    	 }
 		    	 return time1.substring(5, 16);
 		     }
+	}
+
+	// 转换时区
+	public static String transform(String from) {
+		String to = "";
+		SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		// 本地时区
+		Calendar nowCal = Calendar.getInstance();
+		TimeZone localZone = nowCal.getTimeZone();
+		// 设定SDF的时区为本地
+		simple.setTimeZone(localZone);
+
+		SimpleDateFormat simple1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		// 设置 DateFormat的时间区域为GMT
+		simple1.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+		// 把字符串转化为Date对象，然后格式化输出这个Date
+		Date fromDate = new Date();
+		try {
+			// 时间string解析成GMT时间
+			fromDate = simple1.parse(from);
+			// GMT时间转成当前时区的时间
+			to = simple.format(fromDate);
+		} catch (ParseException e1) {
+			e1.printStackTrace();
 		}
-		
-			//转换时区
-		    public static String transform(String from){
-		        String to = "";
-		        SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		        //本地时区
-		        Calendar nowCal = Calendar.getInstance();
-		        TimeZone localZone = nowCal.getTimeZone();
-		        //设定SDF的时区为本地
-		        simple.setTimeZone(localZone);
-
-
-		        SimpleDateFormat simple1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		        //设置 DateFormat的时间区域为GMT
-		        simple1.setTimeZone(TimeZone.getTimeZone("GMT"));
-
-		        //把字符串转化为Date对象，然后格式化输出这个Date
-		        Date fromDate = new Date();
-		        try {
-		            //时间string解析成GMT时间
-		            fromDate = simple1.parse(from);
-		            //GMT时间转成当前时区的时间
-		            to = simple.format(fromDate);
-		        } catch (ParseException e1) {
-		            e1.printStackTrace();
-		        }
-		        return to;
-		    }
+		return to;
+	}
 }

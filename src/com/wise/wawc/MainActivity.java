@@ -39,6 +39,7 @@ import android.view.View.OnKeyListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
+import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -238,6 +239,10 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
                 break; 
             case R.id.iv_activity_home:
                 RightMenu();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                if(imm.isActive()){
+                    imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                }
                 break;
             case R.id.iv_voice:
                 if(isMove){

@@ -41,8 +41,8 @@
             android:layout_marginRight="@dimen/margins"
             android:background="@drawable/article_comment_bg"
             android:text="@string/vehicle_edit"
-            android:textColor="@color/white"
-            android:textSize="@dimen/main" />
+            android:textSize="@dimen/content"
+            android:textColor="@color/white"/>
     </RelativeLayout>
 
     <HorizontalScrollView
@@ -287,7 +287,7 @@
                     android:drawableRight="@drawable/body_icon_arrow2"
                     android:gravity="center_vertical"
                     android:padding="@dimen/margins"
-                    android:text="未绑定终端"
+                    android:hint="未绑定终端"
                     android:textColor="@color/common"
                     android:textSize="@dimen/content" />
             </TableRow>

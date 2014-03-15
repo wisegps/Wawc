@@ -141,7 +141,7 @@
     <!-- 评论内容 -->
 
     <TableLayout
-        android:id="@+id/tablelayout"
+        android:id="@+id/vehicle_friend_comment_tl"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dip"
@@ -251,6 +251,16 @@
                         android:textColor="@color/common"
                         />
                      </LinearLayout>
+                     <TextView 
+                        android:id="@+id/my_vehicle_comment_total_tv"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="@dimen/margins"
+                        android:maxLines="1"
+                        android:textColor="@color/blue"
+                        />
+                    
                 </LinearLayout>
             </TableLayout>
         </TableRow>

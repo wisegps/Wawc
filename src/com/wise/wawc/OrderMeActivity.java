@@ -2,17 +2,16 @@ package com.wise.wawc;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
+import com.wise.list.XListView;
+import com.wise.list.XListView.IXListViewListener;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
-
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -33,26 +32,30 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 /**
  * 我的订单
  * @author honesty
  */
-public class OrderMeActivity extends Activity{
+public class OrderMeActivity extends Activity implements IXListViewListener{
     private static final String TAG = "OrderMeActivity";
     private static final int Get_order = 1;
-    ListView lv_activity_order_me;
+    private static final int refresh = 2;
+    XListView lv_activity_order_me;
     List<OrderData> orderDatas = new ArrayList<OrderData>();
     OrderAdapter orderAdapter;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_order_me);
-		lv_activity_order_me = (ListView)findViewById(R.id.lv_activity_order_me);
+		lv_activity_order_me = (XListView)findViewById(R.id.lv_activity_order_me);
+		//不设置上拉加载无效
+		lv_activity_order_me.setPullRefreshEnable(false);
+		lv_activity_order_me.setPullLoadEnable(true);
+		lv_activity_order_me.setXListViewListener(this);
+        
 		ImageView iv_activity_order_me_menu = (ImageView)findViewById(R.id.iv_activity_order_me_menu);
 		iv_activity_order_me_menu.setOnClickListener(onClickListener);
-		GetOrderDB();
         GetOrder();
         registerBroadcastReceiver();
 	}
@@ -73,36 +76,33 @@ public class OrderMeActivity extends Activity{
             super.handleMessage(msg);
             switch (msg.what) {
             case Get_order:
-                jsonOrder(msg.obj.toString());
-                JudgeOrder(msg.obj.toString());
+                orderDatas.addAll(jsonOrder(msg.obj.toString()));
+                orderAdapter = new OrderAdapter();
+                lv_activity_order_me.setAdapter(orderAdapter);
+                onLoad();
                 break;
 
-            default:
+            case refresh:
+                orderDatas.addAll(jsonOrder(msg.obj.toString()));
+                orderAdapter.notifyDataSetChanged();
+                onLoad();
+                if(jsonOrder(msg.obj.toString()).size() == 0){
+                    lv_activity_order_me.setPullLoadEnable(false);
+                }
                 break;
             }
         }	    
 	};
-	boolean isHaveOrder = false;
-	private void GetOrderDB(){
-	    DBHelper dbHelper = new DBHelper(OrderMeActivity.this);
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base
-                + " where Title=? and Cust_id=?", new String[] { "Orders",Variable.cust_id });
-        if (cursor.moveToFirst()) {
-            String Content = cursor.getString(cursor.getColumnIndex("Content"));
-            isHaveOrder = true;
-            // 解析数据
-            jsonOrder(Content);
-        }
-        cursor.close();
-        db.close();
-	}
-	
+	private void onLoad() {
+	    lv_activity_order_me.stopRefresh();
+	    lv_activity_order_me.stopLoadMore();
+    }
 	private void GetOrder(){
 	    String url = Constant.BaseUrl + "customer/" + Variable.cust_id + "/order?auth_code="+Variable.auth_code;
 	    new Thread(new NetThread.GetDataThread(handler, url, Get_order)).start();
 	}
-	private void jsonOrder(String result){
+	private List<OrderData> jsonOrder(String result){
+        List<OrderData> oDatas = new ArrayList<OrderData>();
 	    try {
             JSONArray jsonArray = new JSONArray(result);
             for(int i = 0 ; i < jsonArray.length() ; i++){
@@ -114,40 +114,14 @@ public class OrderMeActivity extends Activity{
                 orderData.setQuantity(jsonObject.getString("quantity"));
                 orderData.setTotal_price(jsonObject.getString("total_price"));
                 orderData.setUnit_price(jsonObject.getString("unit_price"));
-                orderDatas.add(orderData);
+                oDatas.add(orderData);
             }
-            orderAdapter = new OrderAdapter();
-            lv_activity_order_me.setAdapter(orderAdapter);
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        return oDatas;
 	}
-	/**
-	 * 判断更新还是插入
-	 * @param result
-	 */
-	private void JudgeOrder(String result) {
-        if (isHaveOrder) {// 更新
-            UpdateOrder(result, "Orders");
-        } else {// 插入
-            InsertOrder(result, "Orders");
-        }
-    }
-	private void UpdateOrder(String result, String Title) {
-        DBExcute dbExcute = new DBExcute();
-        ContentValues values = new ContentValues();
-        values.put("Content", result);
-        dbExcute.UpdateDB(OrderMeActivity.this, values, Title);
-    }
-	private void InsertOrder(String result, String Title) {
-        DBExcute dbExcute = new DBExcute();
-        ContentValues values = new ContentValues();
-        values.put("Cust_id", Variable.cust_id);
-        values.put("Title", Title);
-        values.put("Content", result);
-        dbExcute.InsertDB(OrderMeActivity.this, values, Constant.TB_Base);
-    }
-	
+		
 	private class OrderAdapter extends BaseAdapter{
 	    LayoutInflater mInflater = LayoutInflater.from(OrderMeActivity.this);
         @Override
@@ -266,8 +240,21 @@ public class OrderMeActivity extends Activity{
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals(Constant.A_Order)){
                 Log.d(TAG, "刷新订单");
+                orderDatas.clear();
                 GetOrder();
             }
         }	    
 	};
+    @Override
+    public void onRefresh() {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void onLoadMore() {
+        String Order_id = orderDatas.get(orderDatas.size()-1).getOrder_id();
+        String url = Constant.BaseUrl + "customer/" + Variable.cust_id + "/order?auth_code="+Variable.auth_code + "&min_id=" + Order_id;
+        new Thread(new NetThread.GetDataThread(handler, url, refresh)).start();
+    }
 }

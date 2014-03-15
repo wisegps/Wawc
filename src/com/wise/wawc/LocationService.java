@@ -93,6 +93,8 @@ public class LocationService extends Service {
 	            Intent intent = new Intent(Constant.A_City);
 	            intent.putExtra("City", location.getCity());
 	            intent.putExtra("AddrStr", location.getAddrStr());
+	            intent.putExtra("Lat", String.valueOf(location.getLatitude()));
+	            intent.putExtra("Lon", String.valueOf(location.getLongitude()));
 	            sendBroadcast(intent);
 			}
 		}

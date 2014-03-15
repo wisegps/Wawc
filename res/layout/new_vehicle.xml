@@ -41,7 +41,7 @@
             android:background="@drawable/article_comment_bg"
             android:text="@string/save"
             android:textColor="@color/white"
-            android:textSize="@dimen/main" />
+            android:textSize="@dimen/content" />
     </RelativeLayout>
 
     <ScrollView

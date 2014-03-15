@@ -3,46 +3,48 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:layout_margin="10dip"
     >
     <LinearLayout 
         android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
     	android:orientation="horizontal"
         >
-        <TextView 
+        <TextView
+            android:id="@+id/friend_article_data" 
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
             android:text="今天"
+            android:textSize="@dimen/title"
+            android:textColor="@color/common"
+            android:layout_marginRight="@dimen/margins"
+            android:gravity="center"
+            android:paddingLeft="@dimen/margins"
             />
         <LinearLayout 
              android:layout_width="0dip"
 	    	 android:layout_height="wrap_content"
 	    	 android:orientation="vertical"
 	    	 android:layout_weight="6"
-	    	 android:layout_marginLeft="10dip"
+	    	 android:layout_marginRight="@dimen/margins"
             >
-            
-            
             <TextView 
                 android:id="@+id/friend_article_content"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="大众保养技巧"
+                android:textColor="@color/common"
+                android:textSize="@dimen/main" 
                 />
-            
-            <!-- 用户发表的图片 -->
-            <TableLayout 
-                android:id="@+id/friend_home_image"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dip"
-                >
-            </TableLayout>
-            
-            
-            
+			<GridView 
+	                android:id="@+id/friend_home_image"
+	                android:layout_width="fill_parent"
+                	android:layout_height="wrap_content"
+	                android:scrollbars="horizontal"
+	                android:numColumns="3"
+	                android:horizontalSpacing="@dimen/margins"
+	        		android:stretchMode="columnWidth"
+                ></GridView>
             <LinearLayout 
 	             android:layout_width="fill_parent"
 		    	 android:layout_height="wrap_content"
@@ -66,7 +68,7 @@
                         android:id="@+id/friend_article_praises"
                         android:layout_width="20dip"
 			    	 	android:layout_height="20dip"
-			    	 	android:background="@drawable/body_icon_heart_press"
+			    	 	android:background="@drawable/body_icon_heart"
                         />
                     <ImageView 
                         android:id="@+id/friend_article_comment"
@@ -77,10 +79,6 @@
                         />
                 </LinearLayout>
             </LinearLayout>
-            
-            
-            
-            
         </LinearLayout>
     </LinearLayout>
     
@@ -92,19 +90,21 @@
         android:layout_width="fill_parent"
     	android:layout_height="wrap_content"
     	android:orientation="horizontal"
-    	android:layout_marginLeft="10dip"
-    	android:layout_marginBottom="10dip"
+    	android:layout_marginBottom="@dimen/margins"
         >
         <View 
             android:layout_width="0dip"
             android:layout_height="wrap_content"
             android:layout_weight="1.5"
+            android:layout_marginRight="@dimen/margins"
             />
         <LinearLayout 
              android:layout_width="0dip"
 	    	 android:layout_height="wrap_content"
 	    	 android:orientation="vertical"
 	    	 android:layout_weight="6"
+	    	 android:layout_marginRight="@dimen/margins"
+	    	 android:background="@drawable/body_container"
             >
             <!-- 赞 -->
             <LinearLayout 
@@ -112,35 +112,95 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="10dip"
+                android:layout_marginLeft="@dimen/margins"
+                android:layout_marginRight="@dimen/margins"
                 >
                 <ImageView 
                     android:id="@+id/friend_article_praises_star"
                     android:layout_width="20dip"
                     android:layout_height="20dip"
                     android:background="@drawable/body_icon_heart_press"
-                    android:layout_marginRight="10dip"
                     />
             <TextView
                 android:id="@+id/friend_article_praises_user" 
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                
+                android:textColor="@color/blue"
                 />
             </LinearLayout>
             <View 
+                android:id="@+id/friend_article_line"
                 android:layout_marginTop="10dip"
                 android:layout_width="fill_parent"
                 android:layout_height="0.5dip"
                 android:background="#000000"
                 />
             <!-- 评论 -->
-            <LinearLayout 
-                android:id="@+id/friend_article_comment_layout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="10dip"
-                >
-            </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/friend_home_article_comment_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/margins"
+                    android:layout_marginLeft="@dimen/margins"
+                    android:orientation="vertical" >
+                    <LinearLayout 
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        >
+                    <TextView 
+                        android:id="@+id/friend_home__one_comment_name_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dip"
+                        android:maxLines="1"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/blue"
+                        />
+                     <TextView 
+                        android:id="@+id/friend_home__one_comment_content_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:maxLines="1"
+                        android:textColor="@color/common"
+                        />
+                     </LinearLayout>
+                     
+                    <LinearLayout 
+                        android:id="@+id/friend_home_two_comment_ll"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="@dimen/margins"
+                        >
+                    <TextView 
+                        android:id="@+id/friend_home_two_comment_name_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/blue"
+                        />
+                     <TextView 
+                        android:id="@+id/friend_home_two_comment_content_tv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:gravity="center_vertical"
+                        android:textColor="@color/common"
+                        />
+                     </LinearLayout>
+                     <TextView 
+                        android:id="@+id/friend_home_comment_total_tv"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:layout_marginTop="@dimen/margins"
+                        android:maxLines="1"
+                        android:textColor="@color/blue"
+                        />
+                </LinearLayout>
         </LinearLayout>
     </LinearLayout>
     

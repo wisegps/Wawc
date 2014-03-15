@@ -446,8 +446,6 @@ public class NewVehicleActivity extends Activity{
         }
         params.add(new BasicNameValuePair("insurance_company", showInsurance.getText().toString()));
         params.add(new BasicNameValuePair("insurance_date", insuranceTime.getText().toString()));
-//        params.add(new BasicNameValuePair("annual_inspect_date", annualSurveyTime.getText().toString()));
-        params.add(new BasicNameValuePair("annual_inspect_date", ""));
         params.add(new BasicNameValuePair("maintain_company", showMaintain.getText().toString()));
         params.add(new BasicNameValuePair("maintain_last_mileage", lastMileage.getText().toString().trim()));
         params.add(new BasicNameValuePair("maintain_last_date", lastMaintainTime.getText().toString()));
@@ -524,8 +522,6 @@ public class NewVehicleActivity extends Activity{
 					value.put("reg_no", carRegNumber.getText().toString().trim());
 					value.put("insurance_company", showInsurance.getText().toString());
 					value.put("insurance_date", insuranceTime.getText().toString());
-//					value.put("annual_inspect_date", annualSurveyTime.getText().toString());
-					value.put("annual_inspect_date", "");
 					value.put("maintain_company", showMaintain.getText().toString());
 					value.put("maintain_last_mileage", lastMileage.getText().toString().trim());
 					value.put("maintain_last_date", lastMaintainTime.getText().toString());
@@ -539,6 +535,9 @@ public class NewVehicleActivity extends Activity{
 					value.put("maintain_tel", maintainShopTel.getText().toString().trim());
 					value.put("gas_no", petrolGradeTv.getText().toString());
 					value.put("buy_date", buyTime.getText().toString());
+					String annual_inspect_date = GetSystem.GetNextYear(buyTime.getText().toString(), 2);
+					System.out.println("annual_inspect_date = " + annual_inspect_date);
+                    value.put("annual_inspect_date", annual_inspect_date);
 					
 					
 					Log.e("NewVehicleActivity:","汽油标号:" + petrolGradeTv.getText().toString());
@@ -558,8 +557,7 @@ public class NewVehicleActivity extends Activity{
 	                carData.setRegNo(carRegNumber.getText().toString().trim());
 	                carData.setInsurance_company(showInsurance.getText().toString());
 	                carData.setInsurance_date(insuranceTime.getText().toString());
-//	                carData.setAnnual_inspect_date(annualSurveyTime.getText().toString());
-	                carData.setAnnual_inspect_date("");
+	                carData.setAnnual_inspect_date(annual_inspect_date);
 	                carData.setMaintain_company(showMaintain.getText().toString());
 	                carData.setMaintain_last_mileage(lastMileage.getText().toString().trim());
 	                carData.setMaintain_last_date(lastMaintainTime.getText().toString());

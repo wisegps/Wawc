@@ -21,6 +21,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +40,7 @@ import android.widget.Toast;
  * @author honesty
  */
 public class CarLocationActivity extends Activity {
+    private static final String TAG = "CarLocationActivity";
     //WawcApplication app;
     MapView mMapView = null;
     MapController mMapController = null;
@@ -78,6 +80,7 @@ public class CarLocationActivity extends Activity {
         tv_car_name.setText(carData.getObj_name());
         Lat = Double.valueOf(carData.getLat());
         Lon = Double.valueOf(carData.getLon());
+        Log.d(TAG, "carData.getLat() = " + carData.getLat());
         geoPoint = new GeoPoint((int) (Lat * 1E6), (int) (Lon * 1E6));
         OverlayItem item1 = new OverlayItem(geoPoint, "item1", "item1");
         Drawable mark = getResources().getDrawable(

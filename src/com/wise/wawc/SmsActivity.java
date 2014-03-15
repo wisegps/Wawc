@@ -53,8 +53,8 @@ public class SmsActivity extends Activity implements IXListViewListener{
 	
 	boolean isGetDB = true; //上拉是否继续读取数据库
     int Toal = 0; //从那条记录读起
-    int pageSize = 5 ; //每次读取的记录数目
-	
+    int pageSize = 20 ; //每次读取的记录数目
+    boolean isJump;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -90,9 +90,20 @@ public class SmsActivity extends Activity implements IXListViewListener{
 		ImageView iv_sms = (ImageView)findViewById(R.id.iv_sms);
 		iv_sms.setOnClickListener(new OnClickListener() {			
 			public void onClick(View v) {
-			    ActivityFactory.A.LeftMenu();
+			    if(isJump){
+			        finish();
+			    }else{
+	                ActivityFactory.A.LeftMenu();
+			    }
 			}
 		});
+		Intent intent = getIntent();
+		isJump = intent.getBooleanExtra("isJump", false);
+		if(isJump){
+		    iv_sms.setImageResource(R.drawable.nav_back);
+		}else{
+		    iv_sms.setImageResource(R.drawable.side_left);
+		}
 		if(isGetDataUrl()){
 		    String url = "http://wiwc.api.wisegps.cn/customer/" + Variable.cust_id + "/notification?auth_code=" + Variable.auth_code;
 		    new Thread(new NetThread.GetDataThread(handler, url, GET_SMS)).start();
@@ -100,6 +111,12 @@ public class SmsActivity extends Activity implements IXListViewListener{
 		    smsDataList.addAll(0,getSmsDatas(Toal, pageSize));
             newAdapter.notifyDataSetChanged();
             isNothingNote(false);
+            if(smsDataList.size() != 0){
+                int id = smsDataList.get(0).getNoti_id();
+                String url = "http://wiwc.api.wisegps.cn/customer/" + Variable.cust_id + "/notification?auth_code=" 
+                        + Variable.auth_code + "&max_id=" + id;
+                new Thread(new NetThread.GetDataThread(handler, url, GET_SMS)).start();
+            }
 		}	
 	}
 	
@@ -114,6 +131,8 @@ public class SmsActivity extends Activity implements IXListViewListener{
 			    onLoad();
 			    if(smsDataList.size() > 0){
 			        isNothingNote(false);
+			    }else{
+			        isNothingNote(true);
 			    }
 				break;
 			case GET_NEXT_SMS:

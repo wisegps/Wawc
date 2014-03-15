@@ -6,12 +6,16 @@
  */
 package com.wise.list;
 
+import com.wise.wawc.MainActivity;
 import com.wise.wawc.R;
 
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LinearInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -32,7 +36,7 @@ public class XListViewFooter extends LinearLayout {
     private Context mContext;
 
     private View mContentView;
-    private View mProgressBar;
+    private View xlistview_footer_iv;
     private TextView mHintView;
     
     public XListViewFooter(Context context) {
@@ -51,13 +55,20 @@ public class XListViewFooter extends LinearLayout {
      */
     public void setState(int state) {
         mHintView.setVisibility(View.INVISIBLE);
-        mProgressBar.setVisibility(View.INVISIBLE);
+        xlistview_footer_iv.setVisibility(View.INVISIBLE);
+        xlistview_footer_iv.clearAnimation();
         mHintView.setVisibility(View.INVISIBLE);
         if (state == STATE_READY) {
             mHintView.setVisibility(View.VISIBLE);
             mHintView.setText(R.string.xlistview_footer_hint_ready);
         } else if (state == STATE_LOADING) {
-            mProgressBar.setVisibility(View.VISIBLE);
+            xlistview_footer_iv.setVisibility(View.VISIBLE);
+            Animation operatingAnim = AnimationUtils.loadAnimation(mContext, R.anim.tip_fast);  
+            LinearInterpolator lin = new LinearInterpolator();  
+            operatingAnim.setInterpolator(lin); 
+            if (operatingAnim != null) {  
+                xlistview_footer_iv.startAnimation(operatingAnim);  
+            }
         } else {
             mHintView.setVisibility(View.VISIBLE);
             mHintView.setText(R.string.xlistview_footer_hint_normal);
@@ -82,7 +93,8 @@ public class XListViewFooter extends LinearLayout {
      */
     public void normal() {
         mHintView.setVisibility(View.VISIBLE);
-        mProgressBar.setVisibility(View.GONE);
+        xlistview_footer_iv.setVisibility(View.GONE);
+        xlistview_footer_iv.clearAnimation();
     }
     
     
@@ -91,7 +103,13 @@ public class XListViewFooter extends LinearLayout {
      */
     public void loading() {
         mHintView.setVisibility(View.GONE);
-        mProgressBar.setVisibility(View.VISIBLE);
+        xlistview_footer_iv.setVisibility(View.VISIBLE);
+        Animation operatingAnim = AnimationUtils.loadAnimation(mContext, R.anim.tip_fast);  
+        LinearInterpolator lin = new LinearInterpolator();  
+        operatingAnim.setInterpolator(lin); 
+        if (operatingAnim != null) {  
+            xlistview_footer_iv.startAnimation(operatingAnim);  
+        }
     }
     
     /**
@@ -122,7 +140,7 @@ public class XListViewFooter extends LinearLayout {
         moreView.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT));
         
         mContentView = moreView.findViewById(R.id.xlistview_footer_content);
-        mProgressBar = moreView.findViewById(R.id.xlistview_footer_progressbar);
+        xlistview_footer_iv = moreView.findViewById(R.id.xlistview_footer_iv);
         mHintView = (TextView)moreView.findViewById(R.id.xlistview_footer_hint_textview);
     }
     
