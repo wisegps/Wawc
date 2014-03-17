@@ -8,18 +8,14 @@ import org.json.JSONObject;
 import com.wise.list.XListView;
 import com.wise.list.XListView.IXListViewListener;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
-import com.wise.sql.DBExcute;
-import com.wise.sql.DBHelper;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -108,7 +104,7 @@ public class OrderMeActivity extends Activity implements IXListViewListener{
             for(int i = 0 ; i < jsonArray.length() ; i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
                 OrderData orderData = new OrderData();
-                orderData.setCreate_time(jsonObject.getString("create_time"));
+                orderData.setCreate_time(GetSystem.ChangeTimeZone(jsonObject.getString("create_time").replace("T", " ").substring(0, 19)));
                 orderData.setOrder_id(jsonObject.getString("order_id"));
                 orderData.setProduct_name(jsonObject.getString("product_name"));
                 orderData.setQuantity(jsonObject.getString("quantity"));
@@ -155,7 +151,7 @@ public class OrderMeActivity extends Activity implements IXListViewListener{
             OrderData orderData = orderDatas.get(position);
             holder.tv_item_order_product_name.setText(orderData.getProduct_name());
             holder.tv_item_order_unit_price.setText(orderData.getUnit_price());
-            holder.tv_item_order_create_time.setText(orderData.getCreate_time().substring(0, 10));
+            holder.tv_item_order_create_time.setText(orderData.getCreate_time().substring(0, 19));
             holder.tv_item_order_quantity.setText(orderData.getQuantity());
             holder.tv_item_order_total_price.setText(orderData.getTotal_price());
             return convertView;

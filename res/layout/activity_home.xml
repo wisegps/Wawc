@@ -66,7 +66,7 @@
                     android:id="@+id/bt_activity_home_vehicle_status"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/text_color_selector"
+                    android:textColor="@color/color_white_inactive"
                     android:drawableTop="@drawable/home_condition"
                     android:layout_centerInParent="true"
                     android:background="@null"
@@ -89,7 +89,7 @@
 	                android:id="@+id/bt_activity_home_car_remind"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:textColor="@color/text_color_selector"
+	                android:textColor="@color/color_white_inactive"
 	                android:drawableTop="@drawable/home_remind"
 	                android:layout_centerInParent="true"
 	                android:background="@null"
@@ -112,7 +112,7 @@
                     android:id="@+id/bt_activity_home_traffic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/text_color_selector"
+                    android:textColor="@color/color_white_inactive"
                     android:drawableTop="@drawable/home_violate"
                     android:layout_centerInParent="true"
                     android:background="@null"
@@ -136,7 +136,7 @@
 	                android:id="@+id/bt_activity_home_share"
 	                android:layout_width="wrap_content"
 	                android:layout_height="wrap_content"
-	                android:textColor="@color/text_color_selector"
+	                android:textColor="@color/color_white_inactive"
 	                android:drawableTop="@drawable/home_share"
 	                android:background="@null"
 	                android:textSize="@dimen/content"
@@ -263,12 +263,13 @@
 		                    android:textSize="@dimen/main"
 		                    android:text="车辆限行："/>
 		                <TextView 
+		                    android:id="@+id/Tv_xx"
 		                    android:layout_width="wrap_content"
 		                    android:layout_height="wrap_content"
 		                    android:textColor="@color/white"
 		                    android:background="@drawable/home_xx"
 		                    android:textSize="@dimen/content"
-		                    android:text="限行"/>
+		                    android:text=""/>
 		            </LinearLayout>
 		        </LinearLayout>
 		    </RelativeLayout>

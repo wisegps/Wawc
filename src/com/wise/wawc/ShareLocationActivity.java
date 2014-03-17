@@ -139,7 +139,6 @@ public class ShareLocationActivity extends Activity {
                 iv_photo.setVisibility(View.VISIBLE);
                 
                 isDelete = false;
-                iv_photo.setVisibility(View.GONE);
                 iv_photo.setImageBitmap(null);
             }
             GetSystem.displayBriefMemory(ShareLocationActivity.this);

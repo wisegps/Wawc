@@ -128,7 +128,8 @@ public class TrafficActivity extends Activity implements IXListViewListener{
                 }
                 break;
             case load_traffic:
-                trafficDatas.addAll(jsonTrafficData(msg.obj.toString()));
+                List<TrafficData> Datas = jsonTrafficData(msg.obj.toString());
+                trafficDatas.addAll(Datas);
                 trafficAdapter.notifyDataSetChanged();
                 onLoad();
                 if(trafficDatas.size() == 0){
@@ -138,7 +139,7 @@ public class TrafficActivity extends Activity implements IXListViewListener{
                 }
                 tv_total_score.setText(String.format(getResources().getString(R.string.total_score),total_score));
                 tv_total_fine.setText(String.format(getResources().getString(R.string.total_fine),total_fine));
-                if(jsonTrafficData(msg.obj.toString()).size() == 0){
+                if(Datas.size() == 0){
                     lv_activity_traffic.setPullLoadEnable(false);
                 }
                 break;
@@ -158,6 +159,7 @@ public class TrafficActivity extends Activity implements IXListViewListener{
 	OnItemClickListener onItemClickListener = new OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+		    lv_activity_traffic.setPullLoadEnable(true);
 		    GetData(arg2);
 		}
 	};
@@ -187,7 +189,8 @@ public class TrafficActivity extends Activity implements IXListViewListener{
         }else{
             isGetDB = true;
             Log.d(TAG, "从本地读取数据");
-            trafficDatas.addAll(getTrafficDatas(Toal, pageSize));
+            List<TrafficData> Datas = getTrafficDatas(Toal, pageSize);
+            trafficDatas.addAll(Datas);
             trafficAdapter.notifyDataSetChanged();
             tv_total_score.setText(String.format(getResources().getString(R.string.total_score),total_score));
             tv_total_fine.setText(String.format(getResources().getString(R.string.total_fine),total_fine));
@@ -195,6 +198,9 @@ public class TrafficActivity extends Activity implements IXListViewListener{
                 isNothingNote(true);
             }else{
                 isNothingNote(false);
+            }
+            if(Datas.size() != pageSize){
+                lv_activity_traffic.setPullLoadEnable(false);
             }
         }
 	}
@@ -232,7 +238,7 @@ public class TrafficActivity extends Activity implements IXListViewListener{
 	        JSONArray jsonArray = jsonObject1.getJSONArray("data");
             for(int i = 0 ; i < jsonArray.length() ; i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
-                String Time = jsonObject.getString("create_time").replace("T", " ").substring(0, 16);
+                String Time = GetSystem.ChangeTimeZone(jsonObject.getString("vio_time").replace("T", " ").substring(0, 19));
                 TrafficData trafficData = new TrafficData();
                 trafficData.setObj_id(jsonObject.getString("vio_id"));
                 trafficData.setAction(jsonObject.getString("action"));
@@ -341,11 +347,11 @@ public class TrafficActivity extends Activity implements IXListViewListener{
 			    holder.tv_status.setText("(已处理)");
 			    holder.tv_status.setTextColor(getResources().getColor(R.color.common_inactive));
 			}
-			holder.tv_item_traffic_data.setText(trafficData.getDate());
+			holder.tv_item_traffic_data.setText(trafficData.getDate().substring(0, 16));
 			holder.tv_item_traffic_adress.setText(trafficData.getLocation());
 			holder.tv_item_traffic_content.setText(trafficData.getAction());
-			holder.tv_item_traffic_fraction.setText("扣分："+trafficData.getScore());
-			holder.tv_item_traffic_money.setText("罚款："+trafficData.getFine());
+			holder.tv_item_traffic_fraction.setText("扣分: "+trafficData.getScore());
+			holder.tv_item_traffic_money.setText("罚款: "+trafficData.getFine());
 			holder.iv_traffic_share.setOnClickListener(new OnClickListener() {                
                 @Override
                 public void onClick(View v) {

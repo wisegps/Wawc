@@ -262,7 +262,7 @@ public class GetSystem {
      * @return
      */
     public static String sortHomeTime(String time){
-        if(time == null){
+        if(time == null || time.equals("")){
             return "";
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");

@@ -6,9 +6,7 @@
  */
 package com.wise.list;
 
-import com.wise.wawc.MainActivity;
 import com.wise.wawc.R;
-
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -55,14 +53,13 @@ public class XListViewFooter extends LinearLayout {
      * @param state
      */
     public void setState(int state) {
-        mHintView.setVisibility(View.INVISIBLE);
         ll_xlistview_footer.setVisibility(View.INVISIBLE);
         xlistview_footer_iv.clearAnimation();
-        mHintView.setVisibility(View.INVISIBLE);
+        System.out.println("state = " + state);
         if (state == STATE_READY) {
             mHintView.setVisibility(View.VISIBLE);
-            mHintView.setText(R.string.xlistview_footer_hint_ready);
         } else if (state == STATE_LOADING) {
+            mHintView.setVisibility(View.INVISIBLE);
             ll_xlistview_footer.setVisibility(View.VISIBLE);
             Animation operatingAnim = AnimationUtils.loadAnimation(mContext, R.anim.tip_fast);  
             LinearInterpolator lin = new LinearInterpolator();  
@@ -71,8 +68,7 @@ public class XListViewFooter extends LinearLayout {
                 xlistview_footer_iv.startAnimation(operatingAnim);  
             }
         } else {
-            mHintView.setVisibility(View.VISIBLE);
-            mHintView.setText(R.string.xlistview_footer_hint_normal);
+            mHintView.setVisibility(View.INVISIBLE);
         }
     }
     
@@ -93,7 +89,7 @@ public class XListViewFooter extends LinearLayout {
      * 一般状态
      */
     public void normal() {
-        mHintView.setVisibility(View.VISIBLE);
+        mHintView.setVisibility(View.INVISIBLE);
         ll_xlistview_footer.setVisibility(View.GONE);
         xlistview_footer_iv.clearAnimation();
     }
@@ -103,7 +99,7 @@ public class XListViewFooter extends LinearLayout {
      * 加载状态
      */
     public void loading() {
-        mHintView.setVisibility(View.GONE);
+        mHintView.setVisibility(View.INVISIBLE);
         ll_xlistview_footer.setVisibility(View.VISIBLE);
         Animation operatingAnim = AnimationUtils.loadAnimation(mContext, R.anim.tip_fast);  
         LinearInterpolator lin = new LinearInterpolator();  

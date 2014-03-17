@@ -206,9 +206,9 @@ public class AdressAdapter extends BaseAdapter{
 	}
 	private String d(int Distance){
 	    if(Distance > 1000){
-	        return "(" +(int)Distance/1000 + "km)";
+	        return " (" +(int)Distance/1000 + "km)";
 	    }else{
-	        return "(" +Distance + "m)";
+	        return " (" +Distance + "m)";
 	    }
 	}
 	OnCollectListener onCollectListener;

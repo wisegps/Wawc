@@ -63,7 +63,6 @@ public class CollectionActivity extends Activity implements IXListViewListener{
             //服务器取数据
             Log.d(TAG, "服务器取数据");
             isGetDB = false;
-            lv_collection.startLoadMore();
             String url = Constant.BaseUrl + "customer/" + Variable.cust_id + "/favorite?auth_code=" + Variable.auth_code;
             new Thread(new NetThread.GetDataThread(handler, url, frist_getdata)).start();
 		}else{
@@ -95,6 +94,7 @@ public class CollectionActivity extends Activity implements IXListViewListener{
             case load_getdata:
                 jsonCollectionData(msg.obj.toString());
                 collectionAdapter.notifyDataSetChanged();
+                Log.d(TAG, "刷新完毕");
                 onLoad();
                 break;
             }

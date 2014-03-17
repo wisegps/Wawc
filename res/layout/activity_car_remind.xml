@@ -61,7 +61,7 @@
 	            android:id="@+id/rl_inspection"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
-	            android:background="@color/white"
+	            android:background="@drawable/bg_item_selector"
 	            android:padding="@dimen/margins">
 	            <TextView 
 	                android:id="@+id/tv_1"
@@ -129,7 +129,7 @@
 	            android:id="@+id/rl_renewal"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
-	            android:background="@color/white"
+	            android:background="@drawable/bg_item_selector"
                 android:padding="@dimen/margins">
 	            <TextView 
 	                android:id="@+id/tv_2"
@@ -198,7 +198,7 @@
 	            android:id="@+id/rl_maintenance"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
-	            android:background="@color/white"
+	            android:background="@drawable/bg_item_selector"
                 android:padding="@dimen/margins">
 	            <TextView 
 	                android:id="@+id/tv_3"
@@ -268,7 +268,7 @@
 	            android:id="@+id/rl_examined"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
-	            android:background="@color/white"
+	            android:background="@drawable/bg_item_selector"
                 android:padding="@dimen/margins"
 	            android:layout_marginTop="@dimen/double_margins">
 	            <TextView 
@@ -339,7 +339,7 @@
 	            android:id="@+id/rl_replacement"
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
-	            android:background="@color/white"
+	            android:background="@drawable/bg_item_selector"
                 android:padding="@dimen/margins">
 	            <TextView 
 	                android:id="@+id/tv_5"

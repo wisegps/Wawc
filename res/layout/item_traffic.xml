@@ -77,7 +77,7 @@
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
 		        android:gravity="center_horizontal"
-		        android:text="扣分:3分"
+		        android:text="扣分: 3分"
 		        android:textSize="@dimen/content"
 		        android:textColor="@color/common_blue"/>
 	        <View 
@@ -90,7 +90,7 @@
 		        android:layout_height="wrap_content"
 		        android:layout_weight="1"
 		        android:gravity="center_horizontal"
-		        android:text="罚款:150元"
+		        android:text="罚款: 150元"
 		        android:textSize="@dimen/content"
 		        android:textColor="@color/common_blue"/>
 		    <View 
@@ -102,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_horizontal"
-                android:text="人次:50次"
+                android:text="人次: 50次"
                 android:textSize="@dimen/content"
                 android:textColor="@color/common_blue"/>
 	    </LinearLayout>

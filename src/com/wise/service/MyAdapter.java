@@ -343,6 +343,7 @@ public class MyAdapter extends BaseAdapter{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String currentTime = sdf.format(new Date());
 		String time1 =  transform(time);
+		System.out.println(time + "," + time1);
 	     if(Integer.parseInt(time1.substring(0,4)) < Integer.parseInt(currentTime.substring(0,4))){
 	    	 return time1.substring(0, 16);
 	     }else{

@@ -13,6 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:visibility="gone"
             android:gravity="center_vertical"
             android:orientation="horizontal" >
             <ImageView
@@ -33,10 +34,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="@string/xlistview_footer_hint_normal"
+            android:text="@string/xlistview_footer_hint_ready"
             android:textColor="@color/common"
-            android:textSize="@dimen/content"
-            android:visibility="invisible" />
+            android:textSize="@dimen/content"/>
     </RelativeLayout>
 
 </LinearLayout>

@@ -42,6 +42,10 @@ public class Variable{
      */
     public static double Lat = 0;
     /**
+     * 定位时间
+     */
+    public static String gpsTime = "";
+    /**
      * 当前未读
      */
     public static double Lon = 0;
