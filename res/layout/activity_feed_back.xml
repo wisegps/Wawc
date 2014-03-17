@@ -37,7 +37,7 @@
             android:textColor="@color/white"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margins"
-            android:textSize="@dimen/main"
+            android:textSize="@dimen/content"
             android:layout_alignParentRight="true" />
     </RelativeLayout>
     <EditText

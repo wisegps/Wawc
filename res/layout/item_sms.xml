@@ -45,5 +45,6 @@
     </LinearLayout>    
     <View 
         android:layout_width="fill_parent"
+        android:background="@color/gray"
         android:layout_height="@dimen/double_margins"/> 
 </LinearLayout>

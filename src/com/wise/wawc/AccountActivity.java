@@ -10,6 +10,7 @@ import org.json.JSONObject;
 import com.wise.data.CarData;
 import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
@@ -141,11 +142,11 @@ public class AccountActivity extends Activity{
             }
             if(jsonObject.opt("annual_inspect_date") != null){
                 String annual_inspect_date = jsonObject.getString("annual_inspect_date");
-                values.put("annual_inspect_date", annual_inspect_date.replace("T", " ").substring(0, 19));
+                values.put("annual_inspect_date", GetSystem.ChangeTimeZone(annual_inspect_date.replace("T", " ").substring(0, 19)));
             }
             if(jsonObject.opt("change_date") != null){
                 String change_date = jsonObject.getString("change_date");
-                values.put("change_date", change_date.replace("T", " ").substring(0, 19));
+                values.put("change_date", GetSystem.ChangeTimeZone(change_date.replace("T", " ").substring(0, 19)));
             }
             values.put("cust_id", Variable.cust_id);
             dbExcute.InsertDB(AccountActivity.this, values, Constant.TB_Account);
@@ -244,6 +245,7 @@ public class AccountActivity extends Activity{
         editor.putString(Constant.Adress, "");
         editor.putString(Constant.Phone, "");
         editor.putString(Constant.sp_cust_id, "");
+        editor.putString(Constant.platform, "");
         editor.commit();
 	}
 	@Override

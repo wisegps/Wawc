@@ -260,8 +260,8 @@ public class CarFaultActivity extends Activity implements IXListViewListener{
 				@Override
 				public void onClick(View v) {
 				    StringBuffer sb = new StringBuffer();
-				    sb.append("【故障】");
-	                sb.append(faultData.getTime());
+				    sb.append("【故障】 ");
+	                sb.append(faultData.getTime().substring(5, 16));
 	                sb.append("," + faultData.getFaultCode());
 	                sb.append("," + faultData.getFaultInfo());
 	                GetSystem.share(CarFaultActivity.this, sb.toString(), "",0,0,"故障");

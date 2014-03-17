@@ -164,10 +164,10 @@ public class SearchMapActivity extends Activity {
             }
         } else {
             // 搜索关键字
-            Log.d(TAG, keyWord);
+            Log.d(TAG, keyWord + "Variable.Lat = " + Variable.Lat + " , Variable.Lon = " + Variable.Lon);
             mkSearch = new MKSearch();
             mkSearch.init(WawcApplication.getInstance().mBMapManager, mkSearchListener);
-            mkSearch.poiSearchNearBy(keyWord, point, 5000);
+            mkSearch.poiSearchNearBy(keyWord, point, 50000);
         }
         // 显示自己位置
         Drawable mark = getResources().getDrawable(

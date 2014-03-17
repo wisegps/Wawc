@@ -250,10 +250,18 @@ public class CarLocationActivity extends Activity {
                     + carData.getLat() + "," + carData.getLon()
                     + "&coord_type=bd09ll&output=html";
             StringBuffer sb = new StringBuffer();
-            sb.append("【位置】");
-            sb.append(carData.getAdress());
-            sb.append("," + carData.getAdress());
-            sb.append("," + url);
+            sb.append("【位置】 ");
+            if(carData.getGps_time() != null && !carData.getGps_time().equals("")){
+                try {
+                    sb.append(carData.getGps_time().substring(5, 16) + " ");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    sb.append(carData.getGps_time() + " ");
+                }
+            }
+            sb.append(carData.getObj_name());
+            sb.append(" 位于"+carData.getAdress());
+            sb.append(" " + url);
             GetSystem.share(CarLocationActivity.this, sb.toString(), imagePath,
                     (float) Lat, (float) Lon,"位置");
         }

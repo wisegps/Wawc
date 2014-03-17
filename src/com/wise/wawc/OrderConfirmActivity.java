@@ -243,9 +243,13 @@ public class OrderConfirmActivity extends Activity{
     }
 	
 	private void wapPay(String order_id){
-	    String url = Constant.BaseUrl + "pay/get_url?auth_code=" + Variable.auth_code + "&product_name=OBD云终端"
-	            + "&order_id=" + order_id + "&total_price=0.01&cust_id=" + Variable.cust_id;
-	    new Thread(new NetThread.GetDataThread(handler, url, submit_wap)).start();
+	    try {
+	        String url = Constant.BaseUrl + "pay/get_url?auth_code=" + Variable.auth_code + "&product_name=" + URLEncoder.encode("OBD云终端", "UTF-8")
+	                + "&order_id=" + order_id + "&total_price=0.01&cust_id=" + Variable.cust_id;
+	        new Thread(new NetThread.GetDataThread(handler, url, submit_wap)).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }	    
 	}
 	private void jsonWapData(String result){
 	    try {

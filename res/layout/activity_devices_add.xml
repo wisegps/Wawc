@@ -34,7 +34,7 @@
             android:background="@drawable/article_comment_bg"
             android:layout_marginRight ="@dimen/margins"
             android:textColor="@color/white"
-            android:textSize="@dimen/main"
+            android:textSize="@dimen/content"
             android:text="添加"/>
 	</RelativeLayout>
 	<LinearLayout 
@@ -91,6 +91,7 @@
 	                android:id="@+id/et_serial"
                     android:layout_toLeftOf="@id/iv_serial"
                     android:background="@null"
+                    android:layout_centerVertical="true"
 	                android:layout_width="fill_parent"
 	                android:layout_height="wrap_content"/>         
 	        </RelativeLayout>
@@ -101,7 +102,10 @@
 	        android:background="@drawable/body_line"/>
 	    <LinearLayout 
 	        android:orientation="horizontal"
-	        android:padding="@dimen/margins"
+	        android:paddingLeft="@dimen/margins"
+	        android:paddingRight="@dimen/margins"
+	        android:paddingTop="14dp"
+	        android:paddingBottom="14dp"
 	        android:background="@color/white"
 	        android:layout_width="fill_parent"
 	        android:layout_height="wrap_content">
@@ -129,7 +133,10 @@
 	        android:background="@drawable/body_line"/>
 	    <LinearLayout 
             android:orientation="horizontal"
-            android:padding="@dimen/margins"
+            android:paddingLeft="@dimen/margins"
+            android:paddingRight="@dimen/margins"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
             android:background="@color/white"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">

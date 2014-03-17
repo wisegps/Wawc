@@ -5,6 +5,7 @@ import com.baidu.location.BDLocationListener;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.wise.pubclas.Constant;
+import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.Variable;
 
 import android.app.Service;
@@ -89,6 +90,7 @@ public class LocationService extends Service {
 				sb.append(location.getAddrStr());
 				Variable.Adress = location.getAddrStr();
 				Variable.City = location.getCity();
+				Variable.gpsTime = GetSystem.GetNowTime();
 	            //发送定位城市广播，选择城市用到
 	            Intent intent = new Intent(Constant.A_City);
 	            intent.putExtra("City", location.getCity());

@@ -11,6 +11,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -43,12 +44,17 @@ public class FeedBackActivity extends Activity {
                     Toast.makeText(FeedBackActivity.this, "反馈的内容不能为空", Toast.LENGTH_SHORT).show();
                     break;
                 }
+                String qq = et_qq.getText().toString().trim();
+                if(qq.equals("")){
+                    Toast.makeText(FeedBackActivity.this, "联系方式不能为空", Toast.LENGTH_SHORT).show();
+                    break;
+                }
                 String url = Constant.BaseUrl + "feedback?auth_code=" + Variable.auth_code;
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
                 params.add(new BasicNameValuePair("content", content));
-                params.add(new BasicNameValuePair("contact", et_qq.getText().toString().trim()));
+                params.add(new BasicNameValuePair("contact", qq));
                 params.add(new BasicNameValuePair("cust_id", Variable.cust_id == null ? "0":Variable.cust_id));
-                new Thread(new NetThread.putDataThread(handler, url, params, feedBack)).start();
+                new Thread(new NetThread.postDataThread(handler, url, params, feedBack)).start();
                 break;
             case R.id.iv_back:
                 finish();
@@ -62,6 +68,7 @@ public class FeedBackActivity extends Activity {
             super.handleMessage(msg);
             switch (msg.what) {
             case feedBack:
+                System.out.println(msg.obj.toString());
                 Toast.makeText(FeedBackActivity.this, "意见反馈成功", Toast.LENGTH_SHORT).show();
                 break;
             }
