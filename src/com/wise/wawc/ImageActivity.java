@@ -13,6 +13,7 @@ import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.Variable;
 import com.wise.service.ImageAdapter;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,6 +23,8 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Display;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -32,9 +35,6 @@ public class ImageActivity extends Activity {
 	private Gallery gallery = null;
 	private HorizontalScrollView horizontalScroller;
 	private Bitmap bitmap = null;
-	int mImageResourceIds1[] = new int[]{R.drawable.a,R.drawable.ic_launcher,
-			R.drawable.ic_launcher,R.drawable.ic_launcher,R.drawable.ic_launcher,R.drawable.ic_launcher,
-			R.drawable.ic_launcher,R.drawable.ic_launcher,R.drawable.ic_launcher};
 	private ImageAdapter adapter = null;
 	private List<Bitmap> imageModel = new ArrayList<Bitmap>();
 	public static int screenHeight = 0;
@@ -128,6 +128,7 @@ public class ImageActivity extends Activity {
 	class MyHandler extends Handler{
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
+			Log.e("刷新...","刷新");
 			adapter.refreshDatas(imageModel);
 		}
 	}

@@ -58,7 +58,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 	private MyHandler myHandler = null;
 	private ImageView cancle;
 	private TextView friendName = null;
-	private Button sendButton = null;
+	private TextView sendButton = null;
 	private TextView commentContent = null;
 
 	private Intent lastPageDatas = null;
@@ -93,7 +93,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 		friendHead.setOnClickListener(new OnClickListener());
 		friendName = (TextView) findViewById(R.id.friend_home_name);
 		commentContent = (TextView) findViewById(R.id.et_sendmessage);
-		sendButton = (Button) findViewById(R.id.btn_send);
+		sendButton = (TextView) findViewById(R.id.btn_send);
 		sendButton.setOnClickListener(new OnClickListener());
 		cancle = (ImageView) findViewById(R.id.friend_back);
 		cancle.setOnClickListener(new OnClickListener());

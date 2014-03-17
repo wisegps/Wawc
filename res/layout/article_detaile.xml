@@ -146,7 +146,7 @@
                             android:layout_gravity="left|center_vertical"
                             android:layout_weight="1"
                             android:text="10:30"
-                            android:textColor="@color/gray"
+                            android:textColor="@color/common_inactive"
                             android:textSize="@dimen/content" />
 
                         <LinearLayout
@@ -211,12 +211,11 @@
                             android:layout_marginTop="@dimen/margins"
                             android:layout_marginLeft="@dimen/margins" 
                             >
-                            
-
                             <ImageView
                                 android:id="@+id/article_details_praises_star"
                                 android:layout_width="@dimen/double_margins"
                                 android:layout_height="@dimen/double_margins"
+                                android:layout_marginRight="@dimen/margins"
                                 android:background="@drawable/body_icon_heart_press" />
 
                             <TextView
@@ -234,7 +233,9 @@
                             android:layout_width="fill_parent"
                             android:layout_height="0.1dip"
                             android:layout_marginTop="10dip"
-                            android:background="#000000" />
+                            android:layout_marginRight="@dimen/margins"
+                            android:layout_marginLeft="@dimen/margins"
+                            android:background="@color/gray" />
                         <LinearLayout
                             android:id="@+id/article_details_comment_layout"
                             android:layout_width="fill_parent"

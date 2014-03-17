@@ -254,8 +254,8 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
         
         //动态在LinearLayout中添加一张图片
         ImageView imageView = new ImageView(this);
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(Variable.smallImageReqWidth,Variable.smallImageReqWidth));
-        imageView.setPadding(5, 5, 5, 5);
+        imageView.setLayoutParams(new LinearLayout.LayoutParams(takePhoto.getHeight() + 2,takePhoto.getHeight() + 2));
+        imageView.setPadding(5, 0, 0, 0);
         imageView.setImageBitmap(small_image);
         linearLayout.addView(imageView);
         viewList.add(imageView);

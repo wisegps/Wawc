@@ -85,7 +85,7 @@ public class ArticleDetailActivity extends Activity{
 	ImageView saySomethig;
 	LinearLayout commentView;
 	boolean isShow = false;
-	Button sendMessage;
+	TextView sendMessage;
 	TextView articleDetailesCommentContent;
 	String commentContent;
 	LinearLayout commentLayout;
@@ -110,7 +110,7 @@ public class ArticleDetailActivity extends Activity{
 		articleDetaileFavorite = (ImageView) findViewById(R.id.article_detaile_favorite);
 		saySomethig = (ImageView) findViewById(R.id.article_detailes_say_somthing);
 		commentView = (LinearLayout) findViewById(R.id.article_detailes_comment);
-		sendMessage  = (Button) findViewById(R.id.btn_send);
+		sendMessage  = (TextView) findViewById(R.id.btn_send);
 		articleDetailesCommentContent = (TextView) findViewById(R.id.et_sendmessage);
 		tableLayout1 = (TableLayout) findViewById(R.id.article_details_user_image_tr);
 		tableLayout3 = (TableLayout) findViewById(R.id.article_details_comments_tl);
@@ -168,7 +168,7 @@ public class ArticleDetailActivity extends Activity{
 						while (iter.hasNext()) {
 							Map.Entry entry = (Map.Entry) iter.next();
 							String val = (String) entry.getValue();
-							sb.append(val+",");
+							sb.append(val+" , ");
 							if(Variable.cust_name.equals(val)){
 								articleDetaileFavorite.setBackgroundResource(R.drawable.body_icon_heart_press);
 							}
@@ -196,7 +196,7 @@ public class ArticleDetailActivity extends Activity{
 						    TextView commentContent = new TextView(ArticleDetailActivity.this);   //评论内容
 						    commentContent.setTextColor(Color.parseColor("#313131"));
 							String[] commentStr = article.getCommentList().get(i);
-							commentName.setText(commentStr[0] + ":");
+							commentName.setText(commentStr[0] + " : ");
 							
 							oneComment.addView(commentName, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 							SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(ArticleDetailActivity.this, commentStr[1]);

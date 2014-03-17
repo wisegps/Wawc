@@ -180,4 +180,7 @@
     <string name="sure_delete_vehicle">确认删除车辆</string>
     <string name="petrol_grade">汽油标号</string>
     <string name="please_choice_petrol_grade">汽油标号</string>
+    <string name="friend_car">他的爱车</string>
+    <string name="friend_car_friend">他的车友圈</string>
+    <string name="comments">评论</string>
 </resources>

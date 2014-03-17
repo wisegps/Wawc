@@ -32,12 +32,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -63,15 +65,15 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	private ImageView newArticle = null;
 	private View saySomething;   //发表评论控件
-	private Button sendButton = null;
+	private TextView sendButton = null;
 	private TextView commentContent = null;
 	
 	private MyHandler myHandler = null;
 	
 	private ImageView qqUserHead = null;
+	private ImageView titleIcon = null;
 	private TextView qqUserName = null;
 	private TextView TVTitle = null;
-	
 	
 	private SpinerPopWindow mSpinerPopWindow;//文章筛选列表
 	private List<String> titleList = new ArrayList<String>();
@@ -111,7 +113,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	private String articleType = "";
 	
 	private int article = 6;  //文章类型
-	
+	private boolean isChickTitle = false;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -125,7 +127,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		newArticle = (ImageView) findViewById(R.id.publish_article);
 		newArticle.setOnClickListener(new ClickListener());
 		saySomething = (View) findViewById(R.id.say_something);
-		sendButton = (Button) findViewById(R.id.btn_send);
+		sendButton = (TextView) findViewById(R.id.btn_send);
 		sendButton.setOnClickListener(new ClickListener());
 		commentContent = (TextView) findViewById(R.id.et_sendmessage);
 		qqUserHead = (ImageView) findViewById(R.id.user_head);
@@ -134,7 +136,9 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		articleList = (XListView) findViewById(R.id.article_list);
 		articleList.setXListViewListener(this);
 		screenWidth = (int) (getWindowManager().getDefaultDisplay().getWidth()*0.5);
-
+		titleIcon = (ImageView) findViewById(R.id.title_icon);
+		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.body_container_triangle1);
+		titleIcon.setImageBitmap(bitmap);
 		titleList.add("车友圈");
 		titleList.add("同城车友");
 		titleList.add("同车型车友");
@@ -219,7 +223,19 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				mSpinerPopWindow.setWidth(screenWidth);
 				mSpinerPopWindow.setHeight(px*3);				
 				mSpinerPopWindow.showAsDropDown(TVTitle, (TVTitle.getWidth()-screenWidth)/2, 0);
-                Log.d(TAG, "车友圈" + "screenWidth = " + screenWidth);
+				
+				
+				int id = 0;
+				if(!isChickTitle){
+					id = R.drawable.body_container_triangle;
+					isChickTitle = true;
+				}else{
+					id = R.drawable.body_container_triangle1;
+					isChickTitle = false;
+				}
+				Log.e(TAG,"isChickTitle = " + isChickTitle);
+				Bitmap bitmap = BitmapFactory.decodeResource(getResources(), id);
+				titleIcon.setImageBitmap(bitmap);
 				break;
 			default:
 				return;
@@ -614,5 +630,11 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		if(3 == action){
 			onLoad();
 		}
+	}
+	public boolean onTouchEvent(MotionEvent event) {
+		if(event.getAction() == MotionEvent.ACTION_UP){
+			Log.e(TAG,"屏幕点击");
+		}
+		return super.onTouchEvent(event);
 	}
 }

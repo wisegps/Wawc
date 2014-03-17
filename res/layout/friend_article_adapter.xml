@@ -57,6 +57,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
                     android:text="12:45"
+                    android:textColor="@color/common_inactive"
                     />
                 <LinearLayout 
 		             android:layout_width="fill_parent"
@@ -74,7 +75,7 @@
                         android:id="@+id/friend_article_comment"
                         android:layout_width="20dip"
 			    	 	android:layout_height="20dip"
-			    	 	android:layout_marginLeft="10dip"
+			    	 	android:layout_marginLeft="@dimen/double_margins"
 			    	 	android:background="@drawable/side_article_comment"
                         />
                 </LinearLayout>
@@ -119,6 +120,7 @@
                     android:id="@+id/friend_article_praises_star"
                     android:layout_width="20dip"
                     android:layout_height="20dip"
+                    android:layout_marginRight="@dimen/margins"
                     android:background="@drawable/body_icon_heart_press"
                     />
             <TextView
@@ -134,25 +136,28 @@
                 android:layout_marginTop="10dip"
                 android:layout_width="fill_parent"
                 android:layout_height="0.5dip"
-                android:background="#000000"
+                android:layout_marginLeft="@dimen/margins"
+                android:layout_marginRight="@dimen/margins"
+                android:background="@color/gray_light"
                 />
             <!-- 评论 -->
                 <LinearLayout
                     android:id="@+id/friend_home_article_comment_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/margins"
                     android:layout_marginLeft="@dimen/margins"
                     android:orientation="vertical" >
                     <LinearLayout 
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
+                        android:paddingTop="@dimen/margins"
+                        android:paddingBottom="@dimen/margins"
                         >
                     <TextView 
                         android:id="@+id/friend_home__one_comment_name_tv"
                         android:layout_width="wrap_content"
-                        android:layout_height="30dip"
+                        android:layout_height="wrap_content"
                         android:maxLines="1"
                         android:gravity="center_vertical"
                         android:textColor="@color/blue"
@@ -172,7 +177,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal"
-                        android:layout_marginTop="@dimen/margins"
+                        android:layout_marginBottom="@dimen/margins"
                         >
                     <TextView 
                         android:id="@+id/friend_home_two_comment_name_tv"
@@ -196,7 +201,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:layout_marginTop="@dimen/margins"
+                        android:layout_marginBottom="@dimen/margins"
                         android:maxLines="1"
                         android:textColor="@color/blue"
                         />

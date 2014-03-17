@@ -4,9 +4,7 @@
     android:layout_height="fill_parent"
     android:background="#FFFFFF"
     android:orientation="vertical" >
-
     <!-- 头部 -->
-
     <RelativeLayout
         android:id="@+id/friend_home_top"
         android:layout_width="fill_parent"
@@ -26,6 +24,7 @@
             android:layout_height="fill_parent"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/margins"
             android:gravity="center"
             android:text="@string/friend_home"
             android:textColor="@color/white"
@@ -36,7 +35,7 @@
     <RelativeLayout
         android:id="@+id/friend_home_title"
         android:layout_width="fill_parent"
-        android:layout_height="120dip"
+        android:layout_height="@dimen/vehicle_friend_logo_bg"
         android:layout_below="@id/friend_home_top"
         android:background="@drawable/wallpaper_s_01"
         android:gravity="center" >
@@ -49,8 +48,8 @@
 
             <ImageView
                 android:id="@+id/friend_home_user_head"
-                android:layout_width="50dip"
-                android:layout_height="50dip"
+                android:layout_width="65dip"
+                android:layout_height="65dip"
                 android:layout_gravity="center" />
 
             <TextView
@@ -58,6 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/title"
+                android:layout_marginTop="@dimen/margins"
                 android:textColor="@color/white" />
         </LinearLayout>
     </RelativeLayout>
@@ -68,8 +68,9 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/friend_home_title"
-        android:dividerHeight="0.5dip"
-        android:divider="@color/gray_light"
+        android:layout_marginTop="@dimen/margins"
+        android:dividerHeight="@null"
+        android:divider="@null"
         android:descendantFocusability="blocksDescendants"
         >
     </com.wise.list.XListView>
@@ -81,13 +82,10 @@
         android:layout_alignParentBottom="true"
         android:orientation="vertical"
         android:visibility="gone" >
-
         <!-- 聊天输入框 -->
-
         <include
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             layout="@layout/custom_facerelativelayout" />
     </LinearLayout>
-
 </RelativeLayout>

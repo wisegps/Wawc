@@ -384,7 +384,7 @@ public class FriendArticleAdapter extends BaseAdapter{
 			
 			Bitmap bitmap = smallImageList.get(position);
 			if(bitmap == null){   //显示临时图片
-				Bitmap im = BitmapFactory.decodeResource(context.getResources(), R.drawable.body_nothing_icon);
+				Bitmap im = BitmapFactory.decodeResource(context.getResources(), R.drawable.article);
 				userImageHolder.userImage.setImageBitmap(im);
 //				userImageHolder.userImage.setBackgroundResource(R.drawable.article_comment_bg);
 			}else{

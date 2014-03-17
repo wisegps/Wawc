@@ -43,7 +43,7 @@
             android:background="@drawable/article_comment_bg"
             android:text="@string/publish_new_article"
             android:textColor="@color/white"
-            android:textSize="@dimen/main" />
+            android:textSize="@dimen/content" />
     </RelativeLayout>
     <LinearLayout
         android:layout_width="fill_parent"
@@ -63,27 +63,28 @@
             android:lines="8"
             android:scrollbars="vertical" />
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal" >
 
             <ImageView
-                android:layout_width="0dip"
+                android:id="@+id/new_article_location_icon"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
                 android:background="@drawable/body_icon_lbs_2" />
 
             <TextView
                 android:id="@+id/localtion"
-                android:layout_width="0dip"
+                android:layout_toRightOf="@id/new_article_location_icon"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/margins"
-                android:layout_weight="18"
-                android:text="广东省深圳市南山区南山大道115号"
-                android:textColor="@color/common_inactive" />
-        </LinearLayout>
+                android:textColor="@color/common" />
+        </RelativeLayout>
     </LinearLayout>
 
     <HorizontalScrollView

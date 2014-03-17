@@ -6,29 +6,54 @@
     android:layout_height="wrap_content"
     android:background="#F0F0F0" 
     >
-
     <RelativeLayout
         android:id="@+id/rl_input"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-
+        android:layout_height="wrap_content"
+        android:background="@color/white">
+        <LinearLayout 
+            android:id="@+id/face_line"
+            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:orientation="vertical"
+            android:layout_alignParentTop="true"
+            >
+            <View 
+		        android:layout_width="fill_parent"
+		        android:layout_height="0.5dip"
+		        android:background="@color/gray_light"
+        		/>
+            
+        </LinearLayout>
+        <RelativeLayout
+            android:layout_below="@id/face_line"
+	        android:layout_width="fill_parent"
+	        android:layout_height="wrap_content"
+	        android:background="@color/white">
         <ImageButton
             android:id="@+id/btn_face"
-            android:layout_width="40dip"
-            android:layout_height="40dip"
+            android:layout_width="35dip"
+            android:layout_height="35dip"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="8dip"
-            android:background="@drawable/ib_face"
+            android:layout_marginLeft="@dimen/margins"
+            android:layout_marginTop="@dimen/margins"
+            android:layout_marginBottom="@dimen/margins"
+            android:background="@drawable/body_icon_expression"
             />
 
-        <Button
+        <TextView
             android:id="@+id/btn_send"
-            android:layout_width="60dp"
-            android:layout_height="40dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="@dimen/margins"
+            android:layout_marginTop="@dimen/margins"
+            android:layout_marginBottom="@dimen/margins"
+            android:textSize="@dimen/title"
+            android:textColor="@color/blue"
+            android:gravity="center"
             android:text="发送" />
 
         <EditText
@@ -36,12 +61,17 @@
             android:layout_width="fill_parent"
             android:layout_height="40dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="@dimen/margins"
+            android:layout_marginRight="@dimen/margins"
+            android:layout_marginTop="@dimen/margins"
+            android:layout_marginBottom="@dimen/margins"
             android:layout_toLeftOf="@id/btn_send"
             android:layout_toRightOf="@id/btn_face"
             android:singleLine="true"
+            android:hint="@string/comments"
+            android:background="@drawable/new_article_edit_border"
             android:textSize="18sp" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout

@@ -1,16 +1,17 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#FFFFFF"
-    android:orientation="vertical" >
-
+    android:orientation="vertical"
+     >
     <!-- 头部 -->
-
     <RelativeLayout
+        android:id="@+id/friend_article_top"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight"
-        android:background="@drawable/nav_bg" >
+        android:layout_alignParentTop="true"
+        android:background="@drawable/nav_bg">
 
         <ImageView
             android:id="@+id/menu"
@@ -36,25 +37,55 @@
             android:layout_height="@dimen/title_image"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/publish_article"
-            android:background="@drawable/nav_icon_search" />
+            android:background="@drawable/nav_icon_search"
+            android:visibility="gone"
+             />
 
+        
+        <LinearLayout 
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:id="@+id/tv_vehicle_friend_title"
+            	android:layout_width="wrap_content"
+            	android:layout_height="fill_parent" 
+                android:gravity="center_vertical"
+            	android:text="@string/car_circle"
+            	android:textColor="@color/white"
+            	android:textSize="@dimen/head" 
+                />
+            <ImageView 
+                android:id="@+id/title_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/margins"
+                />
+        </LinearLayout>
+        <!-- 
         <TextView
             android:id="@+id/tv_vehicle_friend_title"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_centerInParent="true"
-            android:drawableRight="@drawable/body_container_triangle"
+            android:drawableRight="@drawable/body_container_triangle1"
             android:gravity="center_vertical"
             android:text="@string/car_circle"
             android:textColor="@color/white"
             android:textSize="@dimen/head" />
+             -->
     </RelativeLayout>
     <!-- 标题 -->
 
     <RelativeLayout
+        android:id="@+id/friend_article_title"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/vehicle_friend_logo_bg"
         android:background="@drawable/wallpaper_s_01"
+        android:layout_below="@id/friend_article_top"
         android:gravity="center" >
 
         <LinearLayout
@@ -65,8 +96,8 @@
 
             <ImageView
                 android:id="@+id/user_head"
-                android:layout_width="50dip"
-                android:layout_height="50dip"
+                android:layout_width="65dip"
+                android:layout_height="65dip"
                 android:layout_gravity="center"
                 android:layout_margin="2dip" />
 
@@ -77,46 +108,34 @@
                 android:textSize="@dimen/title"
                 android:textColor="@color/white"
                 android:layout_gravity="center"
+                android:layout_marginTop="@dimen/margins"
                 android:text="用户名"
                  />
         </LinearLayout>
     </RelativeLayout>
-    <!-- 搜索栏 -->
-    <EditText
-        android:id="@+id/search"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:hint="Search"
-        android:visibility="gone" />
     <!-- 显示详细评论信息 -->
-
-    <RelativeLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
         <com.wise.list.XListView
             android:id="@+id/article_list"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:cacheColorHint="#00000000"
             android:divider="@color/gray"
-            android:dividerHeight="0.5dip" >
+            android:layout_marginTop="@dimen/double_margins"
+            android:layout_below="@id/friend_article_title"
+            android:dividerHeight="@null"
+            >
         </com.wise.list.XListView>
-
         <LinearLayout
             android:id="@+id/say_something"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:orientation="vertical"
             android:visibility="gone" >
-
             <!-- 聊天输入框 -->
-
             <include
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 layout="@layout/custom_facerelativelayout" />
         </LinearLayout>
-    </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>

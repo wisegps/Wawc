@@ -35,84 +35,89 @@
 
     <!-- 用户信息 -->
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margins"
-        android:orientation="horizontal" >
+        android:orientation="horizontal"
+        android:gravity="left"
+         >
 
         <ImageView
-            android:layout_width="0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight="1.5"
+            android:id="@+id/friend_information_head"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:layout_centerVertical="true"
+            android:layout_alignParentLeft="true"
+            android:background="@drawable/body_nothing_icon"
             />
 
-        <LinearLayout
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="10dip"
-            android:layout_weight="6"
-            android:orientation="vertical" >
-
             <TextView
-                android:id="@+id/friend_article_content"
-                android:layout_width="fill_parent"
+                android:id="@+id/friend_information_name"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="什么都可以"
-                android:textColor="@color/common" />
-        </LinearLayout>
-    </LinearLayout>
+                android:textColor="@color/common"
+	        	android:textSize="@dimen/main"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/friend_information_head"
+                android:layout_marginLeft="@dimen/margins"
+                android:gravity="left"
+                />
+    </RelativeLayout>
 
     <TextView
+        android:id="@+id/friend_car"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margins"
-        android:text="他的爱车"
-        android:textColor="@color/common" />
+        android:text="@string/friend_car"
+        android:textColor="@color/common"
+	    android:textSize="@dimen/main"
+	    android:padding="@dimen/margins"
+         />
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/friend_car_info"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margins"
+        android:padding="@dimen/margins"
         android:background="@color/gray_light"
-        android:gravity="center"
         android:orientation="horizontal" >
 
         <ImageView
-            android:layout_width="0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight="1.5"
+            android:id="@+id/friend_information_car_brand_iv"
+            android:layout_width="50dip"
+            android:layout_height="50dip"
+            android:background="@drawable/body_nothing_icon"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
              />
 
         <LinearLayout
-            android:layout_width="0dip"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_weight="6"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/friend_information_car_brand_iv"
             android:orientation="vertical" >
 
             <TextView
+                android:id="@+id/friend_information_car_brand_tv"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dip"
+                android:layout_marginLeft="@dimen/margins"
                 android:text="宝马x86"
-                android:textColor="@color/common" />
-
+                android:textColor="@color/common"
+	        	android:textSize="@dimen/main"
+                 />
             <TextView
+                android:id="@+id/friend_information_car_plate_tv"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dip"
+                android:layout_marginLeft="@dimen/margins"
+                android:layout_marginTop="@dimen/margins"
                 android:text="粤B12345"
                 android:textColor="@color/common" />
         </LinearLayout>
-    </LinearLayout>
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margins"
-        android:text="他的车友圈"
-        android:textColor="@color/common" />
-
+    </RelativeLayout>
 </LinearLayout>

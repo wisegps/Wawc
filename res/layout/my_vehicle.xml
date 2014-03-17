@@ -39,8 +39,8 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/margins"
-            android:background="@drawable/article_comment_bg"
             android:text="@string/vehicle_edit"
+            android:background="@drawable/article_comment_bg"
             android:textSize="@dimen/content"
             android:textColor="@color/white"/>
     </RelativeLayout>
