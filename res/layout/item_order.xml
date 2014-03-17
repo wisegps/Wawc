@@ -82,6 +82,7 @@
         android:layout_width="fill_parent"        
         android:layout_height="wrap_content">
         <TextView
+            android:id="@+id/tv_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="已支付"
@@ -89,7 +90,7 @@
             android:textColor="@color/common"
             android:textSize="@dimen/content"/>
          <TextView
-             android:id="@+id/bt_item_order_total_logistics"  
+             android:id="@+id/tv_bt_status"  
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
              android:layout_alignParentRight="true"

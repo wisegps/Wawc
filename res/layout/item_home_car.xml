@@ -41,7 +41,7 @@
         android:layout_margin="@dimen/margins"
         android:textSize="@dimen/main"
         android:drawableLeft="@drawable/home_lbs"
-        android:drawablePadding="@dimen/margins"
+        android:drawablePadding="5dp"
         android:gravity="center_vertical"/>
     <TextView 
         android:id="@+id/tv_updateTime"

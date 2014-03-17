@@ -25,22 +25,13 @@
             android:layout_marginRight="@dimen/margins"
             android:contentDescription="@string/app_name"
             android:src="@drawable/collect" />
-        <LinearLayout 
+        <TextView
+            android:id="@+id/tv_item_dealadress_name"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"            
-            android:layout_toLeftOf="@id/iv_Collect">
-            <TextView
-	           android:id="@+id/tv_item_dealadress_name"
-	           android:layout_width="wrap_content"
-	           android:layout_height="wrap_content"
-	           android:text="深圳红岭北路3002号梅"
-	           android:textColor="@color/common" />
-	       <TextView
-	           android:id="@+id/tv_item_dealadress_distance"
-	           android:layout_width="wrap_content"
-	           android:layout_height="wrap_content"/>
-        </LinearLayout>
+            android:layout_height="wrap_content"    
+            android:layout_toLeftOf="@id/iv_Collect"
+            android:textSize="@dimen/content"
+            android:text="深圳红岭北路3002号梅"/>
     </RelativeLayout>
 
     <RelativeLayout

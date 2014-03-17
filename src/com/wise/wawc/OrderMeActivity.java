@@ -144,22 +144,63 @@ public class OrderMeActivity extends Activity implements IXListViewListener{
                 holder.tv_item_order_create_time = (TextView) convertView.findViewById(R.id.tv_item_order_create_time);
                 holder.tv_item_order_quantity = (TextView) convertView.findViewById(R.id.tv_item_order_quantity);
                 holder.tv_item_order_total_price = (TextView) convertView.findViewById(R.id.tv_item_order_total_price);
+                holder.tv_status = (TextView) convertView.findViewById(R.id.tv_status);
+                holder.tv_bt_status = (TextView) convertView.findViewById(R.id.tv_bt_status);
                 convertView.setTag(holder);
             }else{
                 holder = (ViewHolder) convertView.getTag();
             }
-            OrderData orderData = orderDatas.get(position);
+            final OrderData orderData = orderDatas.get(position);
             holder.tv_item_order_product_name.setText(orderData.getProduct_name());
             holder.tv_item_order_unit_price.setText(orderData.getUnit_price());
             holder.tv_item_order_create_time.setText(orderData.getCreate_time().substring(0, 19));
             holder.tv_item_order_quantity.setText(orderData.getQuantity());
             holder.tv_item_order_total_price.setText(orderData.getTotal_price());
+            switch (orderData.getStatus()) {
+                case 0:
+                    holder.tv_status.setText("待支付");
+                    holder.tv_bt_status.setText("支付");
+                    break;
+                case 1:
+                    holder.tv_status.setText("已支付");
+                    holder.tv_bt_status.setText("查看物流");
+                    break;
+                case 2:
+                    holder.tv_status.setText("已经货");
+                    holder.tv_bt_status.setText("查看物流");
+                    break;
+                case 3:
+                    holder.tv_status.setText("取消订单");
+                    holder.tv_bt_status.setText("查看物流");
+                    break;
+                case 4:
+                    holder.tv_status.setText("待对账");
+                    holder.tv_bt_status.setText("查看物流");
+                    break;
+            }
+            holder.tv_bt_status.setOnClickListener(new OnClickListener() {                
+                @Override
+                public void onClick(View v) {
+                    switch (orderData.getStatus()) {
+                        case 0://跳转到付款界面
+                            
+                            break;
+                        case 1:
+                            break;
+                        case 2://查看物流
+                            break;
+                        case 3:
+                            break;
+                        case 4:
+                            break;
+                    }
+                }
+            });
             return convertView;
         }
         private class ViewHolder {
             TextView tv_item_order_product_name,tv_item_order_unit_price,tv_item_order_create_time,
-                        tv_item_order_quantity,tv_item_order_total_price;
-            Button bt_item_order_total_logistics;
+                        tv_item_order_quantity,tv_item_order_total_price,tv_status,tv_bt_status;
         }
 	}
 	
@@ -170,6 +211,7 @@ public class OrderMeActivity extends Activity implements IXListViewListener{
 	    String unit_price;
 	    String order_id;
 	    String product_name;
+	    int status;
         public String getCreate_time() {
             return create_time;
         }
@@ -205,6 +247,12 @@ public class OrderMeActivity extends Activity implements IXListViewListener{
         }
         public void setProduct_name(String product_name) {
             this.product_name = product_name;
+        }        
+        public int getStatus() {
+            return status;
+        }
+        public void setStatus(int status) {
+            this.status = status;
         }
         @Override
         public String toString() {

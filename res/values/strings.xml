@@ -124,8 +124,8 @@
 
     <string name="search_result">搜索结果</string>
     <!-- 车辆位置 -->
-    <string name="total_score">累计扣分：%s</string>
-    <string name="total_fine">累计罚款：%s元</string>
+    <string name="total_score">累计扣分: %s分</string>
+    <string name="total_fine">累计罚款: %s元</string>
     <!--爱车车况-->
     <string name="month_hk_fuel">百公里油耗\n%sL</string>
     <string name="month_fuel">月总油耗\n%sL</string>

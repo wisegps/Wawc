@@ -2,12 +2,10 @@ package com.wise.extend;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.baidu.platform.comapi.basestruct.GeoPoint;
 import com.wise.data.AdressData;
 import com.wise.pubclas.Constant;
@@ -15,9 +13,6 @@ import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
-import com.wise.wawc.HomeActivity;
-import com.wise.wawc.CollectionActivity;
-import com.wise.wawc.MyVehicleActivity;
 import com.wise.wawc.R;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -27,15 +22,16 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,12 +49,18 @@ public class AdressAdapter extends BaseAdapter{
 	private MyHandler myHandler = null;
 	private static final int addFavorite = 1;
 	int index;
+
+    ForegroundColorSpan blackSpan;
+    ForegroundColorSpan graySpan;
+    
 	public AdressAdapter(Context context,List<AdressData> adressDatas,Activity mActivity){
 		this.context = context;
 		this.adressDatas = adressDatas;
 		this.mActivity = mActivity;
 		mInflater = LayoutInflater.from(context);
 		myHandler = new MyHandler();
+		blackSpan = new ForegroundColorSpan(context.getResources().getColor(R.color.common));
+		graySpan = new ForegroundColorSpan(context.getResources().getColor(R.color.common_inactive));
 	}
 	@Override
 	public int getCount() {
@@ -80,7 +82,6 @@ public class AdressAdapter extends BaseAdapter{
 			convertView = mInflater.inflate(R.layout.item_dealadress, null);
 			holder = new ViewHolder();
 			holder.tv_item_dealadress_name = (TextView) convertView.findViewById(R.id.tv_item_dealadress_name);
-			holder.tv_item_dealadress_distance = (TextView) convertView.findViewById(R.id.tv_item_dealadress_distance);
 			holder.tv_item_dealadress_adress = (TextView)convertView.findViewById(R.id.tv_item_dealadress_adress);
 			holder.tv_item_dealadress_phone = (TextView)convertView.findViewById(R.id.tv_item_dealadress_phone);
 			holder.iv_Collect = (ImageView)convertView.findViewById(R.id.iv_Collect);
@@ -93,10 +94,16 @@ public class AdressAdapter extends BaseAdapter{
 			holder = (ViewHolder) convertView.getTag();
 		}
 		final AdressData adressData = adressDatas.get(position);
-		holder.tv_item_dealadress_name.setText(adressData.getName());
+		String distance = "";
 		if(adressData.getDistance() != -1){
-			holder.tv_item_dealadress_distance.setText(d(adressData.getDistance()));
-		}		
+		    distance = d(adressData.getDistance());
+		}
+        String str = adressData.getName() + distance;
+        SpannableStringBuilder builder = new SpannableStringBuilder(str);
+        builder.setSpan(blackSpan, 0, adressData.getName().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        builder.setSpan(graySpan, adressData.getName().length(), str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        holder.tv_item_dealadress_name.setText(builder);
+        
 		holder.tv_item_dealadress_adress.setText("地址：" + adressData.getAdress());
 		holder.tv_item_dealadress_phone.setText("电话：" +adressData.getPhone());
 		if(adressData.getPhone() == null || adressData.getPhone().equals("")){
@@ -164,7 +171,7 @@ public class AdressAdapter extends BaseAdapter{
 		return convertView;
 	}
 	private class ViewHolder {
-		TextView tv_item_dealadress_name,tv_item_dealadress_adress,tv_item_dealadress_phone,tv_item_dealadress_distance;
+		TextView tv_item_dealadress_name,tv_item_dealadress_adress,tv_item_dealadress_phone;
 		ImageView iv_Collect,iv_location,iv_tel,iv_share;
 		RelativeLayout ll_adress_tel;
 	}

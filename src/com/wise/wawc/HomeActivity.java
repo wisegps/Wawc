@@ -1030,12 +1030,18 @@ public class HomeActivity extends Activity {
                 + carData.getLat() + "," + carData.getLon()
                 + "&coord_type=bd09ll&output=html";
         StringBuffer sb = new StringBuffer();
-        sb.append("【位置】");
-        sb.append(carData.getGps_time());
+        sb.append("【位置】 ");
+        if(carData.getGps_time() != null && !carData.getGps_time().equals("")){
+            try {
+                sb.append(carData.getGps_time().substring(5, 16) + " ");
+            } catch (Exception e) {
+                e.printStackTrace();
+                sb.append(carData.getGps_time() + " ");
+            }
+        }
         sb.append(carData.getObj_name());
-        sb.append("位于" + carData.getAdress());
+        sb.append(" 位于" + carData.getAdress() + " ");
         sb.append(url);
-        Log.d(TAG, sb.toString());
         GetSystem.share(HomeActivity.this, sb.toString(), "",
                 Float.valueOf(carData.getLat()),
                 Float.valueOf(carData.getLon()),"位置");
@@ -1442,19 +1448,23 @@ public class HomeActivity extends Activity {
         }else{
             String device_id = Variable.carDatas.get(index).getDevice_id();
             if(device_id == null || device_id.equals("")){
-                String AddrStr = Variable.Adress;
-                String Lat = String.valueOf(Variable.Lat);
-                String Lon = String.valueOf(Variable.Lon);
-                if(AddrStr == null || AddrStr.equals("")){
-                    mTextViews[DefaultVehicleID][0].setText("未绑定终端，正在获取手机位置..."); 
-                }else{
-                    mTextViews[DefaultVehicleID][0].setText(AddrStr); 
+                try {
+                    String AddrStr = Variable.Adress;
+                    String Lat = String.valueOf(Variable.Lat);
+                    String Lon = String.valueOf(Variable.Lon);
+                    if(AddrStr == null || AddrStr.equals("")){
+                        mTextViews[DefaultVehicleID][0].setText("未绑定终端，正在获取手机位置..."); 
+                    }else{
+                        mTextViews[DefaultVehicleID][0].setText(AddrStr); 
+                    }                
+                    Variable.carDatas.get(DefaultVehicleID).setLat(Lat);
+                    Variable.carDatas.get(DefaultVehicleID).setLon(Lon);
+                    Variable.carDatas.get(DefaultVehicleID).setGps_time(Variable.gpsTime);
+                    Variable.carDatas.get(DefaultVehicleID).setAdress(AddrStr);
+                    mTextViews[DefaultVehicleID][1].setText(GetSystem.sortHomeTime(Variable.gpsTime));
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }                
-                Variable.carDatas.get(DefaultVehicleID).setLat(Lat);
-                Variable.carDatas.get(DefaultVehicleID).setLon(Lon);
-                Variable.carDatas.get(DefaultVehicleID).setGps_time(Variable.gpsTime);
-                Variable.carDatas.get(DefaultVehicleID).setAdress(AddrStr);
-                mTextViews[DefaultVehicleID][1].setText(GetSystem.sortHomeTime(Variable.gpsTime));
             }else{
                 String url = Constant.BaseUrl + "device/" + device_id
                         + "/active_gps_data?auth_code=" + Variable.auth_code;

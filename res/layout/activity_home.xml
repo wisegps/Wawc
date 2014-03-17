@@ -269,7 +269,7 @@
 		                    android:textColor="@color/white"
 		                    android:background="@drawable/home_xx"
 		                    android:textSize="@dimen/content"
-		                    android:text=""/>
+		                    android:text="不限"/>
 		            </LinearLayout>
 		        </LinearLayout>
 		    </RelativeLayout>

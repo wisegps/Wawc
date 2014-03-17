@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -49,6 +50,7 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
     Platform platformSina;
     Platform platformWhat;
     boolean isLogin = false;
+    String platform;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,7 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
         }
         isNeedGetCityFromUrl();
     }
+    
     OnClickListener onClickListener = new OnClickListener() {        
         @Override
         public void onClick(View v) {
@@ -85,11 +88,13 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
                 platformSina.setPlatformActionListener(WelcomeActivity.this);
                 platformSina.SSOSetting(true);
                 platformSina.showUser(null);
+                platform = "sina";
                 break;
 
             case R.id.bt_qq:
                 platformQQ.setPlatformActionListener(WelcomeActivity.this);
                 platformQQ.showUser(null);
+                platform = "qq";
                 break;
             }
         }
@@ -274,6 +279,11 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
         Message message = new Message();
         message.what = login;
         handler.sendMessage(message);
+        SharedPreferences preferences = getSharedPreferences(
+                Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+        Editor editor = preferences.edit();
+        editor.putString(Constant.platform, platform);
+        editor.commit();
     }
     @Override
     public void onError(Platform arg0, int arg1, Throwable arg2) {

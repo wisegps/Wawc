@@ -91,15 +91,21 @@ public class ShareLocationActivity extends Activity {
                         + carData.getLat() + "," + carData.getLon()
                         + "&coord_type=bd09ll&output=html";
                 StringBuffer sb = new StringBuffer();
-                sb.append("【" + reason + "】");
-                sb.append(carData.getGps_time());
-                sb.append(carData.getObj_name());
-                sb.append(carData.getAdress());
-                if (!content.equals("")) {
-                    sb.append("(" + content + ")");
+                sb.append("【" + reason + "】 ");
+                if(carData.getGps_time() != null && !carData.getGps_time().equals("")){
+                    try {
+                        sb.append(carData.getGps_time().substring(5, 16) + " ");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        sb.append(carData.getGps_time() + " ");
+                    }
                 }
-                sb.append("," + url);
-                Log.d(TAG, sb.toString());
+                sb.append(carData.getObj_name());
+                sb.append(" 位于" + carData.getAdress());
+                if (!content.equals("")) {
+                    sb.append(" (" + content + ")");
+                }
+                sb.append(" " + url);
                 GetSystem.share(ShareLocationActivity.this, sb.toString(),
                         imagePath, Float.valueOf(carData.getLat()),
                         Float.valueOf(carData.getLon()),reason);

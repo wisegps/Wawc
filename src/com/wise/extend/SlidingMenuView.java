@@ -19,7 +19,7 @@ import android.widget.Scroller;
  */
 public class SlidingMenuView extends ViewGroup{
     private static final String TAG = "SlidingMenuView";
-    boolean isTag = false;
+    boolean isTag = true;
     private static final int INVALID_SCREEN = -1;
     private static final int SNAP_VELOCITY = 500;
     private int mDefaultScreen = 1;
@@ -160,13 +160,7 @@ public class SlidingMenuView extends ViewGroup{
     	//TODO 
         final int action = ev.getAction();        
         if ((action == MotionEvent.ACTION_MOVE) && (mTouchState != TOUCH_STATE_REST)) {
-            if(isTag){
-                Log.d(TAG, "onInterceptTouchEvent return" + action);
-            }
             return true;
-        }
-        if(isTag){
-            Log.d(TAG, "onInterceptTouchEvent" + action);
         }
         final float x = ev.getX();
         final float y = ev.getY();
@@ -254,9 +248,6 @@ public class SlidingMenuView extends ViewGroup{
         mVelocityTracker.addMovement(ev);
 
         final int action = ev.getAction();
-        if(isTag){
-            Log.d(TAG, "onTouchEvent=" + action);
-        }
         final float x = ev.getX();
 	        switch (action) {
 	        case MotionEvent.ACTION_DOWN:
@@ -307,26 +298,28 @@ public class SlidingMenuView extends ViewGroup{
 				}
 	            break;
 	        case MotionEvent.ACTION_UP:
-	            Log.d(TAG, "前 mTouchState = " + mTouchState);
 	            if (mTouchState == TOUCH_STATE_SCROLLING) {
 	                final VelocityTracker velocityTracker = mVelocityTracker;
 	                velocityTracker.computeCurrentVelocity(1000);
 	                int velocityX = (int) velocityTracker.getXVelocity();
-	                Log.d(TAG, "velocityX = " + velocityX + " , mCurrentScreen = " + mCurrentScreen);
-	                if (velocityX > SNAP_VELOCITY) {//向左滑                
-	                    snapToScreen(0);
-	                } else if (velocityX < -SNAP_VELOCITY) {
-                        snapToScreen(1);
-	                } else {
-	                    snapToDestination();
-	                }
+	                Log.d(TAG, "mCurrentScreen = " + mCurrentScreen);
+	                if(mCurrentScreen == 2){
+	                    
+	                }else{
+	                    if (velocityX > SNAP_VELOCITY) {//向左滑                
+	                        snapToScreen(0);
+	                    } else if (velocityX < -SNAP_VELOCITY) {
+	                        snapToScreen(1);
+	                    } else {
+	                        snapToDestination();
+	                    }
+	                }	                
 	                if (mVelocityTracker != null) {
 	                    mVelocityTracker.recycle();
 	                    mVelocityTracker = null;
 	                }
 	            }
 	            mTouchState = TOUCH_STATE_REST;
-	            Log.d(TAG, "后 mTouchState = " + mTouchState);
 	            break;
 	        case MotionEvent.ACTION_CANCEL:
 	            snapToDestination();
@@ -350,9 +343,6 @@ public class SlidingMenuView extends ViewGroup{
     }
 
     protected void snapToDestination() {
-        if(isTag){
-            Log.d(TAG, "snapToDestination");
-        }
     	int whichScreen = 0;
     	int count = getChildCount();
     	int start = 0;
@@ -379,15 +369,13 @@ public class SlidingMenuView extends ViewGroup{
     }
 
     public void snapToScreen(int whichScreen) {
-        if(isTag){
-            Log.d(TAG, "snapToScreen");
-        }
         enableChildrenCache();
 
         whichScreen = Math.max(0, Math.min(whichScreen, getChildCount() - 1));
         boolean changingScreens = whichScreen != mCurrentScreen;
         
         mNextScreen = whichScreen;
+        mCurrentScreen = whichScreen;
 
         View focusedChild = getFocusedChild();
         if (focusedChild != null && changingScreens && focusedChild == getChildAt(mCurrentScreen)) {

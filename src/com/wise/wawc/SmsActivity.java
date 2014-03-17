@@ -48,7 +48,7 @@ public class SmsActivity extends Activity implements IXListViewListener{
 	XListView lv_sms;
 	ProgressDialog Dialog = null;    //等待框    
 	NewAdapter newAdapter;
-	List<SmsData> smsDataList = new ArrayList<SmsData>();
+	List<SmsData> smsDatas = new ArrayList<SmsData>();
 	DBExcute dbExcute = new DBExcute();
 	
 	boolean isGetDB = true; //上拉是否继续读取数据库
@@ -68,14 +68,15 @@ public class SmsActivity extends Activity implements IXListViewListener{
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
 			    Log.d(TAG, "arg2 = " + arg2);
-				if(arg2 !=0 || arg2 != (smsDataList.size()+1)){
-				    String Type = smsDataList.get(arg2 -1).getMsg_type();
+				if(arg2 !=0 || arg2 != (smsDatas.size()+1)){
+				    Log.d(TAG, smsDatas.get(arg2).toString());
+				    String Type = smsDatas.get(arg2 -1).getMsg_type();
 		            if(Type.equals("0")){
 		                
 		            }else if(Type.equals("1")){
 		                Intent intent = new Intent(SmsActivity.this, CarRemindActivity.class);
-		                if(smsDataList.get(arg2 -1).getObj_id() != null){
-		                    intent.putExtra("Obj_id", smsDataList.get(arg2 -1).getObj_id());
+		                if(smsDatas.get(arg2 -1).getObj_id() != null && !smsDatas.get(arg2 -1).getObj_id().equals("0") ){
+		                    intent.putExtra("Obj_id", smsDatas.get(arg2 -1).getObj_id());
 		                }          
                         startActivity(intent);
 		            }else if (Type.equals("2")) {
@@ -89,7 +90,7 @@ public class SmsActivity extends Activity implements IXListViewListener{
 		            }
 				}
 			}});
-		newAdapter = new NewAdapter(this, smsDataList);
+		newAdapter = new NewAdapter(this, smsDatas);
 		lv_sms.setAdapter(newAdapter);
 		ImageView iv_sms = (ImageView)findViewById(R.id.iv_sms);
 		iv_sms.setOnClickListener(new OnClickListener() {			
@@ -112,11 +113,11 @@ public class SmsActivity extends Activity implements IXListViewListener{
 		    String url = "http://wiwc.api.wisegps.cn/customer/" + Variable.cust_id + "/notification?auth_code=" + Variable.auth_code;
 		    new Thread(new NetThread.GetDataThread(handler, url, GET_SMS)).start();
 		}else{
-		    smsDataList.addAll(0,getSmsDatas(Toal, pageSize));
+		    smsDatas.addAll(0,getSmsDatas(Toal, pageSize));
             newAdapter.notifyDataSetChanged();
             isNothingNote(false);
-            if(smsDataList.size() != 0){
-                int id = smsDataList.get(0).getNoti_id();
+            if(smsDatas.size() != 0){
+                int id = smsDatas.get(0).getNoti_id();
                 String url = "http://wiwc.api.wisegps.cn/customer/" + Variable.cust_id + "/notification?auth_code=" 
                         + Variable.auth_code + "&max_id=" + id;
                 new Thread(new NetThread.GetDataThread(handler, url, GET_SMS)).start();
@@ -130,17 +131,17 @@ public class SmsActivity extends Activity implements IXListViewListener{
 			super.dispatchMessage(msg);
 			switch (msg.what) {
 			case GET_SMS:
-			    smsDataList.addAll(0,jsonData(msg.obj.toString()));
+			    smsDatas.addAll(0,jsonData(msg.obj.toString()));
 			    newAdapter.notifyDataSetChanged();
 			    onLoad();
-			    if(smsDataList.size() > 0){
+			    if(smsDatas.size() > 0){
 			        isNothingNote(false);
 			    }else{
 			        isNothingNote(true);
 			    }
 				break;
 			case GET_NEXT_SMS:
-			    smsDataList.addAll(jsonData(msg.obj.toString()));
+			    smsDatas.addAll(jsonData(msg.obj.toString()));
 			    newAdapter.notifyDataSetChanged();
 			    onLoad();
 				break;
@@ -165,8 +166,8 @@ public class SmsActivity extends Activity implements IXListViewListener{
 		lv_sms.setRefreshTime(GetSystem.GetNowTime());
 	}
 	public void onRefresh() {
-	    if(smsDataList.size() != 0){
-            int id = smsDataList.get(0).getNoti_id();
+	    if(smsDatas.size() != 0){
+            int id = smsDatas.get(0).getNoti_id();
             String url = "http://wiwc.api.wisegps.cn/customer/" + Variable.cust_id + "/notification?auth_code=" 
                     + Variable.auth_code + "&max_id=" + id;
             new Thread(new NetThread.GetDataThread(handler, url, GET_SMS)).start();
@@ -175,13 +176,13 @@ public class SmsActivity extends Activity implements IXListViewListener{
 	public void onLoadMore() {
 	    if(isGetDB){//读取数据库
 	        System.out.println("读取数据库");
-	        smsDataList.addAll(0,getSmsDatas(Toal, pageSize));
+	        smsDatas.addAll(0,getSmsDatas(Toal, pageSize));
             newAdapter.notifyDataSetChanged();
             onLoad();
         }else{//读取服务器
             System.out.println("读取服务器数据");
-            if(smsDataList.size() != 0){
-                int id = smsDataList.get(smsDataList.size() - 1).getNoti_id();
+            if(smsDatas.size() != 0){
+                int id = smsDatas.get(smsDatas.size() - 1).getNoti_id();
                 String url = "http://wiwc.api.wisegps.cn/customer/" + Variable.cust_id + "/notification?auth_code=" 
                         + Variable.auth_code + "&min_id=" + id;
                 new Thread(new NetThread.GetDataThread(handler, url, GET_NEXT_SMS)).start();
@@ -245,7 +246,7 @@ public class SmsActivity extends Activity implements IXListViewListener{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return smsDataList;
+        return smsDatas;
 	}
 	
 	private List<SmsData> getSmsDatas(int start,int pageSize) {
@@ -408,6 +409,13 @@ public class SmsActivity extends Activity implements IXListViewListener{
         }
         public void setObj_id(String obj_id) {
             this.obj_id = obj_id;
+        }
+        @Override
+        public String toString() {
+            return "SmsData [lat=" + lat + ", lon=" + lon + ", rcv_time="
+                    + rcv_time + ", msg_type=" + msg_type + ", content="
+                    + content + ", noti_id=" + noti_id + ", status=" + status
+                    + ", obj_id=" + obj_id + "]";
         }        
-	}
+	}	
 }

@@ -252,7 +252,7 @@ public class TravelActivity extends Activity{
 				@Override
 				public void onClick(View v) {
 				    StringBuffer sb = new StringBuffer();
-				    sb.append("【行程】");
+				    sb.append("【行程】 ");
 		            sb.append(travelData.getStartTime().substring(5, 16));
 		            sb.append(" 从" + travelData.getStart_place());
 		            sb.append("到" + travelData.getEnd_place());

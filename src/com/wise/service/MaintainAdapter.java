@@ -38,9 +38,9 @@ public class MaintainAdapter extends BaseAdapter{
 		TextView maintainTel = (TextView) convertView.findViewById(R.id.tv_phone);
 		ImageView callPhone = (ImageView) convertView.findViewById(R.id.iv_phone);
 		maintainName.setText(maintainList.get(position)[0]);
-		maintainTel.setText(maintainList.get(position)[1]);
+		//maintainTel.setText(maintainList.get(position)[1]);
 		callPhone.setVisibility(View.GONE);
-		maintainTel.setVisibility(View.VISIBLE);
+		maintainTel.setVisibility(View.GONE);
 		return convertView;
 	}
 }

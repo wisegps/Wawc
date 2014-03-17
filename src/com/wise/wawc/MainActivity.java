@@ -117,8 +117,7 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
             }
         });
         
-        tabcontent = (ViewGroup) slidingMenuView
-                .findViewById(R.id.sliding_body);
+        tabcontent = (ViewGroup) slidingMenuView.findViewById(R.id.sliding_body);
         ActivityFactory.v = tabcontent;
         ActivityFactory.S = slidingMenuView;
         slidingMenuView
@@ -303,7 +302,8 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
                 if(bimage != null){
                     GetSystem.saveImageSD(bimage, Constant.userIconPath, Constant.UserImage);
                 }
-                iv_activity_main_logo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
+                //iv_activity_main_logo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
+                iv_activity_main_logo.setImageBitmap(bimage);
                 break;
             case Bind_ID:
                 jsonLogin(msg.obj.toString());
@@ -349,7 +349,10 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
         }
     }
     private void isLogin() {
-        if (platformQQ.getDb().isValid()) {
+        SharedPreferences preferences = getSharedPreferences(
+                Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+        String platform = preferences.getString(Constant.platform, "");
+        if(platform.equals("qq")){
             System.out.println("qq登录");
             tv_activity_main_name.setText(platformQQ.getDb().getUserName());
             Variable.cust_name = platformQQ.getDb().getUserName();
@@ -360,7 +363,7 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
             Login(platformQQ.getDb().getUserId(), platformQQ.getDb()
                     .getUserName(), LocationProvince, LocationCity, platformQQ.getDb()
                     .getUserIcon(), "remark");
-        } else if (platformSina.getDb().isValid()){
+        }else{
             System.out.println("sina登录");
             tv_activity_main_name.setText(platformSina.getDb().getUserName());
             Variable.cust_name = platformSina.getDb().getUserName();
@@ -370,8 +373,6 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
             Login(platformSina.getDb().getUserId(), platformSina.getDb()
                     .getUserName(), LocationProvince, LocationCity, platformSina.getDb()
                     .getUserIcon(), "remark");
-        } else {
-            System.out.println("没有登录");
         }
     }
     /**
@@ -382,7 +383,8 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
         bimage = BitmapFactory.decodeFile(Constant.userIconPath + Constant.UserImage);
         Constant.UserIconUrl = platform.getDb().getUserIcon();
         if(bimage != null){            
-            iv_activity_main_logo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
+            //iv_activity_main_logo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
+            iv_activity_main_logo.setImageBitmap(bimage);
         }else{
             //TODO 获取图片
             
@@ -458,18 +460,10 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if(isHome){
-                long currentTime = System.currentTimeMillis();
-                if (touchTime == 0 || (currentTime - touchTime) >= waitTime) {
-                    Toast.makeText(this, "再按一次退出客户端", Toast.LENGTH_SHORT).show();
-                    touchTime = currentTime;
-                } else {
-                    finish();
-                }
+            if (slidingMenuView.getCurrentScreen() == 2) {
+                slidingMenuView.snapToScreen(1);
             }else{
-                if (slidingMenuView.getCurrentScreen() == 1) {
-                    slidingMenuView.snapToScreen(0);
-                }else{
+                if(isHome){
                     long currentTime = System.currentTimeMillis();
                     if (touchTime == 0 || (currentTime - touchTime) >= waitTime) {
                         Toast.makeText(this, "再按一次退出客户端", Toast.LENGTH_SHORT).show();
@@ -477,8 +471,20 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
                     } else {
                         finish();
                     }
-                } 
-            }                       
+                }else{
+                    if (slidingMenuView.getCurrentScreen() == 1) {
+                        slidingMenuView.snapToScreen(0);
+                    }else{
+                        long currentTime = System.currentTimeMillis();
+                        if (touchTime == 0 || (currentTime - touchTime) >= waitTime) {
+                            Toast.makeText(this, "再按一次退出客户端", Toast.LENGTH_SHORT).show();
+                            touchTime = currentTime;
+                        } else {
+                            finish();
+                        }
+                    } 
+                }
+            }                                   
             return true;
         }
         return super.onKeyDown(keyCode, event);

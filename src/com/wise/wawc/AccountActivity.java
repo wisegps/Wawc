@@ -245,6 +245,7 @@ public class AccountActivity extends Activity{
         editor.putString(Constant.Adress, "");
         editor.putString(Constant.Phone, "");
         editor.putString(Constant.sp_cust_id, "");
+        editor.putString(Constant.platform, "");
         editor.commit();
 	}
 	@Override

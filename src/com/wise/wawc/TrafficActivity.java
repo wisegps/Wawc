@@ -350,18 +350,19 @@ public class TrafficActivity extends Activity implements IXListViewListener{
 			holder.tv_item_traffic_data.setText(trafficData.getDate().substring(0, 16));
 			holder.tv_item_traffic_adress.setText(trafficData.getLocation());
 			holder.tv_item_traffic_content.setText(trafficData.getAction());
-			holder.tv_item_traffic_fraction.setText("扣分: "+trafficData.getScore());
-			holder.tv_item_traffic_money.setText("罚款: "+trafficData.getFine());
+			holder.tv_item_traffic_fraction.setText("扣分: "+trafficData.getScore() + "分");
+			holder.tv_item_traffic_money.setText("罚款: "+trafficData.getFine() + "元");
 			holder.iv_traffic_share.setOnClickListener(new OnClickListener() {                
                 @Override
                 public void onClick(View v) {
                     StringBuffer sb = new StringBuffer();
-                    sb.append("【违章】");
-                    sb.append(trafficData.getDate());
-                    sb.append("," + trafficData.getLocation());
-                    sb.append("," + trafficData.getAction());
-                    sb.append("," + trafficData.getScore());
-                    sb.append("," + trafficData.getFine());
+                    sb.append("【违章】 ");
+                    sb.append(trafficData.getDate().substring(5, 16));
+                    sb.append(" " + Car_name);
+                    sb.append(" 在" + trafficData.getLocation() + "发生违章,");
+                    sb.append("违章内容: " + trafficData.getAction());
+                    sb.append(", 扣分: " + trafficData.getScore());
+                    sb.append("分, 罚款: " + trafficData.getFine() + "元, 人次: 5次");
                     GetSystem.share(TrafficActivity.this, sb.toString(), "",0,0,"违章");
                 }
             });

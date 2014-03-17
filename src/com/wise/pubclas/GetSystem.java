@@ -116,13 +116,11 @@ public class GetSystem {
      */
     public static String ChangeTimeZone(String Date){
         try {
-            Log.d(TAG, Date);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Calendar nowDate = Calendar.getInstance();
             nowDate.setTime(sdf.parse(Date));
             nowDate.add(Calendar.HOUR_OF_DAY, 8);
             String Date1 = sdf.format(nowDate.getTime());
-            Log.d(TAG, Date1);
             return Date1;
         } catch (Exception e) {
             e.printStackTrace();
@@ -486,10 +484,11 @@ public class GetSystem {
             float Lat,float Lon,String Title) {
         final OnekeyShare oks = new OnekeyShare();
         oks.setNotification(R.drawable.ic_launcher, "app_name");
-        //oks.setAddress("12345678901");
+        oks.setAddress("");
         oks.setTitle(Title);
         //oks.setTitleUrl("http://sharesdk.cn");
-        oks.setText(Content);
+        Log.d(TAG, Content + "(来自@我爱我车,点击下载http://dl.wisegps.cn/");
+        oks.setText(Content + "(来自@我爱我车,点击下载http://dl.wisegps.cn/");
         oks.setImagePath(imagePath);
         //oks.setImageUrl("http://img.appgo.cn/imgs/sharesdk/content/2013/07/25/1374723172663.jpg");
         //oks.setUrl("http://www.sharesdk.cn");

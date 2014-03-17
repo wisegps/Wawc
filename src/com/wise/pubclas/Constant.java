@@ -112,6 +112,10 @@ public class Constant {
 	 */
 	public static final String DefaultVehicleID = "DefaultVehicleID";
 	/**
+	 * sp登录平台
+	 */
+	public static final String platform = "platform";
+	/**
 	 * 基础表
 	 */
 	public static String TB_Base = "TB_Base";

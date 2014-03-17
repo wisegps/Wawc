@@ -134,11 +134,11 @@ public class CollectionActivity extends Activity implements IXListViewListener{
                     + adressData.getLat() + "," + adressData.getLon()
                     + "&coord_type=bd09ll&output=html";
             StringBuffer sb = new StringBuffer();
-            sb.append("【地点】");
+            sb.append("【地点】 ");
             sb.append(adressData.getName());
-            sb.append("," + adressData.getAdress());
-            sb.append("," + adressData.getPhone());
-            sb.append("," + url);
+            sb.append(" 地址: " + adressData.getAdress());
+            sb.append(" 电话: " + adressData.getPhone());
+            sb.append(" " + url);
             GetSystem.share(CollectionActivity.this, sb.toString(), "",
                     (float) adressData.getLat(),
                     (float) adressData.getLon(),"地点");

@@ -20,8 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:textColor="@color/common"
-            android:text="沙河西路加油站" />
+            android:textColor="@color/common"/>
         
         <TextView
             android:id="@+id/tv_phone"
