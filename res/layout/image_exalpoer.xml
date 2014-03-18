@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FrameLayout  xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_height="fill_parent" 
-		android:layout_width="fill_parent" 
-		android:orientation="vertical" > 
- <com.wise.extend.MyGallery
-         android:id="@+id/gallery"
-         android:layout_width="fill_parent"
-         android:layout_height="fill_parent"
-         android:spacing="2dp"
-         android:layout_marginTop="5dp"    >
-     </com.wise.extend.MyGallery>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+    <com.wise.extend.MyGallery
+        android:id="@+id/gallery"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginTop="5dp"
+        android:spacing="2dp" >
+    </com.wise.extend.MyGallery>
 </FrameLayout>

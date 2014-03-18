@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"    
+    xmlns:app="http://schemas.android.com/apk/res/com.wise.wawc" 
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#FFFFFF"
@@ -93,13 +94,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingTop="@dimen/margins" >
-
-            <ImageView
-                android:id="@+id/user_head"
-                android:layout_width="65dip"
-                android:layout_height="65dip"
-                android:layout_gravity="center"
-                android:layout_margin="2dip" />
+            <com.wise.extend.CircleImageView 
+                    android:id="@+id/user_head"
+                    android:layout_width="65dip"
+                    android:layout_height="65dip"
+                    android:layout_gravity="center"
+                    android:layout_margin="2dip" 
+                    app:border_width="1dp"
+                    app:border_color="@color/white" />
 
             <TextView
                 android:id="@+id/tv_qq_user_name"
