@@ -235,6 +235,7 @@ public class FriendArticleAdapter extends BaseAdapter{
 		FileOutputStream b = null;
 		try {  
             b = new FileOutputStream(fileName);  
+            Log.e("------------->" , fileName);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件  
         } catch (FileNotFoundException e) {  
             e.printStackTrace();  

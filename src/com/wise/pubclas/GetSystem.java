@@ -462,7 +462,7 @@ public class GetSystem {
      * @param context
      */
     public static void getScreenInfor(Activity activity){
-    	String tempMargins = activity.getResources().getString(R.dimen.margins);
+    	String tempMargins = activity.getResources().getString(R.dimen.margins1);
 		int margins = Integer.valueOf(tempMargins.substring(0,tempMargins.lastIndexOf(".")));
 		Variable.margins = margins;
 		WindowManager manager = activity.getWindowManager();

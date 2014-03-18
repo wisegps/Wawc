@@ -67,20 +67,17 @@
                 android:layout_weight="6"
                 android:scrollbars="horizontal"
                 android:numColumns="3"
-                android:horizontalSpacing="@dimen/margins"
+                android:horizontalSpacing="@dimen/margins1"
         		android:stretchMode="columnWidth"
-        		android:layout_marginLeft="@dimen/margins1"
                 ></GridView>
             <!-- 显示用户发表的图片 
             <LinearLayout
-           
                 android:id="@+id/user_image"
                 android:layout_width="0dip"
                 android:layout_height="wrap_content"
                 android:layout_weight="6"
                 android:orientation="horizontal" >
             </LinearLayout>
-            
             -->
         </TableRow>
     </TableLayout>

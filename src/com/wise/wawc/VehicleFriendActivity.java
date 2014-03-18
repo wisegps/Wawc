@@ -92,6 +92,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	private static final int FriendTypeLoadMore = 33;
 	private static final int selectFriendType = 22;
 	private int articleTypeMinBlogId = 0;
+	private int articleTypeMaxBlogId = 0;
 	
 	private int totalNum = 0;
 	private int screenWidth = 0;
@@ -256,44 +257,55 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	@Override  //下拉刷新
 	public void onRefresh() {
-	    GetSystem.displayBriefMemory(VehicleFriendActivity.this);
-		DBHelper dBHelper = new DBHelper(VehicleFriendActivity.this);
-		SQLiteDatabase  sQLiteDatabase = dBHelper.getReadableDatabase();
-		Cursor cursor = sQLiteDatabase.rawQuery("select * from " + Constant.TB_VehicleFriend, new String[]{});
-		if(cursor.moveToFirst()){
-			maxBlogId = cursor.getInt(cursor.getColumnIndex("Blog_id"));
+		List<Article> articleTempList = new ArrayList<Article>();
+		articleTempList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from "+ Constant.TB_VehicleFriendType + " where Type_id=?",new String[] { String.valueOf(article) }, articleTempList);
+		int[] blogIdList = new int[articleTempList.size()];
+		for (int i = 0; i < articleTempList.size(); i++) {
+			blogIdList[i] = articleTempList.get(i).getBlog_id();
 		}
+		for(int m = 0 ; m < blogIdList.length ; m ++){
+			for(int n = 0 ; n < m ; n ++){
+				int temp = 0;
+				if(blogIdList[m] < blogIdList[n]){
+					temp = blogIdList[m];
+					blogIdList[m] = blogIdList[n];
+					blogIdList[n] = temp;
+				}
+			}
+		}
+		articleTypeMaxBlogId = blogIdList[blogIdList.length - 1];   //最小id
 		
-		new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code + "&max_id=" + maxBlogId, refreshCode)).start();
+		Log.e("下拉刷新","url = " + articleType + "&max_id=" + articleTypeMaxBlogId);
+		new Thread(new NetThread.GetDataThread(myHandler, articleType + "&max_id=" + articleTypeMaxBlogId, refreshCode)).start();
 	}
 	@Override
 	public void onLoadMore() {
-				DBHelper dBHelper = new DBHelper(VehicleFriendActivity.this);
-				SQLiteDatabase  sQLiteDatabase = dBHelper.getReadableDatabase();
-				Cursor cursor = sQLiteDatabase.rawQuery("select * from " + Constant.TB_VehicleFriend, new String[]{});
-				int[] blogIdList = new int[cursor.getCount()];
-				int i = 0;
-				while(cursor.moveToNext()){
-					blogIdList[i] = cursor.getInt(cursor.getColumnIndex("Blog_id"));
-					i ++;
+		List<Article> articleTempList = new ArrayList<Article>();
+		articleTempList = dBExcute.getArticleTypeList(
+				VehicleFriendActivity.this, "select * from "
+						+ Constant.TB_VehicleFriendType + " where Type_id=?",
+				new String[] { String.valueOf(article) }, articleTempList);
+		int[] blogIdList = new int[articleTempList.size()];
+		for (int i = 0; i < articleTempList.size(); i++) {
+			blogIdList[i] = articleTempList.get(i).getBlog_id();
+		}
+		for (int m = 0; m < blogIdList.length; m++) {
+			for (int n = 0; n < m; n++) {
+				int temp = 0;
+				if (blogIdList[m] < blogIdList[n]) {
+					temp = blogIdList[m];
+					blogIdList[m] = blogIdList[n];
+					blogIdList[n] = temp;
 				}
-				for(int m = 0 ; m < blogIdList.length ; m ++){
-					for(int n = 0 ; n < m ; n ++){
-						int temp = 0;
-						if(blogIdList[m] < blogIdList[n]){
-							temp = blogIdList[m];
-							blogIdList[m] = blogIdList[n];
-							blogIdList[n] = temp;
-						}
-					}
-				}
-				articleTypeMinBlogId = blogIdList[0];
-			if(!isLoadMore){
-				articleSort(article,3);
-			}else{
-				new Thread(new NetThread.GetDataThread(myHandler, articleType + "&min_id=" + articleTypeMinBlogId, FriendType)).start();
 			}
-//		}
+		}
+		articleTypeMinBlogId = blogIdList[0];
+		if (!isLoadMore) {
+			articleSort(article, 3);
+		} else {
+			new Thread(new NetThread.GetDataThread(myHandler, articleType
+					+ "&min_id=" + articleTypeMinBlogId, FriendType)).start();
+		}
 	}
 	
 	private void onLoad() {
@@ -384,9 +396,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 						saySomething.setVisibility(View.GONE);
 						myAdapter.isClick = false;
 						
-						//更新数据库
 						dBExcute.updateArticleComments(VehicleFriendActivity.this, Constant.TB_VehicleFriend, blogId, commentMsg, Variable.cust_name, Integer.valueOf(Variable.cust_id));
-						//刷新列表   TODO
 						articleDataList.clear();
 						articleDataList = dBExcute.getArticlePageDatas(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(0),String.valueOf(Constant.start + Constant.pageSize)}, articleDataList);
 						Variable.articleList = articleDataList;
@@ -419,9 +429,50 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				}
 				onLoad();	
 				break;
-			case refreshCode:
+			case refreshCode:  //   上拉刷新结果处理  TODO
 				if(!"[]".equals(msg.obj.toString())){
-					
+					//  更新数据库
+					JSONArray jsonArray = null;
+					try {
+						jsonArray = new JSONArray(msg.obj.toString());
+						if(jsonArray.length() > 1){
+							for(int i = 0 ; i < jsonArray.length() ; i ++){
+								if(Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")) != articleTypeMaxBlogId){
+									Log.e("更新数据库","更新数据库");
+									ContentValues values = new ContentValues();
+									values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
+									values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
+									if(jsonArray.getJSONObject(i).opt("logo") != null){
+										values.put("UserLogo", jsonArray.getJSONObject(i).getString("logo"));
+									}else{
+										values.put("UserLogo", "");
+									}
+									values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
+									dBExcute.InsertDB(VehicleFriendActivity.this,values,Constant.TB_VehicleFriend);
+									//类型表
+									ContentValues valuesType = new ContentValues();
+									valuesType.put("Type_id", article);
+									valuesType.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
+									dBExcute.InsertDB(VehicleFriendActivity.this,valuesType,Constant.TB_VehicleFriendType);
+								}
+//								if(i == (jsonArray.length()-1)){
+//									minBlogId = Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id"));
+//								}
+							}
+							//重新分页
+							articleDataList.clear();
+							setArticleDataList(articleDataList);
+							Constant.totalPage = 0;
+							Constant.start = 0;  // 开始页
+							Constant.pageSize =10;   //每页数量
+							Constant.totalPage = 0;   //数据总量
+							Constant.currentPage = 0;  //当前页
+							articleSort(1,0);
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+//					
 				}
 				onLoad();
 				break;
@@ -539,7 +590,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				Variable.articleList = articleDataList;
 				myAdapter.refreshDates(articleDataList);
 				isLoadMore = true;
-				Log.e("小于10条","小于10条");
 			}else if(Constant.totalPage == Constant.pageSize){
 				articleDataList.clear();
 				Constant.start = Constant.currentPage*Constant.pageSize;
@@ -547,9 +597,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				articleDataList = dBExcute.getArticlePageDatas(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
 				Variable.articleList = articleDataList;
 				myAdapter.refreshDates(articleDataList);
-				Log.e("等   于10条","等  于10条");
 			}else{
-				Log.e("大于   于10条","大   与  于10条");
 				Constant.start = Constant.currentPage*Constant.pageSize;
 				Constant.currentPage ++ ;
 				articleDataList = dBExcute.getArticlePageDatas(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
@@ -638,23 +686,26 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			Constant.totalPage = totalNum%Constant.pageSize > 0 ? totalNum/Constant.pageSize + 1 : totalNum/Constant.pageSize;
 			if(totalNum < Constant.pageSize){
 				articleDataList.clear();
-				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
+				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
 				Variable.articleList = articleDataList;
 				myAdapter.refreshDates(articleDataList);
 				isLoadMore = true;
+				Log.e("小于    10  条","小于    10  条");
 			}else if(totalNum == Constant.pageSize){
 				articleDataList.clear();
 				Constant.start = Constant.currentPage*Constant.pageSize;
 				Constant.currentPage ++ ;
-				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
+				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
 				Variable.articleList = articleDataList;
 				myAdapter.refreshDates(articleDataList);
+				Log.e("等于    10  条","等于    10  条");
 			}else{
 				Constant.start = Constant.currentPage*Constant.pageSize;
 				Constant.currentPage ++ ;
-				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
+				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
 				Variable.articleList = articleDataList;
 				myAdapter.refreshDates(articleDataList);
+				Log.e("大于    10  条","大于    10  条");
 			}
 			if(Constant.totalPage == Constant.currentPage){
 				isLoadMore = true;
