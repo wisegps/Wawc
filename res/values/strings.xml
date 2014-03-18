@@ -182,4 +182,6 @@
     <string name="friend_car">他的爱车</string>
     <string name="friend_car_friend">他的车友圈</string>
     <string name="comments">评论</string>
+    
+    <string name="new_version">新功能即将上线，敬请关注。</string>
 </resources>

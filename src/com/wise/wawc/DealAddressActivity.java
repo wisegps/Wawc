@@ -72,7 +72,7 @@ public class DealAddressActivity extends Activity {
                 sb.append(" " + url);
                 GetSystem.share(DealAddressActivity.this, sb.toString(), "",
                         (float) adressData.getLat(),
-                        (float) adressData.getLon(),"地点");
+                        (float) adressData.getLon(),"地点",url);
             }
         });
         lv_activity_dealadress.setAdapter(adressAdapter);

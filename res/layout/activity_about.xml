@@ -42,7 +42,8 @@
             android:layout_marginBottom="@dimen/double_margins"
             android:textSize="@dimen/content"
             android:text="当前版本：V1.0"/>
-        <Button 
+        <Button
+            android:id="@+id/bt_new_version" 
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_bt_black"

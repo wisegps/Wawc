@@ -1,5 +1,6 @@
 package com.wise.wawc;
 
+import java.io.File;
 import cn.sharesdk.framework.ShareSDK;
 import com.wise.data.CarData;
 import com.wise.pubclas.BlurImage;
@@ -10,17 +11,18 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * 位置分享
@@ -47,6 +49,7 @@ public class ShareLocationActivity extends Activity {
         tv_adress = (TextView) findViewById(R.id.tv_adress);
         tv_reason = (TextView) findViewById(R.id.tv_reason);
         iv_photo = (ImageView) findViewById(R.id.iv_photo);
+        iv_photo.setOnLongClickListener(onLongClickListener);
         iv_photo.setOnClickListener(onClickListener);
         ImageView iv_camera = (ImageView) findViewById(R.id.iv_camera);
         iv_camera.setOnClickListener(onClickListener);
@@ -75,13 +78,11 @@ public class ShareLocationActivity extends Activity {
                     isDelete = false;
                     iv_photo.setVisibility(View.GONE);
                     iv_photo.setImageBitmap(null);
-                }else{
-                    isDelete = true;
-                    iv_photo.setImageResource(R.drawable.body_icon_delete);
                 }
                 break;
             case R.id.iv_camera:
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Constant.picPath + Constant.ShareImage)));
                 startActivityForResult(intent, 1);
                 break;
             case R.id.bt_activity_share:
@@ -108,9 +109,21 @@ public class ShareLocationActivity extends Activity {
                 sb.append(" " + url);
                 GetSystem.share(ShareLocationActivity.this, sb.toString(),
                         imagePath, Float.valueOf(carData.getLat()),
-                        Float.valueOf(carData.getLon()),reason);
+                        Float.valueOf(carData.getLon()),reason,url);
                 break;
             }
+        }
+    };
+    OnLongClickListener onLongClickListener = new OnLongClickListener() {        
+        @Override
+        public boolean onLongClick(View v) {
+            switch (v.getId()) {
+            case R.id.iv_photo:
+                isDelete = true;
+                iv_photo.setImageResource(R.drawable.body_icon_delete);
+                break;
+            }
+            return true;
         }
     };
 
@@ -119,25 +132,16 @@ public class ShareLocationActivity extends Activity {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             imagePath = "";
-            String sdStatus = Environment.getExternalStorageState();
-            if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) { // 检测sd是否可用
-                Toast.makeText(this, "没有多余内存", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            Bundle bundle = data.getExtras();
-            Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式
-            GetSystem
-                    .saveImageSD(bitmap, Constant.picPath, Constant.ShareImage);
             // 修改图片大小
-            bitmap = BlurImage.decodeSampledBitmapFromPath(Constant.picPath
-                    + Constant.ShareImage, 480, 800);
+            Bitmap bitmap = BlurImage.decodeSampledBitmapFromPath(Constant.picPath + Constant.ShareImage, 480, 800);
+            Log.d(TAG, bitmap.getWidth() + "," + bitmap.getHeight() + ",");
             // 再存储到sd卡
-            GetSystem
-                    .saveImageSD(bitmap, Constant.picPath, Constant.ShareImage);
+            GetSystem.saveImageSD(bitmap, Constant.picPath, Constant.ShareImage);
             // 显示到控件上
-            bitmap = BlurImage.decodeSampledBitmapFromPath(Constant.picPath
-                    + Constant.ShareImage, 150, 150);
+            bitmap = BlurImage.decodeSampledBitmapFromPath(Constant.picPath + Constant.ShareImage, 150, 150);
+            Log.d(TAG, bitmap.getWidth() + "," + bitmap.getHeight() + ",");
             bitmap = BlurImage.getSquareBitmap(bitmap);
+            Log.d(TAG, bitmap.getWidth() + "," + bitmap.getHeight() + ",");
             if (bitmap != null) {
                 imagePath = Constant.picPath + Constant.ShareImage;
                 //iv_photo.setImageBitmap(bitmap);
@@ -149,5 +153,15 @@ public class ShareLocationActivity extends Activity {
             }
             GetSystem.displayBriefMemory(ShareLocationActivity.this);
         }
+    }
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        Log.d(TAG, "dispatchTouchEvent");
+        if(isDelete){
+            if(ev.getAction() == MotionEvent.ACTION_DOWN){
+                iv_photo.setImageBitmap(null);
+            }            
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }

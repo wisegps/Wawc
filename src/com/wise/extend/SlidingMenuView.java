@@ -302,7 +302,7 @@ public class SlidingMenuView extends ViewGroup{
 	                final VelocityTracker velocityTracker = mVelocityTracker;
 	                velocityTracker.computeCurrentVelocity(1000);
 	                int velocityX = (int) velocityTracker.getXVelocity();
-	                Log.d(TAG, "mCurrentScreen = " + mCurrentScreen);
+	                //Log.d(TAG, "mCurrentScreen = " + mCurrentScreen);
 	                if(mCurrentScreen == 2){
 	                    
 	                }else{

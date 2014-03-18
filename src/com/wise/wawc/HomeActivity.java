@@ -52,6 +52,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -338,21 +339,45 @@ public class HomeActivity extends Activity {
             case R.id.bt_activity_home_help:// 救援
                 if (Variable.carDatas == null || Variable.carDatas.size() == 0) {
                 } else {
-                    Intent intent_help = new Intent(HomeActivity.this,
-                            ShareLocationActivity.class);
-                    intent_help.putExtra("reason", "救援 ");
-                    intent_help.putExtra("index", DefaultVehicleID);
-                    HomeActivity.this.startActivity(intent_help);
+                    new AlertDialog.Builder(HomeActivity.this)
+                    .setTitle("列表框")
+                    .setItems(new String[] { "拨打电话", "位置分享" },
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog,int which) {
+                                    if (which == 0) {
+                                        Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:"+ Variable.carDatas.get(DefaultVehicleID).getMaintain_tel()));  
+                                        HomeActivity.this.startActivity(intent);
+                                    } else {
+                                        Intent intent_help = new Intent(HomeActivity.this,ShareLocationActivity.class);
+                                        intent_help.putExtra("reason", "救援");
+                                        intent_help.putExtra("index", DefaultVehicleID);
+                                        HomeActivity.this.startActivity(intent_help);
+                                    }
+                                }
+                            }).setNegativeButton("确定", null).show();                    
                 }
                 break;
             case R.id.bt_activity_home_risk:// 报险
                 if (Variable.carDatas == null || Variable.carDatas.size() == 0) {
                 } else {
-                    Intent intent_risk = new Intent(HomeActivity.this,
-                            ShareLocationActivity.class);
-                    intent_risk.putExtra("reason", "报险");
-                    intent_risk.putExtra("index", DefaultVehicleID);
-                    HomeActivity.this.startActivity(intent_risk);
+                    new AlertDialog.Builder(HomeActivity.this)
+                    .setTitle("列表框")
+                    .setItems(new String[] { "拨打电话", "位置分享" },
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog,int which) {
+                                    if (which == 0) {
+                                        Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:"+ Variable.carDatas.get(DefaultVehicleID).getMaintain_tel()));  
+                                        HomeActivity.this.startActivity(intent);
+                                    } else {
+                                        Intent intent_risk = new Intent(HomeActivity.this,ShareLocationActivity.class);
+                                        intent_risk.putExtra("reason", "报险");
+                                        intent_risk.putExtra("index", DefaultVehicleID);
+                                        HomeActivity.this.startActivity(intent_risk);
+                                    }
+                                }
+                            }).setNegativeButton("确定", null).show();
                 }
                 break;
             case R.id.bt_activity_home_share:// 位置分享
@@ -377,7 +402,8 @@ public class HomeActivity extends Activity {
                 }
                 break;
             case R.id.bt_activity_home_vehicle_status:// 爱车车况
-                TurnVehicleStatus();
+                Toast.makeText(HomeActivity.this, R.string.new_version, Toast.LENGTH_SHORT).show();
+                //TurnVehicleStatus();
                 break;
             case R.id.tv_activity_home_car_adress: // 车辆位置
                 Intent intent_adress = new Intent(HomeActivity.this,
@@ -1044,7 +1070,7 @@ public class HomeActivity extends Activity {
         sb.append(url);
         GetSystem.share(HomeActivity.this, sb.toString(), "",
                 Float.valueOf(carData.getLat()),
-                Float.valueOf(carData.getLon()),"位置");
+                Float.valueOf(carData.getLon()),"位置",url);
     }
 
     private void registerBroadcastReceiver() {

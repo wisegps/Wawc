@@ -428,15 +428,16 @@ public class MyVehicleActivity extends Activity{
 				}
 				break;
 			case R.id.vehicle_device_layout:    //我的终端
-			    if(Variable.devicesDatas.size() == 0){
-			        //跳转到购买终端界面
-			        startActivity(new Intent(MyVehicleActivity.this, OrderDeviceActivity.class));
-			    }else{
-			      //跳转到绑定终端界面
-				Intent intent2 = new Intent(MyVehicleActivity.this,DevicesActivity.class);
-                intent2.putExtra("isJump", false);
-                startActivityForResult(intent2, resultCodeDevice);
-			    }
+			    Toast.makeText(MyVehicleActivity.this, R.string.new_version, Toast.LENGTH_SHORT).show();
+//			    if(Variable.devicesDatas.size() == 0){
+//			        //跳转到购买终端界面
+//			        startActivity(new Intent(MyVehicleActivity.this, OrderDeviceActivity.class));
+//			    }else{
+//			      //跳转到绑定终端界面
+//    				Intent intent2 = new Intent(MyVehicleActivity.this,DevicesActivity.class);
+//                    intent2.putExtra("isJump", false);
+//                    startActivityForResult(intent2, resultCodeDevice);
+//			    }
 				break;
 			case R.id.insurance_company_layout:  //选择保险公司
 				Intent intent1 = new Intent(MyVehicleActivity.this,InsuranceActivity.class);

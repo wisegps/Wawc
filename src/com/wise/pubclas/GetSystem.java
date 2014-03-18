@@ -481,18 +481,18 @@ public class GetSystem {
      * @param Lon
      */
     public static void share(Context mContext,String Content,String imagePath,
-            float Lat,float Lon,String Title) {
+            float Lat,float Lon,String Title,String mapUrl) {
         final OnekeyShare oks = new OnekeyShare();
         oks.setNotification(R.drawable.ic_launcher, "app_name");
         oks.setAddress("");
         oks.setTitle(Title);
-        //oks.setTitleUrl("http://sharesdk.cn");
-        Log.d(TAG, Content + "(来自@我爱我车,点击下载http://dl.wisegps.cn/");
-        oks.setText(Content + "(来自@我爱我车,点击下载http://dl.wisegps.cn/");
+        oks.setTitleUrl(mapUrl);
+        Log.d(TAG, Content + " (来自@我爱我车,点击下载http://dl.wisegps.cn/");
+        oks.setText(Content + " (来自@我爱我车,点击下载http://dl.wisegps.cn/");
         oks.setImagePath(imagePath);
         //oks.setImageUrl("http://img.appgo.cn/imgs/sharesdk/content/2013/07/25/1374723172663.jpg");
-        //oks.setUrl("http://www.sharesdk.cn");
-        //oks.setFilePath(imagePath);
+        oks.setUrl("http://www.sharesdk.cn");
+        oks.setFilePath(imagePath);
         //oks.setComment("share");
         //oks.setSite("wise");
         //oks.setSiteUrl("http://sharesdk.cn");

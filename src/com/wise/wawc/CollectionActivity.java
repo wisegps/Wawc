@@ -141,7 +141,7 @@ public class CollectionActivity extends Activity implements IXListViewListener{
             sb.append(" " + url);
             GetSystem.share(CollectionActivity.this, sb.toString(), "",
                     (float) adressData.getLat(),
-                    (float) adressData.getLon(),"地点");
+                    (float) adressData.getLon(),"地点",url);
         }
     };   
 

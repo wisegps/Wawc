@@ -115,11 +115,11 @@ public class SettingCenterActivity extends Activity{
                 startActivityForResult(new Intent(SettingCenterActivity.this, CarSelectActivity.class), 0);
                 break;
             case R.id.tv_share_gift:
-//                Intent intent = new Intent(SettingCenterActivity.this, WapActivity.class);
-//                intent.putExtra("Title", "推荐有礼");
-//                intent.putExtra("url", "http://wiwc.api.wisegps.cn/help/clby");
-//                startActivity(intent);
-                startActivity(new Intent(SettingCenterActivity.this, ArticleActivity.class));
+                Intent intent = new Intent(SettingCenterActivity.this, WapActivity.class);
+                intent.putExtra("Title", "推荐有礼");
+                intent.putExtra("url", "http://wiwc.api.wisegps.cn/help/share");
+                startActivity(intent);
+                //startActivity(new Intent(SettingCenterActivity.this, ArticleActivity.class));
                 break;
             case R.id.tv_feedback:
                 startActivity(new Intent(SettingCenterActivity.this, FeedBackActivity.class));
