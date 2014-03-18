@@ -1,9 +1,12 @@
 package com.wise.wawc;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -36,6 +39,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.KeyEvent;
@@ -90,6 +94,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	private static final int loadMoreAction = 21;
 	private static final int FriendType = 11;
 	private static final int FriendTypeLoadMore = 33;
+	private static final int refreshComments = 24;
 	private static final int selectFriendType = 22;
 	private int articleTypeMinBlogId = 0;
 	private int articleTypeMaxBlogId = 0;
@@ -139,7 +144,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		screenWidth = (int) (getWindowManager().getDefaultDisplay().getWidth()*0.5);
 		
 		titleIcon = (ImageView) findViewById(R.id.title_icon);
-		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.body_container_triangle1);
+		Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.body_container_triangle);
 		titleIcon.setImageBitmap(bitmap);
 		
 //		titleList.add("车友圈");
@@ -186,7 +191,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		mSpinerPopWindow.setOnDismissListener(new OnDismissListener() {
 			public void onDismiss() {
 				if(isChickTitle){
-					Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.body_container_triangle1);
+					Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.body_container_triangle);
 					titleIcon.setImageBitmap(bitmap);
 					isChickTitle = false;
 				}
@@ -231,7 +236,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				break;
 			case R.id.tv_vehicle_friend_title:
 				if(!isChickTitle){
-					Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.body_container_triangle);
+					Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.body_container_triangle1);
 					titleIcon.setImageBitmap(bitmap);
 					isChickTitle = true;
 				}
@@ -263,17 +268,18 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		for (int i = 0; i < articleTempList.size(); i++) {
 			blogIdList[i] = articleTempList.get(i).getBlog_id();
 		}
-		for(int m = 0 ; m < blogIdList.length ; m ++){
-			for(int n = 0 ; n < m ; n ++){
-				int temp = 0;
-				if(blogIdList[m] < blogIdList[n]){
-					temp = blogIdList[m];
-					blogIdList[m] = blogIdList[n];
-					blogIdList[n] = temp;
-				}
-			}
-		}
-		articleTypeMaxBlogId = blogIdList[blogIdList.length - 1];   //最小id
+//		for(int m = 0 ; m < blogIdList.length ; m ++){
+//			for(int n = 0 ; n < m ; n ++){
+//				int temp = 0;
+//				if(blogIdList[m] < blogIdList[n]){
+//					temp = blogIdList[m];
+//					blogIdList[m] = blogIdList[n];
+//					blogIdList[n] = temp;
+//				}
+//			}
+//		}
+//		articleTypeMaxBlogId = blogIdList[blogIdList.length - 1];   //最大id
+		articleTypeMaxBlogId = paiXu(blogIdList)[0];
 		
 		Log.e("下拉刷新","url = " + articleType + "&max_id=" + articleTypeMaxBlogId);
 		new Thread(new NetThread.GetDataThread(myHandler, articleType + "&max_id=" + articleTypeMaxBlogId, refreshCode)).start();
@@ -289,17 +295,19 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		for (int i = 0; i < articleTempList.size(); i++) {
 			blogIdList[i] = articleTempList.get(i).getBlog_id();
 		}
-		for (int m = 0; m < blogIdList.length; m++) {
-			for (int n = 0; n < m; n++) {
-				int temp = 0;
-				if (blogIdList[m] < blogIdList[n]) {
-					temp = blogIdList[m];
-					blogIdList[m] = blogIdList[n];
-					blogIdList[n] = temp;
-				}
-			}
-		}
-		articleTypeMinBlogId = blogIdList[0];
+//		for (int m = 0; m < blogIdList.length; m++) {
+//			for (int n = 0; n < m; n++) {
+//				int temp = 0;
+//				if (blogIdList[m] < blogIdList[n]) {
+//					temp = blogIdList[m];
+//					blogIdList[m] = blogIdList[n];
+//					blogIdList[n] = temp;
+//				}
+//			}
+//		}
+//		articleTypeMinBlogId = blogIdList[0];
+		
+		articleTypeMinBlogId = paiXu(blogIdList)[blogIdList.length - 1];
 		if (!isLoadMore) {
 			articleSort(article, 3);
 		} else {
@@ -455,9 +463,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 									valuesType.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
 									dBExcute.InsertDB(VehicleFriendActivity.this,valuesType,Constant.TB_VehicleFriendType);
 								}
-//								if(i == (jsonArray.length()-1)){
-//									minBlogId = Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id"));
-//								}
 							}
 							//重新分页
 							articleDataList.clear();
@@ -535,6 +540,34 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 					myDialog.cancel();
 				}
 				onLoad();
+				break;
+			case refreshComments:  //  TODO
+				if(!"[]".equals(msg.obj.toString())){
+					try {
+						JSONArray  jsonArray = new JSONArray(msg.obj.toString());
+						for(int i = 0 ; i < jsonArray.length() ; i ++){
+							JSONObject obj = jsonArray.getJSONObject(i);
+							ContentValues contentValues  = new ContentValues();
+							contentValues.put("Blog_id", Integer.valueOf(obj.getString("blog_id")));
+							String updateTime = obj.getString("update_time");
+							String comments = "";
+							String praises = "";
+							if(obj.opt("comments") != null){
+								comments = obj.getJSONObject("comments").toString();
+							}
+							if(obj.opt("praises") != null){
+								praises = obj.getJSONObject("praises").toString();
+							}
+//							dBExcute.updataComment(obj.getString("blog_id"),updateTime,comments,praises,Constant.TB_VehicleFriend,VehicleFriendActivity.this);
+						}
+						
+						//刷新List
+						
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+				Log.e("result---->",msg.obj.toString());
 				break;
 			}
 			super.handleMessage(msg);
@@ -673,6 +706,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	}
 
 	
+	List<Article> tempList = null;
 	//文章分类
 	public void articleSort(int type,int action){
 		if(type == 2){
@@ -687,8 +721,10 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			if(totalNum < Constant.pageSize){
 				articleDataList.clear();
 				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
-				Variable.articleList = articleDataList;
-				myAdapter.refreshDates(articleDataList);
+				
+				tempList = new ArrayList<Article>();
+				tempList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, tempList);
+				updataListDate(articleDataList,tempList);
 				isLoadMore = true;
 				Log.e("小于    10  条","小于    10  条");
 			}else if(totalNum == Constant.pageSize){
@@ -696,15 +732,19 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				Constant.start = Constant.currentPage*Constant.pageSize;
 				Constant.currentPage ++ ;
 				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
-				Variable.articleList = articleDataList;
-				myAdapter.refreshDates(articleDataList);
+				
+				tempList = new ArrayList<Article>();   //用户处理更新评论数据的临时集合
+				tempList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, tempList);
+				updataListDate(articleDataList,tempList);
 				Log.e("等于    10  条","等于    10  条");
 			}else{
 				Constant.start = Constant.currentPage*Constant.pageSize;
 				Constant.currentPage ++ ;
 				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
-				Variable.articleList = articleDataList;
-				myAdapter.refreshDates(articleDataList);
+				
+				tempList = new ArrayList<Article>();
+				tempList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, tempList);
+				updataListDate(articleDataList,tempList);
 				Log.e("大于    10  条","大于    10  条");
 			}
 			if(Constant.totalPage == Constant.currentPage){
@@ -715,10 +755,65 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			myDialog.setCancelable(true);
 			new Thread(new NetThread.GetDataThread(myHandler, articleType, FriendType)).start();
 		}
-		Variable.articleList = articleDataList;
-		myAdapter.refreshDates(articleDataList);
 		if(3 == action){
 			onLoad();
 		}
+	}
+	
+	public void  updataListDate(List<Article> articleDataList,List<Article> tempList){
+		// 刷新评论相关  TODO  每页数据 最大blog_id　　 最小blog_id  最新（大） 时间
+		int[] tempBlogIdList = new int[tempList.size()];
+		String tempTime = "";
+		for(int i = 0 ; i < tempList.size() ; i ++){
+			tempBlogIdList[i] = tempList.get(i).getBlog_id();
+			if(i < tempList.size() - 1){
+				
+				String str = tempList.get(i).getCreate_time();
+				String createTime = str.substring(0, str.indexOf(".")).replace("T"," ").replace("-", "/");
+				
+				String str1 = tempList.get(i + 1).getCreate_time();
+				String createTime1 = str1.substring(0, str.indexOf(".")).replace("T"," ").replace("-", "/");
+				
+				tempTime = getMaxTime(createTime,createTime1);
+			}
+		}
+		Log.e("最小blog_id","最小blog_id = " + paiXu(tempBlogIdList)[tempBlogIdList.length - 1]);
+		Log.e("最大blog_id","最大blog_id = " + paiXu(tempBlogIdList)[0]);
+		String putTime = tempTime.replace(" ", "%20");
+		Log.e("最新时间","最新时间 = " + putTime);
+		String url = Constant.BaseUrl + "blog?auth_code=" + Variable.auth_code + "&type=" + article + "&cust_id=" + Variable.cust_id + "&min_id=" + paiXu(tempBlogIdList)[tempBlogIdList.length - 1] + "&max_id=" + paiXu(tempBlogIdList)[0] + "&update_time=" + putTime;  
+//		String url = http://wiwc.api.wisegps.cn/blog?auth_code=127a154df2d7850c4232542b4faa2c3d&type=1&cust_id=71&min_id=20&max_id=30&update_time=2014-03-11%2019:18:11
+		new Thread(new NetThread.GetDataThread(myHandler, url, refreshComments)).start();
+		Variable.articleList = articleDataList;
+		myAdapter.refreshDates(articleDataList);
+	}
+	
+	//索引最大  blog_id最小
+	public int[] paiXu(int[] tempInt){
+		for(int m = 0 ; m < tempInt.length ; m ++){
+			for(int n = 0 ; n < m ; n ++){
+				int temp = 0;
+				if(tempInt[m] > tempInt[n]){
+					temp = tempInt[m];
+					tempInt[m] = tempInt[n];
+					tempInt[n] = temp;
+				}
+			}
+		}
+		return tempInt;
+	}
+	//得到最(新)大时间
+	public String getMaxTime(String time,String time1){
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+		 java.util.Date begin = null;
+		java.util.Date end = null;
+		try {
+			begin = sdf.parse(time);
+			 end = sdf.parse(time1);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return (int) ((end.getTime() - begin.getTime())/1000) > 0 ? time1 : time;
 	}
 }

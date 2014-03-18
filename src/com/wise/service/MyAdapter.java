@@ -162,7 +162,7 @@ public class MyAdapter extends BaseAdapter{
 		}else{
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		
+		Log.e("MyAdapter--->",articleList.get(position).getCreate_time());
 		//   评论
 		int size = articleList.get(position).getCommentList().size();
 		viewHolder.commentLayout.setVisibility(View.VISIBLE);
@@ -362,7 +362,6 @@ public class MyAdapter extends BaseAdapter{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String currentTime = sdf.format(new Date());
 		String time1 =  transform(time);
-		System.out.println(time + "," + time1);
 	     if(Integer.parseInt(time1.substring(0,4)) < Integer.parseInt(currentTime.substring(0,4))){
 	    	 return time1.substring(0, 16);
 	     }else{
@@ -376,8 +375,6 @@ public class MyAdapter extends BaseAdapter{
 	    	 return time1.substring(5, 16);
 	     }
 	}
-	
-	
 		//转换时区
 	    public static String transform(String from){
 	        String to = "";
