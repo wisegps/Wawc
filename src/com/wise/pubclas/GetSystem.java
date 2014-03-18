@@ -33,6 +33,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.text.format.Time;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.WindowManager;
 import android.widget.Toast;
@@ -465,11 +466,12 @@ public class GetSystem {
     	String tempMargins = activity.getResources().getString(R.dimen.margins1);
 		int margins = Integer.valueOf(tempMargins.substring(0,tempMargins.lastIndexOf(".")));
 		Variable.margins = margins;
+        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,margins, activity.getResources().getDisplayMetrics());
+		Variable.margins = px;
 		WindowManager manager = activity.getWindowManager();
 		Display display = manager.getDefaultDisplay();
-		int screenWidth = (int) ((display.getWidth() - 2*Variable.margins)*0.8);
-		int imageWidth = (screenWidth - 2*margins)/3;
-//		int imageWidth = screenWidth/3;
+		int screenWidth = (int) ((display.getWidth() - 2*px)*0.8);
+		int imageWidth = (screenWidth - 2*px)/3;
 		Variable.smallImageReqWidth = imageWidth;
     }
     /**
