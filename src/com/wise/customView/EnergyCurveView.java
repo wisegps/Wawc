@@ -41,7 +41,6 @@ public class EnergyCurveView extends View implements OnTouchListener{
 	 */
 	private static int SPACING = 35;
 	private Bitmap mTrendLine; // 点击显示的竖线
-	private Bitmap mLastPoint; // 曲线图最后一个绘制灰色圆点
 	private Bitmap mMovePoint; // 曲线图移动中绘制的圆点
 	/**
 	 * 实际画布宽度
@@ -328,7 +327,6 @@ public class EnergyCurveView extends View implements OnTouchListener{
 		float trendLineScale = (float) mGradientHeight / height;
 		mTrendLine = scaleBmp(mTrendLine, 1.0f, trendLineScale); // 缩放图层
 		// 最后一个灰色的点
-		mLastPoint = BitmapFactory.decodeResource(getResources(), R.drawable.energy_trendpoint_last);
 		mMovePoint = BitmapFactory.decodeResource(getResources(), R.drawable.energy_trendpoint_move);
 	}
 
@@ -373,7 +371,7 @@ public class EnergyCurveView extends View implements OnTouchListener{
 			float f = energys.get(i).value;
 			float y = ((mGradientHeight + SPACING_HEIGHT) - f * spacingOfY);
 			
-			float x = (i * spacingOfX + SPACING + mLastPoint.getWidth());
+			float x = (i * spacingOfX + SPACING);
 			PointF point = new PointF(x, y);
 			points.add(point);
 		}

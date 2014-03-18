@@ -386,6 +386,7 @@ public class MyVehicleActivity extends Activity{
 			case R.id.my_vechile_menu:
 				if(CheckDatas()){
 					commitData();
+					
 					if(isJump){
 							finish();
 					}else{
@@ -1224,6 +1225,9 @@ public class MyVehicleActivity extends Activity{
 						 Variable.carDatas.get(chickIndex).setInsurance_tel(insuranceTel.getText().toString().trim());
 						 Variable.carDatas.get(chickIndex).setMaintain_tel(maintainTelEd.getText().toString().trim());
 						 Variable.carDatas.get(chickIndex).setGas_no(petrolResult);
+						 
+						 Intent intent = new Intent(Constant.A_UpdateCar);
+		                 sendBroadcast(intent);
 					 }else{
 						 Log.e("更改爱车   失败:","失败");
 					 }

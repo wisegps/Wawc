@@ -54,6 +54,8 @@ public class AccountActivity extends Activity{
 	EditText et_activity_account_consignee,et_activity_account_adress,et_activity_account_phone;
 	TextView tv_activity_account_name,tv_activity_city,tv_carBrand,tv_carNumber;
 	ImageView iv_activity_account_pic,iv_user_car_logo;
+	boolean isJump = true;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_account);
@@ -76,6 +78,15 @@ public class AccountActivity extends Activity{
 		GetSfData();
 		GetDBData();
         GetCarData();
+        
+        Intent intent = getIntent();
+        isJump = intent.getBooleanExtra("isJump", false);
+        System.out.println("isJump = " + isJump);
+        if (isJump) {
+            iv_activity_account_menu.setImageResource(R.drawable.nav_back);
+        } else {
+            iv_activity_account_menu.setImageResource(R.drawable.side_left);
+        }
 	}
 	OnClickListener onClickListener = new OnClickListener() {	
 		@Override
@@ -83,7 +94,11 @@ public class AccountActivity extends Activity{
 			switch(v.getId()){
 			case R.id.iv_activity_account_menu:	
 			    saveData();
-				ActivityFactory.A.LeftMenu();
+			    if (isJump) {
+                    finish();
+                } else {
+                    ActivityFactory.A.LeftMenu();
+                }
 				break;
 			case R.id.account_to_my_vehicle:
 				startActivityForResult(new Intent(AccountActivity.this, CarSelectActivity.class), 0);
