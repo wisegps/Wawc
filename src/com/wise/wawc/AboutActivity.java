@@ -11,12 +11,15 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 public class AboutActivity extends Activity{
+    private static final String TAG = "AboutActivity";
     private static final int get_version = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +51,7 @@ public class AboutActivity extends Activity{
             switch (msg.what) {
             case get_version:
                 jsonVersion(msg.obj.toString());
+                Log.d(TAG, msg.obj.toString());
                 break;
             }
         }        
@@ -58,13 +62,18 @@ public class AboutActivity extends Activity{
             String VersonUrl = new JSONObject(result).getString("app_path");
             String logs = new JSONObject(result).getString("logs");
             JSONArray jsonArray = new JSONObject(result).getJSONArray("logs");
+            boolean isUpdate = false;
             for (int i = 0; i < jsonArray.length(); i++) {
                  double logVersion = Double.valueOf(jsonArray.getJSONObject(i).getString("version"));
                  if(logVersion > Version){
                      UpdateManager mUpdateManager = new UpdateManager(AboutActivity.this,VersonUrl,logs,Version);
                      mUpdateManager.checkUpdateInfo();
+                     isUpdate = true;
                      break;
                  }
+            }
+            if(!isUpdate){
+                Toast.makeText(AboutActivity.this, "已是最新版本", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e) {
             e.printStackTrace();

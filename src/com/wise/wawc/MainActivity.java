@@ -21,13 +21,19 @@ import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
+import com.wise.sql.DBExcute;
+import com.wise.sql.DBHelper;
+
 import android.app.ActivityGroup;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -395,6 +401,7 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
             iv_activity_main_login.setImageResource(R.drawable.side_icon_qq_press);
             iv_activity_main_arrow.setVisibility(View.VISIBLE);
             platfromIsLogin(platformQQ);
+            //platformQQ.getDb().getUserIcon()
             //绑定
             Login(platformQQ.getDb().getUserId(), platformQQ.getDb()
                     .getUserName(), LocationProvince, LocationCity, platformQQ.getDb()
@@ -711,7 +718,7 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
         new Thread(new NetThread.GetDataThread(handler, url, get_noti_count)).start();
     }
     private void jsonNoti(String result){
-        try {           
+        try {
             JSONObject jsonObject = new JSONObject(result);
             if(jsonObject.opt("noti_count") != null){
                 int count = jsonObject.getInt("noti_count");
@@ -719,7 +726,63 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
                     iv_noti.setVisibility(View.VISIBLE);
                 }else{
                     iv_noti.setVisibility(View.GONE);
-                }
+                }               
+            }
+            int if_alert_noti = 0;
+            if(jsonObject.opt("if_alert_noti") != null){
+                if_alert_noti = jsonObject.getInt("if_alert_noti");
+            }
+            int if_event_noti = 0;
+            if(jsonObject.opt("if_event_noti") != null){
+                if_event_noti = jsonObject.getInt("if_event_noti");
+            }
+            int if_fault_noti = 0;
+            if(jsonObject.opt("if_fault_noti") != null){
+                if_fault_noti = jsonObject.getInt("if_fault_noti");
+            }
+            int if_vio_noti = 0;
+            if(jsonObject.opt("if_vio_noti") != null){
+                if_vio_noti = jsonObject.getInt("if_vio_noti");
+            }
+            DBHelper dbHelper = new DBHelper(this);
+            SQLiteDatabase db = dbHelper.getReadableDatabase();
+            Cursor cursor = db.rawQuery("select * from " + Constant.TB_Account
+                    + " where cust_id=?", new String[] { Variable.cust_id });
+
+            DBExcute dbExcute = new DBExcute();
+            ContentValues values = new ContentValues();
+            if (jsonObject.opt("contacts") != null) {
+                String contacts = jsonObject.getString("contacts");
+                values.put("Consignee", contacts);
+            }
+            if (jsonObject.opt("address") != null) {
+                String address = jsonObject.getString("address");
+                values.put("Adress", address);
+            }
+            if (jsonObject.opt("tel") != null) {
+                String tel = jsonObject.getString("tel");
+                values.put("Phone", tel);
+            }
+            if (jsonObject.opt("annual_inspect_date") != null) {
+                String annual_inspect_date = jsonObject
+                        .getString("annual_inspect_date").replace("T", " ")
+                        .substring(0, 19);
+                values.put("annual_inspect_date", annual_inspect_date);
+            }
+            if (jsonObject.opt("change_date") != null) {
+                String  change_date = jsonObject.getString("change_date")
+                        .replace("T", " ").substring(0, 19);
+                values.put("change_date", change_date);
+            }
+            values.put("alert", if_alert_noti);
+            values.put("event", if_event_noti);
+            values.put("fault", if_fault_noti);
+            values.put("vio", if_vio_noti);
+            if (cursor.getCount() == 0) {//插入
+                values.put("cust_id", Variable.cust_id);
+                dbExcute.InsertDB(MainActivity.this, values, Constant.TB_Account);
+            } else {//更新
+                dbExcute.UpdateDB(this, values, "cust_id=?",new String[] { Variable.cust_id }, Constant.TB_Account);
             }
         } catch (JSONException e) {
             e.printStackTrace();

@@ -32,7 +32,7 @@ public class DBHelper extends SQLiteOpenHelper{
 	//我的违章
 	private static final String CREATE_TB_Traffic = "create table " + Constant.TB_Traffic + "(_id integer primary key autoincrement,obj_id text,Car_name text,create_time text,action text,location text,score int,fine int,status int,city text)";
 	//我的账户
-	private static final String CREATE_TB_Account = "create table " + Constant.TB_Account + "(_id integer primary key autoincrement,cust_id text,Consignee text,Adress text,Phone text,annual_inspect_date text,change_date text)";
+	private static final String CREATE_TB_Account = "create table " + Constant.TB_Account + "(_id integer primary key autoincrement,cust_id text,Consignee text,Adress text,Phone text,annual_inspect_date text,change_date text,alert int,event int,fault int,vio int)";
 	//我的消息
 	private static final String CREATE_TB_Sms = "create table " + Constant.TB_Sms + "(_id integer primary key autoincrement,cust_id text,noti_id int,msg_type int,content text,rcv_time text,lat text,lon text,status text,obj_id text)";
 	

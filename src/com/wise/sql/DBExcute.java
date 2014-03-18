@@ -56,6 +56,7 @@ public class DBExcute {
         db.update(Table, values, where, args);
         db.close();
         dbHelper.close();
+        System.out.println("更新数据库");
 	}
 	/**
 	 * 更新基础数据表
