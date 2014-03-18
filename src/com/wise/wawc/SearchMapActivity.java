@@ -8,9 +8,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import cn.sharesdk.framework.ShareSDK;
-
 import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.map.ItemizedOverlay;
 import com.baidu.mapapi.map.MKEvent;
@@ -170,12 +168,16 @@ public class SearchMapActivity extends Activity {
             mkSearch.poiSearchNearBy(keyWord, point, 50000);
         }
         // 显示自己位置
-        Drawable mark = getResources().getDrawable(
-                R.drawable.body_icon_location2);
+        Drawable mark = getResources().getDrawable(R.drawable.body_icon_location2);
         overlayCar = new OverlayCar(mark, mMapView);
         overlays.add(overlayCar);
+        
+        Drawable markMe = getResources().getDrawable(R.drawable.body_icon_outset);
+        OverlayCar overlayMe = new OverlayCar(markMe, mMapView);
+        overlays.add(overlayMe);
         OverlayItem item = new OverlayItem(point, "item2", "item2");
-        overlayCar.addItem(item);
+        item.setAnchor(OverlayItem.ALING_CENTER);
+        overlayMe.addItem(item);
     }
 
     OnClickListener onClickListener = new OnClickListener() {
@@ -288,6 +290,7 @@ public class SearchMapActivity extends Activity {
         public void onGetShareUrlResult(MKShareUrlResult arg0, int arg1,int arg2) {}
         @Override
         public void onGetPoiResult(MKPoiResult res, int type, int error) {
+            Log.d(TAG, "type = " + type + " , error = " + error);
             if (error == MKEvent.ERROR_RESULT_NOT_FOUND) {
                 Toast.makeText(SearchMapActivity.this,
                         R.string.search_result_not_found, Toast.LENGTH_SHORT)

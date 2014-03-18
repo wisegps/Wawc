@@ -67,9 +67,8 @@
                 android:layout_weight="6"
                 android:scrollbars="horizontal"
                 android:numColumns="3"
-                android:horizontalSpacing="@dimen/margins"
+                android:horizontalSpacing="5dp"
         		android:stretchMode="columnWidth"
-        		android:layout_marginLeft="@dimen/margins1"
                 ></GridView>
             <!-- 显示用户发表的图片 
             <LinearLayout

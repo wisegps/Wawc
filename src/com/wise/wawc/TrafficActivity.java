@@ -175,7 +175,6 @@ public class TrafficActivity extends Activity implements IXListViewListener{
         total_score = 0;
         total_fine = 0;
         boolean isUrl = isGetDataUrl(Car_name);
-        lv_activity_traffic.setPullLoadEnable(true);
         if(isUrl){
             isGetDB = false;
             //从服务器读取数据

@@ -97,12 +97,14 @@ public class AdressAdapter extends BaseAdapter{
 		String distance = "";
 		if(adressData.getDistance() != -1){
 		    distance = d(adressData.getDistance());
-		}
-        String str = adressData.getName() + distance;
-        SpannableStringBuilder builder = new SpannableStringBuilder(str);
-        builder.setSpan(blackSpan, 0, adressData.getName().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        builder.setSpan(graySpan, adressData.getName().length(), str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        holder.tv_item_dealadress_name.setText(builder);
+		    String str = adressData.getName() + distance;
+	        SpannableStringBuilder builder = new SpannableStringBuilder(str);
+	        builder.setSpan(blackSpan, 0, adressData.getName().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	        builder.setSpan(graySpan, adressData.getName().length(), str.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+	        holder.tv_item_dealadress_name.setText(builder);
+		}else{
+		    holder.tv_item_dealadress_name.setText(adressData.getName());
+		}        
         
 		holder.tv_item_dealadress_adress.setText("地址：" + adressData.getAdress());
 		holder.tv_item_dealadress_phone.setText("电话：" +adressData.getPhone());

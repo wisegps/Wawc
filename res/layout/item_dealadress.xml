@@ -31,6 +31,7 @@
             android:layout_height="wrap_content"    
             android:layout_toLeftOf="@id/iv_Collect"
             android:textSize="@dimen/content"
+            android:textColor="@color/common"
             android:text="深圳红岭北路3002号梅"/>
     </RelativeLayout>
 
