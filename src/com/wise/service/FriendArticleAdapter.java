@@ -60,7 +60,6 @@ public class FriendArticleAdapter extends BaseAdapter{
 	private Context context;
 	private LayoutInflater layoutInflater;
 	public static boolean isClick = false;
-	private ImageView LvComment;
 	private List<Article> articleList = null;
 	
 	private StringBuffer sb = null;
@@ -78,7 +77,7 @@ public class FriendArticleAdapter extends BaseAdapter{
 	public FriendArticleAdapter(Context context,LinearLayout linearLayout,List<Article> articleList){
 		this.context = context;
 		this.linearLayout = linearLayout;
-		this.articleList = articleList;
+		this.articleList = processData(articleList);
 		layoutInflater = LayoutInflater.from(context);
 		listener = new OnClickListeners(0);
 		myHandler = new MyHandler();
@@ -101,18 +100,6 @@ public class FriendArticleAdapter extends BaseAdapter{
 			viewHolder.publishTime = (TextView) convertView.findViewById(R.id.friend_article_publish_time);
 			viewHolder.articleContent = (TextView) convertView.findViewById(R.id.friend_article_content);
 			viewHolder.data = (TextView) convertView.findViewById(R.id.friend_article_data);
-			viewHolder.favoriteStart = (ImageView) convertView.findViewById(R.id.friend_article_praises_star);
-			viewHolder.favoriteUser = (TextView)convertView.findViewById(R.id.friend_article_praises_user);
-			viewHolder.addFavorite = (ImageView) convertView.findViewById(R.id.friend_article_praises);
-			viewHolder.commentLayout = (LinearLayout) convertView.findViewById(R.id.friend_home_article_comment_layout);
-			viewHolder.line = convertView.findViewById(R.id.friend_article_line);
-			//  TODO
-			viewHolder.twoCommentLayout = (LinearLayout) convertView.findViewById(R.id.friend_home_two_comment_ll);
-			viewHolder.totalComment = (TextView) convertView.findViewById(R.id.friend_home_comment_total_tv);
-			viewHolder.oneCommentName = (TextView) convertView.findViewById(R.id.friend_home__one_comment_name_tv);
-			viewHolder.oneCommentContent = (TextView) convertView.findViewById(R.id.friend_home__one_comment_content_tv);
-			viewHolder.twoCommentName = (TextView) convertView.findViewById(R.id.friend_home_two_comment_name_tv);
-			viewHolder.twoCommentContent = (TextView) convertView.findViewById(R.id.friend_home_two_comment_content_tv);
 			viewHolder.userImage = (GridView) convertView.findViewById(R.id.friend_home_image);
 			convertView.setTag(viewHolder);
 		}else{
@@ -133,113 +120,46 @@ public class FriendArticleAdapter extends BaseAdapter{
 			smallImageList.add(smallBitmap);
 		}
 		viewHolder.userImage.setAdapter(new UserImageAdapter(threeSmallImageList, position));
-		viewHolder.addFavorite.setOnClickListener(new OnClickListeners(position));
 		String str = articleList.get(position).getCreate_time();
 		String createTime = str.substring(0, str.indexOf(".")).replace("T"," ");
 		viewHolder.articleContent.setText(articleList.get(position).getContent());
 		
-		
-		
-		
 		String data = getTime(createTime).substring(0,getTime(createTime).indexOf("t"));
 		String time = getTime(createTime).substring(getTime(createTime).indexOf("t") + 1);
-		
-		//  TODO
 		viewHolder.publishTime.setText(time);
-		viewHolder.data.setText(data);
-		//评论
-		int size = articleList.get(position).getCommentList().size();
-		viewHolder.commentLayout.setVisibility(View.VISIBLE);
-		viewHolder.twoCommentLayout.setVisibility(View.VISIBLE);
-		viewHolder.line.setVisibility(View.VISIBLE);
-		if(size == 0 || articleList.get(position).getCommentList() == null){
-			viewHolder.commentLayout.setVisibility(View.GONE);
-			viewHolder.line.setVisibility(View.GONE);
-		}else if(size == 1){
-			viewHolder.twoCommentLayout.setVisibility(View.GONE);
-			viewHolder.totalComment.setVisibility(View.GONE);
-			viewHolder.oneCommentName.setText(articleList.get(position).getCommentList().get(0)[0]+":");
-			viewHolder.oneCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(0)[1]));
+		String section = getSectionForPosition(position);
+		if(position == getPositionForSection(section)){
+			viewHolder.data.setVisibility(View.VISIBLE);
+			viewHolder.data.setText(this.articleList.get(position).getData());
 		}else{
-			viewHolder.twoCommentLayout.setVisibility(View.VISIBLE);
-			for (int i = 0; i < size; i++) {
-				if (i == articleList.get(position).getCommentList().size() - 1) {
-					viewHolder.oneCommentName.setText(articleList.get(position).getCommentList().get(i)[0]+":");
-					viewHolder.oneCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(i)[1]));
-				} else if (i == articleList.get(position).getCommentList().size() - 2) {
-					viewHolder.twoCommentName.setText(articleList.get(position).getCommentList().get(i)[0]+":");
-					viewHolder.twoCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(i)[1]));
-				}
-			}
-			if(articleList.get(position).getCommentList().size() > 2){
-				viewHolder.totalComment.setVisibility(View.VISIBLE);
-				viewHolder.totalComment.setText("共" + articleList.get(position).getCommentList().size() + "条评论");
+			viewHolder.data.setText("");
+		}
+		return convertView;
+	}
+	
+	/**
+	 * 根据ListView的当前位置获取文章对象hashCode值
+	 */
+	public String getSectionForPosition(int position) {
+		return this.articleList.get(position).getData();
+	}
+	
+	public int getPositionForSection(String section) {
+		for (int i = 0; i < getCount(); i++) {
+			String str = this.articleList.get(i).getData();
+			if (str.equals(section)) {
+				return i;
 			}
 		}
-		
-		//动态添加用户的评论
-//				LinearLayout commentLayout = (LinearLayout) convertView.findViewById(R.id.friend_article_comment_layout);
-//				for(int i = 0 ; i < articleList.get(position).getCommentList().size() ; i ++){
-//					LinearLayout oneComment = new LinearLayout(context);
-//					oneComment.setOrientation(LinearLayout.HORIZONTAL);
-//					TextView commentName = new TextView(context);
-//					commentName.setTextColor(Color.parseColor("#3b5197"));
-//					commentName.setPadding(Variable.margins, Variable.margins, 0, 0);
-//				    TextView commentContent = new TextView(context);
-//				    commentContent.setTextColor(Color.parseColor("#313131"));
-//				    commentContent.setPadding(Variable.margins, Variable.margins, 0, 0);
-//					String[] commentStr = articleList.get(position).getCommentList().get(i);
-//					commentName.setText(commentStr[0] + ":");
-//					oneComment.addView(commentName, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-//					SpannableString spannableString = FaceConversionUtil.getInstace().getExpressionString(context, commentStr[1]);
-//					commentContent.setText(spannableString);
-//					oneComment.addView(commentContent, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-//					commentLayout.addView(oneComment, new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-//				}
-				//点赞者
-				if(articleList.get(position).getPraisesList() != null){
-					if(articleList.get(position).getPraisesList().size() != 0){
-						sb = new StringBuffer();
-						Iterator iter = articleList.get(position).getPraisesList().entrySet().iterator();
-						while (iter.hasNext()) {
-							Map.Entry entry = (Map.Entry) iter.next();
-							String val = (String) entry.getValue();
-							sb.append(val+",");
-							if(Variable.cust_name.equals(val)){
-								viewHolder.favoriteStart.setBackgroundResource(R.drawable.body_icon_heart_press);
-							}
-						}
-						viewHolder.favoriteStart.setVisibility(View.VISIBLE);
-						viewHolder.favoriteUser.setText(sb.toString());
-					}else{
-						viewHolder.favoriteStart.setVisibility(View.GONE);
-					}
-				}else{
-					viewHolder.favoriteStart.setVisibility(View.GONE);
-				}
-		LvComment = (ImageView) convertView.findViewById(R.id.friend_article_comment);
-		LvComment.setOnClickListener(new OnClickListeners(position));
-		return convertView;
+		return -1;
 	}
 	
 	class ViewHolder{
 		public TextView publishTime;
-		public ImageView favoriteStart = null;
-		public TextView favoriteUser = null;
 		public TextView data = null;
-		public ImageView addFavorite = null;
 		public TextView articleContent = null;
-		public LinearLayout commentLayout;
-		public View line;
-		public LinearLayout twoCommentLayout;
-		public TextView totalComment;
-		public TextView oneCommentName;
-		public TextView oneCommentContent;
-		public TextView twoCommentName;
-		public TextView twoCommentContent;
 		public GridView userImage;
 	}
-	
 	
 	class OnClickListeners implements OnClickListener{
 		int position = 0;
@@ -248,29 +168,6 @@ public class FriendArticleAdapter extends BaseAdapter{
 		}
 		public void onClick(View v) {
 			switch(v.getId()){
-			case R.id.friend_article_comment:
-				FriendHomeActivity.blogId = articleList.get(this.position).getBlog_id();
-				//编辑框不可见，设置为可见
-				Log.e("onClick",String.valueOf(isClick));
-				if(!isClick){
-					isClick = true;
-					linearLayout.setVisibility(View.VISIBLE);
-				//编辑框可见，设置为不可见	
-				}else if(isClick){
-					isClick = false;
-					linearLayout.setVisibility(View.GONE);
-				}
-				break;
-			case R.id.friend_article_praises:  //  点赞
-				FriendArticleAdapter.this.blogId = articleList.get(this.position).getBlog_id();
-				myDialog = ProgressDialog.show(context, "提示","数据提交中...");
-				myDialog.setCancelable(true);
-				List<NameValuePair> params = new ArrayList<NameValuePair>();
-				params.add(new BasicNameValuePair("name",Variable.cust_name));
-				params.add(new BasicNameValuePair("cust_id",Variable.cust_id));
-				new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "blog/" + blogId +"/praise?auth_code=" + Variable.auth_code, params, articleFavorite)).start();
-				Log.e("点赞url:",Constant.BaseUrl + "blog/" + blogId +"/praise?auth_code=" + Variable.auth_code);
-				break;
 			}
 		}
 	}
@@ -289,7 +186,6 @@ public class FriendArticleAdapter extends BaseAdapter{
 						dbExcute.updateArticlePraises(context, Constant.TB_VehicleFriend, blogId, Variable.cust_name, Integer.valueOf(Variable.cust_id));
 						
 						VehicleFriendActivity vehicleFriendActivity = new VehicleFriendActivity();
-						Log.e("---->",Constant.start + "");
 						//更新列表
 						List<Article> oldArticlList = vehicleFriendActivity.getArticleDataList();
 						oldArticlList.clear();
@@ -427,8 +323,17 @@ public class FriendArticleAdapter extends BaseAdapter{
 		 return FaceConversionUtil.getInstace().getExpressionString(context, faceContent);
 	 }
 	public void refreshDates(List<Article> articleList){ 
-		Log.e("好友主页迭代器：" , articleList.size()+"");
-		this.articleList = articleList;
+		this.articleList = processData(articleList);
 		this.notifyDataSetChanged();
+	}
+	
+	public List<Article> processData(List<Article> articleList){
+		for(int i = 0 ; i < articleList.size() ; i ++){
+			String str = articleList.get(i).getCreate_time();
+			String createTime = str.substring(0, str.indexOf(".")).replace("T"," ");
+			String data = getTime(createTime).substring(0,getTime(createTime).indexOf("t"));
+			articleList.get(i).setData(data);
+		}
+		return articleList;
 	}
 }

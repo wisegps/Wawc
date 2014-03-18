@@ -148,9 +148,11 @@ public class DBExcute {
 			SQLiteDatabase db = null;
 				db = dbHelper.getReadableDatabase();
 				Cursor cursor = db.rawQuery(sql, whereClause);
+				Log.e("加载前",articleData.size() + "");
 				while(cursor.moveToNext()){
 					articleData.add(parseDBDatas(cursor));
 				}
+				Log.e("加载  后",articleData.size() + "");
 				db.close();
 				return articleData;
 		}

@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res/com.wise.wawc"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#FFFFFF"
@@ -45,12 +46,15 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingTop="3dip" >
-
-            <ImageView
+            
+            <com.wise.extend.CircleImageView
                 android:id="@+id/friend_home_user_head"
                 android:layout_width="65dip"
                 android:layout_height="65dip"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                app:border_width="1dp"
+                app:border_color="@color/white"
+                ></com.wise.extend.CircleImageView>
 
             <TextView
                 android:id="@+id/friend_home_name"
@@ -69,8 +73,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/friend_home_title"
         android:layout_marginTop="@dimen/margins"
-        android:dividerHeight="@null"
-        android:divider="@null"
+        android:divider="#00000000"
+		android:dividerHeight="@dimen/margins"
+		android:listSelector="@drawable/bg_item_selector"
         android:descendantFocusability="blocksDescendants"
         >
     </com.wise.list.XListView>

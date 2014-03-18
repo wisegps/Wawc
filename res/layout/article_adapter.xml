@@ -198,7 +198,7 @@
                     android:layout_height="0.1dip"
                     android:layout_marginLeft="@dimen/margins"
                     android:layout_marginRight="@dimen/margins"
-                    android:background="@color/gray_light" />
+                    android:background="@color/gray" />
                 <!-- 评论 -->
                 <LinearLayout
                     android:id="@+id/article_comment_layout"

@@ -52,8 +52,9 @@ public class FriendInformationActivity extends Activity{
 	RelativeLayout carInfo = null;
 	
 	String[] carInfor = null;
-	Article article  = null;
 	String cust_id = "";
+	String user_logo = "";
+	String user_name = "";
 	List<String[]> carInforList = new ArrayList<String[]>();
 	DBHelper dbHelper = null;
 	static final int getBarBrand = 2;
@@ -74,8 +75,9 @@ public class FriendInformationActivity extends Activity{
 		
 		
 		myHandler = new MyHandler();
-		article = (Article) getIntent().getSerializableExtra("article");
 		cust_id = getIntent().getStringExtra("cust_id");
+		user_logo = getIntent().getStringExtra("user_logo");
+		user_name = getIntent().getStringExtra("user_name");
 		back.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
 				FriendInformationActivity.this.finish();
@@ -94,8 +96,8 @@ public class FriendInformationActivity extends Activity{
 		}else{
 			new Thread(new Runnable() {
 				public void run() {
-					if(!"".equals(article.getUserLogo())){
-						Bitmap tempBitmap = GetSystem.getBitmapFromURL(article.getUserLogo());
+					if(!"".equals(user_logo)){
+						Bitmap tempBitmap = GetSystem.getBitmapFromURL(user_logo);
 						if(tempBitmap != null){
 							 GetSystem.saveImageSD(tempBitmap, Constant.userIconPath, cust_id + ".jpg");
 							 userHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(tempBitmap));
@@ -104,7 +106,7 @@ public class FriendInformationActivity extends Activity{
 				}
 			}).start();
 		}
-		userName.setText(article.getName());
+		userName.setText(user_name);
 		//设置用户车辆
 		DBHelper dbHelper = new DBHelper(FriendInformationActivity.this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();

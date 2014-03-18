@@ -120,11 +120,13 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/article_details_user_image_tr"
-                android:layout_marginRight="10dip" >
+                android:layout_marginRight="@dimen/margins"
+                android:layout_marginTop="@dimen/margins"
+                 >
 
                 <TableRow
                     android:layout_width="fill_parent"
-                    android:layout_height="10dip" >
+                    android:layout_height="@dimen/margins" >
 
                     <View
                         android:layout_width="0dip"

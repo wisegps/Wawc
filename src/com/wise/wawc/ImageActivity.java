@@ -22,11 +22,7 @@ import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.view.Display;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Gallery;
 import android.widget.HorizontalScrollView;
@@ -42,6 +38,8 @@ public class ImageActivity extends Activity {
 	private Intent intent = null;
 	private Article article = null;
 	private MyHandler myHandler = null;
+	private List<Map<String,String>> imageList = null;
+	private MyThread mYThread = null;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.image_exalpoer);
@@ -54,6 +52,7 @@ public class ImageActivity extends Activity {
 		screenHeight = getWindow().getWindowManager().getDefaultDisplay().getHeight();
 		
 		gallery.setAdapter(adapter);
+		mYThread = new MyThread();
 		gallery.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
 				ImageActivity.this.finish();
@@ -62,27 +61,27 @@ public class ImageActivity extends Activity {
 		myHandler = new MyHandler();
 		intent = getIntent();
 		article = (Article) intent.getSerializableExtra("article");
-		
-		//启动线程下载图片
-	final List<Map<String,String>> imageList = article.getImageList();
-		new Thread(new Runnable() {
-			public void run() {
-					for(int j = 0 ; j < imageList.size() ; j ++){
-						Map<String,String> imageMap = imageList.get(j);
-						final String str = imageMap.get("big_pic");
-						Bitmap bitmap = imageIsExist(Constant.VehiclePath + str.substring(str.lastIndexOf("/")),str);
-						if(bitmap != null){
-						Log.e("执行了没",str);
-						imageModel.add(bitmap);
-					}
-						if(j == (imageList.size() - 1)){
-							myHandler.sendMessage(new Message());
-						}
-					Log.e("加载"+ (j+1)+"张",imageModel.size() + "");	
+		imageList = article.getImageList();
+		mYThread.start();
+	}
+	
+	
+	class MyThread extends Thread{
+		public void run() {
+			for(int j = 0 ; j < imageList.size() ; j ++){
+				Map<String,String> imageMap = imageList.get(j);
+				String str = imageMap.get("big_pic");
+				Bitmap bitmap = imageIsExist(Constant.VehiclePath + str.substring(str.lastIndexOf("/")),str);
+				if(bitmap != null){
+					imageModel.add(bitmap);
 				}
-			}
-		}).start();
-		Log.e(imageModel.size() + "",imageModel.size() + "");
+//				if(j == (imageList.size() - 1)){
+//					myHandler.sendMessage(new Message());
+//				}
+//			Log.e("加载"+ (j+1)+"张",imageModel.size() + "");	
+		}
+			super.run();
+		}
 	}
 	
 	private Bitmap imageIsExist(String path,final String loadUrl) {
@@ -90,6 +89,7 @@ public class ImageActivity extends Activity {
 		if(file.exists()){
 			bitmap = BitmapFactory.decodeFile(path);
 			Log.e("本地存在","本地存在");
+			return bitmap;
 		}else{
 			Log.e("服务器获取","服务器获取");
 			new Thread(new Runnable() {
@@ -100,18 +100,21 @@ public class ImageActivity extends Activity {
 						if(!imagePath.exists()){
 							imagePath.mkdir();
 						}
-						createImage(Constant.VehiclePath + loadUrl.substring(loadUrl.lastIndexOf("/")),bitmap);
+						if(bitmap != null){
+							createImage(Constant.VehiclePath + loadUrl.substring(loadUrl.lastIndexOf("/")),bitmap);
+						}
+							
 					}
 				}
 			}).start();
 		}
-		return bitmap;
+		return null;
 	}
 	
 	public void createImage(String fileName,Bitmap bitmap){
 		FileOutputStream b = null;
 		try {  
-            b = new FileOutputStream(fileName);  
+            b = new FileOutputStream(fileName);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, b);// 把数据写入文件  
         } catch (FileNotFoundException e) {  
             e.printStackTrace();  

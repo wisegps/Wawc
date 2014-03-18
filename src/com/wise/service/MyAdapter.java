@@ -170,31 +170,6 @@ public class MyAdapter extends BaseAdapter{
 		viewHolder.line.setVisibility(View.VISIBLE);
 		viewHolder.allCommentLayout.setVisibility(View.VISIBLE);
 		viewHolder.totalComment.setVisibility(View.GONE);
-//		if(size == 0 || articleList.get(position).getCommentList() == null){
-//			viewHolder.commentLayout.setVisibility(View.GONE);
-//			viewHolder.line.setVisibility(View.GONE);
-//		}else if(size == 1){
-//			viewHolder.twoCommentLayout.setVisibility(View.GONE);
-//			viewHolder.totalComment.setVisibility(View.GONE);
-//			viewHolder.oneCommentName.setText(articleList.get(position).getCommentList().get(0)[0]+" : ");
-//			viewHolder.oneCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(0)[1]));
-//		}else{
-//			viewHolder.twoCommentLayout.setVisibility(View.VISIBLE);
-//			for (int i = 0; i < size; i++) {
-//				if (i == articleList.get(position).getCommentList().size() - 1) {
-//					viewHolder.oneCommentName.setText(articleList.get(position).getCommentList().get(i)[0]+" : ");
-//					viewHolder.oneCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(i)[1]));
-//				} else if (i == articleList.get(position).getCommentList().size() - 2) {
-//					viewHolder.twoCommentName.setText(articleList.get(position).getCommentList().get(i)[0]+" : ");
-//					viewHolder.twoCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(i)[1]));
-//				}
-//			}
-//			if(articleList.get(position).getCommentList().size() > 2){
-//				viewHolder.totalComment.setVisibility(View.VISIBLE);
-//				viewHolder.totalComment.setText("共" + articleList.get(position).getCommentList().size() + "条评论");
-//			}
-//		}
-		
 		
 		/**
 		 * 加载之前  所有控件设置为显示
@@ -205,13 +180,20 @@ public class MyAdapter extends BaseAdapter{
 		if(size == 0 || articleList.get(position).getCommentList() == null){
 			viewHolder.commentLayout.setVisibility(View.GONE);
 			viewHolder.line.setVisibility(View.GONE);
-		}else if(size == 1){
+		}
+		
+		if(size == 1){
 			viewHolder.commentLayout.setVisibility(View.VISIBLE);
 			viewHolder.line.setVisibility(View.VISIBLE);
 			viewHolder.oneCommentLayout.setVisibility(View.VISIBLE);
 			viewHolder.oneCommentName.setText(articleList.get(position).getCommentList().get(0)[0]+" : ");
 			viewHolder.oneCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(0)[1]));
-		}else if(size == 2){
+			viewHolder.twoCommentLayout.setVisibility(View.GONE);
+			viewHolder.totalComment.setVisibility(View.GONE);
+		}
+		
+		
+		if(size == 2){
 			viewHolder.commentLayout.setVisibility(View.VISIBLE);
 			viewHolder.line.setVisibility(View.VISIBLE);
 			viewHolder.oneCommentLayout.setVisibility(View.VISIBLE);
@@ -220,7 +202,9 @@ public class MyAdapter extends BaseAdapter{
 			viewHolder.oneCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(0)[1]));
 			viewHolder.twoCommentName.setText(articleList.get(position).getCommentList().get(1)[0]+" : ");
 			viewHolder.twoCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(1)[1]));
-		}else{
+		}
+		
+		if(size > 2){
 			viewHolder.commentLayout.setVisibility(View.VISIBLE);
 			viewHolder.line.setVisibility(View.VISIBLE);
 			viewHolder.oneCommentLayout.setVisibility(View.VISIBLE);
@@ -232,27 +216,6 @@ public class MyAdapter extends BaseAdapter{
 			viewHolder.totalComment.setVisibility(View.VISIBLE);
 			viewHolder.totalComment.setText("共" + articleList.get(position).getCommentList().size() + "条评论");
 		}
-		
-//		if(size == 0 || articleList.get(position).getCommentList() == null){
-//			viewHolder.commentLayout.setVisibility(View.GONE);
-//			viewHolder.line.setVisibility(View.GONE);
-//		}else if(size == 1){
-//			viewHolder.twoCommentLayout.setVisibility(View.GONE);
-//			viewHolder.totalComment.setVisibility(View.GONE);
-//			viewHolder.oneCommentName.setText(articleList.get(position).getCommentList().get(0)[0]+" : ");
-//			viewHolder.oneCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(0)[1]));
-//		}else if(size == 2){
-//			viewHolder.twoCommentLayout.setVisibility(View.VISIBLE);
-//			viewHolder.oneCommentName.setText(articleList.get(position).getCommentList().get(0)[0]+ " : ");
-//			viewHolder.oneCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(0)[1]));
-//			viewHolder.twoCommentName.setText(articleList.get(position).getCommentList().get(1)[0]+ " : ");
-//			viewHolder.twoCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(1)[1]));
-//		}else{
-//			viewHolder.totalComment.setVisibility(View.VISIBLE);
-//			viewHolder.totalComment.setText("共" + articleList.get(position).getCommentList().size() + "条评论");
-//		}
-		
-		
 		
 		List<Bitmap> threeSmallImageList = new ArrayList<Bitmap>();
 		List<Bitmap> smallImageList = new ArrayList<Bitmap>();
@@ -466,7 +429,8 @@ public class MyAdapter extends BaseAdapter{
 				case R.id.head_article:   //点击用户头像 进入好友主页
 					Intent intent = new Intent(activity,FriendHomeActivity.class);
 					intent.putExtra("cust_id", String.valueOf(articleList.get(index).getCust_id()));
-					intent.putExtra("article", articleList.get(index));
+					intent.putExtra("user_logo", String.valueOf(articleList.get(index).getUserLogo()));
+					intent.putExtra("user_name", String.valueOf(articleList.get(index).getName()));
 					activity.startActivity(intent);
 					break;
 				case R.id.article_user_name:   //点击进入文章的详细介绍

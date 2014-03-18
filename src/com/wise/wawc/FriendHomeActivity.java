@@ -39,6 +39,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -58,7 +60,6 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 	private MyHandler myHandler = null;
 	private ImageView cancle;
 	private TextView friendName = null;
-	private TextView sendButton = null;
 	private TextView commentContent = null;
 
 	private Intent lastPageDatas = null;
@@ -73,13 +74,15 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 	private static final int loadMoreAction = 5;
 	private static final int loadMoreCode = 6;
 	private String cust_id = "";
+	private String user_logo = "";
+	private String user_name = "";
+	
 	private int friendArticleTotalNum = 0;
 	private boolean isLoadMore = false;
 	private String Tag = "FriendHomeActivity";
 	private String commentMsg = null;
 	public static int blogId = 0;
 	private int minBlogId = 0;
-	private Article article = null;
 	
 	
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,17 +96,16 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 		friendHead.setOnClickListener(new OnClickListener());
 		friendName = (TextView) findViewById(R.id.friend_home_name);
 		commentContent = (TextView) findViewById(R.id.et_sendmessage);
-		sendButton = (TextView) findViewById(R.id.btn_send);
-		sendButton.setOnClickListener(new OnClickListener());
 		cancle = (ImageView) findViewById(R.id.friend_back);
 		cancle.setOnClickListener(new OnClickListener());
 		
 		lastPageDatas = getIntent();
 		dBExcute = new DBExcute();
 		cust_id = lastPageDatas.getStringExtra("cust_id");
+		user_logo = lastPageDatas.getStringExtra("user_logo");
+		user_name = lastPageDatas.getStringExtra("user_name");
 		myHandler = new MyHandler();
 		
-		article = (Article) lastPageDatas.getSerializableExtra("article");
 		if(!new File(Constant.userIconPath + cust_id + ".jpg").exists()){
 			Message msg = new Message();
 			msg.what = initDatas;
@@ -112,7 +114,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 			Bitmap userHead = BitmapFactory.decodeFile(Constant.userIconPath + cust_id + ".jpg"); 
 			friendHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(userHead));
 		}
-        friendName.setText(article.getName());
+        friendName.setText(user_name);
         //显示用户数据    查询本地数据库时候存在数据
         getArticleDatas(0);
 		
@@ -128,6 +130,14 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 			public void onScroll(AbsListView view, int firstVisibleItem,int visibleItemCount, int totalItemCount) {
 			}
 		});
+		friendArticleList.setOnItemClickListener(new OnItemClickListener() {
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
+				Article article = (Article) friendArticleList.getItemAtPosition(arg2);
+				Intent intents = new Intent(FriendHomeActivity.this,ArticleDetailActivity.class);
+				intents.putExtra("article", article);
+				FriendHomeActivity.this.startActivity(intents);
+			}
+		});
 	}
 	class OnClickListener implements android.view.View.OnClickListener{
 		public void onClick(View v) {
@@ -135,31 +145,13 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 			case R.id.friend_home_user_head:
 				Intent intent = new Intent(FriendHomeActivity.this,FriendInformationActivity.class);
 				intent.putExtra("cust_id", cust_id);
-				intent.putExtra("article", article);
+				intent.putExtra("user_logo", user_logo);
+				intent.putExtra("user_name", user_name);
 				startActivity(intent);
 				FriendHomeActivity.this.finish();
 				break;
 			case R.id.friend_back:
 				FriendHomeActivity.this.finish();
-				break;
-			case R.id.btn_send:
-				
-				commentMsg = commentContent.getText().toString().trim();
-				//发布到服务器/刷新文章内容显示/评论成功后清空编辑框/隐藏编辑框
-				
-				if("".equals(commentMsg)){
-					Toast.makeText(getApplicationContext(), "评论类容不能为空", 0).show();
-					return;
-				}else{
-					List<NameValuePair> params = new ArrayList<NameValuePair>();
-					params.add(new BasicNameValuePair("cust_id", Variable.cust_id));
-					params.add(new BasicNameValuePair("name", Variable.cust_name));
-					params.add(new BasicNameValuePair("content", commentMsg));
-					
-					myDialog = ProgressDialog.show(FriendHomeActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
-					myDialog.setCancelable(true);
-					new Thread(new NetThread.putDataThread(myHandler, Constant.BaseUrl + "blog/" + blogId + "/comment?auth_code=" + Variable.auth_code, params, commentArticle)).start();
-				}
 				break;
 			default:
 				return;
@@ -173,7 +165,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 			case initDatas:   // 设置用户信息
 				new Thread(new Runnable() {
 					public void run() {
-						Bitmap userLogo = GetSystem.getBitmapFromURL(article.getUserLogo());
+						Bitmap userLogo = GetSystem.getBitmapFromURL(user_logo);
 						if(userLogo != null){
 							GetSystem.saveImageSD(userLogo, Constant.userIconPath, cust_id + ".jpg");
 						}
@@ -181,38 +173,18 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 					}
 				}).start();
 				break;
-			case commentArticle:
+			case getArticleList:
 				String commentResult = msg.obj.toString();
-				try {
-					JSONObject jsonObject = new JSONObject(commentResult);
-					if(Integer.valueOf(jsonObject.getString("status_code")) == 0){
-						commentContent.setText("");
-						//隐藏键盘
-						getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-						saySomething.setVisibility(View.GONE);
-						FriendArticleAdapter.isClick = false;
-						
-						//更新数据库
-						dBExcute.updateArticleComments(FriendHomeActivity.this, Constant.TB_VehicleFriend, blogId, commentMsg, Variable.cust_name, Integer.valueOf(Variable.cust_id));
-						//刷新列表
-						articleDataList.clear();
-						articleDataList = dBExcute.getArticlePageDatas(FriendHomeActivity.this, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(0),String.valueOf(Constant.start + Constant.pageSize)}, articleDataList);
-						Variable.articleList = articleDataList;
-						setArticleDataList(articleDataList);
-						myAdapter.refreshDates(articleDataList);
-						
-						myDialog.dismiss();
-						Toast.makeText(getApplicationContext(), "评论成功", 0).show();
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
+				if(!"".equals(commentResult)){
+					jsonToList(msg.obj.toString());
+					getArticleDatas(0);
 				}
 				break;
 			case loadMoreCode:
 				String result = msg.obj.toString();
 				Log.e("加载更多结果：",msg.obj.toString());
 				if(!"".equals(result)){
-					jsonToList(msg.obj.toString());
+					jsonToList(msg.obj.toString());   //存到数据库
 					isLoadMore = false;
 					getArticleDatas(0);
 				}
@@ -224,34 +196,78 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 		}
 	}
 	
+	public void onLoadMore() {
+		if(!isLoadMore){
+			Log.e("数据库获取","数据库获取");
+			getArticleDatas(loadMoreAction);
+		}else{
+			DBHelper dBHelper = new DBHelper(FriendHomeActivity.this);
+			SQLiteDatabase  sQLiteDatabase = dBHelper.getReadableDatabase();
+			Cursor cursor = sQLiteDatabase.rawQuery("select * from " + Constant.TB_VehicleFriend + " where Cust_id = ? order by Blog_id desc", new String[]{cust_id});
+			if(cursor.moveToLast()){
+				minBlogId = cursor.getInt(cursor.getColumnIndex("Blog_id"));
+			}
+			Log.e("服务器获取","服务器获取" + Constant.BaseUrl + "customer/" + cust_id + "/blog?auth_code=" + Variable.auth_code + "&min_id=" + minBlogId);
+			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + cust_id + "/blog?auth_code=" + Variable.auth_code + "&min_id=" + minBlogId, loadMoreCode)).start();
+		}
+	}
+	
 	//获取数据  TODO
 		public void getArticleDatas(int actionCode){
 			DBHelper dBHelper = new DBHelper(FriendHomeActivity.this);
 			SQLiteDatabase reader = dBHelper.getReadableDatabase();
 			Cursor cursor = reader.rawQuery("select * from " + Constant.TB_VehicleFriend + " where Cust_id = ?", new String[]{cust_id});
-			Log.e(Tag,"查询数据库时user_id = " + cust_id);
 			friendArticleTotalNum = cursor.getCount();
 			if(friendArticleTotalNum > 0){
 				//查询数据库
 				Constant.totalPage1 = friendArticleTotalNum%Constant.pageSize1 > 0 ? friendArticleTotalNum/Constant.pageSize1 + 1 : friendArticleTotalNum/Constant.pageSize1;
-				if(Constant.totalPage1 - 1 >= Constant.currentPage1){
+				
+//				if(Constant.totalPage1 - 1>= Constant.currentPage1){
+//					Constant.start1 = Constant.currentPage1*Constant.pageSize1;
+//					if(Constant.totalPage1 >= Constant.pageSize1){
+//						Constant.currentPage1 ++ ;
+//					}
+//					articleDataList = dBExcute.getArticlePageDatas(FriendHomeActivity.this, "select * from " + Constant.TB_VehicleFriend + " where Cust_id = ? order by Blog_id desc limit ?,?", new String[]{cust_id,String.valueOf(Constant.start1),String.valueOf(Constant.pageSize1)}, articleDataList);
+//					setArticleDataList(articleDataList);
+//				}
+//				if(Constant.totalPage1 == Constant.currentPage1){
+//					isLoadMore = true;
+//				}
+				
+				
+				//分页查询数据库   当前  总数据量（1  -  9）小于每页数据量（10）
+				if(Constant.totalPage1 < Constant.pageSize1){
+					articleDataList.clear();
+					articleDataList = dBExcute.getArticlePageDatas(FriendHomeActivity.this, "select * from " + Constant.TB_VehicleFriend + " where Cust_id = ? order by Blog_id desc limit ?,?", new String[]{cust_id,String.valueOf(Constant.start1),String.valueOf(Constant.pageSize1)}, articleDataList);
+					myAdapter.refreshDates(articleDataList);
+					isLoadMore = true;
+				}else if(Constant.totalPage1 == Constant.pageSize1){
+					articleDataList.clear();
 					Constant.start1 = Constant.currentPage1*Constant.pageSize1;
 					Constant.currentPage1 ++ ;
 					articleDataList = dBExcute.getArticlePageDatas(FriendHomeActivity.this, "select * from " + Constant.TB_VehicleFriend + " where Cust_id = ? order by Blog_id desc limit ?,?", new String[]{cust_id,String.valueOf(Constant.start1),String.valueOf(Constant.pageSize1)}, articleDataList);
-					setArticleDataList(articleDataList);
+					myAdapter.refreshDates(articleDataList);
+				}else{
+					Constant.start1 = Constant.currentPage1*Constant.pageSize1;
+					Constant.currentPage1 ++ ;
+					articleDataList = dBExcute.getArticlePageDatas(FriendHomeActivity.this, "select * from " + Constant.TB_VehicleFriend + " where Cust_id = ? order by Blog_id desc limit ?,?", new String[]{cust_id,String.valueOf(Constant.start1),String.valueOf(Constant.pageSize1)}, articleDataList);
+					myAdapter.refreshDates(articleDataList);
 				}
-				Log.e("currentPage:" + Constant.currentPage1 , "totalPage:" + Constant.totalPage1);
 				if(Constant.totalPage1 == Constant.currentPage1){
 					isLoadMore = true;
 				}
 			}else{
+				Log.e("服务器   获取文章url:",Constant.BaseUrl + "customer/" + cust_id + "/blog?auth_code=" + Variable.auth_code);
 				myDialog = ProgressDialog.show(FriendHomeActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 				myDialog.setCancelable(true);
 				//  TODO  获取文章列表
-				new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code, getArticleList)).start();
-				Log.e("获取文章url:",Constant.BaseUrl + "customer/" + cust_id + "/blog?auth_code=" + Variable.auth_code);
+				new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + cust_id + "/blog?auth_code=" + Variable.auth_code, getArticleList)).start();
+			}
+			for(int i = 0 ; i < articleDataList.size() ; i ++){
+				Log.e("content =  = ","contnent = " + articleDataList.get(i).getContent());
 			}
 			myAdapter.refreshDates(articleDataList);
+			
 			if(loadMoreAction == actionCode){
 				onLoad();
 			}
@@ -261,6 +277,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 		public void jsonToList(String JSON){
 			try {
 			JSONArray jsonArray = new JSONArray(JSON);
+			int[] blog_idAry = new int[jsonArray.length()];
 			for(int i = 0 ; i < jsonArray.length() ; i ++){
 					//存储到数据库
 					ContentValues values = new ContentValues();
@@ -268,14 +285,21 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 					values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
 					values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
 					dBExcute.InsertDB(FriendHomeActivity.this,values,Constant.TB_VehicleFriend);
-					if(i == (jsonArray.length()-1)){
-						minBlogId = Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id"));
+					blog_idAry[i] = Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id"));
+			}
+			
+			for(int n = 0 ; n < blog_idAry.length ; n ++){
+				for(int m = 0 ; m < n ; m ++){
+					if(blog_idAry[m] < blog_idAry[n]){
+						int temp = blog_idAry[m];
+						blog_idAry[m] = blog_idAry[n];
+						blog_idAry[n] = temp;
 					}
-					Log.e("解析数据:minBlogId",jsonArray.getJSONObject(i).getString("blog_id"));
+				}
 			}
 			DBHelper dBHelper = new DBHelper(getApplicationContext());
 			SQLiteDatabase db = dBHelper.getReadableDatabase();
-			Cursor cursor = db.rawQuery("select * from " + Constant.TB_VehicleFriend, new String[]{});
+			Cursor cursor = db.rawQuery("select * from " + Constant.TB_VehicleFriend + " where Cust_id = ?", new String[]{cust_id});
 			Log.e("服务器获取的数据总量：",cursor.getCount() + "");
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -283,20 +307,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 		}
 		
 		public void onRefresh() {
-		}
-		public void onLoadMore() {
-			if(!isLoadMore){
-				getArticleDatas(loadMoreAction);
-			}else{
-				DBHelper dBHelper = new DBHelper(FriendHomeActivity.this);
-				SQLiteDatabase  sQLiteDatabase = dBHelper.getReadableDatabase();
-				Cursor cursor = sQLiteDatabase.rawQuery("select * from " + Constant.TB_VehicleFriend, new String[]{});
-				if(cursor.moveToLast()){
-					minBlogId = cursor.getInt(cursor.getColumnIndex("Blog_id"));
-				}
-				
-				new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code + "&min_id=" + minBlogId, loadMoreCode)).start();
-			}
+			onLoad();
 		}
 		private void onLoad() {
 			//获取当前时间

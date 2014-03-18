@@ -74,7 +74,7 @@ public class BrankAdapter extends BaseAdapter{
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
 		
-		//根据position获取分类的首字母的Char ascii值
+		//根据position获取分类的首字母的Char ascii值   TODO
 				int section = getSectionForPosition(position);
 				
 				//如果当前位置等于该分类首字母的Char的位置 ，则认为是第一次出现

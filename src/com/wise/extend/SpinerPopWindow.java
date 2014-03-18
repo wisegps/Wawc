@@ -8,6 +8,7 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
@@ -26,7 +27,6 @@ public class SpinerPopWindow extends PopupWindow implements OnItemClickListener 
     private List<String> titleList = new ArrayList<String>();
     private int selIndex = 0;
     TitleAdapter titleAdapter;
-    
     public SpinerPopWindow(Context context) {
         super(context);
 
@@ -112,4 +112,5 @@ public class SpinerPopWindow extends PopupWindow implements OnItemClickListener 
             TextView tv_title;
         }
     }
+    
 }

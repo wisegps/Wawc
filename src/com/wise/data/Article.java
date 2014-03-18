@@ -9,6 +9,7 @@ import java.util.Map;
  * @author Mr.Wang
  */
 public class Article implements Serializable{
+	private String data;   //好友主页处理同天文章合并用
 	private String create_time;
 	private String userLogo;
 	private String city;
@@ -121,5 +122,11 @@ public class Article implements Serializable{
 	}
 	public void setUserLogo(String userLogo) {
 		this.userLogo = userLogo;
+	}
+	public String getData() {
+		return data;
+	}
+	public void setData(String data) {
+		this.data = data;
 	}
 }
