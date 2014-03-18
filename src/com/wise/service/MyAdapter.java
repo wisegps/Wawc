@@ -162,7 +162,7 @@ public class MyAdapter extends BaseAdapter{
 		}else{
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		
+		Log.e("MyAdapter--->",articleList.get(position).getCreate_time());
 		//   评论
 		int size = articleList.get(position).getCommentList().size();
 		viewHolder.commentLayout.setVisibility(View.VISIBLE);
@@ -187,8 +187,8 @@ public class MyAdapter extends BaseAdapter{
 			viewHolder.commentLayout.setVisibility(View.VISIBLE);
 			viewHolder.line.setVisibility(View.VISIBLE);
 			viewHolder.oneCommentLayout.setVisibility(View.VISIBLE);
-			viewHolder.oneCommentName.setText(articleList.get(position).getCommentList().get(0)[0]+" : ");
-			viewHolder.oneCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(0)[1]));
+			viewHolder.oneCommentName.setText(articleList.get(position).getCommentList().get(size - 1)[0]+" : ");
+			viewHolder.oneCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(size - 1)[1]));
 			viewHolder.twoCommentLayout.setVisibility(View.GONE);
 			viewHolder.totalComment.setVisibility(View.GONE);
 		}
@@ -199,21 +199,20 @@ public class MyAdapter extends BaseAdapter{
 			viewHolder.line.setVisibility(View.VISIBLE);
 			viewHolder.oneCommentLayout.setVisibility(View.VISIBLE);
 			viewHolder.twoCommentLayout.setVisibility(View.VISIBLE);
-			viewHolder.oneCommentName.setText(articleList.get(position).getCommentList().get(0)[0]+" : ");
-			viewHolder.oneCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(0)[1]));
-			viewHolder.twoCommentName.setText(articleList.get(position).getCommentList().get(1)[0]+" : ");
-			viewHolder.twoCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(1)[1]));
+			viewHolder.oneCommentName.setText(articleList.get(position).getCommentList().get(size - 1)[0]+" : ");
+			viewHolder.oneCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(size - 1)[1]));
+			viewHolder.twoCommentName.setText(articleList.get(position).getCommentList().get(size - 2)[0]+" : ");
+			viewHolder.twoCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(size - 2)[1]));
 		}
-		
 		if(size > 2){
 			viewHolder.commentLayout.setVisibility(View.VISIBLE);
 			viewHolder.line.setVisibility(View.VISIBLE);
 			viewHolder.oneCommentLayout.setVisibility(View.VISIBLE);
 			viewHolder.twoCommentLayout.setVisibility(View.VISIBLE);
-			viewHolder.oneCommentName.setText(articleList.get(position).getCommentList().get(0)[0]+" : ");
-			viewHolder.oneCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(0)[1]));
-			viewHolder.twoCommentName.setText(articleList.get(position).getCommentList().get(1)[0]+" : ");
-			viewHolder.twoCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(1)[1]));
+			viewHolder.oneCommentName.setText(articleList.get(position).getCommentList().get(size - 1)[0]+" : ");
+			viewHolder.oneCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(size - 1)[1]));
+			viewHolder.twoCommentName.setText(articleList.get(position).getCommentList().get(size - 2)[0]+" : ");
+			viewHolder.twoCommentContent.setText(getFaceImage(articleList.get(position).getCommentList().get(size - 2)[1]));
 			viewHolder.totalComment.setVisibility(View.VISIBLE);
 			viewHolder.totalComment.setText("共" + articleList.get(position).getCommentList().size() + "条评论");
 		}
@@ -225,7 +224,6 @@ public class MyAdapter extends BaseAdapter{
 			//判断小图是否存在sd卡 /点击小图的时候再判断大图是否存在sd卡  
 			String smallImage = imageMap.get("small_pic").substring(imageMap.get("small_pic").lastIndexOf("/") + 1);
 			//本地不存在图片  存null  
-			
 			Bitmap smallBitmap = imageIsExist(Constant.VehiclePath + smallImage,imageMap.get("small_pic"),3,0);
 			smallImageList.add(smallBitmap);
 			if(i <= 2){
@@ -364,7 +362,6 @@ public class MyAdapter extends BaseAdapter{
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		String currentTime = sdf.format(new Date());
 		String time1 =  transform(time);
-		System.out.println(time + "," + time1);
 	     if(Integer.parseInt(time1.substring(0,4)) < Integer.parseInt(currentTime.substring(0,4))){
 	    	 return time1.substring(0, 16);
 	     }else{
@@ -378,8 +375,6 @@ public class MyAdapter extends BaseAdapter{
 	    	 return time1.substring(5, 16);
 	     }
 	}
-	
-	
 		//转换时区
 	    public static String transform(String from){
 	        String to = "";

@@ -14,6 +14,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
+
 import com.baidu.mapapi.navi.BaiduMapAppNotSupportNaviException;
 import com.baidu.mapapi.navi.BaiduMapNavigation;
 import com.baidu.mapapi.navi.NaviPara;
@@ -463,8 +465,10 @@ public class GetSystem {
      * @param context
      */
     public static void getScreenInfor(Activity activity){
-        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                5, activity.getResources().getDisplayMetrics());
+    	String tempMargins = activity.getResources().getString(R.dimen.margins1);
+		int margins = Integer.valueOf(tempMargins.substring(0,tempMargins.lastIndexOf(".")));
+		Variable.margins = margins;
+        int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,margins, activity.getResources().getDisplayMetrics());
 		Variable.margins = px;
 		WindowManager manager = activity.getWindowManager();
 		Display display = manager.getDefaultDisplay();
@@ -503,4 +507,30 @@ public class GetSystem {
         oks.setSilent(true);
         oks.show(mContext);
     }
+		//转换时区
+	    public static String transform(String from){
+	        String to = "";
+	        SimpleDateFormat simple = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	        //本地时区
+	        Calendar nowCal = Calendar.getInstance();
+	        TimeZone localZone = nowCal.getTimeZone();
+	        //设定SDF的时区为本地
+	        simple.setTimeZone(localZone);
+
+	        SimpleDateFormat simple1 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	        //设置 DateFormat的时间区域为GMT
+	        simple1.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+	        //把字符串转化为Date对象，然后格式化输出这个Date
+	        Date fromDate = new Date();
+	        try {
+	            //时间string解析成GMT时间
+	            fromDate = simple1.parse(from);
+	            //GMT时间转成当前时区的时间
+	            to = simple.format(fromDate);
+	        } catch (ParseException e1) {
+	            e1.printStackTrace();
+	        }
+	        return to;
+	    }
 }

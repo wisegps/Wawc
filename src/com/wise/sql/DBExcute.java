@@ -344,4 +344,34 @@ public class DBExcute {
 		}
 		return jsonData;
 	}
+	public void updataComment(String whereValues,String updateTime,String comments,String praises,String TbName,Context context) {
+		DBHelper dbHelper = new DBHelper(context);
+		SQLiteDatabase reader = dbHelper.getReadableDatabase();
+		SQLiteDatabase update = dbHelper.getWritableDatabase();
+		Cursor cursor = reader.rawQuery("select * from " + TbName + " where Blog_id=?", new String[]{String.valueOf(whereValues)});
+		String content = "";
+		String newContent = "";
+		while(cursor.moveToNext()){
+			content = cursor.getString(cursor.getColumnIndex("Content"));
+		}
+		Log.e("updateArticlePraises",content);
+		
+		try {
+			JSONObject jsonObject = new JSONObject(content);
+			JSONArray jsonArray = jsonObject.getJSONArray("praises");
+			Log.e("praises",jsonArray.toString());
+			
+			
+			JSONObject newPraises = new JSONObject(praises);
+			jsonArray.put(newPraises);
+			Log.e("赞后：",jsonArray.toString());
+			newContent = jsonObject.toString().replaceAll("\\\\", "");
+			ContentValues values = new ContentValues();
+			values.put("Content", newContent);
+//			update.update(tableName, values, "Blog_id=?", new String[]{String.valueOf(whereValue)});
+			
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
 }

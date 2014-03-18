@@ -69,7 +69,7 @@ public class CarLocationActivity extends Activity {
         GeoPoint point = new GeoPoint((int) (39.915 * 1E6),
                 (int) (116.404 * 1E6));
         mMapController.setCenter(point);// 设置地图中心点
-        mMapController.setZoom(18);// 设置地图zoom级别
+        mMapController.setZoom(12);// 设置地图zoom级别
         overlays = mMapView.getOverlays();
         mMapView.regMapViewListener(WawcApplication.getInstance().mBMapManager, mkMapViewListener);
         // TODO 修改
