@@ -1,4 +1,5 @@
 package com.wise.wawc;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -6,14 +7,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import com.wise.data.Article;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
-import com.wise.pubclas.Variable;
 import com.wise.service.ImageAdapter;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

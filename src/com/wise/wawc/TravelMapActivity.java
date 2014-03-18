@@ -237,7 +237,7 @@ public class TravelMapActivity extends Activity {
             sb.append("，" + intent.getStringExtra("AverageOil"));
             sb.append("，" + intent.getStringExtra("Speed"));
             System.out.println(sb.toString());
-            GetSystem.share(TravelMapActivity.this, sb.toString(), imagePath,0,0,"行程");
+            GetSystem.share(TravelMapActivity.this, sb.toString(), imagePath,0,0,"行程","");
         }
         @Override
         public void onClickMapPoi(MapPoi arg0) {}

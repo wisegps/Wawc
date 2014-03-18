@@ -117,7 +117,7 @@ public class SearchMapActivity extends Activity {
                 sb.append("," + url);
                 GetSystem.share(SearchMapActivity.this, sb.toString(), "",
                         (float) adressData.getLat(),
-                        (float) adressData.getLon(),"地点");
+                        (float) adressData.getLon(),"地点",url);
             }
         });
 

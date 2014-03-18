@@ -22,12 +22,15 @@ import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import android.app.ActivityGroup;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -225,10 +228,12 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
                 ToMyCollection();
                 break;
             case R.id.my_terminal:
-                ToCarTerminal();
+                Toast.makeText(MainActivity.this, R.string.new_version, Toast.LENGTH_SHORT).show();
+                //ToCarTerminal();
                 break;
             case R.id.my_orders:
-                Toorders();
+                Toast.makeText(MainActivity.this, R.string.new_version, Toast.LENGTH_SHORT).show();
+                //Toorders();
                 break;
             //设置中心
             case R.id.setup_center:
@@ -270,17 +275,48 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
                 if(Variable.carDatas == null || Variable.carDatas.size() == 0){                    
                 }else{
                     SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
-                    int DefaultVehicleID = preferences.getInt(Constant.DefaultVehicleID, 0);
-                    Intent intent_help = new Intent(MainActivity.this, ShareLocationActivity.class);
-                    intent_help.putExtra("reason", "救援 ");
-                    intent_help.putExtra("index", DefaultVehicleID);
-                    MainActivity.this.startActivity(intent_help);
+                    final int DefaultVehicleID = preferences.getInt(Constant.DefaultVehicleID, 0);
+                    
+                    new AlertDialog.Builder(MainActivity.this)
+                    .setTitle("列表框")
+                    .setItems(new String[] { "拨打电话", "位置分享" },
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog,int which) {
+                                    if (which == 0) {
+                                        Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:"+ Variable.carDatas.get(DefaultVehicleID).getMaintain_tel()));  
+                                        MainActivity.this.startActivity(intent);
+                                    } else {
+                                        Intent intent_help = new Intent(MainActivity.this,ShareLocationActivity.class);
+                                        intent_help.putExtra("reason", "救援");
+                                        intent_help.putExtra("index", DefaultVehicleID);
+                                        MainActivity.this.startActivity(intent_help);
+                                    }
+                                }
+                            }).setNegativeButton("确定", null).show();
                 }                
                 break;
             case R.id.tv_bx:
-                Intent intent_Insurance = new Intent(MainActivity.this, InsuranceActivity.class);
-                intent_Insurance.putExtra("isNeedPhone", true);
-                startActivity(intent_Insurance);
+                SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+                final int DefaultVehicleID = preferences.getInt(Constant.DefaultVehicleID, 0);
+                
+                new AlertDialog.Builder(MainActivity.this)
+                .setTitle("列表框")
+                .setItems(new String[] { "拨打电话", "位置分享" },
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog,int which) {
+                                if (which == 0) {
+                                    Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:"+ Variable.carDatas.get(DefaultVehicleID).getMaintain_tel()));  
+                                    MainActivity.this.startActivity(intent);
+                                } else {
+                                    Intent intent_help = new Intent(MainActivity.this,ShareLocationActivity.class);
+                                    intent_help.putExtra("reason", "报险");
+                                    intent_help.putExtra("index", DefaultVehicleID);
+                                    MainActivity.this.startActivity(intent_help);
+                                }
+                            }
+                        }).setNegativeButton("确定", null).show();
                 break;
             }
         }

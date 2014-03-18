@@ -35,6 +35,7 @@ import com.wise.sql.DBExcute;
 import com.wise.wawc.ArticleDetailActivity;
 import com.wise.wawc.FriendHomeActivity;
 import com.wise.wawc.ImageActivity;
+import com.wise.wawc.PicActivity;
 import com.wise.wawc.R;
 import com.wise.wawc.VehicleFriendActivity;
 
@@ -625,7 +626,7 @@ public class MyAdapter extends BaseAdapter{
 				userImageHolder.userImage.setOnClickListener(new OnClickListener() {
 					public void onClick(View v) {
 						//查看大图
-						Intent intent = new Intent(activity,ImageActivity.class);
+						Intent intent = new Intent(activity,PicActivity.class);
 						intent.putExtra("article", articleList.get(indexId));
 						activity.startActivity(intent);
 					}

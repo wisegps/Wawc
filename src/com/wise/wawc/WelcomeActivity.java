@@ -77,7 +77,8 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
                 ll_login.setVisibility(View.VISIBLE);                
             }            
         }
-        isNeedGetCityFromUrl();
+        isNeedGetCityFromUrl();        
+        startService(new Intent(WelcomeActivity.this, LocationService.class));
     }
     
     OnClickListener onClickListener = new OnClickListener() {        

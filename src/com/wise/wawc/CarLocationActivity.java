@@ -263,7 +263,7 @@ public class CarLocationActivity extends Activity {
             sb.append(" 位于"+carData.getAdress());
             sb.append(" " + url);
             GetSystem.share(CarLocationActivity.this, sb.toString(), imagePath,
-                    (float) Lat, (float) Lon,"位置");
+                    (float) Lat, (float) Lon,"位置",url);
         }
         @Override
         public void onClickMapPoi(MapPoi arg0) {}

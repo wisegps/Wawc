@@ -312,7 +312,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			case setUserIcon:
 			    Bitmap bimage = BitmapFactory.decodeFile(Constant.userIconPath + Variable.cust_id + ".jpg");
 				if(bimage != null){
-					qqUserHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
+					qqUserHead.setImageBitmap(bimage);
 				}else{
 					qqUserHead.setBackgroundResource(R.drawable.body_nothing_icon);
 					//获取图片
