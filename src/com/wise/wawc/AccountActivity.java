@@ -54,8 +54,11 @@ public class AccountActivity extends Activity{
 	EditText et_activity_account_consignee,et_activity_account_adress,et_activity_account_phone;
 	TextView tv_activity_account_name,tv_activity_city,tv_carBrand,tv_carNumber;
 	ImageView iv_activity_account_pic,iv_user_car_logo;
+	boolean isJump = true;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.d(TAG, "onCreate");
 		setContentView(R.layout.activity_account);
 		view = findViewById(R.id.account_to_my_vehicle);
 		view.setOnClickListener(onClickListener);
@@ -73,9 +76,17 @@ public class AccountActivity extends Activity{
 		et_activity_account_adress = (EditText)findViewById(R.id.et_activity_account_adress);
 		et_activity_account_phone = (EditText)findViewById(R.id.et_activity_account_phone);
 		ShareSDK.initSDK(this);
-		GetSfData();
 		GetDBData();
         GetCarData();
+        
+        Intent intent = getIntent();
+        isJump = intent.getBooleanExtra("isJump", false);
+        System.out.println("isJump = " + isJump);
+        if (isJump) {
+            iv_activity_account_menu.setImageResource(R.drawable.nav_back);
+        } else {
+            iv_activity_account_menu.setImageResource(R.drawable.side_left);
+        }
 	}
 	OnClickListener onClickListener = new OnClickListener() {	
 		@Override
@@ -83,7 +94,11 @@ public class AccountActivity extends Activity{
 			switch(v.getId()){
 			case R.id.iv_activity_account_menu:	
 			    saveData();
-				ActivityFactory.A.LeftMenu();
+			    if (isJump) {
+                    finish();
+                } else {
+                    ActivityFactory.A.LeftMenu();
+                }
 				break;
 			case R.id.account_to_my_vehicle:
 				startActivityForResult(new Intent(AccountActivity.this, CarSelectActivity.class), 0);
@@ -251,6 +266,7 @@ public class AccountActivity extends Activity{
 	@Override
 	protected void onResume() {
 	    super.onResume();
+        GetSfData();
 	}
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

@@ -92,7 +92,7 @@
 	        android:textColor="@color/common"
 	        android:textSize="@dimen/main"
 	        android:padding="@dimen/margins"
-	        android:text="我的爱车"/>
+	        android:text="当前爱车"/>
 	</LinearLayout>
     <RelativeLayout 
         android:id="@+id/account_to_my_vehicle"

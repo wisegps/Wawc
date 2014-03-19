@@ -157,6 +157,8 @@ public class MyAdapter extends BaseAdapter{
 			viewHolder.twoCommentLayout = (LinearLayout) convertView.findViewById(R.id.my_vehicle_two_comment_ll);
 			viewHolder.allCommentLayout = (TableLayout) convertView.findViewById(R.id.vehicle_friend_comment_tl);
 			viewHolder.oneCommentLayout = (LinearLayout) convertView.findViewById(R.id.my_vehicle_one_comment_ll);
+
+            viewHolder.tl_image = (TableLayout) convertView.findViewById(R.id.tl_image);
 			
 			convertView.setTag(viewHolder);
 		}else{
@@ -285,7 +287,12 @@ public class MyAdapter extends BaseAdapter{
 			isNull1 = false;
 			isNull2 = false;
 		}
-		viewHolder.userImageLayout.setAdapter(new UserImageAdapter(threeSmallImageList,position));
+		if(threeSmallImageList.size() == 0){
+		    viewHolder.tl_image.setVisibility(view.GONE);
+		}else{
+		    viewHolder.tl_image.setVisibility(view.VISIBLE);
+	        viewHolder.userImageLayout.setAdapter(new UserImageAdapter(threeSmallImageList,position));
+		}
 
 		String str = articleList.get(position).getCreate_time();
 		String createTime = str.substring(0, str.indexOf(".")).replace("T"," ");
@@ -540,6 +547,7 @@ public class MyAdapter extends BaseAdapter{
 		 public LinearLayout oneCommentLayout = null;
 		 public LinearLayout commentLayout = null; 
 		 public TableLayout allCommentLayout = null;
+		 public TableLayout tl_image;
 	 }
 	 
 	 

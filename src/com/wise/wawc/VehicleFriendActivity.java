@@ -215,7 +215,9 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				startActivityForResult(newArticle,newArticleResult);
 				break;
 			case R.id.user_head:    //用户资料
-				startActivity(new Intent(VehicleFriendActivity.this,AccountActivity.class));
+			    Intent accountIntent = new Intent(VehicleFriendActivity.this,AccountActivity.class);
+			    accountIntent.putExtra("isJump", true);
+				startActivity(accountIntent);
 				break;
 				
 			case R.id.btn_send:

@@ -1,6 +1,10 @@
 package com.wise.wawc;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
@@ -280,15 +284,12 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
         Message message = new Message();
         message.what = login;
         handler.sendMessage(message);
-        SharedPreferences preferences = getSharedPreferences(
-                Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
         Editor editor = preferences.edit();
         editor.putString(Constant.platform, platform);
         editor.commit();
     }
-    @Override
-    public void onError(Platform arg0, int arg1, Throwable arg2) {
-        // TODO Auto-generated method stub
         
-    }
+    @Override
+    public void onError(Platform arg0, int arg1, Throwable arg2) {}
 }

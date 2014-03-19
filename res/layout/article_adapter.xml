@@ -7,7 +7,9 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margins"
+        android:layout_marginTop="@dimen/margins"
+        android:layout_marginLeft="@dimen/margins"
+        android:layout_marginRight="@dimen/margins"
         android:orientation="horizontal" >
 
         <!-- 用户头像 -->
@@ -47,9 +49,13 @@
     <!-- 用户图片 -->
 
     <TableLayout
+        android:id="@+id/tl_image"
+        android:visibility="gone"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/margins" >
+        android:layout_marginTop="@dimen/margins1"
+        android:layout_marginLeft="@dimen/margins"
+        android:layout_marginRight="@dimen/margins">
 
         <TableRow
             android:layout_width="fill_parent"
