@@ -282,6 +282,11 @@ public class DBExcute {
 			article = new Article();
 			article.setBlog_id(Integer.valueOf(cursor.getString(cursor.getColumnIndex("Blog_id"))));
 			article.setUserLogo(cursor.getString(cursor.getColumnIndex("UserLogo")));
+			if(jsonObject.opt("update_time") != null){
+				article.setUpdateTime(jsonObject.getString("update_time"));
+			}else{
+				article.setUpdateTime(jsonObject.getString("create_time"));
+			}
 			article.setCity(jsonObject.getString("city"));
 			article.setName(jsonObject.getString("name"));
 			List<String[]> comments = new ArrayList<String[]>();
@@ -343,6 +348,15 @@ public class DBExcute {
 		}
 		return jsonData;
 	}
+	/**
+	 * 刷新评论  赞
+	 * @param whereValues
+	 * @param updateTime
+	 * @param comments
+	 * @param praises
+	 * @param TbName
+	 * @param context
+	 */
 	public void updataComment(String whereValues,String updateTime,String comments,String praises,String TbName,Context context) {
 		DBHelper dbHelper = new DBHelper(context);
 		SQLiteDatabase reader = dbHelper.getReadableDatabase();
@@ -350,24 +364,40 @@ public class DBExcute {
 		Cursor cursor = reader.rawQuery("select * from " + TbName + " where Blog_id=?", new String[]{String.valueOf(whereValues)});
 		String content = "";
 		String newContent = "";
+		
 		while(cursor.moveToNext()){
 			content = cursor.getString(cursor.getColumnIndex("Content"));
 		}
-		Log.e("updateArticlePraises",content);
-		
+		Log.e("评论前",content);
 		try {
+			//用来存储赞相关数据
 			JSONObject jsonObject = new JSONObject(content);
-			JSONArray jsonArray = jsonObject.getJSONArray("praises");
-			Log.e("praises",jsonArray.toString());
+			JSONArray jsonArrayPraises = jsonObject.getJSONArray("praises");  //  数据库原本赞
+			JSONArray praisesArray = praisesArray = new JSONArray(praises);   //新增赞
+			Log.e("数据：",praises);
+			jsonObject.remove("praises");
+			Log.e("移除后：",jsonObject.toString());
+			jsonObject.put("praises", praisesArray);
 			
+			JSONArray jsonArrayComments = jsonObject.getJSONArray("comments");
+			Log.e("数据：",comments);
+			JSONArray commentsJsonArray = new JSONArray(comments);
+			jsonObject.remove("comments");
+			jsonObject.put("comments", commentsJsonArray);
 			
-			JSONObject newPraises = new JSONObject(praises);
-			jsonArray.put(newPraises);
-			Log.e("赞后：",jsonArray.toString());
-			newContent = jsonObject.toString().replaceAll("\\\\", "");
+			Log.e("评论后",jsonObject.toString());
+			
+			if(jsonObject.opt("update_time") != null){
+				jsonObject.remove("updata_time");
+				jsonObject.put("update_time", updateTime);
+			}else{
+				jsonObject.put("update_time", updateTime);
+			}
+			String newContents = jsonObject.toString().replaceAll("\\\\", "");
 			ContentValues values = new ContentValues();
-			values.put("Content", newContent);
-//			update.update(tableName, values, "Blog_id=?", new String[]{String.valueOf(whereValue)});
+			values.put("Content", newContents);
+			update.update(TbName, values, "Blog_id=?", new String[]{String.valueOf(whereValues)});
+			
 			
 		} catch (JSONException e) {
 			e.printStackTrace();

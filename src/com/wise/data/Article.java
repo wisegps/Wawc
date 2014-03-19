@@ -25,6 +25,7 @@ public class Article implements Serializable{
 	private List<String[]> commentList;
 	private List<Map<String,String>> imageList;
 	private int _v;
+	private String updateTime;
 	
 	private String JSONDatas;   //一篇文章的所有数据
 	public String getCreate_time() {
@@ -128,5 +129,11 @@ public class Article implements Serializable{
 	}
 	public void setData(String data) {
 		this.data = data;
+	}
+	public String getUpdateTime() {
+		return updateTime;
+	}
+	public void setUpdateTime(String updateTime) {
+		this.updateTime = updateTime;
 	}
 }

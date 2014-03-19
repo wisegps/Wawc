@@ -73,6 +73,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 	private static final int commentArticle = 4;
 	private static final int loadMoreAction = 5;
 	private static final int loadMoreCode = 6;
+	private static final int refreshCode = 7;
 	private String cust_id = "";
 	private String user_logo = "";
 	private String user_name = "";
@@ -83,7 +84,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 	private String commentMsg = null;
 	public static int blogId = 0;
 	private int minBlogId = 0;
-	
+	private int maxBlogId = 0;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -190,6 +191,46 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 				}
 				onLoad();
 				break;
+			case refreshCode:
+				if(!"[]".equals(msg.obj.toString())){
+					//  更新数据库
+					JSONArray jsonArray = null;
+					try {
+						jsonArray = new JSONArray(msg.obj.toString());
+						if(jsonArray.length() > 1){
+							for(int i = 0 ; i < jsonArray.length() ; i ++){
+								if(Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")) != maxBlogId){
+									Log.e("更新数据库","更新数据库");
+									ContentValues values = new ContentValues();
+									values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
+									values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
+									if(jsonArray.getJSONObject(i).opt("logo") != null){
+										values.put("UserLogo", jsonArray.getJSONObject(i).getString("logo"));
+									}else{
+										values.put("UserLogo", "");
+									}
+									values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
+									dBExcute.InsertDB(FriendHomeActivity.this,values,Constant.TB_VehicleFriend);
+								}
+							}
+							//重新分页   TODO
+							articleDataList.clear();
+							setArticleDataList(articleDataList);
+							Constant.totalPage1 = 0;
+							Constant.start1 = 0;  // 开始页
+							Constant.pageSize1 =10;   //每页数量
+							Constant.totalPage1 = 0;   //数据总量
+							Constant.currentPage1 = 0;  //当前页
+							Log.e("刷新后重新分页,","刷新后重新分页");
+							getArticleDatas(0);
+							onLoad();
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+				}
+				onLoad();
+				break;
 			default:
 				return;
 			}
@@ -218,6 +259,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 			SQLiteDatabase reader = dBHelper.getReadableDatabase();
 			Cursor cursor = reader.rawQuery("select * from " + Constant.TB_VehicleFriend + " where Cust_id = ?", new String[]{cust_id});
 			friendArticleTotalNum = cursor.getCount();
+			Log.e("好友主页数据量：",friendArticleTotalNum+"");
 			if(friendArticleTotalNum > 0){
 				//查询数据库
 				Constant.totalPage1 = friendArticleTotalNum%Constant.pageSize1 > 0 ? friendArticleTotalNum/Constant.pageSize1 + 1 : friendArticleTotalNum/Constant.pageSize1;
@@ -234,7 +276,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 //					isLoadMore = true;
 //				}
 				
-				
+				Log.e("刷新","刷新");
 				//分页查询数据库   当前  总数据量（1  -  9）小于每页数据量（10）
 				if(Constant.totalPage1 < Constant.pageSize1){
 					articleDataList.clear();
@@ -307,7 +349,17 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 		}
 		
 		public void onRefresh() {
-			onLoad();
+			List<Article> articleTempList = new ArrayList<Article>();
+			articleTempList = dBExcute.getArticlePageDatas(FriendHomeActivity.this, "select * from " + Constant.TB_VehicleFriend + " where Cust_id = ?", new String[]{cust_id}, articleTempList);
+			int[] blogIdList = new int[articleTempList.size()];
+			for (int i = 0; i < articleTempList.size(); i++) {
+				blogIdList[i] = articleTempList.get(i).getBlog_id();
+			}
+			maxBlogId = VehicleFriendActivity.paiXu(blogIdList)[0];
+			String url = Constant.BaseUrl + "customer/" + cust_id + "/blog?auth_code=" + Variable.auth_code + "&max_id=" + maxBlogId;
+			Log.e("下拉刷新","url = " + url);
+			new Thread(new NetThread.GetDataThread(myHandler, url, refreshCode)).start();
+			
 		}
 		private void onLoad() {
 			//获取当前时间

@@ -252,6 +252,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			}
 		}
 	}
+	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -268,19 +269,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		for (int i = 0; i < articleTempList.size(); i++) {
 			blogIdList[i] = articleTempList.get(i).getBlog_id();
 		}
-//		for(int m = 0 ; m < blogIdList.length ; m ++){
-//			for(int n = 0 ; n < m ; n ++){
-//				int temp = 0;
-//				if(blogIdList[m] < blogIdList[n]){
-//					temp = blogIdList[m];
-//					blogIdList[m] = blogIdList[n];
-//					blogIdList[n] = temp;
-//				}
-//			}
-//		}
-//		articleTypeMaxBlogId = blogIdList[blogIdList.length - 1];   //最大id
 		articleTypeMaxBlogId = paiXu(blogIdList)[0];
-		
 		Log.e("下拉刷新","url = " + articleType + "&max_id=" + articleTypeMaxBlogId);
 		new Thread(new NetThread.GetDataThread(myHandler, articleType + "&max_id=" + articleTypeMaxBlogId, refreshCode)).start();
 	}
@@ -406,7 +395,8 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 						
 						dBExcute.updateArticleComments(VehicleFriendActivity.this, Constant.TB_VehicleFriend, blogId, commentMsg, Variable.cust_name, Integer.valueOf(Variable.cust_id));
 						articleDataList.clear();
-						articleDataList = dBExcute.getArticlePageDatas(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(0),String.valueOf(Constant.start + Constant.pageSize)}, articleDataList);
+						
+						articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(article),String.valueOf(0),String.valueOf(Constant.start + Constant.pageSize)}, articleDataList);
 						Variable.articleList = articleDataList;
 						setArticleDataList(articleDataList);
 						myAdapter.refreshDates(articleDataList);
@@ -477,7 +467,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
-//					
 				}
 				onLoad();
 				break;
@@ -542,6 +531,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				onLoad();
 				break;
 			case refreshComments:  //  TODO
+				Log.e("评论过结果","评论结果   = " + msg.obj.toString());
 				if(!"[]".equals(msg.obj.toString())){
 					try {
 						JSONArray  jsonArray = new JSONArray(msg.obj.toString());
@@ -553,21 +543,23 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 							String comments = "";
 							String praises = "";
 							if(obj.opt("comments") != null){
-								comments = obj.getJSONObject("comments").toString();
+								comments = obj.getJSONArray("comments").toString();
 							}
 							if(obj.opt("praises") != null){
-								praises = obj.getJSONObject("praises").toString();
+								praises = obj.getJSONArray("praises").toString();
 							}
-//							dBExcute.updataComment(obj.getString("blog_id"),updateTime,comments,praises,Constant.TB_VehicleFriend,VehicleFriendActivity.this);
+							dBExcute.updataComment(obj.getString("blog_id"),updateTime,comments,praises,Constant.TB_VehicleFriend,VehicleFriendActivity.this);
 						}
-						
 						//刷新List
-						
+						articleDataList.clear();
+						articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(article),String.valueOf(0),String.valueOf(Constant.start + Constant.pageSize)}, articleDataList);
+						Variable.articleList = articleDataList;
+						setArticleDataList(articleDataList);
+						myAdapter.refreshDates(articleDataList);
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
 				}
-				Log.e("result---->",msg.obj.toString());
 				break;
 			}
 			super.handleMessage(msg);
@@ -766,30 +758,18 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		String tempTime = "";
 		for(int i = 0 ; i < tempList.size() ; i ++){
 			tempBlogIdList[i] = tempList.get(i).getBlog_id();
-			if(i < tempList.size() - 1){
-				
-				String str = tempList.get(i).getCreate_time();
-				String createTime = str.substring(0, str.indexOf(".")).replace("T"," ").replace("-", "/");
-				
-				String str1 = tempList.get(i + 1).getCreate_time();
-				String createTime1 = str1.substring(0, str.indexOf(".")).replace("T"," ").replace("-", "/");
-				
-				tempTime = getMaxTime(createTime,createTime1);
-			}
 		}
-		Log.e("最小blog_id","最小blog_id = " + paiXu(tempBlogIdList)[tempBlogIdList.length - 1]);
-		Log.e("最大blog_id","最大blog_id = " + paiXu(tempBlogIdList)[0]);
+		tempTime = getMaxTime(tempList);
 		String putTime = tempTime.replace(" ", "%20");
-		Log.e("最新时间","最新时间 = " + putTime);
 		String url = Constant.BaseUrl + "blog?auth_code=" + Variable.auth_code + "&type=" + article + "&cust_id=" + Variable.cust_id + "&min_id=" + paiXu(tempBlogIdList)[tempBlogIdList.length - 1] + "&max_id=" + paiXu(tempBlogIdList)[0] + "&update_time=" + putTime;  
-//		String url = http://wiwc.api.wisegps.cn/blog?auth_code=127a154df2d7850c4232542b4faa2c3d&type=1&cust_id=71&min_id=20&max_id=30&update_time=2014-03-11%2019:18:11
+		Log.e("刷新评论url == ","刷新评论url == " + url);
 		new Thread(new NetThread.GetDataThread(myHandler, url, refreshComments)).start();
 		Variable.articleList = articleDataList;
 		myAdapter.refreshDates(articleDataList);
 	}
 	
 	//索引最大  blog_id最小
-	public int[] paiXu(int[] tempInt){
+	public static int[] paiXu(int[] tempInt){
 		for(int m = 0 ; m < tempInt.length ; m ++){
 			for(int n = 0 ; n < m ; n ++){
 				int temp = 0;
@@ -803,17 +783,45 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		return tempInt;
 	}
 	//得到最(新)大时间
-	public String getMaxTime(String time,String time1){
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		 java.util.Date begin = null;
+	public String getMaxTime(List<Article> articleLists){
+		String tempTime = "";
+		String tempTime1 = "";
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		java.util.Date begin = null;
 		java.util.Date end = null;
-		try {
-			begin = sdf.parse(time);
-			 end = sdf.parse(time1);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		for(int i = 0 ; i < articleLists.size() ; i ++){
+			for(int j = 0 ; j < i ; j ++){
+				if("".equals(articleLists.get(i).getUpdateTime()) && !"".equals(articleLists.get(j).getUpdateTime())){
+					String str = articleLists.get(i).getUpdateTime();
+					String createTime = str.substring(0, str.indexOf(".")).replace("T"," ");
+					String str1 = articleLists.get(j).getUpdateTime();
+					String createTime1 = str1.substring(0, str.indexOf(".")).replace("T"," ");
+					try {
+						begin = sdf.parse(createTime);
+						end = sdf.parse(createTime1);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+					if(begin.getTime() > end.getTime()){
+						tempTime = MyAdapter.transform(articleLists.get(i).getUpdateTime());
+						tempTime1 = MyAdapter.transform(articleLists.get(j).getUpdateTime());
+						articleLists.get(j).setUpdateTime(tempTime);
+						articleLists.get(i).setUpdateTime(tempTime1);
+					}
+				}
+			}
 		}
-		return (int) ((end.getTime() - begin.getTime())/1000) > 0 ? time1 : time;
+		
+		for(int i = 0 ;i < articleLists.size() ; i ++){
+			Log.e("content","content ==  " + articleLists.get(i).getContent());
+			Log.e("content","blog_id ==  " + articleLists.get(i).getBlog_id());
+			Log.e("content","updateTime ==  " + articleLists.get(i).getUpdateTime());
+		}
+		String result = articleLists.get(0).getUpdateTime();
+		String str = result.substring(result.lastIndexOf("."),result.length() - 1);
+		String createTime = result.substring(0, result.indexOf(".")).replace("T"," ");
+		String time1 =  MyAdapter.transform(createTime) + str;
+		Log.e("得到的时间：",time1);
+		return time1;
 	}
 }

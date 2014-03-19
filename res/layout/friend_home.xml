@@ -74,6 +74,7 @@
         android:layout_below="@id/friend_home_title"
         android:layout_marginTop="@dimen/margins"
         android:divider="#00000000"
+        android:cacheColorHint="#00000000"
 		android:dividerHeight="@dimen/margins"
 		android:listSelector="@drawable/bg_item_selector"
         android:descendantFocusability="blocksDescendants"

@@ -162,7 +162,6 @@ public class MyAdapter extends BaseAdapter{
 		}else{
 			viewHolder = (ViewHolder) convertView.getTag();
 		}
-		Log.e("MyAdapter--->",articleList.get(position).getCreate_time());
 		//   评论
 		int size = articleList.get(position).getCommentList().size();
 		viewHolder.commentLayout.setVisibility(View.VISIBLE);
@@ -290,6 +289,11 @@ public class MyAdapter extends BaseAdapter{
 
 		String str = articleList.get(position).getCreate_time();
 		String createTime = str.substring(0, str.indexOf(".")).replace("T"," ");
+		if(!"".equals(articleList.get(position).getUpdateTime())){
+			String str1 = articleList.get(position).getUpdateTime();
+			String createTime1 = str1.substring(0, str1.indexOf(".")).replace("T"," ");
+			Log.e("MyAdapter--->",createTime1);
+		}
 		
 		viewHolder.publish_time.setText(getTime(createTime));
 		viewHolder.articel_user_name.setText(articleList.get(position).getName());
