@@ -58,6 +58,7 @@ public class AccountActivity extends Activity{
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.d(TAG, "onCreate");
 		setContentView(R.layout.activity_account);
 		view = findViewById(R.id.account_to_my_vehicle);
 		view.setOnClickListener(onClickListener);
@@ -75,7 +76,6 @@ public class AccountActivity extends Activity{
 		et_activity_account_adress = (EditText)findViewById(R.id.et_activity_account_adress);
 		et_activity_account_phone = (EditText)findViewById(R.id.et_activity_account_phone);
 		ShareSDK.initSDK(this);
-		GetSfData();
 		GetDBData();
         GetCarData();
         
@@ -266,6 +266,7 @@ public class AccountActivity extends Activity{
 	@Override
 	protected void onResume() {
 	    super.onResume();
+        GetSfData();
 	}
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

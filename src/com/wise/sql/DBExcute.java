@@ -173,7 +173,6 @@ public class DBExcute {
 				Log.e("Type_id:",cursor.getInt(cursor.getColumnIndex("Type_id"))+"");
 				Log.e("blog_id:",blog_id+"");
 				Cursor cursors = reader.rawQuery("select * from " + Constant.TB_VehicleFriend + " where Blog_id=?", new String[]{String.valueOf(blog_id)});
-				
 				if(cursors.moveToNext()){
 					articleData.add(parseDBDatas(cursors));
 				}

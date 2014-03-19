@@ -303,8 +303,8 @@ public class GetSystem {
             BaiduMapNavigation.openBaiduMapNavi(para, mActivity);
         } catch (BaiduMapAppNotSupportNaviException e) {
             // 在此处理异常
-            e.printStackTrace();
-            Toast.makeText(mActivity, "未安装百度地图，请安装百度地图后在使用导航功能", Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "未安装百度地图,开始web导航");
+            BaiduMapNavigation.openWebBaiduMapNavi(para, mActivity);
         }
     }
 

@@ -176,9 +176,7 @@ public class SelectCityActivity extends Activity {
         @Override
         public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
             CityData cityData = filterCityDatas.get(arg2);
-            if (cityData.getCity_code() != null) {
-            	
-            	
+            if (cityData.getCity_code() != null) {            	
                 Log.e(TAG, cityData.getCity_spell());
                 SaveCityInfo(cityData);
             }
@@ -370,10 +368,6 @@ public class SelectCityActivity extends Activity {
         cityData1.setProvince("12312312312");
         cityData1.setFirst_letter("热门城市");
         cityDatas.add(0, cityData1);
-
-        for (int i = 0; i < cityDatas.size(); i++) {
-            Log.d(TAG, cityDatas.get(i).toString());
-        }
     }
 
     private String GetFristLetter(String city) {
@@ -449,8 +443,6 @@ public class SelectCityActivity extends Activity {
                     hotholder.gv.setAdapter(new hotAdapter());
                     hotholder.gv.setOnItemClickListener(gvOnItemClickListener);
                     convertView.setTag(hotholder);
-                    Log.d(TAG, "hotDatas.size() = " + hotDatas.size() + " , px = " + px);
-                    Log.d(TAG, "hotDatas.size() / 4 = " + hotDatas.size() / 4 + " , (hotDatas.size() / 4)* px) = " + (hotDatas.size() / 4) * px);
                     break;
                 case VALUE_CITY:
                     cityHolder = new ViewCity();
@@ -481,7 +473,6 @@ public class SelectCityActivity extends Activity {
                     break;
 
                 case VALUE_CITY:
-                    Log.d(TAG, "position = " + position);
                     cityHolder = (ViewCity) convertView.getTag();
                     if (citys.get(position).getCity_code() == null) {
                         cityHolder.tv_item_select_city_title

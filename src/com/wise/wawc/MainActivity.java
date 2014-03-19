@@ -429,11 +429,9 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
             //iv_activity_main_logo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
             iv_activity_main_logo.setImageBitmap(bimage);
         }else{
-            //TODO 获取图片
-            
+            //TODO 获取图片            
         }
-        new Thread(new GetBitMapFromUrlThread(platform.getDb()
-                .getUserIcon())).start();
+        new Thread(new GetBitMapFromUrlThread(platform.getDb().getUserIcon())).start();
         SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
         Variable.cust_id  = preferences.getString(Constant.sp_cust_id, "");
         Variable.auth_code = preferences.getString(Constant.sp_auth_code, "");        
