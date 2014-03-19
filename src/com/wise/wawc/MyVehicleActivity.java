@@ -1391,7 +1391,6 @@ public class MyVehicleActivity extends Activity{
  		buttomView.setVisibility(View.GONE);
  		buttomViewIsShow = false;
  		vehNum = vehicleNumber.getText().toString();
- 		//取消广播注册
  		super.onPause();
  	}
  	

@@ -222,6 +222,8 @@ public class Constant {
 	public static int pageSize =10;   //每页数量
 	public static int totalPage = 0;   //数据总量
 	public static int currentPage = 0;  //当前页
+	public static int articleType = 1;  //文章类型
+	
 	
 	public static int start1 = 0;  // 开始页
 	public static int pageSize1 = 10;   //每页数量

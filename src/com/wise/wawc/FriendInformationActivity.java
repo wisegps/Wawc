@@ -32,9 +32,13 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.GetChars;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 /**
@@ -45,11 +49,7 @@ public class FriendInformationActivity extends Activity{
 	ImageView back;
 	ImageView userHead = null;
 	TextView userName = null;
-	ImageView carBrandIv = null;
-	TextView carBrand = null;  //品牌
-	TextView carPlate = null;   //  牌照
 	TextView friendCar = null;
-	RelativeLayout carInfo = null;
 	
 	String[] carInfor = null;
 	String cust_id = "";
@@ -58,23 +58,25 @@ public class FriendInformationActivity extends Activity{
 	List<String[]> carInforList = new ArrayList<String[]>();
 	DBHelper dbHelper = null;
 	static final int getBarBrand = 2;
+	static final int Get_car_info = 3;
 	MyHandler myHandler;
 	ProgressDialog progressDialog;
 	List<BrankModel> brankList;
+	ListView friendCarList = null;
+	FriendCarAdapter friendCarAdapter;
+	LayoutInflater layoutInflater;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.friend_information);
 		back = (ImageView) findViewById(R.id.friend_information_back);
 		userHead = (ImageView) findViewById(R.id.friend_information_head);
 		userName = (TextView) findViewById(R.id.friend_information_name);
-		carBrandIv = (ImageView) findViewById(R.id.friend_information_car_brand_iv);
-		carBrand = (TextView) findViewById(R.id.friend_information_car_brand_tv);
-		carPlate = (TextView) findViewById(R.id.friend_information_car_plate_tv);
-		carInfo = (RelativeLayout) findViewById(R.id.friend_car_info);
 		friendCar = (TextView) findViewById(R.id.friend_car);
-		
+		friendCarList = (ListView) findViewById(R.id.friend_information_car);
 		
 		myHandler = new MyHandler();
+		friendCarAdapter = new FriendCarAdapter();
+		friendCarList.setAdapter(friendCarAdapter);
 		cust_id = getIntent().getStringExtra("cust_id");
 		user_logo = getIntent().getStringExtra("user_logo");
 		user_name = getIntent().getStringExtra("user_name");
@@ -87,8 +89,7 @@ public class FriendInformationActivity extends Activity{
 		initDates();
 	}
 	private void initDates() {
-		carInfo.setVisibility(View.VISIBLE);
-		friendCar.setVisibility(View.VISIBLE);
+		friendCar.setVisibility(View.GONE);
 		//  设置用户资料
 		if(new File(Constant.userIconPath + cust_id + ".jpg").exists()){
 			Bitmap userHeadBitmap = BitmapFactory.decodeFile(Constant.userIconPath + cust_id + ".jpg");
@@ -111,27 +112,35 @@ public class FriendInformationActivity extends Activity{
 		DBHelper dbHelper = new DBHelper(FriendInformationActivity.this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from " + Constant.TB_Vehicle + " where Cust_id=?", new String[] {cust_id });
-        while(cursor.moveToNext()){
-        	String[] str = new String[2];
-        	str[0] = cursor.getString(cursor.getColumnIndex("car_brand"));
-        	str[1] = cursor.getString(cursor.getColumnIndex("obj_name"));
-        	carInforList.add(str);
+        if(cursor.getCount() != 0){
+        	while(cursor.moveToNext()){
+        		String[] str = new String[2];
+        		str[0] = cursor.getString(cursor.getColumnIndex("car_brand"));
+        		str[1] = cursor.getString(cursor.getColumnIndex("obj_name"));
+        		carInforList.add(str);
+        	}
+        	friendCarAdapter.notifyDataSetChanged();
+        	friendCar.setVisibility(View.VISIBLE);
+        }else{
+        	//获取用户车辆
+        	 String url = Constant.BaseUrl + "customer/" + cust_id + "/vehicle?auth_code=" + Variable.auth_code;
+             new Thread(new NetThread.GetDataThread(myHandler, url, Get_car_info)).start();
         }
         //隐藏用户车辆信息  TODO
-        if(carInforList.size() == 0){
-        	carInfo.setVisibility(View.GONE);
-        	friendCar.setVisibility(View.GONE);
-        }else{
-        	carBrand.setText(carInforList.get(0)[0]);
-        	carPlate.setText(carInforList.get(0)[1]);
-        	setCarLogo();
-        }
+//        if(carInforList.size() == 0){
+//        	carInfo.setVisibility(View.GONE);
+//        	friendCar.setVisibility(View.GONE);
+//        }else{
+//        	carBrand.setText(carInforList.get(0)[0]);
+//        	carPlate.setText(carInforList.get(0)[1]);
+//        	setCarLogo();
+//        }
 	}
 	
 	
-	public void setCarLogo(){
+	public Bitmap getCarLogo(String carBrand){
 		Bitmap bitmap = null;
-		if(new File(Constant.VehicleLogoPath + carInforList.get(0)[0] + ".png").exists()){
+		if(new File(Constant.VehicleLogoPath + carBrand + ".png").exists()){
     		bitmap = BitmapFactory.decodeFile(Constant.VehicleLogoPath + carInforList.get(0)[0] + ".png");
     	}else{
     		bitmap = BitmapFactory.decodeResource(FriendInformationActivity.this.getResources(), R.drawable.body_nothing_icon);
@@ -147,7 +156,8 @@ public class FriendInformationActivity extends Activity{
 									Bitmap tempBitmap = GetSystem.getBitmapFromURL(logoUrl);
 									if(tempBitmap != null){
 										GetSystem.saveImageSD(tempBitmap, Constant.VehicleLogoPath, carBrandName + ".png");
-										setCarLogo();
+//										setCarLogo();
+										friendCarAdapter.notifyDataSetChanged();
 									}
 								}
 							}).start();
@@ -155,8 +165,9 @@ public class FriendInformationActivity extends Activity{
     				}
     			}
     		}
+    		return null;
     	}
-    	carBrandIv.setImageBitmap(bitmap);
+		return bitmap;
 	}
 	
 	private void getDate(String whereValues,String url,int handlerWhat) {
@@ -207,6 +218,52 @@ public class FriendInformationActivity extends Activity{
 			}
 		}
 	
+	class FriendCarAdapter extends BaseAdapter{
+		FriendCarAdapter(){
+			layoutInflater = LayoutInflater.from(FriendInformationActivity.this);
+		}
+		public int getCount() {
+			return FriendInformationActivity.this.carInforList.size();
+		}
+		public Object getItem(int arg0) {
+			return FriendInformationActivity.this.carInforList.get(arg0);
+		}
+		public long getItemId(int position) {
+			return position;
+		}
+		public View getView(int position, View convertView, ViewGroup parent) {
+			ViewHolder viewHolder;
+			if(convertView == null){
+				viewHolder = new ViewHolder();
+				convertView = layoutInflater.inflate(R.layout.item_friend_car, null);
+				viewHolder.carBrandIv = (ImageView) convertView.findViewById(R.id.friend_information_car_brand_iv);
+				viewHolder.carBrand = (TextView) convertView.findViewById(R.id.friend_information_car_brand_tv);
+				viewHolder.carPlate = (TextView) convertView.findViewById(R.id.friend_information_car_plate_tv);
+				convertView.setTag(viewHolder);
+			}else{
+				viewHolder = (ViewHolder) convertView.getTag();
+			}
+			viewHolder.carBrand.setText(FriendInformationActivity.this.carInforList.get(position)[0]);
+			viewHolder.carPlate.setText(FriendInformationActivity.this.carInforList.get(position)[1]);
+			
+			Bitmap tempBitmap = getCarLogo(FriendInformationActivity.this.carInforList.get(position)[0]);
+			
+			if(tempBitmap == null){
+				Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.article);
+				viewHolder.carBrandIv.setImageBitmap(bitmap);
+			}else{
+				viewHolder.carBrandIv.setImageBitmap(tempBitmap);
+			}
+			return convertView;
+		}
+		//  TODO
+		class ViewHolder{
+			ImageView carBrandIv = null;
+			TextView carBrand = null;  //品牌
+			TextView carPlate = null;   //  牌照
+		}
+	}
+	
 	class MyHandler extends Handler{
 		public void handleMessage(Message msg) {
 			super.handleMessage(msg);
@@ -220,6 +277,26 @@ public class FriendInformationActivity extends Activity{
 					} catch (JSONException e) {
 						e.printStackTrace();
 					}
+				}
+				break;
+			case Get_car_info:
+				if(!"[]".equals(msg.obj.toString())){
+					try {
+						JSONArray jsonArray = new JSONArray(msg.obj.toString());
+						for(int i = 0 ; i < jsonArray.length() ; i ++){
+							JSONObject obj = jsonArray.getJSONObject(i);
+							String[] str = new String[2];
+							str[0] = obj.getString("car_brand");
+							str[1] = obj.getString("obj_name");
+							carInforList.add(str);
+						}
+					} catch (JSONException e) {
+						e.printStackTrace();
+					}
+					friendCarAdapter.notifyDataSetChanged();
+					friendCar.setVisibility(View.VISIBLE);
+				}else{
+					friendCar.setVisibility(View.GONE);
 				}
 				break;
 			}

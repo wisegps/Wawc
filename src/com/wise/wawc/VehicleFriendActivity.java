@@ -7,7 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -201,7 +200,14 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		//好友主页文章
 //		getArticleDatas(0);
 		//同车型文章
-		articleSort(1,0);
+		
+	}
+	
+	@Override
+	protected void onResume() {
+		article = Constant.articleType;
+		articleSort(article,0);
+		super.onResume();
 	}
 
 	class ClickListener implements OnClickListener{
@@ -753,7 +759,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			onLoad();
 		}
 	}
-	
 	public void  updataListDate(List<Article> articleDataList,List<Article> tempList){
 		// 刷新评论相关  TODO  每页数据 最大blog_id　　 最小blog_id  最新（大） 时间
 		int[] tempBlogIdList = new int[tempList.size()];
@@ -813,17 +818,19 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				}
 			}
 		}
-		
-		for(int i = 0 ;i < articleLists.size() ; i ++){
-			Log.e("content","content ==  " + articleLists.get(i).getContent());
-			Log.e("content","blog_id ==  " + articleLists.get(i).getBlog_id());
-			Log.e("content","updateTime ==  " + articleLists.get(i).getUpdateTime());
-		}
 		String result = articleLists.get(0).getUpdateTime();
 		String str = result.substring(result.lastIndexOf("."),result.length() - 1);
 		String createTime = result.substring(0, result.indexOf(".")).replace("T"," ");
 		String time1 =  MyAdapter.transform(createTime) + str;
-		Log.e("得到的时间：",time1);
 		return time1;
+	}
+	
+	protected void onPause() {
+		Constant.articleType = article;
+		Constant.start = 0;  // 开始页
+		Constant.pageSize =10;   //每页数量
+		Constant.totalPage = 0;   //数据总量
+		Constant.currentPage = 0;  //当前页
+		super.onPause();
 	}
 }
