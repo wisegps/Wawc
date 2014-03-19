@@ -59,11 +59,11 @@ public class WapActivity extends Activity{
 	}
 	
 	//覆盖back按键  在网页中返回上一个页面
-	public boolean onKeyDown(int keyCoder,KeyEvent event){
-        if(shareView.canGoBack() && keyCoder == KeyEvent.KEYCODE_BACK){
-        	shareView.goBack();   //goBack()表示返回webView的上一页面
-                 return true;
-           }
-        return false;
-   }
+//	public boolean onKeyDown(int keyCoder,KeyEvent event){
+//        if(shareView.canGoBack() && keyCoder == KeyEvent.KEYCODE_BACK){
+//        	shareView.goBack();   //goBack()表示返回webView的上一页面
+//                 return true;
+//           }
+//        return false;
+//   }
 }

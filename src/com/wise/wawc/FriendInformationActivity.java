@@ -46,6 +46,9 @@ import android.widget.TextView;
  * @author 王庆文
  */
 public class FriendInformationActivity extends Activity{
+    private static String TAG = "FriendInformationActivity"; 
+
+    ListView lv_car;
 	ImageView back;
 	ImageView userHead = null;
 	TextView userName = null;
@@ -62,7 +65,6 @@ public class FriendInformationActivity extends Activity{
 	MyHandler myHandler;
 	ProgressDialog progressDialog;
 	List<BrankModel> brankList;
-	ListView friendCarList = null;
 	FriendCarAdapter friendCarAdapter;
 	LayoutInflater layoutInflater;
 	protected void onCreate(Bundle savedInstanceState) {
@@ -72,11 +74,12 @@ public class FriendInformationActivity extends Activity{
 		userHead = (ImageView) findViewById(R.id.friend_information_head);
 		userName = (TextView) findViewById(R.id.friend_information_name);
 		friendCar = (TextView) findViewById(R.id.friend_car);
-		friendCarList = (ListView) findViewById(R.id.friend_information_car);
+		
+		lv_car = (ListView) findViewById(R.id.lv_car);
+        friendCarAdapter = new FriendCarAdapter();
+        lv_car.setAdapter(friendCarAdapter);
 		
 		myHandler = new MyHandler();
-		friendCarAdapter = new FriendCarAdapter();
-		friendCarList.setAdapter(friendCarAdapter);
 		cust_id = getIntent().getStringExtra("cust_id");
 		user_logo = getIntent().getStringExtra("user_logo");
 		user_name = getIntent().getStringExtra("user_name");
@@ -126,7 +129,7 @@ public class FriendInformationActivity extends Activity{
         	 String url = Constant.BaseUrl + "customer/" + cust_id + "/vehicle?auth_code=" + Variable.auth_code;
              new Thread(new NetThread.GetDataThread(myHandler, url, Get_car_info)).start();
         }
-        //隐藏用户车辆信息  TODO
+        //隐藏用户车辆信息 
 //        if(carInforList.size() == 0){
 //        	carInfo.setVisibility(View.GONE);
 //        	friendCar.setVisibility(View.GONE);
@@ -295,6 +298,10 @@ public class FriendInformationActivity extends Activity{
 					}
 					friendCarAdapter.notifyDataSetChanged();
 					friendCar.setVisibility(View.VISIBLE);
+					//TODO 
+					for(int i = 0 ; i < carInforList.size() ; i++){
+					    Log.d(TAG, carInforList.get(i)[0] + "," + carInforList.get(i)[1]);
+					}
 				}else{
 					friendCar.setVisibility(View.GONE);
 				}

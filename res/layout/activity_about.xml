@@ -48,6 +48,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_bt_black"
             android:textSize="@dimen/main"
+            android:textColor="@color/color_common"
             android:layout_marginBottom="@dimen/margins"
             android:text="检查新版本"/>
         <Button 
@@ -55,6 +56,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/bg_bt_black"
             android:textSize="@dimen/main"
+            android:textColor="@color/color_common"
             android:text="进入官网"/>
         <TextView 
             android:layout_width="wrap_content"

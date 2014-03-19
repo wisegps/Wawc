@@ -502,8 +502,8 @@ public class GetSystem {
         //oks.setSiteUrl("http://sharesdk.cn");
         //oks.setVenueName("Share SDK");
         //oks.setVenueDescription("This is a beautiful place!");
-        oks.setLatitude(Lat);
-        oks.setLongitude(Lon);
+        //oks.setLatitude(Lat);
+        //oks.setLongitude(Lon);
         oks.setSilent(true);
         oks.show(mContext);
     }
