@@ -79,6 +79,7 @@ public class ArticleDetailActivity extends Activity{
 	ImageView favoriteStart;
 	TextView praisesUser;
 	TableLayout tableLayout;
+	TableLayout allCommentsPraises;
 	Map<String,String> favoriteMap;
 	ProgressDialog myDialog;
 	DBExcute dbExcute;
@@ -89,8 +90,6 @@ public class ArticleDetailActivity extends Activity{
 	TextView articleDetailesCommentContent;
 	String commentContent;
 	LinearLayout commentLayout;
-	TableLayout tableLayout1;
-	TableLayout tableLayout3;
 	private static final int addFavorite = 4;
 	private static final int commentArticle = 5;
 	protected void onCreate(Bundle savedInstanceState) {
@@ -112,8 +111,7 @@ public class ArticleDetailActivity extends Activity{
 		commentView = (LinearLayout) findViewById(R.id.article_detailes_comment);
 		sendMessage  = (TextView) findViewById(R.id.btn_send);
 		articleDetailesCommentContent = (TextView) findViewById(R.id.et_sendmessage);
-		tableLayout1 = (TableLayout) findViewById(R.id.article_details_user_image_tr);
-		tableLayout3 = (TableLayout) findViewById(R.id.article_details_comments_tl);
+		allCommentsPraises = (TableLayout) findViewById(R.id.article_details_comments_tl);
 		sendMessage.setOnClickListener(new ClickListener());
 		dbExcute = new DBExcute();
 		
@@ -158,10 +156,15 @@ public class ArticleDetailActivity extends Activity{
 					bitMapList.add(imageIsExist(Constant.VehiclePath + iamgeName,imageMap.get(Constant.smallImage),3,0));
 					Log.e("imageUrl:",imageMap.get(Constant.smallImage));
 				}
+				commentLayout.setVisibility(View.VISIBLE);
+				articleDetailesLine.setVisibility(View.VISIBLE);
+				favoriteLayout.setVisibility(View.VISIBLE);
+				articleDetailesLine.setVisibility(View.VISIBLE);
+				allCommentsPraises.setVisibility(View.VISIBLE);
+				
 				//   赞     如果没有赞 隐藏赞布局  同时将分割线隐藏
-				boolean sdfsafdsaf = article.getPraisesList() == null ? true : false;
-				Log.e("getPraisesList() = null",sdfsafdsaf+"");
 				if (article.getPraisesList() != null) {
+					Log.e("文章详情","点赞者人数  = " + article.getPraisesList().size());
 					if (article.getPraisesList().size() != 0) {
 						sb = new StringBuffer();
 						Iterator iter = article.getPraisesList().entrySet().iterator();
@@ -184,7 +187,8 @@ public class ArticleDetailActivity extends Activity{
 					favoriteLayout.setVisibility(View.GONE);
 					articleDetailesLine.setVisibility(View.GONE);
 				}
-				//   评论     如果没有评论   将 评论布局隐藏  同时将分割线隐藏
+//				   评论     如果没有评论   将 评论布局隐藏  同时将分割线隐藏
+				commentLayout.removeAllViews();
 				if(article.getCommentList() != null){
 					if(article.getCommentList().size() != 0){
 						for(int i = 0 ; i < article.getCommentList().size() ; i ++){
@@ -214,38 +218,51 @@ public class ArticleDetailActivity extends Activity{
 				}
 				
 				//动态添加用户发表的图片
-				
 				tableLayout.removeAllViews();
 				TableRow row = new TableRow(ArticleDetailActivity.this);
-				TableLayout.LayoutParams params = new TableLayout.LayoutParams(Variable.smallImageReqWidth,Variable.smallImageReqWidth);
-				
+				LinearLayout.LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT);
 				for(int i = 0; i < bitMapList.size() ; i ++){
 					ImageView t = new ImageView(ArticleDetailActivity.this);
-					t.setPadding(0, 0, Variable.margins, 0);
+					t.setPadding(0, 0, 5, 0);
 					t.setClickable(true);
 					t.setId(i);
 					t.setOnClickListener(new OnClickListener() {
 						public void onClick(View v) {
 							//查看大图
-							Intent intent = new Intent(ArticleDetailActivity.this,ImageActivity.class);
+							Intent intent = new Intent(ArticleDetailActivity.this,PicActivity.class);
 							intent.putExtra("article", article);
 							ArticleDetailActivity.this.startActivity(intent);
 						}
 					});
 					t.setImageBitmap(bitMapList.get(i));
-					row.addView(t);
+					row.addView(t,Variable.smallImageReqWidth,Variable.smallImageReqWidth);
 					if((i%3 + 1) == 3){
 						tableLayout.addView(row,params);
 						row = new TableRow(ArticleDetailActivity.this);
-						row.setPadding(0, Variable.margins, 0, 0);
+						row.setPadding(0, 5, 0, 0);
 					}else if(i == (bitMapList.size() - 1)){
 						tableLayout.addView(row,params);
 					}
 				}
-				
-				if(article.getCommentList() != null && article.getPraisesList() == null){
-					tableLayout1.setVisibility(View.GONE);
-					tableLayout3.setVisibility(View.GONE);
+				boolean isNull1 = false;
+				boolean isNull2 = false;
+				if(article.getPraisesList() != null){
+					if(article.getPraisesList().size() == 0){
+						isNull1 = true;
+					}
+				}else{
+					isNull1 = true;
+				}
+				if(article.getCommentList() != null){
+					if(article.getCommentList().size() == 0){
+						isNull2 = true;
+					}
+				}else{
+					isNull2 = true;
+				}
+				if(isNull1 && isNull2){
+					Log.e("隐藏","隐藏");
+					allCommentsPraises.setVisibility(View.GONE);
 				}
 				break;
 			case addFavorite:

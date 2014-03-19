@@ -143,7 +143,6 @@ public class FriendInformationActivity extends Activity{
 		if(new File(Constant.VehicleLogoPath + carBrand + ".png").exists()){
     		bitmap = BitmapFactory.decodeFile(Constant.VehicleLogoPath + carInforList.get(0)[0] + ".png");
     	}else{
-    		bitmap = BitmapFactory.decodeResource(FriendInformationActivity.this.getResources(), R.drawable.body_nothing_icon);
     		getDate("carBrank",Constant.BaseUrl + "base/car_brand",getBarBrand);
     		if(brankList != null){
     			if(brankList.size() != 0){
