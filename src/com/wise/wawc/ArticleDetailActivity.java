@@ -154,7 +154,6 @@ public class ArticleDetailActivity extends Activity{
 					Map<String,String> imageMap = smallImage.get(i);
 					String iamgeName = imageMap.get(Constant.smallImage).substring(imageMap.get(Constant.smallImage).lastIndexOf("/") + 1);
 					bitMapList.add(imageIsExist(Constant.VehiclePath + iamgeName,imageMap.get(Constant.smallImage),3,0));
-					Log.e("imageUrl:",imageMap.get(Constant.smallImage));
 				}
 				commentLayout.setVisibility(View.VISIBLE);
 				articleDetailesLine.setVisibility(View.VISIBLE);
@@ -164,7 +163,6 @@ public class ArticleDetailActivity extends Activity{
 				
 				//   赞     如果没有赞 隐藏赞布局  同时将分割线隐藏
 				if (article.getPraisesList() != null) {
-					Log.e("文章详情","点赞者人数  = " + article.getPraisesList().size());
 					if (article.getPraisesList().size() != 0) {
 						sb = new StringBuffer();
 						Iterator iter = article.getPraisesList().entrySet().iterator();
@@ -261,12 +259,10 @@ public class ArticleDetailActivity extends Activity{
 					isNull2 = true;
 				}
 				if(isNull1 && isNull2){
-					Log.e("隐藏","隐藏");
 					allCommentsPraises.setVisibility(View.GONE);
 				}
 				break;
 			case addFavorite:
-				Log.e("点赞结果：",msg.obj.toString());
 				myDialog.dismiss();
 				try {
 					JSONObject jsonObject = new JSONObject(msg.obj.toString());
@@ -278,11 +274,9 @@ public class ArticleDetailActivity extends Activity{
 							Map<String,String> praisesMap = new HashMap<String, String>();
 							praisesMap.put(Variable.cust_id, Variable.cust_name);
 							article.setPraisesList(praisesMap);
-							Log.e("没有评论者","没有评论者");
 						}else{
 							Map<String,String> praisesMap = article.getPraisesList();
 							praisesMap.put(Variable.cust_id, Variable.cust_name);
-							Log.e("有评论者","有     评论者");
 							article.setPraisesList(praisesMap);
 						}
 						Message msgs = new Message();
@@ -299,7 +293,6 @@ public class ArticleDetailActivity extends Activity{
 				String commentResult = msg.obj.toString();
 				try {
 					JSONObject jsonObject = new JSONObject(commentResult);
-					Log.e("评论结果：",commentResult);
 					if(Integer.valueOf(jsonObject.getString("status_code")) == 0){
 						articleDetailesCommentContent.setText("");
 						//隐藏键盘
@@ -453,7 +446,6 @@ public class ArticleDetailActivity extends Activity{
 			Message msg = new Message();
 			msg.what = initDatas;
 			myHandler.sendMessage(msg);
-			Log.e("创建图片","创建图片");
 		}
 		
 		

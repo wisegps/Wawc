@@ -299,7 +299,6 @@ public class MyAdapter extends BaseAdapter{
 		if(!"".equals(articleList.get(position).getUpdateTime())){
 			String str1 = articleList.get(position).getUpdateTime();
 			String createTime1 = str1.substring(0, str1.indexOf(".")).replace("T"," ");
-			Log.e("MyAdapter--->",createTime1);
 		}
 		
 		viewHolder.publish_time.setText(getTime(createTime));

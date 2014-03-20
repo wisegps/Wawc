@@ -281,7 +281,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			blogIdList[i] = articleTempList.get(i).getBlog_id();
 		}
 		articleTypeMaxBlogId = paiXu(blogIdList)[0];
-		Log.e("下拉刷新","url = " + articleType + "&max_id=" + articleTypeMaxBlogId);
 		new Thread(new NetThread.GetDataThread(myHandler, articleType + "&max_id=" + articleTypeMaxBlogId, refreshCode)).start();
 	}
 	@Override
@@ -455,7 +454,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 							if(isClear){
 								for(int i = 0 ; i < jsonArray.length() ; i ++){
 									if(Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")) != articleTypeMaxBlogId){
-										Log.e("更新数据库","更新数据库");
 										ContentValues values = new ContentValues();
 										values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
 										values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
@@ -474,7 +472,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 									}
 								}
 							}else{
-								Log.e("清空并更新","清空并更新");
 									//清空表
 									DBHelper dBHelper = new DBHelper(VehicleFriendActivity.this);
 									SQLiteDatabase reader = dBHelper.getWritableDatabase();
@@ -582,7 +579,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				onLoad();
 				break;
 			case refreshComments:  //  TODO
-				Log.e("评论过结果","评论结果   = " + msg.obj.toString());
 				if(!"[]".equals(msg.obj.toString())){
 					try {
 						JSONArray  jsonArray = new JSONArray(msg.obj.toString());
@@ -727,10 +723,8 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		}
 		if(pos == 0){   //同城车友
 			articleSort(1,0);
-			Log.e(TAG,"同城     车友");
 			article = 1;
 		}else if(pos == 1){   // 同车型的车友
-			Log.e(TAG,"同车型车友");
 			articleSort(0,0);
 			article = 0;
 		}
@@ -766,7 +760,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				tempList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, tempList);
 				updataListDate(articleDataList,tempList);
 				isLoadMore = true;
-				Log.e("小于    10  条","小于    10  条");
 			}else if(totalNum == Constant.pageSize){
 				articleDataList.clear();
 				Constant.start = Constant.currentPage*Constant.pageSize;
@@ -776,7 +769,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				tempList = new ArrayList<Article>();   //用户处理更新评论数据的临时集合
 				tempList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, tempList);
 				updataListDate(articleDataList,tempList);
-				Log.e("等于    10  条","等于    10  条");
 			}else{
 				Constant.start = Constant.currentPage*Constant.pageSize;
 				Constant.currentPage ++ ;
@@ -785,7 +777,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				tempList = new ArrayList<Article>();
 				tempList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, tempList);
 				updataListDate(articleDataList,tempList);
-				Log.e("大于    10  条","大于    10  条");
 			}
 			if(Constant.totalPage == Constant.currentPage){
 				isLoadMore = true;
@@ -809,7 +800,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		tempTime = getMaxTime(tempList);
 		String putTime = tempTime.replace(" ", "%20");
 		String url = Constant.BaseUrl + "blog?auth_code=" + Variable.auth_code + "&type=" + article + "&cust_id=" + Variable.cust_id + "&min_id=" + paiXu(tempBlogIdList)[tempBlogIdList.length - 1] + "&max_id=" + paiXu(tempBlogIdList)[0] + "&update_time=" + putTime;  
-		Log.e("刷新评论url == ","刷新评论url == " + url);
 		new Thread(new NetThread.GetDataThread(myHandler, url, refreshComments)).start();
 		Variable.articleList = articleDataList;
 		myAdapter.refreshDates(articleDataList);

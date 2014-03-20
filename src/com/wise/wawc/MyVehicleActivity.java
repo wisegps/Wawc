@@ -269,7 +269,6 @@ public class MyVehicleActivity extends Activity{
 		
 		preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
 		chickIndex = preferences.getInt(Constant.DefaultVehicleID, 0);
-		Log.e("默认的车辆id",chickIndex + "");
 		characterParser = new CharacterParser().getInstance();
 		comparator = new PinyinComparator();
 		myHandler = new MyHandler();	
@@ -342,7 +341,6 @@ public class MyVehicleActivity extends Activity{
 					carAdapter.notifyDataSetChanged();
 					chickIndex = arg2;
 					hasSelectIllegalCity = false;
-					Log.e("logo_url:",oneCarData.getLogoPath());
 			}
 		});
 		//设置默认选择第一辆汽车
@@ -522,13 +520,6 @@ public class MyVehicleActivity extends Activity{
 			carSeriesId = data.getStringExtra("seriesId");
 			carType = data.getStringExtra("type");
 			carTypeId = data.getStringExtra("typeId");
-			Log.d(TAG, "resultCodeBrank carBrankId = " + carBrankId);
-			Log.e("车牌：",data.getStringExtra("brank"));
-			Log.e("车牌id：",data.getStringExtra("brankId"));
-			Log.e("车型：",data.getStringExtra("series"));
-			Log.e("车型id：",data.getStringExtra("seriesId"));
-			Log.e("车款：",data.getStringExtra("type"));
-			Log.e("车款Id：",data.getStringExtra("typeId"));
 			//更改静态类
 			Variable.carDatas.get(chickIndex).setCar_brand(carBrank);
 			Variable.carDatas.get(chickIndex).setCar_series(carSeries);
@@ -583,12 +574,6 @@ public class MyVehicleActivity extends Activity{
 			
 			illegalCity = (IllegalCity) data.getSerializableExtra("IllegalCity");
 			if(illegalCity != null){
-				Log.e("illegalCity.getEngine()",illegalCity.getEngine());
-				Log.e("illegalCity.getEngineno()",illegalCity.getEngineno());
-				Log.e("illegalCity.getVehiclenum()",illegalCity.getVehiclenum());
-				Log.e("illegalCity.getVehiclenumno()",illegalCity.getVehiclenumno());
-				Log.e("illegalCity.getRegisternum()",illegalCity.getRegist());
-				Log.e("illegalCity.getVehiclenumno()",illegalCity.getRegistno());
 				
 				engine = Integer.valueOf(illegalCity.getEngine());
 				engineNo = Integer.valueOf(illegalCity.getEngineno());
@@ -731,7 +716,6 @@ public class MyVehicleActivity extends Activity{
 				myVehicleBrank.setText(carData.getCar_brand());
 				carBrank = carData.getCar_brand();  //保存默认品牌  用户获取4s店数据
 				engineNum.setText(carData.getEngine_no());
-				Log.e("显示数据时",carData.getObj_id()+"");
 				frameNum.setText(carData.getFrame_no());
 				showInsuranceCompany.setText(carData.getInsurance_company());
 				System.out.println("carData.getInsurance_date() = " + carData.getInsurance_date());
@@ -760,9 +744,6 @@ public class MyVehicleActivity extends Activity{
 							engineNumLayout.setVisibility(View.VISIBLE);
 							vehicleNumLayout.setVisibility(View.VISIBLE);
 							registerNumLayout.setVisibility(View.VISIBLE);
-							Log.e("illegalCitys.getEngine()",illegalCitys.getEngine());
-							Log.e("illegalCitys.getVehiclenum()",illegalCitys.getVehiclenum());
-							Log.e("illegalCitys.getRegist()",illegalCitys.getRegist());
 							
 							if(Integer.valueOf(illegalCitys.getEngine()) == 0){  //隐藏发动机
 								engineNumLayout.setVisibility(View.GONE);
@@ -812,9 +793,6 @@ public class MyVehicleActivity extends Activity{
 						engineNumLayout.setVisibility(View.VISIBLE);
 						vehicleNumLayout.setVisibility(View.VISIBLE);
 						registerNumLayout.setVisibility(View.VISIBLE);
-						Log.e("illegalCitys.getEngine()",illegalCitys.getEngine());
-						Log.e("illegalCitys.getVehiclenum()",illegalCitys.getVehiclenum());
-						Log.e("illegalCitys.getRegist()",illegalCitys.getRegist());
 						
 						if(Integer.valueOf(illegalCitys.getEngine()) == 0){  //隐藏发动机
 							engineNumLayout.setVisibility(View.GONE);
@@ -1168,7 +1146,6 @@ public class MyVehicleActivity extends Activity{
 		                        sb.append(line);
 		                    }
 						 String strResult = sb.toString();
-						 Log.e("更改爱车数据结果:",strResult);
 						 
 						 //更新数据库
 						 ContentValues values = new ContentValues();
@@ -1229,7 +1206,6 @@ public class MyVehicleActivity extends Activity{
 						 Intent intent = new Intent(Constant.A_UpdateCar);
 		                 sendBroadcast(intent);
 					 }else{
-						 Log.e("更改爱车   失败:","失败");
 					 }
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -1279,14 +1255,6 @@ public class MyVehicleActivity extends Activity{
  		} catch (JSONException e) {
  			e.printStackTrace();
  		}
- 		//排序后返回
- 		if(illegalList == null){
- 			Log.e("List<ProvinceModel>==null","YES");
- 		}else{
- 			for(int i = 0 ; i < illegalList.size() ; i ++){
- 				Log.e("province：",illegalList.get(i).getProvinceName());
- 			}
- 		}
  		return filledData(illegalList);
  	}
  	
@@ -1320,15 +1288,6 @@ public class MyVehicleActivity extends Activity{
  	}
  	//校验输入内容的合法性  TODO
  	public boolean CheckDatas(){
- 		
- 		Log.e("engine",engine+"");
-		Log.e("engineNo",engineNo+"");
-		Log.e("car",car+"");
-		Log.e("carNo",carNo+"");
-		Log.e("register",register+"");
-		Log.e("registerNo",registerNo+"");
-		
-		
  		if(engine == 1){
  			if(engineNo == 0){
  				if(engineNum.getText().toString().trim().length() == engineNo){
