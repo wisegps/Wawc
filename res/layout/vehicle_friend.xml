@@ -15,31 +15,27 @@
 
         <ImageView
             android:id="@+id/menu"
-            android:layout_width="@dimen/title_image"
+            android:layout_width="@dimen/title_width"
             android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margins"
-            android:background="@drawable/side_left" />
+            android:src="@drawable/side_left" />
 
         <ImageView
             android:id="@+id/publish_article"
-            android:layout_width="@dimen/title_image"
+            android:layout_width="@dimen/title_width"
             android:layout_height="@dimen/title_image"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margins"
-            android:layout_marginRight="@dimen/margins"
-            android:background="@drawable/nav_icon_add" />
+            android:src="@drawable/nav_icon_add" />
 
         <ImageView
             android:layout_width="@dimen/title_image"
             android:layout_height="@dimen/title_image"
             android:layout_centerVertical="true"
             android:layout_toLeftOf="@id/publish_article"
-            android:background="@drawable/nav_icon_search"
-            android:visibility="gone"
-             />
+            android:src="@drawable/nav_icon_search"
+            android:visibility="gone"/>
 
         
         <LinearLayout

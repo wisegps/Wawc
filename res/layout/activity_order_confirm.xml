@@ -11,11 +11,10 @@
         android:background="@drawable/nav_bg">
 		<ImageView
             android:id="@+id/iv_activity_order_confirm_back"
-            android:layout_width="@dimen/title_image"
+            android:layout_width="@dimen/title_width"
 	        android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_margin="@dimen/margins"
             android:contentDescription="@string/app_name"
             android:src="@drawable/nav_back"/>
         <TextView

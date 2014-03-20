@@ -155,7 +155,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 				FriendHomeActivity.this.finish();
 				break;
 			default:
-				return;
+			    break;
 			}
 		}
 	}
@@ -232,7 +232,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 				onLoad();
 				break;
 			default:
-				return;
+			    break;
 			}
 		}
 	}

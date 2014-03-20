@@ -11,12 +11,11 @@
         android:background="@drawable/nav_bg">
 		<ImageView
             android:id="@+id/iv_activity_car_remind_menu"
-            android:layout_width="@dimen/title_image"
+            android:layout_width="@dimen/title_width"
 	        android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:clickable="true"
-            android:layout_marginLeft="@dimen/margins"
             android:contentDescription="@string/app_name"
             android:src="@drawable/nav_back"/>
         <TextView
@@ -90,7 +89,7 @@
 	                android:layout_alignParentRight="true"/>
 	            <ImageView
                     android:id="@+id/iv_inspection_help" 
-                    android:layout_width="40dp"
+                    android:layout_width="@dimen/image_width"
                     android:layout_height="40dp"
                     android:src="@drawable/help"
                     android:contentDescription="@string/app_name"
@@ -132,7 +131,8 @@
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:background="@drawable/bg_item_selector"
-                android:padding="@dimen/margins">
+                android:paddingLeft="@dimen/margins"
+                android:paddingRight="@dimen/margins">
 	            <TextView 
 	                android:id="@+id/tv_2"
 	                android:layout_width="wrap_content"
@@ -156,14 +156,15 @@
                     android:layout_height="@dimen/double_margins"
                     android:src="@drawable/body_icon_unfold"
 	                android:contentDescription="@string/app_name"
+	                android:layout_centerVertical="true"
 	                android:layout_alignParentRight="true"/>
 	            <ImageView
                     android:id="@+id/iv_renewal_help" 
-                    android:layout_width="@dimen/double_margins"
-                    android:layout_height="@dimen/double_margins"
+                    android:layout_width="@dimen/image_width"
+                    android:layout_height="@dimen/image_width"
+                    android:padding="@dimen/margins"
                     android:src="@drawable/help"
                     android:contentDescription="@string/app_name"
-                    android:layout_marginRight="@dimen/margins"
                     android:layout_toLeftOf="@id/iv_renewal"/>
 	        </RelativeLayout>
             <View 
@@ -201,7 +202,8 @@
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:background="@drawable/bg_item_selector"
-                android:padding="@dimen/margins">
+                android:paddingLeft="@dimen/margins"
+                android:paddingRight="@dimen/margins">
 	            <TextView 
 	                android:id="@+id/tv_3"
 	                android:layout_width="wrap_content"
@@ -226,14 +228,15 @@
                     android:layout_height="@dimen/double_margins"
                     android:src="@drawable/body_icon_unfold"
 	                android:contentDescription="@string/app_name"
+	                android:layout_centerVertical="true"
 	                android:layout_alignParentRight="true"/>
 	            <ImageView
                     android:id="@+id/iv_maintenance_help" 
-                    android:layout_width="@dimen/double_margins"
-                    android:layout_height="@dimen/double_margins"
+                    android:layout_width="@dimen/image_width"
+                    android:layout_height="@dimen/image_width"
+                    android:padding="@dimen/margins"
                     android:src="@drawable/help"
                     android:contentDescription="@string/app_name"
-                    android:layout_marginRight="@dimen/margins"
                     android:layout_toLeftOf="@id/iv_maintenance"/>
 	        </RelativeLayout>
 	        <View 
@@ -271,7 +274,8 @@
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:background="@drawable/bg_item_selector"
-                android:padding="@dimen/margins"
+                android:paddingLeft="@dimen/margins"
+                android:paddingRight="@dimen/margins"
 	            android:layout_marginTop="@dimen/double_margins">
 	            <TextView 
 	                android:id="@+id/tv_4"
@@ -297,14 +301,15 @@
                     android:layout_height="@dimen/double_margins"
                     android:src="@drawable/body_icon_unfold"
 	                android:contentDescription="@string/app_name"
+	                android:layout_centerVertical="true"
 	                android:layout_alignParentRight="true"/>
 	            <ImageView
                     android:id="@+id/iv_examined_help" 
-                    android:layout_width="@dimen/double_margins"
-                    android:layout_height="@dimen/double_margins"
+                    android:layout_width="@dimen/image_width"
+                    android:layout_height="@dimen/image_width"
+                    android:padding="@dimen/margins"
                     android:src="@drawable/help"
                     android:contentDescription="@string/app_name"
-                    android:layout_marginRight="@dimen/margins"
                     android:layout_toLeftOf="@id/iv_examined"/>
 	        </RelativeLayout>
             <View 
@@ -342,7 +347,8 @@
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:background="@drawable/bg_item_selector"
-                android:padding="@dimen/margins">
+                android:paddingLeft="@dimen/margins"
+                android:paddingRight="@dimen/margins">
 	            <TextView 
 	                android:id="@+id/tv_5"
 	                android:layout_width="wrap_content"
@@ -367,14 +373,15 @@
                     android:layout_height="@dimen/double_margins"
                     android:src="@drawable/body_icon_unfold"
 	                android:contentDescription="@string/app_name"
+	                android:layout_centerVertical="true"
 	                android:layout_alignParentRight="true"/>
 	            <ImageView
                     android:id="@+id/iv_replacement_help" 
-                    android:layout_width="@dimen/double_margins"
-                    android:layout_height="@dimen/double_margins"
+                    android:layout_width="@dimen/image_width"
+                    android:layout_height="@dimen/image_width"
+                    android:padding="@dimen/margins"
                     android:src="@drawable/help"
                     android:contentDescription="@string/app_name"
-                    android:layout_marginRight="@dimen/margins"
                     android:layout_toLeftOf="@id/iv_replacement"/>
 	        </RelativeLayout>
             <View 

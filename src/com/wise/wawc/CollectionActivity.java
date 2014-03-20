@@ -22,6 +22,8 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 /**
@@ -220,6 +222,7 @@ public class CollectionActivity extends Activity implements IXListViewListener{
 	private void onLoad() {
 		lv_collection.stopRefresh();
 		lv_collection.stopLoadMore();
+		lv_collection.setRefreshTime(GetSystem.GetNowTime());
 	}
 	/**
 	 * 

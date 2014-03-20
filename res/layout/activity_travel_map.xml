@@ -19,7 +19,7 @@
             android:textStyle="bold" />        
         <ImageView
             android:id="@+id/iv_activity_travel_back"
-            android:layout_width="@dimen/title_image"
+            android:layout_width="@dimen/title_width"
             android:layout_height="@dimen/title_image"
             android:layout_marginLeft="@dimen/margins"
             android:layout_alignParentLeft="true"
@@ -28,7 +28,7 @@
             android:src="@drawable/nav_back"/>
         <ImageView
             android:id="@+id/iv_activity_travel_share"
-            android:layout_width="@dimen/title_image"
+            android:layout_width="@dimen/title_width"
             android:layout_height="@dimen/title_image"
             android:layout_marginRight="@dimen/margins"
             android:layout_alignParentRight="true"

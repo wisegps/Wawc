@@ -9,22 +9,21 @@
         android:id="@+id/rl_top"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight">
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="@dimen/title_image"
-            android:layout_height="@dimen/title_image"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="@dimen/margins"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/nav_back"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:gravity="center"
             android:text="关于"
             android:textColor="@color/white"
-            android:textSize="@dimen/head"/>
+            android:textSize="@dimen/head"/>        
+        <ImageView
+            android:id="@+id/iv_back"
+            android:layout_width="@dimen/title_width"
+            android:layout_height="@dimen/title_image"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/nav_back"/>
     </RelativeLayout>
     <LinearLayout 
         android:id="@+id/rl_bottom"
@@ -52,6 +51,7 @@
             android:layout_marginBottom="@dimen/margins"
             android:text="检查新版本"/>
         <Button 
+            android:id="@+id/bt_url"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_bt_black"

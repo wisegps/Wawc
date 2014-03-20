@@ -8,6 +8,8 @@ import com.wise.pubclas.NetThread;
 import com.wise.pubclas.UpdateManager;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -27,6 +29,8 @@ public class AboutActivity extends Activity{
         setContentView(R.layout.activity_about);
         Button bt_new_version = (Button)findViewById(R.id.bt_new_version);
         bt_new_version.setOnClickListener(onClickListener);
+        Button bt_url = (Button)findViewById(R.id.bt_url);
+        bt_url.setOnClickListener(onClickListener);
         ImageView iv_back = (ImageView)findViewById(R.id.iv_back);
         iv_back.setOnClickListener(onClickListener);
     }
@@ -40,6 +44,11 @@ public class AboutActivity extends Activity{
             case R.id.bt_new_version:
                 String url = Constant.BaseUrl + "upgrade/android/wiwc";
                 new Thread(new NetThread.GetDataThread(handler, url, get_version)).start();
+                break;
+            case R.id.bt_url:
+                Intent it = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.woiwoche.com/"));  
+                it.setClassName("com.android.browser", "com.android.browser.BrowserActivity");  
+                startActivity(it);  
                 break;
             }
         }

@@ -4,10 +4,12 @@
     <dimen name="title_hight">44dp</dimen>
     <!-- 头部图片按钮大小 -->
     <dimen name="title_image">30dp</dimen>
+    <dimen name="title_width">50dp</dimen>
     <!-- 图标,略缩图大小 -->
     <dimen name="image_logo">100dp</dimen>
     <!-- 内容边距 -->
     <dimen name="margins">10dp</dimen>
+    <dimen name="image_width">40dp</dimen>
     <dimen name="double_margins">20dp</dimen>
     <!-- 内容与屏幕边距 -->
     <dimen name="body_padding">10dp</dimen>

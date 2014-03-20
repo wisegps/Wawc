@@ -2,68 +2,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical"
-    >
-    <LinearLayout 
+    android:orientation="vertical" >
+
+    <LinearLayout
         android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:orientation="horizontal"
-        >
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
         <TextView
-            android:id="@+id/friend_article_data" 
+            android:id="@+id/friend_article_data"
             android:layout_width="0dip"
             android:layout_height="wrap_content"
-            android:layout_weight="1.5"
-            android:textSize="@dimen/title"
-            android:textColor="@color/common"
             android:layout_marginRight="@dimen/margins"
+            android:layout_weight="1.5"
             android:gravity="center"
             android:paddingLeft="@dimen/margins"
-            />
-        <LinearLayout 
-             android:layout_width="0dip"
-	    	 android:layout_height="wrap_content"
-	    	 android:orientation="vertical"
-	    	 android:layout_weight="6"
-	    	 android:background="@drawable/friend_article_bg"
-	    	 android:layout_marginRight="@dimen/margins"
-            >
+            android:textColor="@color/common"
+            android:textSize="@dimen/title" />
+        <LinearLayout
+            android:layout_width="0dip"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margins"
+            android:layout_weight="6"
+            android:background="@drawable/friend_article_bg"
+            android:orientation="vertical" >
             <!-- 文章标题 -->
-            <TextView 
+            <TextView
                 android:id="@+id/friend_article_content"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/common"
                 android:layout_marginLeft="@dimen/margins"
-                android:textSize="@dimen/main" 
-                />
+                android:textColor="@color/common"
+                android:textSize="@dimen/main" />
             <!-- 图片 -->
-			<GridView 
-	                android:id="@+id/friend_home_image"
-	                android:layout_width="fill_parent"
-                	android:layout_height="wrap_content"
-	                android:scrollbars="horizontal"
-	                android:numColumns="3"
-	                android:horizontalSpacing="@dimen/margins"
-	        		android:stretchMode="columnWidth"
-                ></GridView>
-            <LinearLayout 
-	             android:layout_width="fill_parent"
-		    	 android:layout_height="wrap_content"
-		    	 android:orientation="horizontal"
-            >
-            
+            <GridView
+                android:id="@+id/friend_home_image"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:horizontalSpacing="@dimen/margins"
+                android:numColumns="3"
+                android:scrollbars="horizontal"
+                android:stretchMode="columnWidth" >
+            </GridView>
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" >
                 <!-- 时间 -->
-                <TextView 
+                <TextView
                     android:id="@+id/friend_article_publish_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="left"
-                    android:layout_marginLeft="@dimen/margins"
                     android:layout_marginBottom="@dimen/margins"
+                    android:layout_marginLeft="@dimen/margins"
                     android:text="12:45"
-                    android:textColor="@color/common_inactive"
-                    />
+                    android:textColor="@color/common_inactive" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
