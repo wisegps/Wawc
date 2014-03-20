@@ -144,7 +144,7 @@ public class FriendInformationActivity extends Activity{
 	public Bitmap getCarLogo(String carBrand){
 		Bitmap bitmap = null;
 		if(new File(Constant.VehicleLogoPath + carBrand + ".png").exists()){
-    		bitmap = BitmapFactory.decodeFile(Constant.VehicleLogoPath + carInforList.get(0)[0] + ".png");
+    		bitmap = BitmapFactory.decodeFile(Constant.VehicleLogoPath + carBrand + ".png");
     	}else{
     		getDate("carBrank",Constant.BaseUrl + "base/car_brand",getBarBrand);
     		if(brankList != null){
@@ -173,12 +173,10 @@ public class FriendInformationActivity extends Activity{
 	}
 	
 	private void getDate(String whereValues,String url,int handlerWhat) {
-		Log.e("title:",whereValues);
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 		Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base + " where Title = ?", new String[]{whereValues});
 		JSONArray jsonArray = null;
 		if(cursor.moveToFirst()){
-			Log.e("数据库数据","数据库数据");
 			try {
 				jsonArray = new JSONArray(cursor.getString(cursor.getColumnIndex("Content")));
 				parseJSON(jsonArray);
@@ -297,10 +295,6 @@ public class FriendInformationActivity extends Activity{
 					}
 					friendCarAdapter.notifyDataSetChanged();
 					friendCar.setVisibility(View.VISIBLE);
-					//TODO 
-					for(int i = 0 ; i < carInforList.size() ; i++){
-					    Log.d(TAG, carInforList.get(i)[0] + "," + carInforList.get(i)[1]);
-					}
 				}else{
 					friendCar.setVisibility(View.GONE);
 				}

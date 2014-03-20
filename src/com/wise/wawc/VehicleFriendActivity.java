@@ -113,7 +113,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	private String commentMsg = null;
 	
-	public static int minBlogId = 0;
 	public static int maxBlogId = 0;
 	private String articleType = "";
 	
@@ -435,32 +434,72 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				}
 				onLoad();	
 				break;
-			case refreshCode:  //   上拉刷新结果处理  TODO
+			case refreshCode:  //   下拉  刷新结果处理  TODO
 				if(!"[]".equals(msg.obj.toString())){
 					//  更新数据库
 					JSONArray jsonArray = null;
+					boolean isClear = false;
 					try {
 						jsonArray = new JSONArray(msg.obj.toString());
 						if(jsonArray.length() > 1){
 							for(int i = 0 ; i < jsonArray.length() ; i ++){
-								if(Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")) != articleTypeMaxBlogId){
-									Log.e("更新数据库","更新数据库");
-									ContentValues values = new ContentValues();
-									values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
-									values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
-									if(jsonArray.getJSONObject(i).opt("logo") != null){
-										values.put("UserLogo", jsonArray.getJSONObject(i).getString("logo"));
-									}else{
-										values.put("UserLogo", "");
-									}
-									values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
-									dBExcute.InsertDB(VehicleFriendActivity.this,values,Constant.TB_VehicleFriend);
-									//类型表
-									ContentValues valuesType = new ContentValues();
-									valuesType.put("Type_id", article);
-									valuesType.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
-									dBExcute.InsertDB(VehicleFriendActivity.this,valuesType,Constant.TB_VehicleFriendType);
+								//blog_衔接上了  无需删除本地数据库
+								if(Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")) == articleTypeMaxBlogId){
+									isClear = true;
 								}
+							}
+							if(isClear){
+								for(int i = 0 ; i < jsonArray.length() ; i ++){
+									if(Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")) != articleTypeMaxBlogId){
+										Log.e("更新数据库","更新数据库");
+										ContentValues values = new ContentValues();
+										values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
+										values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
+										if(jsonArray.getJSONObject(i).opt("logo") != null){
+											values.put("UserLogo", jsonArray.getJSONObject(i).getString("logo"));
+										}else{
+											values.put("UserLogo", "");
+										}
+										values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
+										dBExcute.InsertDB(VehicleFriendActivity.this,values,Constant.TB_VehicleFriend);
+										//类型表
+										ContentValues valuesType = new ContentValues();
+										valuesType.put("Type_id", article);
+										valuesType.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
+										dBExcute.InsertDB(VehicleFriendActivity.this,valuesType,Constant.TB_VehicleFriendType);
+									}
+								}
+							}else{
+								Log.e("清空并更新","清空并更新");
+									//清空表
+									DBHelper dBHelper = new DBHelper(VehicleFriendActivity.this);
+									SQLiteDatabase reader = dBHelper.getWritableDatabase();
+									//清空车友圈表
+									String sql1 = "delete from "+ Constant.TB_VehicleFriend;
+									//清空类型表
+									String sql3 = "delete from "+ Constant.TB_VehicleFriendType + " where Type_id = " + article;
+									reader.execSQL(sql1);
+									reader.execSQL(sql3);
+									
+									
+									//插入新数据
+									for(int i = 0 ; i < jsonArray.length() ; i ++){
+										ContentValues values = new ContentValues();
+										values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
+										values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
+										if(jsonArray.getJSONObject(i).opt("logo") != null){
+											values.put("UserLogo", jsonArray.getJSONObject(i).getString("logo"));
+										}else{
+											values.put("UserLogo", "");
+										}
+										values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
+										dBExcute.InsertDB(VehicleFriendActivity.this,values,Constant.TB_VehicleFriend);
+										//更新类型表
+										ContentValues  typeValue = new ContentValues();
+										typeValue.put("Type_id", article);
+										typeValue.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
+										dBExcute.InsertDB(VehicleFriendActivity.this,typeValue,Constant.TB_VehicleFriendType);
+									}
 							}
 							//重新分页
 							articleDataList.clear();
@@ -593,9 +632,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				}
 				values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
 				dBExcute.InsertDB(VehicleFriendActivity.this,values,Constant.TB_VehicleFriend);
-				if(i == (jsonArray.length()-1)){
-					minBlogId = Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id"));
-				}
 		}
 		} catch (JSONException e) {
 			e.printStackTrace();
