@@ -57,6 +57,7 @@
 		<activity android:name=".CarRemindActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".NewArticleActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".VehicleStatusActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".ImageShowerActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
 
         <activity android:name=".CarFaultActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".TravelActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>

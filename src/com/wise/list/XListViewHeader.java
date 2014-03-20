@@ -80,9 +80,6 @@ public class XListViewHeader extends LinearLayout {
         
         if (state == STATE_REFRESHING) {    // 显示进度
             mArrowImageView.clearAnimation();
-            mArrowImageView.setVisibility(View.INVISIBLE);
-            mArrowImageView.clearAnimation();
-        } else {    // 显示箭头图片
             mArrowImageView.setVisibility(View.VISIBLE);
             Animation operatingAnim = AnimationUtils.loadAnimation(mContext, R.anim.tip_fast);  
             LinearInterpolator lin = new LinearInterpolator();  
@@ -90,6 +87,9 @@ public class XListViewHeader extends LinearLayout {
             if (operatingAnim != null) {  
                 mArrowImageView.startAnimation(operatingAnim);  
             }
+        } else {    // 显示箭头图片
+            mArrowImageView.setVisibility(View.INVISIBLE);
+            mArrowImageView.clearAnimation();
         }
         
         switch(state){

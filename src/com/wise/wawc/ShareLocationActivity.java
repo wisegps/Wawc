@@ -78,6 +78,10 @@ public class ShareLocationActivity extends Activity {
                     isDelete = false;
                     iv_photo.setVisibility(View.GONE);
                     iv_photo.setImageBitmap(null);
+                }else{
+                    Intent intent = new Intent(ShareLocationActivity.this, ImageShowerActivity.class);
+                    intent.putExtra("ImagePath", imagePath);
+                    startActivity(intent);
                 }
                 break;
             case R.id.iv_camera:
