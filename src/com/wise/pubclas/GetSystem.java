@@ -378,13 +378,13 @@ public class GetSystem {
     }
 
     /**
-     * 保存图片在sd卡上
+     * 保存图片在sd卡上(jgp格式用到)
      * 
      * @param bitmap
      * @param name
-     *            图片名称a.png
+     * @param quality 压缩比例
      */
-    public static void saveImageSD(Bitmap bitmap, String path, String name) {
+    public static void saveImageSD(Bitmap bitmap, String path, String name,int quality) {
         File file = new File(path);
         if (!file.exists()) {
             System.out.println("创建文件夹");
@@ -395,7 +395,11 @@ public class GetSystem {
         FileOutputStream b = null;
         try {
             b = new FileOutputStream(fileName);
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
+            if(name.substring(name.lastIndexOf("."), name.length()).equals("png")){
+                bitmap.compress(Bitmap.CompressFormat.PNG, quality, b);// 把数据写入文件
+            }else{
+                bitmap.compress(Bitmap.CompressFormat.JPEG, quality, b);// 把数据写入文件
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } finally {
@@ -407,6 +411,7 @@ public class GetSystem {
             }
         }
     }
+    
 
     public static void displayBriefMemory(Context mContext) {
         Log.e("tag", "内存" + Runtime.getRuntime().totalMemory() / 1024 / 1024

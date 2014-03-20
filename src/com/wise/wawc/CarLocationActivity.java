@@ -244,7 +244,7 @@ public class CarLocationActivity extends Activity {
         @Override
         public void onGetCurrentMap(Bitmap arg0) {
             System.out.println("截取成功");
-            GetSystem.saveImageSD(arg0, Constant.picPath, Constant.ShareImage);
+            GetSystem.saveImageSD(arg0, Constant.picPath, Constant.ShareImage,50);
             String imagePath = Constant.picPath + Constant.ShareImage;
             String url = "http://api.map.baidu.com/geocoder?location="
                     + carData.getLat() + "," + carData.getLon()

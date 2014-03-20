@@ -690,7 +690,7 @@ public class HomeActivity extends Activity {
                         Bitmap bitmap = GetSystem.getBitmapFromURL(imageUrl);
                         if (bitmap != null) {
                             GetSystem.saveImageSD(bitmap,
-                                    Constant.VehicleLogoPath, brand + ".png");
+                                    Constant.VehicleLogoPath, brand + ".png",100);
                             Variable.carDatas.get(i).setLogoPath(imagePath);
                         }
                         break;

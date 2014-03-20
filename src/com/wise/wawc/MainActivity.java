@@ -337,7 +337,7 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
             switch (msg.what) {
             case Get_Pic:
                 if(bimage != null){
-                    GetSystem.saveImageSD(bimage, Constant.userIconPath, Constant.UserImage);
+                    GetSystem.saveImageSD(bimage, Constant.userIconPath, Constant.UserImage,100);
                 }
                 //iv_activity_main_logo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
                 iv_activity_main_logo.setImageBitmap(bimage);

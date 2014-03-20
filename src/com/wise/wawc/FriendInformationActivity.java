@@ -103,7 +103,7 @@ public class FriendInformationActivity extends Activity{
 					if(!"".equals(user_logo)){
 						Bitmap tempBitmap = GetSystem.getBitmapFromURL(user_logo);
 						if(tempBitmap != null){
-							 GetSystem.saveImageSD(tempBitmap, Constant.userIconPath, cust_id + ".jpg");
+							 GetSystem.saveImageSD(tempBitmap, Constant.userIconPath, cust_id + ".jpg",100);
 							 userHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(tempBitmap));
 						}
 					}
@@ -157,7 +157,7 @@ public class FriendInformationActivity extends Activity{
 								public void run() {
 									Bitmap tempBitmap = GetSystem.getBitmapFromURL(logoUrl);
 									if(tempBitmap != null){
-										GetSystem.saveImageSD(tempBitmap, Constant.VehicleLogoPath, carBrandName + ".png");
+										GetSystem.saveImageSD(tempBitmap, Constant.VehicleLogoPath, carBrandName + ".png",100);
 //										setCarLogo();
 										friendCarAdapter.notifyDataSetChanged();
 									}
