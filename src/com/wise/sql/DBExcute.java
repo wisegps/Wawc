@@ -135,8 +135,10 @@ public class DBExcute {
 			adrDatas.setLon(Double.parseDouble(cursor.getString(cursor.getColumnIndex("lon"))));
 			adressDatas.add(adrDatas);
 		}
-		cursor.close();
-		db.close();
+		if(cursor != null){
+			cursor.close();
+			db.close();
+		}
 		return adressDatas;
 	}
 	
@@ -151,7 +153,10 @@ public class DBExcute {
 				while(cursor.moveToNext()){
 					articleData.add(parseDBDatas(cursor));
 				}
-				db.close();
+				if(cursor != null){
+					cursor.close();
+				}
+				db.close();  
 				return articleData;
 		}
 		
@@ -181,6 +186,10 @@ public class DBExcute {
 					articleData.add(parseDBDatas(cursors));
 				}
 			}
+			if(cursor != null){
+				cursor.close();
+			}
+			db.close();
 			return articleData;
 		}
 		
@@ -214,6 +223,11 @@ public class DBExcute {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+		if(cursor != null){
+			cursor.close();
+		}
+		reader.close();
+		update.close();
 	}
 	public void updateArticlePraises(Context context,String tableName,int whereValue,String praisesUser,int cust_id){
 		DBHelper dbHelper = new DBHelper(context);
@@ -243,6 +257,11 @@ public class DBExcute {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+		if(cursor != null){
+			cursor.close();
+		}
+		reader.close();
+		update.close();
 	}
 	
 	/**
@@ -255,7 +274,9 @@ public class DBExcute {
 		String sql = "select * from " + tableName + ";";
 		Cursor cursor = db.rawQuery(sql, new String[]{});
 		int totalPage = cursor.getCount();
-		cursor.close();
+		if(cursor != null){
+			cursor.close();
+		}
 		db.close();
 		return totalPage;
 	}
@@ -271,7 +292,9 @@ public class DBExcute {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(sql, whereClause);
         int totalPage = cursor.getCount();
-        cursor.close();
+        if(cursor != null){
+        	cursor.close();
+        }
         db.close();
         return totalPage;
     }
@@ -346,6 +369,10 @@ public class DBExcute {
 		if(cursor.moveToFirst()){
 			jsonData = cursor.getString(cursor.getColumnIndex("json_data"));
 		}
+		if(cursor != null){
+			cursor.close();
+		}
+		reader.close();
 		return jsonData;
 	}
 	/**
@@ -397,5 +424,10 @@ public class DBExcute {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+		if(cursor != null){
+			cursor.close();
+		}
+		reader.close();
+		update.close();
 	}
 }
