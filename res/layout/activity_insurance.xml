@@ -10,11 +10,10 @@
         android:background="@drawable/nav_bg" >
         <ImageView
             android:id="@+id/iv_back"
-            android:layout_width="@dimen/title_image"
+            android:layout_width="@dimen/title_width"
             android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margins"
             android:clickable="true"
             android:contentDescription="@string/app_name"
             android:src="@drawable/nav_back" />

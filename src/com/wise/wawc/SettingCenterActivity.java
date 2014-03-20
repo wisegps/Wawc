@@ -42,8 +42,8 @@ public class SettingCenterActivity extends Activity{
 		setContentView(R.layout.activity_setting_center);
 		
 		tv_value = (TextView)findViewById(R.id.tv_value);
-		Button bt_setting_menu = (Button)findViewById(R.id.bt_setting_menu);
-		bt_setting_menu.setOnClickListener(onClickListener);
+		ImageView iv_setting_menu = (ImageView)findViewById(R.id.iv_setting_menu);
+		iv_setting_menu.setOnClickListener(onClickListener);
 		RelativeLayout rl_traffic = (RelativeLayout)findViewById(R.id.rl_traffic);
 		rl_traffic.setOnClickListener(onClickListener);
 		RelativeLayout rl_status = (RelativeLayout)findViewById(R.id.rl_status);
@@ -73,7 +73,7 @@ public class SettingCenterActivity extends Activity{
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
-            case R.id.bt_setting_menu:
+            case R.id.iv_setting_menu:
                 ActivityFactory.A.LeftMenu();
                 break;
             case R.id.rl_traffic:

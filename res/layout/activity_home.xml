@@ -11,12 +11,11 @@
         android:layout_height="@dimen/title_hight">
 		<ImageView
             android:id="@+id/iv_activity_home_menu"
-            android:layout_width="@dimen/title_image"
+            android:layout_width="@dimen/title_width"
 	        android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:clickable="true"
-            android:layout_marginLeft="@dimen/margins"
             android:contentDescription="@string/app_name"
             android:src="@drawable/side_left"/>
         <TextView
@@ -30,12 +29,11 @@
             android:textSize="@dimen/head"/>
 		<ImageView
             android:id="@+id/iv_activity_car_home_search"
-            android:layout_width="@dimen/title_image"
+            android:layout_width="@dimen/title_width"
 	        android:layout_height="@dimen/title_image"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/app_name"
-            android:layout_marginRight="@dimen/margins"
             android:src="@drawable/side_right"/>
 	</RelativeLayout>
     <LinearLayout 

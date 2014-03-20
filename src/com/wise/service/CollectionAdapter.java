@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -157,23 +158,8 @@ public class CollectionAdapter extends BaseAdapter {
 
         } catch (BaiduMapAppNotSupportNaviException e) {
             e.printStackTrace();
-            AlertDialog.Builder builder = new AlertDialog.Builder(context);
-            builder.setMessage("您尚未安装百度地图app或app版本过低，点击确认安装？");
-            builder.setNegativeButton("取消",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-            builder.setPositiveButton("确定",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            BaiduMapNavigation
-                                    .GetLatestBaiduMapApp((Activity) context);
-                        }
-                    });
-            builder.create().show();
+            Log.d(TAG, "未安装百度地图,开始web导航");
+            BaiduMapNavigation.openWebBaiduMapNavi(para, (Activity) context);
         }
     }
 }

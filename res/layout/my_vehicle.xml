@@ -15,11 +15,10 @@
 
         <ImageView
             android:id="@+id/my_vechile_menu"
-            android:layout_width="@dimen/title_image"
+            android:layout_width="@dimen/title_width"
             android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margins"
             android:src="@drawable/side_left" />
 
         <TextView
@@ -42,7 +41,7 @@
             android:text="@string/vehicle_edit"
             android:background="@drawable/article_comment_bg"
             android:textSize="@dimen/content"
-            android:textColor="@color/white"/>
+            android:textColor="@color/color_white"/>
     </RelativeLayout>
 
     <HorizontalScrollView

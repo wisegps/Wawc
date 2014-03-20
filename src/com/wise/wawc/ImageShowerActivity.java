@@ -6,9 +6,11 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.MotionEvent;
 import android.widget.ImageView;
-
+/**
+ * 查看大图界面
+ * @author honesty
+ */
 public class ImageShowerActivity extends Activity {
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub

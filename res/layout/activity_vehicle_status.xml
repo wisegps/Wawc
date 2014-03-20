@@ -11,12 +11,11 @@
         android:background="@drawable/nav_bg">
 		<ImageView
             android:id="@+id/iv_activity_vehicle_status_back"
-            android:layout_width="@dimen/title_image"
+            android:layout_width="@dimen/title_width"
 	        android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/app_name"
-            android:layout_marginLeft="@dimen/margins"
             android:src="@drawable/nav_back"/>
         <TextView
             android:layout_width="fill_parent"

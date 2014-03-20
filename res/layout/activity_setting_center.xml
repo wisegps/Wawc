@@ -10,14 +10,14 @@
         android:layout_height="@dimen/title_hight"
         android:background="@drawable/nav_bg" >
 
-        <Button
-            android:id="@+id/bt_setting_menu"
-            android:layout_width="@dimen/title_image"
+        <ImageView
+            android:id="@+id/iv_setting_menu"
+            android:layout_width="@dimen/title_width"
             android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margins"
-            android:background="@drawable/side_left" />
+            android:src="@drawable/side_left" />
+        
 
         <TextView
             android:layout_width="fill_parent"
@@ -102,6 +102,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_item_selector"
                 android:padding="@dimen/margins" >
+
                 <TextView
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -110,14 +111,15 @@
                     android:text="@string/against_push"
                     android:textColor="@color/common"
                     android:textSize="@dimen/content" />
+
                 <ImageView
                     android:id="@+id/iv_traffic"
                     android:layout_width="@dimen/double_margins"
                     android:layout_height="@dimen/double_margins"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:visibility="gone"
-                    android:src="@drawable/body_icon_check" />
+                    android:src="@drawable/body_icon_check"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -147,14 +149,15 @@
                     android:layout_height="@dimen/double_margins"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:visibility="gone"
-                    android:src="@drawable/body_icon_check" />
+                    android:src="@drawable/body_icon_check"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"
                 android:background="@color/gray_lights" />
+
             <RelativeLayout
                 android:id="@+id/rl_alert"
                 android:layout_width="fill_parent"
@@ -177,8 +180,8 @@
                     android:layout_height="@dimen/double_margins"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:visibility="gone"
-                    android:src="@drawable/body_icon_check" />
+                    android:src="@drawable/body_icon_check"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -208,8 +211,8 @@
                     android:layout_height="@dimen/double_margins"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:visibility="gone"
-                    android:src="@drawable/body_icon_check" />
+                    android:src="@drawable/body_icon_check"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <View
@@ -235,9 +238,9 @@
                 android:id="@+id/tv_share_gift"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_item_selector"
                 android:drawableRight="@drawable/body_icon_arrow2"
                 android:padding="@dimen/margins"
-                android:background="@drawable/bg_item_selector"
                 android:text="@string/share_gift"
                 android:textColor="@color/common"
                 android:textSize="@dimen/content" />
@@ -251,9 +254,9 @@
                 android:id="@+id/tv_feedback"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_item_selector"
                 android:drawableRight="@drawable/body_icon_arrow2"
                 android:padding="@dimen/margins"
-                android:background="@drawable/bg_item_selector"
                 android:text="@string/feedbaack"
                 android:textColor="@color/common"
                 android:textSize="@dimen/content" />
@@ -267,12 +270,13 @@
                 android:id="@+id/tv_about"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:background="@drawable/bg_item_selector"
                 android:drawableRight="@drawable/body_icon_arrow2"
                 android:padding="@dimen/margins"
-                android:background="@drawable/bg_item_selector"
                 android:text="@string/about_appliaction"
                 android:textColor="@color/common"
                 android:textSize="@dimen/content" />
+
             <View
                 android:layout_width="fill_parent"
                 android:layout_height="1dp"

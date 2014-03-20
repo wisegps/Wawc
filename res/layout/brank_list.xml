@@ -12,12 +12,11 @@
         android:layout_alignParentTop="true">
         <ImageView
             android:id="@+id/choice_vechile_back"
-            android:layout_width="@dimen/title_image"
+            android:layout_width="@dimen/title_width"
             android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/margins"
-            android:background="@drawable/nav_back" />
+            android:src="@drawable/nav_back" />
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

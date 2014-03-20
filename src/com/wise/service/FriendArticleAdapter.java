@@ -64,7 +64,7 @@ public class FriendArticleAdapter extends BaseAdapter{
 	private List<Article> articleList = null;
 	
 	private StringBuffer sb = null;
-	private OnClickListeners listener = null;
+	//private OnClickListeners listener = null;
 	private ProgressDialog myDialog = null;
 	private MyHandler myHandler = null;
 	private DBExcute dbExcute= null;
@@ -80,7 +80,7 @@ public class FriendArticleAdapter extends BaseAdapter{
 		this.linearLayout = linearLayout;
 		this.articleList = processData(articleList);
 		layoutInflater = LayoutInflater.from(context);
-		listener = new OnClickListeners(0);
+		//listener = new OnClickListeners(0);
 		myHandler = new MyHandler();
 		dbExcute = new DBExcute();
 		friendHomeActivity = new FriendHomeActivity();
@@ -163,16 +163,16 @@ public class FriendArticleAdapter extends BaseAdapter{
 		public GridView userImage;
 	}
 	
-	class OnClickListeners implements OnClickListener{
-		int position = 0;
-		OnClickListeners(int position){
-			this.position = position;
-		}
-		public void onClick(View v) {
-			switch(v.getId()){
-			}
-		}
-	}
+//	class OnClickListeners implements OnClickListener{
+//		int position = 0;
+//		OnClickListeners(int position){
+//			this.position = position;
+//		}
+//		public void onClick(View v) {
+//			switch(v.getId()){
+//			}
+//		}
+//	}
 	
 	class MyHandler extends Handler{
 		public void handleMessage(Message msg) {
@@ -258,7 +258,6 @@ public class FriendArticleAdapter extends BaseAdapter{
 			 this.smallImageList = smallImageList;
 			 this.indexId = indexId;
 		 }
-		 UserImageAdapter(){}
 		public int getCount() {
 			return smallImageList.size();
 		}

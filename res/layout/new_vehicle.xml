@@ -14,11 +14,11 @@
 
         <ImageView
             android:id="@+id/new_vechile_cancle_iv"
-            android:layout_width="@dimen/title_image"
+            android:layout_width="@dimen/title_width"
             android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/nav_back" />
+            android:src="@drawable/nav_back" />
 
         <TextView
             android:id="@+id/tv_add_vechile_title"
@@ -40,7 +40,7 @@
             android:layout_marginRight="@dimen/margins"
             android:background="@drawable/article_comment_bg"
             android:text="@string/save"
-            android:textColor="@color/white"
+            android:textColor="@color/color_white"
             android:textSize="@dimen/content" />
     </RelativeLayout>
 
