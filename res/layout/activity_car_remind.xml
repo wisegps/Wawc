@@ -62,7 +62,8 @@
 	            android:layout_width="fill_parent"
 	            android:layout_height="wrap_content"
 	            android:background="@drawable/bg_item_selector"
-	            android:padding="@dimen/margins">
+	            android:paddingLeft="@dimen/margins"
+	            android:paddingRight="@dimen/margins">
 	            <TextView 
 	                android:id="@+id/tv_1"
 	                android:layout_width="wrap_content"
@@ -84,15 +85,16 @@
 	                android:layout_width="@dimen/double_margins"
 	                android:layout_height="@dimen/double_margins"
                     android:src="@drawable/body_icon_unfold"
-	                android:contentDescription="@string/app_name"
+	                android:contentDescription="@string/app_name"	                
+                    android:layout_centerVertical="true"
 	                android:layout_alignParentRight="true"/>
 	            <ImageView
                     android:id="@+id/iv_inspection_help" 
-                    android:layout_width="@dimen/double_margins"
-                    android:layout_height="@dimen/double_margins"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:src="@drawable/help"
                     android:contentDescription="@string/app_name"
-                    android:layout_marginRight="@dimen/margins"
+                    android:padding="@dimen/margins"
                     android:layout_toLeftOf="@id/iv_inspection"/>
 	        </RelativeLayout>
             <View 
