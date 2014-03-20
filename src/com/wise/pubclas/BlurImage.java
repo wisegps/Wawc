@@ -50,19 +50,19 @@ public class BlurImage {
      * @param bitmap
      * @return
      */
-    public static Bitmap getSquareBitmap(Bitmap bitmap,int width,int height){
+    public static Bitmap getSquareBitmaps(Bitmap bitmap){
         int imageWidth = bitmap.getWidth();
         int imageHeight = bitmap.getHeight();
-        Log.e("imageWidth",imageWidth+"");
-        Log.e("imageHeight",imageHeight+"");
+        Log.e("imageWidth",imageWidth+"");  //  640
+        Log.e("imageHeight",imageHeight+"");  //  480
         int y = 0;
         Bitmap image = null;
         if(imageHeight > imageWidth){
         	y = (imageHeight - imageWidth)/2;
-        	image = Bitmap.createBitmap(bitmap, 0, y, width, width);
+        	image = Bitmap.createBitmap(bitmap, 0, y, imageWidth, imageWidth);
         }else{
         	y = (imageWidth - imageHeight)/2;
-        	image = Bitmap.createBitmap(bitmap, y, 0, height, height);
+        	image = Bitmap.createBitmap(bitmap, y, 0, imageHeight, imageHeight);
         }
         return image;
     }
