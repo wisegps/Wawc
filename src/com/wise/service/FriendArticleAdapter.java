@@ -121,6 +121,7 @@ public class FriendArticleAdapter extends BaseAdapter{
 			smallImageList.add(smallBitmap);
 		}
 		viewHolder.userImage.setAdapter(new UserImageAdapter(threeSmallImageList, position));
+		viewHolder.userImage.setFocusable(false);
 		String str = articleList.get(position).getCreate_time();
 		String createTime = str.substring(0, str.indexOf(".")).replace("T"," ");
 		viewHolder.articleContent.setText(articleList.get(position).getContent());

@@ -319,7 +319,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 		public void jsonToList(String JSON){
 			try {
 			JSONArray jsonArray = new JSONArray(JSON);
-			int[] blog_idAry = new int[jsonArray.length()];
+//			int[] blog_idAry = new int[jsonArray.length()];
 			for(int i = 0 ; i < jsonArray.length() ; i ++){
 					//存储到数据库
 					ContentValues values = new ContentValues();
@@ -327,18 +327,18 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 					values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
 					values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
 					dBExcute.InsertDB(FriendHomeActivity.this,values,Constant.TB_VehicleFriend);
-					blog_idAry[i] = Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id"));
+//					blog_idAry[i] = Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id"));
 			}
 			
-			for(int n = 0 ; n < blog_idAry.length ; n ++){
-				for(int m = 0 ; m < n ; m ++){
-					if(blog_idAry[m] < blog_idAry[n]){
-						int temp = blog_idAry[m];
-						blog_idAry[m] = blog_idAry[n];
-						blog_idAry[n] = temp;
-					}
-				}
-			}
+//			for(int n = 0 ; n < blog_idAry.length ; n ++){
+//				for(int m = 0 ; m < n ; m ++){
+//					if(blog_idAry[m] < blog_idAry[n]){
+//						int temp = blog_idAry[m];
+//						blog_idAry[m] = blog_idAry[n];
+//						blog_idAry[n] = temp;
+//					}
+//				}
+//			}
 			DBHelper dBHelper = new DBHelper(getApplicationContext());
 			SQLiteDatabase db = dBHelper.getReadableDatabase();
 			Cursor cursor = db.rawQuery("select * from " + Constant.TB_VehicleFriend + " where Cust_id = ?", new String[]{cust_id});
