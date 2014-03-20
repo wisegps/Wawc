@@ -861,6 +861,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		return time1;
 	}
 	
+	
 	protected void onPause() {
 		Constant.articleType = article;
 		Constant.start = 0;  // 开始页
