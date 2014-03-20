@@ -162,7 +162,12 @@ public class DBExcute {
 		 * 分类查询车友圈文章  TODO
 		 */
 		public List<Article> getArticleTypeList(Context context,String sql,String[] whereClause,List<Article> articleData){
-			DBHelper dbHelper = new DBHelper(context);
+			if(articleData == null){
+	            System.out.println("车友圈null");
+			}else{
+			    System.out.println("车友圈不null");
+			}
+		    DBHelper dbHelper = new DBHelper(context);
 			SQLiteDatabase db = dbHelper.getReadableDatabase();
 			Cursor cursor = db.rawQuery(sql, whereClause);
 			while(cursor.moveToNext()){

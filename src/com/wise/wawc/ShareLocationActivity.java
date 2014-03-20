@@ -78,12 +78,22 @@ public class ShareLocationActivity extends Activity {
                     isDelete = false;
                     iv_photo.setVisibility(View.GONE);
                     iv_photo.setImageBitmap(null);
+                }else{
+                    Intent intent = new Intent(ShareLocationActivity.this, ImageShowerActivity.class);
+                    intent.putExtra("ImagePath", imagePath);
+                    startActivity(intent);
                 }
                 break;
             case R.id.iv_camera:
+                File file = new File(Constant.picPath);
+                if (!file.exists()) {
+                    System.out.println("创建文件夹");
+                    file.mkdirs();// 创建文件夹
+                }
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Constant.picPath + Constant.ShareImage)));
                 startActivityForResult(intent, 1);
+                Log.d(TAG,"保存图片路径" + Constant.picPath + Constant.ShareImage);
                 break;
             case R.id.bt_activity_share:
                 String content = et_share_content.getText().toString().trim();
@@ -139,8 +149,8 @@ public class ShareLocationActivity extends Activity {
             GetSystem.saveImageSD(bitmap, Constant.picPath, Constant.ShareImage);
             // 显示到控件上
             bitmap = BlurImage.decodeSampledBitmapFromPath(Constant.picPath + Constant.ShareImage, 150, 150);
-            Log.d(TAG, bitmap.getWidth() + "," + bitmap.getHeight() + ",");
             bitmap = BlurImage.getSquareBitmap(bitmap);
+            Log.d(TAG, bitmap.getWidth() + "," + bitmap.getHeight() + ",");
             Log.d(TAG, bitmap.getWidth() + "," + bitmap.getHeight() + ",");
             if (bitmap != null) {
                 imagePath = Constant.picPath + Constant.ShareImage;

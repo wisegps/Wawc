@@ -490,8 +490,8 @@ public class GetSystem {
         oks.setAddress("");
         oks.setTitle(Title);
         oks.setTitleUrl(mapUrl);
-        Log.d(TAG, Content + " (来自@我爱我车,点击下载http://dl.wisegps.cn/");
-        oks.setText(Content + " (来自@我爱我车,点击下载http://dl.wisegps.cn/");
+        Log.d(TAG, Content + " (来自@我爱我车,点击下载http://dl.wisegps.cn/ )");
+        oks.setText(Content + " (来自@我爱我车,点击下载http://dl.wisegps.cn/ )");
         oks.setImagePath(imagePath);
         //oks.setImageUrl("http://img.appgo.cn/imgs/sharesdk/content/2013/07/25/1374723172663.jpg");
         oks.setUrl("http://www.sharesdk.cn");
@@ -501,8 +501,8 @@ public class GetSystem {
         //oks.setSiteUrl("http://sharesdk.cn");
         //oks.setVenueName("Share SDK");
         //oks.setVenueDescription("This is a beautiful place!");
-        oks.setLatitude(Lat);
-        oks.setLongitude(Lon);
+        //oks.setLatitude(Lat);
+        //oks.setLongitude(Lon);
         oks.setSilent(true);
         oks.show(mContext);
     }

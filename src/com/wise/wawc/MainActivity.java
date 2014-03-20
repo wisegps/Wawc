@@ -88,11 +88,6 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WawcApplication app = (WawcApplication)this.getApplication();
-        if (app.mBMapManager == null) {
-            app.mBMapManager = new BMapManager(getApplicationContext());
-            app.mBMapManager.init(WawcApplication.strKey,null);
-        }
         setContentView(R.layout.activity_main);
         JPushInterface.init(getApplicationContext());
         thread = new ParseFaceThread();

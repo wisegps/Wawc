@@ -346,6 +346,7 @@ public class HomeActivity extends Activity {
                                 @Override
                                 public void onClick(DialogInterface dialog,int which) {
                                     if (which == 0) {
+                                        Log.d(TAG, Variable.carDatas.get(DefaultVehicleID).toString());
                                         Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:"+ Variable.carDatas.get(DefaultVehicleID).getMaintain_tel()));  
                                         HomeActivity.this.startActivity(intent);
                                     } else {

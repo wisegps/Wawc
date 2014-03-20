@@ -9,14 +9,11 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
@@ -24,13 +21,9 @@ import com.wise.pubclas.NetThread;
 import com.wise.pubclas.UploadUtil;
 import com.wise.pubclas.UploadUtil.OnUploadProcessListener;
 import com.wise.pubclas.Variable;
-import com.wise.sharesdk.OnekeyShare;
 import com.wise.sql.DBExcute;
-
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
-import cn.sharesdk.framework.ShareSDK;
-import cn.sharesdk.sina.weibo.SinaWeibo;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
@@ -39,8 +32,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
-import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -53,9 +44,7 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -397,14 +386,9 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 			break;
 		}
 	}
-	public void onUploadProcess(int uploadSize) {
-	}
-	public void initUpload(int fileSize) {
-	}
-	public void onCancel(Platform arg0, int arg1) {
-	}
-	public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
-	}
-	public void onError(Platform arg0, int arg1, Throwable arg2) {
-	}
+	public void onUploadProcess(int uploadSize) {}
+	public void initUpload(int fileSize) {}
+	public void onCancel(Platform arg0, int arg1) {}
+	public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {}
+	public void onError(Platform arg0, int arg1, Throwable arg2) {}
 }
