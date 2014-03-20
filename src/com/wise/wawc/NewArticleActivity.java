@@ -151,7 +151,7 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
                 name = new DateFormat().format("yyyyMMdd_hhmmss",Calendar.getInstance(Locale.CHINA)) + "";
 		       	//调用照相机
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);  
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Constant.picPath + name + ".jpg")));
+//                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Constant.VehiclePath + name + ".jpg")));
                 startActivityForResult(intent, 1); 
 				break;
 			default:
@@ -233,33 +233,40 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 		}else{
 			file = new File(Constant.VehiclePath);
 			file.mkdirs();// 创建文件夹  
-	        fileName = Constant.VehiclePath + name + ".jpg"; 
-	        
-	        createImage(fileName, bitmap);  //创建文件(临时)
-	        File imageFile = new File(fileName);
+//	        fileName = Constant.VehiclePath + name + ".jpg"; 
+//	        
+//	        createImage(fileName, bitmap);  //创建文件(临时)
+//	        File imageFile = new File(fileName);
 	        //将图片压缩至屏幕大小(大图)
-	        Bitmap myBitmap = BlurImage.zoomImg(fileName,screenWidth,screenHeight);
-	        Log.e("bitmap size","bitmap size = " + myBitmap.getWidth());
-            Log.e("bitmap size","bitmap size = " + myBitmap.getHeight());
+	        Bitmap myBitmap = BlurImage.decodeSampledBitmapFromPath(Constant.VehiclePath + name + ".jpg",480,800);
+	        //存储到SD卡   将要上传的大图(无  需删除)
+	        GetSystem.saveImageSD(myBitmap, Constant.VehiclePath, name + "big_image.jpg");
+	        Log.e("上传的大图","宽 = " + myBitmap.getWidth());
+	        Log.e("上传的大图","高= " + myBitmap.getHeight());
+	        Log.e("大图资源大小","size= " + myBitmap.getRowBytes()*myBitmap.getHeight()/(1024*1024) + "M");
 	        //获取正方形图片
-	        Bitmap squareBitmap = BlurImage.getSquareBitmap(myBitmap,screenWidth,screenHeight); 
-	        //按照需要的尺寸压缩图片(小图)
-	        createImage(Constant.VehiclePath + name + "square_image.jpg", squareBitmap);
-	        GetSystem.getScreenInfor(NewArticleActivity.this);
-	        small_image = BlurImage.decodeSampledBitmapFromPath(Constant.VehiclePath + name + "square_image.jpg",Variable.smallImageReqWidth,Variable.smallImageReqWidth);
-	        File squareImage = new File(Constant.VehiclePath + name + "square_image.jpg");
+	        Bitmap squareBitmap =  BlurImage.getSquareBitmap(myBitmap);
+	        Log.e("未压缩的正方形图片","宽 = " + squareBitmap.getWidth());
+	        Log.e("未压缩的正方形图片","高= " + squareBitmap.getHeight());
+	        //存储到内存卡   用户压缩得到小图（需  要删除）
+	        GetSystem.saveImageSD(squareBitmap, Constant.VehiclePath, name + "square_image.jpg");
+	        small_image = BlurImage.decodeSampledBitmapFromPath(Constant.VehiclePath + name + "square_image.jpg",180,180);
+	        //存储到sd卡 上传需要 的小图 （无需删除）
+	        GetSystem.saveImageSD(small_image, Constant.VehiclePath, name + "small_image.jpg");
 	        
-	        createImage(Constant.VehiclePath + name + "small_image.jpg", small_image);
-	        createImage(Constant.VehiclePath + name + "big_image.jpg", myBitmap);
+	        Log.e("上传的小图","宽 = " + small_image.getWidth());
+	        Log.e("上传的小图","高 = " + small_image.getHeight());
+	        Log.e("小图资源大小","size= " + small_image.getRowBytes()*small_image.getHeight() + "bytes");
 	        
 	        filePathList.add(Constant.VehiclePath + name + "small_image.jpg");
 	        filePathList.add(Constant.VehiclePath + name + "big_image.jpg");
 	        bitmapList.add(filePathList);
-	        if(imageFile.exists()){
-	        	imageFile.delete();
+	        
+	        if(new File(Constant.VehiclePath, name + "square_image.jpg").exists()){
+	        	new File(Constant.VehiclePath, name + "square_image.jpg").delete();
 	        }
-	        if(squareImage.exists()){
-	        	squareImage.delete();
+	        if(new File(Constant.VehiclePath + name + ".jpg").exists()){
+	        	new File(Constant.VehiclePath + name + ".jpg").delete();
 	        }
 		}
         
@@ -280,9 +287,10 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
                 Toast.makeText(this, "没有多余内存",0).show();
                 return;  
             }  
-//            Bundle bundle = data.getExtras();    TODO
-//            Bitmap bitmap = (Bitmap) bundle.get("data");//  
-            Bitmap bitmap = BitmapFactory.decodeFile(Constant.picPath + name + ".jpg");
+            Bundle bundle = data.getExtras();    //TODO
+            Bitmap bitmap = (Bitmap) bundle.get("data");//  
+//            Bitmap bitmap = BitmapFactory.decodeFile(Constant.VehiclePath + name + ".jpg");
+            GetSystem.saveImageSD(bitmap, Constant.VehiclePath, name + ".jpg");
             Log.e("bitmap size","bitmap size = " + bitmap.getWidth());
             Log.e("bitmap size","bitmap size = " + bitmap.getHeight());
             ShowBitMap(bitmap);
