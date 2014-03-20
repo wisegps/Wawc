@@ -419,7 +419,6 @@ public class DBExcute {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
 		if(cursor != null){
 			cursor.close();
 		}
