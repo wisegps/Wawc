@@ -183,7 +183,6 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 				break;
 			case loadMoreCode:
 				String result = msg.obj.toString();
-				Log.e("加载更多结果：",msg.obj.toString());
 				if(!"".equals(result)){
 					jsonToList(msg.obj.toString());   //存到数据库
 					isLoadMore = false;
@@ -200,7 +199,6 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 						if(jsonArray.length() > 1){
 							for(int i = 0 ; i < jsonArray.length() ; i ++){
 								if(Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")) != maxBlogId){
-									Log.e("更新数据库","更新数据库");
 									ContentValues values = new ContentValues();
 									values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
 									values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
@@ -221,7 +219,6 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 							Constant.pageSize1 =10;   //每页数量
 							Constant.totalPage1 = 0;   //数据总量
 							Constant.currentPage1 = 0;  //当前页
-							Log.e("刷新后重新分页,","刷新后重新分页");
 							getArticleDatas(0);
 							onLoad();
 						}
@@ -239,7 +236,6 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 	
 	public void onLoadMore() {
 		if(!isLoadMore){
-			Log.e("数据库获取","数据库获取");
 			getArticleDatas(loadMoreAction);
 		}else{
 			DBHelper dBHelper = new DBHelper(FriendHomeActivity.this);
@@ -248,7 +244,6 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 			if(cursor.moveToLast()){
 				minBlogId = cursor.getInt(cursor.getColumnIndex("Blog_id"));
 			}
-			Log.e("服务器获取","服务器获取" + Constant.BaseUrl + "customer/" + cust_id + "/blog?auth_code=" + Variable.auth_code + "&min_id=" + minBlogId);
 			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + cust_id + "/blog?auth_code=" + Variable.auth_code + "&min_id=" + minBlogId, loadMoreCode)).start();
 		}
 	}
@@ -259,7 +254,6 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 			SQLiteDatabase reader = dBHelper.getReadableDatabase();
 			Cursor cursor = reader.rawQuery("select * from " + Constant.TB_VehicleFriend + " where Cust_id = ?", new String[]{cust_id});
 			friendArticleTotalNum = cursor.getCount();
-			Log.e("好友主页数据量：",friendArticleTotalNum+"");
 			if(friendArticleTotalNum > 0){
 				//查询数据库
 				Constant.totalPage1 = friendArticleTotalNum%Constant.pageSize1 > 0 ? friendArticleTotalNum/Constant.pageSize1 + 1 : friendArticleTotalNum/Constant.pageSize1;
@@ -276,7 +270,6 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 //					isLoadMore = true;
 //				}
 				
-				Log.e("刷新","刷新");
 				//分页查询数据库   当前  总数据量（1  -  9）小于每页数据量（10）
 				if(Constant.totalPage1 < Constant.pageSize1){
 					articleDataList.clear();
@@ -299,14 +292,10 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 					isLoadMore = true;
 				}
 			}else{
-				Log.e("服务器   获取文章url:",Constant.BaseUrl + "customer/" + cust_id + "/blog?auth_code=" + Variable.auth_code);
 				myDialog = ProgressDialog.show(FriendHomeActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 				myDialog.setCancelable(true);
 				//  TODO  获取文章列表
 				new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + cust_id + "/blog?auth_code=" + Variable.auth_code, getArticleList)).start();
-			}
-			for(int i = 0 ; i < articleDataList.size() ; i ++){
-				Log.e("content =  = ","contnent = " + articleDataList.get(i).getContent());
 			}
 			myAdapter.refreshDates(articleDataList);
 			
@@ -342,7 +331,6 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 			DBHelper dBHelper = new DBHelper(getApplicationContext());
 			SQLiteDatabase db = dBHelper.getReadableDatabase();
 			Cursor cursor = db.rawQuery("select * from " + Constant.TB_VehicleFriend + " where Cust_id = ?", new String[]{cust_id});
-			Log.e("服务器获取的数据总量：",cursor.getCount() + "");
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}
@@ -357,7 +345,6 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 			}
 			maxBlogId = VehicleFriendActivity.paiXu(blogIdList)[0];
 			String url = Constant.BaseUrl + "customer/" + cust_id + "/blog?auth_code=" + Variable.auth_code + "&max_id=" + maxBlogId;
-			Log.e("下拉刷新","url = " + url);
 			new Thread(new NetThread.GetDataThread(myHandler, url, refreshCode)).start();
 			
 		}

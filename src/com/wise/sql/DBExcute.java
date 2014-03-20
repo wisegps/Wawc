@@ -115,7 +115,6 @@ public class DBExcute {
 		DBHelper dbHelper = new DBHelper(context);
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		db.update(tableName, values, whereClause, whereArgs);
-		Log.e("更改数据库","更改数据库");
 		db.close();
 	}
 	
@@ -149,11 +148,9 @@ public class DBExcute {
 			SQLiteDatabase db = null;
 				db = dbHelper.getReadableDatabase();
 				Cursor cursor = db.rawQuery(sql, whereClause);
-				Log.e("加载前",articleData.size() + "");
 				while(cursor.moveToNext()){
 					articleData.add(parseDBDatas(cursor));
 				}
-				Log.e("加载  后",articleData.size() + "");
 				db.close();
 				return articleData;
 		}
@@ -174,9 +171,6 @@ public class DBExcute {
 				int blog_id = cursor.getInt(cursor.getColumnIndex("Blog_id"));
 				//通过文章类型中的blog_id 在文章表中查询文章详细信息
 				SQLiteDatabase reader = dbHelper.getReadableDatabase();
-				
-				Log.e("Type_id:",cursor.getInt(cursor.getColumnIndex("Type_id"))+"");
-				Log.e("blog_id:",blog_id+"");
 				Cursor cursors = reader.rawQuery("select * from " + Constant.TB_VehicleFriend + " where Blog_id=?", new String[]{String.valueOf(blog_id)});
 				if(cursors.moveToNext()){
 					articleData.add(parseDBDatas(cursors));
@@ -226,19 +220,16 @@ public class DBExcute {
 		while(cursor.moveToNext()){
 			content = cursor.getString(cursor.getColumnIndex("Content"));
 		}
-		Log.e("updateArticlePraises",content);
 		
 		try {
 			JSONObject jsonObject = new JSONObject(content);
 			JSONArray jsonArray = jsonObject.getJSONArray("praises");
-			Log.e("praises",jsonArray.toString());
-			
 			
 			JSONObject newPraises = new JSONObject();
 			newPraises.put("name", praisesUser);
 			newPraises.put("cust_id", cust_id);
 			jsonArray.put(newPraises);
-			Log.e("赞后：",jsonArray.toString());
+			
 			newContent = jsonObject.toString().replaceAll("\\\\", "");
 			ContentValues values = new ContentValues();
 			values.put("Content", newContent);
@@ -308,7 +299,6 @@ public class DBExcute {
 			}
 			article.setCommentList(comments);
 			article.setContent(jsonObject.getString("content"));
-			Log.e("content:",jsonObject.getString("content"));
 			article.setCreate_time(jsonObject.getString("create_time"));
 			article.setCust_id(cursor.getInt(cursor.getColumnIndex("Cust_id")));
 			
@@ -373,24 +363,19 @@ public class DBExcute {
 		while(cursor.moveToNext()){
 			content = cursor.getString(cursor.getColumnIndex("Content"));
 		}
-		Log.e("评论前",content);
 		try {
 			//用来存储赞相关数据
 			JSONObject jsonObject = new JSONObject(content);
 			JSONArray jsonArrayPraises = jsonObject.getJSONArray("praises");  //  数据库原本赞
 			JSONArray praisesArray = praisesArray = new JSONArray(praises);   //新增赞
-			Log.e("数据：",praises);
 			jsonObject.remove("praises");
-			Log.e("移除后：",jsonObject.toString());
 			jsonObject.put("praises", praisesArray);
 			
 			JSONArray jsonArrayComments = jsonObject.getJSONArray("comments");
-			Log.e("数据：",comments);
 			JSONArray commentsJsonArray = new JSONArray(comments);
 			jsonObject.remove("comments");
 			jsonObject.put("comments", commentsJsonArray);
 			
-			Log.e("评论后",jsonObject.toString());
 			
 			if(jsonObject.opt("update_time") != null){
 				jsonObject.remove("updata_time");
