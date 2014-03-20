@@ -383,7 +383,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				}
 
 				articleDataList.clear();
-				articleDataList = dBExcute.getArticlePageDatas(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(0),String.valueOf(Constant.start + Constant.pageSize + 1)}, articleDataList);
+				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id = ? order by Blog_id desc limit ?,?", new String[]{String.valueOf(article),String.valueOf(0),String.valueOf(Constant.start + Constant.pageSize + 1)}, articleDataList);
 				Variable.articleList = articleDataList;
 				setArticleDataList(articleDataList);
 				myAdapter.refreshDates(articleDataList);

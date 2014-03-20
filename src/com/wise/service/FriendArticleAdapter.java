@@ -27,6 +27,7 @@ import com.wise.service.MyAdapter.UserImageAdapter.UserImageHolder;
 import com.wise.sql.DBExcute;
 import com.wise.wawc.FriendHomeActivity;
 import com.wise.wawc.ImageActivity;
+import com.wise.wawc.PicActivity;
 import com.wise.wawc.R;
 import com.wise.wawc.VehicleFriendActivity;
 
@@ -289,7 +290,7 @@ public class FriendArticleAdapter extends BaseAdapter{
 				userImageHolder.userImage.setOnClickListener(new OnClickListener() {
 					public void onClick(View v) {
 						//查看大图
-						Intent intent = new Intent(context,ImageActivity.class);
+						Intent intent = new Intent(context,PicActivity.class);
 						intent.putExtra("article", articleList.get(indexId));
 						context.startActivity(intent);
 					}

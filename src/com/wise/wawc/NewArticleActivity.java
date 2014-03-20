@@ -21,14 +21,18 @@ import com.wise.pubclas.NetThread;
 import com.wise.pubclas.UploadUtil;
 import com.wise.pubclas.UploadUtil.OnUploadProcessListener;
 import com.wise.pubclas.Variable;
+import com.wise.sql.DBExcute;
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -80,6 +84,10 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 	private int screenWidth = 0;
 	private int screenHeight = 0;
 	
+	private DBExcute dBExcute;
+	
+	String name = "";
+	
 	private SharedPreferences preferences = null;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -93,7 +101,7 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 		takePhoto.setOnClickListener(new ClickListener());
 		et_publish_article = (EditText)findViewById(R.id.et_publish_article);
 		linearLayout = (LinearLayout) findViewById(R.id.my_linearLayout);
-		
+		dBExcute = new DBExcute();
 		location = (TextView) findViewById(R.id.localtion);
 		preferences = this.getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
 		
@@ -136,8 +144,14 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 				}				
 				break;
 			case R.id.take_photo:
+				File file = new File("");
+                if (!file.exists()) {
+                    file.mkdirs();// 创建文件夹
+                }
+                name = new DateFormat().format("yyyyMMdd_hhmmss",Calendar.getInstance(Locale.CHINA)) + "";
 		       	//调用照相机
                 Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);  
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(new File(Constant.picPath + name + ".jpg")));
                 startActivityForResult(intent, 1); 
 				break;
 			default:
@@ -185,6 +199,13 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 						Toast.makeText(getApplicationContext(), "发表成功", 0).show();
 						NewArticleActivity.this.setResult(VehicleFriendActivity.newArticleResult);
 						VehicleFriendActivity.newArticleBlogId = jsonObject.getInt("blog_id");
+						
+						
+						
+						ContentValues valuesType = new ContentValues();
+						valuesType.put("Type_id", 1);
+						valuesType.put("Blog_id", Integer.valueOf(jsonObject.getInt("blog_id")));
+						dBExcute.InsertDB(NewArticleActivity.this, valuesType, Constant.TB_VehicleFriendType);
 						NewArticleActivity.this.finish();
 					}else{
 						VehicleFriendActivity.newArticleBlogId = 0;
@@ -201,7 +222,6 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 
 	private void ShowBitMap(Bitmap bitmap){
 		filePathList = new ArrayList<String>();
-		String name = new DateFormat().format("yyyyMMdd_hhmmss",Calendar.getInstance(Locale.CHINA)) + "";
 		File file = null;
 		String fileName = ""; 
 		
@@ -219,6 +239,8 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 	        File imageFile = new File(fileName);
 	        //将图片压缩至屏幕大小(大图)
 	        Bitmap myBitmap = BlurImage.zoomImg(fileName,screenWidth,screenHeight);
+	        Log.e("bitmap size","bitmap size = " + myBitmap.getWidth());
+            Log.e("bitmap size","bitmap size = " + myBitmap.getHeight());
 	        //获取正方形图片
 	        Bitmap squareBitmap = BlurImage.getSquareBitmap(myBitmap,screenWidth,screenHeight); 
 	        //按照需要的尺寸压缩图片(小图)
@@ -228,7 +250,7 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
 	        File squareImage = new File(Constant.VehiclePath + name + "square_image.jpg");
 	        
 	        createImage(Constant.VehiclePath + name + "small_image.jpg", small_image);
-	        createImage(Constant.VehiclePath + name + "big_image.jpg", squareBitmap);
+	        createImage(Constant.VehiclePath + name + "big_image.jpg", myBitmap);
 	        
 	        filePathList.add(Constant.VehiclePath + name + "small_image.jpg");
 	        filePathList.add(Constant.VehiclePath + name + "big_image.jpg");
@@ -258,8 +280,11 @@ public class NewArticleActivity extends Activity implements PlatformActionListen
                 Toast.makeText(this, "没有多余内存",0).show();
                 return;  
             }  
-            Bundle bundle = data.getExtras();  
-            Bitmap bitmap = (Bitmap) bundle.get("data");// 获取相机返回的数据，并转换为Bitmap图片格式  
+//            Bundle bundle = data.getExtras();    TODO
+//            Bitmap bitmap = (Bitmap) bundle.get("data");//  
+            Bitmap bitmap = BitmapFactory.decodeFile(Constant.picPath + name + ".jpg");
+            Log.e("bitmap size","bitmap size = " + bitmap.getWidth());
+            Log.e("bitmap size","bitmap size = " + bitmap.getHeight());
             ShowBitMap(bitmap);
         }  
     }

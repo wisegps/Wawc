@@ -467,7 +467,6 @@ public class GetSystem {
     public static void getScreenInfor(Activity activity){
     	String tempMargins = activity.getResources().getString(R.dimen.margins1);
 		int margins = Integer.valueOf(tempMargins.substring(0,tempMargins.lastIndexOf(".")));
-		Variable.margins = margins;
         int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,margins, activity.getResources().getDisplayMetrics());
 		Variable.margins = px;
 		WindowManager manager = activity.getWindowManager();

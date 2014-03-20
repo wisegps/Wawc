@@ -287,7 +287,7 @@ public class BlurImage {
     	   float scaleHeight = ((float) newHeight) / height;
     	   // 取得想要缩放的matrix参数
     	   Matrix matrix = new Matrix();
-    	   matrix.postScale(scaleWidth, scaleHeight);
+    	   matrix.postScale(scaleWidth, scaleWidth);
     	   // 得到新的图片
     	   Bitmap newbm = Bitmap.createBitmap(bm, 0, 0, width, height, matrix, true);
     	    return newbm;
