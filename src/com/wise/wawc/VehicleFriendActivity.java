@@ -750,6 +750,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		}
 		//查询类型表
 		totalNum = dBExcute.getTotalCount( VehicleFriendActivity.this,"select * from " + Constant.TB_VehicleFriendType + " where Type_id=?",new String[]{String.valueOf(type)});
+		System.out.println("totalNum" + totalNum);
 		if(totalNum > 0){
 			Constant.totalPage = totalNum%Constant.pageSize > 0 ? totalNum/Constant.pageSize + 1 : totalNum/Constant.pageSize;
 			if(totalNum < Constant.pageSize){
@@ -758,6 +759,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				
 				tempList = new ArrayList<Article>();
 				tempList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, tempList);
+				System.out.println("1.tempList = " + tempList.size());
 				updataListDate(articleDataList,tempList);
 				isLoadMore = true;
 			}else if(totalNum == Constant.pageSize){
@@ -768,6 +770,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				
 				tempList = new ArrayList<Article>();   //用户处理更新评论数据的临时集合
 				tempList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, tempList);
+				System.out.println("1.tempList = " + tempList.size());
 				updataListDate(articleDataList,tempList);
 			}else{
 				Constant.start = Constant.currentPage*Constant.pageSize;
@@ -776,6 +779,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				
 				tempList = new ArrayList<Article>();
 				tempList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, tempList);
+				System.out.println("1.tempList = " + tempList.size());
 				updataListDate(articleDataList,tempList);
 			}
 			if(Constant.totalPage == Constant.currentPage){
