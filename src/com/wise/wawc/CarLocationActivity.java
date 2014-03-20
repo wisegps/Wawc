@@ -127,8 +127,9 @@ public class CarLocationActivity extends Activity {
                         "结束");
                 break;
             case R.id.bt_activity_car_location_travel:// 车辆行程
-                CarLocationActivity.this.startActivity(new Intent(
-                        CarLocationActivity.this, TravelActivity.class));
+                Toast.makeText(CarLocationActivity.this, R.string.new_version, Toast.LENGTH_SHORT).show();
+                
+                //CarLocationActivity.this.startActivity(new Intent(CarLocationActivity.this, TravelActivity.class));
                 break;
             case R.id.tv_item_car_location_oil:
                 ToSearchMap(getString(R.string.oil_station));

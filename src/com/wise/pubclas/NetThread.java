@@ -59,21 +59,12 @@ public class NetThread {
 		public void run() {
 			super.run();
 			try {
-				Log.d(TAG, url);
+				//Log.d(TAG, url);
 				URL myURL = new URL(url);
 				URLConnection httpsConn = (URLConnection) myURL.openConnection();
 				if (httpsConn != null) {
 					httpsConn.setConnectTimeout(20*1000);
 					httpsConn.setReadTimeout(20*1000);
-					//InputStreamReader insr = new InputStreamReader(httpsConn.getInputStream(), "UTF-8");
-					
-					//BufferedReader br = new BufferedReader(insr, 1024);
-					//String data = "";
-					//String line = "";
-					//while ((line = br.readLine()) != null) {
-						//data += line;
-					//}
-					// 分段读取输入流数据  
 			        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 					InputStream inputStream = httpsConn.getInputStream();
 					byte[] buffer = new byte[1024];
@@ -121,7 +112,7 @@ public class NetThread {
 		public void run() {
 			super.run();
 			try {
-			    System.out.println("httpPut = "+url);
+			    //System.out.println("httpPut = "+url);
 				BasicHttpParams httpParams = new BasicHttpParams();  
 			    HttpConnectionParams.setConnectionTimeout(httpParams, 10000);  
 			    HttpConnectionParams.setSoTimeout(httpParams, 10000); 
@@ -139,7 +130,6 @@ public class NetThread {
 					while ((line = reader.readLine()) != null) {
 						sb.append(line);
 					}
-					System.out.println(sb.toString());
 					Message message = new Message();
 					message.what = what;
 					message.obj = sb.toString();
@@ -226,7 +216,7 @@ public class NetThread {
 		@Override
 		public void run() {
 			super.run();
-			Log.d(TAG, url);
+			//Log.d(TAG, url);
 			HttpPost httpPost = new HttpPost(url);
 			try {
 				 httpPost.setEntity(new UrlEncodedFormEntity(params, HTTP.UTF_8));

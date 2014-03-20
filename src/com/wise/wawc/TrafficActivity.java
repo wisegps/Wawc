@@ -482,5 +482,6 @@ public class TrafficActivity extends Activity implements IXListViewListener{
     private void onLoad() {
         lv_activity_traffic.stopRefresh();
         lv_activity_traffic.stopLoadMore();
+        lv_activity_traffic.setRefreshTime(GetSystem.GetNowTime());
     }
 }
