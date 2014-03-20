@@ -480,6 +480,19 @@ public class GetSystem {
 		int imageWidth = (screenWidth - 2*px)/3;
 		Variable.smallImageReqWidth = imageWidth;
     }
+    
+    
+    /*
+     * 计算车友圈头部标题高度
+     * @param context
+     */
+    public static int vehicleTitleHeight(Activity activity){
+        //获取屏幕高0.19
+        int width = (int) (activity.getWindowManager().getDefaultDisplay().getWidth() * 0.19);
+        //像素转dip
+        int dip = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,width, activity.getResources().getDisplayMetrics());
+        return dip;
+    }
     /**
      * 分享
      * @param mContext

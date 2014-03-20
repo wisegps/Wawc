@@ -53,7 +53,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.PopupWindow.OnDismissListener;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 /**
@@ -78,6 +80,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	private ImageView titleIcon = null;
 	private TextView qqUserName = null;
 	private TextView TVTitle = null;
+	RelativeLayout viewTitle = null;
 	
 	private SpinerPopWindow mSpinerPopWindow;//文章筛选列表
 	private List<String> titleList = new ArrayList<String>();
@@ -138,6 +141,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		qqUserHead.setOnClickListener(new ClickListener());
 		qqUserName = (TextView) findViewById(R.id.tv_qq_user_name);
 		articleList = (XListView) findViewById(R.id.article_list);
+		viewTitle = (RelativeLayout) findViewById(R.id.friend_article_title);
 		articleList.setXListViewListener(this);
 		screenWidth = (int) (getWindowManager().getDefaultDisplay().getWidth()*0.5);
 		
@@ -199,7 +203,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		//好友主页文章
 //		getArticleDatas(0);
 		//同车型文章
-		
+//		viewTitle.setLayoutParams(new android.widget.RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.FILL_PARENT, GetSystem.vehicleTitleHeight(VehicleFriendActivity.this)));
 	}
 	
 	@Override

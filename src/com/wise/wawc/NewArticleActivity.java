@@ -140,7 +140,7 @@ public class NewArticleActivity extends Activity implements
                                     .setOnUploadProcessListener(
                                             NewArticleActivity.this);
                             myDialog = ProgressDialog.show(
-                                    NewArticleActivity.this, "图片上传", "正在上传");
+                                    NewArticleActivity.this, "发车友圈", "发送中...");
                             myDialog.setCancelable(true);
                             UploadUtil.getInstance().uploadFile(
                                     picDatas.get(0).small_pic,
