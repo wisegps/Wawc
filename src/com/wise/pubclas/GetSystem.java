@@ -395,7 +395,9 @@ public class GetSystem {
         FileOutputStream b = null;
         try {
             b = new FileOutputStream(fileName);
-            if(name.substring(name.lastIndexOf("."), name.length()).equals("png")){
+            System.out.println(name.substring(name.lastIndexOf(".")+1, name.length()));
+            if(name.substring(name.lastIndexOf(".") + 1, name.length()).equals("png")){
+                System.out.println("png");
                 bitmap.compress(Bitmap.CompressFormat.PNG, quality, b);// 把数据写入文件
             }else{
                 bitmap.compress(Bitmap.CompressFormat.JPEG, quality, b);// 把数据写入文件

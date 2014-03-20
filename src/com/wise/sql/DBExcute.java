@@ -172,6 +172,11 @@ public class DBExcute {
 				//通过文章类型中的blog_id 在文章表中查询文章详细信息
 				SQLiteDatabase reader = dbHelper.getReadableDatabase();
 				Cursor cursors = reader.rawQuery("select * from " + Constant.TB_VehicleFriend + " where Blog_id=?", new String[]{String.valueOf(blog_id)});
+				if(cursors != null){
+				    System.out.println("cursors 不为空");
+				}else{
+				    System.out.println("cursors 为空");
+				}
 				if(cursors.moveToNext()){
 					articleData.add(parseDBDatas(cursors));
 				}

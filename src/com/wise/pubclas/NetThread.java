@@ -59,7 +59,7 @@ public class NetThread {
 		public void run() {
 			super.run();
 			try {
-				//Log.d(TAG, url);
+				Log.d(TAG, url);
 				URL myURL = new URL(url);
 				URLConnection httpsConn = (URLConnection) myURL.openConnection();
 				if (httpsConn != null) {
