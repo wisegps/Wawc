@@ -125,7 +125,7 @@ public class ArticleActivity extends Activity implements IXListViewListener {
                         if(bitmap == null){
                             Log.d(TAG, "bitmap为空");
                         }else{
-                            GetSystem.saveImageSD(bitmap, Constant.VehiclePath, small_pic);
+                            GetSystem.saveImageSD(bitmap, Constant.VehiclePath, small_pic,100);
                             Message message = new Message();
                             message.what = GetImage;
                             handler.sendMessage(message);

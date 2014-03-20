@@ -1,5 +1,7 @@
 package com.wise.pubclas;
 
+import java.io.ByteArrayOutputStream;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -97,7 +99,7 @@ public class BlurImage {
         // 调用上面定义的方法计算inSampleSize值  
         options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);  
         // 使用获取到的inSampleSize值再次解析图片  
-        options.inJustDecodeBounds = false;  
+        options.inJustDecodeBounds = false;
         return BitmapFactory.decodeFile(Path, options);
     }
     
@@ -121,7 +123,6 @@ public class BlurImage {
      * @return
      */
     public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {  
-        //BitmapFactory.decodeFile(pathName, opts)
         // 源图片的高度和宽度  
         final int height = options.outHeight;  
         final int width = options.outWidth;

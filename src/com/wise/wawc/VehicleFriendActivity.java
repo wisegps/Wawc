@@ -337,7 +337,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 							public void run() {
 								Bitmap userLogo = GetSystem.getBitmapFromURL(Constant.UserIconUrl);
 								if(userLogo != null){
-									GetSystem.saveImageSD(userLogo, Constant.userIconPath, Variable.cust_id + ".jpg");
+									GetSystem.saveImageSD(userLogo, Constant.userIconPath, Variable.cust_id + ".jpg",100);
 								}
 							}
 						}).start();

@@ -168,7 +168,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 					public void run() {
 						Bitmap userLogo = GetSystem.getBitmapFromURL(user_logo);
 						if(userLogo != null){
-							GetSystem.saveImageSD(userLogo, Constant.userIconPath, cust_id + ".jpg");
+							GetSystem.saveImageSD(userLogo, Constant.userIconPath, cust_id + ".jpg",100);
 						}
 						friendHead.setImageBitmap(BlurImage.getRoundedCornerBitmap(userLogo));
 					}

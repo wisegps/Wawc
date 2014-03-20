@@ -80,7 +80,7 @@ public class PicActivity extends Activity{
                 if(bitmap == null){
                     //读取图片
                     bitmap = GetSystem.getBitmapFromURL(imageMap.get("big_pic"));
-                    GetSystem.saveImageSD(bitmap, Constant.VehiclePath, big_pic);
+                    GetSystem.saveImageSD(bitmap, Constant.VehiclePath, big_pic,100);
                     Message message = new Message();
                     message.what = get_pic;
                     message.arg1 = i;
