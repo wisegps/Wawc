@@ -278,12 +278,12 @@ public class NewArticleActivity extends Activity implements
                         VehicleFriendActivity.newArticleBlogId = jsonObject
                                 .getInt("blog_id");
 
-                        ContentValues valuesType = new ContentValues();
-                        valuesType.put("Type_id", 1);
-                        valuesType.put("Blog_id",
-                                Integer.valueOf(jsonObject.getInt("blog_id")));
-                        dBExcute.InsertDB(NewArticleActivity.this, valuesType,
-                                Constant.TB_VehicleFriendType);
+//                        ContentValues valuesType = new ContentValues();
+//                        valuesType.put("Type_id", 1);
+//                        valuesType.put("Blog_id",
+//                                Integer.valueOf(jsonObject.getInt("blog_id")));
+//                        dBExcute.InsertDB(NewArticleActivity.this, valuesType,
+//                                Constant.TB_VehicleFriendType);
                         NewArticleActivity.this.finish();
                     } else {
                         VehicleFriendActivity.newArticleBlogId = 0;

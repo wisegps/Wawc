@@ -122,7 +122,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	private int article = 1;  //文章类型
 	private boolean isChickTitle = false;
-	private List<String> newBlogIdList = new ArrayList<String>();
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -282,12 +281,8 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		articleTempList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from "+ Constant.TB_VehicleFriendType + " where Type_id=?",new String[] { String.valueOf(article) }, articleTempList);
 		int[] blogIdList = new int[articleTempList.size()];
 		for (int i = 0; i < articleTempList.size(); i++) {
-			if(newBlogIdList.size() != 0){
-				articleTempList.remove(i);
-			}
 			blogIdList[i] = articleTempList.get(i).getBlog_id();
 		}
-		newBlogIdList.clear();
 		articleTypeMaxBlogId = paiXu(blogIdList)[0];
 		new Thread(new NetThread.GetDataThread(myHandler, articleType + "&max_id=" + articleTypeMaxBlogId, refreshCode)).start();
 	}
@@ -389,7 +384,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				setArticleDataList(articleDataList);
 				myAdapter.refreshDates(articleDataList);
 				}
-				newBlogIdList.add(String.valueOf(newArticleBlogId));
 				newArticleBlogId = 0;
 				break;
 			case commentArticle:
@@ -696,9 +690,10 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		//文章发表成功后刷新数据库  
 		if(requestCode == newArticleResult){
 			if(newArticleBlogId != 0){
-			myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
-			myDialog.setCancelable(true);
-			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code, newArticleResult)).start();
+//			myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
+//			myDialog.setCancelable(true);
+			onRefresh();
+//			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + Variable.cust_id + "/blog?auth_code=" + Variable.auth_code, newArticleResult)).start();
 			}
 		}
 	}
