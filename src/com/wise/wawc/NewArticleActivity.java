@@ -164,20 +164,22 @@ public class NewArticleActivity extends Activity implements
                 }
                 break;
             case R.id.take_photo:
-                File file = new File(Constant.VehiclePath);
-                if (!file.exists()) {
-                    file.mkdirs();// 创建文件夹
-                }
-                name = new DateFormat().format("yyyyMMdd_hhmmss",
-                        Calendar.getInstance(Locale.CHINA))
-                        + "";
-                // 调用照相机
-                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                intent.putExtra(
-                        MediaStore.EXTRA_OUTPUT,
-                        Uri.fromFile(new File(Constant.VehiclePath + name
-                                + ".jpg")));
-                startActivityForResult(intent, 1);
+                if(picDatas.size() < 9){
+                    File file = new File(Constant.VehiclePath);
+                    if (!file.exists()) {
+                        file.mkdirs();// 创建文件夹
+                    }
+                    name = new DateFormat().format("yyyyMMdd_hhmmss",
+                            Calendar.getInstance(Locale.CHINA))
+                            + "";
+                    // 调用照相机
+                    Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    intent.putExtra(
+                            MediaStore.EXTRA_OUTPUT,
+                            Uri.fromFile(new File(Constant.VehiclePath + name
+                                    + ".jpg")));
+                    startActivityForResult(intent, 1);
+                }                
                 break;
             case 1:                
                 isDelete = false;
@@ -297,7 +299,7 @@ public class NewArticleActivity extends Activity implements
     }
 
     @SuppressWarnings("deprecation")
-    private void ShowBitMap(Bitmap bitmap) {
+    private void ShowBitMap() {
         File file = null;
         String fileName = "";
 
@@ -384,15 +386,7 @@ public class NewArticleActivity extends Activity implements
                 Toast.makeText(this, "没有多余内存", 0).show();
                 return;
             }
-            // Bundle bundle = data.getExtras(); //TODO
-            // Bitmap bitmap = (Bitmap) bundle.get("data");//
-            Bitmap bitmap = BitmapFactory.decodeFile(Constant.VehiclePath
-                    + name + ".jpg");
-            // GetSystem.saveImageSD(bitmap, Constant.VehiclePath, name +
-            // ".jpg");
-            // Log.e("bitmap size","bitmap size = " + bitmap.getWidth());
-            // Log.e("bitmap size","bitmap size = " + bitmap.getHeight());
-            ShowBitMap(bitmap);
+            ShowBitMap();
         }
     }
 
