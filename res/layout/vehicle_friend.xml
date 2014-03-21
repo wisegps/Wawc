@@ -124,6 +124,27 @@
             android:dividerHeight="@null"
             >
         </com.wise.list.XListView>
+        
+        <LinearLayout 
+            android:id="@+id/no_article_ll"
+	        android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:orientation="vertical"
+	    	android:layout_centerHorizontal="true"
+	    	android:layout_centerVertical="true"
+	    	android:visibility="gone"
+        >
+        <ImageView 
+            android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:background="@drawable/ic_launcher"
+            />
+        <TextView 
+            android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:text="没有数据"
+            />
+    </LinearLayout>
         <LinearLayout
             android:id="@+id/say_something"
             android:layout_width="fill_parent"

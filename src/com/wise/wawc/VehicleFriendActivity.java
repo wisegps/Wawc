@@ -81,6 +81,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	private TextView qqUserName = null;
 	private TextView TVTitle = null;
 	RelativeLayout viewTitle = null;
+	private LinearLayout noArticle = null;
 	
 	private SpinerPopWindow mSpinerPopWindow;//文章筛选列表
 	private List<String> titleList = new ArrayList<String>();
@@ -121,6 +122,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	private int article = 1;  //文章类型
 	private boolean isChickTitle = false;
+	private List<String> newBlogIdList = new ArrayList<String>();
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -142,6 +144,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		qqUserName = (TextView) findViewById(R.id.tv_qq_user_name);
 		articleList = (XListView) findViewById(R.id.article_list);
 		viewTitle = (RelativeLayout) findViewById(R.id.friend_article_title);
+		noArticle = (LinearLayout) findViewById(R.id.no_article_ll);
 		articleList.setXListViewListener(this);
 		screenWidth = (int) (getWindowManager().getDefaultDisplay().getWidth()*0.5);
 		
@@ -208,6 +211,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	@Override
 	protected void onResume() {
+		isLoadMore = false;
 		article = Constant.articleType;
 		articleSort(article,0);
 		super.onResume();
@@ -278,6 +282,9 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		articleTempList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from "+ Constant.TB_VehicleFriendType + " where Type_id=?",new String[] { String.valueOf(article) }, articleTempList);
 		int[] blogIdList = new int[articleTempList.size()];
 		for (int i = 0; i < articleTempList.size(); i++) {
+			if(newBlogIdList.size() != 0){
+				articleTempList.remove(i);
+			}
 			blogIdList[i] = articleTempList.get(i).getBlog_id();
 		}
 		articleTypeMaxBlogId = paiXu(blogIdList)[0];
@@ -307,6 +314,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 //		articleTypeMinBlogId = blogIdList[0];
 		
 		articleTypeMinBlogId = paiXu(blogIdList)[blogIdList.length - 1];
+		Log.e(TAG,"isLoadMore = " + isLoadMore);
 		if (!isLoadMore) {
 			articleSort(article, 3);
 		} else {
@@ -390,6 +398,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				setArticleDataList(articleDataList);
 				myAdapter.refreshDates(articleDataList);
 				}
+				newBlogIdList.add(String.valueOf(newArticleBlogId));
 				newArticleBlogId = 0;
 				break;
 			case commentArticle:
@@ -519,6 +528,8 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				onLoad();
 				break;
 			case FriendType:   
+				articleList.setVisibility(View.VISIBLE);
+				noArticle.setVisibility(View.GONE);
 				String results = msg.obj.toString();
 				try {
 					if(!"[]".equals(msg.obj.toString())){
@@ -568,11 +579,14 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 							}
 						}
 						articleTypeMinBlogId = blogIdList[0];
+						articleSort(article,0);
+					}else if(articleDataList.size() == 0){
+						articleList.setVisibility(View.GONE);
+						noArticle.setVisibility(View.VISIBLE);
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-				articleSort(article,0);
 				if(myDialog != null){
 					myDialog.cancel();
 				}
@@ -750,7 +764,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		}
 		//查询类型表
 		totalNum = dBExcute.getTotalCount( VehicleFriendActivity.this,"select * from " + Constant.TB_VehicleFriendType + " where Type_id=?",new String[]{String.valueOf(type)});
-		System.out.println("totalNum" + totalNum);
+		Log.e(TAG,"totalNum" + totalNum);
 		if(totalNum > 0){
 			Constant.totalPage = totalNum%Constant.pageSize > 0 ? totalNum/Constant.pageSize + 1 : totalNum/Constant.pageSize;
 			if(totalNum < Constant.pageSize){
@@ -760,31 +774,45 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				tempList = new ArrayList<Article>();
 				tempList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, tempList);
 				System.out.println("1.tempList = " + tempList.size());
-				updataListDate(articleDataList,tempList);
+				if(tempList.size() != 0){
+					updataListDate(articleDataList,tempList);
+				}
 				isLoadMore = true;
 			}else if(totalNum == Constant.pageSize){
 				articleDataList.clear();
 				Constant.start = Constant.currentPage*Constant.pageSize;
-				Constant.currentPage ++ ;
+				if(Constant.currentPage < Constant.totalPage){
+					Constant.currentPage ++ ;
+				}
 				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
 				
 				tempList = new ArrayList<Article>();   //用户处理更新评论数据的临时集合
 				tempList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, tempList);
 				System.out.println("1.tempList = " + tempList.size());
-				updataListDate(articleDataList,tempList);
+				if(tempList.size() != 0){
+					updataListDate(articleDataList,tempList);
+				}
 			}else{
 				Constant.start = Constant.currentPage*Constant.pageSize;
-				Constant.currentPage ++ ;
+				if(Constant.currentPage < Constant.totalPage){
+					Constant.currentPage ++ ;
+				}
 				articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, articleDataList);
 				
 				tempList = new ArrayList<Article>();
 				tempList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(type),String.valueOf(Constant.start),String.valueOf(Constant.pageSize)}, tempList);
 				System.out.println("1.tempList = " + tempList.size());
-				updataListDate(articleDataList,tempList);
+				if(tempList.size() != 0){
+					updataListDate(articleDataList,tempList);
+				}
 			}
+			isLoadMore = false;
+			Log.e(TAG,"currentPage = " +  Constant.currentPage);
+			Log.e(TAG,"Constant.totalPage = " +  Constant.totalPage);
 			if(Constant.totalPage == Constant.currentPage){
 				isLoadMore = true;
 			}
+			
 		}else{
 			myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 			myDialog.setCancelable(true);
