@@ -295,7 +295,6 @@ public class HomeActivity extends Activity {
             imageView.setPadding(5, 0, 5, 0);
             ll_image.addView(imageView);
         }
-        changeImage(DefaultVehicleID);
         if (Variable.carDatas.size() != 0) {
             if (DefaultVehicleID >= Variable.carDatas.size()) {// 默认第一个车
                 DefaultVehicleID = 0;
@@ -315,11 +314,16 @@ public class HomeActivity extends Activity {
                     if (DefaultVehicleID >= Variable.carDatas.size()) {// 默认第一个车
                         DefaultVehicleID = 0;
                         Variable.carDatas.get(0).setCheck(true);
-                        ScrollLayout_car.snapFastToScreen(0);
                     } else {
                         Variable.carDatas.get(DefaultVehicleID).setCheck(true);
-                        Log.d(TAG, "跳转到：" + DefaultVehicleID);
-                        ScrollLayout_car.snapFastToScreen(DefaultVehicleID);
+                    }
+                    ScrollLayout_car.snapFastToScreen(DefaultVehicleID);
+                    for(int i = 0 ; i < Variable.carDatas.size() ; i++){
+                        if(i == DefaultVehicleID){
+                            Variable.carDatas.get(i).setCheck(true);
+                        }else{
+                            Variable.carDatas.get(i).setCheck(false);
+                        }
                     }
                 }
             }, 500);

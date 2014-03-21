@@ -22,8 +22,6 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 /**
@@ -54,6 +52,8 @@ public class CollectionActivity extends Activity implements IXListViewListener{
 		lv_collection = (XListView) findViewById(R.id.lv_collection);        
         collectionAdapter = new CollectionAdapter(CollectionActivity.this,adressDatas);
         collectionAdapter.setCollectionItem(collectionItemListener);
+        lv_collection.setAdapter(collectionAdapter);
+        
 		ImageView iv_menu = (ImageView) findViewById(R.id.iv_menu);
 		iv_menu.setOnClickListener(onClickListener);
 		
@@ -72,7 +72,6 @@ public class CollectionActivity extends Activity implements IXListViewListener{
             //本地取数据
             getCollectionDatas(Toal, pageSize);
             collectionAdapter.notifyDataSetChanged();
-            lv_collection.setAdapter(collectionAdapter);
             isNothingNote(false);
 		}
 	}

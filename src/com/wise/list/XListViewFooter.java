@@ -55,7 +55,6 @@ public class XListViewFooter extends LinearLayout {
     public void setState(int state) {
         ll_xlistview_footer.setVisibility(View.INVISIBLE);
         xlistview_footer_iv.clearAnimation();
-        System.out.println("state = " + state);
         if (state == STATE_READY) {
             mHintView.setVisibility(View.VISIBLE);
         } else if (state == STATE_LOADING) {

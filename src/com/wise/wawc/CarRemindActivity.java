@@ -16,8 +16,6 @@ import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
-import com.wise.wawc.R.string;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -178,8 +176,11 @@ public class CarRemindActivity extends Activity {
         gv_activity_car_remind.setStretchMode(GridView.NO_STRETCH);
         gv_activity_car_remind.setNumColumns(Variable.carDatas.size());
         gv_activity_car_remind.setOnItemClickListener(onItemClickListener);
-
+        
         if (Variable.carDatas != null && Variable.carDatas.size() > 0) {
+            for(CarData carData : Variable.carDatas){
+                Log.d(TAG, carData.toString());
+            }
             String Obj_id = getIntent().getStringExtra("Obj_id");
             if(Obj_id != null && !Obj_id.equals("")){                
                 for(int i = 0 ; i < Variable.carDatas.size() ; i++){
