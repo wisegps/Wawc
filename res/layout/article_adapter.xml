@@ -132,16 +132,15 @@
 
                     <ImageView
                         android:id="@+id/favorite"
-                        android:layout_width="@dimen/double_margins"
+                        android:layout_width="@dimen/image_width"
                         android:layout_height="@dimen/double_margins"
-                        android:layout_marginRight="@dimen/double_margins"
-                        android:background="@drawable/body_icon_heart" />
+                        android:src="@drawable/body_icon_heart" />
 
                     <ImageView
                         android:id="@+id/list_say_somthing"
-                        android:layout_width="@dimen/double_margins"
+                        android:layout_width="@dimen/image_width"
                         android:layout_height="@dimen/double_margins"
-                        android:background="@drawable/side_article_comment" />
+                        android:src="@drawable/side_article_comment" />
                 </LinearLayout>
             </TableRow>
         </TableRow>
