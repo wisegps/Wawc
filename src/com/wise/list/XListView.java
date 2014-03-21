@@ -173,7 +173,6 @@ public class XListView extends ListView implements OnScrollListener {
 	public void stopLoadMore() {//TODO 状态
 		if (mPullLoading == true) {
 			mPullLoading = false;
-	        System.out.println("mPullLoading = " + mPullLoading);
 			mFooterView.setState(XListViewFooter.STATE_NORMAL);
 		}
 	}
@@ -256,7 +255,6 @@ public class XListView extends ListView implements OnScrollListener {
 	}
 	//TODO 开始
 	public void startLoadMore() {
-	    System.out.println("begin = startLoadMore = " + mPullLoading);
 		if (!mPullLoading) {
 			mFooterView.setState(XListViewFooter.STATE_LOADING);
 			if (mListViewListener != null) {
@@ -264,7 +262,6 @@ public class XListView extends ListView implements OnScrollListener {
 				mListViewListener.onLoadMore();
 			}
 		}
-		System.out.println("end = startLoadMore = " + mPullLoading);
 	}
 
 	@Override

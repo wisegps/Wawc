@@ -15,7 +15,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_launcher"/>
+            android:src="@drawable/body_nothing_icon"/>
         <TextView 
             android:id="@+id/tv_car_number"
             android:layout_width="fill_parent"
@@ -25,7 +25,7 @@
             android:layout_marginLeft="@dimen/margins"
             android:layout_toRightOf="@id/iv_carLogo"
             android:drawableRight="@drawable/car_arrow"
-            android:textColor="@color/white"/>       
+            android:textColor="@color/color_white"/>       
     </RelativeLayout>
     <View 
         android:layout_width="fill_parent"
@@ -37,7 +37,7 @@
         android:id="@+id/tv_activity_home_car_adress"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:textColor="@color/color_white"
         android:layout_margin="@dimen/margins"
         android:textSize="@dimen/main"
         android:drawableLeft="@drawable/home_lbs"

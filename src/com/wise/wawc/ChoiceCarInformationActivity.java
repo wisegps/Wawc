@@ -62,7 +62,8 @@ import android.widget.AdapterView.OnItemClickListener;
  * 选择车辆品牌
  */
 public class ChoiceCarInformationActivity extends Activity implements IXListViewListener{
-	/**
+    private static final String TAG = "CarBrankListActivity";
+    /**
 	 * 品牌
 	 */
 	private RelativeLayout carBrankLayout = null;   //车牌
@@ -114,6 +115,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 	public static final String carSeriesTitle = "carSeries";  //数据库基础表车辆款式的标题字段
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.d(TAG, "onCreate");
 		setContentView(R.layout.choice_car_information);
 		parentIntent = getIntent();
 		code = parentIntent.getIntExtra("code", 0);
@@ -127,7 +129,6 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 	}
 
 	private void initViews() {
-		Constant.isHideFooter = true;
 		carBrankLayout = (RelativeLayout) findViewById(R.id.choice_car_brank);  
 		vehicleBrankList = (XListView) findViewById(R.id.vehicle_brank_list);   //  车牌
 		carModlesLayout = (ListView) findViewById(R.id.choice_car_modles);    //车型
@@ -212,8 +213,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		
 		mClearEditText = (ClearEditText) findViewById(R.id.filter_edit);
 		vehicleBrankList.setXListViewListener(this);
-		//不设置上拉加载无效
-		vehicleBrankList.setPullLoadEnable(true);
+		vehicleBrankList.setPullLoadEnable(false);
 		
 		
 		letterIndex = (TextView) findViewById(R.id.dialog);
@@ -524,20 +524,16 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		vehicleBrankList.setRefreshTime(date);
 	}
 	protected void onDestroy() {
-		Constant.isHideFooter = false;
 		super.onDestroy();
 	}
 	protected void onPause() {
-		Constant.isHideFooter = false;
 		imageDownload = false;
 		super.onPause();
 	}
 	protected void onRestart() {
-		Constant.isHideFooter = true;
 		super.onRestart();
 	}
 	protected void onResume() {
-		Constant.isHideFooter = true;
 		imageDownload = true;
 		super.onResume();
 	}

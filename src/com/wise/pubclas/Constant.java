@@ -201,8 +201,6 @@ public class Constant {
      * 添加终端
      */
     public static String A_UpdateDevice = "com.wise.wawc.update_device";
-	
-	public static boolean isHideFooter = false;
 	/**
 	 * 收货人
 	 */

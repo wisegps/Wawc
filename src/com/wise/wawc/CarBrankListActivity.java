@@ -56,7 +56,7 @@ import com.wise.wawc.R;
  * @author 王庆文
  */
 public class CarBrankListActivity extends Activity implements IXListViewListener{
-	
+	private static final String TAG = "CarBrankListActivity";
 	
 	private ClearEditText mClearEditText;   //自定义搜索栏
 	private XListView vehicleBrankList = null;   //显示车的品牌
@@ -92,6 +92,7 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.brank_list);
+		Log.d(TAG, "onCreate");
 		getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 		parentIntent = getIntent();
 		code = parentIntent.getIntExtra("code", 0);
@@ -131,12 +132,11 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 	}
 
 	private void initViews() {
-		Constant.isHideFooter = true;
 		mClearEditText = (ClearEditText) findViewById(R.id.filter_edit);
 		vehicleBrankList = (XListView) findViewById(R.id.vehicle_brank_list);
 		vehicleBrankList.setXListViewListener(this);
 		//不设置上拉加载无效
-		vehicleBrankList.setPullLoadEnable(true);
+		vehicleBrankList.setPullLoadEnable(false);
 		
 		
 		letterIndex = (TextView) findViewById(R.id.dialog);
@@ -381,26 +381,5 @@ public class CarBrankListActivity extends Activity implements IXListViewListener
 		
 		adapter = new BrankAdapter(CarBrankListActivity.this, brankModelList);
 		vehicleBrankList.setAdapter(adapter);
-	}
-	
-	protected void onDestroy() {
-		Constant.isHideFooter = false;
-		super.onDestroy();
-	}
-	protected void onPause() {
-		Constant.isHideFooter = false;
-		super.onPause();
-	}
-
-	@Override
-	protected void onRestart() {
-		Constant.isHideFooter = true;
-		super.onRestart();
-	}
-
-	@Override
-	protected void onResume() {
-		Constant.isHideFooter = true;
-		super.onResume();
 	}
 }
