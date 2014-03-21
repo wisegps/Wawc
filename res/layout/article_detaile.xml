@@ -5,32 +5,28 @@
     android:background="#FFFFFF" >
 
     <!-- 头部 -->
-
     <RelativeLayout
         android:id="@+id/article_detail_top"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/nav_bg" >
-
-        <ImageView
+        android:background="@drawable/nav_bg">
+		<ImageView
             android:id="@+id/article_detaile_menu"
             android:layout_width="@dimen/title_width"
-            android:layout_height="@dimen/title_image"
+	        android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/nav_back" />
-
+            android:clickable="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/nav_back"/>
         <TextView
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
+            android:layout_height="fill_parent"
             android:gravity="center"
             android:text="@string/article_detaile"
             android:textColor="@color/white"
-            android:textSize="@dimen/head" />
-    </RelativeLayout>
+            android:textSize="@dimen/head"/>
+	</RelativeLayout>
 
     <ScrollView
         android:layout_width="fill_parent"

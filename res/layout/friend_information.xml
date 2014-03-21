@@ -7,31 +7,28 @@
     tools:context=".VehicleStatusActivity" >
 
     <!-- 头部 -->
-
     <RelativeLayout
         android:id="@+id/friend_home_top"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight"
         android:background="@drawable/nav_bg">
-
-        <ImageView
+		<ImageView
             android:id="@+id/friend_information_back"
             android:layout_width="@dimen/title_width"
-            android:layout_height="@dimen/title_image"
+	        android:layout_height="@dimen/title_image"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/nav_back" />
-
+            android:clickable="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/nav_back"/>
         <TextView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
             android:gravity="center"
             android:text="@string/friend_information"
             android:textColor="@color/white"
-            android:textSize="@dimen/head" />
-    </RelativeLayout>
+            android:textSize="@dimen/head"/>
+	</RelativeLayout>
 
     <!-- 用户信息 -->
 
