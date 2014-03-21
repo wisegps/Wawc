@@ -29,4 +29,7 @@
     
     <dimen name="margins1">5dp</dimen>
     <dimen name="brand_logo">30dp</dimen>
+    
+    <dimen name="article_adapter_left">70dp</dimen>
+    <dimen name="article_title_head">75dp</dimen>
 </resources>

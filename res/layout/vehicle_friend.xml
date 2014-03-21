@@ -94,8 +94,8 @@
             android:paddingTop="@dimen/margins" >
             <com.wise.extend.CircleImageView
                 android:id="@+id/user_head"
-                android:layout_width="65dip"
-                android:layout_height="65dip"
+                android:layout_width="@dimen/article_title_head"
+                android:layout_height="@dimen/article_title_head"
                 android:layout_gravity="center"
                 app:border_width="1dp"
                 app:border_color="@color/white"
