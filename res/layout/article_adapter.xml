@@ -40,6 +40,8 @@
                 android:id="@+id/tv_article_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:singleLine="true"
+    			android:ellipsize="end"
                 android:text="内容"
                 android:textColor="@color/common"
                 android:textSize="@dimen/main" />
@@ -231,7 +233,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
-                        android:maxLines="1"
+                        android:singleLine="true"
+    					android:ellipsize="end"
                         android:textColor="@color/common"
                         />
                      </LinearLayout>
@@ -255,7 +258,8 @@
                         android:id="@+id/my_vehicle_two_comment_content_tv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:maxLines="1"
+                        android:singleLine="true"
+    					android:ellipsize="end"
                         android:gravity="center_vertical"
                         android:textColor="@color/common"
                         />
@@ -266,7 +270,8 @@
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
                         android:layout_marginBottom="@dimen/margins"
-                        android:maxLines="1"
+                        android:singleLine="true"
+    					android:ellipsize="end"
                         android:textColor="@color/blue"
                         />
                 </LinearLayout>

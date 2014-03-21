@@ -303,6 +303,9 @@ public class MyAdapter extends BaseAdapter{
 		
 		viewHolder.publish_time.setText(getTime(createTime));
 		viewHolder.articel_user_name.setText(articleList.get(position).getName());
+//		if(){
+//			
+//		}
 		viewHolder.tv_article_content.setText(articleList.get(position).getContent());
 		viewHolder.saySomething.setOnClickListener(new MyClickListener(position));
 		viewHolder.favorite.setOnClickListener(new MyClickListener(position));
