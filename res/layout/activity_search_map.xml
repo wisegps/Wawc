@@ -9,14 +9,6 @@
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight"
         android:background="@drawable/nav_bg">
-		<ImageView
-            android:id="@+id/iv_activity_search_map_back"
-            android:layout_width="@dimen/title_width"
-	        android:layout_height="@dimen/title_image"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/nav_back"/>
         <TextView
             android:id="@+id/tv_activity_search_map_title"
             android:layout_width="fill_parent"
@@ -24,16 +16,15 @@
             android:gravity="center"
             android:text="加油站"
             android:textColor="@color/white"
-            android:textSize="@dimen/head"/>
-		<ImageView
-            android:id="@+id/iv_activity_search_map_home"
-            android:layout_width="60dp"
-	        android:layout_height="36dp"
-	        android:visibility="gone"
-            android:layout_alignParentRight="true"
+            android:textSize="@dimen/head"/>        
+        <ImageView
+            android:id="@+id/iv_activity_search_map_back"
+            android:layout_width="@dimen/title_width"
+            android:layout_height="@dimen/title_image"
+            android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/app_name"
-            android:src="@drawable/ic_launcher"/>
+            android:src="@drawable/nav_back"/>
 	</RelativeLayout>	
 	<com.baidu.mapapi.map.MapView 
         android:id="@+id/mv_search_map"  

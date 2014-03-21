@@ -31,6 +31,9 @@
                 android:id="@+id/friend_article_content"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:singleLine="false"
+                android:maxLines="6"
                 android:layout_marginLeft="@dimen/margins"
                 android:textColor="@color/common"
                 android:textSize="@dimen/main" />

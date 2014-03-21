@@ -194,8 +194,9 @@ public class XListView extends ListView implements OnScrollListener {
 	}
 
 	private void updateHeaderHeight(float delta) {
-		mHeaderView.setVisiableHeight((int) delta
-				+ mHeaderView.getVisiableHeight());
+        if(mHeaderView.getVisiableHeight() <= (mHeaderViewHeight + 20)){
+            mHeaderView.setVisiableHeight((int) delta + mHeaderView.getVisiableHeight());
+        }
 		if (mEnablePullRefresh && !mPullRefreshing) { //未处于刷新状态，更新箭头
 			if (mHeaderView.getVisiableHeight() > mHeaderViewHeight) {
 				mHeaderView.setState(XListViewHeader.STATE_READY);
@@ -239,9 +240,9 @@ public class XListView extends ListView implements OnScrollListener {
 				mFooterView.setState(XListViewFooter.STATE_NORMAL);
 			}
 		}
-		mFooterView.setBottomMargin(height);
-
-//		setSelection(mTotalItemCount - 1); // scroll to bottom
+        if(height <= (PULL_LOAD_MORE_DELTA + 20)){
+            mFooterView.setBottomMargin(height);
+        }
 	}
 
 	private void resetFooterHeight() {
@@ -279,7 +280,7 @@ public class XListView extends ListView implements OnScrollListener {
 			mLastY = ev.getRawY();
 			if (getFirstVisiblePosition() == 0
 					&& (mHeaderView.getVisiableHeight() > 0 || deltaY > 0)) {
-				// the first item is showing, header has shown or pull down.
+				// the first item is showing, header has shown or pull down.			    
 				updateHeaderHeight(deltaY / OFFSET_RADIO);
 				invokeOnScrolling();
 			} else if (getLastVisiblePosition() == mTotalItemCount - 1
@@ -289,6 +290,7 @@ public class XListView extends ListView implements OnScrollListener {
 			}
 			break;
 		default:
+		    System.out.println("default");
 			mLastY = -1; // reset
 			if (getFirstVisiblePosition() == 0) {
 				// invoke refresh

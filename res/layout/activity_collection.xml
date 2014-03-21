@@ -8,6 +8,13 @@
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight"
         android:background="@drawable/nav_bg">
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:text="我的收藏"
+            android:textColor="@color/white"
+            android:textSize="@dimen/head"/>
         <ImageView
             android:id="@+id/iv_menu"
             android:layout_width="@dimen/title_width"
@@ -17,13 +24,6 @@
             android:clickable="true"
             android:contentDescription="@string/app_name"
             android:src="@drawable/side_left"/>
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:gravity="center"
-            android:text="我的收藏"
-            android:textColor="@color/white"
-            android:textSize="@dimen/head"/>
     </RelativeLayout>
     <RelativeLayout 
         android:layout_width="fill_parent"
