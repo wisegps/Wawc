@@ -240,7 +240,7 @@ public class XListView extends ListView implements OnScrollListener {
 				mFooterView.setState(XListViewFooter.STATE_NORMAL);
 			}
 		}
-        if(height <= (PULL_LOAD_MORE_DELTA + 20)){
+        if(height <= (PULL_LOAD_MORE_DELTA + 40)){
             mFooterView.setBottomMargin(height);
         }
 	}
