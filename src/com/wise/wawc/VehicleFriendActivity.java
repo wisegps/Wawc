@@ -287,6 +287,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			}
 			blogIdList[i] = articleTempList.get(i).getBlog_id();
 		}
+		newBlogIdList.clear();
 		articleTypeMaxBlogId = paiXu(blogIdList)[0];
 		new Thread(new NetThread.GetDataThread(myHandler, articleType + "&max_id=" + articleTypeMaxBlogId, refreshCode)).start();
 	}

@@ -58,10 +58,13 @@ public class FriendInformationActivity extends Activity{
 	String cust_id = "";
 	String user_logo = "";
 	String user_name = "";
+	String vehicleLogoUrl = "";
 	List<String[]> carInforList = new ArrayList<String[]>();
 	DBHelper dbHelper = null;
 	static final int getBarBrand = 2;
 	static final int Get_car_info = 3;
+	static final int SetCarLogo = 4;
+	static final int refreshLogo = 5;
 	MyHandler myHandler;
 	ProgressDialog progressDialog;
 	List<BrankModel> brankList;
@@ -77,6 +80,7 @@ public class FriendInformationActivity extends Activity{
 		
 		lv_car = (ListView) findViewById(R.id.lv_car);
         friendCarAdapter = new FriendCarAdapter();
+        dbHelper = new DBHelper(FriendInformationActivity.this);
         lv_car.setAdapter(friendCarAdapter);
 		
 		myHandler = new MyHandler();
@@ -88,7 +92,6 @@ public class FriendInformationActivity extends Activity{
 				FriendInformationActivity.this.finish();
 			}
 		});
-		
 		initDates();
 	}
 	private void initDates() {
@@ -129,68 +132,66 @@ public class FriendInformationActivity extends Activity{
         	 String url = Constant.BaseUrl + "customer/" + cust_id + "/vehicle?auth_code=" + Variable.auth_code;
              new Thread(new NetThread.GetDataThread(myHandler, url, Get_car_info)).start();
         }
-        //隐藏用户车辆信息 
-//        if(carInforList.size() == 0){
-//        	carInfo.setVisibility(View.GONE);
-//        	friendCar.setVisibility(View.GONE);
-//        }else{
-//        	carBrand.setText(carInforList.get(0)[0]);
-//        	carPlate.setText(carInforList.get(0)[1]);
-//        	setCarLogo();
-//        }
 	}
 	
 	
-	public Bitmap getCarLogo(String carBrand){
+	
+	//  TODO
+	public Bitmap getCarLogo(final String carBrand){
 		Bitmap bitmap = null;
 		if(new File(Constant.VehicleLogoPath + carBrand + ".png").exists()){
+			Log.e(TAG,"车辆Logo存在  == " + Constant.VehicleLogoPath + carBrand + ".png");
     		bitmap = BitmapFactory.decodeFile(Constant.VehicleLogoPath + carBrand + ".png");
-    	}else{
-    		getDate("carBrank",Constant.BaseUrl + "base/car_brand",getBarBrand);
-    		if(brankList != null){
-    			if(brankList.size() != 0){
-    				for(int i =  0 ; i < brankList.size() ; i ++){
-    					if(carInforList.get(0)[0].equals(brankList.get(i).getVehicleBrank())){
-    						final String logoUrl = brankList.get(i).getLogoUrl();
-    						final String carBrandName = brankList.get(i).getVehicleBrank();
-    						new Thread(new Runnable() {
-								public void run() {
-									Bitmap tempBitmap = GetSystem.getBitmapFromURL(logoUrl);
-									if(tempBitmap != null){
-										GetSystem.saveImageSD(tempBitmap, Constant.VehicleLogoPath, carBrandName + ".png",100);
-//										setCarLogo();
-										friendCarAdapter.notifyDataSetChanged();
-									}
-								}
-							}).start();
+    		return bitmap;
+    	}else if(!new File(Constant.VehicleLogoPath + carBrand + ".png").exists()){
+    		Log.e(TAG,"车辆Logo   不存在  == " + carBrand + ".png");
+    		
+    		SQLiteDatabase db = dbHelper.getReadableDatabase();
+    		Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base + " where Title = ?", new String[]{"carBrank"});
+    		JSONArray jsonArray = null;
+    		if(cursor.moveToFirst()){
+    			try {
+    				jsonArray = new JSONArray(cursor.getString(cursor.getColumnIndex("Content")));
+    				for(int i = 0 ; i < jsonArray.length() ; i ++){
+    					JSONObject jsonObj = jsonArray.getJSONObject(i);
+    					BrankModel brankModel = new BrankModel();
+    					brankModel.setVehicleBrank(jsonObj.getString("name"));
+    					brankModel.setBrankId(jsonObj.getString("id"));
+    					if(jsonObj.opt("url_icon") != null){
+    						brankModel.setLogoUrl(jsonObj.getString("url_icon"));
+    					}else{
+    						brankModel.setLogoUrl("");
     					}
+    					brankList.add(brankModel);
     				}
+    			} catch (JSONException e) {
+    				e.printStackTrace();
     			}
     		}
+    		//  所有品牌
+    		for(int i = 0 ; i < brankList.size() ; i ++){
+    			if(carBrand.equals(brankList.get(i).getVehicleBrank())){
+    				vehicleLogoUrl = brankList.get(i).getLogoUrl();
+    			}
+    		}
+    		new Thread(new Runnable() {
+				public void run() {
+					Bitmap tempBitmap = GetSystem.getBitmapFromURL(Constant.ImageUrl + vehicleLogoUrl);
+					if(tempBitmap != null){
+						Log.e(TAG,"创建图片" + Constant.VehicleLogoPath + carBrand + ".png");
+						GetSystem.saveImageSD(tempBitmap, Constant.VehicleLogoPath, carBrand + ".png",100);
+						Message msg = new Message();
+						msg.what = refreshLogo;
+						myHandler.sendMessage(msg);
+					}
+				}
+			}).start();
+    		
     		return null;
     	}
-		return bitmap;
-	}
-	
-	private void getDate(String whereValues,String url,int handlerWhat) {
-		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base + " where Title = ?", new String[]{whereValues});
-		JSONArray jsonArray = null;
-		if(cursor.moveToFirst()){
-			try {
-				jsonArray = new JSONArray(cursor.getString(cursor.getColumnIndex("Content")));
-				parseJSON(jsonArray);
-			} catch (JSONException e) {
-				e.printStackTrace();
-			}
-		}else{
-			progressDialog = ProgressDialog.show(FriendInformationActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
-			progressDialog.setCancelable(true);
-			new Thread(new NetThread.GetDataThread(myHandler, url, handlerWhat)).start();
-		}
+		return null;
 	}
 	public void parseJSON(JSONArray jsonArray){
-		progressDialog.dismiss();
 			try {
 				int arrayLength = jsonArray.length();
 				brankList = new ArrayList<BrankModel>();
@@ -208,13 +209,6 @@ public class FriendInformationActivity extends Activity{
 				}
 			} catch (JSONException e1) {
 				e1.printStackTrace();
-			}
-			
-			for(int i = 0 ; i < carInforList.size(); i ++){
-				
-			}
-			
-			for(int i = 0 ; i < brankList.size() ; i ++){
 			}
 		}
 	
@@ -245,9 +239,9 @@ public class FriendInformationActivity extends Activity{
 			}
 			viewHolder.carBrand.setText(FriendInformationActivity.this.carInforList.get(position)[0]);
 			viewHolder.carPlate.setText(FriendInformationActivity.this.carInforList.get(position)[1]);
-			
-			Bitmap tempBitmap = getCarLogo(FriendInformationActivity.this.carInforList.get(position)[0]);
-			
+		//  TODO
+//			Bitmap tempBitmap = getCarLogo(FriendInformationActivity.this.carInforList.get(position)[0]);
+			Bitmap tempBitmap = BitmapFactory.decodeFile(Constant.VehicleLogoPath + FriendInformationActivity.this.carInforList.get(position)[0] + ".png");
 			if(tempBitmap == null){
 				Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.article);
 				viewHolder.carBrandIv.setImageBitmap(bitmap);
@@ -256,7 +250,7 @@ public class FriendInformationActivity extends Activity{
 			}
 			return convertView;
 		}
-		//  TODO
+		
 		class ViewHolder{
 			ImageView carBrandIv = null;
 			TextView carBrand = null;  //品牌
@@ -298,6 +292,9 @@ public class FriendInformationActivity extends Activity{
 				}else{
 					friendCar.setVisibility(View.GONE);
 				}
+				break;
+			case refreshLogo:
+				friendCarAdapter.notifyDataSetChanged();
 				break;
 			}
 		}
