@@ -71,6 +71,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -155,10 +156,10 @@ public class MyAdapter extends BaseAdapter{
 			viewHolder.twoCommentContent = (TextView)convertView.findViewById(R.id.my_vehicle_two_comment_content_tv);
 			
 			viewHolder.twoCommentLayout = (LinearLayout) convertView.findViewById(R.id.my_vehicle_two_comment_ll);
-			viewHolder.allCommentLayout = (TableLayout) convertView.findViewById(R.id.vehicle_friend_comment_tl);
+			viewHolder.allCommentLayout = (RelativeLayout) convertView.findViewById(R.id.vehicle_friend_comment_tl);
 			viewHolder.oneCommentLayout = (LinearLayout) convertView.findViewById(R.id.my_vehicle_one_comment_ll);
 
-            viewHolder.tl_image = (TableLayout) convertView.findViewById(R.id.tl_image);
+            viewHolder.tl_image = (RelativeLayout) convertView.findViewById(R.id.tl_image);
 			
 			convertView.setTag(viewHolder);
 		}else{
@@ -548,8 +549,8 @@ public class MyAdapter extends BaseAdapter{
 		 public LinearLayout twoCommentLayout = null;
 		 public LinearLayout oneCommentLayout = null;
 		 public LinearLayout commentLayout = null; 
-		 public TableLayout allCommentLayout = null;
-		 public TableLayout tl_image;
+		 public RelativeLayout allCommentLayout = null;
+		 public RelativeLayout tl_image;
 	 }
 	 
 	 

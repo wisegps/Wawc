@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margins"
@@ -16,17 +16,18 @@
 
         <ImageView
             android:id="@+id/head_article"
-            android:layout_width="0dip"
-            android:layout_height="fill_parent"
-            android:layout_weight="1.5" />
+            android:layout_width="@dimen/article_adapter_left"
+            android:layout_height="@dimen/article_adapter_left"
+            />
 
         <LinearLayout
-            android:layout_width="0dip"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/margins"
             android:layout_marginTop="@dimen/margins"
-            android:layout_weight="6"
-            android:orientation="vertical" >
+            android:layout_toRightOf="@id/head_article"
+            android:orientation="vertical"
+             >
 
             <TextView
                 android:id="@+id/article_user_name"
@@ -40,17 +41,21 @@
                 android:id="@+id/tv_article_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:singleLine="true"
-    			android:ellipsize="end"
+                android:ellipsize="end"
+             	android:singleLine="false" 
+             	android:maxLines="6"
                 android:text="内容"
                 android:textColor="@color/common"
                 android:textSize="@dimen/main" />
         </LinearLayout>
-    </LinearLayout>
+    </RelativeLayout>
+    
+    
+    
+    
+     <!-- 用户图片 -->
 
-    <!-- 用户图片 -->
-
-    <TableLayout
+    <RelativeLayout
         android:id="@+id/tl_image"
         android:visibility="gone"
         android:layout_width="fill_parent"
@@ -59,58 +64,50 @@
         android:layout_marginLeft="@dimen/margins"
         android:layout_marginRight="@dimen/margins">
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" >
-
             <View
-                android:layout_width="0dip"
+                android:id="@+id/user_image_v"
+                android:layout_width="@dimen/article_adapter_left"
                 android:layout_height="0dip"
-                android:layout_weight="1.5" />
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                />
             
              <GridView 
                 android:id="@+id/user_image"
-                android:layout_width="0dip"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="6"
                 android:scrollbars="horizontal"
                 android:numColumns="3"
                 android:horizontalSpacing="@dimen/margins1"
         		android:stretchMode="columnWidth"
+        		android:layout_alignParentTop="true"
+        		android:layout_marginLeft="@dimen/margins"
+        		android:layout_toRightOf="@id/user_image_v"
                 ></GridView>
-            <!-- 显示用户发表的图片 
-            <LinearLayout
-                android:id="@+id/user_image"
-                android:layout_width="0dip"
-                android:layout_height="wrap_content"
-                android:layout_weight="6"
-                android:orientation="horizontal" >
-            </LinearLayout>
-            -->
-        </TableRow>
-    </TableLayout>
-
-    <!-- 评论相关控件 -->
-
-    <TableLayout
+    </RelativeLayout>
+    
+    
+    <!-- 评论相关 -->
+     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/margins" >
 
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="10dip" >
-
             <View
-                android:layout_width="0dip"
+                android:id="@+id/view"
+                android:layout_width="@dimen/article_adapter_left"
                 android:layout_height="0dip"
-                android:layout_weight="1.5" />
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                />
 
-            <TableRow
-                android:layout_width="0dip"
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margins"
-                android:layout_weight="6" >
+                android:layout_toRightOf="@id/view" 
+                android:layout_alignParentTop="true"
+                >
 
                 <TextView
                     android:id="@+id/publish_time"
@@ -142,35 +139,32 @@
                         android:layout_height="@dimen/double_margins"
                         android:background="@drawable/side_article_comment" />
                 </LinearLayout>
-            </TableRow>
-        </TableRow>
-    </TableLayout>
-    <!-- 评论内容 -->
+            </LinearLayout>
+    </RelativeLayout>
+    
+     
+     <!-- 评论内容 -->
 
-    <TableLayout
+    <RelativeLayout
         android:id="@+id/vehicle_friend_comment_tl"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dip"
-        android:layout_marginTop="5dip"
+        android:layout_margin="@dimen/margins"
          >
-
-        <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margins"
-            android:layout_marginRight="@dimen/margins" >
-
             <View
-                android:layout_width="0dip"
+                android:id="@+id/article_adapter_left_v"
+                android:layout_width="@dimen/article_adapter_left"
                 android:layout_height="0dip"
-                android:layout_weight="1.5" />
+                android:layout_alignParentTop="true"
+                android:layout_alignParentLeft="true"
+                 />
 
             <TableLayout
-                android:layout_width="0dip"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/margins"
-                android:layout_weight="6"
+                android:layout_toRightOf="@id/article_adapter_left_v"
+                android:layout_alignParentTop="true"
                 android:background="@drawable/body_container" >
                 <!-- 赞 -->
                 <TableRow
@@ -276,7 +270,7 @@
                         />
                 </LinearLayout>
             </TableLayout>
-        </TableRow>
-    </TableLayout>
-
+    </RelativeLayout>
+     
+     
 </LinearLayout>
