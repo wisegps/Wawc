@@ -10,32 +10,28 @@
         android:layout_width="fill_parent"
         android:layout_height="@dimen/title_hight"
         android:background="@drawable/nav_bg" >
-
-        <ImageView
-            android:id="@+id/iv_activity_car_location_back"
-            android:layout_width="@dimen/image_width"
-            android:layout_height="@dimen/image_width"
-            android:padding="@dimen/margins"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:contentDescription="@string/app_name"
-            android:src="@drawable/nav_back" />
-
         <TextView
             android:id="@+id/tv_car_name"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_toLeftOf="@+id/iv_activity_car_location_share"
-            android:layout_toRightOf="@+id/iv_activity_car_location_back"
             android:gravity="center"
             android:textColor="@color/white"
             android:textSize="@dimen/head"/>
+        <ImageView
+            android:id="@+id/iv_activity_car_location_back"
+            android:layout_width="@dimen/title_width"
+            android:layout_height="@dimen/title_image"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/nav_back"/>
 
         <ImageView
             android:id="@+id/iv_activity_car_location_share"
-            android:layout_width="@dimen/image_width"
+            android:layout_width="@dimen/title_width"
             android:layout_height="@dimen/image_width"
-            android:padding="@dimen/margins"
+            android:paddingLeft="@dimen/margins"
+            android:paddingRight="@dimen/margins"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:contentDescription="@string/app_name"

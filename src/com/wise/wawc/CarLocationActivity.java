@@ -113,7 +113,7 @@ public class CarLocationActivity extends Activity {
                 break;
             case R.id.iv_activity_car_location_share:
                 Toast.makeText(CarLocationActivity.this,
-                        R.string.travel_map_urrent, Toast.LENGTH_LONG).show();
+                        R.string.travel_map_urrent, Toast.LENGTH_SHORT).show();
                 boolean isCurrent = mMapView.getCurrentMap();
                 System.out.println("isCurrent = " + isCurrent);
                 break;
