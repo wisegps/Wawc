@@ -292,26 +292,16 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	}
 	@Override
 	public void onLoadMore() {
-		List<Article> articleTempList = new ArrayList<Article>();
-		articleTempList = dBExcute.getArticleTypeList(
-				VehicleFriendActivity.this, "select * from "
-						+ Constant.TB_VehicleFriendType + " where Type_id=?",
-				new String[] { String.valueOf(article) }, articleTempList);
-		int[] blogIdList = new int[articleTempList.size()];
-		for (int i = 0; i < articleTempList.size(); i++) {
-			blogIdList[i] = articleTempList.get(i).getBlog_id();
-		}
-//		for (int m = 0; m < blogIdList.length; m++) {
-//			for (int n = 0; n < m; n++) {
-//				int temp = 0;
-//				if (blogIdList[m] < blogIdList[n]) {
-//					temp = blogIdList[m];
-//					blogIdList[m] = blogIdList[n];
-//					blogIdList[n] = temp;
-//				}
-//			}
+//		List<Article> articleTempList = new ArrayList<Article>();
+//		articleTempList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=?",new String[] { String.valueOf(article) }, articleTempList);
+//		int[] blogIdList = new int[articleTempList.size()];
+//		for (int i = 0; i < articleTempList.size(); i++) {
+//			blogIdList[i] = articleTempList.get(i).getBlog_id();
 //		}
-//		articleTypeMinBlogId = blogIdList[0];
+		int[] blogIdList = new int[articleDataList.size()];
+		for (int i = 0; i < articleDataList.size(); i++) {
+			blogIdList[i] = articleDataList.get(i).getBlog_id();
+		}
 		
 		articleTypeMinBlogId = paiXu(blogIdList)[blogIdList.length - 1];
 		Log.e(TAG,"isLoadMore = " + isLoadMore);

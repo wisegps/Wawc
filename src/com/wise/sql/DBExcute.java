@@ -383,7 +383,7 @@ public class DBExcute {
 	public void updataComment(String whereValues,String updateTime,String comments,String praises,String TbName,Context context) {
 		DBHelper dbHelper = new DBHelper(context);
 		SQLiteDatabase reader = dbHelper.getReadableDatabase();
-		SQLiteDatabase update = dbHelper.getWritableDatabase();
+		SQLiteDatabase updateDatas = dbHelper.getWritableDatabase();
 		Cursor cursor = reader.rawQuery("select * from " + TbName + " where Blog_id=?", new String[]{String.valueOf(whereValues)});
 		String content = "";
 		String newContent = "";
@@ -414,8 +414,7 @@ public class DBExcute {
 			String newContents = jsonObject.toString().replaceAll("\\\\", "");
 			ContentValues values = new ContentValues();
 			values.put("Content", newContents);
-			update.update(TbName, values, "Blog_id=?", new String[]{String.valueOf(whereValues)});
-			
+			updateDatas.update(TbName, values, "Blog_id=?", new String[]{String.valueOf(whereValues)});
 			
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -424,6 +423,6 @@ public class DBExcute {
 			cursor.close();
 		}
 		reader.close();
-		update.close();
+		updateDatas.close();
 	}
 }
