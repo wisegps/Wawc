@@ -628,10 +628,10 @@ public class NewVehicleActivity extends Activity{
 			petrolGradeTv.setHintTextColor(Color.RED);
 			return false;
 		}
-		if("".equals(illegalCityTv.getText().toString().trim())){
-			illegalCityTv.setHintTextColor(Color.RED);
-			return false;
-		}
+//		if("".equals(illegalCityTv.getText().toString().trim())){
+//			illegalCityTv.setHintTextColor(Color.RED);
+//			return false;
+//		}
 		if(engine == 1){
  			if(engineNo == 0){
  				if(engineNumber.getText().toString().trim().length() == engineNo){
@@ -781,7 +781,7 @@ public class NewVehicleActivity extends Activity{
 		try {  
             b = new FileOutputStream(fileName);  
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
-            //发送广播   我的爱车页面刷新显示logo   TODO
+            //发送广播   我的爱车页面刷新显示logo
             Intent intent = new Intent(Constant.A_UpdateCar);
             Intent intent1 = new Intent(Constant.updataMyVehicleLogoAction);
             sendBroadcast(intent);

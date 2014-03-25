@@ -22,7 +22,7 @@ public class CarData {
     private String car_type_id;
     public String engine_no;
     public String frame_no;
-    private String vio_city_name;
+    private String vio_city_name;  //违章城市名
     private String gas_no;
     private String insurance_tel;
     private String maintain_tel;
@@ -49,7 +49,7 @@ public class CarData {
 	public String obj_name;
 	private String maintain_last_date;
 	private String regNo;
-	private String vio_location;
+	private String vio_location = "";   //违章城市代码
 	private String logoPath;
 	private String device_id;
 	private String serial;
