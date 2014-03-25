@@ -1329,6 +1329,8 @@ public class HomeActivity extends Activity {
                         .getColumnIndex("change_date"));
             }
         }
+        cursor.close();
+        db.close();
     }
 
     private void jsonCarRemind(String result) {

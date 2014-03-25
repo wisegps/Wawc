@@ -120,17 +120,17 @@ public class SelectCityActivity extends Activity {
     }
     
     private void GetCity() {
-        // 查询
+        //查询
         DBHelper dbHelper = new DBHelper(SelectCityActivity.this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        // 未来天气
+        //城市
         Cursor c = db.rawQuery("select * from " + Constant.TB_Base
                 + " where Title=?", new String[] { "City" });
         if (c.moveToFirst()) {
             Citys = c.getString(c.getColumnIndex("Content"));
         }
         c.close();
-        // 实时天气
+        //热门城市
         Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base
                 + " where Title=?", new String[] { "hotCity" });
         if (cursor.moveToFirst()) {

@@ -218,7 +218,9 @@ public class SettingCenterActivity extends Activity{
             SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
             int index = preferences.getInt(Constant.DefaultVehicleID, 0);
             tv_value.setText("车辆" + Variable.carDatas.get(index).getObj_name() + "的位置");
-        }        
+        } 
+        cursor.close();
+        db.close();
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

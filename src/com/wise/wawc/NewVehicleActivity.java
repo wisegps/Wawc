@@ -608,6 +608,8 @@ public class NewVehicleActivity extends Activity{
 			Log.e("请求服务器","请求服务器");
 			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + url + id, code)).start();
 		}
+		cursor.close();
+		read.close();
 	}
 	
 	//获取用户输入的数据

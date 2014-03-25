@@ -133,6 +133,8 @@ public class OrderConfirmActivity extends Activity{
                 et_phone.setText(Phone); 
             }                
         }
+        cursor.close();
+        db.close();
     }
 	private void submitOrder(){
 	    String Consignee = et_consignee.getText().toString().trim();

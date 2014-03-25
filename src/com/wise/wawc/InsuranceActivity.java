@@ -117,6 +117,8 @@ public class InsuranceActivity extends Activity implements
                 jsonData(Content);
             }
         }
+        cursor.close();
+        db.close();
     }
     private void jsonData(String result){
         try {

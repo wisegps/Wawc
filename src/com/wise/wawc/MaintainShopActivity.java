@@ -91,7 +91,8 @@ public class MaintainShopActivity extends Activity {
 				}
 				new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "base/dealer?city=" + urlCity + "&brand=" + urlBrank + "&cust_id=" + Variable.cust_id, getMaintainShopCode)).start();
 			}
-		
+			cursor.close();
+			reader.close();		
 	}
 	
 	class MyHandler extends Handler{

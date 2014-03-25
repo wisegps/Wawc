@@ -1312,6 +1312,8 @@ public class MyVehicleActivity extends Activity{
  		}else{
  			new Thread(new NetThread.GetDataThread(myHandler, url, what)).start();
  		}
+ 		cursor.close();
+ 		reader.close();
  	}
  	
  	public void parseVehicleBrandData(String str,int what){

@@ -510,6 +510,8 @@ public class CarRemindActivity extends Activity {
                 userChangeDate(change_date);
             }
         }
+        cursor.close();
+        db.close();
     }
     /**
      * 判断证件年检时间

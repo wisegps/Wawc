@@ -134,6 +134,8 @@ public class FriendInformationActivity extends Activity{
         	 String url = Constant.BaseUrl + "customer/" + cust_id + "/vehicle?auth_code=" + Variable.auth_code;
              new Thread(new NetThread.GetDataThread(myHandler, url, Get_car_info)).start();
         }
+        cursor.close();
+        db.close();
 	}
 	
 	
@@ -170,6 +172,8 @@ public class FriendInformationActivity extends Activity{
     		}else{
     			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "base/car_brand", getCarBrands)).start();
     		}
+    		cursor.close();
+    		db.close();
     		return null;
     	}
 	}
