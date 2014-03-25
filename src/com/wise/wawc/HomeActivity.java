@@ -8,6 +8,9 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import cn.sharesdk.framework.ShareSDK;
+
 import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.search.MKAddrInfo;
 import com.baidu.mapapi.search.MKBusLineResult;
@@ -387,18 +390,22 @@ public class HomeActivity extends Activity {
                 break;
             case R.id.bt_activity_home_share:// 位置分享
                 if (Variable.carDatas == null || Variable.carDatas.size() == 0) {
-
+                    AddCarNote();
                 } else {
                     ToShare();
                 }
                 break;
             case R.id.bt_activity_home_traffic:// 车辆违章
-                HomeActivity.this.startActivity(new Intent(HomeActivity.this,
-                        TrafficActivity.class));
+                if (Variable.carDatas == null || Variable.carDatas.size() == 0) {
+                    AddCarNote();
+                } else {
+                    HomeActivity.this.startActivity(new Intent(HomeActivity.this,
+                            TrafficActivity.class));
+                }
                 break;
             case R.id.bt_activity_home_car_remind:// 车务提醒
                 if (Variable.carDatas == null || Variable.carDatas.size() == 0) {
-
+                    AddCarNote();
                 } else {
                     Intent eventIntent = new Intent(HomeActivity.this,
                             CarRemindActivity.class);
@@ -1129,6 +1136,14 @@ public class HomeActivity extends Activity {
         mkSearch.destory();
         Log.d(TAG, "onDestroy");
         isRefresh = false;
+        
+        
+        ShareSDK.stopSDK(this);
+        WawcApplication app = (WawcApplication) this.getApplication();
+        if (app.mBMapManager != null) {
+            app.mBMapManager.destroy();
+            app.mBMapManager = null;
+        }
     }
 
     @Override
@@ -1570,6 +1585,24 @@ public class HomeActivity extends Activity {
             }
         }
     };
+    /**
+     * 提示添加车辆
+     */
+    private void AddCarNote(){
+        new AlertDialog.Builder(this)
+        .setTitle("提示")
+        .setMessage("时候添加车辆")
+        .setPositiveButton("确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog,int which) {
+                        Intent intent = new Intent(HomeActivity.this,
+                                MyVehicleActivity.class);
+                        intent.putExtra("isJump", true);
+                        HomeActivity.this.startActivity(intent);
+                    }
+                }).setNegativeButton("取消", null).show();
+    }
 
     private void TurnVehicleStatus() {
         if (Variable.carDatas == null || Variable.carDatas.size() == 0) {
