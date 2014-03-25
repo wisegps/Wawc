@@ -20,7 +20,6 @@ import com.wise.service.BrankAdapter;
 import com.wise.service.SeriesAdapter;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
-import com.wise.wawc.ChoiceCarInformationActivity.MyThread;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.database.Cursor;
@@ -65,11 +64,13 @@ public class FriendInformationActivity extends Activity{
 	static final int Get_car_info = 3;
 	static final int SetCarLogo = 4;
 	static final int refreshLogo = 5;
+	static final int getCarBrands = 6;
 	MyHandler myHandler;
 	ProgressDialog progressDialog;
 	List<BrankModel> brankList;
 	FriendCarAdapter friendCarAdapter;
 	LayoutInflater layoutInflater;
+	List<String> strLis = null;
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.friend_information);
@@ -128,7 +129,8 @@ public class FriendInformationActivity extends Activity{
         	friendCarAdapter.notifyDataSetChanged();
         	friendCar.setVisibility(View.VISIBLE);
         }else{
-        	//获取用户车辆
+        	
+        	// 设置用户车辆品牌  车牌号
         	 String url = Constant.BaseUrl + "customer/" + cust_id + "/vehicle?auth_code=" + Variable.auth_code;
              new Thread(new NetThread.GetDataThread(myHandler, url, Get_car_info)).start();
         }
@@ -137,15 +139,13 @@ public class FriendInformationActivity extends Activity{
 	
 	
 	//  TODO
-	public Bitmap getCarLogo(final String carBrand){
+	public Bitmap getCarLogo(String carBrand){
 		Bitmap bitmap = null;
 		if(new File(Constant.VehicleLogoPath + carBrand + ".png").exists()){
-			Log.e(TAG,"车辆Logo存在  == " + Constant.VehicleLogoPath + carBrand + ".png");
     		bitmap = BitmapFactory.decodeFile(Constant.VehicleLogoPath + carBrand + ".png");
     		return bitmap;
-    	}else if(!new File(Constant.VehicleLogoPath + carBrand + ".png").exists()){
-    		Log.e(TAG,"车辆Logo   不存在  == " + carBrand + ".png");
-    		
+    	}else{
+    		List<BrankModel> brankLists = new ArrayList<BrankModel>();
     		SQLiteDatabase db = dbHelper.getReadableDatabase();
     		Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base + " where Title = ?", new String[]{"carBrank"});
     		JSONArray jsonArray = null;
@@ -162,34 +162,16 @@ public class FriendInformationActivity extends Activity{
     					}else{
     						brankModel.setLogoUrl("");
     					}
-    					brankList.add(brankModel);
+    					brankLists.add(brankModel);
     				}
     			} catch (JSONException e) {
     				e.printStackTrace();
     			}
+    		}else{
+    			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "base/car_brand", getCarBrands)).start();
     		}
-    		//  所有品牌
-    		for(int i = 0 ; i < brankList.size() ; i ++){
-    			if(carBrand.equals(brankList.get(i).getVehicleBrank())){
-    				vehicleLogoUrl = brankList.get(i).getLogoUrl();
-    			}
-    		}
-    		new Thread(new Runnable() {
-				public void run() {
-					Bitmap tempBitmap = GetSystem.getBitmapFromURL(Constant.ImageUrl + vehicleLogoUrl);
-					if(tempBitmap != null){
-						Log.e(TAG,"创建图片" + Constant.VehicleLogoPath + carBrand + ".png");
-						GetSystem.saveImageSD(tempBitmap, Constant.VehicleLogoPath, carBrand + ".png",100);
-						Message msg = new Message();
-						msg.what = refreshLogo;
-						myHandler.sendMessage(msg);
-					}
-				}
-			}).start();
-    		
     		return null;
     	}
-		return null;
 	}
 	public void parseJSON(JSONArray jsonArray){
 			try {
@@ -211,6 +193,25 @@ public class FriendInformationActivity extends Activity{
 				e1.printStackTrace();
 			}
 		}
+	
+	
+	
+	//  TODO
+	public  void  downLoadImage(final String LogoUrl,final String carBrand){
+		//  所有品牌
+		new Thread(new Runnable() {
+			public void run() {
+				Bitmap tempBitmap = GetSystem.getBitmapFromURL(Constant.ImageUrl + LogoUrl);
+				if(tempBitmap != null){
+					Log.e(TAG,"创建图片" + Constant.VehicleLogoPath + carBrand + ".png");
+					GetSystem.saveImageSD(tempBitmap, Constant.VehicleLogoPath, carBrand + ".png",100);
+					Message msg = new Message();
+					msg.what = refreshLogo;
+					myHandler.sendMessage(msg);
+				}
+			}
+		}).start();
+	}
 	
 	class FriendCarAdapter extends BaseAdapter{
 		FriendCarAdapter(){
@@ -240,9 +241,9 @@ public class FriendInformationActivity extends Activity{
 			viewHolder.carBrand.setText(FriendInformationActivity.this.carInforList.get(position)[0]);
 			viewHolder.carPlate.setText(FriendInformationActivity.this.carInforList.get(position)[1]);
 		//  TODO
-//			Bitmap tempBitmap = getCarLogo(FriendInformationActivity.this.carInforList.get(position)[0]);
-			Bitmap tempBitmap = BitmapFactory.decodeFile(Constant.VehicleLogoPath + FriendInformationActivity.this.carInforList.get(position)[0] + ".png");
-			if(tempBitmap == null){
+			Bitmap tempBitmap = getCarLogo(FriendInformationActivity.this.carInforList.get(position)[0]);
+//			Bitmap tempBitmap = BitmapFactory.decodeFile(Constant.VehicleLogoPath + FriendInformationActivity.this.carInforList.get(position)[0] + ".png");
+			if(tempBitmap == null){   //显示临时图片  并开启线程下载图片完成后刷新
 				Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.article);
 				viewHolder.carBrandIv.setImageBitmap(bitmap);
 			}else{
@@ -295,6 +296,44 @@ public class FriendInformationActivity extends Activity{
 				break;
 			case refreshLogo:
 				friendCarAdapter.notifyDataSetChanged();
+				break;
+			case getCarBrands:
+				JSONArray jsonArray = null;
+				List<BrankModel> brankLists = new ArrayList<BrankModel>();
+		    		if(!"[]".equals(msg.obj.toString())){
+		    			try {
+		    				jsonArray = new JSONArray(msg.obj.toString());
+		    				for(int i = 0 ; i < jsonArray.length() ; i ++){
+		    					JSONObject jsonObj = jsonArray.getJSONObject(i);
+		    					BrankModel brankModel = new BrankModel();
+		    					brankModel.setVehicleBrank(jsonObj.getString("name"));
+		    					brankModel.setBrankId(jsonObj.getString("id"));
+		    					if(jsonObj.opt("url_icon") != null){
+		    						brankModel.setLogoUrl(jsonObj.getString("url_icon"));
+		    					}else{
+		    						brankModel.setLogoUrl("");
+		    					}
+		    					brankLists.add(brankModel);
+		    				}
+		    			} catch (JSONException e) {
+		    				e.printStackTrace();
+		    			}
+		    		}
+		    		strLis = new ArrayList<String>();
+		    		
+		    		for(int i = 0 ; i < carInforList.size() ; i ++){
+		    			if(!new File(Constant.VehicleLogoPath + carInforList.get(i)[0] + ".png").exists()){
+		    				strLis.add(carInforList.get(i)[0]);
+		    			}
+		    		}
+		    		
+		    		for(int i = 0 ; i < strLis.size() ; i ++){
+		    			for(int j = 0 ; j < brankLists.size() ; j ++){
+		    				if(strLis.get(i).equals(brankLists.get(j).getVehicleBrank())){
+		    					downLoadImage(brankLists.get(j).getLogoUrl(), strLis.get(i));
+		    				}
+		    			}
+		    		}
 				break;
 			}
 		}

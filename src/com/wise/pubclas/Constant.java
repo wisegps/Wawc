@@ -227,8 +227,6 @@ public class Constant {
 	public static int pageSize1 = 10;   //每页数量
 	public static int totalPage1 = 0;   //数据总量
 	public static int currentPage1 = 0;  //当前页
-	
-	
 	public static String UserIconUrl = null;
 	/**
 	 * 水平滑动选择logo的宽度
