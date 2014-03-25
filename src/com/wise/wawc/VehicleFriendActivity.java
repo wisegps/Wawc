@@ -122,6 +122,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 	
 	private int article = 1;  //文章类型
 	private boolean isChickTitle = false;
+	boolean bol = false;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -202,6 +203,10 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 			}
 		});
 		
+		
+//		isLoadMore = false;
+//		article = Constant.articleType;
+//		articleSort(article,0);
 		//好友主页文章
 //		getArticleDatas(0);
 		//同车型文章
@@ -213,6 +218,13 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		isLoadMore = false;
 		article = Constant.articleType;
 		articleSort(article,0);
+		
+//		articleDataList.clear();
+//		
+//		articleDataList = dBExcute.getArticleTypeList(VehicleFriendActivity.this, "select * from " + Constant.TB_VehicleFriendType + " where Type_id=? order by Blog_id desc limit?,?", new String[]{String.valueOf(article),String.valueOf(0),String.valueOf(Constant.start + Constant.pageSize)}, articleDataList);
+//		Variable.articleList = articleDataList;
+//		setArticleDataList(articleDataList);
+//		myAdapter.refreshDates(articleDataList);
 		super.onResume();
 	}
 
@@ -294,18 +306,20 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 //		for (int i = 0; i < articleTempList.size(); i++) {
 //			blogIdList[i] = articleTempList.get(i).getBlog_id();
 //		}
-		int[] blogIdList = new int[articleDataList.size()];
-		for (int i = 0; i < articleDataList.size(); i++) {
-			blogIdList[i] = articleDataList.get(i).getBlog_id();
-		}
 		
-		articleTypeMinBlogId = paiXu(blogIdList)[blogIdList.length - 1];
-		Log.e(TAG,"isLoadMore = " + isLoadMore);
+		
 		if (!isLoadMore) {
 			articleSort(article, 3);
 		} else {
-			new Thread(new NetThread.GetDataThread(myHandler, articleType
-					+ "&min_id=" + articleTypeMinBlogId, FriendType)).start();
+			if(articleDataList.size() != 0){
+				int[] blogIdList = new int[articleDataList.size()];
+				for (int i = 0; i < articleDataList.size(); i++) {
+					blogIdList[i] = articleDataList.get(i).getBlog_id();
+				}
+				articleTypeMinBlogId = paiXu(blogIdList)[blogIdList.length - 1];
+				new Thread(new NetThread.GetDataThread(myHandler, articleType
+						+ "&min_id=" + articleTypeMinBlogId, FriendType)).start();
+			}
 		}
 	}
 	
@@ -750,7 +764,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		}
 		//查询类型表
 		totalNum = dBExcute.getTotalCount( VehicleFriendActivity.this,"select * from " + Constant.TB_VehicleFriendType + " where Type_id=?",new String[]{String.valueOf(type)});
-		Log.e(TAG,"totalNum" + totalNum);
 		if(totalNum > 0){
 			Constant.totalPage = totalNum%Constant.pageSize > 0 ? totalNum/Constant.pageSize + 1 : totalNum/Constant.pageSize;
 			if(totalNum < Constant.pageSize){
@@ -763,6 +776,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				if(tempList.size() != 0){
 					updataListDate(articleDataList,tempList);
 				}
+				bol = true;
 				isLoadMore = true;
 			}else if(totalNum == Constant.pageSize){
 				articleDataList.clear();
@@ -779,6 +793,10 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 					updataListDate(articleDataList,tempList);
 				}
 			}else{
+				if(bol){
+					articleDataList.clear();
+					bol = false;
+				}
 				Constant.start = Constant.currentPage*Constant.pageSize;
 				if(Constant.currentPage < Constant.totalPage){
 					Constant.currentPage ++ ;
@@ -793,8 +811,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 				}
 			}
 			isLoadMore = false;
-			Log.e(TAG,"currentPage = " +  Constant.currentPage);
-			Log.e(TAG,"Constant.totalPage = " +  Constant.totalPage);
 			if(Constant.totalPage == Constant.currentPage){
 				isLoadMore = true;
 			}

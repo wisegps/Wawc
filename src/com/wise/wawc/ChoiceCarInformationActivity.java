@@ -109,7 +109,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 	String carBrank;
 	String logoUrl = "";
 	private MyThread myThread = null;
-	private boolean imageDownload = false;
+	private boolean imageDownload = true;
 	
 	public static final String carBrankTitle = "carBrank";  //数据库基础表车辆品牌的标题字段
 	public static final String carSeriesTitle = "carSeries";  //数据库基础表车辆款式的标题字段
@@ -298,6 +298,11 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 				onLoad();
 				String refreshData = msg.obj.toString();
 				if(!"".equals(refreshData)){
+					SQLiteDatabase db = dbHelper.getReadableDatabase();
+					Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base + " where Title = ?", new String[]{"carBrank"});
+					if(cursor.moveToFirst()){
+						db.delete(Constant.TB_Base, "Title = ?", new String[]{"carBrank"});
+						}
 					ContentValues contentValues = new ContentValues();
 					contentValues.put("Title", carBrankTitle);
 					contentValues.put("Content", refreshData);
@@ -313,6 +318,15 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 				}else{
 					Toast.makeText(getApplicationContext(), "获取数据失败，稍后再试", 0).show();
 				}
+				Log.e(TAG,"imageDownload = " + imageDownload);
+				//  TODO
+				imageDownload = true;
+				new Thread(new Runnable() {
+					public void run() {
+						myThread.run();
+					}
+				}).start();
+				
 				break;
 			case GET_SERIES:   //车型
 				String seriesData = msg.obj.toString();
@@ -536,7 +550,6 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		super.onRestart();
 	}
 	protected void onResume() {
-		imageDownload = true;
 		super.onResume();
 	}
 	
@@ -566,6 +579,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 	
 	class MyThread extends Thread{
 		public void run() {
+			Log.e(TAG,"run()");
 			for(int i = 0 ; i < brankModelList.size() ; i++){
 				if(!"".equals(brankModelList.get(i).getLogoUrl()) && brankModelList.get(i).getLogoUrl() != null){
 					if(imageDownload){
@@ -576,6 +590,10 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 				}
 			}
 			super.run();
+		}
+		
+		public void reStart(){
+			run();
 		}
 	}
 	

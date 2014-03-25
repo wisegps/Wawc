@@ -336,8 +336,7 @@ public class GetSystem {
         try {
             Log.d(TAG, Path);
             URL url = new URL(Path);
-            HttpURLConnection connection = (HttpURLConnection) url
-                    .openConnection();
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);
             connection.connect();
             InputStream input = connection.getInputStream();

@@ -85,6 +85,8 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 	public static int blogId = 0;
 	private int minBlogId = 0;
 	private int maxBlogId = 0;
+	String TAG = "FriendHomeActivity";
+	boolean bol = false;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -238,20 +240,27 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 		if(!isLoadMore){
 			getArticleDatas(loadMoreAction);
 		}else{
-			DBHelper dBHelper = new DBHelper(FriendHomeActivity.this);
-			SQLiteDatabase  sQLiteDatabase = dBHelper.getReadableDatabase();
-			Cursor cursor = sQLiteDatabase.rawQuery("select * from " + Constant.TB_VehicleFriend + " where Cust_id = ? order by Blog_id desc", new String[]{cust_id});
-			if(cursor.moveToLast()){
-				minBlogId = cursor.getInt(cursor.getColumnIndex("Blog_id"));
+//			DBHelper dBHelper = new DBHelper(FriendHomeActivity.this);
+//			SQLiteDatabase  sQLiteDatabase = dBHelper.getReadableDatabase();
+//			Cursor cursor = sQLiteDatabase.rawQuery("select * from " + Constant.TB_VehicleFriend + " where Cust_id = ? order by Blog_id desc", new String[]{cust_id});
+//			if(cursor.moveToLast()){
+//				minBlogId = cursor.getInt(cursor.getColumnIndex("Blog_id"));
+//			}
+			
+			if(articleDataList.size() != 0){
+				int[] blogId = new int[articleDataList.size()];
+				for(int i = 0 ; i < articleDataList.size() ; i ++){
+					blogId[i] = articleDataList.get(i).getBlog_id();
+				}
+				int minBlogId = VehicleFriendActivity.paiXu(blogId)[articleDataList.size() - 1];
+				new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + cust_id + "/blog?auth_code=" + Variable.auth_code + "&min_id=" + minBlogId, loadMoreCode)).start();
 			}
-			cursor.close();
-			sQLiteDatabase.close();
-			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + cust_id + "/blog?auth_code=" + Variable.auth_code + "&min_id=" + minBlogId, loadMoreCode)).start();
 		}
 	}
 	
 	//获取数据  TODO
 		public void getArticleDatas(int actionCode){
+			isLoadMore = false;
 			DBHelper dBHelper = new DBHelper(FriendHomeActivity.this);
 			SQLiteDatabase reader = dBHelper.getReadableDatabase();
 			Cursor cursor = reader.rawQuery("select * from " + Constant.TB_VehicleFriend + " where Cust_id = ?", new String[]{cust_id});
@@ -275,23 +284,32 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 //				}
 				
 				//分页查询数据库   当前  总数据量（1  -  9）小于每页数据量（10）
-				if(Constant.totalPage1 < Constant.pageSize1){
+				if(friendArticleTotalNum < Constant.pageSize1){
 					articleDataList.clear();
 					articleDataList = dBExcute.getArticlePageDatas(FriendHomeActivity.this, "select * from " + Constant.TB_VehicleFriend + " where Cust_id = ? order by Blog_id desc limit ?,?", new String[]{cust_id,String.valueOf(Constant.start1),String.valueOf(Constant.pageSize1)}, articleDataList);
-					myAdapter.refreshDates(articleDataList);
 					isLoadMore = true;
-				}else if(Constant.totalPage1 == Constant.pageSize1){
+					bol = true;
+				}else if(friendArticleTotalNum == Constant.pageSize1){
+					isLoadMore = false;
 					articleDataList.clear();
 					Constant.start1 = Constant.currentPage1*Constant.pageSize1;
-					Constant.currentPage1 ++ ;
+					if(Constant.currentPage1 < Constant.totalPage1){
+						Constant.currentPage1 ++ ;
+					}
 					articleDataList = dBExcute.getArticlePageDatas(FriendHomeActivity.this, "select * from " + Constant.TB_VehicleFriend + " where Cust_id = ? order by Blog_id desc limit ?,?", new String[]{cust_id,String.valueOf(Constant.start1),String.valueOf(Constant.pageSize1)}, articleDataList);
-					myAdapter.refreshDates(articleDataList);
 				}else{
+					if(bol){
+						bol = false;
+						articleDataList.clear();
+					}
+					isLoadMore = false;
 					Constant.start1 = Constant.currentPage1*Constant.pageSize1;
-					Constant.currentPage1 ++ ;
+					if(Constant.currentPage1 < Constant.totalPage1){
+						Constant.currentPage1 ++ ;
+					}
 					articleDataList = dBExcute.getArticlePageDatas(FriendHomeActivity.this, "select * from " + Constant.TB_VehicleFriend + " where Cust_id = ? order by Blog_id desc limit ?,?", new String[]{cust_id,String.valueOf(Constant.start1),String.valueOf(Constant.pageSize1)}, articleDataList);
-					myAdapter.refreshDates(articleDataList);
 				}
+				
 				if(Constant.totalPage1 == Constant.currentPage1){
 					isLoadMore = true;
 				}

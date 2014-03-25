@@ -34,9 +34,12 @@ public class BrankAdapter extends BaseAdapter{
 	private List<BrankModel> brankKList;
 	ViewHolder viewHolder = null;
 	private static final int showLogo = 1;
+	Bitmap bitmap;
+	Handler handler;
 	public BrankAdapter(Context context,List<BrankModel> brankKList){
 		this.context = context;
 		this.brankKList = brankKList;
+		this.handler = handler;
 	}
 	
 	/**
@@ -90,11 +93,35 @@ public class BrankAdapter extends BaseAdapter{
 					viewHolder.logo.setImageBitmap(image);
 				}else{
 					viewHolder.logo.setImageResource(R.drawable.body_nothing_icon);
+					if(!"".equals(this.brankKList.get(position).getLogoUrl()) && this.brankKList.get(position).getLogoUrl() != null){
+//						String logoName = getLogoForPosition(position);
+//						if(position == getLogoPositionForSection(logoName)){
+//							Log.e("BrankAdapter",this.brankKList.get(position).getVehicleBrank());
+//							getImageFromUrl(Constant.VehicleLogoPath, this.brankKList.get(position).getVehicleBrank(), this.brankKList.get(position).getLogoUrl());
+//						}
+					}
 				}
 		return convertView;
 	}
 	
+	/**
+	 * 判断是否已经在下载logo  在下载则不下载
+	 */
 	
+	
+	public String getLogoForPosition(int position) {
+		return this.brankKList.get(position).getLogoUrl();
+	}
+	
+	public int getLogoPositionForSection(String section) {
+		for (int i = 0; i < getCount(); i++) {
+			String str = this.brankKList.get(i).getLogoUrl();
+			if (str.equals(section)) {
+				return i;
+			}
+		}
+		return -1;
+	}
 
 	/**
 	 * 根据ListView的当前位置获取分类的首字母的Char ascii值
@@ -132,4 +159,40 @@ public class BrankAdapter extends BaseAdapter{
 			return "#";
 		}
 	}
+	
+	public void getImageFromUrl(final String imagePath,final String name,final String logoUrl){
+		new Thread(new Runnable() {
+			public void run() {
+				bitmap = GetSystem.getBitmapFromURL(Constant.ImageUrl + logoUrl);
+				if (bitmap != null) {
+					createImage(imagePath + name + ".png", bitmap);
+				}
+			}
+		}).start();
+	}
+	
+	
+	//向SD卡中添加图片
+		public void createImage(String fileName,Bitmap bitmap){
+			FileOutputStream b = null;
+			try {  
+				Log.e("BrandAdapter/b == null ?",b == null ? "null":"no");
+	            b = new FileOutputStream(fileName);  
+	            if(b != null){
+	            	bitmap.compress(Bitmap.CompressFormat.PNG, 100, b);// 把数据写入文件
+	            }
+	        } catch (FileNotFoundException e) {  
+	        	Log.e("BrandAdapter","FileNotFoundException");
+	            e.printStackTrace();  
+	        } finally {  
+	            try {  
+	            	if(b != null ){
+	            		b.flush();  
+	            		b.close();  
+	            	}
+	            } catch (IOException e) {  
+	                e.printStackTrace();  
+	            }  
+	        }
+		}
 }
