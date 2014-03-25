@@ -777,6 +777,8 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
             } else {//更新
                 dbExcute.UpdateDB(this, values, "cust_id=?",new String[] { Variable.cust_id }, Constant.TB_Account);
             }
+            cursor.close();
+            db.close();
         } catch (JSONException e) {
             e.printStackTrace();
         }

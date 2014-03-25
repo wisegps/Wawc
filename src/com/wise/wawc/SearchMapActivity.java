@@ -288,6 +288,7 @@ public class SearchMapActivity extends Activity {
         public void onGetShareUrlResult(MKShareUrlResult arg0, int arg1,int arg2) {}
         @Override
         public void onGetPoiResult(MKPoiResult res, int type, int error) {
+            Log.d(TAG, "error = " + error + " , " + "type = " + type);
             if (error == MKEvent.ERROR_RESULT_NOT_FOUND) {
                 Toast.makeText(SearchMapActivity.this,
                         R.string.search_result_not_found, Toast.LENGTH_SHORT)

@@ -475,7 +475,7 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 									String sql3 = "delete from "+ Constant.TB_VehicleFriendType + " where Type_id = " + article;
 									reader.execSQL(sql1);
 									reader.execSQL(sql3);
-									
+									reader.close();
 									
 									//插入新数据
 									for(int i = 0 ; i < jsonArray.length() ; i ++){

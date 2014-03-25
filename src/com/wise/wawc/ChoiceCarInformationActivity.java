@@ -373,6 +373,8 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 			Log.e("服务器数据","服务器数据");
 			new Thread(new NetThread.GetDataThread(myHandler, url, handlerWhat)).start();
 		}
+		cursor.close();
+		db.close();
 	}
 	
 	//解析json数据

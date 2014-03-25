@@ -132,6 +132,8 @@ public class FriendInformationActivity extends Activity{
         	 String url = Constant.BaseUrl + "customer/" + cust_id + "/vehicle?auth_code=" + Variable.auth_code;
              new Thread(new NetThread.GetDataThread(myHandler, url, Get_car_info)).start();
         }
+        cursor.close();
+        db.close();
 	}
 	
 	
@@ -168,6 +170,8 @@ public class FriendInformationActivity extends Activity{
     				e.printStackTrace();
     			}
     		}
+    		cursor.close();
+    		db.close();
     		//  所有品牌
     		for(int i = 0 ; i < brankList.size() ; i ++){
     			if(carBrand.equals(brankList.get(i).getVehicleBrank())){

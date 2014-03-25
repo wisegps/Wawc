@@ -244,6 +244,8 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 			if(cursor.moveToLast()){
 				minBlogId = cursor.getInt(cursor.getColumnIndex("Blog_id"));
 			}
+			cursor.close();
+			sQLiteDatabase.close();
 			new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + cust_id + "/blog?auth_code=" + Variable.auth_code + "&min_id=" + minBlogId, loadMoreCode)).start();
 		}
 	}
@@ -254,6 +256,8 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 			SQLiteDatabase reader = dBHelper.getReadableDatabase();
 			Cursor cursor = reader.rawQuery("select * from " + Constant.TB_VehicleFriend + " where Cust_id = ?", new String[]{cust_id});
 			friendArticleTotalNum = cursor.getCount();
+			cursor.close();
+			reader.close();
 			if(friendArticleTotalNum > 0){
 				//查询数据库
 				Constant.totalPage1 = friendArticleTotalNum%Constant.pageSize1 > 0 ? friendArticleTotalNum/Constant.pageSize1 + 1 : friendArticleTotalNum/Constant.pageSize1;
@@ -328,9 +332,9 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 //					}
 //				}
 //			}
-			DBHelper dBHelper = new DBHelper(getApplicationContext());
-			SQLiteDatabase db = dBHelper.getReadableDatabase();
-			Cursor cursor = db.rawQuery("select * from " + Constant.TB_VehicleFriend + " where Cust_id = ?", new String[]{cust_id});
+			//DBHelper dBHelper = new DBHelper(getApplicationContext());
+			//SQLiteDatabase db = dBHelper.getReadableDatabase();
+			//Cursor cursor = db.rawQuery("select * from " + Constant.TB_VehicleFriend + " where Cust_id = ?", new String[]{cust_id});
 			} catch (JSONException e) {
 				e.printStackTrace();
 			}

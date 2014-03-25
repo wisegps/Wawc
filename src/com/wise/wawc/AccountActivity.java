@@ -189,6 +189,8 @@ public class AccountActivity extends Activity{
                 et_activity_account_phone.setText(Phone); 
             }                
         }
+        cursor.close();
+        db.close();
 	}
 	/**
 	 * 获取本地数据
