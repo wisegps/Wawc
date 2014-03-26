@@ -529,13 +529,9 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        System.out.println("MainActivity onDestroy");
+        Log.d(TAG, "onDestroy");
         ShareSDK.stopSDK(this);
-        WawcApplication app = (WawcApplication) this.getApplication();
-        if (app.mBMapManager != null) {
-            app.mBMapManager.destroy();
-            app.mBMapManager = null;
-        }
+        
         stopService(new Intent(MainActivity.this, LocationService.class));
         Constant.start = 0;  // 开始页
         Constant.pageSize = 10;   //每页数量
@@ -546,7 +542,7 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
         Constant.totalPage1 = 0;   //数据总量
         Constant.currentPage1 = 0;  //当前页
         VehicleFriendActivity.newArticleBlogId = 0;
-        
+        System.exit(0);
         //测试  车友圈刷新
         //DBHelper dbHelper = new DBHelper(MainActivity.this);
         //SQLiteDatabase write = dbHelper.getWritableDatabase();

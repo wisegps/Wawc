@@ -14,7 +14,6 @@ import com.wise.data.CarData;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.Variable;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -53,13 +52,10 @@ public class CarLocationActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WawcApplication app = (WawcApplication) this.getApplication();
+        WawcApplication app = (WawcApplication)this.getApplication();
         if (app.mBMapManager == null) {
             app.mBMapManager = new BMapManager(getApplicationContext());
-            /**
-             * 如果BMapManager没有初始化则初始化BMapManager
-             */
-            app.mBMapManager.init(WawcApplication.strKey, null);
+            app.mBMapManager.init(WawcApplication.strKey,null);
         }
         setContentView(R.layout.activity_car_location);
         TextView tv_car_name = (TextView) findViewById(R.id.tv_car_name);
@@ -71,7 +67,7 @@ public class CarLocationActivity extends Activity {
         mMapController.setCenter(point);// 设置地图中心点
         mMapController.setZoom(18);// 设置地图zoom级别
         overlays = mMapView.getOverlays();
-        mMapView.regMapViewListener(WawcApplication.getInstance().mBMapManager, mkMapViewListener);
+        mMapView.regMapViewListener(app.mBMapManager, mkMapViewListener);
         // TODO 修改
         Intent intent = getIntent();
         int index = intent.getIntExtra("index", 0);
@@ -104,6 +100,7 @@ public class CarLocationActivity extends Activity {
         ll_activity_car_location_bottom = (LinearLayout) findViewById(R.id.ll_activity_car_location_bottom);
 
     }
+
     OnClickListener onClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -123,13 +120,15 @@ public class CarLocationActivity extends Activity {
             case R.id.bt_activity_car_location_findCar:
                 GeoPoint pt1 = new GeoPoint((int) (Variable.Lat * 1E6),
                         (int) (Variable.Lon * 1E6));
-                GetSystem.FindCar(CarLocationActivity.this, pt1, geoPoint, "起始",
-                        "结束");
+                GetSystem.FindCar(CarLocationActivity.this, pt1, geoPoint,
+                        "起始", "结束");
                 break;
             case R.id.bt_activity_car_location_travel:// 车辆行程
-                Toast.makeText(CarLocationActivity.this, R.string.new_version, Toast.LENGTH_SHORT).show();
-                
-                //CarLocationActivity.this.startActivity(new Intent(CarLocationActivity.this, TravelActivity.class));
+                Toast.makeText(CarLocationActivity.this, R.string.new_version,
+                        Toast.LENGTH_SHORT).show();
+
+                // CarLocationActivity.this.startActivity(new
+                // Intent(CarLocationActivity.this, TravelActivity.class));
                 break;
             case R.id.tv_item_car_location_oil:
                 ToSearchMap(getString(R.string.oil_station));
@@ -152,6 +151,7 @@ public class CarLocationActivity extends Activity {
             }
         }
     };
+
     private void ToSearchMap(String keyWord) {
         mPopupWindow.dismiss();
         Intent intent = new Intent(CarLocationActivity.this,
@@ -159,6 +159,7 @@ public class CarLocationActivity extends Activity {
         intent.putExtra("keyWord", keyWord);
         startActivity(intent);
     }
+
     /**
      * 弹出popupwindow
      */
@@ -200,10 +201,12 @@ public class CarLocationActivity extends Activity {
         public OverlayCar(Drawable arg0, MapView arg1) {
             super(arg0, arg1);
         }
+
         @Override
         protected boolean onTap(int arg0) {
             return true;
         }
+
         @Override
         public boolean onTap(GeoPoint arg0, MapView arg1) {
             super.onTap(arg0, arg1);
@@ -211,25 +214,30 @@ public class CarLocationActivity extends Activity {
             return false;
         }
     }
+
     @Override
     protected void onResume() {
         super.onResume();
-        mMapView.onResume();
+        mMapView.onResume(); 
     }
+
     @Override
     protected void onPause() {
         super.onPause();
         mMapView.onPause();
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         mMapView.destroy();
     }
+
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         mMapView.onSaveInstanceState(outState);
     };
+
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         mMapView.onRestoreInstanceState(savedInstanceState);
@@ -237,22 +245,30 @@ public class CarLocationActivity extends Activity {
 
     MKMapViewListener mkMapViewListener = new MKMapViewListener() {
         @Override
-        public void onMapMoveFinish() {}
+        public void onMapMoveFinish() {
+        }
+
         @Override
-        public void onMapLoadFinish() {}
+        public void onMapLoadFinish() {
+        }
+
         @Override
-        public void onMapAnimationFinish() {}
+        public void onMapAnimationFinish() {
+        }
+
         @Override
         public void onGetCurrentMap(Bitmap arg0) {
             System.out.println("截取成功");
-            GetSystem.saveImageSD(arg0, Constant.picPath, Constant.ShareImage,50);
+            GetSystem.saveImageSD(arg0, Constant.picPath, Constant.ShareImage,
+                    50);
             String imagePath = Constant.picPath + Constant.ShareImage;
             String url = "http://api.map.baidu.com/geocoder?location="
                     + carData.getLat() + "," + carData.getLon()
                     + "&coord_type=bd09ll&output=html";
             StringBuffer sb = new StringBuffer();
             sb.append("【位置】 ");
-            if(carData.getGps_time() != null && !carData.getGps_time().equals("")){
+            if (carData.getGps_time() != null
+                    && !carData.getGps_time().equals("")) {
                 try {
                     sb.append(carData.getGps_time().substring(5, 16) + " ");
                 } catch (Exception e) {
@@ -261,12 +277,14 @@ public class CarLocationActivity extends Activity {
                 }
             }
             sb.append(carData.getObj_name());
-            sb.append(" 位于"+carData.getAdress());
+            sb.append(" 位于" + carData.getAdress());
             sb.append(" " + url);
             GetSystem.share(CarLocationActivity.this, sb.toString(), imagePath,
-                    (float) Lat, (float) Lon,"位置",url);
+                    (float) Lat, (float) Lon, "位置", url);
         }
+
         @Override
-        public void onClickMapPoi(MapPoi arg0) {}
+        public void onClickMapPoi(MapPoi arg0) {
+        }
     };
 }

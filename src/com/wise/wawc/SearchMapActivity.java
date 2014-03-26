@@ -81,13 +81,10 @@ public class SearchMapActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WawcApplication app = (WawcApplication) this.getApplication();
+        WawcApplication app = (WawcApplication)this.getApplication();
         if (app.mBMapManager == null) {
             app.mBMapManager = new BMapManager(getApplicationContext());
-            /**
-             * 如果BMapManager没有初始化则初始化BMapManager
-             */
-            app.mBMapManager.init(WawcApplication.strKey, null);
+            app.mBMapManager.init(WawcApplication.strKey,null);
         }
         setContentView(R.layout.activity_search_map);
         ShareSDK.initSDK(this);
@@ -166,10 +163,9 @@ public class SearchMapActivity extends Activity {
             // 搜索关键字
             Log.d(TAG, keyWord + "Variable.Lat = " + Variable.Lat + " , Variable.Lon = " + Variable.Lon);
             mkSearch = new MKSearch();
-            mkSearch.init(WawcApplication.getInstance().mBMapManager, mkSearchListener);
+            mkSearch.init(app.mBMapManager, mkSearchListener);
             mkSearch.poiSearchNearBy(keyWord, point, 50000);
         }
-        //body_icon_outset
         // 显示自己位置
         Drawable mark = getResources().getDrawable(R.drawable.body_icon_outset);
         OverlayMe overlayMe = new OverlayMe(mark, mMapView);

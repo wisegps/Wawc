@@ -8,9 +8,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import cn.sharesdk.framework.ShareSDK;
-
 import com.baidu.mapapi.BMapManager;
 import com.baidu.mapapi.search.MKAddrInfo;
 import com.baidu.mapapi.search.MKBusLineResult;
@@ -80,7 +78,7 @@ import android.widget.Toast;
  */
 public class HomeActivity extends Activity {
     private static final String TAG = "HomeActivity";
-    private static final int Get_carLimit = 1; //获取车辆限行
+    private static final int Get_carLimit = 1; // 获取车辆限行
     private static final int Get_RealTimeWeather = 2; // 获取实时天气
     private static final int Get_Fuel = 3; // 获取城市油价
     private static final int Get_Cars = 4; // 获取车辆数据
@@ -89,13 +87,13 @@ public class HomeActivity extends Activity {
     private static final int Get_persion = 7;// 获取个人信息
     private static final int Get_device_info = 8; // 获取单个车辆定位,里程信息
     private static final int Get_car_info = 9; // 获取单个车辆信息
-    private static final int Refresh = 10 ; // 刷新车辆信息
+    private static final int Refresh = 10; // 刷新车辆信息
 
     LinearLayout ll_image;
     TextView tv_item_weather_date, tv_item_weather_wd, tv_item_weather,
             tv_item_weather_sky, tv_item_weather_temp1,
             tv_item_weather_index_xc, tv_item_weather_city, tv_item_oil_90,
-            tv_item_oil_93, tv_item_oil_97, tv_item_oil_0,Tv_xx;
+            tv_item_oil_93, tv_item_oil_97, tv_item_oil_0, Tv_xx;
     HScrollLayout ScrollLayout_car;
     private ImageView saySomething = null; // 语音识别
     private SpeechRecognizer iatRecognizer; // 识别对象
@@ -113,15 +111,14 @@ public class HomeActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WawcApplication app = (WawcApplication) this.getApplication();
+        WawcApplication app = (WawcApplication)this.getApplication();
         if (app.mBMapManager == null) {
             app.mBMapManager = new BMapManager(getApplicationContext());
-            app.mBMapManager.init(WawcApplication.strKey, null);
+            app.mBMapManager.init(WawcApplication.strKey,null);
         }
         setContentView(R.layout.activity_home);
         mkSearch = new MKSearch();
-        mkSearch.init(WawcApplication.getInstance().mBMapManager,
-                mkSearchListener);
+        mkSearch.init(app.mBMapManager, mkSearchListener);
         ll_image = (LinearLayout) findViewById(R.id.ll_image);
         ImageView iv_activity_home_menu = (ImageView) findViewById(R.id.iv_activity_home_menu);
         iv_activity_home_menu.setOnClickListener(onClickListener);
@@ -150,8 +147,10 @@ public class HomeActivity extends Activity {
                     carLimit(view);
                 }
             }
+
             @Override
-            public void OnLastView() {}
+            public void OnLastView() {
+            }
         });
         Button bt_activity_home_vehicle_status = (Button) findViewById(R.id.bt_activity_home_vehicle_status);
         bt_activity_home_vehicle_status.setOnClickListener(onClickListener);
@@ -178,7 +177,7 @@ public class HomeActivity extends Activity {
         tv_item_weather_index_xc = (TextView) findViewById(R.id.tv_item_weather_index_xc);
         tv_item_weather_city = (TextView) findViewById(R.id.tv_item_weather_city);
         tv_item_weather_city.setOnClickListener(onClickListener);
-        Tv_xx = (TextView)findViewById(R.id.Tv_xx);
+        Tv_xx = (TextView) findViewById(R.id.Tv_xx);
 
         tv_item_oil_90 = (TextView) findViewById(R.id.tv_item_oil_90);
         tv_item_oil_93 = (TextView) findViewById(R.id.tv_item_oil_93);
@@ -187,13 +186,15 @@ public class HomeActivity extends Activity {
 
         final ImageView iv_weather = (ImageView) findViewById(R.id.iv_weather);
         final ImageView iv_oil = (ImageView) findViewById(R.id.iv_oil);
-        // tv_item_oil_update = (TextView)oilView.findViewById(R.id.tv_item_oil_update);
+        // tv_item_oil_update =
+        // (TextView)oilView.findViewById(R.id.tv_item_oil_update);
         ScrollLayout_other.setOnViewChangeListener(new OnViewChangeListener() {
             @Override
             public void OnViewChange(int view) {
                 switch (view) {
                 case 0:
-                    iv_weather.setImageResource(R.drawable.home_body_cutover_press);
+                    iv_weather
+                            .setImageResource(R.drawable.home_body_cutover_press);
                     iv_oil.setImageResource(R.drawable.home_body_cutover);
                     break;
                 case 1:
@@ -242,7 +243,8 @@ public class HomeActivity extends Activity {
     }
 
     private TextView[][] mTextViews;
-    //显示车辆
+
+    // 显示车辆
     private void showCar() {
         ScrollLayout_car.removeAllViews();
         mTextViews = new TextView[Variable.carDatas.size()][2];
@@ -321,10 +323,10 @@ public class HomeActivity extends Activity {
                         Variable.carDatas.get(DefaultVehicleID).setCheck(true);
                     }
                     ScrollLayout_car.snapFastToScreen(DefaultVehicleID);
-                    for(int i = 0 ; i < Variable.carDatas.size() ; i++){
-                        if(i == DefaultVehicleID){
+                    for (int i = 0; i < Variable.carDatas.size(); i++) {
+                        if (i == DefaultVehicleID) {
                             Variable.carDatas.get(i).setCheck(true);
-                        }else{
+                        } else {
                             Variable.carDatas.get(i).setCheck(false);
                         }
                     }
@@ -347,45 +349,73 @@ public class HomeActivity extends Activity {
                 if (Variable.carDatas == null || Variable.carDatas.size() == 0) {
                 } else {
                     new AlertDialog.Builder(HomeActivity.this)
-                    .setTitle("列表框")
-                    .setItems(new String[] { "拨打电话", "位置分享" },
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog,int which) {
-                                    if (which == 0) {
-                                        Log.d(TAG, Variable.carDatas.get(DefaultVehicleID).toString());
-                                        Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:"+ Variable.carDatas.get(DefaultVehicleID).getMaintain_tel()));  
-                                        HomeActivity.this.startActivity(intent);
-                                    } else {
-                                        Intent intent_help = new Intent(HomeActivity.this,ShareLocationActivity.class);
-                                        intent_help.putExtra("reason", "救援");
-                                        intent_help.putExtra("index", DefaultVehicleID);
-                                        HomeActivity.this.startActivity(intent_help);
-                                    }
-                                }
-                            }).setNegativeButton("确定", null).show();                    
+                            .setTitle("列表框")
+                            .setItems(new String[] { "拨打电话", "位置分享" },
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(
+                                                DialogInterface dialog,
+                                                int which) {
+                                            if (which == 0) {
+                                                Log.d(TAG, Variable.carDatas
+                                                        .get(DefaultVehicleID)
+                                                        .toString());
+                                                Intent intent = new Intent(
+                                                        Intent.ACTION_DIAL,
+                                                        Uri.parse("tel:"
+                                                                + Variable.carDatas
+                                                                        .get(DefaultVehicleID)
+                                                                        .getMaintain_tel()));
+                                                HomeActivity.this
+                                                        .startActivity(intent);
+                                            } else {
+                                                Intent intent_help = new Intent(
+                                                        HomeActivity.this,
+                                                        ShareLocationActivity.class);
+                                                intent_help.putExtra("reason",
+                                                        "救援");
+                                                intent_help.putExtra("index",
+                                                        DefaultVehicleID);
+                                                HomeActivity.this
+                                                        .startActivity(intent_help);
+                                            }
+                                        }
+                                    }).setNegativeButton("确定", null).show();
                 }
                 break;
             case R.id.bt_activity_home_risk:// 报险
                 if (Variable.carDatas == null || Variable.carDatas.size() == 0) {
                 } else {
                     new AlertDialog.Builder(HomeActivity.this)
-                    .setTitle("列表框")
-                    .setItems(new String[] { "拨打电话", "位置分享" },
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog,int which) {
-                                    if (which == 0) {
-                                        Intent intent = new Intent(Intent.ACTION_DIAL,Uri.parse("tel:"+ Variable.carDatas.get(DefaultVehicleID).getMaintain_tel()));  
-                                        HomeActivity.this.startActivity(intent);
-                                    } else {
-                                        Intent intent_risk = new Intent(HomeActivity.this,ShareLocationActivity.class);
-                                        intent_risk.putExtra("reason", "报险");
-                                        intent_risk.putExtra("index", DefaultVehicleID);
-                                        HomeActivity.this.startActivity(intent_risk);
-                                    }
-                                }
-                            }).setNegativeButton("确定", null).show();
+                            .setTitle("列表框")
+                            .setItems(new String[] { "拨打电话", "位置分享" },
+                                    new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(
+                                                DialogInterface dialog,
+                                                int which) {
+                                            if (which == 0) {
+                                                Intent intent = new Intent(
+                                                        Intent.ACTION_DIAL,
+                                                        Uri.parse("tel:"
+                                                                + Variable.carDatas
+                                                                        .get(DefaultVehicleID)
+                                                                        .getMaintain_tel()));
+                                                HomeActivity.this
+                                                        .startActivity(intent);
+                                            } else {
+                                                Intent intent_risk = new Intent(
+                                                        HomeActivity.this,
+                                                        ShareLocationActivity.class);
+                                                intent_risk.putExtra("reason",
+                                                        "报险");
+                                                intent_risk.putExtra("index",
+                                                        DefaultVehicleID);
+                                                HomeActivity.this
+                                                        .startActivity(intent_risk);
+                                            }
+                                        }
+                                    }).setNegativeButton("确定", null).show();
                 }
                 break;
             case R.id.bt_activity_home_share:// 位置分享
@@ -399,8 +429,8 @@ public class HomeActivity extends Activity {
                 if (Variable.carDatas == null || Variable.carDatas.size() == 0) {
                     AddCarNote();
                 } else {
-                    HomeActivity.this.startActivity(new Intent(HomeActivity.this,
-                            TrafficActivity.class));
+                    HomeActivity.this.startActivity(new Intent(
+                            HomeActivity.this, TrafficActivity.class));
                 }
                 break;
             case R.id.bt_activity_home_car_remind:// 车务提醒
@@ -414,8 +444,9 @@ public class HomeActivity extends Activity {
                 }
                 break;
             case R.id.bt_activity_home_vehicle_status:// 爱车车况
-                Toast.makeText(HomeActivity.this, R.string.new_version, Toast.LENGTH_SHORT).show();
-                //TurnVehicleStatus();
+                Toast.makeText(HomeActivity.this, R.string.new_version,
+                        Toast.LENGTH_SHORT).show();
+                // TurnVehicleStatus();
                 break;
             case R.id.tv_activity_home_car_adress: // 车辆位置
                 Intent intent_adress = new Intent(HomeActivity.this,
@@ -701,7 +732,8 @@ public class HomeActivity extends Activity {
                         Bitmap bitmap = GetSystem.getBitmapFromURL(imageUrl);
                         if (bitmap != null) {
                             GetSystem.saveImageSD(bitmap,
-                                    Constant.VehicleLogoPath, brand + ".png",100);
+                                    Constant.VehicleLogoPath, brand + ".png",
+                                    100);
                             Variable.carDatas.get(i).setLogoPath(imagePath);
                         }
                         break;
@@ -906,7 +938,8 @@ public class HomeActivity extends Activity {
                 String car_type = jsonObject.getString("car_type");
                 String engine_no = jsonObject.getString("engine_no");
                 String frame_no = jsonObject.getString("frame_no");
-                String insurance_company = jsonObject.getString("insurance_company");
+                String insurance_company = jsonObject
+                        .getString("insurance_company");
                 String reg_no = "";
                 String vio_location = "";
                 if (jsonObject.opt("reg_no") != null) {
@@ -925,15 +958,22 @@ public class HomeActivity extends Activity {
                             .getString("maintain_last_date").replace("T", " ")
                             .substring(0, 19));
                 }
-                String annual_inspect_date = GetSystem.ChangeTimeZone(jsonObject
-                        .getString("annual_inspect_date").replace("T", " ").substring(0, 19));
-                String insurance_date = GetSystem.ChangeTimeZone(jsonObject.getString("insurance_date")
-                        .replace("T", " ").substring(0, 19));
-                String maintain_company = jsonObject.getString("maintain_company");
-                String maintain_last_mileage = jsonObject.getString("maintain_last_mileage");
-                String maintain_next_mileage = jsonObject.getString("maintain_next_mileage");
-                String buy_date = GetSystem.ChangeTimeZone(jsonObject.getString("buy_date")
-                        .replace("T", " ").substring(0, 19));
+                String annual_inspect_date = GetSystem
+                        .ChangeTimeZone(jsonObject
+                                .getString("annual_inspect_date")
+                                .replace("T", " ").substring(0, 19));
+                String insurance_date = GetSystem.ChangeTimeZone(jsonObject
+                        .getString("insurance_date").replace("T", " ")
+                        .substring(0, 19));
+                String maintain_company = jsonObject
+                        .getString("maintain_company");
+                String maintain_last_mileage = jsonObject
+                        .getString("maintain_last_mileage");
+                String maintain_next_mileage = jsonObject
+                        .getString("maintain_next_mileage");
+                String buy_date = GetSystem.ChangeTimeZone(jsonObject
+                        .getString("buy_date").replace("T", " ")
+                        .substring(0, 19));
 
                 String car_brand_id = jsonObject.getString("car_brand_id");
                 String car_series_id = jsonObject.getString("car_series_id");
@@ -973,7 +1013,8 @@ public class HomeActivity extends Activity {
                 carData.setRegNo(reg_no);
                 carData.setVio_location(vio_location);
                 carData.setDevice_id(device_id);
-                String imagePath = Constant.VehicleLogoPath + car_brand + ".png";// SD卡路径
+                String imagePath = Constant.VehicleLogoPath + car_brand
+                        + ".png";// SD卡路径
                 if (new File(imagePath).isFile()) {// 存在
                     carData.setLogoPath(imagePath);
                 } else {
@@ -1069,7 +1110,7 @@ public class HomeActivity extends Activity {
                 + "&coord_type=bd09ll&output=html";
         StringBuffer sb = new StringBuffer();
         sb.append("【位置】 ");
-        if(carData.getGps_time() != null && !carData.getGps_time().equals("")){
+        if (carData.getGps_time() != null && !carData.getGps_time().equals("")) {
             try {
                 sb.append(carData.getGps_time().substring(5, 16) + " ");
             } catch (Exception e) {
@@ -1082,7 +1123,7 @@ public class HomeActivity extends Activity {
         sb.append(url);
         GetSystem.share(HomeActivity.this, sb.toString(), "",
                 Float.valueOf(carData.getLat()),
-                Float.valueOf(carData.getLon()),"位置",url);
+                Float.valueOf(carData.getLon()), "位置", url);
     }
 
     private void registerBroadcastReceiver() {
@@ -1109,7 +1150,7 @@ public class HomeActivity extends Activity {
                     GetCars();
                 }
                 GetDBPersionRemindData();
-            }else if (action.equals(Constant.A_UpdateCar)) {
+            } else if (action.equals(Constant.A_UpdateCar)) {
                 showCar();
             }
         }
@@ -1119,31 +1160,36 @@ public class HomeActivity extends Activity {
     protected void onResume() {
         super.onResume();
         System.out.println("onResume");
-        //TODO 考虑到车务提醒修改信息后返回
-        if(Variable.carDatas == null || Variable.carDatas.size() == 0){
-            
-        }else{
+        
+        // TODO 考虑到车务提醒修改信息后返回
+        if (Variable.carDatas == null || Variable.carDatas.size() == 0) {
+
+        } else {
             GetDBPersionRemindData();
             notiRemind(DefaultVehicleID);
             getCarRemindFromUrl(DefaultVehicleID);
         }
     }
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "onDestroy");
         unregisterReceiver(broadcastReceiver);
         mkSearch.destory();
-        Log.d(TAG, "onDestroy");
         isRefresh = false;
-        
-        
+
         ShareSDK.stopSDK(this);
-        WawcApplication app = (WawcApplication) this.getApplication();
+        WawcApplication app = (WawcApplication)this.getApplication();
         if (app.mBMapManager != null) {
             app.mBMapManager.destroy();
             app.mBMapManager = null;
         }
+        System.exit(0);
     }
 
     @Override
@@ -1176,7 +1222,7 @@ public class HomeActivity extends Activity {
         public void onEvent(int arg0, Bundle arg1) {
         }
     };
-    //更改语音识别ui布局
+    // 更改语音识别ui布局
     RecognizerListener recognizerListener = new RecognizerListener() {
         public void onBeginOfSpeech() {
             sb = new StringBuffer();
@@ -1208,7 +1254,8 @@ public class HomeActivity extends Activity {
             } else {
                 Animation animation = voiceImage.getAnimation();
                 if (animation == null) {
-                    animation = AnimationUtils.loadAnimation(HomeActivity.this,R.anim.tip);
+                    animation = AnimationUtils.loadAnimation(HomeActivity.this,
+                            R.anim.tip);
                     LinearInterpolator lin = new LinearInterpolator();
                     animation.setInterpolator(lin);
                     voiceImage.startAnimation(animation);
@@ -1235,20 +1282,20 @@ public class HomeActivity extends Activity {
      * @param index
      */
     private void getCarInfo(int index) {
-        if(Variable.carDatas == null || Variable.carDatas.size() == 0){
-            
-        }else{
+        if (Variable.carDatas == null || Variable.carDatas.size() == 0) {
+
+        } else {
             String url = Constant.BaseUrl + "vehicle/"
                     + Variable.carDatas.get(index).getObj_id() + "?auth_code="
                     + Variable.auth_code;
             new Thread(new NetThread.GetDataThread(handler, url, Get_car_info))
                     .start();
-        }        
+        }
     }
 
     private void jsonCarInfo(String result) {
         try {
-            if(!result.equals("")){
+            if (!result.equals("")) {
                 JSONObject jsonObject = new JSONObject(result);
                 if (jsonObject.getString("obj_id").equals(
                         Variable.carDatas.get(DefaultVehicleID).getObj_id())) {
@@ -1265,19 +1312,22 @@ public class HomeActivity extends Activity {
                         iv_car_status.setVisibility(View.VISIBLE);
                     }
                 }
-            }            
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-    private void carLimit(int index){
-        if(Variable.carDatas == null || Variable.carDatas.size() == 0){
-            
-        }else{
+
+    private void carLimit(int index) {
+        if (Variable.carDatas == null || Variable.carDatas.size() == 0) {
+
+        } else {
             CarData carData = Variable.carDatas.get(index);
             try {
                 String url = Constant.BaseUrl + "base/ban?city="
-                        + URLEncoder.encode(LocationCity, "UTF-8") + "&obj_name="+URLEncoder.encode(carData.getObj_name(), "UTF-8");
+                        + URLEncoder.encode(LocationCity, "UTF-8")
+                        + "&obj_name="
+                        + URLEncoder.encode(carData.getObj_name(), "UTF-8");
                 new Thread(new NetThread.GetDataThread(handler, url,
                         Get_carLimit)).start();
             } catch (Exception e) {
@@ -1285,7 +1335,8 @@ public class HomeActivity extends Activity {
             }
         }
     }
-    private void jsonCarLinit(String result){
+
+    private void jsonCarLinit(String result) {
         try {
             JSONObject jsonObject = new JSONObject(result);
             String limit = jsonObject.getString("limit");
@@ -1294,17 +1345,21 @@ public class HomeActivity extends Activity {
             e.printStackTrace();
         }
     }
+
     /**
      * 车辆提醒
+     * 
      * @param index
      */
     private void notiRemind(int index) {
-        if(Variable.carDatas == null || Variable.carDatas.size() == 0){
-            
-        }else{
+        if (Variable.carDatas == null || Variable.carDatas.size() == 0) {
+
+        } else {
             CarData carData = Variable.carDatas.get(index);
-            Log.d(TAG, carData.getAnnual_inspect_date() + "," + carData.getInsurance_date() + "," + 
-                    annual_inspect_date + "," + change_date);
+            Log.d(TAG,
+                    carData.getAnnual_inspect_date() + ","
+                            + carData.getInsurance_date() + ","
+                            + annual_inspect_date + "," + change_date);
             if (GetSystem.isTimeOut(carData.getAnnual_inspect_date())
                     || GetSystem.isTimeOut(carData.getInsurance_date())
                     || GetSystem.isTimeOut(annual_inspect_date)
@@ -1314,11 +1369,12 @@ public class HomeActivity extends Activity {
                 iv_car_remind.setVisibility(View.GONE);
             }
             // 里程和位置在下一个url获取
-        }        
+        }
     }
 
     String annual_inspect_date;
     String change_date;
+
     /**
      * 获取个人证件信息
      */
@@ -1366,12 +1422,15 @@ public class HomeActivity extends Activity {
                 values.put("Phone", tel);
             }
             if (jsonObject.opt("annual_inspect_date") != null) {
-                annual_inspect_date = GetSystem.ChangeTimeZone(jsonObject.getString("annual_inspect_date").replace("T", " ").substring(0, 19));
+                annual_inspect_date = GetSystem.ChangeTimeZone(jsonObject
+                        .getString("annual_inspect_date").replace("T", " ")
+                        .substring(0, 19));
                 values.put("annual_inspect_date", annual_inspect_date);
             }
             if (jsonObject.opt("change_date") != null) {
-                change_date = GetSystem.ChangeTimeZone(jsonObject.getString("change_date")
-                        .replace("T", " ").substring(0, 19));
+                change_date = GetSystem.ChangeTimeZone(jsonObject
+                        .getString("change_date").replace("T", " ")
+                        .substring(0, 19));
                 values.put("change_date", change_date);
             }
             values.put("cust_id", Variable.cust_id);
@@ -1413,11 +1472,14 @@ public class HomeActivity extends Activity {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     DevicesData devicesData = new DevicesData();
                     devicesData.setDevice_id(jsonObject.getString("device_id"));
-                    devicesData.setHardware_version(jsonObject.getString("hardware_version"));
+                    devicesData.setHardware_version(jsonObject
+                            .getString("hardware_version"));
                     devicesData.setSerial(jsonObject.getString("serial"));
-                    devicesData.setService_end_date(jsonObject.getString("service_end_date"));
+                    devicesData.setService_end_date(jsonObject
+                            .getString("service_end_date"));
                     devicesData.setSim(jsonObject.getString("sim"));
-                    devicesData.setSoftware_version(jsonObject.getString("software_version"));
+                    devicesData.setSoftware_version(jsonObject
+                            .getString("software_version"));
                     devicesData.setStatus(jsonObject.getString("status"));
                     devicesData.setType(0);
                     devicesDatas.add(devicesData);
@@ -1488,40 +1550,44 @@ public class HomeActivity extends Activity {
 
     /**
      * 查询车的定位信息,车务提醒里程
+     * 
      * @param index
      */
     private void getCarRemindFromUrl(int index) {
-        if(Variable.carDatas == null || Variable.carDatas.size() == 0){
-            
-        }else{
+        if (Variable.carDatas == null || Variable.carDatas.size() == 0) {
+
+        } else {
             String device_id = Variable.carDatas.get(index).getDevice_id();
-            if(device_id == null || device_id.equals("")){
+            if (device_id == null || device_id.equals("")) {
                 try {
                     String AddrStr = Variable.Adress;
                     String Lat = String.valueOf(Variable.Lat);
                     String Lon = String.valueOf(Variable.Lon);
-                    if(AddrStr == null || AddrStr.equals("")){
-                        mTextViews[DefaultVehicleID][0].setText("未绑定终端，正在获取手机位置..."); 
-                    }else{
-                        mTextViews[DefaultVehicleID][0].setText(AddrStr); 
-                    }                
+                    if (AddrStr == null || AddrStr.equals("")) {
+                        mTextViews[DefaultVehicleID][0]
+                                .setText("未绑定终端，正在获取手机位置...");
+                    } else {
+                        mTextViews[DefaultVehicleID][0].setText(AddrStr);
+                    }
                     Variable.carDatas.get(DefaultVehicleID).setLat(Lat);
                     Variable.carDatas.get(DefaultVehicleID).setLon(Lon);
-                    Variable.carDatas.get(DefaultVehicleID).setGps_time(Variable.gpsTime);
+                    Variable.carDatas.get(DefaultVehicleID).setGps_time(
+                            Variable.gpsTime);
                     Variable.carDatas.get(DefaultVehicleID).setAdress(AddrStr);
-                    mTextViews[DefaultVehicleID][1].setText(GetSystem.sortHomeTime(Variable.gpsTime));
+                    mTextViews[DefaultVehicleID][1].setText(GetSystem
+                            .sortHomeTime(Variable.gpsTime));
                 } catch (Exception e) {
                     e.printStackTrace();
-                }                
-            }else{
+                }
+            } else {
                 String url = Constant.BaseUrl + "device/" + device_id
                         + "/active_gps_data?auth_code=" + Variable.auth_code;
-                new Thread(new NetThread.GetDataThread(handler, url, Get_device_info))
-                        .start();
+                new Thread(new NetThread.GetDataThread(handler, url,
+                        Get_device_info)).start();
             }
-        }                
+        }
     }
-     
+
     private void jsonDeviceInfo(String result) {
         try {
             JSONObject jsonObject = new JSONObject(result);
@@ -1543,11 +1609,16 @@ public class HomeActivity extends Activity {
                 String lon = jsonData.getString("lon");
                 Variable.carDatas.get(DefaultVehicleID).setLat(lat);
                 Variable.carDatas.get(DefaultVehicleID).setLon(lon);
-                String gps_time = jsonData.getString("gps_time").replace("T", " ").substring(0, 19);
-                Variable.carDatas.get(DefaultVehicleID).setGps_time(gps_time.substring(5, 16));
-                GeoPoint point = new GeoPoint(GetSystem.StringToInt(lat),GetSystem.StringToInt(lon));
-                Log.d(TAG, "gps_time = " + gps_time + " , lat = " + lat + " , lon = " + lon);
-                mTextViews[DefaultVehicleID][1].setText(GetSystem.sortHomeTime(gps_time));
+                String gps_time = jsonData.getString("gps_time")
+                        .replace("T", " ").substring(0, 19);
+                Variable.carDatas.get(DefaultVehicleID).setGps_time(
+                        gps_time.substring(5, 16));
+                GeoPoint point = new GeoPoint(GetSystem.StringToInt(lat),
+                        GetSystem.StringToInt(lon));
+                Log.d(TAG, "gps_time = " + gps_time + " , lat = " + lat
+                        + " , lon = " + lon);
+                mTextViews[DefaultVehicleID][1].setText(GetSystem
+                        .sortHomeTime(gps_time));
                 mkSearch.reverseGeocode(point);
             }
         } catch (JSONException e) {
@@ -1557,21 +1628,37 @@ public class HomeActivity extends Activity {
 
     MKSearchListener mkSearchListener = new MKSearchListener() {
         @Override
-        public void onGetWalkingRouteResult(MKWalkingRouteResult arg0, int arg1) {}
+        public void onGetWalkingRouteResult(MKWalkingRouteResult arg0, int arg1) {
+        }
+
         @Override
-        public void onGetTransitRouteResult(MKTransitRouteResult arg0, int arg1) {}
+        public void onGetTransitRouteResult(MKTransitRouteResult arg0, int arg1) {
+        }
+
         @Override
-        public void onGetSuggestionResult(MKSuggestionResult arg0, int arg1) {}
+        public void onGetSuggestionResult(MKSuggestionResult arg0, int arg1) {
+        }
+
         @Override
-        public void onGetShareUrlResult(MKShareUrlResult arg0, int arg1,int arg2) {}
+        public void onGetShareUrlResult(MKShareUrlResult arg0, int arg1,
+                int arg2) {
+        }
+
         @Override
-        public void onGetPoiResult(MKPoiResult arg0, int arg1, int arg2) {}
+        public void onGetPoiResult(MKPoiResult arg0, int arg1, int arg2) {
+        }
+
         @Override
-        public void onGetPoiDetailSearchResult(int arg0, int arg1) {}
+        public void onGetPoiDetailSearchResult(int arg0, int arg1) {
+        }
+
         @Override
-        public void onGetDrivingRouteResult(MKDrivingRouteResult arg0, int arg1) {}
+        public void onGetDrivingRouteResult(MKDrivingRouteResult arg0, int arg1) {
+        }
+
         @Override
-        public void onGetBusDetailResult(MKBusLineResult arg0, int arg1) {}
+        public void onGetBusDetailResult(MKBusLineResult arg0, int arg1) {
+        }
 
         @Override
         public void onGetAddrResult(MKAddrInfo arg0, int arg1) {
@@ -1585,17 +1672,15 @@ public class HomeActivity extends Activity {
             }
         }
     };
+
     /**
      * 提示添加车辆
      */
-    private void AddCarNote(){
-        new AlertDialog.Builder(this)
-        .setTitle("提示")
-        .setMessage("时候添加车辆")
-        .setPositiveButton("确定",
-                new DialogInterface.OnClickListener() {
+    private void AddCarNote() {
+        new AlertDialog.Builder(this).setTitle("提示").setMessage("您还没添加车辆，是否添加？")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog,int which) {
+                    public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(HomeActivity.this,
                                 MyVehicleActivity.class);
                         intent.putExtra("isJump", true);
@@ -1631,12 +1716,12 @@ public class HomeActivity extends Activity {
             }
         }
     }
-    
-    class TimingThread extends Thread{
+
+    class TimingThread extends Thread {
         @Override
         public void run() {
             super.run();
-            while(isRefresh){
+            while (isRefresh) {
                 try {
                     Thread.sleep(60000);
                     Message message = new Message();
@@ -1648,8 +1733,10 @@ public class HomeActivity extends Activity {
             }
         }
     }
+
     long waitTime = 2000;
     long touchTime = 0;
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         Log.d(TAG, "Home onKeyDown");
