@@ -237,7 +237,6 @@ public class ArticleDetailActivity extends Activity{
 					if((i%3 + 1) == 3){
 						tableLayout.addView(row,params);
 						row = new TableRow(ArticleDetailActivity.this);
-						row.setPadding(0, 5, 0, 0);
 					}else if(i == (bitMapList.size() - 1)){
 						tableLayout.addView(row,params);
 					}

@@ -702,7 +702,7 @@ public class MyVehicleActivity extends Activity{
 									}
 							}
 						}
-					}
+					} 
 				/**
 				 * 没有选择城市 
 				 */
