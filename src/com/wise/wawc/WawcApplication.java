@@ -31,12 +31,13 @@ public class WawcApplication extends Application {
     public void onCreate() {
 	    super.onCreate();
 		mInstance = this;
+		Log.e(TAG, "WawcApplication onCreate");
 		initEngineManager(this);
 	}
 	
 	public void initEngineManager(Context context) {
         if (mBMapManager == null) {
-            Log.d(TAG, "mBMapManager实例化");
+            Log.e(TAG, "mBMapManager实例化");
             mBMapManager = new BMapManager(context);
         }
         if (!mBMapManager.init(strKey,null)) {

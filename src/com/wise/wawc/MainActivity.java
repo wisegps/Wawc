@@ -11,19 +11,16 @@ import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qzone.QZone;
-import com.baidu.mapapi.BMapManager;
 import com.wise.extend.FaceConversionUtil;
 import com.wise.extend.OnViewTouchMoveListener;
 import com.wise.extend.PicHorizontalScrollView;
 import com.wise.extend.SlidingMenuView;
-import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
-
 import android.app.ActivityGroup;
 import android.app.AlertDialog;
 import android.content.ContentValues;
@@ -49,7 +46,6 @@ import android.view.View.OnKeyListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
-import android.view.inputmethod.InputMethodManager;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -389,6 +385,9 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
         SharedPreferences preferences = getSharedPreferences(
                 Constant.sharedPreferencesName, Context.MODE_PRIVATE);
         String platform = preferences.getString(Constant.platform, "");
+        if(Constant.isTest){
+            platform = "sina登录";
+        }
         if(platform.equals("qq")){
             System.out.println("qq登录");
             tv_activity_main_name.setText(platformQQ.getDb().getUserName());
@@ -396,21 +395,46 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
             iv_activity_main_login.setImageResource(R.drawable.side_icon_qq_press);
             iv_activity_main_arrow.setVisibility(View.VISIBLE);
             platfromIsLogin(platformQQ);
-            //platformQQ.getDb().getUserIcon()
             //绑定
             Login(platformQQ.getDb().getUserId(), platformQQ.getDb()
                     .getUserName(), LocationProvince, LocationCity, platformQQ.getDb()
                     .getUserIcon(), "remark");
         }else{
             System.out.println("sina登录");
-            tv_activity_main_name.setText(platformSina.getDb().getUserName());
-            Variable.cust_name = platformSina.getDb().getUserName();
-            iv_activity_main_login.setImageResource(R.drawable.side_icon_sina_press);
-            iv_activity_main_arrow.setVisibility(View.VISIBLE);
-            platfromIsLogin(platformSina);
-            Login(platformSina.getDb().getUserId(), platformSina.getDb()
-                    .getUserName(), LocationProvince, LocationCity, platformSina.getDb()
-                    .getUserIcon(), "remark");
+            if(Constant.isTest){
+                tv_activity_main_name.setText("Honesty_fly");
+                Variable.cust_name = "Honesty_fly";
+                iv_activity_main_login.setImageResource(R.drawable.side_icon_sina_press);
+                iv_activity_main_arrow.setVisibility(View.VISIBLE);                
+                Login("2152086902", "Honesty_fly", LocationProvince, LocationCity, 
+                        "http://tp3.sinaimg.cn/2152086902/50/5637362071/1", "remark"); 
+                bimage = BitmapFactory.decodeFile(Constant.userIconPath + Constant.UserImage);
+                Constant.UserIconUrl = "http://tp3.sinaimg.cn/2152086902/50/5637362071/1";
+                if(bimage != null){            
+                    //iv_activity_main_logo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
+                    iv_activity_main_logo.setImageBitmap(bimage);
+                }else{
+                    //TODO 获取图片            
+                }
+                new Thread(new GetBitMapFromUrlThread("http://tp3.sinaimg.cn/2152086902/50/5637362071/1")).start();
+                SharedPreferences preferences1 = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+                Variable.cust_id  = preferences1.getString(Constant.sp_cust_id, "");
+                Variable.auth_code = preferences1.getString(Constant.sp_auth_code, "");
+                Set<String> tagSet = new LinkedHashSet<String>();
+                tagSet.add("2152086902");
+                //调用JPush API设置Tag
+                JPushInterface.setAliasAndTags(getApplicationContext(), null, tagSet, this);
+            }else{
+                tv_activity_main_name.setText(platformSina.getDb().getUserName());
+                Variable.cust_name = platformSina.getDb().getUserName();
+                iv_activity_main_login.setImageResource(R.drawable.side_icon_sina_press);
+                iv_activity_main_arrow.setVisibility(View.VISIBLE);
+                platfromIsLogin(platformSina);
+                Login(platformSina.getDb().getUserId(), platformSina.getDb()
+                        .getUserName(), LocationProvince, LocationCity, platformSina.getDb()
+                        .getUserIcon(), "remark"); 
+            }
+            
         }
     }
     /**
