@@ -184,8 +184,7 @@ public class Fragment_home extends Fragment{
             public void OnViewChange(int view) {
                 switch (view) {
                 case 0:
-                    iv_weather
-                            .setImageResource(R.drawable.home_body_cutover_press);
+                    iv_weather.setImageResource(R.drawable.home_body_cutover_press);
                     iv_oil.setImageResource(R.drawable.home_body_cutover);
                     break;
                 case 1:
@@ -446,8 +445,7 @@ public class Fragment_home extends Fragment{
                     Intent intent = new Intent(getActivity(),NewVehicleActivity.class);
                     getActivity().startActivity(intent);
                 } else {
-                    Intent intent = new Intent(getActivity(),
-                            MyVehicleActivity.class);
+                    Intent intent = new Intent(getActivity(),MyVehicleActivity.class);
                     intent.putExtra("isJump", true);
                     getActivity().startActivity(intent);
                 }

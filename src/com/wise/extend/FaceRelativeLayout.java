@@ -14,7 +14,9 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -148,10 +150,16 @@ public class FaceRelativeLayout extends RelativeLayout implements OnItemClickLis
 		layout_point = (LinearLayout) findViewById(R.id.iv_image);
 		et_sendmessage.setOnClickListener(this);
 		findViewById(R.id.btn_face).setOnClickListener(this);
-		view = findViewById(R.id.ll_facechoose);
-
+		view = findViewById(R.id.ll_facechoose);		
 	}
-
+	@Override
+	public boolean onInterceptTouchEvent(MotionEvent event) {
+	    //屏蔽父控件
+        if(event.getAction() == MotionEvent.ACTION_DOWN){
+            getParent().requestDisallowInterceptTouchEvent(true);
+        }
+	    return false;
+	}
 	/**
 	 * 初始化显示表情的viewpager
 	 */
@@ -219,7 +227,7 @@ public class FaceRelativeLayout extends RelativeLayout implements OnItemClickLis
 
 		}
 	}
-
+	private static final String TAG = "FaceRelativeLayout";
 	/**
 	 * 填充数据
 	 */
@@ -251,6 +259,7 @@ public class FaceRelativeLayout extends RelativeLayout implements OnItemClickLis
 				//Log.e("onPageScrolled", "onPageScrolled");
 			}
 			public void onPageScrollStateChanged(int arg0) {
+			    Log.d(TAG, "arg0 = " + arg0);
 				if(arg0 == 1){
 					//屏蔽父控件的滑动事件
 				    getParent().requestDisallowInterceptTouchEvent(true);

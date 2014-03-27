@@ -14,14 +14,14 @@ public class MyVehicleActivity extends FragmentActivity{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_vehicle);
-        Fragment_account fragment_account = new Fragment_account();
+		Fragment_vehicle fragment_vehicle = new Fragment_vehicle();
         Bundle bundle=new Bundle();  
         bundle.putBoolean("isJump", true);  
-        fragment_account.setArguments(bundle);  
+        fragment_vehicle.setArguments(bundle);  
         
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction transaction = fragmentManager.beginTransaction(); 
-        transaction.add(R.id.fm_vehicle, fragment_account);
+        transaction.add(R.id.fm_vehicle, fragment_vehicle);
         transaction.commit();
 	}
 }

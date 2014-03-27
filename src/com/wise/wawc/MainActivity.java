@@ -191,12 +191,12 @@ public class MainActivity extends FragmentActivity implements TagAliasCallback {
         isLogin();
         startService(new Intent(MainActivity.this, LocationService.class));
 
-//        handler.postDelayed(new Runnable() {            
-//            @Override
-//            public void run() {
-//                slidingMenuView.snapToScreen(1);
-//            }
-//        }, 500);
+        handler.postDelayed(new Runnable() {            
+            @Override
+            public void run() {
+                slidingMenuView.snapToScreen(1);
+            }
+        }, 500);
     }
     boolean isMove = false;
     OnClickListener onClickListener = new OnClickListener() {
