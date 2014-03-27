@@ -493,6 +493,7 @@ public class MyAdapter extends BaseAdapter{
 						if(Integer.valueOf(jsonObject.getString("status_code")) == 0){
 							if(onItemContentClickListener != null){
 								onItemContentClickListener.Favorite(blogId);
+								myDialog.dismiss();
 							}							
 						}
 					} catch (NumberFormatException e) {
