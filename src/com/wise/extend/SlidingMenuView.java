@@ -62,6 +62,7 @@ public class SlidingMenuView extends ViewGroup{
         postDelayed(new Runnable(){
 			@Override
 			public void run() {
+			    Log.d(TAG, "findViewById(R.id.left_sliding_tab).getWidth() = " + findViewById(R.id.left_sliding_tab).getWidth());
 				scrollTo(findViewById(R.id.left_sliding_tab).getWidth(), 0);
 			}
         }, 50);
@@ -376,7 +377,7 @@ public class SlidingMenuView extends ViewGroup{
         
         mNextScreen = whichScreen;
         mCurrentScreen = whichScreen;
-
+        Log.d(TAG, "whichScreen = " + whichScreen);
         View focusedChild = getFocusedChild();
         if (focusedChild != null && changingScreens && focusedChild == getChildAt(mCurrentScreen)) {
             focusedChild.clearFocus();
@@ -390,6 +391,8 @@ public class SlidingMenuView extends ViewGroup{
         newX = Math.min(totalWidth - getWidth(), newX);
         final int delta = newX - getScrollX();
         int duration = Math.abs(delta)*2;
+
+        Log.d(TAG, "newX = " + newX + " , getScrollX() = " + getScrollX() + " , delta = " + delta);
         //松开手后自动滑动
         mScroller.startScroll(getScrollX(), 0, delta, 0, duration);
         onViewTouchMoveListener.OnViewChange(getScrollX(), delta,whichScreen, duration);

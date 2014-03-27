@@ -126,8 +126,7 @@ public class MainActivity extends FragmentActivity implements TagAliasCallback {
             }
         });
         ActivityFactory.S = slidingMenuView;
-        slidingMenuView
-                .setOnViewTouchMoveListener(new OnViewTouchMoveListener() {
+        slidingMenuView.setOnViewTouchMoveListener(new OnViewTouchMoveListener() {
                     @Override
                     public void OnViewMove(int x) {
                         int scrollX = (int) (x * Multiple);
@@ -191,6 +190,13 @@ public class MainActivity extends FragmentActivity implements TagAliasCallback {
         platformSina = ShareSDK.getPlatform(MainActivity.this, SinaWeibo.NAME);
         isLogin();
         startService(new Intent(MainActivity.this, LocationService.class));
+
+//        handler.postDelayed(new Runnable() {            
+//            @Override
+//            public void run() {
+//                slidingMenuView.snapToScreen(1);
+//            }
+//        }, 500);
     }
     boolean isMove = false;
     OnClickListener onClickListener = new OnClickListener() {

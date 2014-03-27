@@ -10,7 +10,7 @@ public class Constant {
      * true,放在百度云上测试,需要默认自动登录
      * false 正式发布
      */
-    public static boolean isTest = true;
+    public static boolean isTest = false;
     /**
      * 服务器地址："http://wiwc.api.wisegps.cn/"
      */
