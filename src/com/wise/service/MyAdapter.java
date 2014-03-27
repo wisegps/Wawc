@@ -593,7 +593,6 @@ public class MyAdapter extends BaseAdapter{
 	 /**
 	  * 显示图片列表
 	  * @author Mr.Wang
-	  *
 	  */
 	 class UserImageAdapter extends BaseAdapter{
 		 List<Bitmap> smallImageList;

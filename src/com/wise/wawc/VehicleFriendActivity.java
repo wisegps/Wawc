@@ -212,7 +212,6 @@ public class VehicleFriendActivity extends Activity implements IXListViewListene
 		//同车型文章
 //		viewTitle.setLayoutParams(new android.widget.RelativeLayout.LayoutParams(android.widget.RelativeLayout.LayoutParams.FILL_PARENT, GetSystem.vehicleTitleHeight(VehicleFriendActivity.this)));
 	}
-	
 	@Override
 	protected void onResume() {
 		isLoadMore = false;
