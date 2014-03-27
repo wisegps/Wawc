@@ -21,7 +21,6 @@ import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
-import android.app.ActivityGroup;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -37,6 +36,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -46,7 +48,6 @@ import android.view.View.OnKeyListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -57,15 +58,23 @@ import android.widget.Toast;
  * 菜单界面
  * @author honesty
  */
-public class MainActivity extends ActivityGroup implements TagAliasCallback {
+public class MainActivity extends FragmentActivity implements TagAliasCallback {
     private static final String TAG = "MainActivity";
 
     private static final int Get_Pic = 2;//获取登录头像
     private static final int Bind_ID = 3; //绑定ID
     private static final int get_noti_count = 4; //获取消息提醒
     
+    private FragmentManager fragmentManager;
+    Fragment_account fragment_account;
+    Fragment_collection fragment_collection;
+    Fragment_home fragment_home;
+    Fragment_setting fragment_setting;
+    Fragment_sms fragment_sms;
+    Fragment_vehiclefriend fragment_vehiclefriend;
+    Fragment_vehicle fragment_vehicle;
+    
     SlidingMenuView slidingMenuView;
-    ViewGroup tabcontent;
     int Screen = 1;
     Platform platformQQ;
     Platform platformSina;
@@ -91,7 +100,7 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
         hsv_pic = (PicHorizontalScrollView) findViewById(R.id.hsv_pic);
         ActivityFactory.A = this;
         slidingMenuView = (SlidingMenuView) findViewById(R.id.sliding_menu_view);
-        
+        fragmentManager = getSupportFragmentManager();
         TextView tv_oil = (TextView)findViewById(R.id.tv_oil);
         tv_oil.setOnClickListener(onClickListener);
         TextView tv_wb = (TextView)findViewById(R.id.tv_wb);
@@ -116,9 +125,6 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
                 return false;
             }
         });
-        
-        tabcontent = (ViewGroup) slidingMenuView.findViewById(R.id.sliding_body);
-        ActivityFactory.v = tabcontent;
         ActivityFactory.S = slidingMenuView;
         slidingMenuView
                 .setOnViewTouchMoveListener(new OnViewTouchMoveListener() {
@@ -144,9 +150,6 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
         iv_pic = (ImageView) findViewById(R.id.iv_pic);
         iv_noti = (ImageView) findViewById(R.id.iv_noti);
         ShowBgImage();
-        //iv_pic.setImageDrawable(getResources().getDrawable(R.drawable.bg));
-        //Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.bg);
-        //iv_pic.setImageDrawable(BlurImage.BoxBlurFilter(bmp));
         ImageView iv_activity_home = (ImageView)findViewById(R.id.iv_activity_home);
         iv_activity_home.setOnClickListener(onClickListener);
         RelativeLayout rl_activity_main_home = (RelativeLayout) findViewById(R.id.rl_activity_main_home);
@@ -182,11 +185,7 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
         
         getSpData();
         
-        Intent i = new Intent(MainActivity.this, HomeActivity.class);
-        View v = getLocalActivityManager().startActivity(
-                HomeActivity.class.getName(), i).getDecorView();
-        tabcontent.removeAllViews();
-        tabcontent.addView(v);
+        ToHome();
         ShareSDK.initSDK(this);
         platformQQ = ShareSDK.getPlatform(MainActivity.this, QZone.NAME);
         platformSina = ShareSDK.getPlatform(MainActivity.this, SinaWeibo.NAME);
@@ -206,12 +205,7 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
                 ToAccountHome();
                 break;
             case R.id.home:
-                slidingMenuView.snapToScreen(1);
-                Intent i = new Intent(MainActivity.this, HomeActivity.class);
-                View view = getLocalActivityManager().startActivity(
-                        HomeActivity.class.getName(), i).getDecorView();
-                tabcontent.removeAllViews();
-                tabcontent.addView(view);
+                ToHome();
                 break;
             // 车友圈
             case R.id.car_circle:
@@ -565,7 +559,12 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
         Constant.pageSize1 = 10;   //每页数量
         Constant.totalPage1 = 0;   //数据总量
         Constant.currentPage1 = 0;  //当前页
-        VehicleFriendActivity.newArticleBlogId = 0;
+        //VehicleFriendActivity.newArticleBlogId = 0;
+        WawcApplication app = (WawcApplication)this.getApplication();
+        if (app.mBMapManager != null) {
+            app.mBMapManager.destroy();
+            app.mBMapManager = null;
+        }
         System.exit(0);
         //测试  车友圈刷新
         //DBHelper dbHelper = new DBHelper(MainActivity.this);
@@ -574,17 +573,120 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
         //VehicleFriendActivity.minBlogId = 0;
     }
     boolean isHome = true;
+    
+    private void setTabSelection(int index) {
+        // 开启一个Fragment事务  
+        FragmentTransaction transaction = fragmentManager.beginTransaction();  
+        // 先隐藏掉所有的Fragment，以防止有多个Fragment显示在界面上的情况  
+        hideFragments(transaction);  
+        switch (index) {  
+        case 0:  
+            if (fragment_account == null) {  
+                // 如果MessageFragment为空，则创建一个并添加到界面上  
+                fragment_account = new Fragment_account();
+                Bundle bundle=new Bundle();  
+                bundle.putBoolean("isJump", false);  
+                fragment_account.setArguments(bundle); 
+                transaction.add(R.id.sliding_body, fragment_account);  
+            } else {  
+                // 如果MessageFragment不为空，则直接将它显示出来  
+                transaction.show(fragment_account);  
+            }  
+            break;  
+        case 1:
+            if (fragment_collection == null) {  
+                // 如果ContactsFragment为空，则创建一个并添加到界面上  
+                fragment_collection = new Fragment_collection();  
+                transaction.add(R.id.sliding_body, fragment_collection);  
+            } else {  
+                // 如果ContactsFragment不为空，则直接将它显示出来  
+                transaction.show(fragment_collection);  
+            }  
+            break;  
+        case 2: 
+            if (fragment_home == null) {  
+                // 如果NewsFragment为空，则创建一个并添加到界面上  
+                fragment_home = new Fragment_home();  
+                transaction.add(R.id.sliding_body, fragment_home);  
+            } else {  
+                // 如果NewsFragment不为空，则直接将它显示出来  
+                transaction.show(fragment_home);  
+            }  
+            break;  
+        case 3:
+            if (fragment_setting == null) {  
+                // 如果SettingFragment为空，则创建一个并添加到界面上  
+                fragment_setting = new Fragment_setting();  
+                transaction.add(R.id.sliding_body, fragment_setting);  
+            } else {  
+                // 如果SettingFragment不为空，则直接将它显示出来  
+                transaction.show(fragment_setting);  
+            }  
+            break;
+        case 4:
+            if (fragment_sms == null) {  
+                // 如果SettingFragment为空，则创建一个并添加到界面上  
+                fragment_sms = new Fragment_sms();  
+                transaction.add(R.id.sliding_body, fragment_sms);  
+            } else {  
+                // 如果SettingFragment不为空，则直接将它显示出来  
+                transaction.show(fragment_sms);  
+            }  
+            break;
+        case 5:
+            if (fragment_vehiclefriend == null) {  
+                // 如果SettingFragment为空，则创建一个并添加到界面上  
+                fragment_vehiclefriend = new Fragment_vehiclefriend();  
+                transaction.add(R.id.sliding_body, fragment_vehiclefriend);  
+            } else {  
+                // 如果SettingFragment不为空，则直接将它显示出来  
+                transaction.show(fragment_vehiclefriend);  
+            }  
+            break;
+        case 6:
+            if (fragment_vehicle == null) {  
+                // 如果SettingFragment为空，则创建一个并添加到界面上  
+                fragment_vehicle = new Fragment_vehicle();  
+                transaction.add(R.id.sliding_body, fragment_vehicle);  
+            } else {  
+                // 如果SettingFragment不为空，则直接将它显示出来  
+                transaction.show(fragment_vehicle);  
+            }  
+            break;
+        }  
+        transaction.commit();  
+    }
+    
+    private void hideFragments(FragmentTransaction transaction) {  
+        if (fragment_account != null) {  
+            transaction.hide(fragment_account);  
+        }  
+        if (fragment_collection != null) {  
+            transaction.hide(fragment_collection);  
+        }  
+        if (fragment_home != null) {  
+            transaction.hide(fragment_home);  
+        }  
+        if (fragment_setting != null) {  
+            transaction.hide(fragment_setting);  
+        }
+        if (fragment_sms != null) {  
+            transaction.hide(fragment_sms);  
+        }
+        if (fragment_vehiclefriend != null) {  
+            transaction.hide(fragment_vehiclefriend);  
+        }
+        if (fragment_vehicle != null) {  
+            transaction.hide(fragment_vehicle);  
+        }
+    }
+    
     /**
      * 设置中心
      */
     public void ToSettingCenter() {
         isHome = false;
-        Intent intent = new Intent(MainActivity.this,
-                SettingCenterActivity.class);
-        View vv = getLocalActivityManager().startActivity(
-                SettingCenterActivity.class.getName(), intent).getDecorView();
-        tabcontent.removeAllViews();
-        tabcontent.addView(vv);
+        setTabSelection(3);
         slidingMenuView.snapToScreen(1);
     }
 
@@ -593,34 +695,21 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
      */
     private void ToMyCollection() {
         isHome = false;
-        Intent intent = new Intent(MainActivity.this,
-                CollectionActivity.class);
-        View vv = getLocalActivityManager().startActivity(
-                CollectionActivity.class.getName(), intent).getDecorView();
-        tabcontent.removeAllViews();
-        tabcontent.addView(vv);
+        setTabSelection(1);
         slidingMenuView.snapToScreen(1);
     }
 
     /**
      * 首页
      */
-    public void ToHome() {
+    private void ToHome() {
         isHome = true;
-        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-        View vv = getLocalActivityManager().startActivity(
-                HomeActivity.class.getName(), intent).getDecorView();
-        tabcontent.removeAllViews();
-        tabcontent.addView(vv);
+        setTabSelection(2);
         slidingMenuView.snapToScreen(1);
     }
     public void ToSms() {
         isHome = false;
-        Intent intent = new Intent(MainActivity.this, SmsActivity.class);
-        View vv = getLocalActivityManager().startActivity(
-                SmsActivity.class.getName(), intent).getDecorView();
-        tabcontent.removeAllViews();
-        tabcontent.addView(vv);
+        setTabSelection(4);
         slidingMenuView.snapToScreen(1);
     }
     /**
@@ -628,13 +717,8 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
      */
     public void ToAccountHome() {
         isHome = false;
+        setTabSelection(0); 
         slidingMenuView.snapToScreen(1);
-        Intent i = new Intent(MainActivity.this, AccountActivity.class);
-        View view = getLocalActivityManager().startActivity(
-                AccountActivity.class.getName(), i).getDecorView();
-        tabcontent.removeAllViews();
-        tabcontent.addView(view);
-        
     }
 
     /**
@@ -642,64 +726,40 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
      */
     public void ToVehicleFriends() {
         isHome = false;
-    	if("".equals(Variable.cust_id)){
-    		Toast.makeText(getApplicationContext(), "请登录...", 0).show();
-    	}else{
-    		 Intent intent = new Intent(MainActivity.this,
-    	                VehicleFriendActivity.class);
-    	        View vv = getLocalActivityManager().startActivity(VehicleFriendActivity.class.getName(), intent).getDecorView();
-    	        tabcontent.removeAllViews();
-    	        tabcontent.addView(vv);
-    	        slidingMenuView.snapToScreen(1);
-    	}
+        setTabSelection(5);
+        slidingMenuView.snapToScreen(1);
     }
 
     /**
      * 我的爱车
      */
     public void ToMyCar() {
-        isHome = false;
-    	if("".equals(Variable.cust_id)){
-    		Toast.makeText(getApplicationContext(), "请登录", 0).show();
-    		return;
-    	}else{
-    		 if(Variable.carDatas.size() == 0){
-     	        //判断网络
-     	        startActivity(new Intent(MainActivity.this,NewVehicleActivity.class));
-     	    }else{
-     	        slidingMenuView.snapToScreen(1);
-                 Intent i = new Intent(MainActivity.this, MyVehicleActivity.class);
-                 View view = getLocalActivityManager().startActivity(MyVehicleActivity.class.getName(), i).getDecorView();
-                 tabcontent.removeAllViews();
-                 tabcontent.addView(view);
-     	    }
-    	}
+        isHome = false;    	
+		if(Variable.carDatas.size() == 0){
+ 	        //判断网络
+ 	        startActivity(new Intent(MainActivity.this,NewVehicleActivity.class));
+ 	    }else{
+ 	       setTabSelection(6);
+ 	      slidingMenuView.snapToScreen(1);
+ 	    }
     }
 
     /**
      * 我的终端
      */
     public void ToCarTerminal() {
-        isHome = false;
-        slidingMenuView.snapToScreen(1);
-        Intent i = new Intent(MainActivity.this, DevicesActivity.class);
-        View view = getLocalActivityManager().startActivity(
-                DevicesActivity.class.getName(), i).getDecorView();
-        tabcontent.removeAllViews();
-        tabcontent.addView(view);
+        //isHome = false;
+        //setTabSelection(4);
+        //slidingMenuView.snapToScreen(1);
     }
 
     /**
      * 我的订单
      */
     public void Toorders() {
-        isHome = false;
-        slidingMenuView.snapToScreen(1);
-        Intent i = new Intent(MainActivity.this, OrderMeActivity.class);
-        View view = getLocalActivityManager().startActivity(
-                OrderMeActivity.class.getName(), i).getDecorView();
-        tabcontent.removeAllViews();
-        tabcontent.addView(view);
+        //isHome = false;
+        //setTabSelection(4);
+        //slidingMenuView.snapToScreen(1);
     }
     public void LeftMenu() {
         if (slidingMenuView.getCurrentScreen() == 0) {

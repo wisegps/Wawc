@@ -50,8 +50,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" android:theme="@android:style/Theme.NoTitleBar" android:windowSoftInputMode="adjustPan"></activity>
-        <activity android:name=".HomeActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
-		<activity android:name=".CarRemindActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
+        <activity android:name=".CarRemindActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
 		<activity android:name=".NewArticleActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".VehicleStatusActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".ImageShowerActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
@@ -78,8 +77,6 @@
         <activity android:name=".NewVehicleActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".CarBrankListActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"
             android:windowSoftInputMode="stateAlwaysHidden|adjustPan"></activity>
-        <activity android:name=".CollectionActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
-        <activity android:name=".SettingCenterActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".FeedBackActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".FriendInformationActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>
         <activity android:name=".FriendHomeActivity" android:screenOrientation="portrait" android:theme="@android:style/Theme.NoTitleBar"></activity>

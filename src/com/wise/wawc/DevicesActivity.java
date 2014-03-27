@@ -370,11 +370,10 @@ public class DevicesActivity extends Activity {
     }
 
     private void backRequest(int index) {
-        Intent intent = new Intent(DevicesActivity.this,
-                MyVehicleActivity.class);
+        Intent intent = new Intent();
         intent.putExtra("DeviceId", devicesDatas.get(index).getDevice_id());
         intent.putExtra("Serial", devicesDatas.get(index).getSerial());
-        setResult(MyVehicleActivity.resultCodeDevice, intent);
+        setResult(7, intent);
         finish();
     }
 

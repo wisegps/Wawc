@@ -138,7 +138,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		
 		back.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				if(code == MyVehicleActivity.resultCodeBrank || code == NewVehicleActivity.newVehicleBrank){
+				if(code == 3 || code == NewVehicleActivity.newVehicleBrank){
 						if(carBrankLayout.getVisibility() == View.VISIBLE){
 							ChoiceCarInformationActivity.this.finish();
 						}else if(carModlesLayout.getVisibility() == View.VISIBLE){
@@ -150,7 +150,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 							title.setText(R.string.choice_series);
 							carModlesLayout.setVisibility(View.VISIBLE);
 						}
-				}else if(code == MyVehicleActivity.resultCodeSeries || code == NewVehicleActivity.newVehicleSeries){
+				}else if(code == 12 || code == NewVehicleActivity.newVehicleSeries){
 					if(carModlesLayout.getVisibility() == View.VISIBLE){
 						ChoiceCarInformationActivity.this.finish();
 					}
@@ -159,7 +159,7 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 						title.setText(R.string.choice_series);
 						carModlesLayout.setVisibility(View.VISIBLE);
 					}
-				}else if(code == MyVehicleActivity.resultCodeType || code == NewVehicleActivity.newVehicleType){
+				}else if(code == 14 || code == NewVehicleActivity.newVehicleType){
 					ChoiceCarInformationActivity.this.finish();
 				}
 			}
@@ -248,16 +248,16 @@ public class ChoiceCarInformationActivity extends Activity implements IXListView
 		progressDialog.setCancelable(true);
 		myHandler = new MyHandler();
 		//获取车牌   
-		if(code == MyVehicleActivity.resultCodeBrank || code == NewVehicleActivity.newVehicleBrank){
+		if(code == 3 || code == NewVehicleActivity.newVehicleBrank){
 			Log.e("点击选择品牌","点击选择品牌");
 			getDate(carBrankTitle,Constant.BaseUrl + "base/car_brand",GET_BRANK);
-		}else if(code == MyVehicleActivity.resultCodeSeries || code == NewVehicleActivity.newVehicleSeries){
+		}else if(code == 12 || code == NewVehicleActivity.newVehicleSeries){
 			carBrankId = getIntent().getStringExtra("brankId");
 			carBrank = getIntent().getStringExtra("carBrank");
 			logoUrl = getIntent().getStringExtra("logo");
 			getDate(carBrankTitle + carBrankId, Constant.BaseUrl + "base/car_series?pid=" + carBrankId,GET_SERIES);
 			Log.e("点击车型","点击车型");
-		}else if(code == MyVehicleActivity.resultCodeType || code == NewVehicleActivity.newVehicleType){
+		}else if(code == 14 || code == NewVehicleActivity.newVehicleType){
 			carBrankId = getIntent().getStringExtra("brankId");
 			carBrank = getIntent().getStringExtra("carBrank");
 			carSeriesId = getIntent().getStringExtra("seriesId");

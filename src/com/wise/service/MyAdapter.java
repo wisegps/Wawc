@@ -1,4 +1,5 @@
 package com.wise.service;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -14,7 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EncodingUtils;
@@ -37,8 +37,6 @@ import com.wise.wawc.FriendHomeActivity;
 import com.wise.wawc.ImageActivity;
 import com.wise.wawc.PicActivity;
 import com.wise.wawc.R;
-import com.wise.wawc.VehicleFriendActivity;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -425,7 +423,10 @@ public class MyAdapter extends BaseAdapter{
 				switch(v.getId()){
 
 				case R.id.list_say_somthing:
-					VehicleFriendActivity.blogId = articleList.get(index).getBlog_id();
+					//VehicleFriendActivity.blogId = articleList.get(index).getBlog_id();
+					if(onItemContentClickListener != null){
+	                    onItemContentClickListener.say_somthing(articleList.get(index).getBlog_id());
+					}
 					//编辑框不可见，设置为可见
 					if(!isClick){
 						isClick = true;
@@ -492,18 +493,18 @@ public class MyAdapter extends BaseAdapter{
 						if(Integer.valueOf(jsonObject.getString("status_code")) == 0){
 							
 							//更新数据库
-							dbExcute.updateArticlePraises(activity, Constant.TB_VehicleFriend, blogId, Variable.cust_name, Integer.valueOf(Variable.cust_id));
-							VehicleFriendActivity vehicleFriendActivity = new VehicleFriendActivity();
-							//更新列表
-							List<Article> oldArticlList = vehicleFriendActivity.getArticleDataList();
-							oldArticlList.clear();
-							vehicleFriendActivity.setArticleDataList(oldArticlList);
-							List<Article> newArticlList = MyAdapter.this.dbExcute.getArticlePageDatas(activity, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(0),String.valueOf(Constant.start + Constant.pageSize)}, vehicleFriendActivity.getArticleDataList());
-							Variable.articleList = newArticlList;
-							vehicleFriendActivity.setArticleDataList(newArticlList);
-							MyAdapter.this.refreshDates(newArticlList);
-							myDialog.dismiss();
-							Toast.makeText(activity, "点赞成功", 0).show();
+//							dbExcute.updateArticlePraises(activity, Constant.TB_VehicleFriend, blogId, Variable.cust_name, Integer.valueOf(Variable.cust_id));
+//							VehicleFriendActivity vehicleFriendActivity = new VehicleFriendActivity();
+//							//更新列表
+//							List<Article> oldArticlList = vehicleFriendActivity.getArticleDataList();
+//							oldArticlList.clear();
+//							vehicleFriendActivity.setArticleDataList(oldArticlList);
+//							List<Article> newArticlList = MyAdapter.this.dbExcute.getArticlePageDatas(activity, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(0),String.valueOf(Constant.start + Constant.pageSize)}, vehicleFriendActivity.getArticleDataList());
+//							Variable.articleList = newArticlList;
+//							vehicleFriendActivity.setArticleDataList(newArticlList);
+//							MyAdapter.this.refreshDates(newArticlList);
+//							myDialog.dismiss();
+//							Toast.makeText(activity, "点赞成功", 0).show();
 						}
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
@@ -648,5 +649,12 @@ public class MyAdapter extends BaseAdapter{
 		class UserImageHolder{
 			ImageView userImage = null;
 		}
+	 }
+	 OnItemContentClickListener onItemContentClickListener;
+	 public void setOnItemContentClickListener(OnItemContentClickListener onItemContentClickListener){
+	     this.onItemContentClickListener = onItemContentClickListener;
+	 }
+	 public interface OnItemContentClickListener{
+	     public abstract void say_somthing(int index);
 	 }
 }

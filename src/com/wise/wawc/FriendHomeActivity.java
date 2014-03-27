@@ -252,7 +252,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 				for(int i = 0 ; i < articleDataList.size() ; i ++){
 					blogId[i] = articleDataList.get(i).getBlog_id();
 				}
-				int minBlogId = VehicleFriendActivity.paiXu(blogId)[articleDataList.size() - 1];
+				int minBlogId = paiXu(blogId)[articleDataList.size() - 1];
 				new Thread(new NetThread.GetDataThread(myHandler, Constant.BaseUrl + "customer/" + cust_id + "/blog?auth_code=" + Variable.auth_code + "&min_id=" + minBlogId, loadMoreCode)).start();
 			}
 		}
@@ -365,7 +365,7 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 			for (int i = 0; i < articleTempList.size(); i++) {
 				blogIdList[i] = articleTempList.get(i).getBlog_id();
 			}
-			maxBlogId = VehicleFriendActivity.paiXu(blogIdList)[0];
+			maxBlogId = paiXu(blogIdList)[0];
 			String url = Constant.BaseUrl + "customer/" + cust_id + "/blog?auth_code=" + Variable.auth_code + "&max_id=" + maxBlogId;
 			new Thread(new NetThread.GetDataThread(myHandler, url, refreshCode)).start();
 			
@@ -399,4 +399,18 @@ public class FriendHomeActivity extends Activity implements IXListViewListener{
 			Constant.currentPage1 = 0;  //当前页
 			super.onDestroy();
 		}
+		//索引最大  blog_id最小
+	    public static int[] paiXu(int[] tempInt){
+	        for(int m = 0 ; m < tempInt.length ; m ++){
+	            for(int n = 0 ; n < m ; n ++){
+	                int temp = 0;
+	                if(tempInt[m] > tempInt[n]){
+	                    temp = tempInt[m];
+	                    tempInt[m] = tempInt[n];
+	                    tempInt[n] = temp;
+	                }
+	            }
+	        }
+	        return tempInt;
+	    }
 }

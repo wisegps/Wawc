@@ -2,14 +2,10 @@ package com.wise.extend;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import com.wise.data.ChatEmoji;
 import com.wise.service.FaceAdapter;
 import com.wise.service.ViewPagerAdapter;
-import com.wise.wawc.ActivityFactory;
 import com.wise.wawc.R;
-import com.wise.wawc.VehicleFriendActivity;
-
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -18,7 +14,6 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.text.SpannableString;
 import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -258,10 +253,10 @@ public class FaceRelativeLayout extends RelativeLayout implements OnItemClickLis
 			public void onPageScrollStateChanged(int arg0) {
 				if(arg0 == 1){
 					//屏蔽父控件的滑动事件
-					ActivityFactory.v.requestDisallowInterceptTouchEvent(true);
+				    getParent().requestDisallowInterceptTouchEvent(true);
 				}else if(arg0 == 0){
 					//释放对父控件的屏蔽
-					ActivityFactory.v.requestDisallowInterceptTouchEvent(false);
+				    getParent().requestDisallowInterceptTouchEvent(false);
 				}
 			}
 		});
