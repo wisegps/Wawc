@@ -271,12 +271,11 @@ public class NewArticleActivity extends Activity implements
                     JSONObject jsonObject = new JSONObject(msg.obj.toString());
                     myDialog.dismiss();
                     if (Integer.parseInt(jsonObject.getString("status_code")) == 0) {
-                        Toast.makeText(getApplicationContext(), "发表成功", 0)
+                        Toast.makeText(getApplicationContext(), "发表成功", Toast.LENGTH_SHORT)
                                 .show();
-                        NewArticleActivity.this
-                                .setResult(VehicleFriendActivity.newArticleResult);
-                        VehicleFriendActivity.newArticleBlogId = jsonObject
-                                .getInt("blog_id");
+                        Intent intent = new Intent(NewArticleActivity.this,MainActivity.class);
+                        intent.putExtra("blog_id", jsonObject.getInt("blog_id"));
+                        setResult(67, intent);
 
 //                        ContentValues valuesType = new ContentValues();
 //                        valuesType.put("Type_id", 1);
@@ -286,7 +285,7 @@ public class NewArticleActivity extends Activity implements
 //                                Constant.TB_VehicleFriendType);
                         NewArticleActivity.this.finish();
                     } else {
-                        VehicleFriendActivity.newArticleBlogId = 0;
+                        //VehicleFriendActivity.newArticleBlogId = 0;
                         Toast.makeText(getApplicationContext(), "发表失败，请重试...",
                                 0).show();
                     }

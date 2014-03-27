@@ -9,8 +9,6 @@ import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
-
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -20,56 +18,57 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-/**
- * 设置中心
- */
-public class SettingCenterActivity extends Activity{
-	
-	TextView tv_value;
-	ImageView iv_traffic,iv_status,iv_alert,iv_remind;
+public class Fragment_setting extends Fragment{
+    TextView tv_value;
+    ImageView iv_traffic,iv_status,iv_alert,iv_remind;
 
     boolean isTraffic,isStatus,isAlert,isRemind;
-	
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_setting_center);
-		
-		tv_value = (TextView)findViewById(R.id.tv_value);
-		ImageView iv_setting_menu = (ImageView)findViewById(R.id.iv_setting_menu);
-		iv_setting_menu.setOnClickListener(onClickListener);
-		RelativeLayout rl_traffic = (RelativeLayout)findViewById(R.id.rl_traffic);
-		rl_traffic.setOnClickListener(onClickListener);
-		RelativeLayout rl_status = (RelativeLayout)findViewById(R.id.rl_status);
-		rl_status.setOnClickListener(onClickListener);
-		RelativeLayout rl_alert = (RelativeLayout)findViewById(R.id.rl_alert);
-		rl_alert.setOnClickListener(onClickListener);
-		RelativeLayout rl_remind = (RelativeLayout)findViewById(R.id.rl_remind);
-		rl_remind.setOnClickListener(onClickListener);
-		RelativeLayout rl_center = (RelativeLayout)findViewById(R.id.rl_center);
-		rl_center.setOnClickListener(onClickListener);
-		
-		iv_traffic = (ImageView)findViewById(R.id.iv_traffic);
-		iv_status = (ImageView)findViewById(R.id.iv_status);
-		iv_alert = (ImageView)findViewById(R.id.iv_alert);
-		iv_remind = (ImageView)findViewById(R.id.iv_remind);
-		
-		TextView tv_share_gift = (TextView)findViewById(R.id.tv_share_gift);
-		tv_share_gift.setOnClickListener(onClickListener);
-		TextView tv_feedback = (TextView)findViewById(R.id.tv_feedback);
-		tv_feedback.setOnClickListener(onClickListener);
-		TextView tv_about = (TextView)findViewById(R.id.tv_about);
-		tv_about.setOnClickListener(onClickListener);		
-		getsp();
-	}
-	
-	OnClickListener onClickListener = new OnClickListener() {
+    
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.activity_setting_center, container, false);
+    }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        tv_value = (TextView)getActivity().findViewById(R.id.tv_value);
+        ImageView iv_setting_menu = (ImageView)getActivity().findViewById(R.id.iv_setting_menu);
+        iv_setting_menu.setOnClickListener(onClickListener);
+        RelativeLayout rl_traffic = (RelativeLayout)getActivity().findViewById(R.id.rl_traffic);
+        rl_traffic.setOnClickListener(onClickListener);
+        RelativeLayout rl_status = (RelativeLayout)getActivity().findViewById(R.id.rl_status);
+        rl_status.setOnClickListener(onClickListener);
+        RelativeLayout rl_alert = (RelativeLayout)getActivity().findViewById(R.id.rl_alert);
+        rl_alert.setOnClickListener(onClickListener);
+        RelativeLayout rl_remind = (RelativeLayout)getActivity().findViewById(R.id.rl_remind);
+        rl_remind.setOnClickListener(onClickListener);
+        RelativeLayout rl_center = (RelativeLayout)getActivity().findViewById(R.id.rl_center);
+        rl_center.setOnClickListener(onClickListener);
+        
+        iv_traffic = (ImageView)getActivity().findViewById(R.id.iv_traffic);
+        iv_status = (ImageView)getActivity().findViewById(R.id.iv_status);
+        iv_alert = (ImageView)getActivity().findViewById(R.id.iv_alert);
+        iv_remind = (ImageView)getActivity().findViewById(R.id.iv_remind);
+        
+        TextView tv_share_gift = (TextView)getActivity().findViewById(R.id.tv_share_gift);
+        tv_share_gift.setOnClickListener(onClickListener);
+        TextView tv_feedback = (TextView)getActivity().findViewById(R.id.tv_feedback);
+        tv_feedback.setOnClickListener(onClickListener);
+        TextView tv_about = (TextView)getActivity().findViewById(R.id.tv_about);
+        tv_about.setOnClickListener(onClickListener);       
+        getsp(); 
+    }
+    OnClickListener onClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
@@ -113,20 +112,20 @@ public class SettingCenterActivity extends Activity{
                 }
                 break;
             case R.id.rl_center:
-                startActivityForResult(new Intent(SettingCenterActivity.this, CarSelectActivity.class), 0);
+                startActivityForResult(new Intent(getActivity(), CarSelectActivity.class), 0);
                 break;
             case R.id.tv_share_gift:
-                Intent intent = new Intent(SettingCenterActivity.this, WapActivity.class);
+                Intent intent = new Intent(getActivity(), WapActivity.class);
                 intent.putExtra("Title", "推荐有礼");
                 intent.putExtra("url", "http://wiwc.api.wisegps.cn/help/share");
                 startActivity(intent);
                 //startActivity(new Intent(SettingCenterActivity.this, ArticleActivity.class));
                 break;
             case R.id.tv_feedback:
-                startActivity(new Intent(SettingCenterActivity.this, FeedBackActivity.class));
+                startActivity(new Intent(getActivity(), FeedBackActivity.class));
                 break;
             case R.id.tv_about:
-                startActivity(new Intent(SettingCenterActivity.this, AboutActivity.class));
+                startActivity(new Intent(getActivity(), AboutActivity.class));
                 break;
             }
         }
@@ -134,12 +133,9 @@ public class SettingCenterActivity extends Activity{
     Handler handler = new Handler(){
         
     };
+    
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-    @Override
-    protected void onPause() {
+    public void onPause() {
         super.onPause();
         DBExcute dbExcute = new DBExcute();
         ContentValues values = new ContentValues();
@@ -147,7 +143,7 @@ public class SettingCenterActivity extends Activity{
         values.put("event", isRemind ? 1 : 0);
         values.put("fault", isStatus ? 1 : 0);
         values.put("vio", isTraffic ? 1 : 0);
-        dbExcute.UpdateDB(this, values, "cust_id=?",new String[] { Variable.cust_id }, Constant.TB_Account);
+        dbExcute.UpdateDB(getActivity(), values, "cust_id=?",new String[] { Variable.cust_id }, Constant.TB_Account);
         
         
         String url = Constant.BaseUrl + "customer/" + Variable.cust_id +"/push?auth_code=" + Variable.auth_code;
@@ -158,12 +154,8 @@ public class SettingCenterActivity extends Activity{
         params.add(new BasicNameValuePair("if_event_noti", isRemind ? "1" : "0"));   
         new Thread(new NetThread.putDataThread(handler, url, params, 999)).start();
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
     private void getsp(){
-        DBHelper dbHelper = new DBHelper(this);
+        DBHelper dbHelper = new DBHelper(getActivity());
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery("select * from " + Constant.TB_Account
                 + " where cust_id=?", new String[] { Variable.cust_id });
@@ -215,7 +207,7 @@ public class SettingCenterActivity extends Activity{
         if(Variable.carDatas == null || Variable.carDatas.size() == 0){
             
         }else{
-            SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+            SharedPreferences preferences = getActivity().getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
             int index = preferences.getInt(Constant.DefaultVehicleID, 0);
             tv_value.setText("车辆" + Variable.carDatas.get(index).getObj_name() + "的位置");
         } 
@@ -223,7 +215,7 @@ public class SettingCenterActivity extends Activity{
         db.close();
     }
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == 1){
             int car_id = data.getIntExtra("Obj_id", 0);
@@ -231,7 +223,7 @@ public class SettingCenterActivity extends Activity{
             tv_value.setText("车辆" + Obj_name + "的位置");
             for(int i = 0 ; i < Variable.carDatas.size() ; i++){
                 if(Variable.carDatas.get(i).getObj_id() == car_id){                    
-                    SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+                    SharedPreferences preferences = getActivity().getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
                     Editor editor = preferences.edit();
                     editor.putInt(Constant.DefaultVehicleID, i);
                     editor.commit();

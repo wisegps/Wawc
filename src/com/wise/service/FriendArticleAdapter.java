@@ -10,12 +10,10 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.wise.data.Article;
 import com.wise.extend.FaceConversionUtil;
 import com.wise.pubclas.Constant;
@@ -29,8 +27,6 @@ import com.wise.wawc.FriendHomeActivity;
 import com.wise.wawc.ImageActivity;
 import com.wise.wawc.PicActivity;
 import com.wise.wawc.R;
-import com.wise.wawc.VehicleFriendActivity;
-
 import android.app.ProgressDialog;
 import android.app.ActionBar.LayoutParams;
 import android.content.Context;
@@ -185,17 +181,17 @@ public class FriendArticleAdapter extends BaseAdapter{
 					if(Integer.valueOf(jsonObject.getString("status_code")) == 0){
 						
 						//更新数据库
-						dbExcute.updateArticlePraises(context, Constant.TB_VehicleFriend, blogId, Variable.cust_name, Integer.valueOf(Variable.cust_id));
-						
-						VehicleFriendActivity vehicleFriendActivity = new VehicleFriendActivity();
-						//更新列表
-						List<Article> oldArticlList = vehicleFriendActivity.getArticleDataList();
-						oldArticlList.clear();
-						vehicleFriendActivity.setArticleDataList(oldArticlList);
-						List<Article> newArticlList = FriendArticleAdapter.this.dbExcute.getArticlePageDatas(context, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(0),String.valueOf(Constant.start1 + Constant.pageSize)}, vehicleFriendActivity.getArticleDataList());
-						Variable.articleList = newArticlList;
-						vehicleFriendActivity.setArticleDataList(newArticlList);
-						FriendArticleAdapter.this.refreshDates(newArticlList);
+					    dbExcute.updateArticlePraises(context, Constant.TB_VehicleFriend, blogId, Variable.cust_name, Integer.valueOf(Variable.cust_id));
+//						
+//						VehicleFriendActivity vehicleFriendActivity = new VehicleFriendActivity();
+//						//更新列表
+//						List<Article> oldArticlList = vehicleFriendActivity.getArticleDataList();
+//						oldArticlList.clear();
+//						vehicleFriendActivity.setArticleDataList(oldArticlList);
+						//List<Article> newArticlList = FriendArticleAdapter.this.dbExcute.getArticlePageDatas(context, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(0),String.valueOf(Constant.start1 + Constant.pageSize)}, vehicleFriendActivity.getArticleDataList());
+						//Variable.articleList = newArticlList;
+						//vehicleFriendActivity.setArticleDataList(newArticlList);
+						//FriendArticleAdapter.this.refreshDates(newArticlList);
 						myDialog.dismiss();
 						
 						Toast.makeText(context, "点赞成功", 0).show();

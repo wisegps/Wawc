@@ -81,13 +81,10 @@ public class SearchMapActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WawcApplication app = (WawcApplication) this.getApplication();
+        WawcApplication app = (WawcApplication)this.getApplication();
         if (app.mBMapManager == null) {
             app.mBMapManager = new BMapManager(getApplicationContext());
-            /**
-             * 如果BMapManager没有初始化则初始化BMapManager
-             */
-            app.mBMapManager.init(WawcApplication.strKey, null);
+            app.mBMapManager.init(WawcApplication.strKey,null);
         }
         setContentView(R.layout.activity_search_map);
         ShareSDK.initSDK(this);
@@ -166,16 +163,21 @@ public class SearchMapActivity extends Activity {
             // 搜索关键字
             Log.d(TAG, keyWord + "Variable.Lat = " + Variable.Lat + " , Variable.Lon = " + Variable.Lon);
             mkSearch = new MKSearch();
-            mkSearch.init(WawcApplication.getInstance().mBMapManager, mkSearchListener);
+            mkSearch.init(app.mBMapManager, mkSearchListener);
             mkSearch.poiSearchNearBy(keyWord, point, 50000);
         }
         // 显示自己位置
-        Drawable mark = getResources().getDrawable(
-                R.drawable.body_icon_location2);
-        overlayCar = new OverlayCar(mark, mMapView);
-        overlays.add(overlayCar);
+        Drawable mark = getResources().getDrawable(R.drawable.body_icon_outset);
+        OverlayMe overlayMe = new OverlayMe(mark, mMapView);
+        overlays.add(overlayMe);
         OverlayItem item = new OverlayItem(point, "item2", "item2");
-        overlayCar.addItem(item);
+        item.setAnchor(OverlayItem.ALING_CENTER);
+        overlayMe.addItem(item);
+        
+        Drawable mark1 = getResources().getDrawable(R.drawable.body_icon_location2);
+        overlayCar = new OverlayCar(mark1, mMapView);
+        overlays.add(overlayCar);
+        mMapView.refresh();
     }
 
     OnClickListener onClickListener = new OnClickListener() {
@@ -279,16 +281,24 @@ public class SearchMapActivity extends Activity {
 
     MKSearchListener mkSearchListener = new MKSearchListener() {
         @Override
-        public void onGetWalkingRouteResult(MKWalkingRouteResult arg0, int arg1) {}
+        public void onGetWalkingRouteResult(MKWalkingRouteResult arg0, int arg1) {
+            Log.d(TAG, "onGetWalkingRouteResult");
+        }
         @Override
-        public void onGetTransitRouteResult(MKTransitRouteResult arg0, int arg1) {}
+        public void onGetTransitRouteResult(MKTransitRouteResult arg0, int arg1) {
+            Log.d(TAG, "onGetTransitRouteResult");
+        }
         @Override
-        public void onGetSuggestionResult(MKSuggestionResult arg0, int arg1) {}
+        public void onGetSuggestionResult(MKSuggestionResult arg0, int arg1) {
+            Log.d(TAG, "onGetSuggestionResult");
+        }
         @Override
-        public void onGetShareUrlResult(MKShareUrlResult arg0, int arg1,int arg2) {}
+        public void onGetShareUrlResult(MKShareUrlResult arg0, int arg1,int arg2) {
+            Log.d(TAG, "onGetShareUrlResult");
+        }
         @Override
         public void onGetPoiResult(MKPoiResult res, int type, int error) {
-            Log.d(TAG, "error = " + error + " , " + "type = " + type);
+            Log.d(TAG, "onGetPoiResult: error = " + error + " , " + "type = " + type);
             if (error == MKEvent.ERROR_RESULT_NOT_FOUND) {
                 Toast.makeText(SearchMapActivity.this,
                         R.string.search_result_not_found, Toast.LENGTH_SHORT)
@@ -338,13 +348,21 @@ public class SearchMapActivity extends Activity {
         }
 
         @Override
-        public void onGetPoiDetailSearchResult(int arg0, int arg1) {}
+        public void onGetPoiDetailSearchResult(int arg0, int arg1) {
+            Log.d(TAG, "onGetPoiDetailSearchResult");
+        }
         @Override
-        public void onGetDrivingRouteResult(MKDrivingRouteResult arg0, int arg1) {}
+        public void onGetDrivingRouteResult(MKDrivingRouteResult arg0, int arg1) {
+            Log.d(TAG, "onGetDrivingRouteResult");
+        }
         @Override
-        public void onGetBusDetailResult(MKBusLineResult arg0, int arg1) {}
+        public void onGetBusDetailResult(MKBusLineResult arg0, int arg1) {
+            Log.d(TAG, "onGetBusDetailResult");
+        }
         @Override
-        public void onGetAddrResult(MKAddrInfo arg0, int arg1) {}
+        public void onGetAddrResult(MKAddrInfo arg0, int arg1) {
+            Log.d(TAG, "onGetAddrResult");
+        }
     };
 
     class OverlayCar extends ItemizedOverlay<OverlayItem> {
@@ -360,6 +378,11 @@ public class SearchMapActivity extends Activity {
             }
             return super.onTap(arg0);
         }
+    }
+    class OverlayMe extends ItemizedOverlay<OverlayItem>{
+        public OverlayMe(Drawable arg0, MapView arg1) {
+            super(arg0, arg1);
+        }        
     }
 
     class Comparator implements java.util.Comparator<AdressData> {

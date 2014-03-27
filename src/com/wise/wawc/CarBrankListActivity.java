@@ -124,9 +124,8 @@ public class CarBrankListActivity extends Activity implements
                 intent.putExtra("brank", brank);
                 intent.putExtra("carId", carId);
                 intent.putExtra("carLogo", carLogo);
-                if (code == MyVehicleActivity.resultCodeBrank) {
-                    CarBrankListActivity.this.setResult(
-                            MyVehicleActivity.resultCodeBrank, intent);
+                if (code == 3) {
+                    CarBrankListActivity.this.setResult(3, intent);
                 } else if (code == NewVehicleActivity.newVehicleBrank) {
                     CarBrankListActivity.this.setResult(
                             NewVehicleActivity.newVehicleBrank, intent);

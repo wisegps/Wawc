@@ -92,8 +92,8 @@ public class InsuranceActivity extends Activity implements
                 intent.putExtra("insurance_phone", insuranceData.getService_phone());
                 if(code == NewVehicleActivity.newVehicleInsurance){
                     InsuranceActivity.this.setResult(NewVehicleActivity.newVehicleInsurance, intent);
-                }else if(code == MyVehicleActivity.resultCodeInsurance){
-                    InsuranceActivity.this.setResult(MyVehicleActivity.resultCodeInsurance, intent);
+                }else if(code == 2){
+                    InsuranceActivity.this.setResult(2, intent);
                 }
                 InsuranceActivity.this.finish();
             }

@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,8 +18,6 @@ import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.service.IllegalProvinceAdapter;
 import com.wise.sql.DBExcute;
-import com.wise.wawc.MyVehicleActivity.PinyinComparator;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -85,11 +82,11 @@ public class IllegalCitiyActivity extends Activity {
 		cityListView.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
 				Log.e("违章城市","违章城市");
-				Intent intent = new Intent(IllegalCitiyActivity.this,MyVehicleActivity.class);
+				Intent intent = new Intent();
 				intent.putExtra("IllegalCity", Variable.illegalList.get(arg2));
 				if(requestCode == NewVehicleActivity.getCityViolateRegulationsCode){
 					Log.e("来自新增爱车","来自新增爱车");
-				}else if(requestCode == MyVehicleActivity.getCityViolateRegulationsCode){
+				}else if(requestCode == 41){
 					Log.e("来自我的爱车","来自我的爱车");
 				}
 				IllegalCitiyActivity.this.setResult(requestCode, intent);
@@ -102,7 +99,7 @@ public class IllegalCitiyActivity extends Activity {
 					cityListView.setVisibility(View.GONE);
 					provinceListView.setVisibility(View.VISIBLE);
 				}else{
-					MyVehicleActivity.illegalCityStr = "";
+					//MyVehicleActivity.illegalCityStr = "";
 					IllegalCitiyActivity.this.finish();
 				}
 			}

@@ -151,8 +151,8 @@ public class MaintainShopActivity extends Activity {
 				Intent intents = new Intent();
 				intents.putExtra("maintain_name", MaintainList.get(arg2)[0]);
 				intents.putExtra("maintain_phone", MaintainList.get(arg2)[1]);
-				if(code == MyVehicleActivity.resultCodeMaintain){
-					MaintainShopActivity.this.setResult(MyVehicleActivity.resultCodeMaintain, intents);
+				if(code == 6){
+					MaintainShopActivity.this.setResult(6, intents);
 				}else if(code == NewVehicleActivity.newVehicleMaintain){
 					MaintainShopActivity.this.setResult(NewVehicleActivity.newVehicleMaintain, intents);
 				}

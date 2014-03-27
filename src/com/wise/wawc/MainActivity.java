@@ -11,20 +11,16 @@ import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
 import cn.sharesdk.tencent.qzone.QZone;
-import com.baidu.mapapi.BMapManager;
 import com.wise.extend.FaceConversionUtil;
 import com.wise.extend.OnViewTouchMoveListener;
 import com.wise.extend.PicHorizontalScrollView;
 import com.wise.extend.SlidingMenuView;
-import com.wise.pubclas.BlurImage;
 import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
-
-import android.app.ActivityGroup;
 import android.app.AlertDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -40,6 +36,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -49,8 +48,6 @@ import android.view.View.OnKeyListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LinearInterpolator;
-import android.view.inputmethod.InputMethodManager;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -61,15 +58,23 @@ import android.widget.Toast;
  * 菜单界面
  * @author honesty
  */
-public class MainActivity extends ActivityGroup implements TagAliasCallback {
+public class MainActivity extends FragmentActivity implements TagAliasCallback {
     private static final String TAG = "MainActivity";
 
     private static final int Get_Pic = 2;//获取登录头像
     private static final int Bind_ID = 3; //绑定ID
     private static final int get_noti_count = 4; //获取消息提醒
     
+    private FragmentManager fragmentManager;
+    Fragment_account fragment_account;
+    Fragment_collection fragment_collection;
+    Fragment_home fragment_home;
+    Fragment_setting fragment_setting;
+    Fragment_sms fragment_sms;
+    Fragment_vehiclefriend fragment_vehiclefriend;
+    Fragment_vehicle fragment_vehicle;
+    
     SlidingMenuView slidingMenuView;
-    ViewGroup tabcontent;
     int Screen = 1;
     Platform platformQQ;
     Platform platformSina;
@@ -95,7 +100,7 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
         hsv_pic = (PicHorizontalScrollView) findViewById(R.id.hsv_pic);
         ActivityFactory.A = this;
         slidingMenuView = (SlidingMenuView) findViewById(R.id.sliding_menu_view);
-        
+        fragmentManager = getSupportFragmentManager();
         TextView tv_oil = (TextView)findViewById(R.id.tv_oil);
         tv_oil.setOnClickListener(onClickListener);
         TextView tv_wb = (TextView)findViewById(R.id.tv_wb);
@@ -120,9 +125,6 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
                 return false;
             }
         });
-        
-        tabcontent = (ViewGroup) slidingMenuView.findViewById(R.id.sliding_body);
-        ActivityFactory.v = tabcontent;
         ActivityFactory.S = slidingMenuView;
         slidingMenuView
                 .setOnViewTouchMoveListener(new OnViewTouchMoveListener() {
@@ -148,9 +150,6 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
         iv_pic = (ImageView) findViewById(R.id.iv_pic);
         iv_noti = (ImageView) findViewById(R.id.iv_noti);
         ShowBgImage();
-        //iv_pic.setImageDrawable(getResources().getDrawable(R.drawable.bg));
-        //Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.bg);
-        //iv_pic.setImageDrawable(BlurImage.BoxBlurFilter(bmp));
         ImageView iv_activity_home = (ImageView)findViewById(R.id.iv_activity_home);
         iv_activity_home.setOnClickListener(onClickListener);
         RelativeLayout rl_activity_main_home = (RelativeLayout) findViewById(R.id.rl_activity_main_home);
@@ -186,11 +185,7 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
         
         getSpData();
         
-        Intent i = new Intent(MainActivity.this, HomeActivity.class);
-        View v = getLocalActivityManager().startActivity(
-                HomeActivity.class.getName(), i).getDecorView();
-        tabcontent.removeAllViews();
-        tabcontent.addView(v);
+        ToHome();
         ShareSDK.initSDK(this);
         platformQQ = ShareSDK.getPlatform(MainActivity.this, QZone.NAME);
         platformSina = ShareSDK.getPlatform(MainActivity.this, SinaWeibo.NAME);
@@ -210,12 +205,7 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
                 ToAccountHome();
                 break;
             case R.id.home:
-                slidingMenuView.snapToScreen(1);
-                Intent i = new Intent(MainActivity.this, HomeActivity.class);
-                View view = getLocalActivityManager().startActivity(
-                        HomeActivity.class.getName(), i).getDecorView();
-                tabcontent.removeAllViews();
-                tabcontent.addView(view);
+                ToHome();
                 break;
             // 车友圈
             case R.id.car_circle:
@@ -389,6 +379,9 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
         SharedPreferences preferences = getSharedPreferences(
                 Constant.sharedPreferencesName, Context.MODE_PRIVATE);
         String platform = preferences.getString(Constant.platform, "");
+        if(Constant.isTest){
+            platform = "sina登录";
+        }
         if(platform.equals("qq")){
             System.out.println("qq登录");
             tv_activity_main_name.setText(platformQQ.getDb().getUserName());
@@ -396,21 +389,46 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
             iv_activity_main_login.setImageResource(R.drawable.side_icon_qq_press);
             iv_activity_main_arrow.setVisibility(View.VISIBLE);
             platfromIsLogin(platformQQ);
-            //platformQQ.getDb().getUserIcon()
             //绑定
             Login(platformQQ.getDb().getUserId(), platformQQ.getDb()
                     .getUserName(), LocationProvince, LocationCity, platformQQ.getDb()
                     .getUserIcon(), "remark");
         }else{
             System.out.println("sina登录");
-            tv_activity_main_name.setText(platformSina.getDb().getUserName());
-            Variable.cust_name = platformSina.getDb().getUserName();
-            iv_activity_main_login.setImageResource(R.drawable.side_icon_sina_press);
-            iv_activity_main_arrow.setVisibility(View.VISIBLE);
-            platfromIsLogin(platformSina);
-            Login(platformSina.getDb().getUserId(), platformSina.getDb()
-                    .getUserName(), LocationProvince, LocationCity, platformSina.getDb()
-                    .getUserIcon(), "remark");
+            if(Constant.isTest){
+                tv_activity_main_name.setText("Honesty_fly");
+                Variable.cust_name = "Honesty_fly";
+                iv_activity_main_login.setImageResource(R.drawable.side_icon_sina_press);
+                iv_activity_main_arrow.setVisibility(View.VISIBLE);                
+                Login("2152086902", "Honesty_fly", LocationProvince, LocationCity, 
+                        "http://tp3.sinaimg.cn/2152086902/50/5637362071/1", "remark"); 
+                bimage = BitmapFactory.decodeFile(Constant.userIconPath + Constant.UserImage);
+                Constant.UserIconUrl = "http://tp3.sinaimg.cn/2152086902/50/5637362071/1";
+                if(bimage != null){            
+                    //iv_activity_main_logo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
+                    iv_activity_main_logo.setImageBitmap(bimage);
+                }else{
+                    //TODO 获取图片            
+                }
+                new Thread(new GetBitMapFromUrlThread("http://tp3.sinaimg.cn/2152086902/50/5637362071/1")).start();
+                SharedPreferences preferences1 = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+                Variable.cust_id  = preferences1.getString(Constant.sp_cust_id, "");
+                Variable.auth_code = preferences1.getString(Constant.sp_auth_code, "");
+                Set<String> tagSet = new LinkedHashSet<String>();
+                tagSet.add("2152086902");
+                //调用JPush API设置Tag
+                JPushInterface.setAliasAndTags(getApplicationContext(), null, tagSet, this);
+            }else{
+                tv_activity_main_name.setText(platformSina.getDb().getUserName());
+                Variable.cust_name = platformSina.getDb().getUserName();
+                iv_activity_main_login.setImageResource(R.drawable.side_icon_sina_press);
+                iv_activity_main_arrow.setVisibility(View.VISIBLE);
+                platfromIsLogin(platformSina);
+                Login(platformSina.getDb().getUserId(), platformSina.getDb()
+                        .getUserName(), LocationProvince, LocationCity, platformSina.getDb()
+                        .getUserIcon(), "remark"); 
+            }
+            
         }
     }
     /**
@@ -529,13 +547,9 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        System.out.println("MainActivity onDestroy");
+        Log.d(TAG, "onDestroy");
         ShareSDK.stopSDK(this);
-        WawcApplication app = (WawcApplication) this.getApplication();
-        if (app.mBMapManager != null) {
-            app.mBMapManager.destroy();
-            app.mBMapManager = null;
-        }
+        
         stopService(new Intent(MainActivity.this, LocationService.class));
         Constant.start = 0;  // 开始页
         Constant.pageSize = 10;   //每页数量
@@ -545,8 +559,13 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
         Constant.pageSize1 = 10;   //每页数量
         Constant.totalPage1 = 0;   //数据总量
         Constant.currentPage1 = 0;  //当前页
-        VehicleFriendActivity.newArticleBlogId = 0;
-        
+        //VehicleFriendActivity.newArticleBlogId = 0;
+        WawcApplication app = (WawcApplication)this.getApplication();
+        if (app.mBMapManager != null) {
+            app.mBMapManager.destroy();
+            app.mBMapManager = null;
+        }
+        System.exit(0);
         //测试  车友圈刷新
         //DBHelper dbHelper = new DBHelper(MainActivity.this);
         //SQLiteDatabase write = dbHelper.getWritableDatabase();
@@ -554,17 +573,120 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
         //VehicleFriendActivity.minBlogId = 0;
     }
     boolean isHome = true;
+    
+    private void setTabSelection(int index) {
+        // 开启一个Fragment事务  
+        FragmentTransaction transaction = fragmentManager.beginTransaction();  
+        // 先隐藏掉所有的Fragment，以防止有多个Fragment显示在界面上的情况  
+        hideFragments(transaction);  
+        switch (index) {  
+        case 0:  
+            if (fragment_account == null) {  
+                // 如果MessageFragment为空，则创建一个并添加到界面上  
+                fragment_account = new Fragment_account();
+                Bundle bundle=new Bundle();  
+                bundle.putBoolean("isJump", false);  
+                fragment_account.setArguments(bundle); 
+                transaction.add(R.id.sliding_body, fragment_account);  
+            } else {  
+                // 如果MessageFragment不为空，则直接将它显示出来  
+                transaction.show(fragment_account);  
+            }  
+            break;  
+        case 1:
+            if (fragment_collection == null) {  
+                // 如果ContactsFragment为空，则创建一个并添加到界面上  
+                fragment_collection = new Fragment_collection();  
+                transaction.add(R.id.sliding_body, fragment_collection);  
+            } else {  
+                // 如果ContactsFragment不为空，则直接将它显示出来  
+                transaction.show(fragment_collection);  
+            }  
+            break;  
+        case 2: 
+            if (fragment_home == null) {  
+                // 如果NewsFragment为空，则创建一个并添加到界面上  
+                fragment_home = new Fragment_home();  
+                transaction.add(R.id.sliding_body, fragment_home);  
+            } else {  
+                // 如果NewsFragment不为空，则直接将它显示出来  
+                transaction.show(fragment_home);  
+            }  
+            break;  
+        case 3:
+            if (fragment_setting == null) {  
+                // 如果SettingFragment为空，则创建一个并添加到界面上  
+                fragment_setting = new Fragment_setting();  
+                transaction.add(R.id.sliding_body, fragment_setting);  
+            } else {  
+                // 如果SettingFragment不为空，则直接将它显示出来  
+                transaction.show(fragment_setting);  
+            }  
+            break;
+        case 4:
+            if (fragment_sms == null) {  
+                // 如果SettingFragment为空，则创建一个并添加到界面上  
+                fragment_sms = new Fragment_sms();  
+                transaction.add(R.id.sliding_body, fragment_sms);  
+            } else {  
+                // 如果SettingFragment不为空，则直接将它显示出来  
+                transaction.show(fragment_sms);  
+            }  
+            break;
+        case 5:
+            if (fragment_vehiclefriend == null) {  
+                // 如果SettingFragment为空，则创建一个并添加到界面上  
+                fragment_vehiclefriend = new Fragment_vehiclefriend();  
+                transaction.add(R.id.sliding_body, fragment_vehiclefriend);  
+            } else {  
+                // 如果SettingFragment不为空，则直接将它显示出来  
+                transaction.show(fragment_vehiclefriend);  
+            }  
+            break;
+        case 6:
+            if (fragment_vehicle == null) {  
+                // 如果SettingFragment为空，则创建一个并添加到界面上  
+                fragment_vehicle = new Fragment_vehicle();  
+                transaction.add(R.id.sliding_body, fragment_vehicle);  
+            } else {  
+                // 如果SettingFragment不为空，则直接将它显示出来  
+                transaction.show(fragment_vehicle);  
+            }  
+            break;
+        }  
+        transaction.commit();  
+    }
+    
+    private void hideFragments(FragmentTransaction transaction) {  
+        if (fragment_account != null) {  
+            transaction.hide(fragment_account);  
+        }  
+        if (fragment_collection != null) {  
+            transaction.hide(fragment_collection);  
+        }  
+        if (fragment_home != null) {  
+            transaction.hide(fragment_home);  
+        }  
+        if (fragment_setting != null) {  
+            transaction.hide(fragment_setting);  
+        }
+        if (fragment_sms != null) {  
+            transaction.hide(fragment_sms);  
+        }
+        if (fragment_vehiclefriend != null) {  
+            transaction.hide(fragment_vehiclefriend);  
+        }
+        if (fragment_vehicle != null) {  
+            transaction.hide(fragment_vehicle);  
+        }
+    }
+    
     /**
      * 设置中心
      */
     public void ToSettingCenter() {
         isHome = false;
-        Intent intent = new Intent(MainActivity.this,
-                SettingCenterActivity.class);
-        View vv = getLocalActivityManager().startActivity(
-                SettingCenterActivity.class.getName(), intent).getDecorView();
-        tabcontent.removeAllViews();
-        tabcontent.addView(vv);
+        setTabSelection(3);
         slidingMenuView.snapToScreen(1);
     }
 
@@ -573,34 +695,21 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
      */
     private void ToMyCollection() {
         isHome = false;
-        Intent intent = new Intent(MainActivity.this,
-                CollectionActivity.class);
-        View vv = getLocalActivityManager().startActivity(
-                CollectionActivity.class.getName(), intent).getDecorView();
-        tabcontent.removeAllViews();
-        tabcontent.addView(vv);
+        setTabSelection(1);
         slidingMenuView.snapToScreen(1);
     }
 
     /**
      * 首页
      */
-    public void ToHome() {
+    private void ToHome() {
         isHome = true;
-        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-        View vv = getLocalActivityManager().startActivity(
-                HomeActivity.class.getName(), intent).getDecorView();
-        tabcontent.removeAllViews();
-        tabcontent.addView(vv);
+        setTabSelection(2);
         slidingMenuView.snapToScreen(1);
     }
     public void ToSms() {
         isHome = false;
-        Intent intent = new Intent(MainActivity.this, SmsActivity.class);
-        View vv = getLocalActivityManager().startActivity(
-                SmsActivity.class.getName(), intent).getDecorView();
-        tabcontent.removeAllViews();
-        tabcontent.addView(vv);
+        setTabSelection(4);
         slidingMenuView.snapToScreen(1);
     }
     /**
@@ -608,13 +717,8 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
      */
     public void ToAccountHome() {
         isHome = false;
+        setTabSelection(0); 
         slidingMenuView.snapToScreen(1);
-        Intent i = new Intent(MainActivity.this, AccountActivity.class);
-        View view = getLocalActivityManager().startActivity(
-                AccountActivity.class.getName(), i).getDecorView();
-        tabcontent.removeAllViews();
-        tabcontent.addView(view);
-        
     }
 
     /**
@@ -622,64 +726,40 @@ public class MainActivity extends ActivityGroup implements TagAliasCallback {
      */
     public void ToVehicleFriends() {
         isHome = false;
-    	if("".equals(Variable.cust_id)){
-    		Toast.makeText(getApplicationContext(), "请登录...", 0).show();
-    	}else{
-    		 Intent intent = new Intent(MainActivity.this,
-    	                VehicleFriendActivity.class);
-    	        View vv = getLocalActivityManager().startActivity(VehicleFriendActivity.class.getName(), intent).getDecorView();
-    	        tabcontent.removeAllViews();
-    	        tabcontent.addView(vv);
-    	        slidingMenuView.snapToScreen(1);
-    	}
+        setTabSelection(5);
+        slidingMenuView.snapToScreen(1);
     }
 
     /**
      * 我的爱车
      */
     public void ToMyCar() {
-        isHome = false;
-    	if("".equals(Variable.cust_id)){
-    		Toast.makeText(getApplicationContext(), "请登录", 0).show();
-    		return;
-    	}else{
-    		 if(Variable.carDatas.size() == 0){
-     	        //判断网络
-     	        startActivity(new Intent(MainActivity.this,NewVehicleActivity.class));
-     	    }else{
-     	        slidingMenuView.snapToScreen(1);
-                 Intent i = new Intent(MainActivity.this, MyVehicleActivity.class);
-                 View view = getLocalActivityManager().startActivity(MyVehicleActivity.class.getName(), i).getDecorView();
-                 tabcontent.removeAllViews();
-                 tabcontent.addView(view);
-     	    }
-    	}
+        isHome = false;    	
+		if(Variable.carDatas.size() == 0){
+ 	        //判断网络
+ 	        startActivity(new Intent(MainActivity.this,NewVehicleActivity.class));
+ 	    }else{
+ 	       setTabSelection(6);
+ 	      slidingMenuView.snapToScreen(1);
+ 	    }
     }
 
     /**
      * 我的终端
      */
     public void ToCarTerminal() {
-        isHome = false;
-        slidingMenuView.snapToScreen(1);
-        Intent i = new Intent(MainActivity.this, DevicesActivity.class);
-        View view = getLocalActivityManager().startActivity(
-                DevicesActivity.class.getName(), i).getDecorView();
-        tabcontent.removeAllViews();
-        tabcontent.addView(view);
+        //isHome = false;
+        //setTabSelection(4);
+        //slidingMenuView.snapToScreen(1);
     }
 
     /**
      * 我的订单
      */
     public void Toorders() {
-        isHome = false;
-        slidingMenuView.snapToScreen(1);
-        Intent i = new Intent(MainActivity.this, OrderMeActivity.class);
-        View view = getLocalActivityManager().startActivity(
-                OrderMeActivity.class.getName(), i).getDecorView();
-        tabcontent.removeAllViews();
-        tabcontent.addView(view);
+        //isHome = false;
+        //setTabSelection(4);
+        //slidingMenuView.snapToScreen(1);
     }
     public void LeftMenu() {
         if (slidingMenuView.getCurrentScreen() == 0) {

@@ -1,10 +1,6 @@
 package com.wise.wawc;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.ShareSDK;
@@ -43,13 +39,13 @@ import android.widget.LinearLayout;
  */
 public class WelcomeActivity extends Activity implements PlatformActionListener {
     private static final String TAG = "WelcomeActivity";
-    
+
     private final static int Wait = 1;
     private final static int Get_city = 2;
     private final static int Get_host_city = 3;
     private final static int login = 4;
     LinearLayout ll_login;
-    Button bt_sina , bt_qq;
+    Button bt_sina, bt_qq;
     Platform platformQQ;
     Platform platformSina;
     Platform platformWhat;
@@ -61,31 +57,35 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         ShareSDK.initSDK(this);
-        ll_login = (LinearLayout)findViewById(R.id.ll_login);
-        bt_sina = (Button)findViewById(R.id.bt_sina);
+        ll_login = (LinearLayout) findViewById(R.id.ll_login);
+        bt_sina = (Button) findViewById(R.id.bt_sina);
         bt_sina.setOnClickListener(onClickListener);
-        bt_qq = (Button)findViewById(R.id.bt_qq);
+        bt_qq = (Button) findViewById(R.id.bt_qq);
         bt_qq.setOnClickListener(onClickListener);
-        //跳转到登录界面
-        isLogin();        
-        if(isLogin){
+        // 跳转到登录界面
+        isLogin();
+        if(Constant.isTest){
+            isLogin = true;
+        }
+        if (isLogin) {
             new Thread(new WaitThread()).start();
-        }else{
+        } else {
             if (isOffline()) {
                 // 没有网络
                 setNetworkMethod();
-            }else{
+            } else {
                 System.out.println("show");
-                Animation operatingAnim = AnimationUtils.loadAnimation(WelcomeActivity.this, R.anim.in_from_bottom);  
+                Animation operatingAnim = AnimationUtils.loadAnimation(
+                        WelcomeActivity.this, R.anim.in_from_bottom);
                 ll_login.setAnimation(operatingAnim);
-                ll_login.setVisibility(View.VISIBLE);                
-            }            
+                ll_login.setVisibility(View.VISIBLE);
+            }
         }
-        isNeedGetCityFromUrl();        
+        isNeedGetCityFromUrl();
         startService(new Intent(WelcomeActivity.this, LocationService.class));
     }
-    
-    OnClickListener onClickListener = new OnClickListener() {        
+
+    OnClickListener onClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
@@ -104,30 +104,30 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
             }
         }
     };
-    
+
     private void isLogin() {
         platformQQ = ShareSDK.getPlatform(WelcomeActivity.this, QZone.NAME);
-        platformSina = ShareSDK.getPlatform(WelcomeActivity.this, SinaWeibo.NAME);
+        platformSina = ShareSDK.getPlatform(WelcomeActivity.this,
+                SinaWeibo.NAME);
         if (platformQQ.getDb().isValid()) {
             System.out.println("qq登录");
             isLogin = true;
             bt_sina.setVisibility(View.INVISIBLE);
             bt_qq.setVisibility(View.INVISIBLE);
-         } else if (platformSina.getDb().isValid()){
+        } else if (platformSina.getDb().isValid()) {
             isLogin = true;
             System.out.println("sina登录");
             bt_sina.setVisibility(View.INVISIBLE);
             bt_qq.setVisibility(View.INVISIBLE);
-       } else {
+        } else {
+            
             isLogin = false;
             System.out.println("没有登录");
             bt_sina.setVisibility(View.VISIBLE);
             bt_qq.setVisibility(View.VISIBLE);
         }
     }
-    
-    
-    
+
     String citys = "";
     String hot_citys = "";
     boolean isCity = false;
@@ -139,7 +139,8 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
             super.handleMessage(msg);
             switch (msg.what) {
             case Wait:
-                startActivity(new Intent(WelcomeActivity.this,MainActivity.class));
+                startActivity(new Intent(WelcomeActivity.this,
+                        MainActivity.class));
                 finish();
                 break;
             case Get_city:
@@ -161,7 +162,6 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
             }
         }
     };
-    
 
     /**
      * 判断网络连接状况，true,没有网络
@@ -203,7 +203,7 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
         @Override
         public void run() {
             super.run();
-            try {                
+            try {
                 Thread.sleep(1000);
                 Message message = new Message();
                 message.what = Wait;
@@ -216,6 +216,7 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
 
     /**
      * 是否是第一次登录
+     * 
      * @return
      */
     private boolean isFristLoad() {
@@ -227,31 +228,34 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
         }
         return false;
     }
-    private void isNeedGetCityFromUrl(){
+
+    private void isNeedGetCityFromUrl() {
         DBHelper dbHelper = new DBHelper(WelcomeActivity.this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery("select * from " + Constant.TB_Base
                 + " where Title=?", new String[] { "City" });
-        if(cursor.getCount() == 0){
+        if (cursor.getCount() == 0) {
             Log.d(TAG, "获取城市");
             String url = Constant.BaseUrl + "base/city?is_hot=0";
-            new Thread(new NetThread.GetDataThread(handler, url, Get_city)).start();
-        }else{
+            new Thread(new NetThread.GetDataThread(handler, url, Get_city))
+                    .start();
+        } else {
             isCity = true;
         }
         cursor.close();
         Cursor c = db.rawQuery("select * from " + Constant.TB_Base
                 + " where Title=?", new String[] { "hotCity" });
-        if(c.getCount() == 0){
+        if (c.getCount() == 0) {
             String url_hot = Constant.BaseUrl + "base/city?is_hot=1";
-            new Thread(new NetThread.GetDataThread(handler, url_hot, Get_host_city)).start();
-        }else{
+            new Thread(new NetThread.GetDataThread(handler, url_hot,
+                    Get_host_city)).start();
+        } else {
             isHotCity = true;
         }
         c.close();
         db.close();
     }
-    
+
     private void InsertCity(String result, String Title) {
         DBExcute dbExcute = new DBExcute();
         ContentValues values = new ContentValues();
@@ -259,37 +263,43 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
         values.put("Content", result);
         dbExcute.InsertDB(WelcomeActivity.this, values, Constant.TB_Base);
     }
-    private void TurnActivity(){
-        if(isCity && isHotCity && isLogin){
-            if(isFristLoad()){
-                Intent intent = new Intent(WelcomeActivity.this, SelectCityActivity.class);
+
+    private void TurnActivity() {
+        if (isCity && isHotCity && isLogin) {
+            if (isFristLoad()) {
+                Intent intent = new Intent(WelcomeActivity.this,
+                        SelectCityActivity.class);
                 intent.putExtra("Welcome", true);
                 startActivity(intent);
                 finish();
-            }else{
-                Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+            } else {
+                Intent intent = new Intent(WelcomeActivity.this,
+                        MainActivity.class);
                 startActivity(intent);
                 finish();
-            }                          
+            }
         }
     }
 
     @Override
     public void onCancel(Platform arg0, int arg1) {
         // TODO Auto-generated method stub
-        
+
     }
+
     @Override
     public void onComplete(Platform arg0, int arg1, HashMap<String, Object> arg2) {
         Message message = new Message();
         message.what = login;
         handler.sendMessage(message);
-        SharedPreferences preferences = getSharedPreferences(Constant.sharedPreferencesName, Context.MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(
+                Constant.sharedPreferencesName, Context.MODE_PRIVATE);
         Editor editor = preferences.edit();
         editor.putString(Constant.platform, platform);
         editor.commit();
     }
-        
+
     @Override
-    public void onError(Platform arg0, int arg1, Throwable arg2) {}
+    public void onError(Platform arg0, int arg1, Throwable arg2) {
+    }
 }

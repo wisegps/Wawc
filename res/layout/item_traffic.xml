@@ -102,6 +102,7 @@
                 android:layout_height="14dp"
                 android:background="@color/common_blue"/>
 		    <TextView
+		        android:id="@+id/tv_item_traffic_total"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

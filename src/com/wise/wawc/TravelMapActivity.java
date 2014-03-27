@@ -53,24 +53,21 @@ public class TravelMapActivity extends Activity {
     ProgressDialog Dialog = null; // progress
     int device = 3;
     Intent intent;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WawcApplication app = (WawcApplication) this.getApplication();
+        WawcApplication app = (WawcApplication)this.getApplication();
         if (app.mBMapManager == null) {
             app.mBMapManager = new BMapManager(getApplicationContext());
-            /**
-             * 如果BMapManager没有初始化则初始化BMapManager
-             */
-            app.mBMapManager.init(WawcApplication.strKey, null);
+            app.mBMapManager.init(WawcApplication.strKey,null);
         }
         setContentView(R.layout.activity_travel_map);
         ImageView iv_activity_travel_share = (ImageView)findViewById(R.id.iv_activity_travel_share);
         iv_activity_travel_share.setOnClickListener(onClickListener);
         mMapView = (MapView) findViewById(R.id.mv_travel_map);
         mMapView.setBuiltInZoomControls(true);
-        mMapView.regMapViewListener(WawcApplication.getInstance().mBMapManager, mkMapViewListener);
+        mMapView.regMapViewListener(app.mBMapManager, mkMapViewListener);
         mMapController = mMapView.getController();
         GeoPoint point = new GeoPoint((int) (39.915 * 1E6),
                 (int) (116.404 * 1E6));
@@ -247,5 +244,13 @@ public class TravelMapActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         mMapView.destroy();
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
     }
 }

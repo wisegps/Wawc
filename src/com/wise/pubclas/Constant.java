@@ -7,6 +7,11 @@ import android.os.Environment;
  */
 public class Constant {
     /**
+     * true,放在百度云上测试,需要默认自动登录
+     * false 正式发布
+     */
+    public static boolean isTest = true;
+    /**
      * 服务器地址："http://wiwc.api.wisegps.cn/"
      */
     public static String BaseUrl = "http://wiwc.api.wisegps.cn/";
