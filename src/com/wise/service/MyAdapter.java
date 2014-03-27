@@ -491,20 +491,10 @@ public class MyAdapter extends BaseAdapter{
 					try {
 						JSONObject jsonObject = new JSONObject(result);
 						if(Integer.valueOf(jsonObject.getString("status_code")) == 0){
-							
-							//更新数据库
-//							dbExcute.updateArticlePraises(activity, Constant.TB_VehicleFriend, blogId, Variable.cust_name, Integer.valueOf(Variable.cust_id));
-//							VehicleFriendActivity vehicleFriendActivity = new VehicleFriendActivity();
-//							//更新列表
-//							List<Article> oldArticlList = vehicleFriendActivity.getArticleDataList();
-//							oldArticlList.clear();
-//							vehicleFriendActivity.setArticleDataList(oldArticlList);
-//							List<Article> newArticlList = MyAdapter.this.dbExcute.getArticlePageDatas(activity, "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(0),String.valueOf(Constant.start + Constant.pageSize)}, vehicleFriendActivity.getArticleDataList());
-//							Variable.articleList = newArticlList;
-//							vehicleFriendActivity.setArticleDataList(newArticlList);
-//							MyAdapter.this.refreshDates(newArticlList);
-//							myDialog.dismiss();
-//							Toast.makeText(activity, "点赞成功", 0).show();
+							if(onItemContentClickListener != null){
+								onItemContentClickListener.Favorite(blogId);
+								myDialog.dismiss();
+							}							
 						}
 					} catch (NumberFormatException e) {
 						e.printStackTrace();
@@ -594,7 +584,6 @@ public class MyAdapter extends BaseAdapter{
 	 /**
 	  * 显示图片列表
 	  * @author Mr.Wang
-	  *
 	  */
 	 class UserImageAdapter extends BaseAdapter{
 		 List<Bitmap> smallImageList;
@@ -656,5 +645,6 @@ public class MyAdapter extends BaseAdapter{
 	 }
 	 public interface OnItemContentClickListener{
 	     public abstract void say_somthing(int index);
+	     public abstract void Favorite(int bolg_id);
 	 }
 }

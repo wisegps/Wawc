@@ -23,7 +23,6 @@ import com.wise.service.MyAdapter;
 import com.wise.service.MyAdapter.OnItemContentClickListener;
 import com.wise.sql.DBExcute;
 import com.wise.sql.DBHelper;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
@@ -43,7 +42,6 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -181,6 +179,24 @@ public class Fragment_vehiclefriend extends Fragment implements IXListViewListen
             public void say_somthing(int index) {
                 blogId = index;
             }
+
+			@Override
+			public void Favorite(int bolg_id) {
+				//更新数据库
+				DBExcute dbExcute = new DBExcute();
+				dbExcute.updateArticlePraises(getActivity(), Constant.TB_VehicleFriend, bolg_id, Variable.cust_name, Integer.valueOf(Variable.cust_id));
+				//VehicleFriendActivity vehicleFriendActivity = new VehicleFriendActivity();
+				//更新列表
+				List<Article> oldArticlList = getArticleDataList();
+				oldArticlList.clear();
+				setArticleDataList(oldArticlList);
+				List<Article> newArticlList = dbExcute.getArticlePageDatas(getActivity(), "select * from " + Constant.TB_VehicleFriend + " order by Blog_id desc limit ?,?", new String[]{String.valueOf(0),String.valueOf(Constant.start + Constant.pageSize)}, getArticleDataList());
+				Variable.articleList = newArticlList;
+				setArticleDataList(newArticlList);
+				//myAdapter.notifyDataSetChanged();
+				myAdapter.refreshDates(newArticlList);
+				Toast.makeText(getActivity(), "点赞成功", 0).show();
+			}
         });
         
         mSpinerPopWindow = new SpinerPopWindow(getActivity());
@@ -260,6 +276,7 @@ public class Fragment_vehiclefriend extends Fragment implements IXListViewListen
             blogIdList[i] = articleTempList.get(i).getBlog_id();
         }
         articleTypeMaxBlogId = paiXu(blogIdList)[0];
+        Log.e("Fragment_vehicleFriend","发文章之后服务器上刷新 url = " + articleType + "&max_id=" + articleTypeMaxBlogId);
         new Thread(new NetThread.GetDataThread(myHandler, articleType + "&max_id=" + articleTypeMaxBlogId, refreshCode)).start();
     }
     @Override
@@ -337,33 +354,33 @@ public class Fragment_vehiclefriend extends Fragment implements IXListViewListen
                 getArticleDatas(0);
                 }
                 break;
-            case newArticleResult:
-                myDialog.dismiss();
-                if(!"[]".equals(msg.obj.toString())){
-                String temp1 = (msg.obj.toString()).replaceAll("\\\\", "");
-                try {
-                    JSONArray jsonArray = new JSONArray(temp1);
-                    for(int i = 0 ; i < jsonArray.length() ; i ++){
-                        if(Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")) == newArticleBlogId){
-                            ContentValues values = new ContentValues();
-                            values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
-                            values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
-                            values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
-                            dBExcute.InsertDB(getActivity(),values,Constant.TB_VehicleFriend);
-                        }
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                articleDataList.clear();
-                articleDataList = dBExcute.getArticleTypeList(getActivity(), "select * from " + Constant.TB_VehicleFriendType + " where Type_id = ? order by Blog_id desc limit ?,?", new String[]{String.valueOf(article),String.valueOf(0),String.valueOf(Constant.start + Constant.pageSize + 1)}, articleDataList);
-                Variable.articleList = articleDataList;
-                setArticleDataList(articleDataList);
-                myAdapter.refreshDates(articleDataList);
-                }
-                newArticleBlogId = 0;
-                break;
+//            case newArticleResult:
+//                myDialog.dismiss();
+//                if(!"[]".equals(msg.obj.toString())){
+//                String temp1 = (msg.obj.toString()).replaceAll("\\\\", "");
+//                try {
+//                    JSONArray jsonArray = new JSONArray(temp1);
+//                    for(int i = 0 ; i < jsonArray.length() ; i ++){
+//                        if(Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")) == newArticleBlogId){
+//                            ContentValues values = new ContentValues();
+//                            values.put("Cust_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("cust_id")));
+//                            values.put("Blog_id", Integer.valueOf(jsonArray.getJSONObject(i).getString("blog_id")));
+//                            values.put("Content", jsonArray.getJSONObject(i).toString().replaceAll("\\\\", ""));
+//                            dBExcute.InsertDB(getActivity(),values,Constant.TB_VehicleFriend);
+//                        }
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                }
+//
+//                articleDataList.clear();
+//                articleDataList = dBExcute.getArticleTypeList(getActivity(), "select * from " + Constant.TB_VehicleFriendType + " where Type_id = ? order by Blog_id desc limit ?,?", new String[]{String.valueOf(article),String.valueOf(0),String.valueOf(Constant.start + Constant.pageSize + 1)}, articleDataList);
+//                Variable.articleList = articleDataList;
+//                setArticleDataList(articleDataList);
+//                myAdapter.refreshDates(articleDataList);
+//                }
+//                newArticleBlogId = 0;
+//                break;
             case commentArticle:
                 String commentResult = msg.obj.toString();
                 try {
@@ -667,8 +684,9 @@ public class Fragment_vehiclefriend extends Fragment implements IXListViewListen
         super.onActivityResult(requestCode, resultCode, data);
       //文章发表成功后刷新数据库  
         if(requestCode == newArticleResult){
+        	Log.e("onActivityResult687","newArticleBlogId = " + newArticleBlogId);
+        	newArticleBlogId = data.getIntExtra("blog_id", 0);
             if(newArticleBlogId != 0){
-                newArticleBlogId = data.getIntExtra("blog_id", 0);
 //          myDialog = ProgressDialog.show(VehicleFriendActivity.this, getString(R.string.dialog_title), getString(R.string.dialog_message));
 //          myDialog.setCancelable(true);
             onRefresh();

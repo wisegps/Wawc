@@ -274,6 +274,7 @@ public class NewArticleActivity extends Activity implements
                         Toast.makeText(getApplicationContext(), "发表成功", Toast.LENGTH_SHORT)
                                 .show();
                         Intent intent = new Intent(NewArticleActivity.this,MainActivity.class);
+                        Log.e("new Article","blog_id = " + jsonObject.getInt("blog_id"));
                         intent.putExtra("blog_id", jsonObject.getInt("blog_id"));
                         setResult(67, intent);
 
