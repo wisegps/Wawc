@@ -183,20 +183,16 @@ public class MainActivity extends FragmentActivity implements TagAliasCallback {
         iv_voice.setOnClickListener(onClickListener);
         
         getSpData();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        fragment_home = new Fragment_home();
+        transaction.add(R.id.sliding_body, fragment_home); 
+        transaction.commit();
         
-        ToHome();
         ShareSDK.initSDK(this);
         platformQQ = ShareSDK.getPlatform(MainActivity.this, QZone.NAME);
         platformSina = ShareSDK.getPlatform(MainActivity.this, SinaWeibo.NAME);
         isLogin();
         startService(new Intent(MainActivity.this, LocationService.class));
-
-        handler.postDelayed(new Runnable() {            
-            @Override
-            public void run() {
-                slidingMenuView.snapToScreen(1);
-            }
-        }, 500);
     }
     boolean isMove = false;
     OnClickListener onClickListener = new OnClickListener() {
@@ -334,9 +330,8 @@ public class MainActivity extends FragmentActivity implements TagAliasCallback {
             case Get_Pic:
                 if(bimage != null){
                     GetSystem.saveImageSD(bimage, Constant.userIconPath, Constant.UserImage,100);
+                    iv_activity_main_logo.setImageBitmap(bimage);
                 }
-                //iv_activity_main_logo.setImageBitmap(BlurImage.getRoundedCornerBitmap(bimage));
-                iv_activity_main_logo.setImageBitmap(bimage);
                 break;
             case Bind_ID:
                 jsonLogin(msg.obj.toString());
@@ -565,24 +560,18 @@ public class MainActivity extends FragmentActivity implements TagAliasCallback {
         Constant.pageSize1 = 10;   //每页数量
         Constant.totalPage1 = 0;   //数据总量
         Constant.currentPage1 = 0;  //当前页
-        //VehicleFriendActivity.newArticleBlogId = 0;
         WawcApplication app = (WawcApplication)this.getApplication();
         if (app.mBMapManager != null) {
             app.mBMapManager.destroy();
             app.mBMapManager = null;
         }
         System.exit(0);
-        //测试  车友圈刷新
-        //DBHelper dbHelper = new DBHelper(MainActivity.this);
-        //SQLiteDatabase write = dbHelper.getWritableDatabase();
-        //write.delete(Constant.TB_VehicleFriend, "Blog_id=?", new String[]{String.valueOf(VehicleFriendActivity.minBlogId)});
-        //VehicleFriendActivity.minBlogId = 0;
     }
     boolean isHome = true;
     
     private void setTabSelection(int index) {
         // 开启一个Fragment事务  
-        FragmentTransaction transaction = fragmentManager.beginTransaction();  
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
         // 先隐藏掉所有的Fragment，以防止有多个Fragment显示在界面上的情况  
         hideFragments(transaction);  
         switch (index) {  

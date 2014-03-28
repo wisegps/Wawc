@@ -24,13 +24,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class Fragment_collection extends Fragment implements IXListViewListener{
+    private static final String TAG = "Fragment_collection";
     private static final int frist_getdata = 1;
     private static final int load_getdata = 2;
     
@@ -43,7 +41,7 @@ public class Fragment_collection extends Fragment implements IXListViewListener{
     
     boolean isGetDB = true; //上拉是否继续读取数据库
     int Toal = 0; //从那条记录读起
-    int pageSize = 5 ; //每次读取的记录数目
+    int pageSize = 10 ; //每次读取的记录数目
     
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -87,18 +85,25 @@ public class Fragment_collection extends Fragment implements IXListViewListener{
             case frist_getdata:
                 dBExcute.DeleteDB(getActivity(), "delete from " + Constant.TB_Collection + " where Cust_id=" + Variable.cust_id);
                 adressDatas.clear();
-                jsonCollectionData(msg.obj.toString());
+                adressDatas.addAll(jsonCollectionData(msg.obj.toString()));
                 collectionAdapter.notifyDataSetChanged();
                 if(adressDatas.size() > 0){
                     isNothingNote(false);
+                }else{
+                    isNothingNote(true);
                 }
                 onLoad();
                 break;
 
             case load_getdata:
-                jsonCollectionData(msg.obj.toString());
-                collectionAdapter.notifyDataSetChanged();
+                List<AdressData> ads = jsonCollectionData(msg.obj.toString());
+                adressDatas.addAll(ads);
                 onLoad();
+                if(ads.size() == 0){//没有数据，取消上拉加载
+                    lv_collection.setPullLoadEnable(false);
+                }else{
+                    collectionAdapter.notifyDataSetChanged();
+                }
                 break;
             }
         }       
@@ -149,6 +154,7 @@ public class Fragment_collection extends Fragment implements IXListViewListener{
     };   
 
     private void isNothingNote(boolean isNote){
+        Log.d(TAG, ""+isNote);
         if(isNote){
             rl_Note.setVisibility(View.VISIBLE);
             lv_collection.setVisibility(View.GONE);
@@ -169,7 +175,8 @@ public class Fragment_collection extends Fragment implements IXListViewListener{
         }
     }
     
-    private void jsonCollectionData(String result){
+    private List<AdressData> jsonCollectionData(String result){
+        List<AdressData> adressDatas = new ArrayList<AdressData>();
         try {
             JSONArray jsonArray = new JSONArray(result);
             for(int i = 0 ; i < jsonArray.length(); i++){
@@ -196,6 +203,7 @@ public class Fragment_collection extends Fragment implements IXListViewListener{
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return adressDatas;
     }
     
     @Override

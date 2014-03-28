@@ -30,7 +30,7 @@ public class LocationService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		Log.d(TAG, "onCreate");
+		Log.e(TAG, "onCreate");
 		mLocationClient = new LocationClient(getApplicationContext()); // 声明LocationClient类
 		mLocationClient.registerLocationListener(myListener); // 注册监听函数
 		mLocationClient.setAK(WawcApplication.strKey);
@@ -40,12 +40,13 @@ public class LocationService extends Service {
 	}
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		Log.d(TAG, "onStartCommand");
+		Log.e(TAG, "onStartCommand");
 		return super.onStartCommand(intent, flags, startId);
 	}
 	@Override
 	public void onDestroy() {
-		Log.d(TAG, "onDestroy");
+		Log.e(TAG, "onDestroy");
+		mLocationClient.stop();
 		mLocationClient.unRegisterLocationListener(myListener);
 		super.onDestroy();
 	}
@@ -67,6 +68,7 @@ public class LocationService extends Service {
 		public void onReceiveLocation(BDLocation location) {
 			if (location == null)
 				return;
+			Log.d(TAG, "定位成功");
 			StringBuffer sb = new StringBuffer(256);
 			sb.append("time : ");
 			sb.append(location.getTime());

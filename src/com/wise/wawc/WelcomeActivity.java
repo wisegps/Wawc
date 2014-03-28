@@ -82,7 +82,6 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
             }
         }
         isNeedGetCityFromUrl();
-        startService(new Intent(WelcomeActivity.this, LocationService.class));
     }
 
     OnClickListener onClickListener = new OnClickListener() {
@@ -267,11 +266,19 @@ public class WelcomeActivity extends Activity implements PlatformActionListener 
     private void TurnActivity() {
         if (isCity && isHotCity && isLogin) {
             if (isFristLoad()) {
-                Intent intent = new Intent(WelcomeActivity.this,
-                        SelectCityActivity.class);
-                intent.putExtra("Welcome", true);
-                startActivity(intent);
-                finish();
+                if(Constant.isTest){
+                    Intent intent = new Intent(WelcomeActivity.this,
+                            MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else{
+                    Intent intent = new Intent(WelcomeActivity.this,
+                            SelectCityActivity.class);
+                    intent.putExtra("Welcome", true);
+                    startActivity(intent);
+                    finish(); 
+                }
+                
             } else {
                 Intent intent = new Intent(WelcomeActivity.this,
                         MainActivity.class);

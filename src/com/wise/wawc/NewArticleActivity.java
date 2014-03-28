@@ -259,7 +259,7 @@ public class NewArticleActivity extends Activity implements
                         .valueOf(Variable.Lon)));
                 params.add(new BasicNameValuePair("lat", String
                         .valueOf(Variable.Lat)));
-
+                System.out.println("temp = " + temp);
                 new Thread(new NetThread.postDataThread(myHandler,
                         Constant.BaseUrl + "blog?auth_code="
                                 + Variable.auth_code, params, publishArticle))

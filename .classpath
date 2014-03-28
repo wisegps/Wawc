@@ -12,5 +12,6 @@
 	<classpathentry kind="lib" path="libs/jpush-sdk-release1.5.0.jar"/>
 	<classpathentry kind="lib" path="libs/core.jar"/>
 	<classpathentry kind="lib" path="libs/android-support-v4.jar"/>
+	<classpathentry kind="lib" path="libs/Msc.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
