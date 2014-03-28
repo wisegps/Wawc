@@ -143,12 +143,7 @@ public class NewArticleActivity extends Activity implements
                                     NewArticleActivity.this, "发车友圈", "发送中...");
                             myDialog.setCancelable(true);
                             UploadUtil.getInstance().uploadFile(
-                                    picDatas.get(0).small_pic,
-                                    "image",
-                                    Constant.BaseUrl
-                                            + "upload_image?auth_code="
-                                            + Variable.auth_code,
-                                    new HashMap<String, String>());
+                                    picDatas.get(0).small_pic,"image",Constant.BaseUrl + "upload_image?auth_code=" + Variable.auth_code,new HashMap<String, String>());
                         } else {
                             myDialog = ProgressDialog.show(
                                     NewArticleActivity.this, "数据提交", "提交中...");
@@ -247,14 +242,15 @@ public class NewArticleActivity extends Activity implements
                 }
                 List<NameValuePair> params = new ArrayList<NameValuePair>();
                 params.add(new BasicNameValuePair("cust_id", Variable.cust_id));
-                params.add(new BasicNameValuePair("city", preferences
-                        .getString(Constant.LocationCity, "")));
+                params.add(new BasicNameValuePair("city", preferences.getString(Constant.LocationCity, "")));
                 params.add(new BasicNameValuePair("name", Variable.cust_name));
                 params.add(new BasicNameValuePair("logo", Constant.UserIconUrl));
                 params.add(new BasicNameValuePair("title", "title"));
                 params.add(new BasicNameValuePair("content", et_publish_article
                         .getText().toString().trim()));
                 params.add(new BasicNameValuePair("pics", temp));
+                //测试
+//              params.add(new BasicNameValuePair("pics", "[null]"));
                 params.add(new BasicNameValuePair("lon", String
                         .valueOf(Variable.Lon)));
                 params.add(new BasicNameValuePair("lat", String

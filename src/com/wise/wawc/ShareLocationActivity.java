@@ -95,6 +95,8 @@ public class ShareLocationActivity extends Activity {
                 startActivityForResult(intent, 1);
                 Log.d(TAG,"保存图片路径" + Constant.picPath + Constant.ShareImage);
                 break;
+                
+                //  分享  TODO
             case R.id.bt_activity_share:
                 String content = et_share_content.getText().toString().trim();
                 
