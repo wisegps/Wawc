@@ -24,7 +24,10 @@ public class WawcApplication extends Application {
     /**
      * 百度地图key
      */
-    public static final String strKey = "zwIFsm9hVHYmroq923Psz3xv";
+    //测试
+    //public static final String strKey = "zwIFsm9hVHYmroq923Psz3xv";
+    //正式
+    public static final String strKey = "S9V4G1qyDIWyU1eVF8MYHfKP";
     BMapManager mBMapManager = null;
 	
 	@Override
