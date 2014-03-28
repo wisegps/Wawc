@@ -870,7 +870,7 @@ public class Fragment_vehiclefriend extends Fragment implements IXListViewListen
     @Override
     public void onPause() {
         super.onPause();
-
+        
         Constant.articleType = article;
         Constant.start = 0;  // 开始页
         Constant.pageSize =10;   //每页数量

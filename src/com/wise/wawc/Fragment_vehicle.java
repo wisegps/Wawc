@@ -310,16 +310,7 @@ public class Fragment_vehicle extends Fragment{
             v_divider.setVisibility(View.VISIBLE);
         }
         //车辆数据
-        int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Constant.ImageWidth, getResources().getDisplayMetrics());
-        LayoutParams params = new LayoutParams((Variable.carDatas.size() * (px + 10) + 10),LayoutParams.WRAP_CONTENT);
-        //汽车品牌Logo
-        carAdapter = new CarAdapter(getActivity(),Variable.carDatas);
-        vehicleGridView.setAdapter(carAdapter);
-        vehicleGridView.setLayoutParams(params);
-        vehicleGridView.setColumnWidth(px);
-        vehicleGridView.setHorizontalSpacing(10);
-        vehicleGridView.setStretchMode(GridView.NO_STRETCH);
-        vehicleGridView.setNumColumns(Variable.carDatas.size());
+        initGridView();
         vehicleGridView.setOnItemClickListener(new OnItemClickListener() {
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,long arg3) {
                     carBrankId = "";
@@ -782,7 +773,8 @@ public class Fragment_vehicle extends Fragment{
                                 Variable.carDatas.get(i).setCheck(false);
                             }
                             Variable.carDatas.get(chickIndex).setCheck(true);
-                            carAdapter.notifyDataSetChanged();
+//                            carAdapter.notifyDataSetChanged();
+//                            carAdapter.refresh(Variable.carDatas);
                             Message message = new Message();
                             message.obj = Variable.carDatas.get(chickIndex);
                             oneCarData = Variable.carDatas.get(chickIndex);
@@ -798,7 +790,10 @@ public class Fragment_vehicle extends Fragment{
                         }
                         buttomView.setVisibility(View.GONE);
                         buttomViewIsShow = false;
+                        initGridView();
+                        carAdapter.refresh(Variable.carDatas);
                         showToast("删除成功");
+                       
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -1327,6 +1322,22 @@ public class Fragment_vehicle extends Fragment{
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+    public void initGridView(){
+    	int px = (int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Constant.ImageWidth, getResources().getDisplayMetrics());
+        LayoutParams params = new LayoutParams((Variable.carDatas.size() * (px + 10) + 10),LayoutParams.WRAP_CONTENT);
+        
+        Log.e(TAG,"宽度 = " + Variable.carDatas.size() * (px + 10) + 10);
+        Log.e(TAG,"集合长度 = " + Variable.carDatas.size());
+        //汽车品牌Logo
+        carAdapter = new CarAdapter(getActivity(),Variable.carDatas);
+        vehicleGridView.setAdapter(carAdapter);
+        vehicleGridView.setLayoutParams(params);
+        vehicleGridView.setColumnWidth(px);
+        vehicleGridView.setHorizontalSpacing(10);
+        vehicleGridView.setStretchMode(GridView.NO_STRETCH);
+        vehicleGridView.setNumColumns(Variable.carDatas.size());
+        carAdapter.notifyDataSetChanged();
     }
     class MyBroadCastReceiver extends BroadcastReceiver{
         public void onReceive(Context context, Intent intent) {

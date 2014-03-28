@@ -219,15 +219,17 @@ public class MyAdapter extends BaseAdapter{
 		
 		List<Bitmap> threeSmallImageList = new ArrayList<Bitmap>();
 		List<Bitmap> smallImageList = new ArrayList<Bitmap>();
-		for(int i = 0 ; i < articleList.get(position).getImageList().size() ; i ++){
-			Map<String,String> imageMap = articleList.get(position).getImageList().get(i);
-			//判断小图是否存在sd卡 /点击小图的时候再判断大图是否存在sd卡  
-			String smallImage = imageMap.get("small_pic").substring(imageMap.get("small_pic").lastIndexOf("/") + 1);
-			//本地不存在图片  存null  
-			Bitmap smallBitmap = imageIsExist(Constant.VehiclePath + smallImage,imageMap.get("small_pic"),3,0);
-			smallImageList.add(smallBitmap);
-			if(i <= 2){
-				threeSmallImageList.add(i, smallBitmap);
+		if(articleList.get(position).getImageList() != null){
+			for(int i = 0 ; i < articleList.get(position).getImageList().size() ; i ++){
+				Map<String,String> imageMap = articleList.get(position).getImageList().get(i);
+				//判断小图是否存在sd卡 /点击小图的时候再判断大图是否存在sd卡  
+				String smallImage = imageMap.get("small_pic").substring(imageMap.get("small_pic").lastIndexOf("/") + 1);
+				//本地不存在图片  存null  
+				Bitmap smallBitmap = imageIsExist(Constant.VehiclePath + smallImage,imageMap.get("small_pic"),3,0);
+				smallImageList.add(smallBitmap);
+				if(i <= 2){
+					threeSmallImageList.add(i, smallBitmap);
+				}
 			}
 		}
 		

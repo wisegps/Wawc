@@ -329,7 +329,7 @@ public class DBExcute {
 //			用户发表的图片
 			Map<String,String> imageListTemp = null;
 			List<Map<String,String>> imageList = new ArrayList<Map<String,String>>();
-			if(!"[]".equals(jsonObject.getString("pics"))){
+			if(!"[]".equals(jsonObject.getString("pics")) && !"[null]".equals(jsonObject.getString("pics"))){
 				JSONArray json = new JSONArray(jsonObject.getString("pics"));
 				for(int j = 0 ; j < json.length() ; j ++){
 					JSONObject jsonObj = json.getJSONObject(j);
