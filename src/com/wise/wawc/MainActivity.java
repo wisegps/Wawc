@@ -73,6 +73,8 @@ public class MainActivity extends FragmentActivity implements TagAliasCallback {
     Fragment_sms fragment_sms;
     Fragment_vehiclefriend fragment_vehiclefriend;
     Fragment_vehicle fragment_vehicle;
+    Fragment_order fragment_order;
+    Fragment_devices fragment_devices;
     
     SlidingMenuView slidingMenuView;
     int Screen = 1;
@@ -641,15 +643,36 @@ public class MainActivity extends FragmentActivity implements TagAliasCallback {
         case 6:
             if (fragment_vehicle == null) {  
                 // 如果SettingFragment为空，则创建一个并添加到界面上  
-                fragment_vehicle = new Fragment_vehicle();  
+                fragment_vehicle = new Fragment_vehicle();
                 transaction.add(R.id.sliding_body, fragment_vehicle);  
             } else {  
                 // 如果SettingFragment不为空，则直接将它显示出来  
                 transaction.show(fragment_vehicle);  
             }  
             break;
+        case 7:
+            if (fragment_order == null) {  
+                // 如果SettingFragment为空，则创建一个并添加到界面上  
+                fragment_order = new Fragment_order();  
+                transaction.add(R.id.sliding_body, fragment_order);  
+            } else {  
+                // 如果SettingFragment不为空，则直接将它显示出来  
+                transaction.show(fragment_order);  
+            }  
+            break;
+        case 8:
+            if (fragment_devices == null) {  
+                // 如果SettingFragment为空，则创建一个并添加到界面上  
+                fragment_devices = new Fragment_devices();  
+                transaction.add(R.id.sliding_body, fragment_devices);  
+            } else {  
+                // 如果SettingFragment不为空，则直接将它显示出来  
+                transaction.show(fragment_devices);  
+            }  
+            break;
         }  
-        transaction.commit();  
+        transaction.commit();
+        slidingMenuView.snapToScreen(1);
     }
     
     private void hideFragments(FragmentTransaction transaction) {  
@@ -674,6 +697,12 @@ public class MainActivity extends FragmentActivity implements TagAliasCallback {
         if (fragment_vehicle != null) {  
             transaction.hide(fragment_vehicle);  
         }
+        if (fragment_order != null) {  
+            transaction.hide(fragment_order);  
+        }
+        if (fragment_devices != null) {  
+            transaction.hide(fragment_devices);  
+        }
     }
     
     /**
@@ -682,7 +711,6 @@ public class MainActivity extends FragmentActivity implements TagAliasCallback {
     public void ToSettingCenter() {
         isHome = false;
         setTabSelection(3);
-        slidingMenuView.snapToScreen(1);
     }
 
     /**
@@ -691,7 +719,6 @@ public class MainActivity extends FragmentActivity implements TagAliasCallback {
     private void ToMyCollection() {
         isHome = false;
         setTabSelection(1);
-        slidingMenuView.snapToScreen(1);
     }
 
     /**
@@ -700,12 +727,10 @@ public class MainActivity extends FragmentActivity implements TagAliasCallback {
     private void ToHome() {
         isHome = true;
         setTabSelection(2);
-        slidingMenuView.snapToScreen(1);
     }
     public void ToSms() {
         isHome = false;
         setTabSelection(4);
-        slidingMenuView.snapToScreen(1);
     }
     /**
      * 个人信息
@@ -713,7 +738,6 @@ public class MainActivity extends FragmentActivity implements TagAliasCallback {
     public void ToAccountHome() {
         isHome = false;
         setTabSelection(0); 
-        slidingMenuView.snapToScreen(1);
     }
 
     /**
@@ -722,7 +746,6 @@ public class MainActivity extends FragmentActivity implements TagAliasCallback {
     public void ToVehicleFriends() {
         isHome = false;
         setTabSelection(5);
-        slidingMenuView.snapToScreen(1);
     }
 
     /**
@@ -735,7 +758,6 @@ public class MainActivity extends FragmentActivity implements TagAliasCallback {
  	        startActivity(new Intent(MainActivity.this,NewVehicleActivity.class));
  	    }else{
  	       setTabSelection(6);
- 	      slidingMenuView.snapToScreen(1);
  	    }
     }
 
@@ -744,8 +766,7 @@ public class MainActivity extends FragmentActivity implements TagAliasCallback {
      */
     public void ToCarTerminal() {
         //isHome = false;
-        //setTabSelection(4);
-        //slidingMenuView.snapToScreen(1);
+        //setTabSelection(8);
     }
 
     /**
@@ -753,8 +774,7 @@ public class MainActivity extends FragmentActivity implements TagAliasCallback {
      */
     public void Toorders() {
         //isHome = false;
-        //setTabSelection(4);
-        //slidingMenuView.snapToScreen(1);
+        //setTabSelection(7);
     }
     public void LeftMenu() {
         if (slidingMenuView.getCurrentScreen() == 0) {

@@ -194,9 +194,13 @@ public class SlidingView extends ViewGroup{
      * @return
      */
     private int getScrollVelocity(){
-        velocityTracker.computeCurrentVelocity(1000);
-        int velocity = (int) velocityTracker.getXVelocity();
-        return velocity;
+        if(velocityTracker == null){
+            return 0;
+        }else{
+            velocityTracker.computeCurrentVelocity(1000);
+            int velocity = (int) velocityTracker.getXVelocity();
+            return velocity;
+        }
     }
     
     @Override

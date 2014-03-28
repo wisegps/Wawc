@@ -11,7 +11,6 @@ import com.wise.pubclas.Constant;
 import com.wise.pubclas.GetSystem;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -19,54 +18,55 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-/**
- * 我的订单
- * @author honesty
- */
-public class OrderMeActivity extends Activity implements IXListViewListener{
-    private static final String TAG = "OrderMeActivity";
+
+public class Fragment_order extends Fragment implements IXListViewListener{
+    private static final String TAG = "Fragment_order";
+    
     private static final int Get_order = 1;
     private static final int refresh = 2;
     XListView lv_activity_order_me;
     List<OrderData> orderDatas = new ArrayList<OrderData>();
     OrderAdapter orderAdapter;
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_order_me);
-		lv_activity_order_me = (XListView)findViewById(R.id.lv_activity_order_me);
-		//不设置上拉加载无效
-		lv_activity_order_me.setPullRefreshEnable(false);
-		lv_activity_order_me.setPullLoadEnable(true);
-		lv_activity_order_me.setXListViewListener(this);
+    
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_order, container, false);
+    }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        lv_activity_order_me = (XListView)getActivity().findViewById(R.id.lv_activity_order_me);
+        lv_activity_order_me.setPullRefreshEnable(false);
+        lv_activity_order_me.setPullLoadEnable(true);
+        lv_activity_order_me.setXListViewListener(this);
         
-		ImageView iv_activity_order_me_menu = (ImageView)findViewById(R.id.iv_activity_order_me_menu);
-		iv_activity_order_me_menu.setOnClickListener(onClickListener);
+        ImageView iv_activity_order_me_menu = (ImageView)getActivity().findViewById(R.id.iv_activity_order_me_menu);
+        iv_activity_order_me_menu.setOnClickListener(onClickListener);
         GetOrder();
-        registerBroadcastReceiver();
-	}
-	OnClickListener onClickListener = new OnClickListener() {		
-		@Override
-		public void onClick(View v) {
-			switch (v.getId()) {
-			case R.id.iv_activity_order_me_menu:
-				ActivityFactory.A.LeftMenu();
-				break;
-			}
-		}
-	};
-	
-	Handler handler = new Handler(){
+        registerBroadcastReceiver(); 
+    }
+    OnClickListener onClickListener = new OnClickListener() {       
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+            case R.id.iv_activity_order_me_menu:
+                ActivityFactory.A.LeftMenu();
+                break;
+            }
+        }
+    };
+    
+    Handler handler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
@@ -87,19 +87,19 @@ public class OrderMeActivity extends Activity implements IXListViewListener{
                 }
                 break;
             }
-        }	    
-	};
-	private void onLoad() {
-	    lv_activity_order_me.stopRefresh();
-	    lv_activity_order_me.stopLoadMore();
+        }       
+    };
+    private void onLoad() {
+        lv_activity_order_me.stopRefresh();
+        lv_activity_order_me.stopLoadMore();
     }
-	private void GetOrder(){
-	    String url = Constant.BaseUrl + "customer/" + Variable.cust_id + "/order?auth_code="+Variable.auth_code;
-	    new Thread(new NetThread.GetDataThread(handler, url, Get_order)).start();
-	}
-	private List<OrderData> jsonOrder(String result){
+    private void GetOrder(){
+        String url = Constant.BaseUrl + "customer/" + Variable.cust_id + "/order?auth_code="+Variable.auth_code;
+        new Thread(new NetThread.GetDataThread(handler, url, Get_order)).start();
+    }
+    private List<OrderData> jsonOrder(String result){
         List<OrderData> oDatas = new ArrayList<OrderData>();
-	    try {
+        try {
             JSONArray jsonArray = new JSONArray(result);
             for(int i = 0 ; i < jsonArray.length() ; i++){
                 JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -116,10 +116,10 @@ public class OrderMeActivity extends Activity implements IXListViewListener{
             e.printStackTrace();
         }
         return oDatas;
-	}
-		
-	private class OrderAdapter extends BaseAdapter{
-	    LayoutInflater mInflater = LayoutInflater.from(OrderMeActivity.this);
+    }
+        
+    private class OrderAdapter extends BaseAdapter{
+        LayoutInflater mInflater = LayoutInflater.from(getActivity());
         @Override
         public int getCount() {
             return orderDatas.size();
@@ -202,16 +202,16 @@ public class OrderMeActivity extends Activity implements IXListViewListener{
             TextView tv_item_order_product_name,tv_item_order_unit_price,tv_item_order_create_time,
                         tv_item_order_quantity,tv_item_order_total_price,tv_status,tv_bt_status;
         }
-	}
-	
-	private class OrderData{
-	    String create_time;
-	    String total_price;
-	    String quantity;
-	    String unit_price;
-	    String order_id;
-	    String product_name;
-	    int status;
+    }
+    
+    private class OrderData{
+        String create_time;
+        String total_price;
+        String quantity;
+        String unit_price;
+        String order_id;
+        String product_name;
+        int status;
         public String getCreate_time() {
             return create_time;
         }
@@ -259,27 +259,15 @@ public class OrderMeActivity extends Activity implements IXListViewListener{
             return "OrderData [create_time=" + create_time + ", total_price="
                     + total_price + ", quantity=" + quantity + ", unit_price="
                     + unit_price + ", order_id=" + order_id + "]";
-        }	    
-	}
-	
-	@Override
-	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			return false;
-		}
-		return super.onKeyDown(keyCode, event);
-	}	
-	@Override
-	protected void onResume() {
-	    super.onResume();
-	    Log.d(TAG, "onResume");
-	}
-	private void registerBroadcastReceiver(){
-	    IntentFilter intentFilter = new IntentFilter();
-	    intentFilter.addAction(Constant.A_Order);
-	    registerReceiver(broadcastReceiver, intentFilter);
-	}
-	BroadcastReceiver broadcastReceiver = new BroadcastReceiver(){
+        }       
+    }   
+    
+    private void registerBroadcastReceiver(){
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Constant.A_Order);
+        getActivity().registerReceiver(broadcastReceiver, intentFilter);
+    }
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver(){
         @Override
         public void onReceive(Context context, Intent intent) {
             if(intent.getAction().equals(Constant.A_Order)){
@@ -287,13 +275,10 @@ public class OrderMeActivity extends Activity implements IXListViewListener{
                 orderDatas.clear();
                 GetOrder();
             }
-        }	    
-	};
+        }       
+    };
     @Override
-    public void onRefresh() {
-        // TODO Auto-generated method stub
-        
-    }
+    public void onRefresh() {}
 
     @Override
     public void onLoadMore() {

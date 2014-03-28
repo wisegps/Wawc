@@ -10,7 +10,6 @@ import com.wise.pubclas.Constant;
 import com.wise.pubclas.NetThread;
 import com.wise.pubclas.Variable;
 import com.wise.sql.DBExcute;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ContentValues;
@@ -21,29 +20,22 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
+import android.support.v4.app.Fragment;
 import android.util.TypedValue;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.View.OnClickListener;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.LinearLayout.LayoutParams;
 
-/**
- * 我的终端
- * 
- * @author honesty
- */
-public class DevicesActivity extends Activity {
-    private static final String TAG = "MyDevicesActivity";
+public class Fragment_devices extends Fragment{
     private static final int Get_data = 1;
 
     LinearLayout ll_content;
@@ -55,25 +47,29 @@ public class DevicesActivity extends Activity {
     List<DevicesData> devicesDatas = new ArrayList<DevicesData>();
     DevicesAdapter devicesAdapter;
     boolean isJump = true;// false绑定终端，true加载
-
+    
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_devices);
-        ll_content = (LinearLayout) findViewById(R.id.ll_content);
-        ImageView iv_activity_devices_menu = (ImageView) findViewById(R.id.iv_activity_devices_menu);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_devices, container, false);
+    }
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ll_content = (LinearLayout) getActivity().findViewById(R.id.ll_content);
+        ImageView iv_activity_devices_menu = (ImageView) getActivity().findViewById(R.id.iv_activity_devices_menu);
         iv_activity_devices_menu.setOnClickListener(onClickListener);
-        TextView tv_activity_devices_renewals = (TextView) findViewById(R.id.tv_activity_devices_renewals);
+        TextView tv_activity_devices_renewals = (TextView) getActivity().findViewById(R.id.tv_activity_devices_renewals);
         tv_activity_devices_renewals.setOnClickListener(onClickListener);
-        gv_activity_devices = (GridView) findViewById(R.id.gv_activity_devices);
-        tv_activity_devices_serial = (TextView) findViewById(R.id.tv_activity_devices_serial);
-        tv_activity_devices_sim = (TextView) findViewById(R.id.tv_activity_devices_sim);
-        tv_activity_devices_status = (TextView) findViewById(R.id.tv_activity_devices_status);
-        tv_activity_devices_service_end_date = (TextView) findViewById(R.id.tv_activity_devices_service_end_date);
-        tv_activity_devices_hardware_version = (TextView) findViewById(R.id.tv_activity_devices_hardware_version);
-        tv_activity_devices_software_version = (TextView) findViewById(R.id.tv_activity_devices_software_version);
+        gv_activity_devices = (GridView) getActivity().findViewById(R.id.gv_activity_devices);
+        tv_activity_devices_serial = (TextView) getActivity().findViewById(R.id.tv_activity_devices_serial);
+        tv_activity_devices_sim = (TextView) getActivity().findViewById(R.id.tv_activity_devices_sim);
+        tv_activity_devices_status = (TextView) getActivity().findViewById(R.id.tv_activity_devices_status);
+        tv_activity_devices_service_end_date = (TextView) getActivity().findViewById(R.id.tv_activity_devices_service_end_date);
+        tv_activity_devices_hardware_version = (TextView) getActivity().findViewById(R.id.tv_activity_devices_hardware_version);
+        tv_activity_devices_software_version = (TextView) getActivity().findViewById(R.id.tv_activity_devices_software_version);
 
-        Intent intent = getIntent();
+        Intent intent = getActivity().getIntent();
         isJump = intent.getBooleanExtra("isJump", true);
         System.out.println("isJump = " + isJump);
         if (!isJump) {// 绑定终端
@@ -88,21 +84,20 @@ public class DevicesActivity extends Activity {
         GetDevicesData();
         registerBroadcastReceiver();
     }
-
+    
     OnClickListener onClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             switch (v.getId()) {
             case R.id.iv_activity_devices_menu:
                 if (!isJump) {
-                    finish();
+                    getActivity().finish();
                 } else {
                     ActivityFactory.A.LeftMenu();
                 }
                 break;
             case R.id.tv_activity_devices_renewals:
-                DevicesActivity.this.startActivity(new Intent(
-                        DevicesActivity.this, OrderServiceActivity.class));
+                getActivity().startActivity(new Intent(getActivity(), OrderServiceActivity.class));
                 break;
             }
         }
@@ -227,7 +222,7 @@ public class DevicesActivity extends Activity {
         DBExcute dbExcute = new DBExcute();
         ContentValues values = new ContentValues();
         values.put("Content", result);
-        dbExcute.UpdateDB(DevicesActivity.this, values, Title);
+        dbExcute.UpdateDB(getActivity(), values, Title);
     }
 
     private void InsertDevice(String result, String Title) {
@@ -236,7 +231,7 @@ public class DevicesActivity extends Activity {
         values.put("Cust_id", Variable.cust_id);
         values.put("Title", Title);
         values.put("Content", result);
-        dbExcute.InsertDB(DevicesActivity.this, values, Constant.TB_Base);
+        dbExcute.InsertDB(getActivity(), values, Constant.TB_Base);
     }
 
     /**
@@ -274,7 +269,7 @@ public class DevicesActivity extends Activity {
     private class DevicesAdapter extends BaseAdapter {
         private static final int VALUE_CAR = 0;
         private static final int VALUE_ADD = 1;
-        LayoutInflater mInflater = LayoutInflater.from(DevicesActivity.this);
+        LayoutInflater mInflater = LayoutInflater.from(getActivity());
 
         @Override
         public int getCount() {
@@ -359,57 +354,45 @@ public class DevicesActivity extends Activity {
         }
     }
 
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        System.out.println("isJump = " + isJump);
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            if (!isJump) {
-                finish();
-            }
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
     private void backRequest(int index) {
         Intent intent = new Intent();
         intent.putExtra("DeviceId", devicesDatas.get(index).getDevice_id());
         intent.putExtra("Serial", devicesDatas.get(index).getSerial());
-        setResult(7, intent);
-        finish();
+        getActivity().setResult(7, intent);
+        getActivity().finish();
     }
 
     private void showDialog() {
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(getActivity())
                 .setTitle("列表框")
                 .setItems(new String[] { "添加终端", "订购终端" },
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog,
                                     int which) {
-                                Log.d(TAG, "which = " + which);
                                 if (which == 0) {
-                                    DevicesActivity.this
+                                    getActivity()
                                             .startActivity(new Intent(
-                                                    DevicesActivity.this,
+                                                    getActivity(),
                                                     DevicesAddActivity.class));
                                 } else {
-                                    DevicesActivity.this
-                                            .startActivity(new Intent(
-                                                    DevicesActivity.this,
+                                    getActivity().startActivity(new Intent(
+                                            getActivity(),
                                                     OrderDeviceActivity.class));
                                 }
                             }
                         }).setNegativeButton("确定", null).show();
     }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        unregisterReceiver(broadcastReceiver);
-    }
     
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        getActivity().unregisterReceiver(broadcastReceiver);
+    }
     private void registerBroadcastReceiver() {
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(Constant.A_UpdateDevice);
-        registerReceiver(broadcastReceiver, intentFilter);
+        getActivity().registerReceiver(broadcastReceiver, intentFilter);
     }
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
